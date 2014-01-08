@@ -1,0 +1,193 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    android:fillViewport="true"
+    android:id="@+id/glyinscarbsScrollView"
+    tools:context=".GlyInsCarbs" >
+
+    <LinearLayout
+        android:paddingTop="16dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+        <TableLayout android:layout_width="fill_parent"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+		    android:stretchColumns="0,1" >
+		    <TableRow android:id="@+id/tableRow1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="left"
+		        android:padding="5dp" 
+		        android:paddingTop="5dp" >
+		        <Button
+        	        android:layout_width="wrap_content"
+        	        android:layout_margin="16dp"
+        	        android:padding="8dp"
+		            android:text="Glicemia"
+		            android:textColor="@color/primary_text_holo_dark"
+		            android:textSize="14sp"
+		            android:id="@+id/glicemia"
+		            android:drawableTop="@drawable/glucose"
+		            android:background="@color/background_holo_dark"
+		            android:onClick="Call_Glycemia" />
+		        <Button
+        	        android:layout_width="wrap_content"
+        	        android:layout_margin="16dp"
+        	        android:padding="8dp"
+		            android:text="Insulina"
+		            android:textColor="@color/primary_text_holo_dark"
+		            android:textSize="14sp"
+		            android:id="@+id/insulina"
+		            android:drawableTop="@drawable/insulin"
+		            android:background="@color/background_holo_dark"
+		            android:onClick="Call_Insulin" />
+            </TableRow>
+            <TableRow android:id="@+id/tableRow1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="left"
+		        android:padding="5dp" 
+		        android:paddingTop="5dp" >
+		        <Button
+        	        android:layout_width="wrap_content"
+        	        android:layout_margin="16dp"
+        	        android:padding="8dp"
+		            android:text="H.Carb"
+		            android:textColor="@color/primary_text_holo_dark"
+		            android:textSize="14sp"
+		            android:id="@+id/carbs"
+		            android:drawableTop="@drawable/carbs"
+		            android:background="@color/background_holo_dark"
+		            android:onClick="Call_Carbs" />
+            </TableRow>
+        </TableLayout>
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp" >
+
+            <Button
+                android:id="@+id/glycemialeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="false"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="8dp"
+                android:layout_centerVertical="true"
+                android:background="@color/background_holo_dark"
+                android:drawableLeft="@drawable/viewdetail"
+                android:onClick="Call_Home" />
+            
+            <Button
+                android:id="@+id/glycemiaright"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentLeft="false"
+                android:layout_marginRight="8dp"
+                android:layout_centerVertical="true"
+                android:background="@color/background_holo_dark"
+                android:drawableRight="@drawable/viewdetail"
+                android:onClick="Call_OutrasLeituras" />
+
+            
+
+        </RelativeLayout>
+        
+    <!-- 
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:clickable="true"
+	        android:onClick="Call_Glycemia" >
+	        
+            <ImageView
+				android:id="@+id/img_glyinscarbs_glycemia"
+				android:contentDescription="glycemia_img"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:layout_gravity="right"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:src="@drawable/glucose" />
+	        
+	        <TextView
+		        android:id="@+id/tv_glyinscarbs_glycemia"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Glicemia"
+		        android:textSize="24sp"
+		        android:gravity="left|center_vertical" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:clickable="true"
+	        android:onClick="Call_Insulin"  >
+	        
+            <ImageView
+				android:id="@+id/img_glyinscarbs_insulin"
+				android:contentDescription="insulin_img"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:layout_gravity="right"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:src="@drawable/insulin" />
+	        
+	        <TextView
+		        android:id="@+id/tv_glyinscarbs_insulin"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Insulina"
+		        android:textSize="24sp"
+		        android:gravity="left|center_vertical" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:clickable="true"
+	        android:onClick="Call_Carbs"  >
+	        
+            <ImageView
+				android:id="@+id/img_datatools_carbs"
+				android:contentDescription="cabrs_img"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:layout_gravity="right"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:src="@drawable/carbs" />
+	        
+	        <TextView
+		        android:id="@+id/tv_datatools_carbs"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Hidratos de Carbono"
+		        android:textSize="24sp"
+		        android:gravity="left|center_vertical" />
+        </LinearLayout>
+         -->
+        
+        
+    </LinearLayout>
+
+</ScrollView>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">A Minha Diabetes</string>
+    <string name="add_Exercise">Adicionar Exercicio</string>
+    <string name="title_activity_my_data">Meus Dados</string>
+    <string name="title_activity_preferences">Configurações</string>
+    <string name="title_activity_exercise">Registos de Exercicio</string>
+    <string name="save_MyData">Guardar</string>
+    <string name="title_activity_glycemia">Registos de Glicemia</string>
+    <string name="action_settings">Settings</string>
+    <string name="add_Glycemia">Adicionar Glicemia</string>
+    <string name="title_activity_insulin">Registos de Insulina</string>
+    <string name="add_Insulin">Adicionar Insulina</string>
+    <string name="title_activity_blood_pressure">Registos de P. Arterial</string>
+    <string name="add_BloodPressure">Adicionar Pressão Arterial</string>
+    <string name="title_activity_carbo_hydrate">Registos de H. Carbono</string>
+    <string name="add_Carbs">Adicionar Hidratos de Carbono</string>
+    <string name="title_activity_cholesterol">Registos de Colesterol</string>
+    <string name="add_Cholesterol">Adicionar Colesterol</string>
+    <string name="title_activity_disease">Registos de Doenças</string>
+    <string name="add_Disease">Adicionar Doença</string>
+    <string name="title_activity_h1_a1c">Registos de A1c</string>
+    <string name="add_H1A1c">Adicionar H1A1c</string>
+    <string name="title_activity_weight">Registos de Peso</string>
+    <string name="add_Weight">Adicionar Peso</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_TagsFragment">Adicionar Etiqueta</string>
+    <string name="add_DiseasesFragment">Adicionar Doença</string>
+    <string name="add_ExercisesFragment">Adicionar Exercicio</string>
+    <string name="add_InsulinsFragment">Adicionar Insulina</string>
+    <string name="add_MedicinesFragment">Adicionar Medicamento</string>
+
+    <string-array name="Sex">
+        <item>Masculino</item>
+        <item>Feminino</item>
+    </string-array>
+    <string-array name="diabetes_Type">
+        <item>Tipo 1</item>
+        <item>Tipo 2</item>
+        <item>Gestacional</item>
+    </string-array>
+
+    <string name="title_activity_data_tools">Definições &amp; Ferramentas</string>
+    <string name="title_activity_gly_ins_carbs">A Minha Diabetes</string>
+    <string name="title_activity_ex_bpcho_dis_wei">A Minha Diabetes</string>
+    <string name="title_activity_glycemia_detail">Registo de Glicemia</string>
+    <string name="save_GlycemiaDetail">Guardar</string>
+    <string name="title_activity_insulin_detail">Registo de Insulina</string>
+    <string name="title_activity_exercise_detail">Registo de Exercicio</string>
+
+    <string-array name="Effort">
+        <item>Muito Leve</item>
+        <item>Leve</item>
+        <item>Moderado</item>
+        <item>Intenso</item>
+        <item>Muito Intenso</item>
+    </string-array>
+
+    <string name="title_activity_carbo_hydrate_detail">Registo de H. Carbono</string>
+
+    <string-array name="daytimes">
+        <item>Acordar</item>
+        <item>Antes Peq. almoço</item>
+        <item>Depois Peq. almoço</item>
+        <item>Antes almoço</item>
+        <item>Depois Almoço</item>
+        <item>Antes jantar</item>
+        <item>Depois jantar</item>
+        <item>Deitar</item>
+        <item>Outra</item>
+    </string-array>
+    <string-array name="bg_targets">
+        <item>Dia</item>
+        <item>Noite</item>
+    </string-array>
+
+    <string name="title_activity_blood_pressure_detail">Registo de P. Arterial</string>
+    <string name="title_activity_cholesterol_detail">Registo de Colesterol</string>
+    <string name="title_activity_weight_detail">Registo de Peso</string>
+    <string name="title_activity_hb_a1c_detail">Registo de A1c</string>
+    <string name="title_activity_disease_detail">Registo de Doença</string>
+    <string name="title_activity_import_export">Importar &amp; Exportar</string>
+    <string name="title_activity_tag_detail">Fase do Dia</string>
+    <string name="title_activity_target_bg_detail">Objetivo de Glicemia</string>
+    <string name="title_activity_insulins_detail">Insulina</string>
+    <string name="title_activity_meal">Refeição</string>
+    <string name="title_activity_info">Informação</string>
+    <string name="title_activity_view_photo">Fotografia</string>
+    <string name="Meal">Refeição</string>
+    <string name="Glycemia">Glicemia</string>
+    <string name="Insulin">Insulina</string>
+    <string name="Carbs">H.Carb</string>
+    <string name="Exercise">Exercício</string>
+
+</resources>

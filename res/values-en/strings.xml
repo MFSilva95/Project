@@ -1,0 +1,19 @@
+<resources>
+
+    <string name="Carbs">Carbs</string>
+    <string name="Exercise">Exercise</string>
+    <string name="Glycemia">Glycemia</string>
+    <string name="Insulin">Insulin</string>
+    <string name="Meal">Meal</string>
+    <string name="action_settings">Settings</string>
+    <string name="add_BloodPressure">Add Blood Pressure</string>
+    <string name="add_Carbs">Add Carbo-hydrates</string>
+    <string name="add_Cholesterol">Add colhesterol</string>
+    <string name="add_Disease">Add Disease</string>
+    <string name="title_activity_blood_pressure">B.P. Registers</string>
+    <string name="title_activity_blood_pressure_detail">B.P. Register</string>
+    <string name="title_activity_ex_bpcho_dis_wei">My Diabetes</string>
+    <string name="title_activity_gly_ins_carbs">My Diabetes</string>
+    <string name="title_activity_view_photo">Photograph</string>
+
+</resources>

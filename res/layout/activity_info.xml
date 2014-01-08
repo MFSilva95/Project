@@ -1,0 +1,56 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    tools:context=".Info" >
+
+    <LinearLayout
+        android:paddingTop="8dp"
+        
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:descendantFocusability="beforeDescendants"
+		android:focusableInTouchMode="true">
+    
+	    
+	    <TextView
+	        android:layout_marginTop="8dp"
+	        android:layout_marginLeft="4dp"
+        	android:layout_marginRight="4dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="16sp"
+	        android:text="Aplicação desenvolvida no âmbito da tese &quot;Gestão de diabetes em Smartphone&quot;, para obtenção de grau Mestre em  Engenharia de Redes e Sistemas Informáticos na Faculdade de Ciências da Universidade do Porto." />
+	
+	    <TextView
+	        android:layout_marginTop="8dp"
+	        android:layout_marginLeft="4dp"
+        	android:layout_marginRight="4dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="16sp"
+	        android:text="Para o desenvolvimento da aplicação, contou-se com a cooperação de médicos dos serviçoes de endocrinologia dos Hospitais S. João no Porto e Santos Silva em V. N. Gaia. Esta cooperação foi principalmente para a definição de requisitos para a aplicação." />
+	    
+	    <TextView
+	        android:layout_marginTop="8dp"
+	        android:layout_marginLeft="4dp"
+        	android:layout_marginRight="4dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="16sp"
+	        android:text="Aplicação desenvolvida por João Graça." />
+	    
+	    <TextView
+	        android:layout_marginTop="8dp"
+	        android:layout_marginLeft="4dp"
+        	android:layout_marginRight="4dp"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textSize="16sp"
+	        android:text="Contacto: joao.adg@gmail.com" />
+	    
+    </LinearLayout>
+</ScrollView>

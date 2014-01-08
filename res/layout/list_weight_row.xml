@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+    
+	<LinearLayout
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_marginLeft="3dp"
+	    android:orientation="vertical"
+	    android:layout_centerVertical="true"
+	    android:layout_alignParentLeft="true" >
+	    <TextView
+	        android:id="@+id/tv_list_weight_data"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:textSize="16sp"
+	        android:textStyle="bold" />
+        <TextView
+	        android:id="@+id/tv_list_weight_hora"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:textSize="16sp"
+	        android:textStyle="bold" />
+	</LinearLayout>
+	<TextView
+	        android:id="@+id/tv_list_weight_value"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_centerVertical="true"
+	        android:text="95"
+	        android:textSize="36sp"
+	        android:layout_toLeftOf="@+id/tv_list_weight_unit" />
+	<TextView
+	        android:id="@+id/tv_list_weight_unit"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:text="Kg"
+	        android:textSize="16sp"
+	        android:paddingLeft="8dp"
+	        android:layout_centerVertical="true"
+	        android:layout_toLeftOf="@+id/ib_list_weight_detail" />
+	<ImageButton
+        android:contentDescription="weight_detail_img"
+        android:id="@+id/ib_list_weight_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:paddingRight="8dp"
+        android:paddingLeft="8dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/viewdetail"
+        android:background="@color/transparent" />
+</RelativeLayout>
