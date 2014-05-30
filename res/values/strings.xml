@@ -30,6 +30,9 @@
     <string name="add_ExercisesFragment">Adicionar Exercicio</string>
     <string name="add_InsulinsFragment">Adicionar Insulina</string>
     <string name="add_MedicinesFragment">Adicionar Medicamento</string>
+    <string name="title_activity_transfer">Transferência PC</string>
+    <string name="title_activity_scan">Digitalizar</string>
+    <string name="title_activity_cloud_server">CloudServerActivity</string>
 
     <string-array name="Sex">
         <item>Masculino</item>
