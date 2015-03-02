@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.DialogFragment;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.ListView;
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.widget.EditText;
+import android.widget.ListView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -18,14 +18,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
+
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.InsulinRegAdapter;
 import com.jadg.mydiabetes.database.InsulinRegDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class Insulin extends Activity {
 
@@ -36,7 +41,7 @@ public class Insulin extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_insulin);
 		// Show the Up button in the action bar.
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		FillDates();
 		
 		EditText datefrom = (EditText)findViewById(R.id.et_Insulin_DataFrom);
@@ -67,7 +72,7 @@ public class Insulin extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getSupportMenuInflater().inflate(R.menu.insulin, menu);
+		getMenuInflater().inflate(R.menu.insulin, menu);
 		return true;
 	}
 
@@ -155,7 +160,7 @@ public class Insulin extends Activity {
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_Insulin_DataFrom);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "DatePicker");
+	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
 	@SuppressWarnings("deprecation")
 	public void showDatePickerDialogTo(View v){
@@ -163,6 +168,6 @@ public class Insulin extends Activity {
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_Insulin_DataTo);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "DatePicker");
+	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
 }

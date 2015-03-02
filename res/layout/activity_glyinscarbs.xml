@@ -47,7 +47,7 @@
 		            android:background="@color/background_holo_dark"
 		            android:onClick="Call_Insulin" />
             </TableRow>
-            <TableRow android:id="@+id/tableRow1"
+            <TableRow android:id="@+id/tableRow2"
 		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
 		        android:gravity="left"

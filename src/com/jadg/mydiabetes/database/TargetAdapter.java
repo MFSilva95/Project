@@ -2,6 +2,8 @@ package com.jadg.mydiabetes.database;
 
 import java.util.ArrayList;
 
+
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;

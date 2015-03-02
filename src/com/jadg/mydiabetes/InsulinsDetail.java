@@ -1,21 +1,27 @@
 package com.jadg.mydiabetes;
 
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.Toast;
-
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.widget.EditText;
+import android.widget.Toast;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuInflater;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.database.InsulinDataBinding;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class InsulinsDetail extends Activity {
 
@@ -27,7 +33,7 @@ public class InsulinsDetail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_insulins_detail);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		getActionBar();
 		
 		Bundle args = getIntent().getExtras();
 		if(args!=null){
@@ -54,7 +60,7 @@ public class InsulinsDetail extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();
+		MenuInflater inflater = getMenuInflater();
 
 		Bundle args = getIntent().getExtras();
 		if(args!=null){

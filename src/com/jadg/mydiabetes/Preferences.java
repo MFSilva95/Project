@@ -1,7 +1,7 @@
 package com.jadg.mydiabetes;
 
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.Fragment;
+import android.app.Activity;
+import android.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,16 +9,22 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.view.View;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.jadg.mydiabetes.fragments.Diseases;
 import com.jadg.mydiabetes.fragments.Exercises;
 import com.jadg.mydiabetes.fragments.Insulins;
 import com.jadg.mydiabetes.fragments.Tags;
 import com.jadg.mydiabetes.fragments.TargetBG;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class Preferences extends Activity {
 
@@ -27,39 +33,39 @@ public class Preferences extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_preferences);
 		// Show the Up button in the action bar.
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		
-		ActionBar.Tab tab = getSupportActionBar().newTab();
+		ActionBar.Tab tab = getActionBar().newTab();
 		Fragment tagsFragment = new Tags();
 		tab.setTabListener(new MyTabsListener(tagsFragment));
 		tab.setText("Fases do Dia");
-        getSupportActionBar().addTab(tab);
+        getActionBar().addTab(tab);
         
-        tab = getSupportActionBar().newTab();
+        tab = getActionBar().newTab();
         Fragment targetsFragment = new TargetBG();
         tab.setTabListener(new MyTabsListener(targetsFragment));
         tab.setText("Objetivos Glicemia");
-        getSupportActionBar().addTab(tab);
+        getActionBar().addTab(tab);
         
-        tab = getSupportActionBar().newTab();
+        tab = getActionBar().newTab();
         Fragment diseasesFragment = new Diseases();
         tab.setTabListener(new MyTabsListener(diseasesFragment));
         tab.setText("Doenças");
-        getSupportActionBar().addTab(tab);
+        getActionBar().addTab(tab);
         
-        tab = getSupportActionBar().newTab();
+        tab = getActionBar().newTab();
         Fragment exercisesFragment = new Exercises();
         tab.setTabListener(new MyTabsListener(exercisesFragment));
         tab.setText("Exercicios");
-        getSupportActionBar().addTab(tab);
+        getActionBar().addTab(tab);
         
-        tab = getSupportActionBar().newTab();
+        tab = getActionBar().newTab();
         Fragment insulinsFragment = new Insulins();
         tab.setTabListener(new MyTabsListener(insulinsFragment));
         tab.setText("Insulinas");
-        getSupportActionBar().addTab(tab);
+        getActionBar().addTab(tab);
         
         //tab = getSupportActionBar().newTab();
         //Fragment medicinesFragment = new Medicines();
@@ -70,7 +76,7 @@ public class Preferences extends Activity {
         
         Bundle args = getIntent().getExtras();
         if(args!=null){
-        	getSupportActionBar().getTabAt(args.getInt("tabPosition")).select();
+        	getActionBar().getTabAt(args.getInt("tabPosition")).select();
         }
         
 	}
@@ -107,21 +113,21 @@ public class Preferences extends Activity {
         this.fragment = fragment;
         }
 		
+
 		@Override
-		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+		public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
 			// TODO Auto-generated method stub
 			ft.replace(R.id.preferences_FragmentContainer, fragment);
-			
 		}
 
 		@Override
-		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
 			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
-		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
 			// TODO Auto-generated method stub
 			
 		}

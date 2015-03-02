@@ -4,17 +4,24 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.holoeverywhere.app.Dialog;
-import org.holoeverywhere.app.DialogFragment;
-import org.holoeverywhere.app.TimePickerDialog;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.TimePicker;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.TimePickerDialog;
+import android.widget.EditText;
+import android.widget.TimePicker;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
+
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
+
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 	EditText item;

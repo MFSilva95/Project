@@ -6,12 +6,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.DialogFragment;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.Spinner;
-import org.holoeverywhere.widget.Toast;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
@@ -33,9 +33,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuInflater;
 import com.jadg.mydiabetes.database.CarbsDataBinding;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
@@ -44,7 +44,11 @@ import com.jadg.mydiabetes.database.TagDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 import com.jadg.mydiabetes.dialogs.TimePickerFragment;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class CarboHydrateDetail extends Activity {
 
@@ -59,7 +63,7 @@ public class CarboHydrateDetail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_carbohydrate_detail);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		getActionBar();
 		FillTagSpinner();
 		EditText hora = (EditText)findViewById(R.id.et_CarboHydrateDetail_Hora);
 		Bundle args = getIntent().getExtras();
@@ -120,7 +124,7 @@ public class CarboHydrateDetail extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		MenuInflater inflater = getSupportMenuInflater();
+		MenuInflater inflater = getMenuInflater();
 		Bundle args = getIntent().getExtras();
 		if(args!=null){
 			inflater.inflate(R.menu.carbo_hydrate_detail_edit, menu);
@@ -183,7 +187,7 @@ public class CarboHydrateDetail extends Activity {
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_CarboHydrateDetail_Data);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "DatePicker");
+	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
 	@SuppressWarnings("deprecation")
 	public void showTimePickerDialog(View v) {
@@ -191,7 +195,7 @@ public class CarboHydrateDetail extends Activity {
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_CarboHydrateDetail_Hora);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "timePicker");
+	    newFragment.show(getFragmentManager(), "timePicker");
 	    
 	}
 	
@@ -209,8 +213,8 @@ public class CarboHydrateDetail extends Activity {
 			}
 		}
 		
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, org.holoeverywhere.R.layout.simple_spinner_item, allTags);
-		adapter.setDropDownViewResource(org.holoeverywhere.R.layout.simple_spinner_dropdown_item);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allTags);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 	}
 	

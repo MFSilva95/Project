@@ -10,14 +10,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.DialogFragment;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.CheckBox;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.TextView;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.app.Fragment;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -30,10 +30,10 @@ import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.View;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.app.ActionBar;
+import android.app.ActionBar.Tab;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.jadg.mydiabetes.database.BloodPressureDataBinding;
 import com.jadg.mydiabetes.database.CarbsDataBinding;
 import com.jadg.mydiabetes.database.CholesterolDataBinding;
@@ -58,6 +58,12 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.draw.LineSeparator;
 
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
+
 public class ImportExport extends Activity {
 
 	@Override
@@ -65,32 +71,32 @@ public class ImportExport extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_import_export);
 		// Show the Up button in the action bar.
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		ActionBar.Tab tab = getSupportActionBar().newTab();
+		ActionBar.Tab tab = getActionBar().newTab();
 		Fragment impexpFragment = new PdfExport();
 		tab.setTabListener(new MyTabsListener(impexpFragment));
-		tab.setText("Relatï¿½rio");
-		getSupportActionBar().addTab(tab);
+		tab.setText("Relatório");
+		getActionBar().addTab(tab);
 
-		tab = getSupportActionBar().newTab();
+		tab = getActionBar().newTab();
 		Fragment bacuprestoreFragment = new DB_BackupRestore();
 		tab.setTabListener(new MyTabsListener(bacuprestoreFragment));
-		tab.setText("Cï¿½pia de Seguranï¿½a");
-		getSupportActionBar().addTab(tab);
+		tab.setText("Cópia de Segurança");
+		getActionBar().addTab(tab);
 
-		tab = getSupportActionBar().newTab();
+		tab = getActionBar().newTab();
 		Fragment syncFragment = new Sync();
 		tab.setTabListener(new MyTabsListener(syncFragment));
-		tab.setText("SincronizaÃ§Ã£o");
-		getSupportActionBar().addTab(tab);
+		tab.setText("Sincronização");
+		getActionBar().addTab(tab);
 
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getSupportMenuInflater().inflate(R.menu.import_export, menu);
+		getMenuInflater().inflate(R.menu.import_export, menu);
 		return true;
 	}
 
@@ -667,7 +673,7 @@ public class ImportExport extends Activity {
 		Bundle args = new Bundle();
 		args.putInt("textbox", R.id.et_pdfexport_DataFrom);
 		newFragment.setArguments(args);
-		newFragment.show(getSupportFragmentManager(), "DatePicker");
+		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	@SuppressWarnings("deprecation")
@@ -676,7 +682,7 @@ public class ImportExport extends Activity {
 		Bundle args = new Bundle();
 		args.putInt("textbox", R.id.et_pdfexport_DataTo);
 		newFragment.setArguments(args);
-		newFragment.show(getSupportFragmentManager(), "DatePicker");
+		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void backup(View v) {
@@ -812,22 +818,22 @@ public class ImportExport extends Activity {
 			this.fragment = fragment;
 		}
 
-		@Override
-		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+				@Override
+		public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
 			// TODO Auto-generated method stub
 			ft.replace(R.id.importexport_FragmentContainer, fragment);
 		}
 
 		@Override
-		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
 			// TODO Auto-generated method stub
-
+			
 		}
 
 		@Override
-		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
 			// TODO Auto-generated method stub
-
+			
 		}
 
 	}

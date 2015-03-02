@@ -7,16 +7,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.DialogFragment;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.Spinner;
-import org.holoeverywhere.widget.Toast;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuInflater;
 import com.jadg.mydiabetes.database.CarbsDataBinding;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
@@ -43,13 +43,17 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
 
 
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class Meal extends Activity {
 
@@ -62,7 +66,7 @@ public class Meal extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_meal);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		getActionBar();
 		
 		DB_Read read = new DB_Read(this);
 		if(!read.Insulin_HasInsulins()){
@@ -161,7 +165,7 @@ public class Meal extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		MenuInflater inflater = getSupportMenuInflater();
+		MenuInflater inflater = getMenuInflater();
 		
 		inflater.inflate(R.menu.meal, menu);
 		
@@ -214,27 +218,27 @@ public class Meal extends Activity {
 			}
 		}
 		
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, org.holoeverywhere.R.layout.simple_spinner_item, allTags);
-		adapter.setDropDownViewResource(org.holoeverywhere.R.layout.simple_spinner_dropdown_item);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allTags);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 	}
 
-	@SuppressWarnings("deprecation")
+	//@SuppressWarnings("deprecation")
 	public void showDatePickerDialog(View v){
 		DialogFragment newFragment = new DatePickerFragment();
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_MealDetail_Data);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "DatePicker");
+	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
 	
-	@SuppressWarnings("deprecation")
+	//@SuppressWarnings("deprecation")
 	public void showTimePickerDialog(View v) {
 	    DialogFragment newFragment = new TimePickerFragment();
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_MealDetail_Hora);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "timePicker");
+	    newFragment.show(getFragmentManager(), "timePicker");
 	    
 	}
 
@@ -305,8 +309,8 @@ public class Meal extends Activity {
 				allInsulins.add(val.get(i));
 			}
 		}
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, org.holoeverywhere.R.layout.simple_spinner_item, allInsulins);
-		adapter.setDropDownViewResource(org.holoeverywhere.R.layout.simple_spinner_dropdown_item);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allInsulins);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 	}
 	

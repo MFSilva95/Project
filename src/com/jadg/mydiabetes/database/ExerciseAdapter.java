@@ -2,8 +2,8 @@ package com.jadg.mydiabetes.database;
 
 import java.util.ArrayList;
 
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.widget.Toast;
+import android.app.AlertDialog;
+import android.widget.Toast;
 
 import android.content.Context;
 import android.content.DialogInterface;

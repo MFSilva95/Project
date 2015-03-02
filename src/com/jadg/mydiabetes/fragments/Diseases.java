@@ -2,10 +2,10 @@ package com.jadg.mydiabetes.fragments;
 
 import java.util.ArrayList;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.widget.ListView;
+import android.view.LayoutInflater;
+import android.app.AlertDialog;
+import android.app.Fragment;
+import android.widget.ListView;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,16 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.database.DiseaseAdapter;
 import com.jadg.mydiabetes.database.DiseaseDataBinding;
 
-
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -32,6 +34,9 @@ import com.jadg.mydiabetes.database.DiseaseDataBinding;
  * create an instance of this fragment.
  * 
  */
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 public class Diseases extends Fragment {
 	
 	ListView diseaseList;
@@ -45,7 +50,7 @@ public class Diseases extends Fragment {
 	@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuInflater diseasesmenu = getSupportActivity().getSupportMenuInflater();
+        MenuInflater diseasesmenu = getActivity().getMenuInflater();
         diseasesmenu.inflate(R.menu.diseases_menu, menu);
     }
 	
@@ -73,8 +78,8 @@ public class Diseases extends Fragment {
 	}
 	
 	public void showDiseaseDialog(){
-		LayoutInflater inflater = getLayoutInflater();
-		final View v = inflater.inflate(R.layout.dialog_new_disease);
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+		final View v = inflater.inflate(R.layout.dialog_new_disease, null);
 
     	new AlertDialog.Builder(getActivity())
     	    .setView(v)

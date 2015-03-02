@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.DialogFragment;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.ListView;
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.widget.EditText;
+import android.widget.ListView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -18,14 +18,18 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.WeightAdapter;
 import com.jadg.mydiabetes.database.WeightDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class Weight extends Activity {
 
@@ -36,7 +40,7 @@ public class Weight extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_weight);
 		// Show the Up button in the action bar.
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		FillDates();
 		weightList = (ListView)findViewById(R.id.WeightActivityList);
@@ -68,7 +72,7 @@ public class Weight extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getSupportMenuInflater().inflate(R.menu.weight, menu);
+		getMenuInflater().inflate(R.menu.weight, menu);
 		return true;
 	}
 
@@ -86,21 +90,21 @@ public class Weight extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	@SuppressWarnings("deprecation")
+	//@SuppressWarnings("deprecation")
 	public void showDatePickerDialogFrom(View v){
 		DialogFragment newFragment = new DatePickerFragment();
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_Weight_DataFrom);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "DatePicker");
+	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
-	@SuppressWarnings("deprecation")
+	//@SuppressWarnings("deprecation")
 	public void showDatePickerDialogTo(View v){
 		DialogFragment newFragment = new DatePickerFragment();
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_Weight_DataTo);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "DatePicker");
+	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
 	@SuppressLint("SimpleDateFormat")
 	public void FillDates(){

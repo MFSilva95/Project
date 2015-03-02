@@ -3,8 +3,8 @@
  */
 package com.jadg.mydiabetes.fragments;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.Fragment;
+import android.view.LayoutInflater;
+import android.app.Fragment;
 
 import android.os.Bundle;
 import android.view.View;
@@ -16,6 +16,16 @@ import com.jadg.mydiabetes.R;
  * @author artur
  *
  */
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
+
+
+
+
 public class Sync extends Fragment {
 	
 	@Override

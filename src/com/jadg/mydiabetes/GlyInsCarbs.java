@@ -1,6 +1,6 @@
 package com.jadg.mydiabetes;
 
-import org.holoeverywhere.app.Activity;
+import android.app.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +12,15 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ScrollView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class GlyInsCarbs extends Activity {
 
@@ -23,7 +30,7 @@ public class GlyInsCarbs extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_glyinscarbs);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		getActionBar();
 		
 		final GestureDetector gestureDetector;
         gestureDetector = new GestureDetector(new MyGestureDetector());
@@ -45,7 +52,7 @@ public class GlyInsCarbs extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getSupportMenuInflater().inflate(R.menu.home, menu);
+		getMenuInflater().inflate(R.menu.home, menu);
 		return true;
 	}
 

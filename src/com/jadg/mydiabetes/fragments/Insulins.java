@@ -3,10 +3,12 @@ package com.jadg.mydiabetes.fragments;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.widget.ListView;
+
+import android.view.LayoutInflater;
+import android.app.Fragment;
+import android.app.AlertDialog;
+import android.widget.ListView;
+
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,15 +17,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
 import com.jadg.mydiabetes.InsulinsDetail;
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.database.InsulinAdapter;
 import com.jadg.mydiabetes.database.InsulinDataBinding;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
+
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -33,6 +41,8 @@ import com.jadg.mydiabetes.database.InsulinDataBinding;
  * create an instance of this fragment.
  * 
  */
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 public class Insulins extends Fragment {
 	
 	ListView insulinList;
@@ -46,7 +56,7 @@ public class Insulins extends Fragment {
 	@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuInflater diseasesmenu = getSupportActivity().getSupportMenuInflater();
+        MenuInflater diseasesmenu = getActivity().getMenuInflater();
         diseasesmenu.inflate(R.menu.insulins_menu, menu);
     }
 	
@@ -80,8 +90,8 @@ public class Insulins extends Fragment {
 	}
 	
 	public void showInsulinDialog(){
-		LayoutInflater inflater = getLayoutInflater();
-		final View v = inflater.inflate(R.layout.dialog_new_insulin);
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+		final View v = inflater.inflate(R.layout.dialog_new_insulin,null);
 
     	new AlertDialog.Builder(getActivity())
     	    .setView(v)

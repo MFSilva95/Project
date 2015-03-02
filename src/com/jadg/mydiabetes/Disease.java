@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.DialogFragment;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.ListView;
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.widget.EditText;
+import android.widget.ListView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -18,14 +18,19 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DiseaseRegAdapter;
 import com.jadg.mydiabetes.database.DiseaseRegDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 
 
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class Disease extends Activity {
 
@@ -36,7 +41,7 @@ public class Disease extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_disease);
 		// Show the Up button in the action bar.
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		FillDates();
 		diseaseList = (ListView)findViewById(R.id.DiseaseRegActivityList);
@@ -67,7 +72,7 @@ public class Disease extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getSupportMenuInflater().inflate(R.menu.disease, menu);
+		getMenuInflater().inflate(R.menu.disease, menu);
 		return true;
 	}
 
@@ -91,7 +96,7 @@ public class Disease extends Activity {
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_DiseaseReg_DataFrom);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "DatePicker");
+	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
 	@SuppressWarnings("deprecation")
 	public void showDatePickerDialogTo(View v){
@@ -99,7 +104,7 @@ public class Disease extends Activity {
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_DiseaseReg_DataTo);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "DatePicker");
+	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
 	@SuppressLint("SimpleDateFormat")
 	public void FillDates(){

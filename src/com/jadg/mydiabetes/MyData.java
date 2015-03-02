@@ -1,22 +1,29 @@
 package com.jadg.mydiabetes;
 
-import org.holoeverywhere.ArrayAdapter;
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.DialogFragment;
-import org.holoeverywhere.widget.Spinner;
-import org.holoeverywhere.widget.Toast;
-
+import android.widget.ArrayAdapter;
+import android.app.Activity;
+import android.app.DialogFragment;
+import android.widget.Spinner;
+import android.widget.Toast;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
+
 
 public class MyData extends Activity {
 
@@ -25,17 +32,17 @@ public class MyData extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_data);
 		// Show the Up button in the action bar.
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		
 		Spinner sp_MyData_Sex = (Spinner) findViewById(R.id.sp_MyData_Sex);
-		ArrayAdapter<CharSequence> adapter_sp_MyData_Sex = ArrayAdapter.createFromResource(this, R.array.Sex, org.holoeverywhere.R.layout.simple_spinner_item);
-		adapter_sp_MyData_Sex.setDropDownViewResource(org.holoeverywhere.R.layout.simple_spinner_dropdown_item);
+		ArrayAdapter<CharSequence> adapter_sp_MyData_Sex = ArrayAdapter.createFromResource(this, R.array.Sex, android.R.layout.simple_spinner_item);
+		adapter_sp_MyData_Sex.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sp_MyData_Sex.setAdapter(adapter_sp_MyData_Sex);
 		
 		Spinner sp_MyData_DiabetesType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
-		ArrayAdapter<CharSequence> adapter_sp_MyData_DiabetesType = ArrayAdapter.createFromResource(this, R.array.diabetes_Type, org.holoeverywhere.R.layout.simple_spinner_item);
-		adapter_sp_MyData_DiabetesType.setDropDownViewResource(org.holoeverywhere.R.layout.simple_spinner_dropdown_item);
+		ArrayAdapter<CharSequence> adapter_sp_MyData_DiabetesType = ArrayAdapter.createFromResource(this, R.array.diabetes_Type, android.R.layout.simple_spinner_item);
+		adapter_sp_MyData_DiabetesType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sp_MyData_DiabetesType.setAdapter(adapter_sp_MyData_DiabetesType);
 		
 		
@@ -48,7 +55,7 @@ public class MyData extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-       MenuInflater inflater = getSupportMenuInflater();
+       MenuInflater inflater = getMenuInflater();
        inflater.inflate(R.menu.my_data, menu);
        return super.onCreateOptionsMenu(menu);
     }
@@ -67,26 +74,55 @@ public class MyData extends Activity {
 				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_MyData_Save:
-				DB_Write rdb = new DB_Write(this);
-				rdb.MyData_Save(getMyDataFromActivity());
-				rdb.close();
-				Toast.makeText(this, "Guardado", Toast.LENGTH_LONG).show();
-				return true;
+				
+				if(inputIsValid()){
+				 
+					DB_Write rdb = new DB_Write(this);
+					rdb.MyData_Save(getMyDataFromActivity());
+					rdb.close();
+					Toast.makeText(this, "Guardado", Toast.LENGTH_LONG).show();
+					return true;
+				}else{
+					//toast message
+					Toast.makeText(this, "Antes de guardar preencha todos os campos.", Toast.LENGTH_LONG).show();
+				}
+				
 		}
 		return super.onOptionsItemSelected(item);
 	}
 	
-	@SuppressWarnings("deprecation")
+	//@SuppressWarnings("deprecation")
 	public void showDatePickerDialog(View v) {
 	    DialogFragment newFragment = new DatePickerFragment();
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_MyData_BirthDate);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "DatePicker");
+	    newFragment.show(getFragmentManager(), "DatePicker");
 	    
 	}
 	
-public Object[] getMyDataFromActivity(){
+	//added ze ornelas
+	//corrige erro ao gravar
+	// os spinners não são verificados porque incialmente têm sempre valor
+	public Boolean inputIsValid(){
+		Object[] obj = new Object[7];
+		obj[0] = (EditText)findViewById(R.id.et_MyData_Name);
+		obj[1] = (EditText)findViewById(R.id.et_MyData_InsulinRatio);
+		obj[2] = (EditText)findViewById(R.id.et_MyData_CarbsRatio);
+		obj[3] = (EditText)findViewById(R.id.et_MyData_LowerRange);
+		obj[4] = (EditText)findViewById(R.id.et_MyData_HigherRange);
+		obj[5] = (EditText)findViewById(R.id.et_MyData_BirthDate);
+		obj[6] = (EditText)findViewById(R.id.et_MyData_Height);
+		
+		for(Object aux:obj){
+			if(((EditText) aux).getText().toString().trim().length() == 0){
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public Object[] getMyDataFromActivity(){
 		
 		Object[] obj = new Object[10];
 		EditText name = (EditText)findViewById(R.id.et_MyData_Name);

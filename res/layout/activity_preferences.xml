@@ -5,7 +5,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Preferences" >
 
-    <LinearLayout 
+    <LinearLayout
+        android:orientation="vertical"
         android:id="@+id/preferences_FragmentContainer" 
         android:layout_height="match_parent" 
         android:layout_width="match_parent" />

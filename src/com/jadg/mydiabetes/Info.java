@@ -1,12 +1,19 @@
 package com.jadg.mydiabetes;
 
-import org.holoeverywhere.app.Activity;
+import android.app.Activity;
 
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class Info extends Activity {
 
@@ -15,7 +22,7 @@ public class Info extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_info);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		getActionBar();
 	}
 
 	
@@ -23,7 +30,7 @@ public class Info extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getSupportMenuInflater().inflate(R.menu.info, menu);
+		getMenuInflater().inflate(R.menu.info, menu);
 		return true;
 	}
 

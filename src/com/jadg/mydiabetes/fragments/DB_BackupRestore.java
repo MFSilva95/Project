@@ -4,18 +4,17 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.widget.Button;
-import org.holoeverywhere.widget.TextView;
-
+import android.view.LayoutInflater;
+import android.app.Fragment;
+import android.widget.Button;
+import android.widget.TextView;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.jadg.mydiabetes.R;
 
 /**
@@ -26,6 +25,8 @@ import com.jadg.mydiabetes.R;
  * method to create an instance of this fragment.
  * 
  */
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 public class DB_BackupRestore extends Fragment {
 
 	@Override

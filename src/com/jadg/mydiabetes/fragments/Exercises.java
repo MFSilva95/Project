@@ -3,26 +3,31 @@ package com.jadg.mydiabetes.fragments;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.ListView;
+import android.view.LayoutInflater;
+import android.app.AlertDialog;
+import android.app.Fragment;
+import android.widget.EditText;
+import android.widget.ListView;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.database.ExerciseAdapter;
 import com.jadg.mydiabetes.database.ExerciseDataBinding;
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
 
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
  * contain this fragment must implement the
@@ -44,7 +49,7 @@ public class Exercises extends Fragment {
 	@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuInflater exercisessmenu = getSupportActivity().getSupportMenuInflater();
+        MenuInflater exercisessmenu = getActivity().getMenuInflater();
         exercisessmenu.inflate(R.menu.exercises_menu, menu);
         
     }
@@ -72,8 +77,8 @@ public class Exercises extends Fragment {
 	}
 	
 	public void showExerciseDialog(){
-		LayoutInflater inflater = getLayoutInflater();
-		final View v = inflater.inflate(R.layout.dialog_new_exercise);
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+		final View v = inflater.inflate(R.layout.dialog_new_exercise, null);
 
     	new AlertDialog.Builder(getActivity())
     	    .setView(v)

@@ -6,13 +6,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.DialogFragment;
-import org.holoeverywhere.widget.AutoCompleteTextView;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.Spinner;
-import org.holoeverywhere.widget.Toast;
+
+import android.widget.AutoCompleteTextView;
+
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -24,15 +27,21 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuInflater;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.database.ExerciseRegDataBinding;
 import com.jadg.mydiabetes.database.NoteDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 import com.jadg.mydiabetes.dialogs.TimePickerFragment;
+
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class ExerciseDetail extends Activity {
 
@@ -44,7 +53,7 @@ public class ExerciseDetail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_exercise_detail);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		getActionBar();
 		FillExerciseSpinner();
 		FillEffortSpinner();
 		
@@ -84,7 +93,7 @@ public class ExerciseDetail extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		MenuInflater inflater = getSupportMenuInflater();
+		MenuInflater inflater = getMenuInflater();
 		
 		Bundle args = getIntent().getExtras();
 		if(args!=null){
@@ -138,7 +147,7 @@ public class ExerciseDetail extends Activity {
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_ExerciseDetail_Data);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "DatePicker");
+	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
 	@SuppressWarnings("deprecation")
 	public void showTimePickerDialog(View v) {
@@ -146,7 +155,7 @@ public class ExerciseDetail extends Activity {
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_ExerciseDetail_Hora);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "timePicker");
+	    newFragment.show(getFragmentManager(), "timePicker");
 	    
 	}
 	
@@ -163,14 +172,14 @@ public class ExerciseDetail extends Activity {
 			}
 		}
 		
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, org.holoeverywhere.R.layout.simple_list_item_1, allExercises);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allExercises);
 		spinner.setAdapter(adapter);
 	}
 	
 	public void FillEffortSpinner(){
 		Spinner sp_Exercise_Detail = (Spinner) findViewById(R.id.sp_ExerciseDetail_Effort);
-		ArrayAdapter<CharSequence> adapter_sp_Exercise_Detail = ArrayAdapter.createFromResource(this, R.array.Effort, org.holoeverywhere.R.layout.simple_spinner_item);
-		adapter_sp_Exercise_Detail.setDropDownViewResource(org.holoeverywhere.R.layout.simple_spinner_dropdown_item);
+		ArrayAdapter<CharSequence> adapter_sp_Exercise_Detail = ArrayAdapter.createFromResource(this, R.array.Effort, android.R.layout.simple_spinner_item);
+		adapter_sp_Exercise_Detail.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sp_Exercise_Detail.setAdapter(adapter_sp_Exercise_Detail);
 	}
 	

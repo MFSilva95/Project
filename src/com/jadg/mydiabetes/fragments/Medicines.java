@@ -3,26 +3,30 @@ package com.jadg.mydiabetes.fragments;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.ListView;
+import android.view.LayoutInflater;
+import android.app.Fragment;
+import android.app.AlertDialog;
+import android.widget.ListView;
+import android.widget.EditText;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.database.MedicineAdapter;
 import com.jadg.mydiabetes.database.MedicineDataBinding;
 
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
  * contain this fragment must implement the
@@ -31,6 +35,12 @@ import com.jadg.mydiabetes.database.MedicineDataBinding;
  * create an instance of this fragment.
  * 
  */
+
+
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
+
 public class Medicines extends Fragment {
 
 	ListView medicineList;
@@ -44,7 +54,7 @@ public class Medicines extends Fragment {
 	@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuInflater diseasesmenu = getSupportActivity().getSupportMenuInflater();
+        MenuInflater diseasesmenu = getActivity().getMenuInflater();
         diseasesmenu.inflate(R.menu.medicines_menu, menu);
     }
 	
@@ -70,8 +80,8 @@ public class Medicines extends Fragment {
 	}
 	
 	public void showMedicineDialog(){
-		LayoutInflater inflater = getLayoutInflater();
-		final View v = inflater.inflate(R.layout.dialog_new_medicine);
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+		final View v = inflater.inflate(R.layout.dialog_new_medicine, null);
 
     	new AlertDialog.Builder(getActivity())
     	    .setView(v)

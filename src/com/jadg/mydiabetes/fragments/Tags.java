@@ -4,28 +4,32 @@ package com.jadg.mydiabetes.fragments;
 
 import java.util.ArrayList;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.widget.ListView;
 
+
+import android.view.LayoutInflater;
+import android.app.Fragment;
+import android.app.AlertDialog;
+import android.widget.ListView;
 import android.content.DialogInterface;
 import android.content.Intent;
-
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.TagDetail;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.database.TagAdapter;
 import com.jadg.mydiabetes.database.TagDataBinding;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
 
 
 /**
@@ -36,6 +40,8 @@ import com.jadg.mydiabetes.database.TagDataBinding;
  * of this fragment.
  * 
  */
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 public class Tags extends Fragment {
 
 	ListView tagList;
@@ -51,7 +57,7 @@ public class Tags extends Fragment {
 	@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuInflater tagsmenu = getSupportActivity().getSupportMenuInflater();
+        MenuInflater tagsmenu = getActivity().getMenuInflater();
         tagsmenu.inflate(R.menu.tags_menu, menu);
     }
 	
@@ -83,8 +89,8 @@ public class Tags extends Fragment {
 	
 	
 	public void showTagDialog(){
-		LayoutInflater inflater = getLayoutInflater();
-		final View v = inflater.inflate(R.layout.dialog_new_tag);
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+		final View v = inflater.inflate(R.layout.dialog_new_tag,null);
 		
     	new AlertDialog.Builder(getActivity())
     	    .setView(v)

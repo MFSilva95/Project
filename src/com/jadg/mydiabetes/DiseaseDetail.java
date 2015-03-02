@@ -5,13 +5,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.DialogFragment;
-import org.holoeverywhere.widget.AutoCompleteTextView;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.Toast;
-
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,10 +20,10 @@ import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuInflater;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.database.DiseaseDataBinding;
@@ -32,6 +32,12 @@ import com.jadg.mydiabetes.database.NoteDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 
 
+
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class DiseaseDetail extends Activity {
 
@@ -43,7 +49,7 @@ public class DiseaseDetail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_disease_detail);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		getActionBar();
 		FillDiseaseAC();
 		
 		
@@ -79,7 +85,7 @@ public class DiseaseDetail extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();
+		MenuInflater inflater = getMenuInflater();
 		
 		Bundle args = getIntent().getExtras();
 		if(args!=null){
@@ -118,7 +124,7 @@ public class DiseaseDetail extends Activity {
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_DiseaseRegDetail_DataFrom);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "DatePicker");
+	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
 	@SuppressWarnings("deprecation")
 	public void showDatePickerDialogTo(View v){
@@ -126,7 +132,7 @@ public class DiseaseDetail extends Activity {
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_DiseaseRegDetail_DataTo);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "DatePicker");
+	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
 	
 	public void FillDiseaseAC(){
@@ -142,7 +148,7 @@ public class DiseaseDetail extends Activity {
 			}
 		}
 		
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, org.holoeverywhere.R.layout.simple_list_item_1, allDiseases);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allDiseases);
 		spinner.setAdapter(adapter);
 	}
 	

@@ -1,10 +1,10 @@
 package com.jadg.mydiabetes;
 
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.app.DialogFragment;
-import org.holoeverywhere.widget.EditText;
-import org.holoeverywhere.widget.Toast;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,13 +12,21 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.View;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuInflater;
+
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.database.TargetDataBinding;
 import com.jadg.mydiabetes.dialogs.TimePickerFragment;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class TargetBG_detail extends Activity {
 
@@ -30,7 +38,7 @@ public class TargetBG_detail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_target_bg_detail);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		getActionBar();
 		
 		
 		Bundle args = getIntent().getExtras();
@@ -61,7 +69,7 @@ public class TargetBG_detail extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		MenuInflater inflater = getSupportMenuInflater();
+		MenuInflater inflater = getMenuInflater();
 
 		Bundle args = getIntent().getExtras();
 		if(args!=null){
@@ -100,21 +108,21 @@ public class TargetBG_detail extends Activity {
 	}
 
 	
-	@SuppressWarnings("deprecation")
+	//@SuppressWarnings("deprecation")
 	public void showTimePickerDialogFrom(View v) {
 	    DialogFragment newFragment = new TimePickerFragment();
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_TargetBG_HourFrom);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "timePicker");
+	    newFragment.show(getFragmentManager(), "timePicker");
 	}
-	@SuppressWarnings("deprecation")
+	//@SuppressWarnings("deprecation")
 	public void showTimePickerDialogTo(View v) {
 	    DialogFragment newFragment = new TimePickerFragment();
 	    Bundle args = new Bundle();
 	    args.putInt("textbox",R.id.et_TargetBG_HourTo);
 	    newFragment.setArguments(args);
-	    newFragment.show(getSupportFragmentManager(), "timePicker");
+	    newFragment.show(getFragmentManager(), "timePicker");
 	}
 	
 	public void AddNewTarget(){

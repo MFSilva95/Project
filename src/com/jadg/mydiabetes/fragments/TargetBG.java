@@ -2,18 +2,19 @@ package com.jadg.mydiabetes.fragments;
 
 import java.util.ArrayList;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.widget.ListView;
 
+
+import android.view.LayoutInflater;
+import android.app.Fragment;
+import android.widget.ListView;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.TargetBG_detail;
 import com.jadg.mydiabetes.database.DB_Read;
@@ -22,6 +23,13 @@ import com.jadg.mydiabetes.database.TargetDataBinding;
 
 
 
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class TargetBG extends Fragment {
 
@@ -37,7 +45,7 @@ public class TargetBG extends Fragment {
 	@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuInflater targetsmenu = getSupportActivity().getSupportMenuInflater();
+        MenuInflater targetsmenu = getActivity().getMenuInflater();
         targetsmenu.inflate(R.menu.targets_menu, menu);
     }
 

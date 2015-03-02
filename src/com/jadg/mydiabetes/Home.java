@@ -1,7 +1,7 @@
 package com.jadg.mydiabetes;
 
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.AlertDialog;
+import android.app.Activity;
+import android.app.AlertDialog;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,9 +14,16 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ScrollView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.jadg.mydiabetes.database.DB_Read;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class Home extends Activity {
 
@@ -25,7 +32,7 @@ public class Home extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-		getSupportActionBar();
+		getActionBar();
 		
 		DB_Read read = new DB_Read(this);
 		if(!read.MyData_HasData()){
@@ -54,7 +61,7 @@ public class Home extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getSupportMenuInflater().inflate(R.menu.home, menu);
+		getMenuInflater().inflate(R.menu.home, menu);
 		return true;
 	}
 	

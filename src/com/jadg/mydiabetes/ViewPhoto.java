@@ -2,9 +2,9 @@ package com.jadg.mydiabetes;
 
 import java.io.File;
 
-import org.holoeverywhere.app.Activity;
-import org.holoeverywhere.app.AlertDialog;
-import org.holoeverywhere.widget.Toast;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.widget.Toast;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -16,9 +16,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuItem;
 import com.jadg.mydiabetes.database.DB_Write;
+
+import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.os.Build;
+
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 
 public class ViewPhoto extends Activity {
 
@@ -27,7 +34,7 @@ public class ViewPhoto extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_viewphoto);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		getActionBar();
 		
 		Bundle args = getIntent().getExtras();
 		if(args!=null){
@@ -44,7 +51,7 @@ public class ViewPhoto extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getSupportMenuInflater().inflate(R.menu.view_photo, menu);
+		getMenuInflater().inflate(R.menu.view_photo, menu);
 		return true;
 	}
 

@@ -4,9 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import org.holoeverywhere.LayoutInflater;
-import org.holoeverywhere.app.Fragment;
-import org.holoeverywhere.widget.EditText;
+import android.view.LayoutInflater;
+import android.app.Fragment;
+import android.widget.EditText;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -15,7 +15,11 @@ import android.view.ViewGroup;
 
 import com.jadg.mydiabetes.R;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 
+@TargetApi(Build.VERSION_CODES.GINGERBREAD)
+@SuppressLint("NewApi")
 public class PdfExport extends Fragment {
 
 	@Override
