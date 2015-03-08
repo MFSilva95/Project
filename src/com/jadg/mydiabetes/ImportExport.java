@@ -698,11 +698,11 @@ public class ImportExport extends Activity {
 				try {
 					fileBackup.createNewFile();
 					copyFile(inputFile, fileBackup);
-					ShowDialogMsg("Cï¿½pia de seguranï¿½a efectuada com sucesso!");
+					ShowDialogMsg("Cópia de segurança efectuada com sucesso!");
 				} catch (IOException ioException) {
-					ShowDialogMsg("Ocurreu um erro durante a cï¿½pia de seguranï¿½a, verifique se a memï¿½ria externa estï¿½ disponivel!");
+					ShowDialogMsg("Ocurreu um erro durante a cópia de segurança, verifique se a memória externa está disponivel!");
 				} catch (Exception exception) {
-					ShowDialogMsg("Ocurreu um erro durante a cï¿½pia de seguranï¿½a, verifique se a memï¿½ria externa estï¿½ disponivel!");
+					ShowDialogMsg("Ocurreu um erro durante a cópia de segurança, verifique se a memória externa está disponivel!");
 				}
 			}
 		}
