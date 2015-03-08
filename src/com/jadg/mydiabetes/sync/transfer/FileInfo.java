@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.jadg.mydiabetes.sync.transfer;
 
 import java.io.ByteArrayOutputStream;
@@ -21,6 +18,9 @@ import android.os.Environment;
  * From Project
  * JFileSync, Version 2.3 Alpha
  * Copyright (C) 2002-2013, Jens Heidrich
+ * 
+ * 
+ * 
  */
 public class FileInfo implements Serializable {
 

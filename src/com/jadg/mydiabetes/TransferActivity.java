@@ -6,7 +6,6 @@ import java.util.Hashtable;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -28,7 +27,7 @@ import com.jadg.mydiabetes.sync.transfer.Stream;
 import com.jadg.mydiabetes.sync.transfer.Stream.StreamBinder;
 import com.jadg.mydiabetes.sync.transfer.Transmission;
 
-public class TransferActivity extends Activity {
+public class TransferActivity<messenger1> extends Activity {
 	private String host = "";
 	private int port = 5444;
 	private byte[] key;
@@ -46,9 +45,24 @@ public class TransferActivity extends Activity {
 		public void handleMessage(Message message) {
 			if (message.arg1 == RESULT_OK) {
 				Toast.makeText(TransferActivity.this,
-						"TransferÃªncia concluÃ­da", Toast.LENGTH_LONG).show();
+						"Ligação estabelecida", Toast.LENGTH_LONG).show();
 			} else {
-				Toast.makeText(TransferActivity.this, "TransferÃªncia falhou",
+				Toast.makeText(TransferActivity.this, "Ligação falhou",
+						Toast.LENGTH_LONG).show();
+			}
+		};
+	};
+
+	private Handler handler2 = new Handler() {
+		public void handleMessage(Message message) {
+			if (message.arg1 == RESULT_OK) {
+				Toast.makeText(TransferActivity.this, "Transferência concluída",
+						Toast.LENGTH_LONG).show();
+				Intent intent = new Intent(getApplicationContext(), ImportExport.class);
+	        	
+	        	 startActivity(intent);
+			} else {
+				Toast.makeText(TransferActivity.this, "Transferência falhou",
 						Toast.LENGTH_LONG).show();
 			}
 		};
@@ -59,12 +73,16 @@ public class TransferActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_transfer);
 
+		
+		Toast.makeText(TransferActivity.this, "Atenção! Esperar ligação",
+				Toast.LENGTH_LONG).show();
 		starter = getIntent();
 		Bundle extras = starter.getExtras();
 		host = extras.getString("host");
 		key = extras.getByteArray("key").clone();
 		iv = extras.getByteArray("iv").clone();
 		onPC = extras.getBoolean("onPC");
+
 	}
 
 	@Override
@@ -77,12 +95,8 @@ public class TransferActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		if (onPC == null || onPC)
-			syncFileStructure(null);
-		else {
-			syncServer();
-		}
-
+		syncFileStructure(null);
+		
 	}
 
 	@Override
@@ -93,7 +107,13 @@ public class TransferActivity extends Activity {
 			mBound = false;
 		}
 	}
+	
 
+	/**
+	 * Button transferir fetches the DB_Diabetes from the data directory
+	 * an gets the images selected
+	 * @param view
+	 */
 	public void transfer(View view) {
 		if (mBound) {
 			unbindService(mConnection);
@@ -101,7 +121,7 @@ public class TransferActivity extends Activity {
 		}
 
 		Intent intent = new Intent(this, Stream.class);
-		Messenger messenger = new Messenger(handler);
+		Messenger messenger = new Messenger(handler2);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("host", host);
 		intent.putExtra("port", port);
@@ -114,7 +134,14 @@ public class TransferActivity extends Activity {
 		alfi.add(fi);
 		intent.putExtra("files", alfi);
 		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+		//Messenger messenger1 = new Messenger(handler3);
+		
+		
 	}
+
+
+	
+	
 
 	private ArrayList<FileInfo> getSelectFiles(LinearLayout ll) {
 		ArrayList<FileInfo> fil = new ArrayList<FileInfo>();
@@ -141,32 +168,45 @@ public class TransferActivity extends Activity {
 		}
 		return fil;
 	}
+	
 
+	/**
+	 * Button refresh, call method addFiles to put images from FileInfo in ll
+	 * @param view
+	 */
 	public void button2Click(View view) {
 		if (mBound) {
 			if ((fi = mService.getFIServer()) == null) {
-				System.out.println("Ainda nÃ£o obteve fi do Servidor");
+				System.out.println("Ainda não obteve fi do Servidor");
 			} else {
 				LinearLayout ll = (LinearLayout) findViewById(R.id.llFiles);
 				if (ll != null && ll.getChildCount() > 0) {
 					try {
+						System.out.println("Entrou if button2Click --->"+ll.getChildCount());
 						ll.removeViews(0, ll.getChildCount());
 						htFileInfo.clear();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
+				System.out.println("FI antes do addFiles -->"+mService.getFIServer().getAbsolutePath());
 				addFiles(ll, mService.getFIServer());
 
 			}
 			unbindService(mConnection);
 			mBound = false;
 		} else {
-			System.out.println("ServiÃ§o nÃ£o ligado");
+			System.out.println("Serviço não ligado");
 		}
 
 	}
 
+	
+	/**
+	 * Usado por button2click
+	 * @param ll
+	 * @param fi
+	 */
 	public void addFiles(LinearLayout ll, FileInfo fi) {
 		LinearLayout ll2;
 		CheckBox cb;
@@ -174,48 +214,7 @@ public class TransferActivity extends Activity {
 		ImageView pcImage;
 		ImageView androidImage;
 		String fileName;
-
-		for (FileInfo fiChild : fi.getFileList()) {
-
-			ll2 = new LinearLayout(this);
-
-			cb = new CheckBox(this);
-			ll2.addView(cb);
-
-			text = new TextView(this);
-			fileName = fiChild.getName();
-			text.setText(fileName);
-			htFileInfo.put(fileName, fiChild);
-
-			ll2.addView(text);
-
-			pcImage = new ImageView(this);
-			pcImage.setImageResource(R.drawable.pc_icon);
-			pcImage.setMaxWidth(50);
-			pcImage.setAdjustViewBounds(true);
-			ll2.addView(pcImage);
-
-			if (fiChild.checkFileExists()) {
-				androidImage = new ImageView(this);
-				androidImage.setImageResource(R.drawable.android_icon);
-				androidImage.setMaxWidth(50);
-				androidImage.setAdjustViewBounds(true);
-				ll2.addView(androidImage);
-			}
-
-			ll.addView(ll2);
-			if (fiChild.isDir()) {
-				ll2 = new LinearLayout(this);
-				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-						LinearLayout.LayoutParams.WRAP_CONTENT,
-						LinearLayout.LayoutParams.WRAP_CONTENT);
-				lp.setMargins(30, 0, 0, 0);
-				ll2.setLayoutParams(lp);
-				ll2.setOrientation(LinearLayout.VERTICAL);
-				addFiles(ll2, fiChild);
-				ll.addView(ll2);
-			}
-		}
+		
 		FileInfo fi2 = new FileInfo(fi.getRelativePath());
 		fi2.update();
 		if (fi2.exists() && fi2.getFileList() != null) {
@@ -233,13 +232,15 @@ public class TransferActivity extends Activity {
 		for (FileInfo fiChild : fi.getFileList()) {
 
 			if (!htFileInfo.containsKey(fiChild.getName())) {
-
+				
+				if (fiChild.getName().contains(".jpg")){
 				ll2 = new LinearLayout(this);
 
 				cb = new CheckBox(this);
 				ll2.addView(cb);
 
 				text = new TextView(this);
+				System.out.println("Nome do ficheiro --->"+fiChild.getName());
 				fileName = fiChild.getName();
 				text.setText(fileName);
 				htFileInfo.put(fileName, fiChild);
@@ -251,6 +252,7 @@ public class TransferActivity extends Activity {
 				androidImage.setAdjustViewBounds(true);
 				ll2.addView(androidImage);
 				ll.addView(ll2);
+				}
 			}
 
 			if (fiChild.isDir()) {
@@ -293,14 +295,16 @@ public class TransferActivity extends Activity {
 			unbindService(mConnection);
 			mBound = false;
 		}
+		// TODO PASSAR esta funcao para SyncServerActivity
+		byte b = 15;
 		Intent intent = new Intent(this, Stream.class);
-		Messenger messenger = new Messenger(handler);
+		Messenger messenger = new Messenger(handler2);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("host", host);
-		intent.putExtra("port", port);
+		intent.putExtra("port", 5445);
 		intent.putExtra("key", key);
 		intent.putExtra("iv", iv);
-		intent.putExtra("cmd", 31);
+		intent.putExtra("cmd", b);
 		intent.putExtra("file", Environment.getExternalStorageDirectory()
 				+ "/MyDiabetes");
 		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
@@ -322,6 +326,10 @@ public class TransferActivity extends Activity {
 		intent.putExtra("cmd", Transmission.GET_INFO);
 		intent.putExtra("file", Environment.getExternalStorageDirectory()
 				+ "/MyDiabetes");
+//		if (mBound) {
+//			unbindService(mConnection);
+//			mBound = false;
+//		}
 		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 	}
 

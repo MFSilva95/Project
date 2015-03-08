@@ -24,6 +24,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.util.Log;
 
+import com.jadg.mydiabetes.ImportExport;
 import com.jadg.mydiabetes.sync.crypt.Encrypt;
 import com.jadg.mydiabetes.sync.crypt.EncryptionUtil;
 
@@ -48,6 +49,7 @@ public class Stream extends Service{
 	public IBinder onBind(Intent intent) {
 		extras = intent.getExtras();
 		byte cmd = extras.getByte("cmd");
+		final byte b = 15;
 		switch (cmd) {
 		case Transmission.GET_INFO:
 			GetInfo giTask = new GetInfo();
@@ -57,7 +59,7 @@ public class Stream extends Service{
 			SendFile task = new SendFile();
 			task.execute(extras);
 			break;
-		case 31:
+		case b:
 			SyncServer ssTask = new SyncServer();
 			ssTask.execute(extras);
 			break;
@@ -122,6 +124,7 @@ public class Stream extends Service{
 					oos.close();
 					
 					result = Activity.RESULT_OK;
+					
 
 				} catch (UnknownHostException e) {
 					System.err.println("Unknown host: " + host);
@@ -191,6 +194,7 @@ public class Stream extends Service{
 				fiServer = fi2;
 
 				result = Activity.RESULT_OK;
+				System.out.println("get resultado "+result);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -254,20 +258,8 @@ public class Stream extends Service{
 				ObjectOutputStream oos = new ObjectOutputStream(out);
 				oos.write(bytes2);
 				oos.flush();
-				
-				
-				bytes = Encrypt.encrypt(bytes, key, iv);
-				oos.write(bytes);
-				oos.flush();
-				oos.write(getBytes("END_OF_OBJECT"));
-				oos.flush();
 
-				InputStream in = socket.getInputStream();
-				ObjectInputStream ois = new ObjectInputStream(in);
-				FileInfo fi2 = (FileInfo) ois.readObject();
-
-				fiServer = fi2;
-
+				socket.close();
 				result = Activity.RESULT_OK;
 			} catch (Exception e) {
 				e.printStackTrace();
