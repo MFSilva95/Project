@@ -2,6 +2,7 @@ package com.jadg.mydiabetes;
 
 import android.widget.ArrayAdapter;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -19,6 +20,9 @@ import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
@@ -81,6 +85,14 @@ public class MyData extends Activity {
 					rdb.MyData_Save(getMyDataFromActivity());
 					rdb.close();
 					Toast.makeText(this, "Guardado", Toast.LENGTH_LONG).show();
+					
+					//mandar para a actividade das insulinas
+					DB_Read read = new DB_Read(this);
+					if(!read.Insulin_HasInsulins()){
+						ShowDialogAddInsulin();
+					}
+					read.close();
+					
 					return true;
 				}else{
 					//toast message
@@ -188,7 +200,24 @@ public class MyData extends Activity {
 			}
 			height.setText(obj[9].toString());
 		}
-}
+	}
+	
+	public void ShowDialogAddInsulin(){
+		final Context c = this;
+		new AlertDialog.Builder(this)
+	    .setTitle("Informação")
+	    .setMessage("Para finalizar deve adicionar a insulina a administrar!")
+	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	         public void onClick(DialogInterface dialog, int whichButton) {
+	             //Falta verificar se não está associada a nenhuma entrada da DB
+	        	 //Rever porque não elimina o registo de glicemia
+	        	 Intent intent = new Intent(c, Preferences.class);
+	        	 intent.putExtra("tabPosition", 4);
+	        	 startActivity(intent);
+	        	 finish();
+	         }
+	    }).show();
+	}
 	
 	
 }
