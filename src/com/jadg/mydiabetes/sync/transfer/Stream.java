@@ -24,7 +24,6 @@ import android.os.Message;
 import android.os.Messenger;
 import android.util.Log;
 
-import com.jadg.mydiabetes.ImportExport;
 import com.jadg.mydiabetes.sync.crypt.Encrypt;
 import com.jadg.mydiabetes.sync.crypt.EncryptionUtil;
 

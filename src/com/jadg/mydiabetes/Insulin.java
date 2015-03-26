@@ -154,7 +154,6 @@ public class Insulin extends Activity {
 		lv.setAdapter(new InsulinRegAdapter(allInsulins, this));
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void showDatePickerDialogFrom(View v){
 		DialogFragment newFragment = new DatePickerFragment();
 	    Bundle args = new Bundle();
@@ -162,7 +161,6 @@ public class Insulin extends Activity {
 	    newFragment.setArguments(args);
 	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
-	@SuppressWarnings("deprecation")
 	public void showDatePickerDialogTo(View v){
 		DialogFragment newFragment = new DatePickerFragment();
 	    Bundle args = new Bundle();

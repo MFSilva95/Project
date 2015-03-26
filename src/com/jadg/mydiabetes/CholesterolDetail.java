@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import android.annotation.SuppressLint;
@@ -122,7 +121,6 @@ public class CholesterolDetail extends Activity {
         hour.setText(timeString);
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void showDatePickerDialog(View v){
 		DialogFragment newFragment = new DatePickerFragment();
 	    Bundle args = new Bundle();
@@ -131,7 +129,6 @@ public class CholesterolDetail extends Activity {
 	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void showTimePickerDialog(View v) {
 	    DialogFragment newFragment = new TimePickerFragment();
 	    Bundle args = new Bundle();
@@ -223,14 +220,14 @@ public class CholesterolDetail extends Activity {
 	    .setTitle("Eliminar leitura?")
 	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se não está associada a nenhuma entrada da DB
-	        	 //Rever porque não elimina o registo de glicemia
+	             //Falta verificar se nï¿½o estï¿½ associada a nenhuma entrada da DB
+	        	 //Rever porque nï¿½o elimina o registo de glicemia
 	        	 DB_Write wdb = new DB_Write(c);
 	        	 try {
 	        		 wdb.Cholesterol_Delete(idCho);
 	        		 goUp();
 	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "Não pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
+	        		 Toast.makeText(c, "Nï¿½o pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
 	     		 }
 	             wdb.close();
 	             

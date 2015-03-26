@@ -5,7 +5,6 @@ import android.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.view.View;
 
@@ -52,7 +51,7 @@ public class Preferences extends Activity {
         tab = getActionBar().newTab();
         Fragment diseasesFragment = new Diseases();
         tab.setTabListener(new MyTabsListener(diseasesFragment));
-        tab.setText("Doenças");
+        tab.setText("Doenï¿½as");
         getActionBar().addTab(tab);
         
         tab = getActionBar().newTab();

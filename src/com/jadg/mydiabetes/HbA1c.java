@@ -26,7 +26,6 @@ import com.jadg.mydiabetes.database.HbA1cAdapter;
 import com.jadg.mydiabetes.database.HbA1cDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 
@@ -92,7 +91,6 @@ ListView hba1cList;
 		return super.onOptionsItemSelected(item);
 	}
 
-	@SuppressWarnings("deprecation")
 	public void showDatePickerDialogFrom(View v){
 		DialogFragment newFragment = new DatePickerFragment();
 	    Bundle args = new Bundle();
@@ -100,7 +98,6 @@ ListView hba1cList;
 	    newFragment.setArguments(args);
 	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
-	@SuppressWarnings("deprecation")
 	public void showDatePickerDialogTo(View v){
 		DialogFragment newFragment = new DatePickerFragment();
 	    Bundle args = new Bundle();

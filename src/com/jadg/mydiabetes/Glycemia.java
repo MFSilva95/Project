@@ -101,7 +101,6 @@ public class Glycemia extends Activity {
 		lv.setAdapter(new GlycemiaAdapter(allGlycemias, this));
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void showDatePickerDialogFrom(View v){
 		DialogFragment newFragment = new DatePickerFragment();
 	    Bundle args = new Bundle();
@@ -109,7 +108,6 @@ public class Glycemia extends Activity {
 	    newFragment.setArguments(args);
 	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
-	@SuppressWarnings("deprecation")
 	public void showDatePickerDialogTo(View v){
 		DialogFragment newFragment = new DatePickerFragment();
 	    Bundle args = new Bundle();

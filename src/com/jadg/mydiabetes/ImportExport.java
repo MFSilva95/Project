@@ -25,7 +25,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.View;
@@ -76,19 +75,19 @@ public class ImportExport extends Activity {
 		ActionBar.Tab tab = getActionBar().newTab();
 		Fragment impexpFragment = new PdfExport();
 		tab.setTabListener(new MyTabsListener(impexpFragment));
-		tab.setText("Relatório");
+		tab.setText("Relatï¿½rio");
 		getActionBar().addTab(tab);
 
 		tab = getActionBar().newTab();
 		Fragment bacuprestoreFragment = new DB_BackupRestore();
 		tab.setTabListener(new MyTabsListener(bacuprestoreFragment));
-		tab.setText("Cópia de Segurança");
+		tab.setText("Cï¿½pia de Seguranï¿½a");
 		getActionBar().addTab(tab);
 
 		tab = getActionBar().newTab();
 		Fragment syncFragment = new Sync();
 		tab.setTabListener(new MyTabsListener(syncFragment));
-		tab.setText("Sincronização");
+		tab.setText("Sincronizaï¿½ï¿½o");
 		getActionBar().addTab(tab);
 
 	}
@@ -667,7 +666,6 @@ public class ImportExport extends Activity {
 				}).show();
 	}
 
-	@SuppressWarnings("deprecation")
 	public void showDatePickerDialogFrom(View v) {
 		DialogFragment newFragment = new DatePickerFragment();
 		Bundle args = new Bundle();
@@ -676,7 +674,6 @@ public class ImportExport extends Activity {
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
-	@SuppressWarnings("deprecation")
 	public void showDatePickerDialogTo(View v) {
 		DialogFragment newFragment = new DatePickerFragment();
 		Bundle args = new Bundle();
@@ -698,11 +695,11 @@ public class ImportExport extends Activity {
 				try {
 					fileBackup.createNewFile();
 					copyFile(inputFile, fileBackup);
-					ShowDialogMsg("Cópia de segurança efectuada com sucesso!");
+					ShowDialogMsg("Cï¿½pia de seguranï¿½a efectuada com sucesso!");
 				} catch (IOException ioException) {
-					ShowDialogMsg("Ocurreu um erro durante a cópia de segurança, verifique se a memória externa está disponivel!");
+					ShowDialogMsg("Ocurreu um erro durante a cï¿½pia de seguranï¿½a, verifique se a memï¿½ria externa estï¿½ disponivel!");
 				} catch (Exception exception) {
-					ShowDialogMsg("Ocurreu um erro durante a cópia de segurança, verifique se a memória externa está disponivel!");
+					ShowDialogMsg("Ocurreu um erro durante a cï¿½pia de seguranï¿½a, verifique se a memï¿½ria externa estï¿½ disponivel!");
 				}
 			}
 		}
