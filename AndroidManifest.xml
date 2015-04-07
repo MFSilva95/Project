@@ -9,7 +9,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="21" />
+        android:targetSdkVersion="16" />
 	<!--
 	 Removido da linha 18: android:name="com.jadg.mydiabetes"
 	Caso contrário não corre.	
@@ -291,6 +291,15 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.jadg.mydiabetes.ImportExport" />
+        </activity>
+        
+        <activity
+            android:name="com.jadg.mydiabetes.Logbook"
+            android:label="@string/title_activity_logbook"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
         </activity>
 
         <!-- <activity

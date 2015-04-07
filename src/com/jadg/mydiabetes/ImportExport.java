@@ -75,19 +75,19 @@ public class ImportExport extends Activity {
 		ActionBar.Tab tab = getActionBar().newTab();
 		Fragment impexpFragment = new PdfExport();
 		tab.setTabListener(new MyTabsListener(impexpFragment));
-		tab.setText("Relatï¿½rio");
+		tab.setText("Relatório");
 		getActionBar().addTab(tab);
 
 		tab = getActionBar().newTab();
 		Fragment bacuprestoreFragment = new DB_BackupRestore();
 		tab.setTabListener(new MyTabsListener(bacuprestoreFragment));
-		tab.setText("Cï¿½pia de Seguranï¿½a");
+		tab.setText("Cópia de Segurança");
 		getActionBar().addTab(tab);
 
 		tab = getActionBar().newTab();
 		Fragment syncFragment = new Sync();
 		tab.setTabListener(new MyTabsListener(syncFragment));
-		tab.setText("Sincronizaï¿½ï¿½o");
+		tab.setText("Sincronização");
 		getActionBar().addTab(tab);
 
 	}

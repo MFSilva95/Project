@@ -51,13 +51,13 @@ public class Preferences extends Activity {
         tab = getActionBar().newTab();
         Fragment diseasesFragment = new Diseases();
         tab.setTabListener(new MyTabsListener(diseasesFragment));
-        tab.setText("Doenï¿½as");
+        tab.setText("Doenças");
         getActionBar().addTab(tab);
         
         tab = getActionBar().newTab();
         Fragment exercisesFragment = new Exercises();
         tab.setTabListener(new MyTabsListener(exercisesFragment));
-        tab.setText("Exercicios");
+        tab.setText("Exercícios");
         getActionBar().addTab(tab);
         
         tab = getActionBar().newTab();

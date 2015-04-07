@@ -134,6 +134,12 @@ public class Home extends Activity {
 		startActivity(intent);
 	}
 	
+	//ADDED BY ZE ORNELAS
+	public void Call_Logbook(View view){
+		Intent intent = new Intent(this, Logbook.class);
+		startActivity(intent);
+	}
+	
 	private class MyGestureDetector extends SimpleOnGestureListener {
 
 	    private static final int SWIPE_MIN_DISTANCE = 120;

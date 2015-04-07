@@ -161,6 +161,7 @@ public class Insulin extends Activity {
 	    newFragment.setArguments(args);
 	    newFragment.show(getFragmentManager(), "DatePicker");
 	}
+
 	public void showDatePickerDialogTo(View v){
 		DialogFragment newFragment = new DatePickerFragment();
 	    Bundle args = new Bundle();
