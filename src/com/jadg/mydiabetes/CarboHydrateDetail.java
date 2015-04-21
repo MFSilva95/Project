@@ -12,7 +12,6 @@ import android.app.DialogFragment;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -32,10 +31,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
+import android.view.inputmethod.InputMethodManager;
+
 import com.jadg.mydiabetes.database.CarbsDataBinding;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
@@ -44,11 +44,8 @@ import com.jadg.mydiabetes.database.TagDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 import com.jadg.mydiabetes.dialogs.TimePickerFragment;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
 
 public class CarboHydrateDetail extends Activity {
 
@@ -144,7 +141,7 @@ public class CarboHydrateDetail extends Activity {
 				return true;
 			case R.id.menuItem_CarboHydrateDetail_Save:
 				AddCarbsRead();
-				NavUtils.navigateUpFromSameTask(this);
+				//NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_CarboHydrateDetail_Delete:
 				DeleteCarbsRead(Integer.parseInt(args.getString("Id")));
@@ -224,6 +221,16 @@ public class CarboHydrateDetail extends Activity {
 		EditText photopath = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
 		EditText note = (EditText)findViewById(R.id.et_CarboHydrateDetail_Notes);
 		
+		//adicionado por zeornelas
+		//para obrigar a colocar o valor dos hidratos e nao crashar
+		if(carbs.getText().toString().equals("")){
+			carbs.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(carbs, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		
+		
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
@@ -255,6 +262,7 @@ public class CarboHydrateDetail extends Activity {
 		
 		reg.Carbs_Save(carb);
 		reg.close();
+		NavUtils.navigateUpFromSameTask(this);
 	}
 	
 	public void TakePhoto(View v) {

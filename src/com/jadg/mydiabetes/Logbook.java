@@ -8,6 +8,8 @@ import java.util.Date;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.InsulinRegAdapter;
 import com.jadg.mydiabetes.database.InsulinRegDataBinding;
+import com.jadg.mydiabetes.database.LogbookAdapter;
+import com.jadg.mydiabetes.database.LogbookDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 
 import android.annotation.SuppressLint;
@@ -95,9 +97,9 @@ public class Logbook extends Activity {
 		EditText datefrom = (EditText)findViewById(R.id.et_Logbook_DataFrom);
 		EditText dateto = (EditText)findViewById(R.id.et_Logbook_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<InsulinRegDataBinding> allInsulins = rdb.InsulinReg_GetByDate(datefrom.getText().toString(), dateto.getText().toString());
+		ArrayList<LogbookDataBinding> lb = rdb.getLogbook(datefrom.getText().toString(), dateto.getText().toString());
 		rdb.close();
-		lv.setAdapter(new InsulinRegAdapter(allInsulins, this));
+		lv.setAdapter(new LogbookAdapter(lb, this));
 	}
 	
 	public void showDatePickerDialogFrom(View v){
@@ -114,14 +116,6 @@ public class Logbook extends Activity {
 	    args.putInt("textbox",R.id.et_Logbook_DataTo);
 	    newFragment.setArguments(args);
 	    newFragment.show(getFragmentManager(), "DatePicker");
-	}
-	
-	
-	
-	
-	
-	public Logbook() {
-		// TODO Auto-generated constructor stub
 	}
 
 }

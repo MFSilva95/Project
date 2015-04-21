@@ -52,6 +52,7 @@
     <string name="save_GlycemiaDetail">Guardar</string>
     <string name="title_activity_insulin_detail">Registo de Insulina</string>
     <string name="title_activity_exercise_detail">Registo de Exercicio</string>
+    <string name="title_activity_logbook_detail">Registo no Logbook</string>
 
     <string-array name="Effort">
         <item>Muito Leve</item>

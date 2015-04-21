@@ -301,7 +301,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.jadg.mydiabetes.Home" />
         </activity>
-
+		
+        <activity
+            android:name="com.jadg.mydiabetes.LogbookDetail"
+            android:label="@string/title_activity_logbook_detail"
+            android:parentActivityName="com.jadg.mydiabetes.Logbook" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Logbook" />
+        </activity>
         <!-- <activity
             android:name="com.example.projetoandroid.CloudServerActivity"
             android:label="@string/title_activity_cloud_server" >

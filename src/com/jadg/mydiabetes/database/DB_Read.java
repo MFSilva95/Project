@@ -976,4 +976,217 @@ public class DB_Read {
 		cursor.close();
 		return n;
 	}
+
+
+
+
+	/*
+	 * LOGBOOK by zeornelas
+	 */
+	
+	public ArrayList<LogbookDataBinding> getLogbook(String from, String to) {
+		ArrayList<LogbookDataBinding> lb = new ArrayList<LogbookDataBinding>();
+		LogbookDataBinding row;
+		CarbsDataBinding ch;
+		InsulinRegDataBinding ins;
+		GlycemiaDataBinding bg;
+		
+		Cursor cursor = myDB.rawQuery("SELECT ins.datetime, ins.Id_user, ins.Id_Tag, ins.Id_Note, ch.Id, ch.value, ch.PhotoPath, ins.Id, ins.Id_Insulin, ins.Id_BloodGlucose,ins.Target_BG,ins.Value, bg.Value" + 
+			" from Reg_CarboHydrate as ch, Reg_Insulin as ins, Reg_BloodGlucose as bg"+ 
+			" where ch.datetime >'"+ from + " 00:00:00' AND ch.datetime < '"+ to + " 23:59:59'" +
+			" AND ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" + 
+			" AND ch.datetime = ins.datetime AND ch.Id_User=ins.Id_User AND ins.Id_BloodGlucose is not NULL AND bg.Id = ins.Id_BloodGlucose"+
+			" UNION" +
+			" SELECT ins.DateTime, ins.Id_User, ins.Id_Tag, ins.Id_Note, null, null, null, ins.Id, ins.Id_Insulin, ins.Id_BloodGlucose, ins.Target_BG, ins.value, bg.value"+
+			" FROM Reg_Insulin as ins, Reg_BloodGlucose as bg"+
+			" WHERE ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" +
+			" AND bg.datetime >'"+ from + " 00:00:00' AND bg.datetime < '"+ to + " 23:59:59'" + 
+			" AND bg.Id=ins.Id_BloodGlucose AND ins.Id not in"+
+			" (SELECT ins.Id"+
+			" from Reg_CarboHydrate as ch, Reg_Insulin as ins" +
+			" where ch.datetime >'"+ from + " 00:00:00' AND ch.datetime < '"+ to + " 23:59:59'" +
+			" AND ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" + 
+			" AND ch.datetime = ins.datetime AND ch.Id_User=ins.Id_User AND ins.Id_BloodGlucose is not NULL" +
+			" Union" +
+			" SELECT ins.Id" +
+			" from Reg_Insulin as ins" +
+			" where ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" +
+			" AND ins.Id_BloodGlucose is NULL)" +
+			" UNION" +
+			" SELECT bg.DateTime, bg.Id_User, bg.Id_Tag, bg.Id_Note, null, null, null, null, null, bg.Id, null, null, bg.value" +
+			" FROM Reg_BloodGlucose as bg" +
+			" WHERE bg.datetime >'"+ from + " 00:00:00' AND bg.datetime < '"+ to + " 23:59:59'" +
+			" AND id not in" +
+			" (SELECT ins.Id_BloodGlucose" +
+			" from Reg_CarboHydrate as ch, Reg_Insulin as ins" +
+			" where ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" +
+			" AND ch.datetime >'"+ from + " 00:00:00' AND ch.datetime < '"+ to + " 23:59:59'" + 
+			" AND ch.datetime = ins.datetime AND ch.Id_User=ins.Id_User AND ins.Id_BloodGlucose is not NULL" +
+			" Union" +
+			" SELECT ins.Id_BloodGlucose" +
+			" from Reg_Insulin as ins" +
+			" where ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" +
+			" AND ins.Id_BloodGlucose is not NULL)"+
+			" UNION" +
+			" SELECT ch.DateTime, ch.Id_User, ch.Id_Tag, ch.Id_Note, ch.Id, ch.Value, ch.PhotoPath, null, null, null, null, null, null" +
+			" FROM Reg_CarboHydrate as ch" +
+			" WHERE ch.datetime >'"+ from + " 00:00:00' AND ch.datetime < '"+ to + " 23:59:59'" + 
+			" AND id not in" +
+			" (SELECT ch.Id" +
+			" from Reg_CarboHydrate as ch, Reg_Insulin as ins" +
+			" where ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" +
+			" AND ch.datetime >'"+ from + " 00:00:00' AND ch.datetime < '"+ to + " 23:59:59'" + 
+			" AND ch.datetime = ins.datetime AND ch.Id_User=ins.Id_User AND ins.Id_BloodGlucose is not NULL)" +
+			" UNION" +
+			" SELECT ins.DateTime, ins.DateTime, ins.Id_Tag, ins.Id_Note, null, null, null, ins.Id, ins.Id_Insulin, ins.Id_BloodGlucose, ins.Target_BG, ins.Value, null" +
+			" FROM Reg_Insulin as ins" +
+			" WHERE ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" +
+			" AND id not in" + 
+			" (SELECT ins.Id" +
+			" from Reg_CarboHydrate as ch, Reg_Insulin as ins" +
+			" where ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" +
+			" AND ch.datetime >'"+ from + " 00:00:00' AND ch.datetime < '"+ to + " 23:59:59'" +
+			" AND ch.datetime = ins.datetime AND ch.Id_User=ins.Id_User AND ins.Id_BloodGlucose is not NULL" +
+			" Union" +
+			" SELECT ins.Id_BloodGlucose" +
+			" from Reg_Insulin as ins" +
+			" where ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" +
+			" AND ins.Id_BloodGlucose is not NULL)" +
+			" ORDER BY datetime DESC",null);
+		
+		//Log.d("LOGBOOK", String.valueOf(cursor.getCount()));
+		
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			
+			do{
+				row = new LogbookDataBinding();
+				ch = new CarbsDataBinding();
+				ins = new InsulinRegDataBinding();
+				bg = new GlycemiaDataBinding();
+				
+				String t = cursor.getString(0);
+
+				if(!cursor.isNull(4) && !cursor.isNull(7) && !cursor.isNull(9)){ //refeicao completa
+					ch.setDate(t.split(" ")[0]);
+					ch.setTime(t.split(" ")[1]);
+					ins.setDate(t.split(" ")[0]);
+					ins.setTime(t.split(" ")[1]);
+					bg.setDate(t.split(" ")[0]);
+					bg.setTime(t.split(" ")[1]);
+					
+					ch.setId_User(cursor.getInt(1));
+					ins.setIdUser(cursor.getInt(1));
+					bg.setIdUser(cursor.getInt(1));
+				
+					ch.setId_Tag(cursor.getInt(2));
+					ins.setIdTag(cursor.getInt(2));
+					bg.setIdTag(cursor.getInt(2));
+				
+					ch.setId_Note((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+					ins.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+					bg.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+
+					ch.setId(cursor.getInt(4));
+					ch.setCarbsValue(cursor.getDouble(5));
+					ch.setPhotoPath(cursor.getString(6));
+					
+					ins.setId(cursor.getInt(7));
+					ins.setIdInsulin(cursor.getInt(8));
+					ins.setIdBloodGlucose(cursor.getInt(9));
+					ins.setTargetGlycemia(cursor.getDouble(10));
+					ins.setInsulinUnits(cursor.getDouble(11));
+					
+					bg.setId(cursor.getInt(9));
+					bg.setValue(cursor.getDouble(12));
+					
+					row.set_bg(bg);
+					row.set_ch(ch);
+					row.set_ins(ins);
+				}else if(!cursor.isNull(4) && cursor.isNull(7) && cursor.isNull(9)){ //so hidratos carbono
+					ch.setDate(t.split(" ")[0]);
+					ch.setTime(t.split(" ")[1]);
+					ch.setId_User(cursor.getInt(1));
+					ch.setId_Tag(cursor.getInt(2));
+					ch.setId_Note((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+					ch.setId(cursor.getInt(4));
+					ch.setCarbsValue(cursor.getDouble(5));
+					ch.setPhotoPath(cursor.getString(6));
+					
+					row.set_bg(null);
+					row.set_ch(ch);
+					row.set_ins(null);
+				}else if(cursor.isNull(4) && !cursor.isNull(7) && !cursor.isNull(9)){ //insulina com parametro da glicemia
+					ins.setDate(t.split(" ")[0]);
+					ins.setTime(t.split(" ")[1]);
+					bg.setDate(t.split(" ")[0]);
+					bg.setTime(t.split(" ")[1]);
+
+					ins.setIdUser(cursor.getInt(1));
+					bg.setIdUser(cursor.getInt(1));
+
+					ins.setIdTag(cursor.getInt(2));
+					bg.setIdTag(cursor.getInt(2));
+
+					ins.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+					bg.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+
+					ins.setId(cursor.getInt(7));
+					ins.setIdInsulin(cursor.getInt(8));
+					ins.setIdBloodGlucose(cursor.getInt(9));
+					ins.setTargetGlycemia(cursor.getDouble(10));
+					ins.setInsulinUnits(cursor.getDouble(11));
+					
+					bg.setId(cursor.getInt(9));
+					bg.setValue(cursor.getDouble(12));
+					
+					row.set_bg(bg);
+					row.set_ch(null);
+					row.set_ins(ins);
+				}else if(cursor.isNull(4) && cursor.isNull(7) && !cursor.isNull(9)){ //so glicemia
+					bg.setDate(t.split(" ")[0]);
+					bg.setTime(t.split(" ")[1]);
+					bg.setIdUser(cursor.getInt(1));
+					bg.setIdTag(cursor.getInt(2));
+					bg.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+					bg.setId(cursor.getInt(9));
+					bg.setValue(cursor.getDouble(12));
+					
+					row.set_bg(bg);
+					row.set_ch(null);
+					row.set_ins(null);
+				}else if(cursor.isNull(4) && !cursor.isNull(7) && cursor.isNull(9)){ //so insulina
+					ins.setDate(t.split(" ")[0]);
+					ins.setTime(t.split(" ")[1]);
+					ins.setIdUser(cursor.getInt(1));
+					ins.setIdTag(cursor.getInt(2));
+					ins.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+					ins.setId(cursor.getInt(7));
+					ins.setIdInsulin(cursor.getInt(8));
+					ins.setIdBloodGlucose(cursor.getInt(9));
+					ins.setTargetGlycemia(cursor.getDouble(10));
+					ins.setInsulinUnits(cursor.getDouble(11));
+					
+					row.set_bg(null);
+					row.set_ch(null);
+					row.set_ins(ins);
+				}
+				
+				
+				lb.add(row);
+				cursor.moveToNext();
+			}
+			while(!cursor.isAfterLast());
+			cursor.close();
+			//Log.d("LOGBOOK", String.valueOf(lb.size()));
+			return lb;
+		}
+		else {
+			cursor.close();
+			//Log.d("LOGBOOK", String.valueOf(lb.size()));
+			return lb;
+		}
+		
+	}	
 }
+

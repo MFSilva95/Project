@@ -26,11 +26,7 @@ import com.jadg.mydiabetes.database.InsulinRegAdapter;
 import com.jadg.mydiabetes.database.InsulinRegDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
 
 public class Insulin extends Activity {
 

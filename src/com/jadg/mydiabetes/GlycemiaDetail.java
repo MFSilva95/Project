@@ -11,7 +11,6 @@ import android.app.DialogFragment;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,10 +22,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
+import android.view.inputmethod.InputMethodManager;
+
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.database.GlycemiaDataBinding;
@@ -34,6 +34,7 @@ import com.jadg.mydiabetes.database.NoteDataBinding;
 import com.jadg.mydiabetes.database.TagDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 import com.jadg.mydiabetes.dialogs.TimePickerFragment;
+
 
 
 import android.annotation.TargetApi;
@@ -123,7 +124,7 @@ public class GlycemiaDetail extends Activity {
 				return true;
 			case R.id.menuItem_GlycemiaDetail_Save:
 				AddGlycemiaRead();
-				NavUtils.navigateUpFromSameTask(this);
+				//NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_GlycemiaDetail_Delete:
 				DeleteGlycemiaRead();
@@ -179,6 +180,13 @@ public class GlycemiaDetail extends Activity {
 		EditText hora = (EditText)findViewById(R.id.et_GlycemiaDetail_Hora);
 		EditText note = (EditText)findViewById(R.id.et_GlycemiaDetail_Notes);
 		
+		if(glycemia.getText().toString().equals("")){
+			glycemia.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(glycemia, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
@@ -209,6 +217,7 @@ public class GlycemiaDetail extends Activity {
 		
 		reg.Glycemia_Save(gly);
 		reg.close();
+		NavUtils.navigateUpFromSameTask(this);
 		
 	}
 	public void UpdateGlycemiaRead(int id){

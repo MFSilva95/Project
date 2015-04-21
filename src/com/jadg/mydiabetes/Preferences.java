@@ -22,9 +22,6 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
-
 public class Preferences extends Activity {
 
 	@Override
@@ -51,13 +48,13 @@ public class Preferences extends Activity {
         tab = getActionBar().newTab();
         Fragment diseasesFragment = new Diseases();
         tab.setTabListener(new MyTabsListener(diseasesFragment));
-        tab.setText("Doenças");
+        tab.setText("DoenÃ§as");
         getActionBar().addTab(tab);
         
         tab = getActionBar().newTab();
         Fragment exercisesFragment = new Exercises();
         tab.setTabListener(new MyTabsListener(exercisesFragment));
-        tab.setText("Exercícios");
+        tab.setText("ExercÃ­cios");
         getActionBar().addTab(tab);
         
         tab = getActionBar().newTab();
