@@ -13,10 +13,10 @@ import android.app.DialogFragment;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
+
 import com.jadg.mydiabetes.database.CarbsDataBinding;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
@@ -401,38 +401,55 @@ public class Meal extends Activity {
 	}
 	
 	public void TakePhoto(View v) {
-		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-		File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
-		dir.mkdirs();
+		EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
+		if(!photopath.getText().toString().equals("")){
+			Intent intent = new Intent(v.getContext(), ViewPhoto.class);
+			
+			Bundle argsToPhoto = new Bundle();
+			argsToPhoto.putString("Path", photopath.getText().toString());
+			argsToPhoto.putInt("Id", -1);
+			intent.putExtras(argsToPhoto);
+			//v.getContext().startActivity(intent);
+			startActivityForResult(intent, 101010);
+		}else{
+			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
+			dir.mkdirs();
+			
+			final Calendar c = Calendar.getInstance();
+	        int year = c.get(Calendar.YEAR);
+	        int month = c.get(Calendar.MONTH);
+	        int day = c.get(Calendar.DAY_OF_MONTH);
+			int hour = c.get(Calendar.HOUR_OF_DAY);
+			int minute = c.get(Calendar.MINUTE);
+			int sec = c.get(Calendar.SECOND);
+			now = year + "-" + (month+1) + "-" + day + " " + hour + "." + minute + "." + sec;
+			File file = new File(dir, now + ".jpg");
+			
+			outputFileUri = Uri.fromFile(file);
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
+			startActivityForResult(intent, TAKE_PICTURE);
+		}
 		
-		final Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-		int hour = c.get(Calendar.HOUR_OF_DAY);
-		int minute = c.get(Calendar.MINUTE);
-		int sec = c.get(Calendar.SECOND);
-		now = year + "-" + (month+1) + "-" + day + " " + hour + "." + minute + "." + sec;
-		File file = new File(dir, now + ".jpg");
-		
-		outputFileUri = Uri.fromFile(file);
-		intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-		startActivityForResult(intent, TAKE_PICTURE);
 	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
+		EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
+		ImageView img = (ImageView)findViewById(R.id.iv_MealDetail_Photo);
+
 		if (requestCode == TAKE_PICTURE && resultCode!= Activity.RESULT_CANCELED){
 			Toast.makeText(getApplicationContext(), outputFileUri.toString(), Toast.LENGTH_LONG).show();
-			EditText c = (EditText)findViewById(R.id.et_MealDetail_Photo);
-			c.setText("/MyDiabetes/" + now + ".jpg");
-			ImageView img = (ImageView)findViewById(R.id.iv_MealDetail_Photo);
+			photopath.setText("/MyDiabetes/" + now + ".jpg");
 			img.setImageURI(outputFileUri);
 			deleteLastCapturedImage();
+		}if (requestCode == 101010){
+			photopath.setText("");
+			img.setImageDrawable(getResources().getDrawable(R.drawable.newphoto));
+			
 		}
 	}
 	
-	@SuppressWarnings("deprecation")
 	public void deleteLastCapturedImage() {
 	    String[] projection = { 
 	            MediaStore.Images.ImageColumns.SIZE,
@@ -443,7 +460,9 @@ public class Meal extends Activity {
 	    Uri u = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 	    try {
 	        if (u != null) {
-	            c = managedQuery(u, projection, null, null, null); }
+	            //c = managedQuery(u, projection, null, null, null);
+	            c = getContentResolver().query(u, projection, null, null, null); 
+	        }
 	        if ((c != null) && (c.moveToLast())) {
 	            ContentResolver cr = getContentResolver();
 	            int i = cr.delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, BaseColumns._ID + "=" + c.getString(c.getColumnIndex(BaseColumns._ID)), null);
@@ -451,7 +470,8 @@ public class Meal extends Activity {
 	        }
 	    } finally {
 	        if (c != null) {
-	            c.close(); }
+	            c.close(); 
+	        }
 	    }
 	}
 	

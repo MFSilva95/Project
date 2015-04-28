@@ -51,7 +51,7 @@ public class ViewPhoto extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.view_photo, menu);
+		//getMenuInflater().inflate(R.menu.view_photo, menu);
 		return true;
 	}
 
@@ -66,7 +66,8 @@ public class ViewPhoto extends Activity {
 			//
 			// http://developer.android.com/design/patterns/navigation.html#up-vs-back
 			//
-			NavUtils.navigateUpFromSameTask(this);
+			//NavUtils.navigateUpFromSameTask(this);
+			finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -82,9 +83,14 @@ public class ViewPhoto extends Activity {
 	    .setTitle("Eliminar foto?")
 	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	        	 DB_Write wdb = new DB_Write(c);
+	        	 
 	        	 try {
-	        		 wdb.Carbs_DeletePhoto(id);
+	        		 if(id!=-1){
+	        			 DB_Write wdb = new DB_Write(c);
+	        			 wdb.Carbs_DeletePhoto(id);
+	        			 wdb.close();
+	        		 }
+	        		 
 	        		 String path = args.getString("Path");
 	        		 File file = new File(Environment.getExternalStorageDirectory() + path);
 	        		 boolean deleted = file.delete();
@@ -98,7 +104,6 @@ public class ViewPhoto extends Activity {
 	        	 }catch (Exception e) {
 	        		 Toast.makeText(c, "Não pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
 	     		 }
-	             wdb.close();
 	         }
 	    })
 	    .setNegativeButton("Não", new DialogInterface.OnClickListener() {

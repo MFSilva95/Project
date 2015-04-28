@@ -54,6 +54,7 @@ public class CarboHydrateDetail extends Activity {
 	private String now;
 	int idNote = 0;
 	private String _id;
+	int id_ch = -1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,7 @@ public class CarboHydrateDetail extends Activity {
 			DB_Read rdb = new DB_Read(this);
 			String id = args.getString("Id");
 			_id = id;
+			id_ch = Integer.parseInt(args.getString("Id"));
 			CarbsDataBinding toFill = rdb.CarboHydrate_GetById(Integer.parseInt(id));
 			
 			Spinner tagSpinner = (Spinner)findViewById(R.id.sp_CarboHydrateDetail_Tag);
@@ -270,10 +272,10 @@ public class CarboHydrateDetail extends Activity {
 		if(!photopath.getText().toString().equals("")){
 			Intent intent = new Intent(v.getContext(), ViewPhoto.class);
 			
-			Bundle args = getIntent().getExtras();
+			//Bundle args = getIntent().getExtras();
 			Bundle argsToPhoto = new Bundle();
 			argsToPhoto.putString("Path", photopath.getText().toString());
-			argsToPhoto.putInt("Id", Integer.parseInt(args.getString("Id")));
+			argsToPhoto.putInt("Id", id_ch);
 			intent.putExtras(argsToPhoto);
 			//v.getContext().startActivity(intent);
 			startActivityForResult(intent, 101010);
@@ -303,29 +305,34 @@ public class CarboHydrateDetail extends Activity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
+		EditText photopath = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
+		ImageView img = (ImageView)findViewById(R.id.iv_CarboHydrateDetail_Photo);
 		if (requestCode == TAKE_PICTURE && resultCode!= Activity.RESULT_CANCELED){
 			Toast.makeText(getApplicationContext(), outputFileUri.toString(), Toast.LENGTH_LONG).show();
-			EditText c = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
-			c.setText("/MyDiabetes/" + now + ".jpg");
-			ImageView img = (ImageView)findViewById(R.id.iv_CarboHydrateDetail_Photo);
+			photopath.setText("/MyDiabetes/" + now + ".jpg");
 			img.setImageURI(outputFileUri);
 			deleteLastCapturedImage();
 		}
 		if (requestCode == 101010){
-			DB_Read rdb = new DB_Read(this);
-			CarbsDataBinding toFill = rdb.CarboHydrate_GetById(Integer.parseInt(_id));
-			if (toFill.getPhotoPath().equals("")){
-				EditText photopath = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
-				photopath.setText(toFill.getPhotoPath());
-				ImageView img = (ImageView)findViewById(R.id.iv_CarboHydrateDetail_Photo);
+			if(id_ch!=-1){
+				DB_Read rdb = new DB_Read(this);
+				CarbsDataBinding toFill = rdb.CarboHydrate_GetById(Integer.parseInt(_id));
+				if (toFill.getPhotoPath().equals("")){
+					photopath.setText(toFill.getPhotoPath());
+					img.setImageDrawable(getResources().getDrawable(R.drawable.newphoto));
+				}
+				rdb.close();
+			}else{
+				photopath.setText("");
 				img.setImageDrawable(getResources().getDrawable(R.drawable.newphoto));
 			}
+			
 		}
 		
  
 	}
 
-	@SuppressWarnings("deprecation")
+
 	public void deleteLastCapturedImage() {
 	    String[] projection = { 
 	            MediaStore.Images.ImageColumns.SIZE,
@@ -336,7 +343,9 @@ public class CarboHydrateDetail extends Activity {
 	    Uri u = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
 	    try {
 	        if (u != null) {
-	            c = managedQuery(u, projection, null, null, null); }
+	        	//c = managedQuery(u, projection, null, null, null);
+	            c = getContentResolver().query(u, projection, null, null, null); 
+	        }
 	        if ((c != null) && (c.moveToLast())) {
 	            ContentResolver cr = getContentResolver();
 	            int i = cr.delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, BaseColumns._ID + "=" + c.getString(c.getColumnIndex(BaseColumns._ID)), null);
