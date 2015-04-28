@@ -92,7 +92,7 @@ public class MyData extends Activity {
 						ShowDialogAddInsulin();
 					}
 					read.close();
-					
+					NavUtils.navigateUpFromSameTask(this);
 					return true;
 				}else{
 					//toast message
