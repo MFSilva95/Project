@@ -12,7 +12,6 @@ import android.app.DialogFragment;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,10 +24,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
+import android.view.inputmethod.InputMethodManager;
 
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
@@ -153,8 +152,12 @@ public class InsulinDetail extends Activity {
 						Double gli = Double.parseDouble(glycemia.getText().toString());
 						Double tar = Double.parseDouble(target.getText().toString());
 						Double result = (gli-tar)/ iRatio;
+						result = 0.5 * Math.round(result/0.5);
+						if(result<0){
+							result = 0.0;
+						}
 						Log.d("resultado", result.toString());
-						insulinunits.setText(String.valueOf(0.5 * Math.round(result/0.5)));
+						insulinunits.setText(String.valueOf(result));
 					}
 				}
 				@Override
@@ -202,7 +205,6 @@ public class InsulinDetail extends Activity {
 				return true;
 			case R.id.menuItem_InsulinDetail_Save:
 				AddInsulinRead();
-				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_InsulinDetail_Delete:
 				DeleteInsulinRead();
@@ -210,7 +212,7 @@ public class InsulinDetail extends Activity {
 				return true;
 			case R.id.menuItem_InsulinDetail_EditSave:
 				UpdateInsulinRead();
-				NavUtils.navigateUpFromSameTask(this);
+				//NavUtils.navigateUpFromSameTask(this);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -327,6 +329,12 @@ public class InsulinDetail extends Activity {
 		EditText insulinunits = (EditText)findViewById(R.id.et_InsulinDetail_InsulinUnits);
 		EditText note = (EditText)findViewById(R.id.et_InsulinDetail_Notes);
 		
+		if(insulinunits.getText().toString().equals("")){
+			insulinunits.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(insulinunits, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
 		
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
@@ -390,6 +398,8 @@ public class InsulinDetail extends Activity {
 		
 		reg.close();
 		rdb.close();
+		
+		goUp();
 	}
 	
 	public void UpdateInsulinRead(){
@@ -401,6 +411,13 @@ public class InsulinDetail extends Activity {
 		EditText target = (EditText)findViewById(R.id.et_InsulinDetail_TargetGlycemia);
 		EditText insulinunits = (EditText)findViewById(R.id.et_InsulinDetail_InsulinUnits);
 		EditText note = (EditText)findViewById(R.id.et_InsulinDetail_Notes);
+		
+		if(insulinunits.getText().toString().equals("")){
+			insulinunits.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(insulinunits, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
 		
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
@@ -483,6 +500,8 @@ public class InsulinDetail extends Activity {
 		reg.Insulin_Update(ins);
 		rdb.close();
 		reg.close();
+		
+		goUp();
 		
 	}
 	
