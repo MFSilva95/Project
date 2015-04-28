@@ -132,7 +132,7 @@ public class GlycemiaDetail extends Activity {
 				return true;
 			case R.id.menuItem_GlycemiaDetail_EditSave:
 				UpdateGlycemiaRead(idGlycemia);
-				NavUtils.navigateUpFromSameTask(this);
+				//NavUtils.navigateUpFromSameTask(this);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -217,7 +217,7 @@ public class GlycemiaDetail extends Activity {
 		
 		reg.Glycemia_Save(gly);
 		reg.close();
-		NavUtils.navigateUpFromSameTask(this);
+		goUp();
 		
 	}
 	public void UpdateGlycemiaRead(int id){
@@ -226,6 +226,13 @@ public class GlycemiaDetail extends Activity {
 		EditText data = (EditText)findViewById(R.id.et_GlycemiaDetail_Data);
 		EditText hora = (EditText)findViewById(R.id.et_GlycemiaDetail_Hora);
 		EditText note = (EditText)findViewById(R.id.et_GlycemiaDetail_Notes);
+		
+		if(glycemia.getText().toString().equals("")){
+			glycemia.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(glycemia, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
 		
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
@@ -261,7 +268,7 @@ public class GlycemiaDetail extends Activity {
 		
 		reg.Glycemia_Update(gly);
 		reg.close();
-		
+		goUp();
 	}
 	
 	public void DeleteGlycemiaRead(){

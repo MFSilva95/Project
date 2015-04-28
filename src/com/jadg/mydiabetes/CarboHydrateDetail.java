@@ -149,7 +149,7 @@ public class CarboHydrateDetail extends Activity {
 				return true;
 			case R.id.menuItem_CarboHydrateDetail_EditSave:
 				UpdateCarbsRead(Integer.parseInt(args.getString("Id")));
-				NavUtils.navigateUpFromSameTask(this);
+				//NavUtils.navigateUpFromSameTask(this);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -262,7 +262,7 @@ public class CarboHydrateDetail extends Activity {
 		
 		reg.Carbs_Save(carb);
 		reg.close();
-		NavUtils.navigateUpFromSameTask(this);
+		goUp();
 	}
 	
 	public void TakePhoto(View v) {
@@ -398,6 +398,13 @@ public class CarboHydrateDetail extends Activity {
 		EditText photopath = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
 		EditText note = (EditText)findViewById(R.id.et_CarboHydrateDetail_Notes);
 		
+		if(carbs.getText().toString().equals("")){
+			carbs.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(carbs, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
@@ -434,5 +441,6 @@ public class CarboHydrateDetail extends Activity {
 	
 		reg.Carbs_Update(carb);
 		reg.close();
+		goUp();
 	}
 }
