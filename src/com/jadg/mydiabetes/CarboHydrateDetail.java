@@ -53,7 +53,6 @@ public class CarboHydrateDetail extends Activity {
 	private Uri outputFileUri;
 	private String now;
 	int idNote = 0;
-	private String _id;
 	int id_ch = -1;
 	
 	@Override
@@ -68,7 +67,6 @@ public class CarboHydrateDetail extends Activity {
 		if(args!=null){
 			DB_Read rdb = new DB_Read(this);
 			String id = args.getString("Id");
-			_id = id;
 			id_ch = Integer.parseInt(args.getString("Id"));
 			CarbsDataBinding toFill = rdb.CarboHydrate_GetById(Integer.parseInt(id));
 			
@@ -369,13 +367,13 @@ public class CarboHydrateDetail extends Activity {
 	    .setTitle("Eliminar leitura?")
 	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se n�o est� associada a nenhuma entrada da DB
+	             //Falta verificar se não está associada a nenhuma entrada da DB
 	        	 DB_Write wdb = new DB_Write(c);
 	        	 try {
 	        		 wdb.Carbs_Delete(id);
 	        		 goUp();
 	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "N�o pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
+	        		 Toast.makeText(c, "Não pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
 	     		 }
 	             wdb.close();
 	             

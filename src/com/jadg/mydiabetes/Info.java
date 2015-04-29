@@ -9,11 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
+
+
 
 public class Info extends Activity {
 

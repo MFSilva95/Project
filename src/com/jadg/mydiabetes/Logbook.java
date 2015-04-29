@@ -6,8 +6,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import com.jadg.mydiabetes.database.DB_Read;
-import com.jadg.mydiabetes.database.InsulinRegAdapter;
-import com.jadg.mydiabetes.database.InsulinRegDataBinding;
 import com.jadg.mydiabetes.database.LogbookAdapter;
 import com.jadg.mydiabetes.database.LogbookDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;

@@ -16,11 +16,11 @@ import android.os.Bundle;
 import android.text.format.DateFormat;
 import android.util.Log;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
+
+
 
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {

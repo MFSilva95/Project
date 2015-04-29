@@ -17,11 +17,11 @@ import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.database.InsulinDataBinding;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
+
+
 
 public class InsulinsDetail extends Activity {
 
@@ -149,14 +149,14 @@ public class InsulinsDetail extends Activity {
 	    .setTitle("Eliminar Insulina?")
 	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se não está associada a nenhuma entrada da DB
-	        	 //Rever porque não elimina o registo de glicemia
+	             //Falta verificar se nï¿½o estï¿½ associada a nenhuma entrada da DB
+	        	 //Rever porque nï¿½o elimina o registo de glicemia
 	        	 DB_Write wdb = new DB_Write(c);
 	        	 try {
 	        		 wdb.Insulin_Remove(idInsulin);
 	        		 goUp();
 	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "Não pode eliminar esta insulina, associado a outros registos!", Toast.LENGTH_LONG).show();
+	        		 Toast.makeText(c, "Nï¿½o pode eliminar esta insulina, associado a outros registos!", Toast.LENGTH_LONG).show();
 	     		 }
 	             wdb.close();
 	             

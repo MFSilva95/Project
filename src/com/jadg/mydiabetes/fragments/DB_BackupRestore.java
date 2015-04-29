@@ -9,8 +9,8 @@ import android.app.Fragment;
 import android.widget.Button;
 import android.widget.TextView;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
+
+
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
@@ -25,8 +25,8 @@ import com.jadg.mydiabetes.R;
  * method to create an instance of this fragment.
  * 
  */
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
 public class DB_BackupRestore extends Fragment {
 
 	@Override

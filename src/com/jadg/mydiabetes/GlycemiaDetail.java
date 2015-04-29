@@ -37,11 +37,11 @@ import com.jadg.mydiabetes.dialogs.TimePickerFragment;
 
 
 
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
+
+
 
 public class GlycemiaDetail extends Activity {
 

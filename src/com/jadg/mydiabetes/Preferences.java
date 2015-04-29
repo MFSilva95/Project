@@ -19,8 +19,8 @@ import com.jadg.mydiabetes.fragments.Tags;
 import com.jadg.mydiabetes.fragments.TargetBG;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
+
+
 
 public class Preferences extends Activity {
 

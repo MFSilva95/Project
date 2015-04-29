@@ -23,8 +23,8 @@ import com.jadg.mydiabetes.database.DiseaseAdapter;
 import com.jadg.mydiabetes.database.DiseaseDataBinding;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
+
+
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
@@ -35,8 +35,8 @@ import android.os.Build;
  * 
  */
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
 public class Diseases extends Fragment {
 	
 	ListView diseaseList;

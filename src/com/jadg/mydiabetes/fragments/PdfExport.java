@@ -15,11 +15,11 @@ import android.view.ViewGroup;
 
 import com.jadg.mydiabetes.R;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
+
+
 public class PdfExport extends Fragment {
 
 	@Override

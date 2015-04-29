@@ -28,8 +28,8 @@ import com.jadg.mydiabetes.database.TagAdapter;
 import com.jadg.mydiabetes.database.TagDataBinding;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
+
+
 
 
 /**
@@ -40,8 +40,8 @@ import android.os.Build;
  * of this fragment.
  * 
  */
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
 public class Tags extends Fragment {
 
 	ListView tagList;

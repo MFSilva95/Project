@@ -23,11 +23,11 @@ import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.database.ExerciseAdapter;
 import com.jadg.mydiabetes.database.ExerciseDataBinding;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
+
+
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
  * contain this fragment must implement the

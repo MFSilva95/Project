@@ -29,8 +29,8 @@ import com.jadg.mydiabetes.database.InsulinAdapter;
 import com.jadg.mydiabetes.database.InsulinDataBinding;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
+
+
 
 
 /**
@@ -41,8 +41,8 @@ import android.os.Build;
  * create an instance of this fragment.
  * 
  */
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
 public class Insulins extends Fragment {
 	
 	ListView insulinList;

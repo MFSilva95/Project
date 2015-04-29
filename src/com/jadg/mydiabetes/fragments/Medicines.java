@@ -25,8 +25,8 @@ import com.jadg.mydiabetes.database.MedicineAdapter;
 import com.jadg.mydiabetes.database.MedicineDataBinding;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
+
+
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
  * contain this fragment must implement the
@@ -38,8 +38,8 @@ import android.os.Build;
 
 
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
 
 public class Medicines extends Fragment {
 

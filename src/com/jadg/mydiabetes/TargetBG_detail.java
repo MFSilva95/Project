@@ -22,11 +22,11 @@ import com.jadg.mydiabetes.database.TargetDataBinding;
 import com.jadg.mydiabetes.dialogs.TimePickerFragment;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
+
+
 
 public class TargetBG_detail extends Activity {
 
@@ -180,14 +180,14 @@ public class TargetBG_detail extends Activity {
 	    .setTitle("Eliminar Objetivo de Glicemia?")
 	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se não está associada a nenhuma entrada da DB
-	        	 //Rever porque não elimina o registo de glicemia
+	             //Falta verificar se nï¿½o estï¿½ associada a nenhuma entrada da DB
+	        	 //Rever porque nï¿½o elimina o registo de glicemia
 	        	 DB_Write wdb = new DB_Write(c);
 	        	 try {
 	        		 wdb.Target_Remove(idTarget);
 	        		 goUp();
 	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "Não pode eliminar este objetivo, associado a outros registos!", Toast.LENGTH_LONG).show();
+	        		 Toast.makeText(c, "Nï¿½o pode eliminar este objetivo, associado a outros registos!", Toast.LENGTH_LONG).show();
 	     		 }
 	             wdb.close();
 	             

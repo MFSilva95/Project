@@ -17,11 +17,11 @@ import com.jadg.mydiabetes.R;
  *
  */
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
+
+
 
 
 

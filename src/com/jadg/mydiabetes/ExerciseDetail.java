@@ -37,11 +37,11 @@ import com.jadg.mydiabetes.database.NoteDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 import com.jadg.mydiabetes.dialogs.TimePickerFragment;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
+
+
 
 public class ExerciseDetail extends Activity {
 

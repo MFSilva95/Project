@@ -21,11 +21,11 @@ import com.jadg.mydiabetes.database.TagDataBinding;
 import com.jadg.mydiabetes.dialogs.TimePickerFragment;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
+
+
 
 public class TagDetail extends Activity {
 
@@ -172,14 +172,14 @@ public class TagDetail extends Activity {
 	    .setTitle("Eliminar Fase do dia?")
 	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se não está associada a nenhuma entrada da DB
-	        	 //Rever porque não elimina o registo de glicemia
+	             //Falta verificar se nï¿½o estï¿½ associada a nenhuma entrada da DB
+	        	 //Rever porque nï¿½o elimina o registo de glicemia
 	        	 DB_Write wdb = new DB_Write(c);
 	        	 try {
 	        		 wdb.Tag_Remove(idTag);
 	        		 goUp();
 	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "Não pode eliminar esta leitura, associada a outros registos!", Toast.LENGTH_LONG).show();
+	        		 Toast.makeText(c, "Nï¿½o pode eliminar esta leitura, associada a outros registos!", Toast.LENGTH_LONG).show();
 	     		 }
 	             wdb.close();
 	             

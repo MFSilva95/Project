@@ -32,11 +32,11 @@ import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 
 
 
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
+
+
 
 public class DiseaseDetail extends Activity {
 

@@ -81,7 +81,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:gravity="center_horizontal"
-	        android:text="Glicémia"
+	        android:text="Glicemia"
 	        android:textSize="12sp" />
         <TextView
 	        android:id="@+id/tv_list_insulinreg_glycemia_value"

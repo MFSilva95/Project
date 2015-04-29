@@ -25,11 +25,11 @@ import com.jadg.mydiabetes.database.TargetDataBinding;
 
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
+
+
 
 public class TargetBG extends Fragment {
 

@@ -25,11 +25,11 @@ import com.jadg.mydiabetes.database.WeightAdapter;
 import com.jadg.mydiabetes.database.WeightDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
+
+
 
 public class Weight extends Activity {
 
