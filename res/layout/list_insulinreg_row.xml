@@ -32,7 +32,9 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:gravity="left"
-	        android:textSize="12sp" />
+	        android:textSize="12sp"
+	        android:lines="1"
+	        android:ellipsize="end" />
 	</LinearLayout>
 	
 	<LinearLayout
@@ -48,7 +50,9 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:gravity="center_horizontal"
-	        android:textSize="12sp" />
+	        android:textSize="12sp"
+	        android:lines="1"
+	        android:ellipsize="end" />
         <TextView
 	        android:id="@+id/tv_list_insulinreg_insulin_value"
 	        android:layout_width="fill_parent"

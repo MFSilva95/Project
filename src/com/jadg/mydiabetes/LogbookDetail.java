@@ -591,7 +591,7 @@ public class LogbookDetail extends Activity {
 			int hour = c.get(Calendar.HOUR_OF_DAY);
 			int minute = c.get(Calendar.MINUTE);
 			int sec = c.get(Calendar.SECOND);
-			now = year + "-" + (month+1) + "-" + day + " " + hour + "." + minute + "." + sec;
+			now = year + "" + (month+1) + "" + day + "" + hour + "" + minute + "" + sec;
 			File file = new File(dir, now + ".jpg");
 			
 			outputFileUri = Uri.fromFile(file);
