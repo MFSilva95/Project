@@ -49,17 +49,14 @@ import android.widget.ImageView;
 import android.widget.SpinnerAdapter;
 
 
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
 
 public class Meal extends Activity {
 
 	private static int TAKE_PICTURE = 1;
 	private Uri outputFileUri;
 	private String now;
+	ArrayList<String> allInsulins;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -268,12 +265,12 @@ public class Meal extends Activity {
 	public void ShowDialogAddInsulin(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Informação")
-	    .setMessage("Antes de Adicionar registos de insulina deve adicionar a insulina a administrar!")
+	    .setTitle("InformaÃ§Ã£o")
+	    .setMessage("Antes de adicionar registos de insulina deve adicionar a insulina a administrar!")
 	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se não está associada a nenhuma entrada da DB
-	        	 //Rever porque não elimina o registo de glicemia
+	             //Falta verificar se nï¿½o estï¿½ associada a nenhuma entrada da DB
+	        	 //Rever porque nï¿½o elimina o registo de glicemia
 	        	 Intent intent = new Intent(c, Preferences.class);
 	        	 intent.putExtra("tabPosition", 4);
 	        	 startActivity(intent);
@@ -299,7 +296,7 @@ public class Meal extends Activity {
 	
 	public void FillInsulinSpinner(){
 		Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
-		ArrayList<String> allInsulins = new ArrayList<String>();
+		allInsulins = new ArrayList<String>();
 		DB_Read rdb = new DB_Read(this);
 		HashMap<Integer, String> val = rdb.Insulin_GetAllNames();
 		rdb.close();
@@ -423,7 +420,7 @@ public class Meal extends Activity {
 			int hour = c.get(Calendar.HOUR_OF_DAY);
 			int minute = c.get(Calendar.MINUTE);
 			int sec = c.get(Calendar.SECOND);
-			now = year + "-" + (month+1) + "-" + day + " " + hour + "." + minute + "." + sec;
+			now = year + "" + (month+1) + "" + day + "" + hour + "" + minute + "" + sec;
 			File file = new File(dir, now + ".jpg");
 			
 			outputFileUri = Uri.fromFile(file);
@@ -444,8 +441,13 @@ public class Meal extends Activity {
 			img.setImageURI(outputFileUri);
 			deleteLastCapturedImage();
 		}if (requestCode == 101010){
-			photopath.setText("");
-			img.setImageDrawable(getResources().getDrawable(R.drawable.newphoto));
+			Log.d("Result:", resultCode+"");
+			//se tivermos apagado a foto dÃ¡ result code -1
+			//se voltarmos por um return por exemplo o resultcode Ã© 0
+			if(resultCode==-1){
+				photopath.setText("");
+				img.setImageDrawable(getResources().getDrawable(R.drawable.newphoto));
+			}
 			
 		}
 	}
@@ -581,6 +583,11 @@ public class Meal extends Activity {
 			insulinunits.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(insulinunits, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		//spinner das insulinas tem de ter valores
+		if(allInsulins.isEmpty()){
+			ShowDialogAddInsulin();
 			return;
 		}
 		

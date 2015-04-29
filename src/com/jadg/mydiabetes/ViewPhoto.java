@@ -20,12 +20,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.jadg.mydiabetes.database.DB_Write;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
+
 
 public class ViewPhoto extends Activity {
 
@@ -97,16 +94,17 @@ public class ViewPhoto extends Activity {
 	        		 if (deleted) {
 	        			 Log.d("apagado", file.getAbsolutePath());
 	        		 }else {
-	        			 Log.d("não apagado", file.getAbsolutePath());
+	        			 Log.d("nÃ£o apagado", file.getAbsolutePath());
 	        		 }
+	        		 setResult(RESULT_OK);
 	        		 finish();
 	        		 
 	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "Não pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
+	        		 Toast.makeText(c, "NÃ£o pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
 	     		 }
 	         }
 	    })
-	    .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+	    .setNegativeButton("NÃ£o", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	                // Do nothing.
 	         }
@@ -119,13 +117,13 @@ public class ViewPhoto extends Activity {
 	    .setTitle("Eliminar leitura?")
 	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se não está associada a nenhuma entrada da DB
+	             //Falta verificar se nï¿½o estï¿½ associada a nenhuma entrada da DB
 	        	 DB_Write wdb = new DB_Write(c);
 	        	 try {
 	        		 wdb.Carbs_Delete(id);
 	        		 goUp();
 	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "Não pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
+	        		 Toast.makeText(c, "NÃ£o pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
 	     		 }
 	             wdb.close();
 	             

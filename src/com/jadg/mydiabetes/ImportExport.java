@@ -18,7 +18,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,11 +27,11 @@ import android.os.Environment;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.View;
-
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.view.Menu;
 import android.view.MenuItem;
+
 import com.jadg.mydiabetes.database.BloodPressureDataBinding;
 import com.jadg.mydiabetes.database.CarbsDataBinding;
 import com.jadg.mydiabetes.database.CholesterolDataBinding;
@@ -57,11 +56,8 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.draw.LineSeparator;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
+
 
 public class ImportExport extends Activity {
 
@@ -75,19 +71,19 @@ public class ImportExport extends Activity {
 		ActionBar.Tab tab = getActionBar().newTab();
 		Fragment impexpFragment = new PdfExport();
 		tab.setTabListener(new MyTabsListener(impexpFragment));
-		tab.setText("Relatório");
+		tab.setText("RelatÃ³rio");
 		getActionBar().addTab(tab);
 
 		tab = getActionBar().newTab();
 		Fragment bacuprestoreFragment = new DB_BackupRestore();
 		tab.setTabListener(new MyTabsListener(bacuprestoreFragment));
-		tab.setText("Cópia de Segurança");
+		tab.setText("CÃ³pia de SeguranÃ§a");
 		getActionBar().addTab(tab);
 
 		tab = getActionBar().newTab();
 		Fragment syncFragment = new Sync();
 		tab.setTabListener(new MyTabsListener(syncFragment));
-		tab.setText("Sincronização");
+		tab.setText("SincronizaÃ§Ã£o");
 		getActionBar().addTab(tab);
 
 	}
@@ -808,6 +804,7 @@ public class ImportExport extends Activity {
 		startActivity(intent);
 	}
 
+	@SuppressWarnings("deprecation")
 	class MyTabsListener implements ActionBar.TabListener {
 		public Fragment fragment;
 

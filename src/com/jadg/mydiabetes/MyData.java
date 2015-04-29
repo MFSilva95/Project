@@ -18,15 +18,11 @@ import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Build;
 
-@TargetApi(Build.VERSION_CODES.GINGERBREAD)
-@SuppressLint("NewApi")
 
 
 public class MyData extends Activity {
@@ -89,10 +85,13 @@ public class MyData extends Activity {
 					//mandar para a actividade das insulinas
 					DB_Read read = new DB_Read(this);
 					if(!read.Insulin_HasInsulins()){
+						read.close();
 						ShowDialogAddInsulin();
+					}else{
+						NavUtils.navigateUpFromSameTask(this);
 					}
-					read.close();
-					NavUtils.navigateUpFromSameTask(this);
+					
+					
 					return true;
 				}else{
 					//toast message
@@ -115,7 +114,7 @@ public class MyData extends Activity {
 	
 	//added ze ornelas
 	//corrige erro ao gravar
-	// os spinners não são verificados porque incialmente têm sempre valor
+	// os spinners nï¿½o sï¿½o verificados porque incialmente tï¿½m sempre valor
 	public Boolean inputIsValid(){
 		Object[] obj = new Object[7];
 		obj[0] = (EditText)findViewById(R.id.et_MyData_Name);
@@ -205,12 +204,12 @@ public class MyData extends Activity {
 	public void ShowDialogAddInsulin(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Informação")
+	    .setTitle("InformaÃ§Ã£o")
 	    .setMessage("Para finalizar deve adicionar a insulina a administrar!")
 	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se não está associada a nenhuma entrada da DB
-	        	 //Rever porque não elimina o registo de glicemia
+	             //Falta verificar se nï¿½o estï¿½ associada a nenhuma entrada da DB
+	        	 //Rever porque nï¿½o elimina o registo de glicemia
 	        	 Intent intent = new Intent(c, Preferences.class);
 	        	 intent.putExtra("tabPosition", 4);
 	        	 startActivity(intent);

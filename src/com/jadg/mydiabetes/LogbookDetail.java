@@ -55,6 +55,7 @@ public class LogbookDetail extends Activity {
 	private static int TAKE_PICTURE = 1;
 	private Uri outputFileUri;
 	private String now;
+	ArrayList<String> allInsulins;
 	
 	private int id_ch = -1;
 	private int id_ins = -1;
@@ -435,12 +436,12 @@ public class LogbookDetail extends Activity {
 	public void ShowDialogAddInsulin(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Informação")
+	    .setTitle("Informaï¿½ï¿½o")
 	    .setMessage("Antes de Adicionar registos de insulina deve adicionar a insulina a administrar!")
 	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se não está associada a nenhuma entrada da DB
-	        	 //Rever porque não elimina o registo de glicemia
+	             //Falta verificar se nï¿½o estï¿½ associada a nenhuma entrada da DB
+	        	 //Rever porque nï¿½o elimina o registo de glicemia
 	        	 Intent intent = new Intent(c, Preferences.class);
 	        	 intent.putExtra("tabPosition", 4);
 	        	 startActivity(intent);
@@ -466,7 +467,7 @@ public class LogbookDetail extends Activity {
 	
 	public void FillInsulinSpinner(){
 		Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
-		ArrayList<String> allInsulins = new ArrayList<String>();
+		allInsulins = new ArrayList<String>();
 		DB_Read rdb = new DB_Read(this);
 		HashMap<Integer, String> val = rdb.Insulin_GetAllNames();
 		rdb.close();
@@ -611,15 +612,9 @@ public class LogbookDetail extends Activity {
 			deleteLastCapturedImage();
 		}
 		if (requestCode == 101010){
-			if(id_ch!=-1){
-				DB_Read rdb = new DB_Read(this);
-				CarbsDataBinding toFill = rdb.CarboHydrate_GetById(id_ch);
-				if (toFill.getPhotoPath().equals("")){
-					photopath.setText(toFill.getPhotoPath());
-					img.setImageDrawable(getResources().getDrawable(R.drawable.newphoto));
-				}
-				rdb.close();
-			}else{
+			//se tivermos apagado a foto dÃ¡ result code -1
+			//se voltarmos por um return por exemplo o resultcode Ã© 0
+			if(resultCode==-1){
 				photopath.setText("");
 				img.setImageDrawable(getResources().getDrawable(R.drawable.newphoto));
 			}
@@ -759,6 +754,11 @@ public class LogbookDetail extends Activity {
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(insulinunits, InputMethodManager.SHOW_IMPLICIT);
 			return;
+		}
+		//spinner das insulinas tem de ter valores
+		if(allInsulins.isEmpty()){
+					ShowDialogAddInsulin();
+					return;
 		}
 		
 		//AddGlycemiaRead();

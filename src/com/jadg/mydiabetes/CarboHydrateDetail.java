@@ -314,19 +314,12 @@ public class CarboHydrateDetail extends Activity {
 			deleteLastCapturedImage();
 		}
 		if (requestCode == 101010){
-			if(id_ch!=-1){
-				DB_Read rdb = new DB_Read(this);
-				CarbsDataBinding toFill = rdb.CarboHydrate_GetById(Integer.parseInt(_id));
-				if (toFill.getPhotoPath().equals("")){
-					photopath.setText(toFill.getPhotoPath());
-					img.setImageDrawable(getResources().getDrawable(R.drawable.newphoto));
-				}
-				rdb.close();
-			}else{
+			//se tivermos apagado a foto dá result code -1
+			//se voltarmos por um return por exemplo o resultcode é 0
+			if(resultCode==-1){
 				photopath.setText("");
 				img.setImageDrawable(getResources().getDrawable(R.drawable.newphoto));
 			}
-			
 		}
 		
  
