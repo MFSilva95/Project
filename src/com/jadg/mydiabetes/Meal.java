@@ -266,7 +266,7 @@ public class Meal extends Activity {
 		final Context c = this;
 		new AlertDialog.Builder(this)
 	    .setTitle("Informação")
-	    .setMessage("Antes de adicionar registos de insulina deve adicionar a insulina a administrar!")
+	    .setMessage("Antes de adicionar uma refeição deve adicionar a insulina a administrar!")
 	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	             //Falta verificar se n�o est� associada a nenhuma entrada da DB

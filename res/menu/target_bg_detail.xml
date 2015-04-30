@@ -3,7 +3,7 @@
     <item
         android:id="@+id/menuItem_TargetBGDetail_Save"
         android:title="@string/save_GlycemiaDetail"
-        android:icon="@drawable/abs__ic_cab_done_holo_dark"
+        android:icon="@drawable/ic_action_save"
         android:orderInCategory="100"
         android:showAsAction="always"
         android:enabled="true" 

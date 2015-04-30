@@ -3,7 +3,7 @@
     <item
         android:id="@+id/menuItem_WeightDetail_Delete"
         android:title="Eliminar"
-        android:icon="@drawable/delete"
+        android:icon="@drawable/ic_action_discard"
         android:orderInCategory="100"
         android:showAsAction="always"
         android:enabled="true" 
@@ -12,7 +12,7 @@
     <item
         android:id="@+id/menuItem_WeightDetail_EditSave"
         android:title="@string/save_GlycemiaDetail"
-        android:icon="@drawable/update"
+        android:icon="@drawable/ic_action_save"
         android:orderInCategory="100"
         android:showAsAction="always"
         android:enabled="true" 
