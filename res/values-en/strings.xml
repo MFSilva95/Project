@@ -15,5 +15,6 @@
     <string name="title_activity_ex_bpcho_dis_wei">My Diabetes</string>
     <string name="title_activity_gly_ins_carbs">My Diabetes</string>
     <string name="title_activity_view_photo">Photograph</string>
+    <string name="photoSaved">Stored in: </string>
 
 </resources>

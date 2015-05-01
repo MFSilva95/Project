@@ -436,7 +436,7 @@ public class Meal extends Activity {
 		ImageView img = (ImageView)findViewById(R.id.iv_MealDetail_Photo);
 
 		if (requestCode == TAKE_PICTURE && resultCode!= Activity.RESULT_CANCELED){
-			Toast.makeText(getApplicationContext(), outputFileUri.toString(), Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), getString(R.string.photoSaved) +" " + outputFileUri.toString().substring(7), Toast.LENGTH_LONG).show();
 			photopath.setText("/MyDiabetes/" + now + ".jpg");
 			img.setImageURI(outputFileUri);
 			deleteLastCapturedImage();

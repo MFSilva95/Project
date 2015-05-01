@@ -98,4 +98,5 @@
     <string name="Carbs">H.Carb</string>
     <string name="Exercise">Exercício</string>
 	<string name="Logbook">Logbook</string>
+	<string name="photoSaved">Guardada em: </string>
 </resources>
