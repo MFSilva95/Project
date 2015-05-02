@@ -9,17 +9,16 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.View;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
+import android.view.inputmethod.InputMethodManager;
 
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
@@ -94,14 +93,12 @@ public class WeightDetail extends Activity {
 				return true;
 			case R.id.menuItem_WeightDetail_Save:
 				AddWeightRead();
-				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_WeightDetail_Delete:
 				DeleteWeightRead();
 				return true;
 			case R.id.menuItem_WeightDetail_EditSave:
 				UpdateWeightRead();
-				NavUtils.navigateUpFromSameTask(this);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -147,6 +144,12 @@ public class WeightDetail extends Activity {
 		EditText hora = (EditText)findViewById(R.id.et_WeightDetail_Hora);
 		EditText note = (EditText)findViewById(R.id.et_WeightDetail_Notes);
 		
+		if(value.getText().toString().equals("")){
+			value.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(value, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
 		
 		DB_Write wdb = new DB_Write(this);
 		
@@ -174,7 +177,7 @@ public class WeightDetail extends Activity {
 		wdb.close();
 		rdb.close();
 		
-		
+		goUp();
 	}
 
 	public void UpdateWeightRead(){
@@ -183,6 +186,12 @@ public class WeightDetail extends Activity {
 		EditText hora = (EditText)findViewById(R.id.et_WeightDetail_Hora);
 		EditText note = (EditText)findViewById(R.id.et_WeightDetail_Notes);
 		
+		if(value.getText().toString().equals("")){
+			value.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(value, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
 		
 		DB_Write wdb = new DB_Write(this);
 		
@@ -215,6 +224,7 @@ public class WeightDetail extends Activity {
 		
 		wdb.close();
 		rdb.close();
+		goUp();
 	}
 	
 	public void DeleteWeightRead(){

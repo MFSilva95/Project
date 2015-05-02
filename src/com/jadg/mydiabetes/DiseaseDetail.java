@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
+import android.view.inputmethod.InputMethodManager;
 
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
@@ -104,14 +105,12 @@ public class DiseaseDetail extends Activity {
 				return true;
 			case R.id.menuItem_DiseaseRegDetail_Save:
 				AddDiseaseRead();
-				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_DiseaseRegDetail_Delete:
 				DeleteDiseaseRead();
 				return true;
 			case R.id.menuItem_DiseaseRegDetail_EditSave:
 				UpdateDiseaseRead();
-				NavUtils.navigateUpFromSameTask(this);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -165,6 +164,13 @@ public class DiseaseDetail extends Activity {
 		EditText dataTo = (EditText)findViewById(R.id.et_DiseaseRegDetail_DataTo);
 		EditText note = (EditText)findViewById(R.id.et_DiseaseRegDetail_Notes);
 		
+		if(diseaseSpinner.getText().toString().equals("")){
+			diseaseSpinner.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(diseaseSpinner, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
@@ -195,6 +201,8 @@ public class DiseaseDetail extends Activity {
 		reg.DiseaseReg_Save(dis);
 		reg.close();
 		rdb.close();
+		
+		goUp();
 	}
 	
 	public void DeleteDiseaseRead(){
@@ -231,6 +239,13 @@ public class DiseaseDetail extends Activity {
 		EditText dataFrom = (EditText)findViewById(R.id.et_DiseaseRegDetail_DataFrom);
 		EditText dataTo = (EditText)findViewById(R.id.et_DiseaseRegDetail_DataTo);
 		EditText note = (EditText)findViewById(R.id.et_DiseaseRegDetail_Notes);
+		
+		if(diseaseSpinner.getText().toString().equals("")){
+			diseaseSpinner.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(diseaseSpinner, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
 		
 		
 		DB_Write wdb = new DB_Write(this);
@@ -272,5 +287,7 @@ public class DiseaseDetail extends Activity {
 		
 		wdb.close();
 		rdb.close();
+		
+		goUp();
 	}
 }

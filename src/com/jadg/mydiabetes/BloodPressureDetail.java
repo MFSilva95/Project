@@ -11,7 +11,6 @@ import android.app.DialogFragment;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,10 +22,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.SpinnerAdapter;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
+import android.view.inputmethod.InputMethodManager;
+
 import com.jadg.mydiabetes.database.BloodPressureDataBinding;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
@@ -124,14 +124,12 @@ public class BloodPressureDetail extends Activity {
 				return true;
 			case R.id.menuItem_BloodPressureDetail_Save:
 				AddBloodPressureRead();
-				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_BloodPressureDetail_Delete:
 				DeleteBloodPressureRead();
 				return true;
 			case R.id.menuItem_BloodPressureDetail_EditSave:
 				UpdateBloodPressureRead();
-				NavUtils.navigateUpFromSameTask(this);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -217,6 +215,18 @@ public class BloodPressureDetail extends Activity {
 		EditText hora = (EditText)findViewById(R.id.et_BloodPressureDetail_Hora);
 		EditText note = (EditText)findViewById(R.id.et_BloodPressureDetail_Notes);
 		
+		if(systolic.getText().toString().equals("")){
+			systolic.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(systolic, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}if(diastolic.getText().toString().equals("")){
+			diastolic.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(diastolic, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		
 		
 		DB_Write wdb = new DB_Write(this);
 		
@@ -250,6 +260,7 @@ public class BloodPressureDetail extends Activity {
 		
 		wdb.close();
 		rdb.close();
+		goUp();
 		
 		
 	}
@@ -261,6 +272,18 @@ public class BloodPressureDetail extends Activity {
 		EditText data = (EditText)findViewById(R.id.et_BloodPressureDetail_Data);
 		EditText hora = (EditText)findViewById(R.id.et_BloodPressureDetail_Hora);
 		EditText note = (EditText)findViewById(R.id.et_BloodPressureDetail_Notes);
+		
+		if(systolic.getText().toString().equals("")){
+			systolic.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(systolic, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}if(diastolic.getText().toString().equals("")){
+			diastolic.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(diastolic, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
 		
 		DB_Write wdb = new DB_Write(this);
 		//Get id of user 
@@ -298,6 +321,7 @@ public class BloodPressureDetail extends Activity {
 		
 		wdb.close();
 		rdb.close();
+		goUp();
 	}
 
 	public void DeleteBloodPressureRead(){
@@ -313,7 +337,7 @@ public class BloodPressureDetail extends Activity {
 	        		 wdb.BloodPressure_Delete(idBP);
 	        		 goUp();
 	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "N�o pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
+	        		 Toast.makeText(c, "Não pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
 	     		 }
 	             wdb.close();
 	             

@@ -9,17 +9,17 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.View;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
+import android.view.inputmethod.InputMethodManager;
+
 import com.jadg.mydiabetes.database.CholesterolDataBinding;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
@@ -93,14 +93,12 @@ public class CholesterolDetail extends Activity {
 				return true;
 			case R.id.menuItem_CholesterolDetail_Save:
 				AddCholesterolRead();
-				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_CholesterolDetail_Delete:
 				DeleteCholesterolRead();
 				return true;
 			case R.id.menuItem_CholesterolDetail_EditSave:
 				UpdateCholesterolRead();
-				NavUtils.navigateUpFromSameTask(this);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -144,6 +142,13 @@ public class CholesterolDetail extends Activity {
 		EditText hora = (EditText)findViewById(R.id.et_CholesterolDetail_Hora);
 		EditText note = (EditText)findViewById(R.id.et_CholesterolDetail_Notes);
 		
+		if(value.getText().toString().equals("")){
+			value.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(value, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		
 		
 		DB_Write wdb = new DB_Write(this);
 		
@@ -171,7 +176,7 @@ public class CholesterolDetail extends Activity {
 		wdb.close();
 		rdb.close();
 		
-		
+		goUp();
 	}
 
 	public void UpdateCholesterolRead(){
@@ -179,6 +184,13 @@ public class CholesterolDetail extends Activity {
 		EditText data = (EditText)findViewById(R.id.et_CholesterolDetail_Data);
 		EditText hora = (EditText)findViewById(R.id.et_CholesterolDetail_Hora);
 		EditText note = (EditText)findViewById(R.id.et_CholesterolDetail_Notes);
+		
+		if(value.getText().toString().equals("")){
+			value.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(value, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
 		
 		
 		DB_Write wdb = new DB_Write(this);
@@ -212,6 +224,8 @@ public class CholesterolDetail extends Activity {
 		
 		wdb.close();
 		rdb.close();
+		
+		goUp();
 	}
 	
 	public void DeleteCholesterolRead(){
