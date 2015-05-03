@@ -568,4 +568,19 @@ public class DB_Write {
 		
 		Log.d("Update", "Tag");
 	}
+	
+	
+	//added zeornelas
+	//------------- Logbook --------------
+	public void Logbook_Delete(int ch_id, int ins_id, int bg_id, int note_id) {
+		if(ch_id!=-1){
+			Carbs_Delete(ch_id);
+		}if(ins_id!=-1){
+			Insulin_Delete(ins_id);
+		}if(bg_id!=-1 && ins_id==-1){
+			Glycemia_Delete(bg_id);
+		}if(note_id!=-1){
+			Note_Delete(note_id);
+		}
+	}
 }

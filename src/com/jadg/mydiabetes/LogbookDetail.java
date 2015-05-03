@@ -63,9 +63,9 @@ public class LogbookDetail extends Activity {
 	private CarbsDataBinding ch = null;
 	private InsulinRegDataBinding ins = null;
 	private GlycemiaDataBinding bg = null;
-	int tagId;
-	int insulinId;
-	int noteId;
+	int tagId = -1;
+	int insulinId = -1;
+	int noteId = -1;
 	
 	EditText data;
 	EditText hora;
@@ -206,7 +206,7 @@ public class LogbookDetail extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		MenuInflater inflater = getMenuInflater();
 		
-		inflater.inflate(R.menu.meal, menu);
+		inflater.inflate(R.menu.logbook_detail_edit, menu);
 		
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -217,11 +217,11 @@ public class LogbookDetail extends Activity {
 			case android.R.id.home:
 				NavUtils.navigateUpFromSameTask(this);
 				return true;
-			case R.id.menuItem_MealDetail_Save:
+			case R.id.menuItem_LogbookDetail_EditSave:
 				
-				//VerifySaveReads();
-				//Toast.makeText(this, "Clicado em gravar", Toast.LENGTH_LONG).show();
-				//NavUtils.navigateUpFromSameTask(this);
+				return true;
+			case R.id.menuItem_LogbookDetail_Delete:
+				DeleteRead();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -766,8 +766,37 @@ public class LogbookDetail extends Activity {
 		AddInsulinRead();
 		NavUtils.navigateUpFromSameTask(this);
 	}
-	/*
+	
 	//created by zeornelas
+	public void DeleteRead(){
+		final Context c = this;
+		new AlertDialog.Builder(this)
+	    .setTitle(getString(R.string.deleteReading))
+	    .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+	         public void onClick(DialogInterface dialog, int whichButton) {
+	        	 DB_Write wdb = new DB_Write(c);
+	        	 try {
+	        		 wdb.Logbook_Delete(id_ch, id_ins, id_bg, noteId);
+	        		 goUp();
+	        	 }catch (Exception e) {
+	        		 Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
+	     		 }
+	             wdb.close();
+	             
+	         }
+	    })
+	    .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
+	         public void onClick(DialogInterface dialog, int whichButton) {
+	                // Do nothing.
+	         }
+	    }).show();
+	}
+	
+	public void goUp(){
+		NavUtils.navigateUpFromSameTask(this);
+	}
+	
+	/*
 	public void saveButton(){
 		
 		//bg

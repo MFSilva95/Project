@@ -53,6 +53,12 @@
     <string name="title_activity_insulin_detail">Registo de Insulina</string>
     <string name="title_activity_exercise_detail">Registo de Exercicio</string>
     <string name="title_activity_logbook_detail">Registo no Logbook</string>
+    <string name="save_detail">Guardar</string>
+    <string name="delete_detail">Eliminar</string>
+    <string name="deleteReading">Eliminar leitura?</string>
+    <string name="positiveButton">Sim</string>
+    <string name="negativeButton">Cancelar</string>
+    <string name="deleteException">Não pode eliminar esta leitura!</string>
 
     <string-array name="Effort">
         <item>Muito Leve</item>

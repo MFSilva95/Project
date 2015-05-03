@@ -531,7 +531,7 @@ public class InsulinDetail extends Activity {
 	        		 wdb.Insulin_Delete(idIns);
 	        		 goUp();
 	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "N�o pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
+	        		 Toast.makeText(c, "Não pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
 	     		 }
 	             wdb.close();
 	             

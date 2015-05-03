@@ -1048,14 +1048,14 @@ public class DB_Read {
 			" AND ch.datetime >'"+ from + " 00:00:00' AND ch.datetime < '"+ to + " 23:59:59'" +
 			" AND ch.datetime = ins.datetime AND ch.Id_User=ins.Id_User AND ins.Id_BloodGlucose is not NULL" +
 			" Union" +
-			" SELECT ins.Id_BloodGlucose" +
+			" SELECT ins.Id" +
 			" from Reg_Insulin as ins" +
 			" where ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" +
 			" AND ins.Id_BloodGlucose is not NULL)" +
 			" ORDER BY datetime DESC",null);
 		
 		//Log.d("LOGBOOK", String.valueOf(cursor.getCount()));
-		
+		int a = cursor.getCount();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			
