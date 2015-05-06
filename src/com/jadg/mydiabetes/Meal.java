@@ -110,8 +110,12 @@ public class Meal extends Activity {
 					Double tar = Double.parseDouble(target.getText().toString());
 					Double car = Double.parseDouble(carbs.getText().toString());
 					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
+					result = 0.5 * Math.round(result/0.5);
+					if(result<0){
+						result = 0.0;
+					}
 					Log.d("resultado", result.toString());
-					insulinunits.setText(String.valueOf(0.5 * Math.round(result/0.5)));
+					insulinunits.setText(String.valueOf(result));
 				}
 			}
 			@Override
@@ -128,8 +132,12 @@ public class Meal extends Activity {
 					Double tar = Double.parseDouble(target.getText().toString());
 					Double car = Double.parseDouble(carbs.getText().toString());
 					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
+					result = 0.5 * Math.round(result/0.5);
+					if(result<0){
+						result = 0.0;
+					}
 					Log.d("resultado", result.toString());
-					insulinunits.setText(String.valueOf(0.5 * Math.round(result/0.5)));
+					insulinunits.setText(String.valueOf(result));
 				}
 			}
 			@Override
@@ -146,8 +154,12 @@ public class Meal extends Activity {
 					Double tar = Double.parseDouble(target.getText().toString());
 					Double car = Double.parseDouble(carbs.getText().toString());
 					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
+					result = 0.5 * Math.round(result/0.5);
+					if(result<0){
+						result = 0.0;
+					}
 					Log.d("resultado", result.toString());
-					insulinunits.setText(String.valueOf(0.5 * Math.round(result/0.5)));
+					insulinunits.setText(String.valueOf(result));
 				}
 			}
 			@Override

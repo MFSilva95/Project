@@ -44,6 +44,7 @@ public class InsulinDetail extends Activity {
 	int id_BG = 0;
 	int idNote = 0;
 	int idIns = 0;
+	ArrayList<String> allInsulins;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -134,8 +135,12 @@ public class InsulinDetail extends Activity {
 						Double gli = Double.parseDouble(glycemia.getText().toString());
 						Double tar = Double.parseDouble(target.getText().toString());
 						Double result = (gli-tar)/ iRatio;
+						result = 0.5 * Math.round(result/0.5);
+						if(result<0){
+							result = 0.0;
+						}
 						Log.d("resultado", result.toString());
-						insulinunits.setText(String.valueOf(0.5 * Math.round(result/0.5)));
+						insulinunits.setText(String.valueOf(result));
 					}
 				}
 				@Override
@@ -253,7 +258,7 @@ public class InsulinDetail extends Activity {
 	}
 	public void FillInsulinSpinner(){
 		Spinner spinner = (Spinner) findViewById(R.id.sp_InsulinDetail_Insulin);
-		ArrayList<String> allInsulins = new ArrayList<String>();
+		allInsulins = new ArrayList<String>();
 		DB_Read rdb = new DB_Read(this);
 		HashMap<Integer, String> val = rdb.Insulin_GetAllNames();
 		rdb.close();
@@ -305,7 +310,7 @@ public class InsulinDetail extends Activity {
 		final Context c = this;
 		new AlertDialog.Builder(this)
 	    .setTitle("Informa��o")
-	    .setMessage("Antes de Adicionar registos de insulina deve adicionar a insulina a administrar!")
+	    .setMessage("Antes de adicionar registos de insulina deve adicionar a insulina a administrar!")
 	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	             //Falta verificar se n�o est� associada a nenhuma entrada da DB
@@ -416,6 +421,10 @@ public class InsulinDetail extends Activity {
 			insulinunits.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(insulinunits, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		if(allInsulins.isEmpty()){
+			ShowDialogAddInsulin();
 			return;
 		}
 		

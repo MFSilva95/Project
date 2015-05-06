@@ -152,8 +152,8 @@ public class MyData extends Activity {
 			obj[0] = 0;
 		obj[1] = name.getText().toString();
 		obj[2] = dType.getSelectedItem().toString();
-		obj[3] = Integer.parseInt(iRatio.getText().toString());
-		obj[4] = Integer.parseInt(cRatio.getText().toString());
+		obj[3] = Double.parseDouble(iRatio.getText().toString());
+		obj[4] = Double.parseDouble(cRatio.getText().toString());
 		obj[5] = Double.parseDouble(lRange.getText().toString());
 		obj[6] = Double.parseDouble(hRange.getText().toString());
 		obj[7] = bDate.getText().toString();

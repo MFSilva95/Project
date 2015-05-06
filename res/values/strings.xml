@@ -59,7 +59,13 @@
     <string name="positiveButton">Sim</string>
     <string name="negativeButton">Cancelar</string>
     <string name="deleteException">Não pode eliminar esta leitura!</string>
-
+    <string name="deleteAlert">Alerta!</string>
+    <string name="deleteConfirmationSingular">O item seguinte será apagado:</string>
+	<string name="deleteConfirmationPlural">Os itens seguintes serão apagados:</string>
+	<string name="deleteCarbsReg">Registo de Hidratos de Carbonos</string>
+	<string name="deleteGlycemiaReg">Registo de Glicemia</string>
+	<string name="deleteInsulinReg">Registo de Insulina</string>
+	
     <string-array name="Effort">
         <item>Muito Leve</item>
         <item>Leve</item>

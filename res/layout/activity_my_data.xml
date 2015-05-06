@@ -81,7 +81,7 @@
 		        android:layout_height="match_parent"
 		        android:textSize="18sp"
 		        android:hint="ex.: 45"
-		        android:inputType="number" >
+		        android:inputType="numberDecimal" >
 		    </EditText>
         </LinearLayout>
         
@@ -105,7 +105,7 @@
 		        android:layout_height="match_parent"
 		        android:textSize="18sp"
 		        android:hint="ex.: 10"
-		        android:inputType="number" >
+		        android:inputType="numberDecimal" >
 		    </EditText>
         </LinearLayout>
         
@@ -129,7 +129,7 @@
 		        android:layout_height="match_parent"
 		        android:textSize="18sp"
 		        android:hint="ex.: 70"
-		        android:inputType="number" >
+		        android:inputType="numberDecimal" >
 		    </EditText>
         </LinearLayout>
         
@@ -153,7 +153,7 @@
 		        android:layout_height="match_parent"
 		        android:textSize="18sp"
 		        android:hint="ex.: 150"
-		        android:inputType="number" >
+		        android:inputType="numberDecimal" >
 		    </EditText>
         </LinearLayout>
         

@@ -66,17 +66,21 @@ public class LogbookDetail extends Activity {
 	int tagId = -1;
 	int insulinId = -1;
 	int noteId = -1;
+	int userId;
 	
 	EditText data;
 	EditText hora;
 	Spinner TagSpinner;
 	EditText glycemia;
 	ImageView img;
+	EditText photopath;
 	EditText carbs;
 	Spinner InsulinSpinner;
 	EditText target;
 	EditText insulin;
 	EditText note;
+
+	
 	
 	
 	
@@ -108,11 +112,13 @@ public class LogbookDetail extends Activity {
 		
 		
 		DB_Read rdb = new DB_Read(this);
+		
+		/*
+		
 		Object[] obj = rdb.MyData_Read();
+		rdb.close(); 
 		final double iRatio = Double.valueOf(obj[3].toString());
 		final double cRatio = Double.valueOf(obj[4].toString());
-		rdb.close();
-		
 		final EditText insulinunits = (EditText)findViewById(R.id.et_MealDetail_InsulinUnits);
 		final EditText target = (EditText)findViewById(R.id.et_MealDetail_TargetGlycemia);
 		final EditText glycemia = (EditText)findViewById(R.id.et_MealDetail_Glycemia);
@@ -127,8 +133,12 @@ public class LogbookDetail extends Activity {
 					Double tar = Double.parseDouble(target.getText().toString());
 					Double car = Double.parseDouble(carbs.getText().toString());
 					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
+					result = 0.5 * Math.round(result/0.5);
+					if(result<0){
+						result = 0.0;
+					}
 					Log.d("resultado", result.toString());
-					insulinunits.setText(String.valueOf(0.5 * Math.round(result/0.5)));
+					insulinunits.setText(String.valueOf(result));
 				}
 			}
 			@Override
@@ -145,8 +155,12 @@ public class LogbookDetail extends Activity {
 					Double tar = Double.parseDouble(target.getText().toString());
 					Double car = Double.parseDouble(carbs.getText().toString());
 					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
+					result = 0.5 * Math.round(result/0.5);
+					if(result<0){
+						result = 0.0;
+					}
 					Log.d("resultado", result.toString());
-					insulinunits.setText(String.valueOf(0.5 * Math.round(result/0.5)));
+					insulinunits.setText(String.valueOf(result));
 				}
 			}
 			@Override
@@ -163,8 +177,12 @@ public class LogbookDetail extends Activity {
 					Double tar = Double.parseDouble(target.getText().toString());
 					Double car = Double.parseDouble(carbs.getText().toString());
 					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
+					result = 0.5 * Math.round(result/0.5);
+					if(result<0){
+						result = 0.0;
+					}
 					Log.d("resultado", result.toString());
-					insulinunits.setText(String.valueOf(0.5 * Math.round(result/0.5)));
+					insulinunits.setText(String.valueOf(result));
 				}
 			}
 			@Override
@@ -172,6 +190,7 @@ public class LogbookDetail extends Activity {
 			@Override
 			public void afterTextChanged(Editable s) { }
 		});
+		*/
 		
 		
 		
@@ -218,7 +237,7 @@ public class LogbookDetail extends Activity {
 				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_LogbookDetail_EditSave:
-				
+				SaveRead();
 				return true;
 			case R.id.menuItem_LogbookDetail_Delete:
 				DeleteRead();
@@ -258,19 +277,13 @@ public class LogbookDetail extends Activity {
 		
 		
 		if(ch!=null && ins!=null && bg!=null){
+			userId = ins.getIdUser();
 			data.setText(ins.getDate());
 			hora.setText(ins.getTime());;
 			tagId = ins.getIdTag();
 			String aux = rdb.Tag_GetById(tagId).getName();
 			SelectSpinnerItemByValue(TagSpinner, aux);
 			glycemia.setText(bg.getValue().toString());
-			
-			/*
-			if(!ch.getPhotoPath().isEmpty()){
-				file = new File(Environment.getExternalStorageDirectory() + ch.getPhotoPath());
-				img.setImageURI(Uri.fromFile(file));
-			}
-			*/
 			carbs.setText(ch.getCarbsValue().toString());
 			insulinId = ins.getIdInsulin();
 			String aux1 = rdb.Insulin_GetById(insulinId).getName();
@@ -282,20 +295,13 @@ public class LogbookDetail extends Activity {
 				note.setText(rdb.Note_GetById(noteId).getNote());
 			}
 		}else if(ch!=null && ins== null && bg==null){//so hidratos carbono
-        	data.setText(ch.getDate());
+			userId = ch.getId_User();
+			data.setText(ch.getDate());
             hora.setText(ch.getTime());
             tagId = ch.getId_Tag();
 			String aux = rdb.Tag_GetById(tagId).getName();
 			SelectSpinnerItemByValue(TagSpinner, aux);
             glycemia.setText("");
-			/*
-            img.setImageURI(Uri.parse(ch.getPhotoPath()));
-			Log.d("Imagem", "link:" + ch.getPhotoPath());
-			if(!ch.getPhotoPath().isEmpty()){
-				file = new File(Environment.getExternalStorageDirectory() + ch.getPhotoPath());
-				img.setImageURI(Uri.fromFile(file));
-			}
-			*/
 			carbs.setText(ch.getCarbsValue().toString());
             target.setText("");
             insulin.setText("");
@@ -305,6 +311,7 @@ public class LogbookDetail extends Activity {
 			}
 			
         }else if(ch==null && ins!= null && bg!=null){//insulina com parametro da glicemia
+        	userId = ins.getIdUser();
         	data.setText(ins.getDate());
             hora.setText(ins.getTime());
             tagId = ins.getIdTag();
@@ -322,6 +329,7 @@ public class LogbookDetail extends Activity {
 				note.setText(rdb.Note_GetById(noteId).getNote());
 			}
         }else if(ch==null && ins== null && bg!=null){//so glicemia
+        	userId = bg.getIdUser();
         	data.setText(bg.getDate());
             hora.setText(bg.getTime());
             tagId = bg.getIdTag();
@@ -337,6 +345,7 @@ public class LogbookDetail extends Activity {
 			}
           
         }else if(ch==null && ins!= null && bg==null){//so insulina
+        	userId = ins.getIdUser();
         	data.setText(ins.getDate());
             hora.setText(ins.getTime());
             tagId = ins.getIdTag();
@@ -436,8 +445,8 @@ public class LogbookDetail extends Activity {
 	public void ShowDialogAddInsulin(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Informa��o")
-	    .setMessage("Antes de Adicionar registos de insulina deve adicionar a insulina a administrar!")
+	    .setTitle("Informação")
+	    .setMessage("Antes de gravar deve adicionar a insulina a administrar!")
 	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	             //Falta verificar se n�o est� associada a nenhuma entrada da DB
@@ -569,7 +578,7 @@ public class LogbookDetail extends Activity {
 	}
 	
 	public void TakePhoto(View v) {
-		EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
+		photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
 		if(!photopath.getText().toString().equals("")){
 			Intent intent = new Intent(v.getContext(), ViewPhoto.class);
 			
@@ -603,8 +612,8 @@ public class LogbookDetail extends Activity {
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data){
-		EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
-		ImageView img = (ImageView)findViewById(R.id.iv_MealDetail_Photo);
+		photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
+		img = (ImageView)findViewById(R.id.iv_MealDetail_Photo);
 		if (requestCode == TAKE_PICTURE && resultCode!= Activity.RESULT_CANCELED){
 			Toast.makeText(getApplicationContext(), getString(R.string.photoSaved) +" " + outputFileUri.toString().substring(7), Toast.LENGTH_LONG).show();
 			photopath.setText("/MyDiabetes/" + now + ".jpg");
@@ -757,8 +766,8 @@ public class LogbookDetail extends Activity {
 		}
 		//spinner das insulinas tem de ter valores
 		if(allInsulins.isEmpty()){
-					ShowDialogAddInsulin();
-					return;
+			ShowDialogAddInsulin();
+			return;
 		}
 		
 		//AddGlycemiaRead();
@@ -796,45 +805,293 @@ public class LogbookDetail extends Activity {
 		NavUtils.navigateUpFromSameTask(this);
 	}
 	
-	/*
-	public void saveButton(){
+	
+	public void SaveRead(){
+		DB_Write reg = new DB_Write(this);
+		boolean deleteCh = false;
+		boolean deleteBg = false;
+		boolean deleteIns = false;
+		int itemsToDelete = 0;
 		
-		//bg
+		String d = data.getText().toString();
+		String h = hora.getText().toString();
 		
-		//carbs
-		if(ch==null){
-			if(!carbs.getText().toString().equals("")){
-				
-			}
+		//nota id nao existe e tem de ser criado
+		if( noteId==-1 && !note.getText().toString().equals("")){
+			NoteDataBinding n = new NoteDataBinding();
+			n.setNote(note.getText().toString());
+			noteId = reg.Note_Add(n);
+		}
+		//nota id existe e o texto foi apagado/alterado
+		else if(noteId!=-1){
+			NoteDataBinding n = new NoteDataBinding();
+			n.setNote(note.getText().toString());
+			n.setId(noteId);
+			reg.Note_Update(n);
 		}
 		
+		
+		//carbs
+		//carbs id existe e foi apagado
+		if(ch!=null && carbs.getText().toString().equals("")){
+			deleteCh = true;
+			itemsToDelete++;
+			
+		}
+		//carbs id nao existe e tem de ser criado
+		else if(ch==null && !carbs.getText().toString().equals("") && !deleteCh){
+			photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
+			ch = new CarbsDataBinding();
+			if(noteId!=-1){
+				ch.setId_Note(noteId);
+			}
+	        
+	        
+	        ch.setId_User(userId);
+	        ch.setCarbsValue(Double.parseDouble(carbs.getText().toString()));
+	        DB_Read rdb = new DB_Read(this);
+	        String tagSelected = TagSpinner.getSelectedItem().toString();
+			Log.d("selected Spinner", tagSelected);
+			tagId = rdb.Tag_GetIdByName(tagSelected);
+	        ch.setId_Tag(tagId);
+	        ch.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
+	        ch.setDate(d);
+	        ch.setTime(h);
+			
+	        rdb.close();
+			reg.Carbs_Save(ch);
+		}
+		//carbs id existe e valor está igual ou foi alterado
+		else if(ch!=null && !carbs.getText().toString().equals("") && !deleteCh){
+			photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
+			if(noteId!=-1){
+				ch.setId_Note(noteId);
+			}
+	        
+	        ch.setId(id_ch);
+	        ch.setId_User(userId);
+	        ch.setCarbsValue(Double.parseDouble(carbs.getText().toString()));
+	        DB_Read rdb = new DB_Read(this);
+	        String tagSelected = TagSpinner.getSelectedItem().toString();
+			Log.d("selected Spinner", tagSelected);
+			tagId = rdb.Tag_GetIdByName(tagSelected);
+	        ch.setId_Tag(tagId);
+	        ch.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
+	        ch.setDate(d);
+	        ch.setTime(h);
+
+	        rdb.close();
+			reg.Carbs_Update(ch);
+		}
+		
+		//bg
+		//bg id existe e foi apagado
+		if(bg!=null && glycemia.getText().toString().equals("")){
+			deleteBg = true;
+			itemsToDelete++;
+			
+		}
+		//bg id nao existe e tem de ser criado
+		else if(bg==null && !glycemia.getText().toString().equals("") && !deleteBg){
+			bg = new GlycemiaDataBinding();
+			if(noteId!=-1){
+				bg.setIdNote(noteId);
+			}
+	        bg.setIdUser(userId);
+	        bg.setValue(Double.parseDouble(glycemia.getText().toString()));
+	        bg.setDate(d);
+	        bg.setTime(h);
+	        
+	        DB_Read rdb = new DB_Read(this);
+	        String tagSelected = TagSpinner.getSelectedItem().toString();
+			Log.d("selected Spinner", tagSelected);
+			tagId = rdb.Tag_GetIdByName(tagSelected);
+	        bg.setIdTag(tagId);
+	        
+	        rdb.close();
+			id_bg = reg.Glycemia_Save(bg);
+		}
+		//bg id existe e valor está igual ou foi alterado
+		else if(bg!=null && !glycemia.getText().toString().equals("") && !deleteBg){
+			if(noteId!=-1){
+				bg.setIdNote(noteId);
+			}
+	        bg.setIdUser(userId);
+	        bg.setValue(Double.parseDouble(glycemia.getText().toString()));
+	        bg.setDate(d);
+	        bg.setTime(h);
+	        
+	        DB_Read rdb = new DB_Read(this);
+	        String tagSelected = TagSpinner.getSelectedItem().toString();
+			Log.d("selected Spinner", tagSelected);
+			tagId = rdb.Tag_GetIdByName(tagSelected);
+	        bg.setIdTag(tagId);
+	        
+	        rdb.close();
+			reg.Glycemia_Update(bg);
+		}
+
+		
+		
 		//ins
-	}
-	
-	public void saveBg(){
+		//ins id existe e foi apagado
+		if(ins!=null && insulin.getText().toString().equals("")){
+			deleteIns = true;
+			itemsToDelete++;
+			
+		}
+		//ins id nao existe e tem de ser criado
+		else if(ins==null && !insulin.getText().toString().equals("") && !deleteIns){
+			if(target.getText().toString().equals("")){
+				target.requestFocus();
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(target, InputMethodManager.SHOW_IMPLICIT);
+				return;
+			}
+			//spinner das insulinas tem de ter valores
+			if(allInsulins.isEmpty()){
+				ShowDialogAddInsulin();
+				return;
+			}
+			
+			
+	        ins = new InsulinRegDataBinding();
+	        if(noteId!=-1){
+				ins.setIdNote(noteId);
+			}
+	        
+	        String insulinSelected = InsulinSpinner.getSelectedItem().toString();
+			Log.d("selected Spinner", insulinSelected);
+			DB_Read rdb = new DB_Read(this);
+			insulinId = rdb.Insulin_GetByName(insulinSelected).getId();
+			
+	        
+	        ins.setIdUser(userId);
+	        ins.setIdInsulin(insulinId);
+	        ins.setIdBloodGlucose(id_bg!=-1 ? id_bg : -1);
+	        ins.setDate(d);
+	        ins.setTime(h);
+	        ins.setTargetGlycemia(Double.parseDouble(target.getText().toString()));
+	        ins.setInsulinUnits(Double.parseDouble(insulin.getText().toString()));
+	        
+	        String tagSelected = TagSpinner.getSelectedItem().toString();
+			Log.d("selected Spinner", tagSelected);
+			tagId = rdb.Tag_GetIdByName(tagSelected);
+	        ins.setIdTag(tagId);
+	        
+	        rdb.close();
+			reg.Insulin_Save(ins);
+		}
+		//ins id existe e valor está igual ou foi alterado
+		else if(ins!=null && !insulin.getText().toString().equals("") && !deleteIns){
+			if(target.getText().toString().equals("")){
+				target.requestFocus();
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+				imm.showSoftInput(target, InputMethodManager.SHOW_IMPLICIT);
+				return;
+			}
+			//spinner das insulinas tem de ter valores
+			if(allInsulins.isEmpty()){
+				ShowDialogAddInsulin();
+				return;
+			}
+			
+			if(noteId!=-1){
+				ins.setIdNote(noteId);
+			}
+			
+			String insulinSelected = InsulinSpinner.getSelectedItem().toString();
+			Log.d("selected Spinner", insulinSelected);
+			DB_Read rdb = new DB_Read(this);
+			insulinId = rdb.Insulin_GetByName(insulinSelected).getId();
+			
+			
+			ins.setId(id_ins);
+	        ins.setIdUser(userId);
+	        ins.setIdInsulin(insulinId);
+	        ins.setIdBloodGlucose(id_bg!=-1 ? id_bg : -1);
+			ins.setDate(d);
+			ins.setTime(h);
+			ins.setTargetGlycemia(Double.parseDouble(target.getText().toString()));
+			ins.setInsulinUnits(Double.parseDouble(insulin.getText().toString()));
+			
+			String tagSelected = TagSpinner.getSelectedItem().toString();
+			Log.d("selected Spinner", tagSelected);
+			tagId = rdb.Tag_GetIdByName(tagSelected);
+			ins.setIdTag(tagId);
+			
+			rdb.close();
+			reg.Insulin_Update(ins);
+			Log.d("AQUI", "AQUIIII");
+		}
+		reg.close();
 		
+		if(deleteCh || deleteBg || deleteIns){
+			final Context c = this;
+			String message;
+			if(itemsToDelete==1){message = getString(R.string.deleteConfirmationSingular);}
+			else{ message = getString(R.string.deleteConfirmationPlural);}
+			
+			if(deleteBg){message+="\n" + "- " + getString(R.string.deleteGlycemiaReg);}
+			if(deleteCh){message+="\n" + "- " + getString(R.string.deleteCarbsReg);}
+			if(deleteIns){message+="\n" + "- " + getString(R.string.deleteInsulinReg);}
+			
+			final boolean delCh = deleteCh;
+			final boolean delBg = deleteBg;
+			final boolean delIns = deleteIns;
+				
+			new AlertDialog.Builder(this)
+		    .setTitle(getString(R.string.deleteAlert))
+		    .setMessage(message)
+		    .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+		         public void onClick(DialogInterface dialog, int whichButton) {
+		        	 
+		        	 try {
+		        		 DB_Write wdb = new DB_Write(c);
+		        		 if(delCh && delBg && delIns){
+		        			 wdb.Logbook_Delete(id_ch, id_ins, id_bg, noteId);
+		        		 }else{
+		        			 if(delCh){
+			        			 wdb.Logbook_DeleteOnSave(id_ch, -1, -1, -1);
+			        		 }
+			        		 if(delBg){
+			        			 if(ins!=null){
+			        				 wdb.Logbook_DeleteOnSave(-1, -1, id_bg, id_ins);
+			        				 
+			        			 }else{
+			        				 wdb.Logbook_DeleteOnSave(-1, -1, id_bg,-1);
+			        				 
+			        			 }
+			        			 
+			        			 
+			        		 }if(delIns){
+			        			 wdb.Logbook_DeleteOnSave(-1,id_ins,-1,-1);
+			        		 }
+		        		 } 		 
+		        		 wdb.close();
+		        		 goUp();
+		        	 }catch (Exception e) {
+	 
+		        		 Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
+		        		 Log.d("Excepção", e.getMessage());
+		        		 //Log.d("LocalizedMessage",e.getLocalizedMessage());
+		        		 //Log.d("trace",e.getStackTrace().toString());
+		        		 //e.printStackTrace();
+		        		 
+		        	 }
+		             
+		             
+		         }
+		    })
+		    .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
+		         public void onClick(DialogInterface dialog, int whichButton) {
+		                // Do nothing.
+		         }
+		    }).show();
+		}else{		
+			goUp();
+		}
 	}
 	
-	public void updateBg(){
-		
-	}
-	
-	
-	public void saveCarbs(){
-		
-	}
-	
-	public void updateCarbs(){
-		
-	}
-	
-	public void saveIns(){
-		
-	}
-	
-	public void updateIns(){
-		
-	}
-	*/
 	
 }

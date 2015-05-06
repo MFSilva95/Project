@@ -52,9 +52,9 @@ public class DB_Read {
 	        //Diabetes Type
 	        obj[2] = cursor.getString(2);
 	        //Insulin Ratio
-	        obj[3] = Integer.parseInt(cursor.getString(3));
+	        obj[3] = Double.parseDouble(cursor.getString(3));
 	        //Carbs Ratio
-	        obj[4] = Integer.parseInt(cursor.getString(4));
+	        obj[4] = Double.parseDouble(cursor.getString(4));
 	        //Lower Range
 	        obj[5] = Double.parseDouble(cursor.getString(5));
 	        //Higher Range

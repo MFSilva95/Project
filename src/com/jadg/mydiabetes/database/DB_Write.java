@@ -36,8 +36,8 @@ public class DB_Write {
 			ContentValues toUpdate = new ContentValues();
 			toUpdate.put("Name", obj[1].toString());
 			toUpdate.put("DType", obj[2].toString());
-			toUpdate.put("InsulinRatio", Integer.parseInt(obj[3].toString()));
-			toUpdate.put("CarbsRatio", Integer.parseInt(obj[4].toString()));
+			toUpdate.put("InsulinRatio", Double.parseDouble(obj[3].toString()));
+			toUpdate.put("CarbsRatio", Double.parseDouble(obj[4].toString()));
 			toUpdate.put("LowerRange", Double.parseDouble(obj[5].toString()));
 			toUpdate.put("HigherRange", Double.parseDouble(obj[6].toString()));
 			toUpdate.put("BDate", obj[7].toString());
@@ -52,8 +52,8 @@ public class DB_Write {
 			ContentValues toInsert = new ContentValues();
 			toInsert.put("Name", obj[1].toString());
 			toInsert.put("DType", obj[2].toString());
-			toInsert.put("InsulinRatio", Integer.parseInt(obj[3].toString()));
-			toInsert.put("CarbsRatio", Integer.parseInt(obj[4].toString()));
+			toInsert.put("InsulinRatio", Double.parseDouble(obj[3].toString()));
+			toInsert.put("CarbsRatio", Double.parseDouble(obj[4].toString()));
 			toInsert.put("LowerRange", Double.parseDouble(obj[5].toString()));
 			toInsert.put("HigherRange", Double.parseDouble(obj[6].toString()));
 			toInsert.put("BDate", obj[7].toString());
@@ -215,7 +215,10 @@ public class DB_Write {
 		toUpdate.put("Id_User", obj.getIdUser());
 		toUpdate.put("Id_Insulin", obj.getIdInsulin());
 		if(obj.getIdBloodGlucose() > 0){
-			toUpdate.put("Id_BloodGlucose", obj.getIdBloodGlucose());}
+			toUpdate.put("Id_BloodGlucose", obj.getIdBloodGlucose());
+		}else{
+			toUpdate.putNull("Id_BloodGlucose");
+		}
 		String datetime = obj.getDate() + " " + obj.getTime();
 		toUpdate.put("DateTime", datetime);
 		toUpdate.put("Target_BG", obj.getTargetGlycemia());
@@ -226,7 +229,7 @@ public class DB_Write {
 		
 		myDB.update("Reg_Insulin", toUpdate, "Id=" + obj.getId(), null);
 		
-		//Log.d("Guardou", "Reg_BloodGlucose");
+		Log.d("Reg_Insulin", "actualizado");
 		//return (int) myDB.insert("Reg_Insulin", null, toInsert);
 	}
 
@@ -334,6 +337,7 @@ public class DB_Write {
 			toInsert.put("Id_Note", obj.getId_Note());}
 		
 		myDB.update("Reg_CarboHydrate", toInsert, "Id=" + obj.getId(), null);
+		Log.d("Reg_CarboHydrate", "actualizado");
 	}
 	
 	public void Carbs_Delete(int id) {
@@ -582,5 +586,32 @@ public class DB_Write {
 		}if(note_id!=-1){
 			Note_Delete(note_id);
 		}
+	}
+	
+	public void Logbook_DeleteOnSave(int ch_id, int ins_id, int bg_id, int insToUpdate){
+		if(ch_id!=-1){
+			myDB.delete("Reg_CarboHydrate", "Id=" + ch_id, null);
+			Log.d("Delete", "Reg_CarboHydrate");
+		}if(ins_id!=-1){
+			myDB.delete("Reg_Insulin", "Id=" + ins_id, null);
+			Log.d("Delete", "Reg_Insulin");
+		}if(insToUpdate!=-1 && bg_id!=-1){
+			DB_Read rdb = new DB_Read(myContext);
+			InsulinRegDataBinding ins = rdb.InsulinReg_GetById(insToUpdate);
+			
+			ins.setIdBloodGlucose(-1);
+			Insulin_Update(ins);
+			
+			ins = rdb.InsulinReg_GetById(insToUpdate);
+			Log.d("DEPOIS UPDATE", ins.getIdBloodGlucose()+"");
+			
+			rdb.close();
+			myDB.delete("Reg_BloodGlucose", "Id=" + bg_id, null);
+			Log.d("Delete", "Reg_BloodGlucose");
+		}
+		else if(bg_id!=-1){
+			myDB.delete("Reg_BloodGlucose", "Id=" + bg_id, null);
+			Log.d("Delete", "Reg_BloodGlucose");
+		}		
 	}
 }
