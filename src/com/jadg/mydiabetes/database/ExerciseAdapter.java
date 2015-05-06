@@ -71,10 +71,10 @@ public class ExerciseAdapter extends BaseAdapter {
 			public void onClick(final View v) {
 				// TODO Auto-generated method stub
 				new AlertDialog.Builder(v.getContext())
-	    	    .setTitle("Eliminar exercicio?")
+	    	    .setTitle("Eliminar exerc√≠cio?")
 	    	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 	    	         public void onClick(DialogInterface dialog, int whichButton) {
-	    	             //Falta verificar se n„o est· associada a nenhuma entrada da DB
+	    	        	//Falta verificar se n√£o est√° associada a nenhuma entrada da DB
 	    	        	 
 	    	        	 DB_Write wdb = new DB_Write(v.getContext());
 	    	        	 try {
@@ -83,13 +83,13 @@ public class ExerciseAdapter extends BaseAdapter {
 		    	             _data.remove(position);
 		    	             notifyDataSetChanged();
 	    	        	 }catch (Exception e) {
-	    	        		 Toast.makeText(v.getContext(), "N„o pode eliminar este exercicio, referenciado em leituras!", Toast.LENGTH_LONG).show();
+	    	        		 Toast.makeText(v.getContext(), "N√£o pode eliminar este exerc√≠cio, referenciado em leituras!", Toast.LENGTH_LONG).show();
 	    	     		 }
 	    	             wdb.close();
 	    	             
 	    	         }
 	    	    })
-	    	    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
 	    	         public void onClick(DialogInterface dialog, int whichButton) {
 	    	                // Do nothing.
 	    	         }

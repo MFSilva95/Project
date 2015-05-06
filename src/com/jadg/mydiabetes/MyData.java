@@ -114,7 +114,7 @@ public class MyData extends Activity {
 	
 	//added ze ornelas
 	//corrige erro ao gravar
-	// os spinners n�o s�o verificados porque incialmente t�m sempre valor
+	// os spinners não são verificados porque incialmente têm sempre valor
 	public Boolean inputIsValid(){
 		Object[] obj = new Object[7];
 		obj[0] = (EditText)findViewById(R.id.et_MyData_Name);
@@ -208,8 +208,8 @@ public class MyData extends Activity {
 	    .setMessage("Para finalizar deve adicionar a insulina a administrar!")
 	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se n�o est� associada a nenhuma entrada da DB
-	        	 //Rever porque n�o elimina o registo de glicemia
+	        	 //Falta verificar se não está associada a nenhuma entrada da DB
+	        	 //Rever porque não elimina o registo de glicemia
 	        	 Intent intent = new Intent(c, Preferences.class);
 	        	 intent.putExtra("tabPosition", 4);
 	        	 startActivity(intent);

@@ -70,10 +70,10 @@ public class DiseaseAdapter extends BaseAdapter {
 			public void onClick(final View v) {
 				// TODO Auto-generated method stub
 				new AlertDialog.Builder(v.getContext())
-	    	    .setTitle("Eliminar doenÁa?")
+	    	    .setTitle("Eliminar doen√ßa?")
 	    	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 	    	         public void onClick(DialogInterface dialog, int whichButton) {
-	    	             //Falta verificar se n„o est· associada a nenhuma entrada da DB
+	    	             //Falta verificar se n√£o est√° associada a nenhuma entrada da DB
 	    	        	 
 	    	        	 DB_Write wdb = new DB_Write(v.getContext());
 	    	             wdb.Disease_Remove(disease.getId());
@@ -83,7 +83,7 @@ public class DiseaseAdapter extends BaseAdapter {
 	    	             notifyDataSetChanged();
 	    	         }
 	    	    })
-	    	    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
 	    	         public void onClick(DialogInterface dialog, int whichButton) {
 	    	                // Do nothing.
 	    	         }

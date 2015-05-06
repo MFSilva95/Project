@@ -277,19 +277,19 @@ public class GlycemiaDetail extends Activity {
 	    .setTitle("Eliminar leitura?")
 	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se n�o est� associada a nenhuma entrada da DB
+	        	 //Falta verificar se não está associada a nenhuma entrada da DB
 	        	 DB_Write wdb = new DB_Write(c);
 	        	 try {
 	        		 wdb.Glycemia_Delete(idGlycemia);
 	        		 goUp();
 	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "N�o pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
+	        		 Toast.makeText(c, "Não pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
 	     		 }
 	             wdb.close();
 	             
 	         }
 	    })
-	    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	                // Do nothing.
 	         }

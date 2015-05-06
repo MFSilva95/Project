@@ -45,9 +45,9 @@ public class TransferActivity<messenger1> extends Activity {
 		public void handleMessage(Message message) {
 			if (message.arg1 == RESULT_OK) {
 				Toast.makeText(TransferActivity.this,
-						"Ligação estabelecida", Toast.LENGTH_LONG).show();
+						"LigaÃ§Ã£o estabelecida", Toast.LENGTH_LONG).show();
 			} else {
-				Toast.makeText(TransferActivity.this, "Ligação falhou",
+				Toast.makeText(TransferActivity.this, "LigaÃ§Ã£o falhou",
 						Toast.LENGTH_LONG).show();
 			}
 		};
@@ -56,13 +56,13 @@ public class TransferActivity<messenger1> extends Activity {
 	private Handler handler2 = new Handler() {
 		public void handleMessage(Message message) {
 			if (message.arg1 == RESULT_OK) {
-				Toast.makeText(TransferActivity.this, "Transferência concluída",
+				Toast.makeText(TransferActivity.this, "TransferÃªncia concluÃ­da",
 						Toast.LENGTH_LONG).show();
 				Intent intent = new Intent(getApplicationContext(), ImportExport.class);
 	        	
 	        	 startActivity(intent);
 			} else {
-				Toast.makeText(TransferActivity.this, "Transferência falhou",
+				Toast.makeText(TransferActivity.this, "TransferÃªncia falhou",
 						Toast.LENGTH_LONG).show();
 			}
 		};
@@ -74,7 +74,7 @@ public class TransferActivity<messenger1> extends Activity {
 		setContentView(R.layout.activity_transfer);
 
 		
-		Toast.makeText(TransferActivity.this, "Atenção! Esperar ligação",
+		Toast.makeText(TransferActivity.this, "AtenÃ§Ã£o! Esperar ligaÃ§Ã£o",
 				Toast.LENGTH_LONG).show();
 		starter = getIntent();
 		Bundle extras = starter.getExtras();
@@ -177,7 +177,7 @@ public class TransferActivity<messenger1> extends Activity {
 	public void button2Click(View view) {
 		if (mBound) {
 			if ((fi = mService.getFIServer()) == null) {
-				System.out.println("Ainda não obteve fi do Servidor");
+				System.out.println("Ainda nÃ£o obteve fi do Servidor");
 			} else {
 				LinearLayout ll = (LinearLayout) findViewById(R.id.llFiles);
 				if (ll != null && ll.getChildCount() > 0) {
@@ -196,7 +196,7 @@ public class TransferActivity<messenger1> extends Activity {
 			unbindService(mConnection);
 			mBound = false;
 		} else {
-			System.out.println("Serviço não ligado");
+			System.out.println("ServiÃ§o nÃ£o ligado");
 		}
 
 	}

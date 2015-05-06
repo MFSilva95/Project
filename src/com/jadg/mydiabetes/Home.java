@@ -80,8 +80,8 @@ public class Home extends Activity {
 	    .setMessage("Antes de adicionar qualquer registo deve adicionar a sua informação!")
 	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se n�o est� associada a nenhuma entrada da DB
-	        	 //Rever porque n�o elimina o registo de glicemia
+	        	 //Falta verificar se não está associada a nenhuma entrada da DB
+	        	 //Rever porque não elimina o registo de glicemia
 	        	 Intent intent = new Intent(c, MyData.class);
 	        	 intent.putExtra("tabPosition", 4);
 	        	 startActivity(intent);

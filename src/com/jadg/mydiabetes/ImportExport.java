@@ -169,7 +169,7 @@ public class ImportExport extends Activity {
 			EditText datefrom = (EditText) findViewById(R.id.et_pdfexport_DataFrom);
 			EditText dateto = (EditText) findViewById(R.id.et_pdfexport_DataTo);
 			Intent emailIntent = new Intent("android.intent.action.SEND");
-			String sub = "Relat�rio diabetes - "
+			String sub = "Relatório diabetes - "
 					+ datefrom.getText().toString() + " a "
 					+ dateto.getText().toString() + ".";
 			emailIntent.putExtra(Intent.EXTRA_SUBJECT, sub);
@@ -182,7 +182,7 @@ public class ImportExport extends Activity {
 	}
 
 	private static void addMetaData(Document document) {
-		document.addTitle("A minha Diabetes - Exporta��o");
+		document.addTitle("A minha Diabetes - Exportação");
 		document.addAuthor("A minha Diabetes");
 		document.addCreator("A minha Diabetes");
 	}
@@ -190,7 +190,7 @@ public class ImportExport extends Activity {
 	private void addTitlePage(Document document) throws DocumentException {
 		Paragraph title = new Paragraph();
 		Font titleFont = new Font(Font.HELVETICA, 18, Font.BOLD);
-		title.add(new Paragraph("Relat�rio - A Minha Diabetes", titleFont));
+		title.add(new Paragraph("Relatório - A Minha Diabetes", titleFont));
 		EditText datefrom = (EditText) findViewById(R.id.et_pdfexport_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_pdfexport_DataTo);
 		title.add(new Paragraph("De " + datefrom.getText().toString() + " a "
@@ -213,9 +213,9 @@ public class ImportExport extends Activity {
 		Log.d("nome", name);
 		header.add(new Paragraph("Nome: " + obj[1].toString(), headerFont));
 		header.add(new Paragraph("Diabetes: " + obj[2].toString(), headerFont));
-		header.add(new Paragraph("R�cio Insulina: " + obj[3].toString(),
+		header.add(new Paragraph("Rácio Insulina: " + obj[3].toString(),
 				headerFont));
-		header.add(new Paragraph("R�cio H. Carbono: " + obj[4].toString(),
+		header.add(new Paragraph("Rácio H. Carbono: " + obj[4].toString(),
 				headerFont));
 		LineSeparator ls = new LineSeparator();
 		header.add(ls);
@@ -348,8 +348,8 @@ public class ImportExport extends Activity {
 		t.addCell(new Phrase("Data", tf));
 		t.addCell(new Phrase("Hora", tf));
 		t.addCell(new Phrase("Exercicio", tf));
-		t.addCell(new Phrase("Dura��o (min)", tf));
-		t.addCell(new Phrase("Esfor�o", tf));
+		t.addCell(new Phrase("Duração (min)", tf));
+		t.addCell(new Phrase("Esforço", tf));
 		t.addCell(new Phrase("Notas", tf));
 
 		for (ExerciseRegDataBinding i : reads) {
@@ -425,7 +425,7 @@ public class ImportExport extends Activity {
 		Paragraph title = new Paragraph();
 		addEmptyLine(title, 1);
 		title.setFont(hFont);
-		title.add("Leituras de Press�o Arterial");
+		title.add("Leituras de Pressão Arterial");
 		document.add(title);
 
 		Font cf = new Font(Font.HELVETICA, 8, Font.NORMAL);
@@ -443,8 +443,8 @@ public class ImportExport extends Activity {
 		// Headers
 		t.addCell(new Phrase("Data", tf));
 		t.addCell(new Phrase("Hora", tf));
-		t.addCell(new Phrase("Sist�lica", tf));
-		t.addCell(new Phrase("Diast�lica", tf));
+		t.addCell(new Phrase("Sistólica", tf));
+		t.addCell(new Phrase("Diastólica", tf));
 		t.addCell(new Phrase("Fase do dia", tf));
 		t.addCell(new Phrase("Notas", tf));
 
@@ -473,7 +473,7 @@ public class ImportExport extends Activity {
 		Paragraph title = new Paragraph();
 		addEmptyLine(title, 1);
 		title.setFont(hFont);
-		title.add("Leituras de Doen�as");
+		title.add("Leituras de Doenças");
 		document.add(title);
 
 		Font cf = new Font(Font.HELVETICA, 8, Font.NORMAL);
@@ -490,7 +490,7 @@ public class ImportExport extends Activity {
 		// Headers
 		t.addCell(new Phrase("Inicio", tf));
 		t.addCell(new Phrase("Fim", tf));
-		t.addCell(new Phrase("Doen�a", tf));
+		t.addCell(new Phrase("Doença", tf));
 		t.addCell(new Phrase("Notas", tf));
 
 		for (DiseaseRegDataBinding i : reads) {
@@ -651,12 +651,11 @@ public class ImportExport extends Activity {
 
 	public void ShowMsgExport(String msg) {
 		// final Context c = this;
-		new AlertDialog.Builder(this).setTitle("Informa��o").setMessage(msg)
+		new AlertDialog.Builder(this).setTitle("Informação").setMessage(msg)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
-						// Falta verificar se n�o est� associada a nenhuma
-						// entrada da DB
-						// Rever porque n�o elimina o registo de glicemia
+						//Falta verificar se não está associada a nenhuma entrada da DB
+						// Rever porque não elimina o registo de glicemia
 
 					}
 				}).show();
@@ -691,11 +690,11 @@ public class ImportExport extends Activity {
 				try {
 					fileBackup.createNewFile();
 					copyFile(inputFile, fileBackup);
-					ShowDialogMsg("C�pia de seguran�a efectuada com sucesso!");
+					ShowDialogMsg("Cópia de segurançaa efectuada com sucesso!");
 				} catch (IOException ioException) {
-					ShowDialogMsg("Ocurreu um erro durante a c�pia de seguran�a, verifique se a mem�ria externa est� disponivel!");
+					ShowDialogMsg("Ocurreu um erro durante a cópia de segurançaa, verifique se a memória externa está disponivel!");
 				} catch (Exception exception) {
-					ShowDialogMsg("Ocurreu um erro durante a c�pia de seguran�a, verifique se a mem�ria externa est� disponivel!");
+					ShowDialogMsg("Ocurreu um erro durante a cópia de segurançaa, verifique se a memória externa está disponivel!");
 				}
 			}
 		}
@@ -716,9 +715,9 @@ public class ImportExport extends Activity {
 					copyFile(inputFile, fileBackup);
 					ShowDialogMsg("Restauro efectuado com sucesso!");
 				} catch (IOException ioException) {
-					ShowDialogMsg("Ocurreu um erro durante o restauro, verifique se a mem�ria externa est� disponivel!");
+					ShowDialogMsg("Ocurreu um erro durante o restauro, verifique se a memória externa está disponivel!");
 				} catch (Exception exception) {
-					ShowDialogMsg("Ocurreu um erro durante o restauro, verifique se a mem�ria externa est� disponivel!");
+					ShowDialogMsg("Ocurreu um erro durante o restauro, verifique se a memória externa está disponivel!");
 				}
 			}
 		}
@@ -751,12 +750,11 @@ public class ImportExport extends Activity {
 
 	public void ShowDialogMsg(String msg) {
 		// final Context c = this;
-		new AlertDialog.Builder(this).setTitle("Informa��o").setMessage(msg)
+		new AlertDialog.Builder(this).setTitle("Informação").setMessage(msg)
 				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
-						// Falta verificar se n�o est� associada a nenhuma
-						// entrada da DB
-						// Rever porque n�o elimina o registo de glicemia
+						//Falta verificar se não está associada a nenhuma entrada da DB
+						// Rever porque não elimina o registo de glicemia
 						fillBackup();
 					}
 				}).show();

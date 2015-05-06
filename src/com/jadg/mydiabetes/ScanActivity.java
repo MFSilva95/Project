@@ -59,7 +59,7 @@ public class ScanActivity extends Activity {
 	            }
 	            else
 	            {
-	            	Toast toast = Toast.makeText(this, "QR code inv�lido", Toast.LENGTH_SHORT);
+	            	Toast toast = Toast.makeText(this, "QR code inválido", Toast.LENGTH_SHORT);
 		        	toast.show();
 	            }
 	        }

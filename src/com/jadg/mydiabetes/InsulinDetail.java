@@ -309,12 +309,12 @@ public class InsulinDetail extends Activity {
 	public void ShowDialogAddInsulin(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Informa��o")
+	    .setTitle("Informação")
 	    .setMessage("Antes de adicionar registos de insulina deve adicionar a insulina a administrar!")
 	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se n�o est� associada a nenhuma entrada da DB
-	        	 //Rever porque n�o elimina o registo de glicemia
+	        	 //Falta verificar se não está associada a nenhuma entrada da DB
+	        	 //Rever porque não elimina o registo de glicemia
 	        	 Intent intent = new Intent(c, Preferences.class);
 	        	 intent.putExtra("tabPosition", 4);
 	        	 startActivity(intent);
@@ -533,8 +533,8 @@ public class InsulinDetail extends Activity {
 	    .setTitle("Eliminar leitura?")
 	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se n�o est� associada a nenhuma entrada da DB
-	        	 //Rever porque n�o elimina o registo de glicemia
+	        	//Falta verificar se não está associada a nenhuma entrada da DB
+	        	 //Rever porque não elimina o registo de glicemia
 	        	 DB_Write wdb = new DB_Write(c);
 	        	 try {
 	        		 wdb.Insulin_Delete(idIns);
@@ -546,7 +546,7 @@ public class InsulinDetail extends Activity {
 	             
 	         }
 	    })
-	    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	                // Do nothing.
 	         }

@@ -379,7 +379,7 @@ public class CarboHydrateDetail extends Activity {
 	             
 	         }
 	    })
-	    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	                // Do nothing.
 	         }

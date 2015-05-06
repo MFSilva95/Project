@@ -78,7 +78,7 @@ public class MedicineAdapter extends BaseAdapter {
 		    	    .setTitle("Eliminar medicamento?")
 		    	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 		    	         public void onClick(DialogInterface dialog, int whichButton) {
-		    	             //Falta verificar se n„o est· associada a nenhuma entrada da DB
+		    	        	//Falta verificar se n√£o est√° associada a nenhuma entrada da DB
 		    	        	 
 		    	        	 DB_Write wdb = new DB_Write(v.getContext());
 		    	        	 try {
@@ -87,13 +87,13 @@ public class MedicineAdapter extends BaseAdapter {
 			    	             _data.remove(position);
 			    	             notifyDataSetChanged();
 		    	        	 }catch (Exception e) {
-		    	        		 Toast.makeText(v.getContext(), "N„o pode eliminar este medicamento, referenciado em registos!", Toast.LENGTH_LONG).show();
+		    	        		 Toast.makeText(v.getContext(), "N√£o pode eliminar este medicamento, referenciado em registos!", Toast.LENGTH_LONG).show();
 		    	     		 }
 		    	             wdb.close();
 		    	             
 		    	         }
 		    	    })
-		    	    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		    	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
 		    	         public void onClick(DialogInterface dialog, int whichButton) {
 		    	                // Do nothing.
 		    	         }

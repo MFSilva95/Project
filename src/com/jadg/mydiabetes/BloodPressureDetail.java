@@ -330,8 +330,8 @@ public class BloodPressureDetail extends Activity {
 	    .setTitle("Eliminar leitura?")
 	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se n�o est� associada a nenhuma entrada da DB
-	        	 //Rever porque n�o elimina o registo de glicemia
+	        	//Falta verificar se não está associada a nenhuma entrada da DB
+	        	//Rever porque não elimina o registo de glicemia
 	        	 DB_Write wdb = new DB_Write(c);
 	        	 try {
 	        		 wdb.BloodPressure_Delete(idBP);
@@ -343,7 +343,7 @@ public class BloodPressureDetail extends Activity {
 	             
 	         }
 	    })
-	    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	                // Do nothing.
 	         }
