@@ -26,7 +26,10 @@
         android:layout_below="@+id/syncPC"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="44dp"
+        android:clickable="false"
+        android:longClickable="false"
         android:onClick="syncCloud"
-        android:text="Enviar para Cloud" />
+        android:text="Enviar para Cloud"
+        android:visibility="gone" />
 
 </RelativeLayout>
