@@ -129,22 +129,22 @@
 		            android:width="80dp" />
 		        
 		        <Button
-        	        android:id="@+id/logbook"
-        	        android:layout_width="80dp"
-        	        android:layout_height="80dp"
-        	        android:layout_marginBottom="8dp"
-        	        android:layout_marginLeft="16dp"
-        	        android:layout_marginRight="16dp"
-        	        android:layout_marginTop="8dp"
-        	        android:background="@color/background_holo_dark"
-        	        android:drawableTop="@drawable/insulin"
-        	        android:height="80dp"
-        	        android:onClick="Call_Logbook"
-        	        android:paddingTop="8dp"
-        	        android:text="@string/Logbook"
-        	        android:textColor="@color/primary_text_holo_dark"
-        	        android:textSize="14sp"
-        	        android:width="80dp" />
+		            android:id="@+id/logbook"
+		            android:layout_width="80dp"
+		            android:layout_height="80dp"
+		            android:layout_marginBottom="8dp"
+		            android:layout_marginLeft="16dp"
+		            android:layout_marginRight="16dp"
+		            android:layout_marginTop="8dp"
+		            android:background="@color/background_holo_dark"
+		            android:drawableTop="@drawable/logbook"
+		            android:height="80dp"
+		            android:onClick="Call_Logbook"
+		            android:paddingTop="8dp"
+		            android:text="@string/Logbook"
+		            android:textColor="@color/primary_text_holo_dark"
+		            android:textSize="14sp"
+		            android:width="80dp" />
 
             </TableRow>
         
