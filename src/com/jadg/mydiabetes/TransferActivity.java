@@ -16,7 +16,10 @@ import android.os.Message;
 import android.os.Messenger;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -40,7 +43,9 @@ public class TransferActivity<messenger1> extends Activity {
 	// Bound Service
 	private Stream mService;
 	private boolean mBound = false;
-
+	
+	ImageButton lock;
+	
 	private Handler handler = new Handler() {
 		public void handleMessage(Message message) {
 			if (message.arg1 == RESULT_OK) {
@@ -73,6 +78,7 @@ public class TransferActivity<messenger1> extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_transfer);
 
+		lock = (ImageButton)findViewById(R.id.image_view);
 		
 		Toast.makeText(TransferActivity.this, "Atenção! Esperar ligação",
 				Toast.LENGTH_LONG).show();
@@ -82,6 +88,7 @@ public class TransferActivity<messenger1> extends Activity {
 		key = extras.getByteArray("key").clone();
 		iv = extras.getByteArray("iv").clone();
 		onPC = extras.getBoolean("onPC");
+		lock.setEnabled(false);
 
 	}
 
@@ -318,6 +325,7 @@ public class TransferActivity<messenger1> extends Activity {
 
 		Intent intent = new Intent(this, Stream.class);
 		Messenger messenger = new Messenger(handler);
+		lock.setEnabled(true);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("host", host);
 		intent.putExtra("port", port);
