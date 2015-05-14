@@ -16,8 +16,10 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="114dp"
+        android:background="@color/background_holo_dark"
+        android:drawableTop="@drawable/sync"
         android:onClick="syncPC"
-        android:text="Sincronizar com PC" />
+        android:text="@string/sync" />
 
     <Button
         android:id="@+id/syncCloud"

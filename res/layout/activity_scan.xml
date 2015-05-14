@@ -15,7 +15,9 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="140dp"
-        android:text="Ler QR"
-        android:onClick="scanQR" />
+        android:background="@color/background_holo_dark"
+        android:drawableTop="@drawable/qr"
+        android:onClick="scanQR"
+        android:text="@string/qr" />
 
 </RelativeLayout>
