@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -30,7 +33,7 @@ import com.jadg.mydiabetes.sync.transfer.Stream;
 import com.jadg.mydiabetes.sync.transfer.Stream.StreamBinder;
 import com.jadg.mydiabetes.sync.transfer.Transmission;
 
-public class TransferActivity<messenger1> extends Activity {
+public class TransferActivity extends Activity {
 	private String host = "";
 	private int port = 5444;
 	private byte[] key;
@@ -39,6 +42,8 @@ public class TransferActivity<messenger1> extends Activity {
 	private FileInfo fi;
 	private Boolean onPC = null;
 	private Hashtable<String, FileInfo> htFileInfo = new Hashtable<String, FileInfo>();
+	private boolean visible;
+	AlertDialog dialog1;
 
 	// Bound Service
 	private Stream mService;
@@ -46,11 +51,12 @@ public class TransferActivity<messenger1> extends Activity {
 	
 	ImageButton lock;
 	
-	private Handler handler = new Handler() {
+	private Handler handler_lig = new Handler() {
 		public void handleMessage(Message message) {
 			if (message.arg1 == RESULT_OK) {
-				Toast.makeText(TransferActivity.this,
-						"Ligação estabelecida", Toast.LENGTH_LONG).show();
+				showDialogTransf();
+				//Toast.makeText(TransferActivity.this,
+					//	"Ligação estabelecida", Toast.LENGTH_LONG).show();
 			} else {
 				Toast.makeText(TransferActivity.this, "Ligação falhou",
 						Toast.LENGTH_LONG).show();
@@ -58,7 +64,7 @@ public class TransferActivity<messenger1> extends Activity {
 		};
 	};
 
-	private Handler handler2 = new Handler() {
+	private Handler handler_transf = new Handler() {
 		public void handleMessage(Message message) {
 			if (message.arg1 == RESULT_OK) {
 				Toast.makeText(TransferActivity.this, "Transferência concluída",
@@ -77,18 +83,19 @@ public class TransferActivity<messenger1> extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_transfer);
-
-		lock = (ImageButton)findViewById(R.id.image_view);
 		
-		Toast.makeText(TransferActivity.this, "Atenção! Esperar ligação",
-				Toast.LENGTH_LONG).show();
+		
+
+	
+		
+	
 		starter = getIntent();
 		Bundle extras = starter.getExtras();
 		host = extras.getString("host");
 		key = extras.getByteArray("key").clone();
 		iv = extras.getByteArray("iv").clone();
 		onPC = extras.getBoolean("onPC");
-		lock.setEnabled(false);
+		showDialogLig(true);
 
 	}
 
@@ -128,7 +135,7 @@ public class TransferActivity<messenger1> extends Activity {
 		}
 
 		Intent intent = new Intent(this, Stream.class);
-		Messenger messenger = new Messenger(handler2);
+		Messenger messenger = new Messenger(handler_transf);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("host", host);
 		intent.putExtra("port", port);
@@ -181,7 +188,7 @@ public class TransferActivity<messenger1> extends Activity {
 	 * Button refresh, call method addFiles to put images from FileInfo in ll
 	 * @param view
 	 */
-	public void button2Click(View view) {
+	public void button2Click() {
 		if (mBound) {
 			if ((fi = mService.getFIServer()) == null) {
 				System.out.println("Ainda não obteve fi do Servidor");
@@ -305,7 +312,7 @@ public class TransferActivity<messenger1> extends Activity {
 		// TODO PASSAR esta funcao para SyncServerActivity
 		byte b = 15;
 		Intent intent = new Intent(this, Stream.class);
-		Messenger messenger = new Messenger(handler2);
+		Messenger messenger = new Messenger(handler_transf);
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("host", host);
 		intent.putExtra("port", 5445);
@@ -324,8 +331,8 @@ public class TransferActivity<messenger1> extends Activity {
 		}
 
 		Intent intent = new Intent(this, Stream.class);
-		Messenger messenger = new Messenger(handler);
-		lock.setEnabled(true);
+		Messenger messenger = new Messenger(handler_lig);
+
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("host", host);
 		intent.putExtra("port", port);
@@ -358,4 +365,42 @@ public class TransferActivity<messenger1> extends Activity {
 			mBound = false;
 		}
 	};
+	
+	public void showDialogLig(boolean d){
+		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+
+		builder.setTitle("Atenção!")
+		.setMessage("Esperar ligação");
+
+
+
+		dialog1 = builder.create();;
+		
+		
+		dialog1.show();
+		dialog1.setCanceledOnTouchOutside(false);
+		
+		
+	}
+	
+	
+	public void showDialogTransf(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Informação")
+			.setMessage("Ligação Establecida")
+		
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	         public void onClick(DialogInterface dialog, int whichButton) {
+	        	 //Falta verificar se não está associada a nenhuma entrada da DB
+	        	 //Rever porque não elimina o registo de glicemia
+	        	//visible = true;
+	        	dialog1.dismiss();
+	        	button2Click();
+	        	
+	        	 
+	         }
+	    }).show();
+	}
 }

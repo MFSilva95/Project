@@ -8,47 +8,21 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".TransferActivity" >
 
-    <ImageButton
-        android:id="@+id/image_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        
-        android:adjustViewBounds="true"
-        android:contentDescription="Android Refresh"
-        android:maxHeight="55dp"
-        android:maxWidth="55dp"
-        android:onClick="button2Click"
-        android:scaleType="fitXY"
-        android:src="@drawable/android_refresh" />
-
     <Button
         android:id="@+id/Button01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/image_view"
-        android:layout_alignBottom="@+id/image_view"
-        android:layout_toRightOf="@+id/image_view"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/button1"
         android:onClick="selectAll"
-        android:text="Selec. Tudo" />
-
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/image_view"
-        android:layout_alignBottom="@+id/image_view"
-        android:layout_toRightOf="@+id/Button01"
-        android:onClick="transfer"
-        android:text="Transferir" />
+        android:text="Selecionar Tudo" />
 
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/image_view"
-        android:layout_alignRight="@+id/button1"
-        android:layout_below="@+id/Button01" >
+        android:layout_below="@+id/Button01"
+        android:layout_centerHorizontal="true" >
 
         <LinearLayout
             android:id="@+id/llFiles"
@@ -58,24 +32,13 @@
         </LinearLayout>
     </ScrollView>
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/scrollView1"
-        android:layout_marginTop="18dp"
-        android:gravity="center"
-        android:text="Carregue no Botão para atualizar"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
     <LinearLayout
         android:id="@+id/llOptions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
+        android:layout_below="@+id/scrollView1"
         android:layout_marginTop="5dp"
+        android:baselineAligned="false"
         android:orientation="vertical" >
 
         <CheckedTextView
@@ -88,5 +51,14 @@
             android:gravity="center"
             android:text="Transferir Base de Dados" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/llOptions"
+        android:layout_alignTop="@+id/Button01"
+        android:onClick="transfer"
+        android:text="Transferir" />
 
 </RelativeLayout>
