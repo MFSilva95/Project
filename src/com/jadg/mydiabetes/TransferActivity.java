@@ -5,6 +5,7 @@ import java.util.Hashtable;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,7 +16,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.Messenger;
+import android.os.Messenger; 
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
@@ -48,18 +50,27 @@ public class TransferActivity extends Activity {
 	// Bound Service
 	private Stream mService;
 	private boolean mBound = false;
-	
+
 	ImageButton lock;
-	
+
 	private Handler handler_lig = new Handler() {
 		public void handleMessage(Message message) {
 			if (message.arg1 == RESULT_OK) {
-				showDialogTransf();
-				//Toast.makeText(TransferActivity.this,
-					//	"Ligação estabelecida", Toast.LENGTH_LONG).show();
-			} else {
-				Toast.makeText(TransferActivity.this, "Ligação falhou",
-						Toast.LENGTH_LONG).show();
+				showDialogTransf(true);
+			} 
+			else {
+				showDialogTransf(false);
+			}
+		};
+	};
+	
+	private Handler handler1 = new Handler() {
+		public void handleMessage(Message message) {
+			if (message.arg2 == 5) {
+				showDialogProg();
+			} 
+			else {
+				showDialogProg();
 			}
 		};
 	};
@@ -67,14 +78,9 @@ public class TransferActivity extends Activity {
 	private Handler handler_transf = new Handler() {
 		public void handleMessage(Message message) {
 			if (message.arg1 == RESULT_OK) {
-				Toast.makeText(TransferActivity.this, "Transferência concluída",
-						Toast.LENGTH_LONG).show();
-				Intent intent = new Intent(getApplicationContext(), ImportExport.class);
-	        	
-	        	 startActivity(intent);
+				showDialogFinal(true);
 			} else {
-				Toast.makeText(TransferActivity.this, "Transferência falhou",
-						Toast.LENGTH_LONG).show();
+				showDialogFinal(false);
 			}
 		};
 	};
@@ -83,19 +89,19 @@ public class TransferActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_transfer);
-		
-		
 
-	
-		
-	
+
+
+
+
+
 		starter = getIntent();
 		Bundle extras = starter.getExtras();
 		host = extras.getString("host");
 		key = extras.getByteArray("key").clone();
 		iv = extras.getByteArray("iv").clone();
 		onPC = extras.getBoolean("onPC");
-		showDialogLig(true);
+		showDialogLig();
 
 	}
 
@@ -110,7 +116,7 @@ public class TransferActivity extends Activity {
 	protected void onStart() {
 		super.onStart();
 		syncFileStructure(null);
-		
+
 	}
 
 	@Override
@@ -121,7 +127,7 @@ public class TransferActivity extends Activity {
 			mBound = false;
 		}
 	}
-	
+
 
 	/**
 	 * Button transferir fetches the DB_Diabetes from the data directory
@@ -136,6 +142,10 @@ public class TransferActivity extends Activity {
 
 		Intent intent = new Intent(this, Stream.class);
 		Messenger messenger = new Messenger(handler_transf);
+		
+		Messenger progress = new Messenger(handler1);
+		intent.putExtra("PROGRESS", progress);
+		
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("host", host);
 		intent.putExtra("port", port);
@@ -149,13 +159,13 @@ public class TransferActivity extends Activity {
 		intent.putExtra("files", alfi);
 		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 		//Messenger messenger1 = new Messenger(handler3);
-		
-		
+
+
 	}
 
 
-	
-	
+
+
 
 	private ArrayList<FileInfo> getSelectFiles(LinearLayout ll) {
 		ArrayList<FileInfo> fil = new ArrayList<FileInfo>();
@@ -182,7 +192,7 @@ public class TransferActivity extends Activity {
 		}
 		return fil;
 	}
-	
+
 
 	/**
 	 * Button refresh, call method addFiles to put images from FileInfo in ll
@@ -215,7 +225,7 @@ public class TransferActivity extends Activity {
 
 	}
 
-	
+
 	/**
 	 * Usado por button2click
 	 * @param ll
@@ -228,7 +238,7 @@ public class TransferActivity extends Activity {
 		ImageView pcImage;
 		ImageView androidImage;
 		String fileName;
-		
+
 		FileInfo fi2 = new FileInfo(fi.getRelativePath());
 		fi2.update();
 		if (fi2.exists() && fi2.getFileList() != null) {
@@ -246,26 +256,26 @@ public class TransferActivity extends Activity {
 		for (FileInfo fiChild : fi.getFileList()) {
 
 			if (!htFileInfo.containsKey(fiChild.getName())) {
-				
+
 				if (fiChild.getName().contains(".jpg")){
-				ll2 = new LinearLayout(this);
+					ll2 = new LinearLayout(this);
 
-				cb = new CheckBox(this);
-				ll2.addView(cb);
+					cb = new CheckBox(this);
+					ll2.addView(cb);
 
-				text = new TextView(this);
-				System.out.println("Nome do ficheiro --->"+fiChild.getName());
-				fileName = fiChild.getName();
-				text.setText(fileName);
-				htFileInfo.put(fileName, fiChild);
-				ll2.addView(text);
+					text = new TextView(this);
+					System.out.println("Nome do ficheiro --->"+fiChild.getName());
+					fileName = fiChild.getName();
+					text.setText(fileName);
+					htFileInfo.put(fileName, fiChild);
+					ll2.addView(text);
 
-				androidImage = new ImageView(this);
-				androidImage.setImageResource(R.drawable.android_icon);
-				androidImage.setMaxWidth(50);
-				androidImage.setAdjustViewBounds(true);
-				ll2.addView(androidImage);
-				ll.addView(ll2);
+					androidImage = new ImageView(this);
+					androidImage.setImageResource(R.drawable.android_icon);
+					androidImage.setMaxWidth(50);
+					androidImage.setAdjustViewBounds(true);
+					ll2.addView(androidImage);
+					ll.addView(ll2);
 				}
 			}
 
@@ -332,7 +342,8 @@ public class TransferActivity extends Activity {
 
 		Intent intent = new Intent(this, Stream.class);
 		Messenger messenger = new Messenger(handler_lig);
-
+		
+		
 		intent.putExtra("MESSENGER", messenger);
 		intent.putExtra("host", host);
 		intent.putExtra("port", port);
@@ -341,10 +352,10 @@ public class TransferActivity extends Activity {
 		intent.putExtra("cmd", Transmission.GET_INFO);
 		intent.putExtra("file", Environment.getExternalStorageDirectory()
 				+ "/MyDiabetes");
-//		if (mBound) {
-//			unbindService(mConnection);
-//			mBound = false;
-//		}
+		//		if (mBound) {
+		//			unbindService(mConnection);
+		//			mBound = false;
+		//		}
 		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 	}
 
@@ -365,42 +376,96 @@ public class TransferActivity extends Activity {
 			mBound = false;
 		}
 	};
-	
-	public void showDialogLig(boolean d){
-		
+
+	/**
+	 * Dialogo de espera
+	 */
+	public void showDialogLig(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-
 		builder.setTitle("Atenção!")
 		.setMessage("Esperar ligação");
-
-
-
 		dialog1 = builder.create();;
-		
-		
 		dialog1.show();
 		dialog1.setCanceledOnTouchOutside(false);
-		
-		
 	}
-	
-	
-	public void showDialogTransf(){
+
+
+	/**
+	 * Diálogo para a ligação
+	 * @param d
+	 */
+	public void showDialogTransf(boolean d){
+		final Context c = this;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Informação")
-			.setMessage("Ligação Establecida")
+		builder.setTitle("Informação");
 		
-		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-	         public void onClick(DialogInterface dialog, int whichButton) {
-	        	 //Falta verificar se não está associada a nenhuma entrada da DB
-	        	 //Rever porque não elimina o registo de glicemia
-	        	//visible = true;
-	        	dialog1.dismiss();
-	        	button2Click();
-	        	
-	        	 
-	         }
-	    }).show();
+		if (d){	
+			builder.setMessage("Ligação Establecida");
+			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					dialog1.dismiss();
+					button2Click();
+				}
+			}).show();
+		}
+		else {
+			builder.setMessage("Ligação Falhou!\n"
+					+ "Verifique se tem o wi-fi ligado\n"
+					+ "ou se está na rede correta.");			
+			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					Intent intent = new Intent(c, ImportExport.class);
+					startActivity(intent);
+				}
+			}).show();
+		}
+
 	}
+	
+	/**
+	 * Dialogo progresso transfeencia
+	 */
+	public void showDialogProg(){
+		
+		ProgressDialog pd = new ProgressDialog(this);
+		pd.setMessage("A tranferir...");
+		pd.setCanceledOnTouchOutside(false);
+		pd.show();
+	}
+	
+	public void showDialogFinal(boolean d){
+		final Context c = this;
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle("Informação");
+		if (d){
+		builder.setMessage("Transferência concluída com sucesso")
+		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+				// TODO Auto-generated method stub
+				Intent intent = new Intent(c, ImportExport.class);
+				startActivity(intent);
+				
+			}
+		}).show();
+		}
+		else {
+			builder.setMessage("Ocorreu um erro\n"
+					+ "tente novamente")
+			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int whichButton) {
+					// TODO Auto-generated method stub
+					Intent intent = new Intent(c, ImportExport.class);
+					startActivity(intent);
+					
+				}
+			}).show();
+		}
+		
+	}
+	
+	
 }

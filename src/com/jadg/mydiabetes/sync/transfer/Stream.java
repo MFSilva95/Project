@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.RemoteException;
 import android.util.Log;
 
 import com.jadg.mydiabetes.sync.crypt.Encrypt;
@@ -32,6 +33,7 @@ public class Stream extends Service{
 		super();
 	}
 	private int result = Activity.RESULT_CANCELED;
+	private int progress = 5;
 	private Socket socket = null;
 	private byte[] bytes;
 	private final IBinder mBinder = new StreamBinder();
@@ -71,7 +73,18 @@ public class Stream extends Service{
 	public class SendFile extends AsyncTask<Bundle, Void, Bundle> {
 		@Override
 		protected Bundle doInBackground(Bundle... extras) {
-
+			
+			Messenger messenger = (Messenger) extras[0].get("PROGRESS");
+			Message msg = Message.obtain();
+			msg.arg2 = progress;
+			
+				try {
+					messenger.send(msg);
+				} catch (RemoteException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			
 			if (extras[0].getByte("cmd") == Transmission.PUT_CONTENTS) {
 				String host = "";
 				int port = 0;
