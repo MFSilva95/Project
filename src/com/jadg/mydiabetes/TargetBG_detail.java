@@ -5,16 +5,15 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.View;
-
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuInflater;
+import android.view.inputmethod.InputMethodManager;
 
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
@@ -94,7 +93,7 @@ public class TargetBG_detail extends Activity {
 				//data.putExtra("tabPosition", 2);
 				//setResult(RESULT_OK, data);
 				//NavUtils.navigateUpFromSameTask(this);
-				finish();
+				
 				return true;
 			case R.id.menuItem_TargetBGDetail_EditSave:
 				UpdateTarget();
@@ -131,6 +130,31 @@ public class TargetBG_detail extends Activity {
 		EditText hourTo = (EditText)findViewById(R.id.et_TargetBG_HourTo);
 		EditText value = (EditText)findViewById(R.id.et_TargetBG_Glycemia);
 		
+		if(name.getText().toString().equals("")){
+			name.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(name, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		if(hourFrom.getText().toString().equals("")){
+			hourFrom.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		if(hourTo.getText().toString().equals("")){
+			hourTo.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(hourTo, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		if(value.getText().toString().equals("")){
+			value.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(value, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		
 		DB_Write wdb = new DB_Write(this);
 		
 		TargetDataBinding target = new TargetDataBinding();
@@ -147,6 +171,7 @@ public class TargetBG_detail extends Activity {
 		
 		wdb.Target_Add(target);
 		wdb.close();
+		finish();
 	}
 	
 	public void UpdateTarget(){
@@ -154,6 +179,31 @@ public class TargetBG_detail extends Activity {
 		EditText hourFrom = (EditText)findViewById(R.id.et_TargetBG_HourFrom);
 		EditText hourTo = (EditText)findViewById(R.id.et_TargetBG_HourTo);
 		EditText value = (EditText)findViewById(R.id.et_TargetBG_Glycemia);
+		
+		if(name.getText().toString().equals("")){
+			name.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(name, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		if(hourFrom.getText().toString().equals("")){
+			hourFrom.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		if(hourTo.getText().toString().equals("")){
+			hourTo.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(hourTo, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		if(value.getText().toString().equals("")){
+			value.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(value, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
 		
 		DB_Write wdb = new DB_Write(this);
 		
@@ -171,6 +221,8 @@ public class TargetBG_detail extends Activity {
 		
 		wdb.Target_Update(target);
 		wdb.close();
+		finish();
+
 	}
 	
 	

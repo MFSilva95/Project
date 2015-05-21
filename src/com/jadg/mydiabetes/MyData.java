@@ -205,7 +205,7 @@ public class MyData extends Activity {
 		final Context c = this;
 		new AlertDialog.Builder(this)
 	    .setTitle("Informação")
-	    .setMessage("Para finalizar deve adicionar a insulina a administrar!")
+	    .setMessage("De seguida deve adicionar a insulina a administrar!")
 	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	        	 //Falta verificar se não está associada a nenhuma entrada da DB

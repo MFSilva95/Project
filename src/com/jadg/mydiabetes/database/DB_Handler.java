@@ -116,8 +116,8 @@ public class DB_Handler extends SQLiteOpenHelper {
 			toInsert.put("Name", daytimes[8]);
 			db.insert("Tag", null, toInsert);
 			
-			
-			
+			//Isto já não é necessário porque a objetivo da insulina é pedido ao início.
+			/*
 			String[] daytargets = res.getStringArray(R.array.bg_targets);
 			
 			toInsert = new ContentValues();
@@ -133,6 +133,7 @@ public class DB_Handler extends SQLiteOpenHelper {
 			toInsert.put("TimeEnd", "07:30:00");
 			toInsert.put("Value", "90.0");
 			db.insert("BG_Target", null, toInsert);
+			*/
 		}
 
 		

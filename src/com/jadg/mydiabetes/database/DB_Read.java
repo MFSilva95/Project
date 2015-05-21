@@ -907,6 +907,18 @@ public class DB_Read {
 	
 	
 	//-------------- TARGETS GLYCEMIA -----------------
+	public boolean Target_HasTargets(){
+		Cursor cursor = myDB.rawQuery("SELECT * FROM BG_Target", null);
+		if (cursor.getCount() > 0) {
+			return true;
+		}
+		else{
+			return false;
+		}
+		
+	}
+	
+	
 	public double Target_GetTargetByTime(String time){
 		Cursor cursor = myDB.rawQuery("SELECT * FROM BG_Target WHERE  "
 										+ "(TimeStart < TimeEnd AND '" + time + "' >= TimeStart AND '" + time + "' <= TimeEnd)" +

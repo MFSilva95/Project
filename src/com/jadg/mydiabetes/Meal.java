@@ -291,6 +291,23 @@ public class Meal extends Activity {
 	    }).show();
 	}
 	
+	public void ShowDialogAddTarget(){
+		final Context c = this;
+		new AlertDialog.Builder(this)
+	    .setTitle("Informação")
+	    .setMessage("Antes de adicionar uma refeição deve adicionar os seus objetivos da glicemia!")
+	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	         public void onClick(DialogInterface dialog, int whichButton) {
+	        	 //Falta verificar se não está associada a nenhuma entrada da DB
+	        	 //Rever porque não elimina o registo de glicemia
+	        	 Intent intent = new Intent(c, Preferences.class);
+	        	 intent.putExtra("tabPosition", 1);
+	        	 startActivity(intent);
+	        	 finish();
+	         }
+	    }).show();
+	}
+	
 	public void end(){
 		finish();
 	}
@@ -573,6 +590,15 @@ public class Meal extends Activity {
 		EditText glycemia = (EditText)findViewById(R.id.et_MealDetail_Glycemia);
 		EditText carbs = (EditText)findViewById(R.id.et_MealDetail_Carbs);
 		
+		//tem de ter um target inserido
+		DB_Read read = new DB_Read(this);
+		if(!read.Target_HasTargets()){
+			read.close();
+			ShowDialogAddTarget();
+			return;
+		}
+			
+		
 		if(glycemia.getText().toString().equals("")){
 			glycemia.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -602,6 +628,8 @@ public class Meal extends Activity {
 			ShowDialogAddInsulin();
 			return;
 		}
+		
+		
 		
 		//AddGlycemiaRead();
 		AddCarbsRead();

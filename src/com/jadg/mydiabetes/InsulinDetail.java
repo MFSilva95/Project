@@ -323,6 +323,23 @@ public class InsulinDetail extends Activity {
 	    }).show();
 	}
 	
+	public void ShowDialogAddTarget(){
+		final Context c = this;
+		new AlertDialog.Builder(this)
+	    .setTitle("Informação")
+	    .setMessage("Antes de adicionar registos de insulina deve adicionar os seus objetivos da glicemia!")
+	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	         public void onClick(DialogInterface dialog, int whichButton) {
+	        	 //Falta verificar se não está associada a nenhuma entrada da DB
+	        	 //Rever porque não elimina o registo de glicemia
+	        	 Intent intent = new Intent(c, Preferences.class);
+	        	 intent.putExtra("tabPosition", 1);
+	        	 startActivity(intent);
+	        	 finish();
+	         }
+	    }).show();
+	}
+	
 	
 	public void AddInsulinRead(){
 		Spinner tagSpinner = (Spinner)findViewById(R.id.sp_InsulinDetail_Tag);
@@ -333,6 +350,13 @@ public class InsulinDetail extends Activity {
 		EditText target = (EditText)findViewById(R.id.et_InsulinDetail_TargetGlycemia);
 		EditText insulinunits = (EditText)findViewById(R.id.et_InsulinDetail_InsulinUnits);
 		EditText note = (EditText)findViewById(R.id.et_InsulinDetail_Notes);
+		//tem de ter um target inserido
+		DB_Read read = new DB_Read(this);
+		if(!read.Target_HasTargets()){
+			read.close();
+			ShowDialogAddTarget();
+			return;
+		}
 		
 		if(insulinunits.getText().toString().equals("")){
 			insulinunits.requestFocus();
@@ -416,6 +440,14 @@ public class InsulinDetail extends Activity {
 		EditText target = (EditText)findViewById(R.id.et_InsulinDetail_TargetGlycemia);
 		EditText insulinunits = (EditText)findViewById(R.id.et_InsulinDetail_InsulinUnits);
 		EditText note = (EditText)findViewById(R.id.et_InsulinDetail_Notes);
+		
+		//tem de ter um target inserido
+		DB_Read read = new DB_Read(this);
+		if(!read.Target_HasTargets()){
+			read.close();
+			ShowDialogAddTarget();
+			return;
+		}
 		
 		if(insulinunits.getText().toString().equals("")){
 			insulinunits.requestFocus();

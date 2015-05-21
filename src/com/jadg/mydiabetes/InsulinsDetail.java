@@ -6,6 +6,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -81,11 +82,19 @@ public class InsulinsDetail extends Activity {
 				return true;
 			case R.id.menuItem_InsulinsDetail_Save:
 				AddNewInsulin();
+				
+				DB_Read read = new DB_Read(this);
+				if(!read.Target_HasTargets()){
+					read.close();
+					ShowDialogAddTarget();
+				}else{
+					finish();
+				}
 				//Intent data = new Intent();
 				//data.putExtra("tabPosition", 2);
 				//setResult(RESULT_OK, data);
 				//NavUtils.navigateUpFromSameTask(this);
-				finish();
+				
 				return true;
 			case R.id.menuItem_InsulinsDetail_EditSave:
 				UpdateInsulin();
@@ -96,6 +105,23 @@ public class InsulinsDetail extends Activity {
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void ShowDialogAddTarget(){
+		final Context c = this;
+		new AlertDialog.Builder(this)
+	    .setTitle("Informação")
+	    .setMessage("Para adicionar mais insulinas deve carregar no ícone superior direito do menu inicial, de seguida entrar em Configurações e depois seleccionar a aba Insulinas. Para finalizar deve adicionar os seus objetivos da glicemia!")
+	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	         public void onClick(DialogInterface dialog, int whichButton) {
+	        	 //Falta verificar se não está associada a nenhuma entrada da DB
+	        	 //Rever porque não elimina o registo de glicemia
+	        	 Intent intent = new Intent(c, Preferences.class);
+	        	 intent.putExtra("tabPosition", 1);
+	        	 startActivity(intent);
+	        	 finish();
+	         }
+	    }).show();
 	}
 
 	public void AddNewInsulin(){
