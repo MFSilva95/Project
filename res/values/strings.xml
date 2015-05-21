@@ -111,9 +111,13 @@
     <string name="Exercise">Exercício</string>
 	<string name="Logbook">Logbook</string>
 	<string name="photoSaved">Guardada em: </string>
-	<string name="information_about">Aplicação desenvolvida no âmbito ddo projeto interno do Instituto de Telecomunicações \"S-Dia-SelMan - Smart Diabetes Self Management system" na Fac. de Ciências e Fac. de Medicina da Universidade do Porto. Trabalho realizado em colaboração com o Hospital de S. João.</string>
+	<string name="information_about">Aplicação desenvolvida no âmbito do projeto interno do Instituto de Telecomunicações \"S-Dia-SelMan - Smart Diabetes Self Management System\" na Fac. de Ciências e Fac. de Medicina da Universidade do Porto. Trabalho realizado em colaboração com o Hospital de S. João.</string>
 	<string name="information_about_using">A utilização da aplicação apenas está disponível se estiver envolvido(a) na fase de teste da mesma (Serviço de Endocrinologia do Hospital de São João, EPE), tendo assinado o Consentimento Informado que lhe foi fornecido e estando totalmente informado(a) acerca da metodologia a desenvolver durante o estudo.</string>
 	<string name="information_about_developers">Aplicação desenvolvida por João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
+	<string name="information_about_libraries">Esta aplicação utiliza a biblioteca DroidText.</string>
+	<string name="information_about_version">Versão 1.0</string>
+	
+	
 	<string name="information_about_contact">mydiabetes@dcc.fc.up.pt\n\nhttp://mydiabetes.dcc.fc.up.pt/</string>
 	<string name="uporto">Univ. Porto</string>
 	
