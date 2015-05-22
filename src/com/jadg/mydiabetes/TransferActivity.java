@@ -400,7 +400,7 @@ public class TransferActivity extends Activity {
 		builder.setTitle("Informação");
 		
 		if (d){	
-			builder.setMessage("Ligação Establecida");
+			builder.setMessage("Ligação Estabelecida");
 			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					dialog1.dismiss();
@@ -428,7 +428,7 @@ public class TransferActivity extends Activity {
 	public void showDialogProg(){
 		
 		ProgressDialog pd = new ProgressDialog(this);
-		pd.setMessage("A tranferir...");
+		pd.setMessage("A transferir...");
 		pd.setCanceledOnTouchOutside(false);
 		pd.show();
 	}
