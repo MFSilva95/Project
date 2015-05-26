@@ -82,12 +82,6 @@ public class TransferActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_transfer);
-
-
-
-
-
-
 		starter = getIntent();
 		Bundle extras = starter.getExtras();
 		host = extras.getString("host");
