@@ -17,19 +17,13 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger; 
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.WindowManager.LayoutParams;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.jadg.mydiabetes.sync.transfer.FileInfo;
 import com.jadg.mydiabetes.sync.transfer.Stream;
 import com.jadg.mydiabetes.sync.transfer.Stream.StreamBinder;
@@ -44,7 +38,6 @@ public class TransferActivity extends Activity {
 	private FileInfo fi;
 	private Boolean onPC = null;
 	private Hashtable<String, FileInfo> htFileInfo = new Hashtable<String, FileInfo>();
-	private boolean visible;
 	AlertDialog dialog1;
 
 	// Bound Service
@@ -200,7 +193,7 @@ public class TransferActivity extends Activity {
 	 */
 	public void button2Click() {
 		if (mBound) {
-			if ((fi = mService.getFIServer()) == null) {
+			if ((this.fi = mService.getFIServer()) == null) {
 				System.out.println("Ainda não obteve fi do Servidor");
 			} else {
 				LinearLayout ll = (LinearLayout) findViewById(R.id.llFiles);
@@ -232,13 +225,6 @@ public class TransferActivity extends Activity {
 	 * @param fi
 	 */
 	public void addFiles(LinearLayout ll, FileInfo fi) {
-		LinearLayout ll2;
-		CheckBox cb;
-		TextView text;
-		ImageView pcImage;
-		ImageView androidImage;
-		String fileName;
-
 		FileInfo fi2 = new FileInfo(fi.getRelativePath());
 		fi2.update();
 		if (fi2.exists() && fi2.getFileList() != null) {
@@ -381,9 +367,9 @@ public class TransferActivity extends Activity {
 	 * Dialogo de espera
 	 */
 	public void showDialogLig(){
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Atenção!")
-		.setMessage("Esperar ligação");
+		AlertDialog.Builder builder = new AlertDialog.Builder(this); 
+		builder.setTitle(R.string.transf_WaitTitle).
+		setMessage(this.getString(R.string.transf_WaitMesg));
 		dialog1 = builder.create();;
 		dialog1.show();
 		dialog1.setCanceledOnTouchOutside(false);
@@ -397,10 +383,10 @@ public class TransferActivity extends Activity {
 	public void showDialogTransf(boolean d){
 		final Context c = this;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Informação");
+		builder.setTitle(this.getString(R.string.transf_InfoTitle));
 		
 		if (d){	
-			builder.setMessage("Ligação Estabelecida");
+			builder.setMessage(this.getString(R.string.transf_ConnOK));
 			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					dialog1.dismiss();
@@ -409,6 +395,7 @@ public class TransferActivity extends Activity {
 			}).show();
 		}
 		else {
+			//TODO set in string
 			builder.setMessage("Ligação Falhou!\n"
 					+ "Verifique se tem o wi-fi ligado\n"
 					+ "ou se está na rede correta.");			
@@ -428,6 +415,7 @@ public class TransferActivity extends Activity {
 	public void showDialogProg(){
 		
 		ProgressDialog pd = new ProgressDialog(this);
+		//TODO set in string
 		pd.setMessage("A transferir...");
 		pd.setCanceledOnTouchOutside(false);
 		pd.show();
@@ -436,8 +424,9 @@ public class TransferActivity extends Activity {
 	public void showDialogFinal(boolean d){
 		final Context c = this;
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Informação");
+		builder.setTitle(this.getString(R.string.transf_InfoTitle));
 		if (d){
+			//TODO set in string
 		builder.setMessage("Transferência concluída com sucesso")
 		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			
@@ -451,6 +440,7 @@ public class TransferActivity extends Activity {
 		}).show();
 		}
 		else {
+			//TODO set in string
 			builder.setMessage("Ocorreu um erro\n"
 					+ "tente novamente")
 			.setPositiveButton("OK", new DialogInterface.OnClickListener() {

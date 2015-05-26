@@ -34,6 +34,10 @@
     <string name="title_activity_transfer">Transferência PC</string>
     <string name="title_activity_scan">Digitalizar</string>
     <string name="title_activity_cloud_server">CloudServerActivity</string>
+    <string name="transf_WaitMesg">Esperar ligação</string>
+    <string name="transf_WaitTitle">Atenção</string>
+    <string name="transf_ConnOK">Ligação Estabelecida</string>
+    <string name="transf_InfoTitle">Informação</string>
 
     <string-array name="Sex">
         <item>Masculino</item>
