@@ -1,9 +1,14 @@
 package com.jadg.mydiabetes;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -13,6 +18,7 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
@@ -33,7 +39,35 @@ public class Info extends Activity {
 	 */
 	private boolean useWebView = false;
 	private WebView mWebView;
+	
+	public static long getInstallDate(Context context) throws NameNotFoundException {
+		long time = 0;
+		PackageManager pm = context.getPackageManager();
+		PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
+		time = packageInfo.lastUpdateTime;
 
+		return time;
+	}
+
+	/**
+	 * Used to get the current date. Recipe from SO http://stackoverflow.com/questions/7607165/how-to-write-build-time-stamp-into-apk
+	 * @param context the context to extract AI and Package Name
+	 * @return the time in millisecs
+	 * @throws NameNotFoundException 
+	 * @throws IOException 
+	 */
+	public static long getBuildDate(Context context) throws NameNotFoundException, IOException {
+		long time = 0;
+
+			ApplicationInfo ai = context.getPackageManager()
+					.getApplicationInfo(context.getPackageName(), 0);
+			ZipFile zf = new ZipFile(ai.sourceDir);
+			ZipEntry ze = zf.getEntry("classes.dex");
+			time = ze.getTime();
+			zf.close();
+
+		return time;
+	}
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,12 +81,14 @@ public class Info extends Activity {
 			String version = ""+ versionTextWebView.getText();
 			
             try {
-            	PackageManager pm = getPackageManager();
-				PackageInfo packageInfo = pm.getPackageInfo(getPackageName(), 0);
-				String installDate = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault()).format(packageInfo.lastUpdateTime);
+            	long time;
+            	time = getBuildDate(this);
+				String installDate = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault()).format(time);
 				version += " (" + installDate +")";
 			} catch (NameNotFoundException e) {
-				//no package found empty build/install date
+				Log.d("Info","NameNotFoundException on getting build date");
+            } catch (IOException e) {
+            	Log.d("Info","IOException on getting build date");
 			}
 			versionTextWebView.setText(version);
 		}
