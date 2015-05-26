@@ -1,6 +1,12 @@
 package com.jadg.mydiabetes;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import android.app.Activity;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Html;
@@ -11,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 
 
@@ -36,6 +43,18 @@ public class Info extends Activity {
 		}
 		else{
 			setContentView(R.layout.activity_info);
+			TextView versionTextWebView = (TextView) findViewById(R.id.infoVersionView);
+			String version = ""+ versionTextWebView.getText();
+			
+            try {
+            	PackageManager pm = getPackageManager();
+				PackageInfo packageInfo = pm.getPackageInfo(getPackageName(), 0);
+				String installDate = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault()).format(packageInfo.lastUpdateTime);
+				version += " (" + installDate +")";
+			} catch (NameNotFoundException e) {
+				//no package found empty build/install date
+			}
+			versionTextWebView.setText(version);
 		}
 		// 	Show the Up button in the action bar.
 		getActionBar();
