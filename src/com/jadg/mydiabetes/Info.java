@@ -77,8 +77,8 @@ public class Info extends Activity {
 		}
 		else{
 			setContentView(R.layout.activity_info);
-			TextView versionTextWebView = (TextView) findViewById(R.id.infoVersionView);
-			String version = ""+ versionTextWebView.getText();
+			TextView versionTextView = (TextView) findViewById(R.id.infoVersionView);
+			String version = ""+ versionTextView.getText();
 			
             try {
             	long time;
@@ -90,7 +90,7 @@ public class Info extends Activity {
             } catch (IOException e) {
             	Log.d("Info","IOException on getting build date");
 			}
-			versionTextWebView.setText(version);
+            versionTextView.setText(version);
 		}
 		// 	Show the Up button in the action bar.
 		getActionBar();
