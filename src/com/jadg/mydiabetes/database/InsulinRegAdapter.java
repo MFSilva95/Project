@@ -55,7 +55,9 @@ public class InsulinRegAdapter extends BaseAdapter {
         TextView data = (TextView)v.findViewById(R.id.tv_list_insulinreg_data);
         TextView hora = (TextView)v.findViewById(R.id.tv_list_insulinreg_hora);
         TextView ivalue = (TextView)v.findViewById(R.id.tv_list_insulinreg_insulin_value);
+        TextView gtag = (TextView)v.findViewById(R.id.tv_list_insulinreg_glycemia);
         TextView gvalue = (TextView)v.findViewById(R.id.tv_list_insulinreg_glycemia_value);
+        TextView gunit = (TextView)v.findViewById(R.id.tv_list_insulinreg_glycemia_unit);  
         TextView tag = (TextView)v.findViewById(R.id.tv_list_insulinreg_tag);
         TextView insulin = (TextView)v.findViewById(R.id.tv_list_insulinreg_insulin);
 	   
@@ -72,9 +74,15 @@ public class InsulinRegAdapter extends BaseAdapter {
         	Log.d("if glycemia", "entrou");
         	GlycemiaDataBinding glycemia = rdb.Glycemia_GetById(insulin_datab.getIdBloodGlucose());
         	gvalue.setText(glycemia.getValue().toString());
+        	gtag.setVisibility(View.VISIBLE);
+        	gvalue.setVisibility(View.VISIBLE);
+            gunit.setVisibility(View.VISIBLE);
         }
         else{
         	gvalue.setText("");
+        	gtag.setVisibility(View.GONE);
+        	gvalue.setVisibility(View.GONE);
+            gunit.setVisibility(View.GONE);
         }
         InsulinDataBinding ins = rdb.Insulin_GetById(insulin_datab.getIdInsulin());
         insulin.setText(ins.getName());

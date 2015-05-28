@@ -6,35 +6,34 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
-import android.annotation.SuppressLint;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.BaseColumns;
 import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.SpinnerAdapter;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import com.jadg.mydiabetes.database.CarbsDataBinding;
 import com.jadg.mydiabetes.database.DB_Read;
@@ -48,10 +47,12 @@ import com.jadg.mydiabetes.dialogs.TimePickerFragment;
 
 
 public class CarboHydrateDetail extends Activity {
-
-	private static int TAKE_PICTURE = 1;
-	private Uri outputFileUri;
-	private String now;
+	
+	//photo variables - start
+	final private int CAPTURE_IMAGE = 2;
+	Uri imgUri;
+	Bitmap b;
+	//photo variables - end
 	int idNote = 0;
 	int id_ch = -1;
 	
@@ -91,12 +92,14 @@ public class CarboHydrateDetail extends Activity {
 			if(!toFill.getPhotoPath().equals("")){
 				photopath.setText(toFill.getPhotoPath());
 				Log.d("foto path", "foto: " + toFill.getPhotoPath());
-				File dir = new File(Environment.getExternalStorageDirectory() + toFill.getPhotoPath());
 				ImageView img = (ImageView)findViewById(R.id.iv_CarboHydrateDetail_Photo);
-				img.setImageURI(Uri.fromFile(dir));
+				//img.setImageURI(Uri.parse(toFill.getPhotoPath()));
+				b = decodeFile(toFill.getPhotoPath());
+				img.setImageBitmap(b);
+
 			}
 				
-			Log.d("texto no photopath", "texto:" + toFill.getPhotoPath() + ":");
+			Log.d("photopath", toFill.getPhotoPath());
 			
 			rdb.close();
 		}else{
@@ -265,88 +268,163 @@ public class CarboHydrateDetail extends Activity {
 		goUp();
 	}
 	
+	
+	//PHOTO - START
+	
+	public Uri setImageUri() {
+        // Store image in /MyDiabetes
+        File file = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes", new Date().getTime() + ".jpg");
+        File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
+        if(!dir.exists()){
+        	dir.mkdir();
+        }
+        imgUri = Uri.fromFile(file);
+        return imgUri;
+	}
+	
+	
+		
 	public void TakePhoto(View v) {
 		EditText photopath = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
 		if(!photopath.getText().toString().equals("")){
-			Intent intent = new Intent(v.getContext(), ViewPhoto.class);
-			
-			//Bundle args = getIntent().getExtras();
+			final Intent intent = new Intent(this, ViewPhoto.class);
 			Bundle argsToPhoto = new Bundle();
 			argsToPhoto.putString("Path", photopath.getText().toString());
 			argsToPhoto.putInt("Id", id_ch);
 			intent.putExtras(argsToPhoto);
-			//v.getContext().startActivity(intent);
 			startActivityForResult(intent, 101010);
-		}
-		else{
-			Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
-			dir.mkdirs();
-			
-			final Calendar c = Calendar.getInstance();
-	        int year = c.get(Calendar.YEAR);
-	        int month = c.get(Calendar.MONTH);
-	        int day = c.get(Calendar.DAY_OF_MONTH);
-			int hour = c.get(Calendar.HOUR_OF_DAY);
-			int minute = c.get(Calendar.MINUTE);
-			int sec = c.get(Calendar.SECOND);
-			now = year + "" + (month+1) + "" + day + "" + hour + "" + minute + "" + sec;
-			File file = new File(dir, now + ".jpg");
-			
-			outputFileUri = Uri.fromFile(file);
-			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputFileUri);
-			
-			
-			startActivityForResult(intent, TAKE_PICTURE);
-		}
-	}
-	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data){
-		EditText photopath = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
-		ImageView img = (ImageView)findViewById(R.id.iv_CarboHydrateDetail_Photo);
-		if (requestCode == TAKE_PICTURE && resultCode!= Activity.RESULT_CANCELED){
-			Toast.makeText(getApplicationContext(), getString(R.string.photoSaved) +" " + outputFileUri.toString().substring(7), Toast.LENGTH_LONG).show();
-			photopath.setText("/MyDiabetes/" + now + ".jpg");
-			img.setImageURI(outputFileUri);
-			deleteLastCapturedImage();
-		}
-		if (requestCode == 101010){
-			//se tivermos apagado a foto dá result code -1
-			//se voltarmos por um return por exemplo o resultcode é 0
-			if(resultCode==-1){
-				photopath.setText("");
-				img.setImageDrawable(getResources().getDrawable(R.drawable.newphoto));
-			}
+		}else{
+			final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			intent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
+			startActivityForResult(intent, CAPTURE_IMAGE);
 		}
 		
- 
 	}
 
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		EditText photopath = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
+		ImageView img = (ImageView)findViewById(R.id.iv_CarboHydrateDetail_Photo);
+		if (resultCode != Activity.RESULT_CANCELED) {
+			if (requestCode == CAPTURE_IMAGE) {
+				Toast.makeText(getApplicationContext(), getString(R.string.photoSaved) +" " + imgUri.getPath(), Toast.LENGTH_LONG).show();
+				b = decodeFile(imgUri.getPath());
+				//b = adjustImageOrientation(b,imgUri.getPath());
+				img.setImageBitmap(b);
+				photopath.setText(imgUri.getPath());
 
-	public void deleteLastCapturedImage() {
-	    String[] projection = { 
-	            MediaStore.Images.ImageColumns.SIZE,
-	            MediaStore.Images.ImageColumns.DISPLAY_NAME,
-	            MediaStore.Images.ImageColumns.DATA, 
-	            BaseColumns._ID };
-	    Cursor c = null;
-	    Uri u = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-	    try {
-	        if (u != null) {
-	        	//c = managedQuery(u, projection, null, null, null);
-	            c = getContentResolver().query(u, projection, null, null, null); 
-	        }
-	        if ((c != null) && (c.moveToLast())) {
-	            ContentResolver cr = getContentResolver();
-	            int i = cr.delete(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, BaseColumns._ID + "=" + c.getString(c.getColumnIndex(BaseColumns._ID)), null);
-	            Log.v("delete dup foto", "Number of column deleted : " + i);
-	        }
-	    } finally {
-	        if (c != null) {
-	            c.close(); }
+			}else if (requestCode == 101010){
+				Log.d("Result:", resultCode+"");
+				//se tivermos apagado a foto dá result code -1
+				//se voltarmos por um return por exemplo o resultcode é 0
+				if(resultCode==-1){
+					photopath.setText("");
+					img.setImageDrawable(getResources().getDrawable(R.drawable.newphoto));
+				}
+			}else {
+				super.onActivityResult(requestCode, resultCode, data);
+			}
+		}
+
+	}
+	
+	
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+	    super.onSaveInstanceState(outState);
+	    if (imgUri != null) {
+	        outState.putString("cameraImageUri", imgUri.toString());
 	    }
 	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+	    super.onRestoreInstanceState(savedInstanceState);
+	    if (savedInstanceState.containsKey("cameraImageUri")) {
+	        imgUri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
+	        EditText photopath = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
+			ImageView img = (ImageView)findViewById(R.id.iv_CarboHydrateDetail_Photo);
+			b = decodeFile(imgUri.getPath());
+			//b = adjustImageOrientation(b,imgUri.getPath());
+			img.setImageBitmap(b);
+			photopath.setText(imgUri.getPath());
+	    }
+	}
+	
+	public Bitmap decodeFile(String path) {
+        try {
+            // Decode image size
+            BitmapFactory.Options o = new BitmapFactory.Options();
+            o.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path, o);
+
+            final int REQUIRED_SIZE = 70;
+
+            // Find the correct scale value. It should be the power of 2.
+            int scale = 1;
+            while (o.outWidth / scale / 2 >= REQUIRED_SIZE && o.outHeight / scale / 2 >= REQUIRED_SIZE)
+                scale *= 2;
+
+            // Decode with inSampleSize
+            BitmapFactory.Options o2 = new BitmapFactory.Options();
+            o2.inSampleSize = scale;
+            return BitmapFactory.decodeFile(path, o2);
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+
+//	private Bitmap adjustImageOrientation(Bitmap image, String picturePath ) {
+//        ExifInterface exif;
+//        try {
+//            exif = new ExifInterface(picturePath);
+//            int exifOrientation = exif.getAttributeInt(
+//                    ExifInterface.TAG_ORIENTATION,
+//                    ExifInterface.ORIENTATION_NORMAL);
+//
+//            int rotate = 0;
+//            switch (exifOrientation) {
+//            case ExifInterface.ORIENTATION_ROTATE_90:
+//                rotate = 90;
+//                break;
+//
+//            case ExifInterface.ORIENTATION_ROTATE_180:
+//                rotate = 180;
+//                break;
+//
+//            case ExifInterface.ORIENTATION_ROTATE_270:
+//                rotate = 270;
+//                break;
+//            }
+//
+//            if (rotate != 0) {
+//                int w = image.getWidth();
+//                int h = image.getHeight();
+//
+//                // Setting pre rotate
+//                Matrix mtx = new Matrix();
+//                mtx.preRotate(rotate);
+//
+//                // Rotating Bitmap & convert to ARGB_8888, required by tess
+//                image = Bitmap.createBitmap(image, 0, 0, w, h, mtx, false);
+//
+//            }
+//        } catch (IOException e) {
+//                 return null;
+//        }
+//        return image.copy(Bitmap.Config.ARGB_8888, true);
+//    }
+	
+	
+	//PHOTO - END
+
+	
+
+
+	
 	
 	public static void SelectSpinnerItemByValue(Spinner spnr, String value)
 	{

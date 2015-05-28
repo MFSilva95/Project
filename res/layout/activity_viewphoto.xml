@@ -12,11 +12,12 @@
         
         android:layout_centerVertical="true"
         android:id="@+id/viewphoto_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter"
         
         />
-
+	<!-- 
     <Button
         android:id="@+id/bt_viewphoto_delete"
         android:layout_width="wrap_content"
@@ -25,5 +26,5 @@
         android:layout_centerHorizontal="true"
         android:text="Eliminar" 
         android:onClick="DeletePhoto"/>
-    
+    --> 
 </RelativeLayout>
