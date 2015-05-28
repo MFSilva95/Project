@@ -78,7 +78,14 @@ public class Info extends Activity {
 		else{
 			setContentView(R.layout.activity_info);
 			TextView versionTextView = (TextView) findViewById(R.id.infoVersionView);
-			String version = ""+ versionTextView.getText();
+			String version = "Versão ";
+			try {
+				version += getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+			} catch (NameNotFoundException e1) {
+				// TODO Auto-generated catch block
+				//e1.printStackTrace();
+				Log.e("ERROR GETTING VERSION NAME: ", e1.getMessage());
+			}
 			
             try {
             	long time;

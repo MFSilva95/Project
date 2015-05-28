@@ -26,6 +26,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -273,8 +274,12 @@ public class LogbookDetail extends Activity {
 				photopath.setText(ch.getPhotoPath());
 				Log.d("foto path", "foto: " + ch.getPhotoPath());
 				ImageView img = (ImageView)findViewById(R.id.iv_MealDetail_Photo);
-				//img.setImageURI(Uri.parse(ch.getPhotoPath()));
-				b = decodeFile(ch.getPhotoPath());
+				
+				DisplayMetrics displaymetrics = new DisplayMetrics();
+				getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+				int height = (int)(displaymetrics.heightPixels * 0.1);
+				int width = (int)(displaymetrics.widthPixels * 0.1);
+				b = decodeSampledBitmapFromPath(ch.getPhotoPath(),width,height );
 				img.setImageBitmap(b);
 			}
 		}
@@ -620,8 +625,11 @@ public class LogbookDetail extends Activity {
 			if (resultCode != Activity.RESULT_CANCELED) {
 				if (requestCode == CAPTURE_IMAGE) {
 					Toast.makeText(getApplicationContext(), getString(R.string.photoSaved) +" " + imgUri.getPath(), Toast.LENGTH_LONG).show();
-					b = decodeFile(imgUri.getPath());
-					//b = adjustImageOrientation(b,imgUri.getPath());
+					DisplayMetrics displaymetrics = new DisplayMetrics();
+					getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+					int height = (int)(displaymetrics.heightPixels * 0.1);
+					int width = (int)(displaymetrics.widthPixels * 0.1);
+					b = decodeSampledBitmapFromPath(imgUri.getPath(),width,height );
 					img.setImageBitmap(b);
 					photopath.setText(imgUri.getPath());
 					b=null;
@@ -657,39 +665,56 @@ public class LogbookDetail extends Activity {
 		        imgUri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
 		        EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
 				ImageView img = (ImageView)findViewById(R.id.iv_MealDetail_Photo);
-				b = decodeFile(imgUri.getPath());
-				//b = adjustImageOrientation(b,imgUri.getPath());
+				DisplayMetrics displaymetrics = new DisplayMetrics();
+				getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+				int height = (int)(displaymetrics.heightPixels * 0.1);
+				int width = (int)(displaymetrics.widthPixels * 0.1);
+				b = decodeSampledBitmapFromPath(imgUri.getPath(),width,height );
 				img.setImageBitmap(b);
 				photopath.setText(imgUri.getPath());
 		    }
 		}
 		
-		public Bitmap decodeFile(String path) {
-	        try {
-	            // Decode image size
-	            BitmapFactory.Options o = new BitmapFactory.Options();
-	            o.inJustDecodeBounds = true;
-	            BitmapFactory.decodeFile(path, o);
+		public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+		    // Raw height and width of image
+		    final int height = options.outHeight;
+		    final int width = options.outWidth;
+		    int inSampleSize = 1;
 
-	            final int REQUIRED_SIZE = 70;
+		    if (height > reqHeight || width > reqWidth) {
+		
+		        final int halfHeight = height / 2;
+		        final int halfWidth = width / 2;
+		
+		        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+		        // height and width larger than the requested height and width.
+		        while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
+		            inSampleSize *= 2;
+		        }
+		    }
+		
+		    return inSampleSize;
+		}
+		
+		
+		public static Bitmap decodeSampledBitmapFromPath(String path, int reqWidth, int reqHeight) {
 
-	            // Find the correct scale value. It should be the power of 2.
-	            int scale = 1;
-	            while (o.outWidth / scale / 2 >= REQUIRED_SIZE && o.outHeight / scale / 2 >= REQUIRED_SIZE)
-	                scale *= 2;
+		    // First decode with inJustDecodeBounds=true to check dimensions
+		    final BitmapFactory.Options options = new BitmapFactory.Options();
+		    options.inJustDecodeBounds = true;
+		    //BitmapFactory.decodeResource(res, resId, options);
+		    BitmapFactory.decodeFile(path, options);
 
-	            // Decode with inSampleSize
-	            BitmapFactory.Options o2 = new BitmapFactory.Options();
-	            o2.inSampleSize = scale;
-	            return BitmapFactory.decodeFile(path, o2);
-	        } catch (Throwable e) {
-	            e.printStackTrace();
-	        }
-	        return null;
+		    // Calculate inSampleSize
+		    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
 
-	    }
-
-		private Bitmap adjustImageOrientation(Bitmap image, String picturePath ) {
+		    // Decode bitmap with inSampleSize set
+		    options.inJustDecodeBounds = false;
+		    return adjustImageOrientation(BitmapFactory.decodeFile(path, options),path);
+		}
+		
+		
+		private static Bitmap adjustImageOrientation(Bitmap image, String picturePath ) {
 	        ExifInterface exif;
 	        try {
 	            exif = new ExifInterface(picturePath);
@@ -729,6 +754,8 @@ public class LogbookDetail extends Activity {
 	        }
 	        return image.copy(Bitmap.Config.ARGB_8888, true);
 	    }
+
+		
 		
 		//PHOTO - END
 	

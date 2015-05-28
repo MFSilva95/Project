@@ -1,6 +1,7 @@
 package com.jadg.mydiabetes;
 
 import java.io.File;
+import java.io.IOException;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,12 +9,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Point;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -26,6 +28,7 @@ import com.jadg.mydiabetes.database.DB_Write;
 
 
 public class ViewPhoto extends Activity {
+	ImageView img;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,88 +41,102 @@ public class ViewPhoto extends Activity {
 		if(args!=null){
 			String path = args.getString("Path");
 			Log.d("DIRPATH", path);
-			ImageView img = (ImageView)findViewById(R.id.viewphoto_img);
-			Bitmap b = decodeFile(path);
-			//b = adjustImageOrientation(b,path);
-			img.setImageBitmap(b);
+			img = (ImageView)findViewById(R.id.viewphoto_img);
+
+			DisplayMetrics displaymetrics = new DisplayMetrics();
+			getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+			int height = (int)(displaymetrics.heightPixels * 0.3);
+			int width = (int)(displaymetrics.widthPixels * 0.3);
+			Log.d("IMAGE WIDTH:", "" + width);
+			Log.d("IMAGE HEIGHT:", "" + height);
 			
+			
+			Bitmap b = decodeSampledBitmapFromPath(path, width, height);
+	
+			img.setImageBitmap(b);
 		}
 	}
 	
 	
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+	    // Raw height and width of image
+	    final int height = options.outHeight;
+	    final int width = options.outWidth;
+	    int inSampleSize = 1;
+
+	    if (height > reqHeight || width > reqWidth) {
+	
+	        final int halfHeight = height / 2;
+	        final int halfWidth = width / 2;
+	
+	        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+	        // height and width larger than the requested height and width.
+	        while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
+	            inSampleSize *= 2;
+	        }
+	    }
+	
+	    return inSampleSize;
+	}
 	
 	
-	public Bitmap decodeFile(String path) {
+	public static Bitmap decodeSampledBitmapFromPath(String path, int reqWidth, int reqHeight) {
+
+	    // First decode with inJustDecodeBounds=true to check dimensions
+	    final BitmapFactory.Options options = new BitmapFactory.Options();
+	    options.inJustDecodeBounds = true;
+	    //BitmapFactory.decodeResource(res, resId, options);
+	    BitmapFactory.decodeFile(path, options);
+
+	    // Calculate inSampleSize
+	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+	    // Decode bitmap with inSampleSize set
+	    options.inJustDecodeBounds = false;
+	    return adjustImageOrientation(BitmapFactory.decodeFile(path, options),path);
+	}
+	
+	
+	private static Bitmap adjustImageOrientation(Bitmap image, String picturePath ) {
+        ExifInterface exif;
         try {
-            // Decode image size
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(path, o);
-            // The new size we want to scale to
-            Display display = getWindowManager().getDefaultDisplay();
-    		Point size = new Point();
-    		display.getSize(size);
-    		int newWidth = size.x;
-    		int newHeight = size.y;
-    		
-    		final int REQUIRED_SIZE = newWidth;
+            exif = new ExifInterface(picturePath);
+            int exifOrientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
 
-            // Find the correct scale value. It should be the power of 2.
-            int scale = 1;
-            while (o.outWidth / scale / 2 >= REQUIRED_SIZE && o.outHeight / scale / 2 >= REQUIRED_SIZE)
-                scale *= 2;
+            int rotate = 0;
+            switch (exifOrientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                rotate = 90;
+                break;
 
-            // Decode with inSampleSize
-            BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize = scale;
-            return BitmapFactory.decodeFile(path, o2);
-        } catch (Throwable e) {
-            e.printStackTrace();
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                rotate = 180;
+                break;
+
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                rotate = 270;
+                break;
+            }
+
+            if (rotate != 0) {
+                int w = image.getWidth();
+                int h = image.getHeight();
+
+                // Setting pre rotate
+                Matrix mtx = new Matrix();
+                mtx.preRotate(rotate);
+
+                // Rotating Bitmap & convert to ARGB_8888, required by tess
+                image = Bitmap.createBitmap(image, 0, 0, w, h, mtx, false);
+
+            }
+        } catch (IOException e) {
+                 return null;
         }
-        return null;
-
+        return image.copy(Bitmap.Config.ARGB_8888, true);
     }
-
-//	private Bitmap adjustImageOrientation(Bitmap image, String picturePath ) {
-//        ExifInterface exif;
-//        try {
-//            exif = new ExifInterface(picturePath);
-//            int exifOrientation = exif.getAttributeInt(
-//                    ExifInterface.TAG_ORIENTATION,
-//                    ExifInterface.ORIENTATION_NORMAL);
-//
-//            int rotate = 0;
-//            switch (exifOrientation) {
-//            case ExifInterface.ORIENTATION_ROTATE_90:
-//                rotate = 90;
-//                break;
-//
-//            case ExifInterface.ORIENTATION_ROTATE_180:
-//                rotate = 180;
-//                break;
-//
-//            case ExifInterface.ORIENTATION_ROTATE_270:
-//                rotate = 270;
-//                break;
-//            }
-//
-//            if (rotate != 0) {
-//                int w = image.getWidth();
-//                int h = image.getHeight();
-//
-//                // Setting pre rotate
-//                Matrix mtx = new Matrix();
-//                mtx.preRotate(rotate);
-//
-//                // Rotating Bitmap & convert to ARGB_8888, required by tess
-//                image = Bitmap.createBitmap(image, 0, 0, w, h, mtx, false);
-//
-//            }
-//        } catch (IOException e) {
-//                 return null;
-//        }
-//        return image.copy(Bitmap.Config.ARGB_8888, true);
-//    }
 	
 
 	@Override

@@ -1,6 +1,7 @@
 package com.jadg.mydiabetes;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,6 +17,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,6 +26,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -596,8 +600,11 @@ public class Meal extends Activity {
 		if (resultCode != Activity.RESULT_CANCELED) {
 			if (requestCode == CAPTURE_IMAGE) {
 				Toast.makeText(getApplicationContext(), getString(R.string.photoSaved) +" " + imgUri.getPath(), Toast.LENGTH_LONG).show();
-				b = decodeFile(imgUri.getPath());
-				//b = adjustImageOrientation(b,imgUri.getPath());
+				DisplayMetrics displaymetrics = new DisplayMetrics();
+				getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+				int height = (int)(displaymetrics.heightPixels * 0.1);
+				int width = (int)(displaymetrics.widthPixels * 0.1);
+				b = decodeSampledBitmapFromPath(imgUri.getPath(),width,height );
 				img.setImageBitmap(b);
 				photopath.setText(imgUri.getPath());
 			}else if (requestCode == 101010){
@@ -631,80 +638,97 @@ public class Meal extends Activity {
 	        imgUri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
 	        EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
 			ImageView img = (ImageView)findViewById(R.id.iv_MealDetail_Photo);
-			b = decodeFile(imgUri.getPath());
-			//b = adjustImageOrientation(b,imgUri.getPath());
+			
+			DisplayMetrics displaymetrics = new DisplayMetrics();
+			getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+			int height = (int)(displaymetrics.heightPixels * 0.1);
+			int width = (int)(displaymetrics.widthPixels * 0.1);
+			b = decodeSampledBitmapFromPath(imgUri.getPath(),width,height );
 			img.setImageBitmap(b);
 			photopath.setText(imgUri.getPath());
 	    }
 	}
 	
 	
-	public Bitmap decodeFile(String path) {
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+	    // Raw height and width of image
+	    final int height = options.outHeight;
+	    final int width = options.outWidth;
+	    int inSampleSize = 1;
+
+	    if (height > reqHeight || width > reqWidth) {
+	
+	        final int halfHeight = height / 2;
+	        final int halfWidth = width / 2;
+	
+	        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+	        // height and width larger than the requested height and width.
+	        while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
+	            inSampleSize *= 2;
+	        }
+	    }
+	
+	    return inSampleSize;
+	}
+	
+	
+	public static Bitmap decodeSampledBitmapFromPath(String path, int reqWidth, int reqHeight) {
+
+	    // First decode with inJustDecodeBounds=true to check dimensions
+	    final BitmapFactory.Options options = new BitmapFactory.Options();
+	    options.inJustDecodeBounds = true;
+	    //BitmapFactory.decodeResource(res, resId, options);
+	    BitmapFactory.decodeFile(path, options);
+
+	    // Calculate inSampleSize
+	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+	    // Decode bitmap with inSampleSize set
+	    options.inJustDecodeBounds = false;
+	    return adjustImageOrientation(BitmapFactory.decodeFile(path, options),path);
+	}
+	
+	
+	private static Bitmap adjustImageOrientation(Bitmap image, String picturePath ) {
+        ExifInterface exif;
         try {
-            // Decode image size
-            BitmapFactory.Options o = new BitmapFactory.Options();
-            o.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(path, o);
+            exif = new ExifInterface(picturePath);
+            int exifOrientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_NORMAL);
 
-    		final int REQUIRED_SIZE = 70;
+            int rotate = 0;
+            switch (exifOrientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                rotate = 90;
+                break;
 
-            // Find the correct scale value. It should be the power of 2.
-            int scale = 1;
-            while (o.outWidth / scale / 2 >= REQUIRED_SIZE && o.outHeight / scale / 2 >= REQUIRED_SIZE)
-                scale *= 2;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                rotate = 180;
+                break;
 
-            // Decode with inSampleSize
-            BitmapFactory.Options o2 = new BitmapFactory.Options();
-            o2.inSampleSize = scale;
-            return BitmapFactory.decodeFile(path, o2);
-        } catch (Throwable e) {
-            e.printStackTrace();
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                rotate = 270;
+                break;
+            }
+
+            if (rotate != 0) {
+                int w = image.getWidth();
+                int h = image.getHeight();
+
+                // Setting pre rotate
+                Matrix mtx = new Matrix();
+                mtx.preRotate(rotate);
+
+                // Rotating Bitmap & convert to ARGB_8888, required by tess
+                image = Bitmap.createBitmap(image, 0, 0, w, h, mtx, false);
+
+            }
+        } catch (IOException e) {
+                 return null;
         }
-        return null;
-
+        return image.copy(Bitmap.Config.ARGB_8888, true);
     }
-
-//	private Bitmap adjustImageOrientation(Bitmap image, String picturePath ) {
-//        ExifInterface exif;
-//        try {
-//            exif = new ExifInterface(picturePath);
-//            int exifOrientation = exif.getAttributeInt(
-//                    ExifInterface.TAG_ORIENTATION,
-//                    ExifInterface.ORIENTATION_NORMAL);
-//
-//            int rotate = 0;
-//            switch (exifOrientation) {
-//            case ExifInterface.ORIENTATION_ROTATE_90:
-//                rotate = 90;
-//                break;
-//
-//            case ExifInterface.ORIENTATION_ROTATE_180:
-//                rotate = 180;
-//                break;
-//
-//            case ExifInterface.ORIENTATION_ROTATE_270:
-//                rotate = 270;
-//                break;
-//            }
-//
-//            if (rotate != 0) {
-//                int w = image.getWidth();
-//                int h = image.getHeight();
-//
-//                // Setting pre rotate
-//                Matrix mtx = new Matrix();
-//                mtx.preRotate(rotate);
-//
-//                // Rotating Bitmap & convert to ARGB_8888, required by tess
-//                image = Bitmap.createBitmap(image, 0, 0, w, h, mtx, false);
-//
-//            }
-//        } catch (IOException e) {
-//                 return null;
-//        }
-//        return image.copy(Bitmap.Config.ARGB_8888, true);
-//    }
-//	
 	//PHOTO - END
 	
 
