@@ -78,20 +78,18 @@ public class Info extends Activity {
 		else{
 			setContentView(R.layout.activity_info);
 			TextView versionTextView = (TextView) findViewById(R.id.infoVersionView);
-			String version = "Versão ";
+			String version = getString(R.string.information_about_version);
 			try {
 				version += getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
 			} catch (NameNotFoundException e1) {
-				// TODO Auto-generated catch block
-				//e1.printStackTrace();
 				Log.e("ERROR GETTING VERSION NAME: ", e1.getMessage());
 			}
 			
             try {
             	long time;
             	time = getBuildDate(this);
-				String installDate = new SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault()).format(time);
-				version += " (" + installDate +")";
+				String date = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(time);
+				version += " (" + date +")";
 			} catch (NameNotFoundException e) {
 				Log.d("Info","NameNotFoundException on getting build date");
             } catch (IOException e) {

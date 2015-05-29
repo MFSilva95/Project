@@ -119,6 +119,7 @@
 	<string name="information_about_using">A utilização da aplicação apenas está disponível se estiver envolvido(a) na fase de teste da mesma (Serviço de Endocrinologia do Hospital de São João, EPE), tendo assinado o Consentimento Informado que lhe foi fornecido e estando totalmente informado(a) acerca da metodologia a desenvolver durante o estudo.</string>
 	<string name="information_about_developers">Aplicação desenvolvida por João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
 	<string name="information_about_libraries">Esta aplicação utiliza a biblioteca DroidText.</string>
+	<string name="information_about_version">Versão </string>
 	
 	
 	
