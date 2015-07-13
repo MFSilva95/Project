@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="4dp"
+    android:paddingBottom="4dp"
+    android:orientation="vertical" >
+
+   		<TextView
+	        android:id="@+id/tv_DialogDisease_Name"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:text="Doença"
+	        android:textSize="16sp"
+	        android:textStyle="bold" />
+        <EditText
+	        android:id="@+id/sp_DialogDisease_Name"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:textSize="18sp"
+	        android:hint="Gripe"
+	        android:inputType="text" >
+	    </EditText>
+    
+        <TextView
+	        android:id="@+id/tv_DialogDisease_DateFrom"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:text="De"
+	        android:textSize="16sp"
+	        android:textStyle="bold" />
+        <EditText
+	        android:id="@+id/et_DialogDisease_DateFrom"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:textSize="18sp"
+	        android:hint="20013-04-06"
+	        android:inputType="datetime" >
+	    </EditText>
+	    
+        <TextView
+	        android:id="@+id/tv_DialogDisease_DateTo"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:text="Até"
+	        android:textSize="16sp"
+	        android:textStyle="bold" />
+        <EditText
+	        android:id="@+id/et_DialogDisease_DateTo"
+	        android:layout_width="match_parent"
+	        android:layout_height="match_parent"
+	        android:textSize="18sp"
+	        android:hint="20013-04-06"
+	        android:inputType="datetime" >
+	    </EditText>
+    
+</LinearLayout>

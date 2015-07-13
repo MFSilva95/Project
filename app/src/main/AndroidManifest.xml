@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.jadg.mydiabetes"
+    android:versionCode="1"
+    android:versionName="1.01" >
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-sdk
+        android:minSdkVersion="14"
+        android:targetSdkVersion="16" />
+	<!--
+	 Removido da linha 18: android:name="com.jadg.mydiabetes"
+	Caso contrário não corre.	
+	 -->
+    <application
+        
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        
+        <activity
+            android:name="com.jadg.mydiabetes.Home"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.MyData"
+            android:label="@string/title_activity_my_data"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.Preferences"
+            android:label="@string/title_activity_preferences"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.Exercise"
+            android:label="@string/title_activity_exercise"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.Glycemia"
+            android:label="@string/title_activity_glycemia"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.Insulin"
+            android:label="@string/title_activity_insulin"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.BloodPressure"
+            android:label="@string/title_activity_blood_pressure"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.CarboHydrate"
+            android:label="@string/title_activity_carbo_hydrate"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.Cholesterol"
+            android:label="@string/title_activity_cholesterol"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.Disease"
+            android:label="@string/title_activity_disease"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.HbA1c"
+            android:label="@string/title_activity_h1_a1c"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.Weight"
+            android:label="@string/title_activity_weight"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.DataTools"
+            android:label="@string/title_activity_data_tools"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.GlyInsCarbs"
+            android:label="@string/title_activity_gly_ins_carbs"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.ExBPChoDisWei"
+            android:label="@string/title_activity_ex_bpcho_dis_wei"
+            android:parentActivityName="com.jadg.mydiabetes.GlyInsCarbs" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.GlycemiaDetail"
+            android:label="@string/title_activity_glycemia_detail"
+            android:parentActivityName="com.jadg.mydiabetes.Glycemia" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Glycemia" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.InsulinDetail"
+            android:label="@string/title_activity_insulin_detail"
+            android:parentActivityName="com.jadg.mydiabetes.Insulin" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Insulin" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.ExerciseDetail"
+            android:label="@string/title_activity_exercise_detail"
+            android:parentActivityName="com.jadg.mydiabetes.Exercise" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Exercise" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.CarboHydrateDetail"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:label="@string/title_activity_carbo_hydrate_detail"
+            android:parentActivityName="com.jadg.mydiabetes.CarboHydrate" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.CarboHydrate" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.BloodPressureDetail"
+            android:label="@string/title_activity_blood_pressure_detail"
+            android:parentActivityName="com.jadg.mydiabetes.BloodPressure" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.BloodPressure" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.CholesterolDetail"
+            android:label="@string/title_activity_cholesterol_detail"
+            android:parentActivityName="com.jadg.mydiabetes.Cholesterol" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Cholesterol" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.WeightDetail"
+            android:label="@string/title_activity_weight_detail"
+            android:parentActivityName="com.jadg.mydiabetes.Weight" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Weight" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.HbA1cDetail"
+            android:label="@string/title_activity_hb_a1c_detail"
+            android:parentActivityName="com.jadg.mydiabetes.HbA1c" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.HbA1c" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.DiseaseDetail"
+            android:label="@string/title_activity_disease_detail"
+            android:parentActivityName="com.jadg.mydiabetes.Disease" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Disease" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.ImportExport"
+            android:label="@string/title_activity_import_export"
+            android:parentActivityName="com.jadg.mydiabetes.DataTools" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.DataTools" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.TagDetail"
+            android:label="@string/title_activity_tag_detail"
+            android:parentActivityName="com.jadg.mydiabetes.Preferences" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Preferences" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.TargetBG_detail"
+            android:label="@string/title_activity_target_bg_detail"
+            android:parentActivityName="com.jadg.mydiabetes.Preferences" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Preferences" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.InsulinsDetail"
+            android:label="@string/title_activity_insulins_detail"
+            android:parentActivityName="com.jadg.mydiabetes.Preferences" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Preferences" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.Meal"
+            android:label="@string/title_activity_meal"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.Info"
+            android:label="@string/title_activity_info"
+            android:parentActivityName="com.jadg.mydiabetes.DataTools" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.DataTools" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.ViewPhoto"
+            android:label="@string/title_activity_view_photo"
+            android:parentActivityName="com.jadg.mydiabetes.CarboHydrateDetail" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.CarboHydrateDetail" />
+        </activity>
+        <activity
+            android:name="com.jadg.mydiabetes.TransferActivity"
+            android:label="@string/title_activity_transfer" 
+            android:parentActivityName="com.jadg.mydiabetes.ImportExport" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.ImportExport" />
+        </activity>
+        <service
+            android:name="com.jadg.mydiabetes.sync.transfer.Stream"
+            android:exported="false" >
+        </service>
+        <activity
+            android:name="com.jadg.mydiabetes.ScanActivity"
+            android:label="@string/title_activity_scan" 
+            android:parentActivityName="com.jadg.mydiabetes.ImportExport" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.ImportExport" />
+        </activity>
+        
+        <activity
+            android:name="com.jadg.mydiabetes.Logbook"
+            android:label="@string/title_activity_logbook"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Home" />
+        </activity>
+		
+        <activity
+            android:name="com.jadg.mydiabetes.LogbookDetail"
+            android:label="@string/title_activity_logbook_detail"
+            android:parentActivityName="com.jadg.mydiabetes.Logbook" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Logbook" />
+        </activity>
+        <!-- <activity
+            android:name="com.example.projetoandroid.CloudServerActivity"
+            android:label="@string/title_activity_cloud_server" >
+        </activity>
+        <activity
+            android:name="com.example.projetoandroid.CloudLoginActivity"
+            android:label="@string/title_activity_cloud_login"
+            android:windowSoftInputMode="adjustResize|stateVisible" >
+        </activity> -->
+        
+    </application>
+
+</manifest>

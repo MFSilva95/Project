@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/menuItem_TargetsFragment_Add"
+        android:title="@string/add_TagsFragment"
+        android:icon="@drawable/plus_btn"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:enabled="true" 
+        android:visible="true"/>
+
+</menu><!-- From: file:/C:/Users/Zé/Desktop/Development/Workspaces/Android%20Studio/MyDiabetes/app/src/main/res/menu/targets_menu.xml -->

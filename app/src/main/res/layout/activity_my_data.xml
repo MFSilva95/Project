@@ -1,0 +1,236 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    tools:context=".MyData" >
+
+    <LinearLayout
+        android:paddingTop="16dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:showDividers="middle"
+        android:descendantFocusability="beforeDescendants"
+		android:focusableInTouchMode="true" >
+        
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"  >
+	        <TextView
+	            
+		        android:id="@+id/tv_MyData_Name"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Nome"
+		        android:textSize="16sp"
+		        android:textStyle="bold" />
+	        
+	        <EditText
+		        android:id="@+id/et_MyData_Name"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:textSize="18sp"
+		        android:hint="Jorge Mendes"
+		        android:inputType="text" >
+		    </EditText>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"  >
+	        <TextView
+		        android:id="@+id/tv_MyData_DiabetesType"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Tipo de diabetes"
+		        android:textSize="16sp"
+		        android:textStyle="bold" />
+	        
+	        <Spinner
+			    android:id="@+id/sp_MyData_DiabetesType"
+			    android:layout_width="match_parent"
+			    android:layout_height="match_parent" />
+	        
+        </LinearLayout>
+        
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"  >
+	        <TextView
+		        android:id="@+id/tv_MyData_InsulinRatio"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Fator de sensibilidade"
+		        android:textSize="16sp"
+		        android:textStyle="bold" />
+	        
+	        <EditText
+		        android:id="@+id/et_MyData_InsulinRatio"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:textSize="18sp"
+		        android:hint="ex.: 45"
+		        android:inputType="numberDecimal" >
+		    </EditText>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"  >
+	        <TextView
+		        android:id="@+id/tv_MyData_CarbsRatio"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Rácio Hidratos de Carbono"
+		        android:textSize="16sp"
+		        android:textStyle="bold" />
+	        
+	        <EditText
+		        android:id="@+id/et_MyData_CarbsRatio"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:textSize="18sp"
+		        android:hint="ex.: 10"
+		        android:inputType="numberDecimal" >
+		    </EditText>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"  >
+	        <TextView
+		        android:id="@+id/tv_MyData_LowerRange"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Limite para hipoglicemia"
+		        android:textSize="16sp"
+		        android:textStyle="bold" />
+	        
+	        <EditText
+		        android:id="@+id/et_MyData_LowerRange"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:textSize="18sp"
+		        android:hint="ex.: 70"
+		        android:inputType="numberDecimal" >
+		    </EditText>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"  >
+	        <TextView
+		        android:id="@+id/tv_MyData_HigherRange"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Limite para hiperglicemia"
+		        android:textSize="16sp"
+		        android:textStyle="bold" />
+	        
+	        <EditText
+		        android:id="@+id/et_MyData_HigherRange"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:textSize="18sp"
+		        android:hint="ex.: 150"
+		        android:inputType="numberDecimal" >
+		    </EditText>
+        </LinearLayout>
+        
+        
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"  >
+	        <TextView
+		        android:id="@+id/tv_MyData_BirthDate"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Data de Nascimento"
+		        android:textSize="16sp"
+		        android:textStyle="bold" />
+	        
+	        <EditText
+		        android:id="@+id/et_MyData_BirthDate"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:textSize="18sp"
+		        android:hint="1980-04-22"
+		        android:inputType="date"
+		        android:focusable="false"
+		        android:focusableInTouchMode="false"
+			    android:onClick="showDatePickerDialog" >
+		    </EditText>
+        </LinearLayout>
+        
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"  >
+	        <TextView
+		        android:id="@+id/tv_MyData_Sex"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Sexo"
+		        android:textSize="16sp"
+		        android:textStyle="bold" />
+	        
+	        <Spinner
+			    android:id="@+id/sp_MyData_Sex"
+			    android:layout_width="match_parent"
+			    android:layout_height="match_parent" />
+	        
+	        
+        </LinearLayout>
+        
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="vertical"  >
+	        <TextView
+		        android:id="@+id/tv_MyData_Height"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Altura"
+		        android:textSize="16sp"
+		        android:textStyle="bold" />
+	        
+	        <EditText
+		        android:id="@+id/et_MyData_Height"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:textSize="18sp"
+		        android:hint="ex.: 1.82"
+		        android:inputType="numberDecimal" >
+		    </EditText>
+        </LinearLayout>
+        
+    </LinearLayout>
+
+</ScrollView>
