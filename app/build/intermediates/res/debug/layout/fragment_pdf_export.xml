@@ -296,4 +296,4 @@
         android:text="Exportar"
         android:onClick="createPDF" />
     
-</LinearLayout><!-- From: file:/C:/Users/Zé/Desktop/Development/Workspaces/Android%20Studio/MyDiabetes/app/src/main/res/layout/fragment_pdf_export.xml -->
+</LinearLayout><!-- From: file:/Users/leonelsantos/Desktop/MyDiabetes/app/src/main/res/layout/fragment_pdf_export.xml -->

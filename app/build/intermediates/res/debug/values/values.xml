@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- From: file:/C:/Users/Zé/Desktop/Development/Workspaces/Android%20Studio/MyDiabetes/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/Users/leonelsantos/Desktop/MyDiabetes/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string-array name="Effort">
         <item>Muito Leve</item>
@@ -33,17 +33,17 @@
         <item>Tipo 2</item>
         <item>Gestacional</item>
     </string-array>
-    <!-- From: file:/C:/Users/Zé/Desktop/Development/Workspaces/Android%20Studio/MyDiabetes/app/src/main/res/values/colors.xml -->
+    <!-- From: file:/Users/leonelsantos/Desktop/MyDiabetes/app/src/main/res/values/colors.xml -->
     <eat-comment/>
     <color name="background_holo_dark">#ff000000</color>
     <color name="holo_blue_dark">@android:color/holo_blue_dark</color>
     <color name="primary_text_holo_dark">#fff</color>
     <color name="transparent">@android:color/transparent</color>
-    <!-- From: file:/C:/Users/Zé/Desktop/Development/Workspaces/Android%20Studio/MyDiabetes/app/src/main/res/values/dimens.xml -->
+    <!-- From: file:/Users/leonelsantos/Desktop/MyDiabetes/app/src/main/res/values/dimens.xml -->
     <eat-comment/>
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <!-- From: file:/C:/Users/Zé/Desktop/Development/Workspaces/Android%20Studio/MyDiabetes/app/src/main/res/values/strings.xml -->
+    <!-- From: file:/Users/leonelsantos/Desktop/MyDiabetes/app/src/main/res/values/strings.xml -->
     <eat-comment/>
     <string name="Carbs">H.Carb</string>
     <string name="Exercise">Exercício</string>
@@ -133,7 +133,7 @@
     <string name="transf_WaitMesg">Esperar ligação</string>
     <string name="transf_WaitTitle">Atenção</string>
     <string name="uporto">Univ. Porto</string>
-    <!-- From: file:/C:/Users/Zé/Desktop/Development/Workspaces/Android%20Studio/MyDiabetes/app/src/main/res/values/styles.xml -->
+    <!-- From: file:/Users/leonelsantos/Desktop/MyDiabetes/app/src/main/res/values/styles.xml -->
     <eat-comment/>
     <style name="AppBaseTheme" parent="@android:style/Theme.Holo">
         <!--

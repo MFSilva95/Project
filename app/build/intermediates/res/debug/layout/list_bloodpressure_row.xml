@@ -97,4 +97,4 @@
         android:layout_alignParentRight="true"
         android:src="@drawable/viewdetail"
         android:background="@color/transparent" />
-</RelativeLayout><!-- From: file:/C:/Users/Zé/Desktop/Development/Workspaces/Android%20Studio/MyDiabetes/app/src/main/res/layout/list_bloodpressure_row.xml -->
+</RelativeLayout><!-- From: file:/Users/leonelsantos/Desktop/MyDiabetes/app/src/main/res/layout/list_bloodpressure_row.xml -->

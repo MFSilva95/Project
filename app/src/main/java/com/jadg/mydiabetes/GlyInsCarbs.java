@@ -15,12 +15,6 @@ import android.widget.ScrollView;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import android.annotation.SuppressLint;
-
-
-
-
-
 
 public class GlyInsCarbs extends Activity {
 
