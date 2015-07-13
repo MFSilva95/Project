@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center_vertical" 
+    android:id="@+id/TargetBGRow">
+
+    <TextView
+        android:id="@+id/list_targetName"
+        android:layout_height="48dp"
+        android:layout_width="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_alignParentLeft="true"
+        android:paddingLeft="8dp"
+        android:textIsSelectable="false"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    
+    <LinearLayout
+	    android:id="@+id/ll_list_exercisereg_middleright"
+	    android:layout_width="80dp"
+	    android:layout_height="48dp"
+	    android:layout_marginRight="8dp"
+	    android:orientation="vertical"
+	    android:layout_centerVertical="true"
+	    android:layout_toLeftOf="@+id/list_targettimes" >
+        <TextView
+	        android:id="@+id/list_targetValue"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:gravity="center_horizontal"
+	        android:textSize="16sp"
+	        android:textStyle="bold" />
+        <TextView
+	        
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:gravity="center_horizontal"
+	        android:text="mg/dl"
+	        android:textSize="12sp" />
+	</LinearLayout>
+    
+    
+    
+    <LinearLayout
+        android:id="@+id/list_targettimes"
+	    android:layout_width="70dp"
+	    android:layout_height="wrap_content"
+	    android:gravity="center_vertical"
+	    android:layout_centerVertical="true"
+	    android:layout_alignParentRight="true"
+	    android:layout_marginRight="8dp"
+	    android:orientation="vertical" >
+	    
+	    <TextView
+	        android:id="@+id/list_targetStart"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        android:layout_gravity="center_vertical"
+	        android:gravity="center_vertical"
+	        android:layout_weight="1"
+	        android:paddingLeft="8dp"
+	        android:textIsSelectable="false"
+	        android:textAppearance="?android:attr/textAppearanceSmall" />
+	    
+	    <TextView
+	        android:id="@+id/list_targetEnd"
+	        android:layout_height="wrap_content"
+	        android:layout_width="wrap_content"
+	        android:gravity="center_vertical"
+	        android:layout_gravity="center_vertical"
+	        android:layout_weight="1"
+	        android:paddingLeft="8dp"
+	        android:textIsSelectable="false"
+	        android:textAppearance="?android:attr/textAppearanceSmall" />
+    </LinearLayout>
+    
+
+</RelativeLayout><!-- From: file:/C:/Users/Zé/Desktop/Development/Workspaces/Android%20Studio/MyDiabetes/app/src/main/res/layout/list_target_row.xml -->

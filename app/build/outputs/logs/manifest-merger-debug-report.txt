@@ -1,0 +1,349 @@
+-- Merging decision tree log ---
+manifest
+ADDED from AndroidManifest.xml:2:1
+	package
+		ADDED from AndroidManifest.xml:3:5
+		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from AndroidManifest.xml:0:0
+	android:versionName
+		ADDED from AndroidManifest.xml:5:5
+	android:versionCode
+		ADDED from AndroidManifest.xml:4:5
+		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from AndroidManifest.xml:0:0
+	xmlns:android
+		ADDED from AndroidManifest.xml:2:11
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from AndroidManifest.xml:7:5
+	android:name
+		ADDED from AndroidManifest.xml:7:22
+uses-permission#android.permission.INTERNET
+ADDED from AndroidManifest.xml:8:5
+	android:name
+		ADDED from AndroidManifest.xml:8:22
+uses-sdk
+ADDED from AndroidManifest.xml:10:5
+MERGED from com.android.support:support-v4:21.0.3:15:5
+	android:targetSdkVersion
+		ADDED from AndroidManifest.xml:12:9
+		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from AndroidManifest.xml:0:0
+	android:minSdkVersion
+		ADDED from AndroidManifest.xml:11:9
+		INJECTED from AndroidManifest.xml:0:0
+		INJECTED from AndroidManifest.xml:0:0
+application
+ADDED from AndroidManifest.xml:17:5
+MERGED from com.android.support:support-v4:21.0.3:16:5
+	android:label
+		ADDED from AndroidManifest.xml:21:9
+	android:allowBackup
+		ADDED from AndroidManifest.xml:19:9
+	android:icon
+		ADDED from AndroidManifest.xml:20:9
+	android:theme
+		ADDED from AndroidManifest.xml:22:9
+activity#com.jadg.mydiabetes.Home
+ADDED from AndroidManifest.xml:24:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:27:13
+	android:label
+		ADDED from AndroidManifest.xml:26:13
+	android:name
+		ADDED from AndroidManifest.xml:25:13
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from AndroidManifest.xml:28:13
+action#android.intent.action.MAIN
+ADDED from AndroidManifest.xml:29:17
+	android:name
+		ADDED from AndroidManifest.xml:29:25
+category#android.intent.category.LAUNCHER
+ADDED from AndroidManifest.xml:31:17
+	android:name
+		ADDED from AndroidManifest.xml:31:27
+activity#com.jadg.mydiabetes.MyData
+ADDED from AndroidManifest.xml:34:9
+	android:label
+		ADDED from AndroidManifest.xml:36:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:37:13
+	android:name
+		ADDED from AndroidManifest.xml:35:13
+meta-data#android.support.PARENT_ACTIVITY
+ADDED from AndroidManifest.xml:38:13
+	android:value
+		ADDED from AndroidManifest.xml:40:17
+	android:name
+		ADDED from AndroidManifest.xml:39:17
+activity#com.jadg.mydiabetes.Preferences
+ADDED from AndroidManifest.xml:42:9
+	android:label
+		ADDED from AndroidManifest.xml:44:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:45:13
+	android:name
+		ADDED from AndroidManifest.xml:43:13
+activity#com.jadg.mydiabetes.Exercise
+ADDED from AndroidManifest.xml:50:9
+	android:label
+		ADDED from AndroidManifest.xml:52:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:53:13
+	android:name
+		ADDED from AndroidManifest.xml:51:13
+activity#com.jadg.mydiabetes.Glycemia
+ADDED from AndroidManifest.xml:58:9
+	android:label
+		ADDED from AndroidManifest.xml:60:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:61:13
+	android:name
+		ADDED from AndroidManifest.xml:59:13
+activity#com.jadg.mydiabetes.Insulin
+ADDED from AndroidManifest.xml:66:9
+	android:label
+		ADDED from AndroidManifest.xml:68:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:69:13
+	android:name
+		ADDED from AndroidManifest.xml:67:13
+activity#com.jadg.mydiabetes.BloodPressure
+ADDED from AndroidManifest.xml:74:9
+	android:label
+		ADDED from AndroidManifest.xml:76:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:77:13
+	android:name
+		ADDED from AndroidManifest.xml:75:13
+activity#com.jadg.mydiabetes.CarboHydrate
+ADDED from AndroidManifest.xml:82:9
+	android:label
+		ADDED from AndroidManifest.xml:84:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:85:13
+	android:name
+		ADDED from AndroidManifest.xml:83:13
+activity#com.jadg.mydiabetes.Cholesterol
+ADDED from AndroidManifest.xml:90:9
+	android:label
+		ADDED from AndroidManifest.xml:92:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:93:13
+	android:name
+		ADDED from AndroidManifest.xml:91:13
+activity#com.jadg.mydiabetes.Disease
+ADDED from AndroidManifest.xml:98:9
+	android:label
+		ADDED from AndroidManifest.xml:100:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:101:13
+	android:name
+		ADDED from AndroidManifest.xml:99:13
+activity#com.jadg.mydiabetes.HbA1c
+ADDED from AndroidManifest.xml:106:9
+	android:label
+		ADDED from AndroidManifest.xml:108:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:109:13
+	android:name
+		ADDED from AndroidManifest.xml:107:13
+activity#com.jadg.mydiabetes.Weight
+ADDED from AndroidManifest.xml:114:9
+	android:label
+		ADDED from AndroidManifest.xml:116:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:117:13
+	android:name
+		ADDED from AndroidManifest.xml:115:13
+activity#com.jadg.mydiabetes.DataTools
+ADDED from AndroidManifest.xml:122:9
+	android:label
+		ADDED from AndroidManifest.xml:124:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:125:13
+	android:name
+		ADDED from AndroidManifest.xml:123:13
+activity#com.jadg.mydiabetes.GlyInsCarbs
+ADDED from AndroidManifest.xml:130:9
+	android:label
+		ADDED from AndroidManifest.xml:132:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:133:13
+	android:name
+		ADDED from AndroidManifest.xml:131:13
+activity#com.jadg.mydiabetes.ExBPChoDisWei
+ADDED from AndroidManifest.xml:138:9
+	android:label
+		ADDED from AndroidManifest.xml:140:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:141:13
+	android:name
+		ADDED from AndroidManifest.xml:139:13
+activity#com.jadg.mydiabetes.GlycemiaDetail
+ADDED from AndroidManifest.xml:146:9
+	android:label
+		ADDED from AndroidManifest.xml:148:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:149:13
+	android:name
+		ADDED from AndroidManifest.xml:147:13
+activity#com.jadg.mydiabetes.InsulinDetail
+ADDED from AndroidManifest.xml:154:9
+	android:label
+		ADDED from AndroidManifest.xml:156:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:157:13
+	android:name
+		ADDED from AndroidManifest.xml:155:13
+activity#com.jadg.mydiabetes.ExerciseDetail
+ADDED from AndroidManifest.xml:162:9
+	android:label
+		ADDED from AndroidManifest.xml:164:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:165:13
+	android:name
+		ADDED from AndroidManifest.xml:163:13
+activity#com.jadg.mydiabetes.CarboHydrateDetail
+ADDED from AndroidManifest.xml:170:9
+	android:label
+		ADDED from AndroidManifest.xml:173:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:174:13
+	android:configChanges
+		ADDED from AndroidManifest.xml:172:13
+	android:name
+		ADDED from AndroidManifest.xml:171:13
+activity#com.jadg.mydiabetes.BloodPressureDetail
+ADDED from AndroidManifest.xml:179:9
+	android:label
+		ADDED from AndroidManifest.xml:181:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:182:13
+	android:name
+		ADDED from AndroidManifest.xml:180:13
+activity#com.jadg.mydiabetes.CholesterolDetail
+ADDED from AndroidManifest.xml:187:9
+	android:label
+		ADDED from AndroidManifest.xml:189:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:190:13
+	android:name
+		ADDED from AndroidManifest.xml:188:13
+activity#com.jadg.mydiabetes.WeightDetail
+ADDED from AndroidManifest.xml:195:9
+	android:label
+		ADDED from AndroidManifest.xml:197:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:198:13
+	android:name
+		ADDED from AndroidManifest.xml:196:13
+activity#com.jadg.mydiabetes.HbA1cDetail
+ADDED from AndroidManifest.xml:203:9
+	android:label
+		ADDED from AndroidManifest.xml:205:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:206:13
+	android:name
+		ADDED from AndroidManifest.xml:204:13
+activity#com.jadg.mydiabetes.DiseaseDetail
+ADDED from AndroidManifest.xml:211:9
+	android:label
+		ADDED from AndroidManifest.xml:213:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:214:13
+	android:name
+		ADDED from AndroidManifest.xml:212:13
+activity#com.jadg.mydiabetes.ImportExport
+ADDED from AndroidManifest.xml:219:9
+	android:label
+		ADDED from AndroidManifest.xml:221:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:222:13
+	android:name
+		ADDED from AndroidManifest.xml:220:13
+activity#com.jadg.mydiabetes.TagDetail
+ADDED from AndroidManifest.xml:227:9
+	android:label
+		ADDED from AndroidManifest.xml:229:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:230:13
+	android:name
+		ADDED from AndroidManifest.xml:228:13
+activity#com.jadg.mydiabetes.TargetBG_detail
+ADDED from AndroidManifest.xml:235:9
+	android:label
+		ADDED from AndroidManifest.xml:237:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:238:13
+	android:name
+		ADDED from AndroidManifest.xml:236:13
+activity#com.jadg.mydiabetes.InsulinsDetail
+ADDED from AndroidManifest.xml:243:9
+	android:label
+		ADDED from AndroidManifest.xml:245:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:246:13
+	android:name
+		ADDED from AndroidManifest.xml:244:13
+activity#com.jadg.mydiabetes.Meal
+ADDED from AndroidManifest.xml:251:9
+	android:label
+		ADDED from AndroidManifest.xml:253:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:254:13
+	android:name
+		ADDED from AndroidManifest.xml:252:13
+activity#com.jadg.mydiabetes.Info
+ADDED from AndroidManifest.xml:259:9
+	android:label
+		ADDED from AndroidManifest.xml:261:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:262:13
+	android:name
+		ADDED from AndroidManifest.xml:260:13
+activity#com.jadg.mydiabetes.ViewPhoto
+ADDED from AndroidManifest.xml:267:9
+	android:label
+		ADDED from AndroidManifest.xml:269:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:270:13
+	android:name
+		ADDED from AndroidManifest.xml:268:13
+activity#com.jadg.mydiabetes.TransferActivity
+ADDED from AndroidManifest.xml:275:9
+	android:label
+		ADDED from AndroidManifest.xml:277:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:278:13
+	android:name
+		ADDED from AndroidManifest.xml:276:13
+service#com.jadg.mydiabetes.sync.transfer.Stream
+ADDED from AndroidManifest.xml:283:9
+	android:exported
+		ADDED from AndroidManifest.xml:285:13
+	android:name
+		ADDED from AndroidManifest.xml:284:13
+activity#com.jadg.mydiabetes.ScanActivity
+ADDED from AndroidManifest.xml:287:9
+	android:label
+		ADDED from AndroidManifest.xml:289:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:290:13
+	android:name
+		ADDED from AndroidManifest.xml:288:13
+activity#com.jadg.mydiabetes.Logbook
+ADDED from AndroidManifest.xml:296:9
+	android:label
+		ADDED from AndroidManifest.xml:298:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:299:13
+	android:name
+		ADDED from AndroidManifest.xml:297:13
+activity#com.jadg.mydiabetes.LogbookDetail
+ADDED from AndroidManifest.xml:305:9
+	android:label
+		ADDED from AndroidManifest.xml:307:13
+	android:parentActivityName
+		ADDED from AndroidManifest.xml:308:13
+	android:name
+		ADDED from AndroidManifest.xml:306:13

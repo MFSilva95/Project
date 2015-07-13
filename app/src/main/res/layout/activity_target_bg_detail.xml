@@ -1,0 +1,211 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    tools:context=".TargetBG_detail" >
+
+    <LinearLayout
+        android:paddingTop="8dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:descendantFocusability="beforeDescendants"
+		android:focusableInTouchMode="true">
+
+        
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginBottom="8dp"
+        	android:layout_marginTop="8dp" >
+        	
+            <View android:layout_height="1dip"
+		        android:layout_width="fill_parent" 
+		        android:layout_weight="1"
+		        android:background="@color/holo_blue_dark"
+		        android:layout_gravity="center_vertical" />
+            
+            <TextView
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="Descrição"
+		        android:textSize="16sp"
+		        android:gravity="center_vertical|center_horizontal" />
+            
+            <View android:layout_height="1dip"
+		        android:layout_width="fill_parent" 
+		        android:layout_weight="1"
+		        android:background="@color/holo_blue_dark" 
+		        android:layout_gravity="center_vertical" />
+        </LinearLayout>
+        <LinearLayout
+	            android:orientation="vertical"
+	            android:layout_width="fill_parent"
+	        	android:layout_height="0dp"
+	        	android:layout_weight="1"
+	        	android:gravity="center_vertical" >
+	            <EditText
+			        android:id="@+id/et_TargetBG_Nome"
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:layout_gravity="center_horizontal"
+			        android:textSize="24sp"
+			        android:inputType="text"
+			        android:layout_marginLeft="16dp"
+		        	android:layout_marginRight="16dp" />
+        </LinearLayout>
+        
+        
+        
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginBottom="8dp"
+        	android:layout_marginTop="8dp" >
+        	
+            <View android:layout_height="1dip"
+		        android:layout_width="fill_parent" 
+		        android:layout_weight="1"
+		        android:background="@color/holo_blue_dark"
+		        android:layout_gravity="center_vertical" />
+            
+            <TextView
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="1"
+		        android:text="Horário"
+		        android:textSize="16sp"
+		        android:gravity="center_vertical|center_horizontal" />
+            
+            <View android:layout_height="1dip"
+		        android:layout_width="fill_parent" 
+		        android:layout_weight="1"
+		        android:background="@color/holo_blue_dark" 
+		        android:layout_gravity="center_vertical" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginBottom="8dp" >
+	        
+            <LinearLayout
+	            android:orientation="vertical"
+	            android:layout_width="0dp"
+	        	android:layout_height="wrap_content"
+	        	android:layout_weight="1"
+	        	android:gravity="center_vertical" >
+	        	<TextView
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="De"
+			        android:textSize="16sp"
+			        android:layout_gravity="center_horizontal" />
+	            <EditText
+			        android:id="@+id/et_TargetBG_HourFrom"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="1"
+			        android:layout_marginLeft="16dp"
+			        android:layout_marginRight="16dp"
+			        android:textSize="18sp"
+			        android:gravity="center_horizontal"
+			        style="@style/Holo.Spinner"
+			        android:focusable="false"
+			        android:focusableInTouchMode="false"
+			        android:onClick="showTimePickerDialogFrom" />
+            </LinearLayout>
+            <LinearLayout
+	            android:orientation="vertical"
+	            android:layout_width="0dp"
+	        	android:layout_height="wrap_content"
+	        	android:layout_weight="1"
+	        	android:gravity="center_vertical" >
+	        	<TextView
+			        android:layout_width="wrap_content"
+			        android:layout_height="wrap_content"
+			        android:text="Até"
+			        android:textSize="16sp"
+			        android:layout_gravity="center_horizontal" />
+	            <EditText
+			        android:id="@+id/et_TargetBG_HourTo"
+			        android:layout_width="match_parent"
+			        android:layout_height="wrap_content"
+			        android:layout_weight="1"
+			        android:layout_marginLeft="16dp"
+			        android:layout_marginRight="16dp"
+			        android:textSize="18sp"
+			        android:gravity="center_horizontal"
+			        style="@style/Holo.Spinner"
+			        android:focusable="false"
+			        android:focusableInTouchMode="false"
+			        android:onClick="showTimePickerDialogTo" />
+            </LinearLayout>
+        </LinearLayout>
+        
+        
+        
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:layout_marginBottom="8dp"
+        	android:layout_marginTop="8dp" >
+        	
+            <View android:layout_height="1dip"
+		        android:layout_width="fill_parent" 
+		        android:layout_weight="1"
+		        android:background="@color/holo_blue_dark"
+		        android:layout_gravity="center_vertical" />
+            
+            <TextView
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_weight="0.60"
+		        android:text="Objetivo de glicemia"
+		        android:textSize="16sp"
+		        android:gravity="center_vertical|center_horizontal" />
+            
+            <View android:layout_height="1dip"
+		        android:layout_width="fill_parent" 
+		        android:layout_weight="1"
+		        android:background="@color/holo_blue_dark" 
+		        android:layout_gravity="center_vertical" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:gravity="center_horizontal" >
+	        
+            <EditText
+		        android:id="@+id/et_TargetBG_Glycemia"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="center_horizontal"
+		        android:width="100dp"
+		        android:textSize="24sp"
+		        android:inputType="numberDecimal" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:gravity="center_horizontal"
+        	android:layout_marginBottom="8dp" >
+            <TextView
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:text="mg/dl"
+		        android:textSize="16sp"
+		        android:gravity="center_vertical|center_horizontal" />
+        </LinearLayout>
+        
+        
+	</LinearLayout>
+</ScrollView>

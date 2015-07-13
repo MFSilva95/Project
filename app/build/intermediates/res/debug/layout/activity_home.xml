@@ -1,0 +1,256 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/homeScrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    tools:context=".Home" >
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="16dp" >
+        
+        <TableLayout android:layout_width="fill_parent"
+		    android:layout_height="match_parent"
+		    android:layout_weight="1"
+		    android:stretchColumns="0,1" >
+        	<TableRow android:id="@+id/tableRow1"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="left"
+		        android:padding="5dp" >
+            	
+        	    <Button
+        	        android:id="@+id/meal"
+        	        android:layout_width="80dp"
+        	        android:layout_height="80dp"
+        	        android:layout_marginBottom="8dp"
+        	        android:layout_marginLeft="16dp"
+        	        android:layout_marginRight="16dp"
+        	        android:layout_marginTop="8dp"
+        	        android:background="@color/background_holo_dark"
+        	        android:drawableTop="@drawable/meal"
+        	        android:height="80dp"
+        	        android:onClick="Call_Meal"
+        	        android:paddingTop="8dp"
+        	        android:text="@string/Meal"
+        	        android:textColor="@color/primary_text_holo_dark"
+        	        android:textSize="14sp"
+        	        android:width="80dp" />
+        	    
+        	    <Button
+        	        android:id="@+id/glycemia"
+        	        android:layout_width="80dp"
+        	        android:layout_height="80dp"
+        	        android:layout_marginBottom="8dp"
+        	        android:layout_marginLeft="16dp"
+        	        android:layout_marginRight="16dp"
+        	        android:layout_marginTop="8dp"
+        	        android:background="@color/background_holo_dark"
+        	        android:drawableTop="@drawable/glucose"
+        	        android:height="80dp"
+        	        android:onClick="Call_Glycemia"
+        	        android:paddingTop="8dp"
+        	        android:text="@string/Glycemia"
+        	        android:textColor="@color/primary_text_holo_dark"
+        	        android:textSize="14sp"
+        	        android:width="80dp" />
+        	    
+        	</TableRow>
+        	<TableRow android:id="@+id/tableRow2"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="left"
+		        android:padding="5dp" >
+        	    
+        	    <Button
+        	        android:id="@+id/exercise"
+        	        android:layout_width="80dp"
+        	        android:layout_height="80dp"
+        	        android:layout_marginBottom="8dp"
+        	        android:layout_marginLeft="16dp"
+        	        android:layout_marginRight="16dp"
+        	        android:layout_marginTop="8dp"
+        	        android:background="@color/background_holo_dark"
+        	        android:drawableTop="@drawable/exercise"
+        	        android:height="80dp"
+        	        android:onClick="Call_Exercise"
+        	        android:paddingTop="8dp"
+        	        android:text="@string/Exercise"
+        	        android:textColor="@color/primary_text_holo_dark"
+        	        android:textSize="14sp"
+        	        android:width="80dp" />
+
+        	    <Button
+        	        android:id="@+id/insulina"
+        	        android:layout_width="80dp"
+        	        android:layout_height="80dp"
+        	        android:layout_marginBottom="8dp"
+        	        android:layout_marginLeft="16dp"
+        	        android:layout_marginRight="16dp"
+        	        android:layout_marginTop="8dp"
+        	        android:background="@color/background_holo_dark"
+        	        android:drawableTop="@drawable/insulin"
+        	        android:height="80dp"
+        	        android:onClick="Call_Insulin"
+        	        android:paddingTop="8dp"
+        	        android:text="@string/Insulin"
+        	        android:textColor="@color/primary_text_holo_dark"
+        	        android:textSize="14sp"
+        	        android:width="80dp" />
+
+        	</TableRow>
+        	<TableRow android:id="@+id/tableRow3"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:gravity="left"
+		        android:padding="5dp" >
+
+		        <Button
+		            android:id="@+id/carbs"
+		            android:layout_width="80dp"
+		            android:layout_height="80dp"
+		            android:layout_marginBottom="8dp"
+		            android:layout_marginLeft="16dp"
+		            android:layout_marginRight="16dp"
+		            android:layout_marginTop="8dp"
+		            android:background="@color/background_holo_dark"
+		            android:drawableTop="@drawable/carbs"
+		            android:height="80dp"
+		            android:onClick="Call_Carbs"
+		            android:paddingTop="8dp"
+		            android:text="@string/Carbs"
+		            android:textColor="@color/primary_text_holo_dark"
+		            android:textSize="14sp"
+		            android:width="80dp" />
+		        
+		        <Button
+        	        android:id="@+id/logbook"
+        	        android:layout_width="80dp"
+        	        android:layout_height="80dp"
+        	        android:layout_marginBottom="8dp"
+        	        android:layout_marginLeft="16dp"
+        	        android:layout_marginRight="16dp"
+        	        android:layout_marginTop="8dp"
+        	        android:background="@color/background_holo_dark"
+        	        android:drawableTop="@drawable/logbook"
+        	        android:height="80dp"
+        	        android:onClick="Call_Logbook"
+        	        android:paddingTop="8dp"
+        	        android:text="@string/Logbook"
+        	        android:textColor="@color/primary_text_holo_dark"
+        	        android:textSize="14sp"
+        	        android:width="80dp" />
+            </TableRow>
+        
+        </TableLayout>
+        
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="60dp"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp" >
+	        <Button
+	  	        android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentLeft="false"
+                android:layout_marginRight="8dp"
+                android:layout_centerVertical="true"
+	            android:id="@+id/glycemiasss"
+	            android:drawableRight="@drawable/viewdetail"
+	            android:background="@color/background_holo_dark"
+	            android:onClick="Call_OutrasLeituras" />
+        
+        
+        </RelativeLayout>
+        <!-- 
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:clickable="true"
+	        android:onClick="Call_Leituras" >
+	        
+            <ImageView
+				android:id="@+id/img_home_readings"
+				android:contentDescription="readings_img"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:layout_gravity="right"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:src="@drawable/settings" />
+	        
+	        <TextView
+		        android:id="@+id/tv_home_readings"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Registos Diários"
+		        android:textSize="24sp"
+		        android:gravity="left|center_vertical" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:clickable="true"
+	        android:onClick="Call_OutrasLeituras" >
+	        
+            <ImageView
+				android:id="@+id/img_home_other"
+				android:contentDescription="other_img"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:layout_gravity="right"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:src="@drawable/settings" />
+	        
+	        <TextView
+		        android:id="@+id/tv_home_other"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Outros Registos"
+		        android:textSize="24sp"
+		        android:gravity="left|center_vertical" />
+        </LinearLayout>
+        
+        <LinearLayout
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:clickable="true" >
+	        
+            <ImageView
+				android:id="@+id/img_home_combined"
+				android:contentDescription="combined_img"
+				android:layout_width="wrap_content"
+				android:layout_height="fill_parent"
+				android:layout_gravity="right"
+				android:layout_marginLeft="8dp"
+				android:layout_marginRight="8dp"
+				android:src="@drawable/settings" />
+	        
+	        <TextView
+		        android:id="@+id/tv_home_combined"
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:text="Combinado"
+		        android:textSize="24sp"
+		        android:gravity="left|center_vertical" />
+        </LinearLayout>
+         -->
+    </LinearLayout>
+</ScrollView><!-- From: file:/C:/Users/Zé/Desktop/Development/Workspaces/Android%20Studio/MyDiabetes/app/src/main/res/layout/activity_home.xml -->
