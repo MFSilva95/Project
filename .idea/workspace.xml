@@ -6,164 +6,9 @@
     </shared>
   </component>
   <component name="ChangeListManager">
-    <list default="true" readonly="true" id="84745512-9510-4068-9790-273ce4854cbc" name="Default" comment="Add Leonel Glycemia.java">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" afterPath="$PROJECT_DIR$/build/intermediates/gradle_project_sync_data.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/outputFileStates.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/outputFileStates.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/resources/resources-debug-androidTest.ap_" afterPath="$PROJECT_DIR$/app/build/intermediates/resources/resources-debug-androidTest.ap_" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/resources/resources-debug.ap_" afterPath="$PROJECT_DIR$/app/build/intermediates/resources/resources-debug.ap_" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/.gradle/2.2.1/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/manifests/full/debug/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/manifests/full/debug/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jadg/mydiabetes/GlyInsCarbs.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jadg/mydiabetes/GlyInsCarbs.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/jadg/mydiabetes/Glycemia.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/jadg/mydiabetes/Glycemia.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/generated/source/r/debug/com/jadg/mydiabetes/R.java" afterPath="$PROJECT_DIR$/app/build/generated/source/r/debug/com/jadg/mydiabetes/R.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/symbols/debug/R.txt" afterPath="$PROJECT_DIR$/app/build/intermediates/symbols/debug/R.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/drawable/abs__ic_clear.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/drawable/abs__ic_clear.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_blood_pressure.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_blood_pressure.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_blood_pressure_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_blood_pressure_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_carbo_hydrate.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_carbo_hydrate.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_carbohydrate_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_carbohydrate_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_cholesterol.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_cholesterol.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_cholesterol_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_cholesterol_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_datatools.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_datatools.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_disease.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_disease.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_disease_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_disease_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_exbpchodiswei.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_exbpchodiswei.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_exercise.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_exercise.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_exercise_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_exercise_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_glycemia.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_glycemia.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_glycemia_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_glycemia_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_glyinscarbs.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_glyinscarbs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_hba1c.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_hba1c.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_hba1c_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_hba1c_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_home.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_home.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_import_export.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_import_export.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_info.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_info.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_info2.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_info2.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_insulin.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_insulin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_insulin_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_insulin_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_insulins_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_insulins_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_logbook.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_logbook.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_meal.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_meal.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_my_data.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_my_data.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_preferences.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_preferences.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_scan.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_scan.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_tag_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_tag_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_target_bg_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_target_bg_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_transfer.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_transfer.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_viewphoto.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_viewphoto.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_weight.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_weight.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_weight_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/activity_weight_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/app.iml" afterPath="$PROJECT_DIR$/app/app.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/blood_pressure.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/blood_pressure.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/blood_pressure_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/blood_pressure_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/blood_pressure_detail_edit.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/blood_pressure_detail_edit.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build.gradle" afterPath="$PROJECT_DIR$/app/build.gradle" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/carbo_hydrate.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/carbo_hydrate.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/carbo_hydrate_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/carbo_hydrate_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/carbo_hydrate_detail_edit.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/carbo_hydrate_detail_edit.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/cholesterol.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/cholesterol.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/cholesterol_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/cholesterol_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/cholesterol_detail_edit.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/cholesterol_detail_edit.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/data_tools.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/data_tools.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_bloodpressure_new_entry.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_bloodpressure_new_entry.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_carbohydrate_new_entry.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_carbohydrate_new_entry.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_cholesterol_new_entry.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_cholesterol_new_entry.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_disease_new_entry.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_disease_new_entry.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_exercise_new_entry.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_exercise_new_entry.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_glycemia_new_entry.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_glycemia_new_entry.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_h1a1c_new_entry.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_h1a1c_new_entry.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_new_disease.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_new_disease.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_new_exercise.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_new_exercise.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_new_insulin.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_new_insulin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_new_medicine.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_new_medicine.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_new_tag.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_new_tag.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_weight_new_entry.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/dialog_weight_new_entry.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/disease.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/disease.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/disease_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/disease_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/disease_detail_edit.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/disease_detail_edit.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/diseases_menu.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/diseases_menu.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/droidText_0_4.xml" afterPath="$PROJECT_DIR$/.idea/libraries/droidText_0_4.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/ex_bpcho_dis_wei.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/ex_bpcho_dis_wei.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/exercise.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/exercise.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/exercise_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/exercise_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/exercise_detail_edit.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/exercise_detail_edit.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/exercises_menu.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/exercises_menu.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_db__backup_restore.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_db__backup_restore.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_diseases.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_diseases.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_exercises.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_exercises.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_insulins.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_insulins.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_medicines.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_medicines.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_pdf_export.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_pdf_export.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_sync.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_sync.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_tags.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_tags.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_target_bg.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_target_bg.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_transfer.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/fragment_transfer.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/gly_ins_carbs.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/gly_ins_carbs.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/glycemia.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/glycemia.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/glycemia_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/glycemia_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/glycemia_detail_edit.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/glycemia_detail_edit.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/gradle.xml" afterPath="$PROJECT_DIR$/.idea/gradle.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/hba1c.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/hba1c.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/hba1c_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/hba1c_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/hba1c_detail_edit.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/hba1c_detail_edit.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/home.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/home.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/import_export.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/import_export.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/info.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/info.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/insulin.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/insulin.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/insulin_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/insulin_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/insulin_detail_edit.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/insulin_detail_edit.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/insulins_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/insulins_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/insulins_detail_edit.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/insulins_detail_edit.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/insulins_menu.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/insulins_menu.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_bloodpressure_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_bloodpressure_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_carbs_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_carbs_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_cholesterol_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_cholesterol_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_disease_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_disease_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_diseasereg_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_diseasereg_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_exercise_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_exercise_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_exercisereg_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_exercisereg_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_glycemia_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_glycemia_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_hba1c_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_hba1c_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_insulin_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_insulin_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_insulinreg_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_insulinreg_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_logbook_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_logbook_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_medicine_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_medicine_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_tag_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_tag_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_target_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_target_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_weight_row.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/layout/list_weight_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/local.properties" afterPath="$PROJECT_DIR$/local.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/logbook_detail_edit.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/logbook_detail_edit.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/meal.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/meal.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/medicines_menu.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/medicines_menu.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeAssets/androidTest/debug/merger.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeAssets/androidTest/debug/merger.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeAssets/debug/merger.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeAssets/debug/merger.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeResources/androidTest/debug/merger.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeResources/androidTest/debug/merger.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeResources/debug/merger.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/incremental/mergeResources/debug/merger.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/my_data.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/my_data.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/scan.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/scan.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_annotations_21_0_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_annotations_21_0_3.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/support_v4_21_0_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/support_v4_21_0_3.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/tag_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/tag_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/tag_detail_edit.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/tag_detail_edit.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/tags_menu.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/tags_menu.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/target_bg_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/target_bg_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/target_bg_detail_edit.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/target_bg_detail_edit.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/targets_menu.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/targets_menu.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/transfer.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/transfer.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/values-en/values-en.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/values-en/values-en.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/values-sw720dp-land/values-sw720dp-land.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/values-sw720dp-land/values-sw720dp-land.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/values-v11/values-v11.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/values-v11/values-v11.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/values-v14/values-v14.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/values-v14/values-v14.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/values/values.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/values/values.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/view_photo.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/view_photo.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/weight.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/weight.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/weight_detail.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/weight_detail.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/weight_detail_edit.xml" afterPath="$PROJECT_DIR$/app/build/intermediates/res/debug/menu/weight_detail_edit.xml" />
+    <list default="true" readonly="true" id="84745512-9510-4068-9790-273ce4854cbc" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/jadg/mydiabetes/usability" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/jadg/mydiabetes/usability/ActivityEvent.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="MyDiabetes.iws" />
@@ -212,17 +57,48 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Glycemia.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Glycemia.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jadg/mydiabetes/Glycemia.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.6079545">
-              <caret line="38" column="74" selection-start-line="38" selection-start-column="74" selection-end-line="38" selection-end-column="74" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ActivityEvent.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jadg/mydiabetes/usability/ActivityEvent.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.071428575">
+              <caret line="5" column="45" selection-start-line="5" selection-start-column="45" selection-end-line="5" selection-end-column="45" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BloodPressureAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jadg/mydiabetes/database/BloodPressureAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="GradleLocalSettings">
     <option name="availableProjects">
@@ -1498,6 +1374,7 @@
       <list>
         <option value="$PROJECT_DIR$/app/build.gradle" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/jadg/mydiabetes/Glycemia.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/jadg/mydiabetes/ActivityEvent.java" />
       </list>
     </option>
   </component>
@@ -1515,7 +1392,7 @@
     <OptionsSetting value="true" id="Update" />
     <OptionsSetting value="true" id="Status" />
     <OptionsSetting value="true" id="Edit" />
-    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="2" id="Add" />
     <ConfirmationsSetting value="1" id="Remove" />
   </component>
   <component name="ProjectView">
@@ -1573,6 +1450,28 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="mydiabetes" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="MyDiabetes" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="mydiabetes" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidPsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="usability" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -1831,7 +1730,13 @@
       <option name="project" value="LOCAL" />
       <updated>1436809640483</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add Leonel Glycemia.java">
+      <created>1436813427152</created>
+      <option name="number" value="00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1436813427153</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">
@@ -1848,7 +1753,7 @@
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32925472" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32769045" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39105338" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -1862,7 +1767,7 @@
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18055555" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28428927" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2382104" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -1953,9 +1858,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jadg/mydiabetes/Glycemia.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.6079545">
-          <caret line="38" column="74" selection-start-line="38" selection-start-column="74" selection-end-line="38" selection-end-column="74" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jadg/mydiabetes/database/BloodPressureAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/jadg/mydiabetes/usability/ActivityEvent.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.071428575">
+          <caret line="5" column="45" selection-start-line="5" selection-start-column="45" selection-end-line="5" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
