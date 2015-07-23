@@ -148,7 +148,7 @@
             android:parentActivityName="com.jadg.mydiabetes.Glycemia" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Glycemia" />
+                android:value="com.jadg.mydiabetes.Glycemia" />
         </activity>
         <activity
             android:name="com.jadg.mydiabetes.InsulinDetail"
