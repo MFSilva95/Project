@@ -1,5 +1,12 @@
 package com.jadg.mydiabetes;
 
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
+import android.widget.ScrollView;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -28,14 +35,17 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
@@ -49,40 +59,61 @@ import com.jadg.mydiabetes.database.NoteDataBinding;
 import com.jadg.mydiabetes.database.TagDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 import com.jadg.mydiabetes.dialogs.TimePickerFragment;
-
-
+import com.jadg.mydiabetes.usability.ActivityEvent;
 
 
 public class Meal extends Activity {
 
-	
+
 	ArrayList<String> allInsulins;
 	//photo variables - start
 	final private int CAPTURE_IMAGE = 2;
 	Uri imgUri;
 	Bitmap b;
 	//photo variables - end
-	
+
+	// variavel que contem o nome da janela em que vai ser contado o tempo
+	// contem o tempo de inicio ou abertura dessa janela
+	// no fim de fechar a janela vai conter o tempo em que a janela foi fechada
+	// e vai criar uma entrada na base de dados a registar os tempos
+	ActivityEvent activityEvent;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_meal);
 		// Show the Up button in the action bar.
 		getActionBar();
-		
+
 		DB_Read read = new DB_Read(this);
 		if(!read.Insulin_HasInsulins()){
 			ShowDialogAddInsulin();
 		}
 		read.close();
-		
-		
+
+
 		FillDateHour();
 		FillTagSpinner();
 		SetTagByTime();
 		SetTargetByHour();
 		FillInsulinSpinner();
-		
+
+		// bloco de codigo que verifica se o utilizador carregou numa zona
+		// "vazia" do ecra. Neste caso regista o click como um missed click
+		ScrollView sv = (ScrollView)findViewById(R.id.mealScrollView);
+		sv.setOnTouchListener(new View.OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					DB_Write write = new DB_Write(Meal.this);    // gera uma nova instancia de escrita na base de dados
+					write.newClick("Meal_Missed_Click");                // regista o clique na base de dados
+
+					write.newMissed(event.getX(), event.getY(), "Meal");
+					Log.d("test", event.toString());
+				}
+				return true;
+			}
+		});
+
 		EditText hora = (EditText)findViewById(R.id.et_MealDetail_Hora);
 		hora.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -93,20 +124,20 @@ public class Meal extends Activity {
 			@Override
 			public void afterTextChanged(Editable s) { }
 		});
-		
-		
+
+
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
 		final double iRatio = Double.valueOf(obj[3].toString());
 		final double cRatio = Double.valueOf(obj[4].toString());
 		rdb.close();
-		
+
 		final EditText insulinunits = (EditText)findViewById(R.id.et_MealDetail_InsulinUnits);
 		final EditText target = (EditText)findViewById(R.id.et_MealDetail_TargetGlycemia);
 		final EditText glycemia = (EditText)findViewById(R.id.et_MealDetail_Glycemia);
 		final EditText carbs = (EditText)findViewById(R.id.et_MealDetail_Carbs);
-		
-		
+
+
 		target.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -128,7 +159,7 @@ public class Meal extends Activity {
 			@Override
 			public void afterTextChanged(Editable s) { }
 		});
-		
+
 		glycemia.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -150,7 +181,7 @@ public class Meal extends Activity {
 			@Override
 			public void afterTextChanged(Editable s) { }
 		});
-		
+
 		carbs.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -172,28 +203,51 @@ public class Meal extends Activity {
 			@Override
 			public void afterTextChanged(Editable s) { }
 		});
-		
+
 	}
 
-	
+	// Esta funcao e chamada sempre que a actividade atual passa a ser a Meal
+	// ou seja, quando a janela a mostrar é a janela da Meal. Assim, é nesta
+	// funcao que o timer inicia.
+	@Override
+	public void onResume(){
+		activityEvent = new ActivityEvent(new DB_Write(this), "Meal");
+		super.onPause();
+	}
+
+	// Esta funcao e chamada sempre que a actividade atual deixa de ser a Meal
+	// ou seja, quando a janela a mostrar deixa de ser a janela da Meal. Assim,
+	// é nesta funcao que o timer para e que guardamos a nova entrada na base de dados.
+	@Override
+	public void onPause(){
+		activityEvent.stop();
+		super.onPause();
+	}
+
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		MenuInflater inflater = getMenuInflater();
-		
+
 		inflater.inflate(R.menu.meal, menu);
-		
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		DB_Write write = new DB_Write(this);			// gera uma nova instancia de escrita na base de dados
+
 		switch (item.getItemId()) {
 			case android.R.id.home:
+				write.newClick("menuItem_Meal_Home");	// regista o clique na base de dados
+
 				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_MealDetail_Save:
-				
+				write.newClick("menuItem_MealDetail_Save");		// regista o clique na base de dados
+
 				VerifySaveReads();
 				//Toast.makeText(this, "Clicado em gravar", Toast.LENGTH_LONG).show();
 				//NavUtils.navigateUpFromSameTask(this);
@@ -202,36 +256,36 @@ public class Meal extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	
+
 	@SuppressLint("SimpleDateFormat")
 	public void FillDateHour(){
 		EditText date = (EditText)findViewById(R.id.et_MealDetail_Data);
 		final Calendar c = Calendar.getInstance();
-	    Date newDate = c.getTime();
-	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-	    String dateString = formatter.format(newDate);
-        date.setText(dateString);
-        
-        EditText hour = (EditText)findViewById(R.id.et_MealDetail_Hora);
-        formatter = new SimpleDateFormat("HH:mm:ss");
-        String timeString = formatter.format(newDate);
-        hour.setText(timeString);
+		Date newDate = c.getTime();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = formatter.format(newDate);
+		date.setText(dateString);
+
+		EditText hour = (EditText)findViewById(R.id.et_MealDetail_Hora);
+		formatter = new SimpleDateFormat("HH:mm:ss");
+		String timeString = formatter.format(newDate);
+		hour.setText(timeString);
 	}
-	
+
 	public void FillTagSpinner(){
 		Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
 		ArrayList<String> allTags = new ArrayList<String>();
 		DB_Read rdb = new DB_Read(this);
 		ArrayList<TagDataBinding> t = rdb.Tag_GetAll();
 		rdb.close();
-		
-		
+
+
 		if(t!=null){
 			for (TagDataBinding i : t){
 				allTags.add(i.getName());
 			}
 		}
-		
+
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allTags);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
@@ -240,20 +294,20 @@ public class Meal extends Activity {
 	//@SuppressWarnings("deprecation")
 	public void showDatePickerDialog(View v){
 		DialogFragment newFragment = new DatePickerFragment();
-	    Bundle args = new Bundle();
-	    args.putInt("textbox",R.id.et_MealDetail_Data);
-	    newFragment.setArguments(args);
-	    newFragment.show(getFragmentManager(), "DatePicker");
+		Bundle args = new Bundle();
+		args.putInt("textbox",R.id.et_MealDetail_Data);
+		newFragment.setArguments(args);
+		newFragment.show(getFragmentManager(), "DatePicker");
 	}
-	
+
 	//@SuppressWarnings("deprecation")
 	public void showTimePickerDialog(View v) {
-	    DialogFragment newFragment = new TimePickerFragment();
-	    Bundle args = new Bundle();
-	    args.putInt("textbox",R.id.et_MealDetail_Hora);
-	    newFragment.setArguments(args);
-	    newFragment.show(getFragmentManager(), "timePicker");
-	    
+		DialogFragment newFragment = new TimePickerFragment();
+		Bundle args = new Bundle();
+		args.putInt("textbox",R.id.et_MealDetail_Hora);
+		newFragment.setArguments(args);
+		newFragment.show(getFragmentManager(), "timePicker");
+
 	}
 
 	public void SetTagByTime(){
@@ -267,52 +321,52 @@ public class Meal extends Activity {
 
 	public static void SelectSpinnerItemByValue(Spinner spnr, String value)
 	{
-	    SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
-	    for (int position = 0; position < adapter.getCount(); position++)
-	    {
-	        if(adapter.getItem(position).equals(value))
-	        {
-	            spnr.setSelection(position);
-	            return;
-	        }
-	    }
+		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
+		for (int position = 0; position < adapter.getCount(); position++)
+		{
+			if(adapter.getItem(position).equals(value))
+			{
+				spnr.setSelection(position);
+				return;
+			}
+		}
 	}
-	
+
 
 	public void ShowDialogAddInsulin(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Informação")
-	    .setMessage("Antes de adicionar uma refeição deve adicionar a insulina a administrar!")
-	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se não está associada a nenhuma entrada da DB
-	        	 //Rever porque não elimina o registo de glicemia
-	        	 Intent intent = new Intent(c, Preferences.class);
-	        	 intent.putExtra("tabPosition", 2);
-	        	 startActivity(intent);
-	        	 end();
-	         }
-	    }).show();
+				.setTitle("Informação")
+				.setMessage("Antes de adicionar uma refeição deve adicionar a insulina a administrar!")
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						//Falta verificar se não está associada a nenhuma entrada da DB
+						//Rever porque não elimina o registo de glicemia
+						Intent intent = new Intent(c, Preferences.class);
+						intent.putExtra("tabPosition", 4);
+						startActivity(intent);
+						end();
+					}
+				}).show();
 	}
-	
+
 	public void ShowDialogAddTarget(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Informação")
-	    .setMessage("Antes de adicionar uma refeição deve adicionar os seus objetivos da glicemia!")
-	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-	         public void onClick(DialogInterface dialog, int whichButton) {
-	        	 //Falta verificar se não está associada a nenhuma entrada da DB
-	        	 //Rever porque não elimina o registo de glicemia
-	        	 Intent intent = new Intent(c, Preferences.class);
-	        	 intent.putExtra("tabPosition", 1);
-	        	 startActivity(intent);
-	        	 finish();
-	         }
-	    }).show();
+				.setTitle("Informação")
+				.setMessage("Antes de adicionar uma refeição deve adicionar os seus objetivos da glicemia!")
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						//Falta verificar se não está associada a nenhuma entrada da DB
+						//Rever porque não elimina o registo de glicemia
+						Intent intent = new Intent(c, Preferences.class);
+						intent.putExtra("tabPosition", 1);
+						startActivity(intent);
+						finish();
+					}
+				}).show();
 	}
-	
+
 	public void end(){
 		finish();
 	}
@@ -327,14 +381,14 @@ public class Meal extends Activity {
 		}
 		rdb.close();
 	}
-	
+
 	public void FillInsulinSpinner(){
 		Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
 		allInsulins = new ArrayList<String>();
 		DB_Read rdb = new DB_Read(this);
 		HashMap<Integer, String> val = rdb.Insulin_GetAllNames();
 		rdb.close();
-		
+
 		if(val!=null){
 			for (int i : val.keySet()){
 				allInsulins.add(val.get(i));
@@ -344,9 +398,9 @@ public class Meal extends Activity {
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 	}
-	
-	
-	
+
+
+
 	//-------------------------------------------
 	public void AddGlycemiaRead(){
 		Spinner TagSpinner = (Spinner)findViewById(R.id.sp_MealDetail_Tag);
@@ -354,42 +408,42 @@ public class Meal extends Activity {
 		EditText data = (EditText)findViewById(R.id.et_MealDetail_Data);
 		EditText hora = (EditText)findViewById(R.id.et_MealDetail_Hora);
 		EditText note = (EditText)findViewById(R.id.et_MealDetail_Notes);
-		
+
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
-		
+
 		//Get id of selected tag
 		String tag = TagSpinner.getSelectedItem().toString();
 		Log.d("selected Spinner", tag);
 		int idTag = rdb.Tag_GetIdByName(tag);
 		rdb.close();
-		
+
 		DB_Write reg = new DB_Write(this);
 		GlycemiaDataBinding gly = new GlycemiaDataBinding();
-		
+
 		if(!note.getText().toString().equals("")){
 			NoteDataBinding n = new NoteDataBinding();
 			n.setNote(note.getText().toString());
 			gly.setIdNote(reg.Note_Add(n));
 		}
-		
-        
-        gly.setIdUser(idUser);
-        gly.setValue(Double.parseDouble(glycemia.getText().toString()));
-        gly.setDate(data.getText().toString());
-        gly.setTime(hora.getText().toString());
-        gly.setIdTag(idTag);
-        
-		
+
+
+		gly.setIdUser(idUser);
+		gly.setValue(Double.parseDouble(glycemia.getText().toString()));
+		gly.setDate(data.getText().toString());
+		gly.setTime(hora.getText().toString());
+		gly.setIdTag(idTag);
+
+
 		reg.Glycemia_Save(gly);
 		reg.close();
-		
+
 	}
 
-	
-	
+
+
 	public void AddCarbsRead(){
 		Spinner tagSpinner = (Spinner)findViewById(R.id.sp_MealDetail_Tag);
 		EditText carbs = (EditText)findViewById(R.id.et_MealDetail_Carbs);
@@ -397,40 +451,40 @@ public class Meal extends Activity {
 		EditText hora = (EditText)findViewById(R.id.et_MealDetail_Hora);
 		EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
 		EditText note = (EditText)findViewById(R.id.et_MealDetail_Notes);
-		
+
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
-		
+
 		//Get id of selected tag
 		String tag = tagSpinner.getSelectedItem().toString();
 		Log.d("selected Spinner", tag);
 		int idTag = rdb.Tag_GetIdByName(tag);
 		rdb.close();
 		DB_Write reg = new DB_Write(this);
-        CarbsDataBinding carb = new CarbsDataBinding();
-        
-        if(!note.getText().toString().equals("")){
+		CarbsDataBinding carb = new CarbsDataBinding();
+
+		if(!note.getText().toString().equals("")){
 			NoteDataBinding n = new NoteDataBinding();
 			n.setNote(note.getText().toString());
 			carb.setId_Note(reg.Note_Add(n));
 		}
-        
-        
-        carb.setId_User(idUser);
-        carb.setCarbsValue(Double.parseDouble(carbs.getText().toString()));
-        carb.setId_Tag(idTag);
-        carb.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-        carb.setDate(data.getText().toString());
-        carb.setTime(hora.getText().toString());
 
-	
-		
+
+		carb.setId_User(idUser);
+		carb.setCarbsValue(Double.parseDouble(carbs.getText().toString()));
+		carb.setId_Tag(idTag);
+		carb.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
+		carb.setDate(data.getText().toString());
+		carb.setTime(hora.getText().toString());
+
+
+
 		reg.Carbs_Save(carb);
 		reg.close();
 	}
-	
+
 	public void AddInsulinRead(){
 		Spinner tagSpinner = (Spinner)findViewById(R.id.sp_MealDetail_Tag);
 		Spinner insulinSpinner = (Spinner)findViewById(R.id.sp_MealDetail_Insulin);
@@ -440,79 +494,79 @@ public class Meal extends Activity {
 		EditText target = (EditText)findViewById(R.id.et_MealDetail_TargetGlycemia);
 		EditText insulinunits = (EditText)findViewById(R.id.et_MealDetail_InsulinUnits);
 		EditText note = (EditText)findViewById(R.id.et_MealDetail_Notes);
-		
-		
+
+
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
-		
+
 		//Get id of selected tag
 		String tag = tagSpinner.getSelectedItem().toString();
 		Log.d("selected Spinner", tag);
 		int idTag = rdb.Tag_GetIdByName(tag);
-		
+
 		//Get id of selected insulin
 		String insulin = insulinSpinner.getSelectedItem().toString();
 		Log.d("selected Spinner", insulin);
 		int idInsulin = rdb.Insulin_GetByName(insulin).getId();
-		
-		
-        int idGlycemia = 0;
-        boolean hasGlycemia = false;
-        DB_Write reg = new DB_Write(this);
-        
-        InsulinRegDataBinding ins = new InsulinRegDataBinding();
-        
-        int idnote = 0;
-        
-        if(!note.getText().toString().equals("")){
+
+
+		int idGlycemia = 0;
+		boolean hasGlycemia = false;
+		DB_Write reg = new DB_Write(this);
+
+		InsulinRegDataBinding ins = new InsulinRegDataBinding();
+
+		int idnote = 0;
+
+		if(!note.getText().toString().equals("")){
 			NoteDataBinding n = new NoteDataBinding();
 			n.setNote(note.getText().toString());
 			idnote = reg.Note_Add(n);
 			ins.setIdNote(idnote);
 		}
-        
-        if(!glycemia.getText().toString().equals("")){
-        	GlycemiaDataBinding gly = new GlycemiaDataBinding();
-        	
-        	gly.setIdUser(idUser);
-            gly.setValue(Double.parseDouble(glycemia.getText().toString()));
-            gly.setDate(data.getText().toString());
-            gly.setTime(hora.getText().toString());
-            gly.setIdTag(idTag);
-    		if(idnote > 0){
-    			gly.setIdNote(idnote);
-    		}
-            
-    		idGlycemia = reg.Glycemia_Save(gly);
-    		Log.d("id glycemia", String.valueOf(idGlycemia));
-    		hasGlycemia = true;
-        }
-        
-        ins.setIdUser(idUser);
-        ins.setIdInsulin(idInsulin);
-        ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
-        ins.setDate(data.getText().toString());
-        ins.setTime(hora.getText().toString());
-        ins.setTargetGlycemia(Double.parseDouble(target.getText().toString()));
-        ins.setInsulinUnits(Double.parseDouble(insulinunits.getText().toString()));
-        ins.setIdTag(idTag);
-        
-		
+
+		if(!glycemia.getText().toString().equals("")){
+			GlycemiaDataBinding gly = new GlycemiaDataBinding();
+
+			gly.setIdUser(idUser);
+			gly.setValue(Double.parseDouble(glycemia.getText().toString()));
+			gly.setDate(data.getText().toString());
+			gly.setTime(hora.getText().toString());
+			gly.setIdTag(idTag);
+			if(idnote > 0){
+				gly.setIdNote(idnote);
+			}
+
+			idGlycemia = reg.Glycemia_Save(gly);
+			Log.d("id glycemia", String.valueOf(idGlycemia));
+			hasGlycemia = true;
+		}
+
+		ins.setIdUser(idUser);
+		ins.setIdInsulin(idInsulin);
+		ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
+		ins.setDate(data.getText().toString());
+		ins.setTime(hora.getText().toString());
+		ins.setTargetGlycemia(Double.parseDouble(target.getText().toString()));
+		ins.setInsulinUnits(Double.parseDouble(insulinunits.getText().toString()));
+		ins.setIdTag(idTag);
+
+
 		reg.Insulin_Save(ins);
-		
+
 		reg.close();
 		rdb.close();
 	}
-	
+
 	//-----------------------------------------
 	public void VerifySaveReads(){
 		EditText insulinunits = (EditText)findViewById(R.id.et_MealDetail_InsulinUnits);
 		EditText target = (EditText)findViewById(R.id.et_MealDetail_TargetGlycemia);
 		EditText glycemia = (EditText)findViewById(R.id.et_MealDetail_Glycemia);
 		EditText carbs = (EditText)findViewById(R.id.et_MealDetail_Carbs);
-		
+
 		//tem de ter um target inserido
 		DB_Read read = new DB_Read(this);
 		if(!read.Target_HasTargets()){
@@ -520,8 +574,8 @@ public class Meal extends Activity {
 			ShowDialogAddTarget();
 			return;
 		}
-			
-		
+
+
 		if(glycemia.getText().toString().equals("")){
 			glycemia.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -551,31 +605,31 @@ public class Meal extends Activity {
 			ShowDialogAddInsulin();
 			return;
 		}
-		
-		
-		
+
+
+
 		//AddGlycemiaRead();
 		AddCarbsRead();
 		AddInsulinRead();
 		NavUtils.navigateUpFromSameTask(this);
 	}
-	
-	
-	
+
+
+
 	//PHOTO - START
-	
+
 	public Uri setImageUri() {
-        // Store image in /MyDiabetes
-        File file = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes", new Date().getTime() + ".jpg");
-        File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
-        if(!dir.exists()){
-        	dir.mkdir();
-        }
-        imgUri = Uri.fromFile(file);
-        return imgUri;
+		// Store image in /MyDiabetes
+		File file = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes", new Date().getTime() + ".jpg");
+		File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
+		if(!dir.exists()){
+			dir.mkdir();
+		}
+		imgUri = Uri.fromFile(file);
+		return imgUri;
 	}
-	
-		
+
+
 	public void TakePhoto(View v) {
 		EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
 		if(!photopath.getText().toString().equals("")){
@@ -590,9 +644,9 @@ public class Meal extends Activity {
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
 			startActivityForResult(intent, CAPTURE_IMAGE);
 		}
-		
+
 	}
-	
+
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
@@ -621,24 +675,24 @@ public class Meal extends Activity {
 		}
 
 	}
-	
-	
+
+
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
-	    super.onSaveInstanceState(outState);
-	    if (imgUri != null) {
-	        outState.putString("cameraImageUri", imgUri.toString());
-	    }
+		super.onSaveInstanceState(outState);
+		if (imgUri != null) {
+			outState.putString("cameraImageUri", imgUri.toString());
+		}
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
-	    super.onRestoreInstanceState(savedInstanceState);
-	    if (savedInstanceState.containsKey("cameraImageUri")) {
-	        imgUri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
-	        EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
+		super.onRestoreInstanceState(savedInstanceState);
+		if (savedInstanceState.containsKey("cameraImageUri")) {
+			imgUri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
+			EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
 			ImageView img = (ImageView)findViewById(R.id.iv_MealDetail_Photo);
-			
+
 			DisplayMetrics displaymetrics = new DisplayMetrics();
 			getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 			int height = (int)(displaymetrics.heightPixels * 0.1);
@@ -646,90 +700,90 @@ public class Meal extends Activity {
 			b = decodeSampledBitmapFromPath(imgUri.getPath(),width,height );
 			img.setImageBitmap(b);
 			photopath.setText(imgUri.getPath());
-	    }
+		}
 	}
-	
-	
-	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-	    // Raw height and width of image
-	    final int height = options.outHeight;
-	    final int width = options.outWidth;
-	    int inSampleSize = 1;
 
-	    if (height > reqHeight || width > reqWidth) {
-	
-	        final int halfHeight = height / 2;
-	        final int halfWidth = width / 2;
-	
-	        // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-	        // height and width larger than the requested height and width.
-	        while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
-	            inSampleSize *= 2;
-	        }
-	    }
-	
-	    return inSampleSize;
+
+	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+		// Raw height and width of image
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
+
+		if (height > reqHeight || width > reqWidth) {
+
+			final int halfHeight = height / 2;
+			final int halfWidth = width / 2;
+
+			// Calculate the largest inSampleSize value that is a power of 2 and keeps both
+			// height and width larger than the requested height and width.
+			while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
+				inSampleSize *= 2;
+			}
+		}
+
+		return inSampleSize;
 	}
-	
-	
+
+
 	public static Bitmap decodeSampledBitmapFromPath(String path, int reqWidth, int reqHeight) {
 
-	    // First decode with inJustDecodeBounds=true to check dimensions
-	    final BitmapFactory.Options options = new BitmapFactory.Options();
-	    options.inJustDecodeBounds = true;
-	    //BitmapFactory.decodeResource(res, resId, options);
-	    BitmapFactory.decodeFile(path, options);
+		// First decode with inJustDecodeBounds=true to check dimensions
+		final BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		//BitmapFactory.decodeResource(res, resId, options);
+		BitmapFactory.decodeFile(path, options);
 
-	    // Calculate inSampleSize
-	    options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+		// Calculate inSampleSize
+		options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
 
-	    // Decode bitmap with inSampleSize set
-	    options.inJustDecodeBounds = false;
-	    return adjustImageOrientation(BitmapFactory.decodeFile(path, options),path);
+		// Decode bitmap with inSampleSize set
+		options.inJustDecodeBounds = false;
+		return adjustImageOrientation(BitmapFactory.decodeFile(path, options),path);
 	}
-	
-	
+
+
 	private static Bitmap adjustImageOrientation(Bitmap image, String picturePath ) {
-        ExifInterface exif;
-        try {
-            exif = new ExifInterface(picturePath);
-            int exifOrientation = exif.getAttributeInt(
-                    ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_NORMAL);
+		ExifInterface exif;
+		try {
+			exif = new ExifInterface(picturePath);
+			int exifOrientation = exif.getAttributeInt(
+					ExifInterface.TAG_ORIENTATION,
+					ExifInterface.ORIENTATION_NORMAL);
 
-            int rotate = 0;
-            switch (exifOrientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                rotate = 90;
-                break;
+			int rotate = 0;
+			switch (exifOrientation) {
+				case ExifInterface.ORIENTATION_ROTATE_90:
+					rotate = 90;
+					break;
 
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                rotate = 180;
-                break;
+				case ExifInterface.ORIENTATION_ROTATE_180:
+					rotate = 180;
+					break;
 
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                rotate = 270;
-                break;
-            }
+				case ExifInterface.ORIENTATION_ROTATE_270:
+					rotate = 270;
+					break;
+			}
 
-            if (rotate != 0) {
-                int w = image.getWidth();
-                int h = image.getHeight();
+			if (rotate != 0) {
+				int w = image.getWidth();
+				int h = image.getHeight();
 
-                // Setting pre rotate
-                Matrix mtx = new Matrix();
-                mtx.preRotate(rotate);
+				// Setting pre rotate
+				Matrix mtx = new Matrix();
+				mtx.preRotate(rotate);
 
-                // Rotating Bitmap & convert to ARGB_8888, required by tess
-                image = Bitmap.createBitmap(image, 0, 0, w, h, mtx, false);
+				// Rotating Bitmap & convert to ARGB_8888, required by tess
+				image = Bitmap.createBitmap(image, 0, 0, w, h, mtx, false);
 
-            }
-        } catch (IOException e) {
-                 return null;
-        }
-        return image.copy(Bitmap.Config.ARGB_8888, true);
-    }
+			}
+		} catch (IOException e) {
+			return null;
+		}
+		return image.copy(Bitmap.Config.ARGB_8888, true);
+	}
 	//PHOTO - END
-	
+
 
 }

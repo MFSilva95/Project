@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -18,12 +19,17 @@ import android.view.MenuItem;
 
 import android.annotation.SuppressLint;
 
-
-
-
+import com.jadg.mydiabetes.database.DB_Write;
+import com.jadg.mydiabetes.usability.ActivityEvent;
 
 
 public class ExBPChoDisWei extends Activity {
+
+	// variavel que contem o nome da janela em que vai ser contado o tempo
+	// contem o tempo de inicio ou abertura dessa janela
+	// no fim de fechar a janela vai conter o tempo em que a janela foi fechada
+	// e vai criar uma entrada na base de dados a registar os tempos
+	ActivityEvent activityEvent;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -32,23 +38,31 @@ public class ExBPChoDisWei extends Activity {
 		setContentView(R.layout.activity_exbpchodiswei);
 		// Show the Up button in the action bar.
 		getActionBar();
-		
+
 		final GestureDetector gestureDetector;
-        gestureDetector = new GestureDetector(new MyGestureDetector());
+		gestureDetector = new GestureDetector(new MyGestureDetector());
 		ScrollView sv = (ScrollView)findViewById(R.id.exbpchodisweiScrollView);
 		sv.setOnTouchListener(new OnTouchListener() {
 
-            public boolean onTouch(View v, MotionEvent event) {
-                if (gestureDetector.onTouchEvent(event)) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        });
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					DB_Write write = new DB_Write(ExBPChoDisWei.this);    // gera uma nova instancia de escrita na base de dados
+					write.newClick("ExBPChoDisWei_Missed_Click");                // regista o clique na base de dados
+
+					write.newMissed(event.getX(), event.getY(), "ExBPChoDisWei");
+					Log.d("test", event.toString());
+				}
+
+				if (gestureDetector.onTouchEvent(event)) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		});
 	}
 
-	
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -61,6 +75,8 @@ public class ExBPChoDisWei extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
+				DB_Write write = new DB_Write(this);						// gera uma nova instancia de escrita na base de dados
+				write.newClick("menuItem_ExBPChoDisWei_Home");		// regista o clique na base de dados
 				// This ID represents the Home or Up button. In the case of this
 				// activity, the Up button is shown. Use NavUtils to allow users
 				// to navigate up one level in the application structure. For
@@ -76,45 +92,78 @@ public class ExBPChoDisWei extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
-	
+
+	// Esta funcao e chamada sempre que a actividade atual passa a ser a ExBPChoDisWei
+	// ou seja, quando a janela a mostrar � a janela da ExBPChoDisWei. Assim, � nesta
+	// funcao que o timer inicia.
+	@Override
+	public void onResume(){
+		activityEvent = new ActivityEvent(new DB_Write(this), "ExBPChoDisWei");
+		super.onPause();
+	}
+
+	// Esta funcao e chamada sempre que a actividade atual deixa de ser a ExBPChoDisWei
+	// ou seja, quando a janela a mostrar deixa de ser a janela da ExBPChoDisWei. Assim,
+	// � nesta funcao que o timer para e que guardamos a nova entrada na base de dados.
+	@Override
+	public void onPause() {
+		activityEvent.stop();
+		super.onPause();
+	}
+
 	public void Call_DataTools(){
+		DB_Write write = new DB_Write(this);
+		write.newClick("Call_DataTools");
+
 		Intent intent = new Intent(this, DataTools.class);
 		startActivity(intent);
 	}
-	
-	public void Call_Exercise(View view){
-		Intent intent = new Intent(this, Exercise.class);
-		startActivity(intent);
-	}
-	
+
 	public void Call_BloodPressure(View view){
+		DB_Write write = new DB_Write(this);
+		write.newClick("Call_BloodPressure");
+
 		Intent intent = new Intent(this, BloodPressure.class);
 		startActivity(intent);
 	}
 
 	public void Call_Cholesterol(View view){
+		DB_Write write = new DB_Write(this);
+		write.newClick("Call_Cholesterol");
+
 		Intent intent = new Intent(this, Cholesterol.class);
 		startActivity(intent);
 	}
-	
+
 	public void Call_Disease(View view){
+		DB_Write write = new DB_Write(this);
+		write.newClick("Call_Disease");
+
 		Intent intent = new Intent(this, Disease.class);
 		startActivity(intent);
 	}
 
-	
+
 	public void Call_Weight(View view){
+		DB_Write write = new DB_Write(this);
+		write.newClick("Call_Weight");
+
 		Intent intent = new Intent(this, Weight.class);
 		startActivity(intent);
 	}
-	
+
 	public void Call_H1A1c(View view){
+		DB_Write write = new DB_Write(this);
+		write.newClick("Call_H1A1c");
+
 		Intent intent = new Intent(this, HbA1c.class);
 		startActivity(intent);
 	}
-	
+
 	public void Call_Middle(View view){
+		DB_Write write = new DB_Write(this);
+		write.newClick("Call_Middle");
+
 		finish();
 		//Intent intent = new Intent(this, CarboHydrate.class);
 		//startActivity(intent);
@@ -122,27 +171,27 @@ public class ExBPChoDisWei extends Activity {
 
 	private class MyGestureDetector extends SimpleOnGestureListener {
 
-	    private static final int SWIPE_MIN_DISTANCE = 120;
-	    private static final int SWIPE_MAX_OFF_PATH = 250;
-	    private static final int SWIPE_THRESHOLD_VELOCITY = 200;
+		private static final int SWIPE_MIN_DISTANCE = 120;
+		private static final int SWIPE_MAX_OFF_PATH = 250;
+		private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
-	    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-	            float velocityY) {
-	        System.out.println(" in onFling() :: ");
-	        if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-	            return false;
-	        if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
-	                && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-	        	
-	        	//Right
-        		
-	        	
-	        } else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
-	                && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-	            //Left
-	        	finish();
-	        }
-	        return super.onFling(e1, e2, velocityX, velocityY);
-	    }
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+							   float velocityY) {
+			System.out.println(" in onFling() :: ");
+			if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+				return false;
+			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
+					&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+
+				//Right
+
+
+			} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
+					&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+				//Left
+				finish();
+			}
+			return super.onFling(e1, e2, velocityX, velocityY);
+		}
 	}
 }

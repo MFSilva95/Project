@@ -614,4 +614,61 @@ public class DB_Write {
 			Log.d("Delete", "Reg_BloodGlucose");
 		}		
 	}
+
+	// -- Usability --
+
+	// funcao que muda o numero de cliques de cada botao na Base de Dados
+	public void newClick(String clicked){
+		// verifica se o botao clicado j� tinha sido clicado antes
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Usab_Clicks WHERE Clicked = '" + clicked + "'", null);
+
+		if(cursor.getCount()==1)
+		{
+			// se entramos aqui � porque o botao clicado ja tinha sido clicado antes,
+			// assim adiciona-se 1 ao total de cliques
+			cursor.moveToFirst();
+			ContentValues toUpdate = new ContentValues();
+			toUpdate.put("Total", cursor.getInt(2) + 1);
+			myDB.update("Usab_Clicks", toUpdate,  "Clicked = '" + clicked + "'", null);
+		}
+		else{
+			// se entramos aqui � porque o botao clicado nunca tinha sido clicado,
+			// neste caso cria-se uma entrada na base de dados com o nome do botao
+			// clicado e poe-se a um o numero total de cliques nesse botao
+			ContentValues toInsert = new ContentValues();
+			toInsert.put("Clicked", clicked);
+			toInsert.put("Total", 1);
+			myDB.insert("Usab_Clicks", null, toInsert);
+		}
+
+		// print no LOG de debug, pode ser comentado
+		Log.d("Clicked", clicked);
+	}
+
+	// funcao que cria um evento na Base de Dados que mostra o tempo que o utilizador demorou em dada accao
+	public void newEvent(String description, String start, String end, int duration){
+
+		ContentValues toInsert = new ContentValues();
+		toInsert.put("Description", description);
+		toInsert.put("TimeStart", start);
+		toInsert.put("TimeEnd", end);
+		toInsert.put("msDuration", duration);
+		myDB.insert("Usab_Event", null, toInsert);
+
+		// print no LOG de debug, pode ser comentado
+		Log.d("EventSaved", description);
+	}
+
+	// funcao que adiciona missed click a tabela Usab_Missed
+	public void newMissed(float x, float y, String activity) {
+
+		ContentValues toInsert = new ContentValues();
+		toInsert.put("Activity", activity);
+		toInsert.put("X", x);
+		toInsert.put("Y", y);
+		myDB.insert("Usab_Missed", null, toInsert);
+
+		// print no LOG de debug, pode ser comentado
+		Log.d("MissedClick", activity);
+	}
 }

@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
@@ -17,12 +18,17 @@ import android.widget.ScrollView;
 import android.view.Menu;
 import android.view.MenuItem;
 import com.jadg.mydiabetes.database.DB_Read;
-
-
-
+import com.jadg.mydiabetes.database.DB_Write;
+import com.jadg.mydiabetes.usability.ActivityEvent;
 
 
 public class Home extends Activity {
+
+	// variavel que contem o nome da janela em que vai ser contado o tempo
+	// contem o tempo de inicio ou abertura dessa janela
+	// no fim de fechar a janela vai conter o tempo em que a janela foi fechada
+	// e vai criar uma entrada na base de dados a registar os tempos
+	ActivityEvent activityEvent;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -36,20 +42,29 @@ public class Home extends Activity {
 			ShowDialogAddData();
 		}
 		read.close();
-		
+
 		final GestureDetector gestureDetector;
-        gestureDetector = new GestureDetector(new MyGestureDetector());
+		gestureDetector = new GestureDetector(new MyGestureDetector());
 		ScrollView sv = (ScrollView)findViewById(R.id.homeScrollView);
 		sv.setOnTouchListener(new OnTouchListener() {
 
-            public boolean onTouch(View v, MotionEvent event) {
-                if (gestureDetector.onTouchEvent(event)) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-        });
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					DB_Write write = new DB_Write(Home.this);    // gera uma nova instancia de escrita na base de dados
+					write.newClick("Home_Missed_Click");                // regista o clique na base de dados
+
+					write.newMissed(event.getX(), event.getY(), "Home");
+					Log.d("test", event.toString());
+				}
+
+				if (gestureDetector.onTouchEvent(event)) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		});
+
 	}
 
 	
@@ -71,6 +86,24 @@ public class Home extends Activity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
+	// Esta funcao e chamada sempre que a actividade atual passa a ser a Home
+	// ou seja, quando a janela a mostrar é a janela Home. Assim, é nesta
+	// funcao que o timer inicia.
+	@Override
+	public void onResume(){
+		activityEvent = new ActivityEvent(new DB_Write(this), "Home");
+		super.onPause();
+	}
+
+	// Esta funcao e chamada sempre que a actividade atual deixa de ser a Home
+	// ou seja, quando a janela a mostrar deixa de ser a janela Home. Assim,
+	// é nesta funcao que o timer para e que guardamos a nova entrada na base de dados.
+	@Override
+	public void onPause(){
+		activityEvent.stop();
+		super.onPause();
+	}
 	
 	
 	public void ShowDialogAddData(){
@@ -91,48 +124,66 @@ public class Home extends Activity {
 	}
 	
 	public void Call_DataTools(){
+		DB_Write write = new DB_Write(this);	// gera uma nova instancia de escrita na base de dados
+		write.newClick("Call_DataTools");		// regista o clique na base de dados
+
 		Intent intent = new Intent(this, DataTools.class);
-		startActivity(intent);
-	}
-	
-	public void Call_Leituras(View view){
-		Intent intent = new Intent(this, GlyInsCarbs.class);
 		startActivity(intent);
 	}
 
 	public void Call_OutrasLeituras(View view){
+		DB_Write write = new DB_Write(this);	// gera uma nova instancia de escrita na base de dados
+		write.newClick("Call_OutrasLeituras");	// regista o clique na base de dados
+
 		Intent intent = new Intent(this, ExBPChoDisWei.class);
 		startActivity(intent);
 	}
 
-	
 	public void Call_Meal(View view){
+		DB_Write write = new DB_Write(this);	// gera uma nova instancia de escrita na base de dados
+		write.newClick("Call_Meal");			// regista o clique na base de dados
+
 		Intent intent = new Intent(this, Meal.class);
 		startActivity(intent);
 	}
-	
+
 	public void Call_Glycemia(View view){
+		DB_Write write = new DB_Write(this);	// gera uma nova instancia de escrita na base de dados
+		write.newClick("Call_Glycemia");		// regista o clique na base de dados
+
 		Intent intent = new Intent(this, Glycemia.class);
 		startActivity(intent);
 	}
-	
+
 	public void Call_Exercise(View view){
+		DB_Write write = new DB_Write(this);	// gera uma nova instancia de escrita na base de dados
+		write.newClick("Call_Exercise");		// regista o clique na base de dados
+
 		Intent intent = new Intent(this, Exercise.class);
 		startActivity(intent);
 	}
 
 	public void Call_Insulin(View view){
+		DB_Write write = new DB_Write(this);	// gera uma nova instancia de escrita na base de dados
+		write.newClick("Call_Insulin");			// regista o clique na base de dados
+
 		Intent intent = new Intent(this, Insulin.class);
 		startActivity(intent);
 	}
-	
+
 	public void Call_Carbs(View view){
+		DB_Write write = new DB_Write(this);	// gera uma nova instancia de escrita na base de dados
+		write.newClick("Call_Carbs");			// regista o clique na base de dados
+
 		Intent intent = new Intent(this, CarboHydrate.class);
 		startActivity(intent);
 	}
 	
 	//ADDED BY ZE ORNELAS
 	public void Call_Logbook(View view){
+		DB_Write write = new DB_Write(this);	// gera uma nova instancia de escrita na base de dados
+		write.newClick("Call_Logbook");			// regista o clique na base de dados
+
 		Intent intent = new Intent(this, Logbook.class);
 		startActivity(intent);
 	}

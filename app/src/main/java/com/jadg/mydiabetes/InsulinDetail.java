@@ -9,7 +9,9 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.view.MotionEvent;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.annotation.SuppressLint;
@@ -37,6 +39,7 @@ import com.jadg.mydiabetes.database.NoteDataBinding;
 import com.jadg.mydiabetes.database.TagDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 import com.jadg.mydiabetes.dialogs.TimePickerFragment;
+import com.jadg.mydiabetes.usability.ActivityEvent;
 
 
 public class InsulinDetail extends Activity {
@@ -45,7 +48,13 @@ public class InsulinDetail extends Activity {
 	int idNote = 0;
 	int idIns = 0;
 	ArrayList<String> allInsulins;
-	
+
+	// variavel que contem o nome da janela em que vai ser contado o tempo
+	// contem o tempo de inicio ou abertura dessa janela
+	// no fim de fechar a janela vai conter o tempo em que a janela foi fechada
+	// e vai criar uma entrada na base de dados a registar os tempos
+	ActivityEvent activityEvent;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -56,26 +65,42 @@ public class InsulinDetail extends Activity {
 			ShowDialogAddInsulin();
 		}
 		read.close();
-		
-		
-		
+
+
+
 		getActionBar();
 		FillTagSpinner();
 		FillInsulinSpinner();
 		EditText hora = (EditText)findViewById(R.id.et_InsulinDetail_Hora);
-		
+
+		// bloco de codigo que verifica se o utilizador carregou numa zona
+		// "vazia" do ecra. Neste caso regista o click como um missed click
+		ScrollView sv = (ScrollView)findViewById(R.id.insulinDetailScrollView);
+		sv.setOnTouchListener(new View.OnTouchListener() {
+			public boolean onTouch(View v, MotionEvent event) {
+				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+					DB_Write write = new DB_Write(InsulinDetail.this);    // gera uma nova instancia de escrita na base de dados
+					write.newClick("InsulinDetail_Missed_Click");                // regista o clique na base de dados
+
+					write.newMissed(event.getX(), event.getY(), "InsulinDetail");
+					Log.d("test", event.toString());
+				}
+				return true;
+			}
+		});
+
 		Bundle args = getIntent().getExtras();
 		if(args!=null){
 			DB_Read rdb = new DB_Read(this);
 			String id = args.getString("Id");
 			idIns = Integer.parseInt(id);
 			InsulinRegDataBinding toFill = rdb.InsulinReg_GetById(Integer.parseInt(id));
-			
+
 			Spinner tagSpinner = (Spinner)findViewById(R.id.sp_InsulinDetail_Tag);
 			SelectSpinnerItemByValue(tagSpinner, rdb.Tag_GetById(toFill.getIdTag()).getName());
 			Spinner insulinSpinner = (Spinner)findViewById(R.id.sp_InsulinDetail_Insulin);
 			SelectSpinnerItemByValue(insulinSpinner, rdb.Insulin_GetById(toFill.getIdInsulin()).getName());
-			
+
 			EditText data = (EditText)findViewById(R.id.et_InsulinDetail_Data);
 			data.setText(toFill.getDate());
 			hora.setText(toFill.getTime());
@@ -84,7 +109,7 @@ public class InsulinDetail extends Activity {
 			EditText insulinunits = (EditText)findViewById(R.id.et_InsulinDetail_InsulinUnits);
 			insulinunits.setText(String.valueOf(toFill.getInsulinUnits()));
 			EditText note = (EditText)findViewById(R.id.et_InsulinDetail_Notes);
-			
+
 			//If exists glycemia read fill fields
 			EditText glycemia = (EditText)findViewById(R.id.et_InsulinDetail_Glycemia);
 			id_BG = toFill.getIdBloodGlucose();
@@ -93,14 +118,14 @@ public class InsulinDetail extends Activity {
 				GlycemiaDataBinding g = rdb.Glycemia_GetById(id_BG);
 				glycemia.setText(String.valueOf(g.getValue()));
 			}
-			
+
 			if(toFill.getIdNote()!=-1){
 				NoteDataBinding n = new NoteDataBinding();
 				n=rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
 				idNote=n.getId();
 			}
-			
+
 			hora.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -110,24 +135,24 @@ public class InsulinDetail extends Activity {
 				@Override
 				public void afterTextChanged(Editable s) { }
 			});
-			
+
 			rdb.close();
 		}else{
 			FillDateHour();
 			SetTargetByHour();
 			SetTagByTime();
-			
-			
+
+
 			//Get id of user 
 			DB_Read rdb = new DB_Read(this);
 			Object[] obj = rdb.MyData_Read();
 			final double iRatio = Double.valueOf(obj[3].toString());
 			rdb.close();
-			
+
 			final EditText insulinunits = (EditText)findViewById(R.id.et_InsulinDetail_InsulinUnits);
 			final EditText target = (EditText)findViewById(R.id.et_InsulinDetail_TargetGlycemia);
 			final EditText glycemia = (EditText)findViewById(R.id.et_InsulinDetail_Glycemia);
-			
+
 			target.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -148,8 +173,8 @@ public class InsulinDetail extends Activity {
 				@Override
 				public void afterTextChanged(Editable s) { }
 			});
-			
-			
+
+
 			glycemia.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -170,9 +195,9 @@ public class InsulinDetail extends Activity {
 				@Override
 				public void afterTextChanged(Editable s) { }
 			});
-			
-			
-			
+
+
+
 			hora.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -183,8 +208,8 @@ public class InsulinDetail extends Activity {
 				public void afterTextChanged(Editable s) { }
 			});
 		}
-		
-		
+
+
 	}
 
 
@@ -198,44 +223,71 @@ public class InsulinDetail extends Activity {
 		}else{
 			inflater.inflate(R.menu.insulin_detail, menu);
 		}
-		
+
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		DB_Write write = new DB_Write(this);						// gera uma nova instancia de escrita na base de dados
 		switch (item.getItemId()) {
 			case android.R.id.home:
+				write.newClick("menuItem_InsulinDetail_Home");		// regista o clique na base de dados
+
 				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_InsulinDetail_Save:
+				write.newClick("menuItem_InsulinDetail_Save");		// regista o clique na base de dados
+
 				AddInsulinRead();
 				return true;
 			case R.id.menuItem_InsulinDetail_Delete:
+				write.newClick("menuItem_InsulinDetail_Delete");	// regista o clique na base de dados
+
 				DeleteInsulinRead();
 				//NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_InsulinDetail_EditSave:
+				write.newClick("menuItem_InsulinDetail_EditSave");	// regista o clique na base de dados
+
 				UpdateInsulinRead();
 				//NavUtils.navigateUpFromSameTask(this);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
+	// Esta funcao e chamada sempre que a actividade atual passa a ser a InsulinDetail
+	// ou seja, quando a janela a mostrar é a janela da InsulinDetail. Assim, é nesta
+	// funcao que o timer inicia.
+	@Override
+	public void onResume(){
+		activityEvent = new ActivityEvent(new DB_Write(this), "InsulinDetail");
+		super.onPause();
+	}
+
+	// Esta funcao e chamada sempre que a actividade atual deixa de ser a InsulinDetail
+	// ou seja, quando a janela a mostrar deixa de ser a janela da InsulinDetail. Assim,
+	// é nesta funcao que o timer para e que guardamos a nova entrada na base de dados.
+	@Override
+	public void onPause(){
+		activityEvent.stop();
+		super.onPause();
+	}
+
 	public void showDatePickerDialog(View v){
 		DialogFragment newFragment = new DatePickerFragment();
-	    Bundle args = new Bundle();
-	    args.putInt("textbox",R.id.et_InsulinDetail_Data);
-	    newFragment.setArguments(args);
-	    newFragment.show(getFragmentManager(), "DatePicker");
+		Bundle args = new Bundle();
+		args.putInt("textbox",R.id.et_InsulinDetail_Data);
+		newFragment.setArguments(args);
+		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 	public void showTimePickerDialog(View v) {
-	    DialogFragment newFragment = new TimePickerFragment();
-	    Bundle args = new Bundle();
-	    args.putInt("textbox",R.id.et_InsulinDetail_Hora);
-	    newFragment.setArguments(args);
-	    newFragment.show(getFragmentManager(), "timePicker");
+		DialogFragment newFragment = new TimePickerFragment();
+		Bundle args = new Bundle();
+		args.putInt("textbox",R.id.et_InsulinDetail_Hora);
+		newFragment.setArguments(args);
+		newFragment.show(getFragmentManager(), "timePicker");
 	}
 
 	public void FillTagSpinner(){
@@ -244,14 +296,14 @@ public class InsulinDetail extends Activity {
 		DB_Read rdb = new DB_Read(this);
 		ArrayList<TagDataBinding> t = rdb.Tag_GetAll();
 		rdb.close();
-		
-		
+
+
 		if(t!=null){
 			for (TagDataBinding i : t){
 				allTags.add(i.getName());
 			}
 		}
-		
+
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allTags);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
@@ -262,7 +314,7 @@ public class InsulinDetail extends Activity {
 		DB_Read rdb = new DB_Read(this);
 		HashMap<Integer, String> val = rdb.Insulin_GetAllNames();
 		rdb.close();
-		
+
 		if(val!=null){
 			for (int i : val.keySet()){
 				allInsulins.add(val.get(i));
@@ -276,15 +328,15 @@ public class InsulinDetail extends Activity {
 	public void FillDateHour(){
 		EditText date = (EditText)findViewById(R.id.et_InsulinDetail_Data);
 		final Calendar c = Calendar.getInstance();
-	    Date newDate = c.getTime();
-	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-	    String dateString = formatter.format(newDate);
-        date.setText(dateString);
-        
-        EditText hour = (EditText)findViewById(R.id.et_InsulinDetail_Hora);
-        formatter = new SimpleDateFormat("HH:mm:ss");
-        String timeString = formatter.format(newDate);
-        hour.setText(timeString);
+		Date newDate = c.getTime();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = formatter.format(newDate);
+		date.setText(dateString);
+
+		EditText hour = (EditText)findViewById(R.id.et_InsulinDetail_Hora);
+		formatter = new SimpleDateFormat("HH:mm:ss");
+		String timeString = formatter.format(newDate);
+		hour.setText(timeString);
 	}
 	public void SetTargetByHour(){
 		EditText target = (EditText)findViewById(R.id.et_InsulinDetail_TargetGlycemia);
@@ -296,7 +348,7 @@ public class InsulinDetail extends Activity {
 		}
 		rdb.close();
 	}
-	
+
 	public void SetTagByTime(){
 		Spinner tagSpinner = (Spinner)findViewById(R.id.sp_InsulinDetail_Tag);
 		EditText hora = (EditText)findViewById(R.id.et_InsulinDetail_Hora);
@@ -305,42 +357,42 @@ public class InsulinDetail extends Activity {
 		rdb.close();
 		SelectSpinnerItemByValue(tagSpinner, name);
 	}
-	
+
 	public void ShowDialogAddInsulin(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Informação")
-	    .setMessage("Antes de adicionar registos de insulina deve adicionar a insulina a administrar!")
-	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-	         public void onClick(DialogInterface dialog, int whichButton) {
-	        	 //Falta verificar se não está associada a nenhuma entrada da DB
-	        	 //Rever porque não elimina o registo de glicemia
-	        	 Intent intent = new Intent(c, Preferences.class);
-	        	 intent.putExtra("tabPosition", 2);
-	        	 startActivity(intent);
-	        	 end();
-	         }
-	    }).show();
+				.setTitle("Informação")
+				.setMessage("Antes de adicionar registos de insulina deve adicionar a insulina a administrar!")
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						//Falta verificar se não está associada a nenhuma entrada da DB
+						//Rever porque não elimina o registo de glicemia
+						Intent intent = new Intent(c, Preferences.class);
+						intent.putExtra("tabPosition", 4);
+						startActivity(intent);
+						end();
+					}
+				}).show();
 	}
-	
+
 	public void ShowDialogAddTarget(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Informação")
-	    .setMessage("Antes de adicionar registos de insulina deve adicionar os seus objetivos da glicemia!")
-	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-	         public void onClick(DialogInterface dialog, int whichButton) {
-	        	 //Falta verificar se não está associada a nenhuma entrada da DB
-	        	 //Rever porque não elimina o registo de glicemia
-	        	 Intent intent = new Intent(c, Preferences.class);
-	        	 intent.putExtra("tabPosition", 1);
-	        	 startActivity(intent);
-	        	 finish();
-	         }
-	    }).show();
+				.setTitle("Informação")
+				.setMessage("Antes de adicionar registos de insulina deve adicionar os seus objetivos da glicemia!")
+				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						//Falta verificar se não está associada a nenhuma entrada da DB
+						//Rever porque não elimina o registo de glicemia
+						Intent intent = new Intent(c, Preferences.class);
+						intent.putExtra("tabPosition", 1);
+						startActivity(intent);
+						finish();
+					}
+				}).show();
 	}
-	
-	
+
+
 	public void AddInsulinRead(){
 		Spinner tagSpinner = (Spinner)findViewById(R.id.sp_InsulinDetail_Tag);
 		Spinner insulinSpinner = (Spinner)findViewById(R.id.sp_InsulinDetail_Insulin);
@@ -357,80 +409,80 @@ public class InsulinDetail extends Activity {
 			ShowDialogAddTarget();
 			return;
 		}
-		
+
 		if(insulinunits.getText().toString().equals("")){
 			insulinunits.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(insulinunits, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		
+
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
-		
+
 		//Get id of selected tag
 		String tag = tagSpinner.getSelectedItem().toString();
 		Log.d("selected Spinner", tag);
 		int idTag = rdb.Tag_GetIdByName(tag);
-		
+
 		//Get id of selected insulin
 		String insulin = insulinSpinner.getSelectedItem().toString();
 		Log.d("selected Spinner", insulin);
 		int idInsulin = rdb.Insulin_GetByName(insulin).getId();
-		
-		
-        int idGlycemia = 0;
-        boolean hasGlycemia = false;
-        DB_Write reg = new DB_Write(this);
-        
-        InsulinRegDataBinding ins = new InsulinRegDataBinding();
-        
-        int idnote = 0;
-        
-        if(!note.getText().toString().equals("")){
+
+
+		int idGlycemia = 0;
+		boolean hasGlycemia = false;
+		DB_Write reg = new DB_Write(this);
+
+		InsulinRegDataBinding ins = new InsulinRegDataBinding();
+
+		int idnote = 0;
+
+		if(!note.getText().toString().equals("")){
 			NoteDataBinding n = new NoteDataBinding();
 			n.setNote(note.getText().toString());
 			idnote = reg.Note_Add(n);
 			ins.setIdNote(idnote);
 		}
-        
-        if(!glycemia.getText().toString().equals("")){
-        	GlycemiaDataBinding gly = new GlycemiaDataBinding();
-        	
-        	gly.setIdUser(idUser);
-            gly.setValue(Double.parseDouble(glycemia.getText().toString()));
-            gly.setDate(data.getText().toString());
-            gly.setTime(hora.getText().toString());
-            gly.setIdTag(idTag);
-    		if(idnote > 0){
-    			gly.setIdNote(idnote);
-    		}
-            
-    		idGlycemia = reg.Glycemia_Save(gly);
-    		Log.d("id glycemia", String.valueOf(idGlycemia));
-    		hasGlycemia = true;
-        }
-        
-        ins.setIdUser(idUser);
-        ins.setIdInsulin(idInsulin);
-        ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
-        ins.setDate(data.getText().toString());
-        ins.setTime(hora.getText().toString());
-        ins.setTargetGlycemia(Double.parseDouble(target.getText().toString()));
-        ins.setInsulinUnits(Double.parseDouble(insulinunits.getText().toString()));
-        ins.setIdTag(idTag);
-        
-		
+
+		if(!glycemia.getText().toString().equals("")){
+			GlycemiaDataBinding gly = new GlycemiaDataBinding();
+
+			gly.setIdUser(idUser);
+			gly.setValue(Double.parseDouble(glycemia.getText().toString()));
+			gly.setDate(data.getText().toString());
+			gly.setTime(hora.getText().toString());
+			gly.setIdTag(idTag);
+			if(idnote > 0){
+				gly.setIdNote(idnote);
+			}
+
+			idGlycemia = reg.Glycemia_Save(gly);
+			Log.d("id glycemia", String.valueOf(idGlycemia));
+			hasGlycemia = true;
+		}
+
+		ins.setIdUser(idUser);
+		ins.setIdInsulin(idInsulin);
+		ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
+		ins.setDate(data.getText().toString());
+		ins.setTime(hora.getText().toString());
+		ins.setTargetGlycemia(Double.parseDouble(target.getText().toString()));
+		ins.setInsulinUnits(Double.parseDouble(insulinunits.getText().toString()));
+		ins.setIdTag(idTag);
+
+
 		reg.Insulin_Save(ins);
-		
+
 		reg.close();
 		rdb.close();
-		
+
 		goUp();
 	}
-	
+
 	public void UpdateInsulinRead(){
 		Spinner tagSpinner = (Spinner)findViewById(R.id.sp_InsulinDetail_Tag);
 		Spinner insulinSpinner = (Spinner)findViewById(R.id.sp_InsulinDetail_Insulin);
@@ -440,7 +492,7 @@ public class InsulinDetail extends Activity {
 		EditText target = (EditText)findViewById(R.id.et_InsulinDetail_TargetGlycemia);
 		EditText insulinunits = (EditText)findViewById(R.id.et_InsulinDetail_InsulinUnits);
 		EditText note = (EditText)findViewById(R.id.et_InsulinDetail_Notes);
-		
+
 		//tem de ter um target inserido
 		DB_Read read = new DB_Read(this);
 		if(!read.Target_HasTargets()){
@@ -448,7 +500,7 @@ public class InsulinDetail extends Activity {
 			ShowDialogAddTarget();
 			return;
 		}
-		
+
 		if(insulinunits.getText().toString().equals("")){
 			insulinunits.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -459,30 +511,30 @@ public class InsulinDetail extends Activity {
 			ShowDialogAddInsulin();
 			return;
 		}
-		
+
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
-		
+
 		//Get id of selected tag
 		String tag = tagSpinner.getSelectedItem().toString();
 		Log.d("selected Spinner", tag);
 		int idTag = rdb.Tag_GetIdByName(tag);
-		
+
 		//Get id of selected insulin
 		String insulin = insulinSpinner.getSelectedItem().toString();
 		Log.d("selected Spinner", insulin);
 		int idInsulin = rdb.Insulin_GetByName(insulin).getId();
-		
-		
+
+
 		DB_Write reg = new DB_Write(this);
-        
-        InsulinRegDataBinding ins = new InsulinRegDataBinding();
-        
-        
-        int idnote = 0;
-        if(!note.getText().toString().equals("") && idNote==0){
+
+		InsulinRegDataBinding ins = new InsulinRegDataBinding();
+
+
+		int idnote = 0;
+		if(!note.getText().toString().equals("") && idNote==0){
 			NoteDataBinding n = new NoteDataBinding();
 			n.setNote(note.getText().toString());
 			idnote = reg.Note_Add(n);
@@ -494,97 +546,97 @@ public class InsulinDetail extends Activity {
 			n.setId(idNote);
 			reg.Note_Update(n);
 		}
-        
+
 		int idglycemia = 0;
-		
-        if(id_BG<=0 && !glycemia.getText().toString().equals("")){
-        	GlycemiaDataBinding gly = new GlycemiaDataBinding();
-        	
-    		gly.setIdUser(idUser);
-            gly.setValue(Double.parseDouble(glycemia.getText().toString()));
-            gly.setDate(data.getText().toString());
-            gly.setTime(hora.getText().toString());
-            gly.setIdTag(idTag);
-            if(idnote > 0){
-    			gly.setIdNote(idnote);
-    		}
-            
-    		idglycemia = reg.Glycemia_Save(gly);
-        }
-        if(id_BG > 0){
-        	GlycemiaDataBinding gly = new GlycemiaDataBinding();
-        	gly.setId(id_BG);
-    		gly.setIdUser(idUser);
-            gly.setValue((!glycemia.getText().toString().equals("")) ? Double.parseDouble(glycemia.getText().toString()) : 0);
-            gly.setDate(data.getText().toString());
-            gly.setTime(hora.getText().toString());
-            gly.setIdTag(idTag);
-            if(idnote > 0){
-    			gly.setIdNote(idnote);
-    		}
-    		reg.Glycemia_Update(gly);
-        	
-    		Log.d("id glycemia", String.valueOf(id_BG));
-        }
-        
-        ins.setId(idIns);
-        ins.setIdUser(idUser);
-        ins.setIdInsulin(idInsulin);
+
+		if(id_BG<=0 && !glycemia.getText().toString().equals("")){
+			GlycemiaDataBinding gly = new GlycemiaDataBinding();
+
+			gly.setIdUser(idUser);
+			gly.setValue(Double.parseDouble(glycemia.getText().toString()));
+			gly.setDate(data.getText().toString());
+			gly.setTime(hora.getText().toString());
+			gly.setIdTag(idTag);
+			if(idnote > 0){
+				gly.setIdNote(idnote);
+			}
+
+			idglycemia = reg.Glycemia_Save(gly);
+		}
+		if(id_BG > 0){
+			GlycemiaDataBinding gly = new GlycemiaDataBinding();
+			gly.setId(id_BG);
+			gly.setIdUser(idUser);
+			gly.setValue((!glycemia.getText().toString().equals("")) ? Double.parseDouble(glycemia.getText().toString()) : 0);
+			gly.setDate(data.getText().toString());
+			gly.setTime(hora.getText().toString());
+			gly.setIdTag(idTag);
+			if(idnote > 0){
+				gly.setIdNote(idnote);
+			}
+			reg.Glycemia_Update(gly);
+
+			Log.d("id glycemia", String.valueOf(id_BG));
+		}
+
+		ins.setId(idIns);
+		ins.setIdUser(idUser);
+		ins.setIdInsulin(idInsulin);
 		ins.setIdBloodGlucose((id_BG > 0) ? id_BG : (idglycemia > 0) ? idglycemia : -1);
 		ins.setDate(data.getText().toString());
 		ins.setTime(hora.getText().toString());
 		ins.setTargetGlycemia(Double.parseDouble(target.getText().toString()));
 		ins.setInsulinUnits(Double.parseDouble(insulinunits.getText().toString()));
 		ins.setIdTag(idTag);
-		
-		
+
+
 		reg.Insulin_Update(ins);
 		rdb.close();
 		reg.close();
-		
+
 		goUp();
-		
+
 	}
-	
+
 	public static void SelectSpinnerItemByValue(Spinner spnr, String value)
 	{
-	    SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
-	    for (int position = 0; position < adapter.getCount(); position++)
-	    {
-	        if(adapter.getItem(position).equals(value))
-	        {
-	            spnr.setSelection(position);
-	            return;
-	        }
-	    }
+		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
+		for (int position = 0; position < adapter.getCount(); position++)
+		{
+			if(adapter.getItem(position).equals(value))
+			{
+				spnr.setSelection(position);
+				return;
+			}
+		}
 	}
-	
+
 	public void DeleteInsulinRead(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Eliminar leitura?")
-	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-	         public void onClick(DialogInterface dialog, int whichButton) {
-	        	//Falta verificar se não está associada a nenhuma entrada da DB
-	        	 //Rever porque não elimina o registo de glicemia
-	        	 DB_Write wdb = new DB_Write(c);
-	        	 try {
-	        		 wdb.Insulin_Delete(idIns);
-	        		 goUp();
-	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "Não pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
-	     		 }
-	             wdb.close();
-	             
-	         }
-	    })
-	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-	         public void onClick(DialogInterface dialog, int whichButton) {
-	                // Do nothing.
-	         }
-	    }).show();
+				.setTitle("Eliminar leitura?")
+				.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						//Falta verificar se não está associada a nenhuma entrada da DB
+						//Rever porque não elimina o registo de glicemia
+						DB_Write wdb = new DB_Write(c);
+						try {
+							wdb.Insulin_Delete(idIns);
+							goUp();
+						}catch (Exception e) {
+							Toast.makeText(c, "Não pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
+						}
+						wdb.close();
+
+					}
+				})
+				.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						// Do nothing.
+					}
+				}).show();
 	}
-	
+
 	public void goUp(){
 		NavUtils.navigateUpFromSameTask(this);
 	}
