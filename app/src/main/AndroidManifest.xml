@@ -56,7 +56,7 @@
                 android:value="com.jadg.mydiabetes.Home" />
         </activity>
         <activity
-            android:name=".Glycemia"
+            android:name="com.jadg.mydiabetes.Glycemia"
             android:label="@string/title_activity_glycemia"
             android:parentActivityName="com.jadg.mydiabetes.Home" >
             <meta-data
@@ -146,10 +146,10 @@
         <activity
             android:name="com.jadg.mydiabetes.GlycemiaDetail"
             android:label="@string/title_activity_glycemia_detail"
-            android:parentActivityName=".Glycemia" >
+            android:parentActivityName="com.jadg.mydiabetes.Glycemia" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".Glycemia" />
+                android:value="com.jadg.mydiabetes.Glycemia" />
         </activity>
         <activity
             android:name="com.jadg.mydiabetes.InsulinDetail"
