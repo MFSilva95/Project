@@ -2,6 +2,7 @@ package com.jadg.mydiabetes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.content.Context;
@@ -82,14 +83,6 @@ public class InsulinsDetail extends Activity {
 				return true;
 			case R.id.menuItem_InsulinsDetail_Save:
 				AddNewInsulin();
-
-				DB_Read read = new DB_Read(this);
-				if(!read.Target_HasTargets()){
-					read.close();
-					ShowDialogAddTarget();
-				}else{
-					finish();
-				}
 				//Intent data = new Intent();
 				//data.putExtra("tabPosition", 2);
 				//setResult(RESULT_OK, data);
@@ -98,7 +91,6 @@ public class InsulinsDetail extends Activity {
 				return true;
 			case R.id.menuItem_InsulinsDetail_EditSave:
 				UpdateInsulin();
-				finish();
 				return true;
 			case R.id.menuItem_InsulinsDetail_Delete:
 				DeleteInsulin();
@@ -130,6 +122,27 @@ public class InsulinsDetail extends Activity {
 		EditText action = (EditText)findViewById(R.id.et_Insulins_Acao);
 		//EditText value = (EditText)findViewById(R.id.et_TargetBG_Glycemia);
 
+		//adicionado por zeornelas
+		//para obrigar a colocar o valor dos hidratos e nao crashar
+		if(name.getText().toString().equals("")){
+			name.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(name, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		if(type.getText().toString().equals("")){
+			type.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(type, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		if(action.getText().toString().equals("")){
+			action.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(action, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+
 		DB_Write wdb = new DB_Write(this);
 
 		InsulinDataBinding insulin = new InsulinDataBinding();
@@ -143,6 +156,14 @@ public class InsulinsDetail extends Activity {
 
 		wdb.Insulin_Add(insulin);
 		wdb.close();
+
+		DB_Read read = new DB_Read(this);
+		if(!read.Target_HasTargets()){
+			read.close();
+			ShowDialogAddTarget();
+		}else{
+			finish();
+		}
 	}
 
 
@@ -151,6 +172,27 @@ public class InsulinsDetail extends Activity {
 		EditText type = (EditText)findViewById(R.id.et_Insulins_Tipo);
 		EditText action = (EditText)findViewById(R.id.et_Insulins_Acao);
 		//EditText value = (EditText)findViewById(R.id.et_TargetBG_Glycemia);
+
+		//adicionado por zeornelas
+		//para obrigar a colocar o valor dos hidratos e nao crashar
+		if(name.getText().toString().equals("")){
+			name.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(name, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		if(type.getText().toString().equals("")){
+			type.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(type, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		if(action.getText().toString().equals("")){
+			action.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(action, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
 
 		DB_Write wdb = new DB_Write(this);
 
@@ -165,6 +207,14 @@ public class InsulinsDetail extends Activity {
 
 		wdb.Insulin_Update(insulin);
 		wdb.close();
+
+		DB_Read read = new DB_Read(this);
+		if(!read.Target_HasTargets()){
+			read.close();
+			ShowDialogAddTarget();
+		}else{
+			finish();
+		}
 	}
 
 

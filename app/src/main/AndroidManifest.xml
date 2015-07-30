@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jadg.mydiabetes"
     android:versionCode="1"
-    android:versionName="1.01" >
+    android:versionName="1.02" >
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -309,6 +309,25 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.jadg.mydiabetes.Logbook" />
+        </activity>
+
+        <activity
+            android:name="com.jadg.mydiabetes.DiseasesDetail"
+            android:label="@string/add_DiseasesFragment"
+            android:parentActivityName="com.jadg.mydiabetes.Preferences" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Preferences" />
+        </activity>
+
+
+        <activity
+            android:name="com.jadg.mydiabetes.ExercisesDetail"
+            android:label="@string/add_ExercisesFragment"
+            android:parentActivityName="com.jadg.mydiabetes.Preferences" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Preferences" />
         </activity>
         <!-- <activity
             android:name="com.example.projetoandroid.CloudServerActivity"

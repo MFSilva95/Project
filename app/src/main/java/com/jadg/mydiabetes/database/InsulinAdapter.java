@@ -18,78 +18,73 @@ import com.jadg.mydiabetes.R;
 
 public class InsulinAdapter extends BaseAdapter {
 
-	private ArrayList<InsulinDataBinding> _data;
+    private ArrayList<InsulinDataBinding> _data;
     Context _c;
-    
-    public InsulinAdapter (ArrayList<InsulinDataBinding> data, Context c){
+
+    public InsulinAdapter(ArrayList<InsulinDataBinding> data, Context c) {
         _data = data;
         _c = c;
     }
-	
-	
-	@Override
-	public int getCount() {
-		// TODO Auto-generated method stub
-		return _data.size();
-	}
 
-	@Override
-	public Object getItem(int position) {
-		// TODO Auto-generated method stub
-		return _data.get(position);
-	}
 
-	@Override
-	public long getItemId(int position) {
-		// TODO Auto-generated method stub
-		return position;
-	}
+    @Override
+    public int getCount() {
+        // TODO Auto-generated method stub
+        return _data.size();
+    }
 
-	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
-		View v = convertView;
-         if (v == null)
-         {
-            LayoutInflater vi = (LayoutInflater)_c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    @Override
+    public Object getItem(int position) {
+        // TODO Auto-generated method stub
+        return _data.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        // TODO Auto-generated method stub
+        return position;
+    }
+
+    @Override
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        // TODO Auto-generated method stub
+        View v = convertView;
+        if (v == null) {
+            LayoutInflater vi = (LayoutInflater) _c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             v = vi.inflate(R.layout.list_insulin_row, null);
-         }
- 
-         
-         RelativeLayout rLayout = (RelativeLayout)v.findViewById(R.id.InsulinsRow);
-         
-         
-         TextView iname = (TextView)v.findViewById(R.id.list_insulinName);
-         TextView itype = (TextView)v.findViewById(R.id.list_insulinType);
-         TextView iaction = (TextView)v.findViewById(R.id.list_insulinAction);
-         //TextView iduration = (TextView)v.findViewById(R.id.list_insulinDuration);
-         
-         
-		   
-         final InsulinDataBinding insulin = _data.get(position);
-         final String _id = ""+insulin.getId();
-         iname.setText(insulin.getName());
-         iname.setTag(_id);
-         itype.setText(insulin.getType());
-         iaction.setText(insulin.getAction());
-         //iduration.setText(insulin.getDuration().toString());
-         
-		   
-         
-         
-         
-         rLayout.setOnClickListener(new View.OnClickListener() {
+        }
 
-  			@Override
-  			public void onClick(final View v) {
-  				Intent intent = new Intent(v.getContext(), InsulinsDetail.class);
-  				Bundle args = new Bundle();
-  				args.putString("Id", String.valueOf(insulin.getId()));
 
-  				intent.putExtras(args);
-  				v.getContext().startActivity(intent);
-  			}
-  		});
+        RelativeLayout rLayout = (RelativeLayout) v.findViewById(R.id.InsulinsRow);
+
+
+        TextView iname = (TextView) v.findViewById(R.id.list_insulinName);
+        TextView itype = (TextView) v.findViewById(R.id.list_insulinType);
+        TextView iaction = (TextView) v.findViewById(R.id.list_insulinAction);
+        //TextView iduration = (TextView)v.findViewById(R.id.list_insulinDuration);
+
+
+        final InsulinDataBinding insulin = _data.get(position);
+        final String _id = "" + insulin.getId();
+        iname.setText(insulin.getName());
+        iname.setTag(_id);
+        itype.setText(insulin.getType());
+        iaction.setText(insulin.getAction());
+        //iduration.setText(insulin.getDuration().toString());
+
+
+        rLayout.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(final View v) {
+                Intent intent = new Intent(v.getContext(), InsulinsDetail.class);
+                Bundle args = new Bundle();
+                args.putString("Id", String.valueOf(insulin.getId()));
+
+                intent.putExtras(args);
+                v.getContext().startActivity(intent);
+            }
+        });
          
          
 		 /*  
@@ -124,9 +119,9 @@ public class InsulinAdapter extends BaseAdapter {
 	    	 }
 		   
          });
-                */                     
-                        
+                */
+
         return v;
-	}
-	
+    }
+
 }

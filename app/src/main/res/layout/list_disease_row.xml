@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:orientation="horizontal"
+    android:id="@+id/DiseasesRow">
 
     <TextView
         android:id="@+id/list_diseaseName"
@@ -13,7 +14,7 @@
         android:paddingLeft="8dp"
         android:textIsSelectable="false"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
+    <!--
     <ImageButton
         android:contentDescription="diseaseRemove_img"
         android:layout_gravity="center_vertical"
@@ -23,5 +24,5 @@
         android:paddingRight="8dp"
         android:src="@drawable/abs__ic_clear"
         android:background="@color/transparent" />
-
+    -->
 </LinearLayout>

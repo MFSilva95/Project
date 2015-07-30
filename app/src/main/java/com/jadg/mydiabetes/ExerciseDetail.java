@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AutoCompleteTextView;
 
 
@@ -113,14 +114,12 @@ public class ExerciseDetail extends Activity {
 				return true;
 			case R.id.menuItem_ExerciseDetail_Save:
 				AddExerciseRead();
-				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_ExerciseDetail_Delete:
 				DeleteExerciseRead(idExercise);
 				return true;
 			case R.id.menuItem_ExerciseDetail_EditSave:
 				UpdateExerciseRead(idExercise);
-				NavUtils.navigateUpFromSameTask(this);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -188,7 +187,22 @@ public class ExerciseDetail extends Activity {
 		EditText data = (EditText)findViewById(R.id.et_ExerciseDetail_Data);
 		EditText hora = (EditText)findViewById(R.id.et_ExerciseDetail_Hora);
 		EditText note = (EditText)findViewById(R.id.et_ExerciseDetail_Notes);
-		
+
+		//adicionado por zeornelas
+		//para obrigar a colocar o valor dos hidratos e nao crashar
+		if(exerciseSpinner.getText().toString().equals("")){
+			exerciseSpinner.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(exerciseSpinner, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		if(duration.getText().toString().equals("")){
+			duration.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(duration, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
@@ -227,9 +241,11 @@ public class ExerciseDetail extends Activity {
 		reg.Exercise_Save(ex);
 		reg.close();
 		rdb.close();
+
+		NavUtils.navigateUpFromSameTask(this);
 	}
 	public static void SelectSpinnerItemByValue(Spinner spnr, String value){
-	    SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
+	    SpinnerAdapter adapter = spnr.getAdapter();
 	    for (int position = 0; position < adapter.getCount(); position++){
 	        if(adapter.getItem(position).equals(value)){
 	            spnr.setSelection(position);
@@ -275,6 +291,21 @@ public class ExerciseDetail extends Activity {
 		EditText data = (EditText)findViewById(R.id.et_ExerciseDetail_Data);
 		EditText hora = (EditText)findViewById(R.id.et_ExerciseDetail_Hora);
 		EditText note = (EditText)findViewById(R.id.et_ExerciseDetail_Notes);
+
+		//adicionado por zeornelas
+		//para obrigar a colocar o valor dos hidratos e nao crashar
+		if(exerciseSpinner.getText().toString().equals("")){
+			exerciseSpinner.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(exerciseSpinner, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		if(duration.getText().toString().equals("")){
+			duration.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(duration, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
 		
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
@@ -311,5 +342,7 @@ public class ExerciseDetail extends Activity {
 		wdb.Exercise_Update(toUpdate);
 		wdb.close();
 		rdb.close();
+
+		NavUtils.navigateUpFromSameTask(this);
 	}
 }

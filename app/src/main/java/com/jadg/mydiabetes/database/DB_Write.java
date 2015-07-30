@@ -111,6 +111,13 @@ public class DB_Write {
 		myDB.delete("Disease", "id=" + id, null);
 		
 	}
+	public void Disease_Update(DiseaseDataBinding i) {
+		ContentValues toUpdate = new ContentValues();
+		toUpdate.put("Name", i.getName());
+
+		myDB.update("Disease", toUpdate, "Id=" + i.getId(), null);
+		Log.d("Update", "Disease");
+	}
 	
 	//--------------- GLYCEMIA -------------------
 	public int Glycemia_Save(GlycemiaDataBinding obj) {
@@ -255,6 +262,14 @@ public class DB_Write {
 	public void Exercise_Remove(int id){
 		myDB.delete("Exercise", "id=" + id, null);
 		
+	}
+
+	public void Exercise_Update(ExerciseDataBinding i) {
+		ContentValues toUpdate = new ContentValues();
+		toUpdate.put("Name", i.getName());
+
+		myDB.update("Exercise", toUpdate, "Id=" + i.getId(), null);
+		Log.d("Update", "Disease");
 	}
 
 	//------------------- EXERCISE REG ---------------------------

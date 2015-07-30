@@ -1,29 +1,29 @@
 package com.jadg.mydiabetes.fragments;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import android.view.LayoutInflater;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Toast;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import com.jadg.mydiabetes.ExercisesDetail;
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.database.ExerciseAdapter;
 import com.jadg.mydiabetes.database.ExerciseDataBinding;
 
-import android.annotation.SuppressLint;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 
@@ -32,8 +32,8 @@ import android.annotation.SuppressLint;
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
  * contain this fragment must implement the
- * {@link Exercises.OnFragmentInteractionListener} interface to handle
- * interaction events. Use the {@link Exercises#newInstance} factory method to
+ * @link Exercises.OnFragmentInteractionListener interface to handle
+ * interaction events. Use the @link Exercises#newInstance factory method to
  * create an instance of this fragment.
  * 
  */
@@ -71,10 +71,18 @@ public class Exercises extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case R.id.menuItem_ExercisesFragment_Add:
-				showExerciseDialog();
+				Intent intent = new Intent(this.getActivity(), ExercisesDetail.class);
+				startActivity(intent);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		exerciseList = (ListView)super.getActivity().findViewById(R.id.exercisesFragmentList);
+		fillListView(exerciseList);
 	}
 	
 	public void showExerciseDialog(){
@@ -123,9 +131,6 @@ public class Exercises extends Fragment {
 				exercise.setName(val.get(i));
 				allExercises.add(exercise);
 			}
-		}
-		else{
-			
 		}
 		
 		lv.setAdapter(new ExerciseAdapter(allExercises, getActivity()));

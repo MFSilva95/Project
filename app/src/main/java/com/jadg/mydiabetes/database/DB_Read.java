@@ -31,12 +31,7 @@ public class DB_Read {
 	
 	public boolean MyData_HasData(){
 		Cursor cursor = myDB.rawQuery("SELECT * FROM UserInfo", null);
-		if (cursor.getCount() > 0) {
-			return true;
-		}
-		else{
-			return false;
-		}
+		return cursor.getCount() > 0;
 	}
 	
 	public Object[] MyData_Read() {
@@ -191,11 +186,7 @@ public class DB_Read {
 	
 	public boolean Disease_ExistName(String name){
 		Cursor cursor = myDB.rawQuery("SELECT Name FROM Disease where Name='" + name + "'", null);
-		if (cursor.getCount() > 0) {
-			return true;
-		}else{
-			return false;
-		}
+		return cursor.getCount() > 0;
 	}
 	
 	
@@ -310,12 +301,7 @@ public class DB_Read {
 
 	public boolean Insulin_HasInsulins(){
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Insulin", null);
-		if (cursor.getCount() > 0) {
-			return true;
-		}
-		else{
-			return false;
-		}
+		return cursor.getCount() > 0;
 		
 	}
 	
@@ -473,11 +459,7 @@ public class DB_Read {
 	//----------------- EXERCISES --------------
 	public boolean Exercise_ExistName(String name){
 		Cursor cursor = myDB.rawQuery("SELECT Name FROM Exercise where Name='" + name + "'", null);
-		if (cursor.getCount() > 0) {
-			return true;
-		}else{
-			return false;
-		}
+		return cursor.getCount() > 0;
 	}
 	
 	public int Exercise_GetIdByName(String name){
@@ -909,12 +891,7 @@ public class DB_Read {
 	//-------------- TARGETS GLYCEMIA -----------------
 	public boolean Target_HasTargets(){
 		Cursor cursor = myDB.rawQuery("SELECT * FROM BG_Target", null);
-		if (cursor.getCount() > 0) {
-			return true;
-		}
-		else{
-			return false;
-		}
+		return cursor.getCount() > 0;
 		
 	}
 	
@@ -1003,7 +980,7 @@ public class DB_Read {
 		InsulinRegDataBinding ins;
 		GlycemiaDataBinding bg;
 		
-		Cursor cursor = myDB.rawQuery("SELECT ins.datetime, ins.Id_user, ins.Id_Tag, ins.Id_Note, ch.Id, ch.value, ch.PhotoPath, ins.Id, ins.Id_Insulin, ins.Id_BloodGlucose,ins.Target_BG,ins.Value, bg.Value" + 
+		/*Cursor cursor = myDB.rawQuery("SELECT ins.datetime, ins.Id_user, ins.Id_Tag, ins.Id_Note, ch.Id, ch.value, ch.PhotoPath, ins.Id, ins.Id_Insulin, ins.Id_BloodGlucose,ins.Target_BG,ins.Value, bg.Value" +
 			" from Reg_CarboHydrate as ch, Reg_Insulin as ins, Reg_BloodGlucose as bg"+ 
 			" where ch.datetime >'"+ from + " 00:00:00' AND ch.datetime < '"+ to + " 23:59:59'" +
 			" AND ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" + 
@@ -1065,7 +1042,66 @@ public class DB_Read {
 			" where ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" +
 			" AND ins.Id_BloodGlucose is not NULL)" +
 			" ORDER BY datetime DESC",null);
-		
+		*/
+
+
+		Cursor cursor = myDB.rawQuery("SELECT ins.datetime, ins.Id_user, ins.Id_Tag, ins.Id_Note, ch.Id, ch.value, ch.PhotoPath, ins.Id, ins.Id_Insulin, ins.Id_BloodGlucose,ins.Target_BG,ins.Value, bg.Value" +
+				" from Reg_CarboHydrate as ch, Reg_Insulin as ins, Reg_BloodGlucose as bg"+
+				" where ch.datetime >'"+ from + " 00:00:00' AND ch.datetime < '"+ to + " 23:59:59'" +
+				" AND ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" +
+				" AND ch.datetime = ins.datetime AND ch.Id_User=ins.Id_User AND ins.Id_BloodGlucose is not NULL AND bg.Id = ins.Id_BloodGlucose"+
+				" UNION" +
+				" SELECT ins.DateTime, ins.Id_User, ins.Id_Tag, ins.Id_Note, null, null, null, ins.Id, ins.Id_Insulin, ins.Id_BloodGlucose, ins.Target_BG, ins.value, bg.value"+
+				" FROM Reg_Insulin as ins, Reg_BloodGlucose as bg"+
+				" WHERE ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" +
+				" AND bg.datetime >'"+ from + " 00:00:00' AND bg.datetime < '"+ to + " 23:59:59'" +
+				" AND bg.Id=ins.Id_BloodGlucose AND ins.DateTime not in"+
+				" (SELECT ch.DateTime From Reg_CarboHydrate as ch)" +
+				" UNION" +
+				" SELECT bg.DateTime, bg.Id_User, bg.Id_Tag, bg.Id_Note, null, null, null, null, null, bg.Id, null, null, bg.value" +
+				" FROM Reg_BloodGlucose as bg" +
+				" WHERE bg.datetime >'"+ from + " 00:00:00' AND bg.datetime < '"+ to + " 23:59:59'" +
+				" AND bg.datetime not in" +
+				" (SELECT datetime from Reg_Insulin " +
+				" union" +
+				" SELECT datetime from Reg_CarboHydrate)" +
+				" UNION" +
+				" SELECT ch.DateTime, ch.Id_User, ch.Id_Tag, ch.Id_Note, ch.Id, ch.Value, ch.PhotoPath, null, null, null, null, null, null" +
+				" FROM Reg_CarboHydrate as ch" +
+				" WHERE ch.datetime >'"+ from + " 00:00:00' AND ch.datetime < '"+ to + " 23:59:59'" +
+				" AND ch.datetime not in" +
+				" (SELECT datetime from Reg_Insulin " +
+				"union" +
+				" SELECT datetime from Reg_BloodGlucose)" +
+				" UNION" +
+				" SELECT ins.DateTime, ins.DateTime, ins.Id_Tag, ins.Id_Note, null, null, null, ins.Id, ins.Id_Insulin, ins.Id_BloodGlucose, ins.Target_BG, ins.Value, null" +
+				" FROM Reg_Insulin as ins" +
+				" WHERE ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" +
+				" AND datetime not in" +
+				" (SELECT datetime from Reg_BloodGlucose" +
+				" union" +
+				" SELECT ch.DateTime From Reg_CarboHydrate as ch)" +
+				" UNION" +
+				" SELECT ins.datetime, ins.Id_user, ins.Id_Tag, ins.Id_Note, ch.Id, ch.value, ch.PhotoPath, ins.Id, ins.Id_Insulin, ins.Id_BloodGlucose,ins.Target_BG,ins.Value, null" +
+				" from Reg_CarboHydrate as ch, Reg_Insulin as ins"+
+				" where ch.datetime >'"+ from + " 00:00:00' AND ch.datetime < '"+ to + " 23:59:59'" +
+				" AND ins.datetime >'"+ from + " 00:00:00' AND ins.datetime < '"+ to + " 23:59:59'" +
+				" AND ch.datetime = ins.datetime AND ins.datetime not in "+
+				" (SELECT datetime from Reg_BloodGlucose)" +
+				" UNION" +
+				" SELECT ch.datetime, ch.Id_user, ch.Id_Tag, ch.Id_Note, ch.Id, ch.value, ch.PhotoPath, null, null, bg.Id, null, null, bg.value" +
+				" from Reg_CarboHydrate as ch, Reg_BloodGlucose as bg"+
+				" where ch.datetime >'"+ from + " 00:00:00' AND ch.datetime < '"+ to + " 23:59:59'" +
+				" AND bg.datetime >'"+ from + " 00:00:00' AND bg.datetime < '"+ to + " 23:59:59'" +
+				" AND ch.datetime = bg.datetime AND ch.datetime not in "+
+				" (SELECT datetime from Reg_Insulin)" +
+				" ORDER BY datetime DESC",null);
+
+
+
+
+
+
 		//Log.d("LOGBOOK", String.valueOf(cursor.getCount()));
 		int a = cursor.getCount();
 		if (cursor.getCount() > 0) {
@@ -1182,6 +1218,51 @@ public class DB_Read {
 					row.set_bg(null);
 					row.set_ch(null);
 					row.set_ins(ins);
+				}else if(!cursor.isNull(4) && !cursor.isNull(7) && cursor.isNull(9)){ //so hidratos e insulina
+					ins.setDate(t.split(" ")[0]);
+					ins.setTime(t.split(" ")[1]);
+					ins.setIdUser(cursor.getInt(1));
+					ins.setIdTag(cursor.getInt(2));
+					ins.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+					ins.setId(cursor.getInt(7));
+					ins.setIdInsulin(cursor.getInt(8));
+					ins.setIdBloodGlucose(cursor.getInt(9));
+					ins.setTargetGlycemia(cursor.getDouble(10));
+					ins.setInsulinUnits(cursor.getDouble(11));
+
+					ch.setDate(t.split(" ")[0]);
+					ch.setTime(t.split(" ")[1]);
+					ch.setId_User(cursor.getInt(1));
+					ch.setId_Tag(cursor.getInt(2));
+					ch.setId_Note((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+					ch.setId(cursor.getInt(4));
+					ch.setCarbsValue(cursor.getDouble(5));
+					ch.setPhotoPath(cursor.getString(6));
+
+					row.set_bg(null);
+					row.set_ch(ch);
+					row.set_ins(ins);
+				}else if(!cursor.isNull(4) && cursor.isNull(7) && !cursor.isNull(9)){ //so hidratos e glicemia
+					ch.setDate(t.split(" ")[0]);
+					ch.setTime(t.split(" ")[1]);
+					ch.setId_User(cursor.getInt(1));
+					ch.setId_Tag(cursor.getInt(2));
+					ch.setId_Note((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+					ch.setId(cursor.getInt(4));
+					ch.setCarbsValue(cursor.getDouble(5));
+					ch.setPhotoPath(cursor.getString(6));
+
+					bg.setDate(t.split(" ")[0]);
+					bg.setTime(t.split(" ")[1]);
+					bg.setIdUser(cursor.getInt(1));
+					bg.setIdTag(cursor.getInt(2));
+					bg.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+					bg.setId(cursor.getInt(9));
+					bg.setValue(cursor.getDouble(12));
+
+					row.set_bg(bg);
+					row.set_ch(ch);
+					row.set_ins(null);
 				}
 				
 				
