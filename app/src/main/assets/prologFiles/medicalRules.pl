@@ -9,14 +9,35 @@
 %% Time is always defined in seconds
 %%------------------------------------------------------------------------------------------------------------
 
-maxTimeUntested(glycemia, 10800). %3h
-maxTimeUntested(artecialPressure, 86400). %24h
+maxTimeUntested(glucose, 10800). %3h
+maxTimeUntested(meal, 10800). %3h
+maxTimeUntested(insulin, 10800). %3h
+maxTimeUntested(carbs, 86400).
+maxTimeUntested(arterialPressure, 86400). %24h
+maxTimeUntested(cholesterol, 2592000). %1mes
 maxTimeUntested(weight, 2592000). %1 mes
 maxTimeUntested(hbA1c, 86400). %24h
 
+maxValue(glucose, 120).
+maxValue(insulin, 120).
+maxValue(weight, 120).
+maxValue(hbA1c, 120).
+maxValue(cholesterol, 120).
+maxValue(arterialPressure, 120).
+
+minValue(glucose, 50).
+minValue(insulin, 50).
+minValue(weight, 50).
+minValue(hbA1c, 50).
+minValue(cholesterol, 50).
+minValue(arterialPressure, 50).
+
+recentTimeDefenition(exercise, 3600).
+safetyInterval(600).
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                                                            %
-%                                          Subtype Division                                                  %
+%                                         Parameter Correlation                                              %
 %                                                                                                            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -25,8 +46,12 @@ maxTimeUntested(hbA1c, 86400). %24h
 %% this fact must be of form adviceTypes(TypeToDivide, ListOfTypeDivisions)
 %%------------------------------------------------------------------------------------------------------------
 
-adviceTypes(glicose, [glicose,insulin,hbA1c]).
-adviceTypes(exercicio, [food,insulin,exercise]).
+adviceRelatedParameters(glicose, [glicose,insulin,hbA1c]).
+adviceRelatedParameters(exercise, [food,insulin,exercise]).
+
+%In case no subdivision is defined
+
+adviceRelatedParameters(Any, [Any]). % to test
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -37,17 +62,35 @@ adviceTypes(exercicio, [food,insulin,exercise]).
 
 %%------------------------------------------------------------------------------------------------------------
 %% To define a test of risk a fact must be inserted
-%% this fact must be of form inRisk(Type, SubType, Risk, ID) :- 
-%% NOT bloqued(glicose),
-%% (conditions to activate separeted by ','), msg(pt, ID, _). 
+%% this fact must be of form inRisk( Situation, Type, SubType, Risk, ID) :- 
+%% NOT bloqued(glucose),
+%% (conditions to activate separeted by ','), msg( start, pt, ID, _). 
 %% The facts must be inserted in decrescent order of Risk
 %% The facts must be inserted from the most specific to the more abstracts
 %%------------------------------------------------------------------------------------------------------------
 
-inRisk( glicose, insulin, 5, ID) :- ID = hasHighGlycemia, NOT bloqued(ID), hasGlicemiaAlta, msg(SysLang, ID, _).
-inRisk( glicose, _, 5, ID) :- NOT bloqued(glicose), hasGlicemiaAlta, msg(SysLang, ID, _).
-inRisk( glicose, _, 3, ID) :- NOT bloqued(glicose), hasGlicemiaAlta, msg(SysLang, ID, _).
+inRisk( end, glucose, _, 10, ID) :- ID = 'hasHighGlucose', hasHighGlucose.
+inRisk( end, glucose, _, 10, ID) :- ID = 'hasLowGlucose', hasLowGlucose.
 
+inRisk( end, hbA1c, _, 10, ID) :- ID = 'hasHighHbA1c', hasHighHbA1c.
+inRisk( end, hbA1c, _, 10, ID) :- ID = 'hasLowHbA1c', hasLowHbA1c.
+
+inRisk( end, cholesterol, _, 10, ID) :- ID = 'hasHighCholesterol', hasHighCholesterol.
+inRisk( end, cholesterol, _, 10, ID) :- ID = 'hasLowCholesterol', hasLowCholesterol.
+
+inRisk( end, insulin, _, 10, ID) :- ID = 'hasHighInsulin', hasHighInsulin.
+
+inRisk( end, weight, _, 3, ID) :- ID = 'hasHighWeight', NOT bloqued(weight), hasHighWeight.
+inRisk( end, weight, _, 3, ID) :- ID = 'hasLowWeight', NOT bloqued(weight), hasLowWeight.
+
+inRisk( end, arterialPressure, _, 3, ID) :- ID = 'hasHighArterialPressure', hasHighArterialPressure.
+inRisk( end, arterialPressure, _, 3, ID) :- ID = 'hasLowArterialPressure', hasLowArterialPressure.
+
+inRisk( start, meal, meal, 3, ID) :- ID = 'mealExercisedRecently', hasExercisedRecently.
+inRisk( start, meal, meal, 3, ID) :- ID = 'mealUserWithHighWeight', hasHighWeight.
+
+%% Null case: No advice to be given
+inRisk( _, _, _, 0, ID) :- ID = 'NULL'.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -57,63 +100,17 @@ inRisk( glicose, _, 3, ID) :- NOT bloqued(glicose), hasGlicemiaAlta, msg(SysLang
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%------------------------------------------------------------------------------------------------------------
-%%
+%% Essencial Tasks: the SABR needs these registry types updated to function properlly 
 %%------------------------------------------------------------------------------------------------------------
 
-hasTask(Description) :- timeOfLastGlucoseRegistry(LastRegTime), maxTimeUntested(glycemia, MaxTime), LastRegTime > MaxTime - 600, msg('Tsk1', Description).
+hasTask(Description) :- timeOfLastGlucoseRegistry(LastRegTime), maxTimeUntested(glucose, MaxTime), safetyInterval(SafetyInterval), LastRegTime > MaxTime - SafetyInterval, msg('Tsk_glucoseReg', Description).
+hasTask(Description) :- timeOfLastHbA1cRegistry(LastRegTime), maxTimeUntested(hbA1c, MaxTime), safetyInterval(SafetyInterval), LastRegTime > MaxTime - SafetyInterval, msg('Tsk_hbA1cReg', Description).
+hasTask(Description) :- timeOfLastArterialPressureRegistry(LastRegTime), maxTimeUntested(arterialPressure, MaxTime), safetyInterval(SafetyInterval), LastRegTime > MaxTime - SafetyInterval, msg('Tsk_arterialPReg', Description).
+hasTask(Description) :- timeOfLastWeightRegistry(LastRegTime), maxTimeUntested(weight, MaxTime), safetyInterval(SafetyInterval), LastRegTime > MaxTime - SafetyInterval, msg('Tsk_weightReg', Description).
+hasTask(Description) :- timeOfLastCholesterolRegistry(LastRegTime), maxTimeUntested(cholesterol, MaxTime), safetyInterval(SafetyInterval), LastRegTime > MaxTime - SafetyInterval, msg('Tsk_cholesterolReg', Description).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                                                                                            %
-%                                             Test Division                                                  %
-%                                                                                                            %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%------------------------------------------------------------------------------------------------------------
+%% Other Tasks: these tasks are advised to the majority of diabetics 
+%%------------------------------------------------------------------------------------------------------------
 
-hasGlicemiaAlta :- lastGlucoseValue(Value), Value >= 120.
-
-
-%-------------------------------------Regras Carla----------------------------
-
-
-%-------Hipoglicemia
-
-hipoglicemia(ValorBGRecente,HorasDepoisHipo) :- valorBGRecente(ValorBGRecente), valorMinBG(MinBG), tempoValidoHipo(HorasDepoisHipo),ValorBGRecente=<MinBG.
-
-valoresBaixosPorExercicio(ValorBGRcente, HorasDepoisHipo) :- exercicioRecente(HorasDepoisEx), hipoglicemia(ValorBGRecente, HorasDepoisHipo).
-
-valoresBaixosListaHC(ValorBGRecente, Min) :- valorBGRecente(ValorBGRecente), valorMinBG(MinBG), ValorBGRecente =< MinBG, minPassados(Min).
-
-valoresBaixosPosMin(ValorBGRecente, Max) :- valorBGRecente(ValorBGRecente), valorMaxBG(MaxBG), ValorBGRecente >= MinBG, maxPassados(Max).
-
-%-------Hiperglicemia
-
-hiperglicemia(MaxBG, HoraUltimaRefeicao, HoraUltimaInsulina) :- hiperglicemia(ValorBGRecente, HoraDepoisHiper), refeicao(HoraUltimaRefeicao), naoInsulina(HoraUltimaInsulina).
-
-hiperglicemia(ValorBGRecente, HorasDepoisHiper) :- valorBGRecente(ValorBGRecente), valorMaxBG(MaxBG), tempoValidoHiper(HorasDepoisHiper), ValorBGRecente >= MaxBG.
-
-hiperglicemiacomCetoacidoseModerada(ValorBGRecente, ValorCetose) :- hiperglicemia(ValorBGRecente, HoraDepoisHiper), cetoacidoseModerada(ValorCetose).
-
-hiperglicemiacomCetoasidadeGrave(ValorBGRecente, ValorCetose) :- hiperglicemia(ValorBGRecente, HoraDepoisHiper), cetoacidoseGrave(ValorCetose).
-
-%-------Cetoacidose
-
-cetoacidoseModerada(ValorCetose) :- valorCetoseRecente(ValorCetose), valorCetoseMin(MinCetose), ValorCetose >= 0.3, ValorCetose < 3.0.
-
-cetoacidoseGrave(ValorCetose) :- valorCetoseRecente(ValorCetose), valorCetoseMan(MaxCetose), ValorCetose >= 3.0.
-
-%-------Ajuste Insulina
-
-ajustarInsulinaPorqueHipo(HorasDepoisHipo) :- hipoglicemia(ValorRecente, HorasDepoisHipo).
-
-ajustarInsulinaPorqueExercicioRecente(HorasDepoisEx) :- exercicioRecente(HorasDepoisEx).
-
-ajustarInsulinaPorqueNaoRefeicao(HoraUltimaRefeicao) :- naoRefeicao(HoraUltimaRefeicao).
-
-%-------Idade Utilizador
-
-utilizadorAdolescente() :- idadeUtilizador(Idade). 
-Idade =< 18.
-
-%------- Regra de Exercicio
-
-exercicioRecente(HorasDepoisEx) :- tempoValidoExercicio(HorasDepoisEx).
-
+hasTask(Description) :- numberExercisesToday < 2, msg('Tsk_doExerciseTwoTimesADay', Description).

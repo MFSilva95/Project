@@ -20,12 +20,11 @@ setLanguageFile(LangDescriptor) :- atom_concat('advice_msg_',LangDescriptor, Lan
 %% Master Rule - called from the android application with the type of test "Type" requested by the user 
 %%------------------------------------------------------------------------------------------------------------
 
-masterRule(advice, Type, Language,MostUrgentAdvice):- setLanguageFile(Language), adviceTypes(Type, SubTypeList), 
-getAllAdvices(Type, SubTypeList, ListAllAdvices), 
-%printLista(ListAllAdvices), 
-filter(ListAllAdvices, MostUrgentAdvice).
-%write(MostUrgentAdvice), nl.
-
+masterRule( advice, Condition, Type, Language, MostUrgentAdvice):- setLanguageFile(Language), 
+adviceRelatedParameters(Type, SubParameterList), 
+getAllAdvices( Condition, Type, SubParameterList, ListAllAdvices), 
+filter( ListAllAdvices, [ID, HigherRisk]),
+msg( ID, MostUrgentAdvice).
 
 masterRule(task, Language,TaskList):- setLanguageFile(Language), 
 findall(Description ,task(Description), TaskList).
@@ -35,15 +34,15 @@ findall(Description ,task(Description), TaskList).
 %% For the type "Type", and list of subtypes returns a list of Advices Id and their respective Risks
 %%------------------------------------------------------------------------------------------------------------
 
-getAllAdvices(Type ,[SubType], [[ID,Risk]] ) :- inRisk(Type,SubType,Risk,ID).
-getAllAdvices(Type, [SubType|Rest],[[ID,Risk]|AdviceList]):- inRisk(Type,SubType,Risk,ID), getAllAdvices(Type, Rest,AdviceList).
+getAllAdvices( Condition, [Paramter], RegType, [[ID,Risk]] ) :- inRisk( Condition, Paramter, RegType, Risk, ID).
+getAllAdvices( Condition, [Paramter|Rest], RegType,[[ID,Risk]|AdviceList]):- inRisk( Condition, Paramter, RegType, Risk, ID), getAllAdvices( Condition, Rest, RegType, AdviceList).
 
 %%------------------------------------------------------------------------------------------------------------
 %% Returns a list of Task's for the user to do
 %%------------------------------------------------------------------------------------------------------------
 
-%getAllTasks([[Description]] ) :- hasTask(Description).
-%getAllTasks([[Description]|TaskList]):- hasTask(Description), getAllTasks(TaskList).
+getAllTasks([Description] ) :- hasTask(Description).
+getAllTasks([Description|TaskList]):- hasTask(Description), getAllTasks(TaskList).
 
 
 %%------------------------------------------------------------------------------------------------------------
