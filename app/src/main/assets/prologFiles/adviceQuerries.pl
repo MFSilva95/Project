@@ -28,10 +28,10 @@ and g.Value <="+HypoglycaemiaValue+" order by count(*) desc limit 1 ").
 
 
 %%------------------------------------------------------------------------------------------------------------
-%% Regra que retorna o numero de Hiperglicemias (valor de glicose acima do HyperglycamiaValue)
+%% Regra que retorna o numero de Hiperglicemias (valor glicemico acima do HyperglycamiaValue)
 %% nos ultimos TimeSpan minutos
 %%----------------------------------
-%% Rule that returns the number of HyperGlycemias(glucose value over the)
+%% Rule that returns the number of HyperGlycemias(glycemia value over the)
 %% in the last TimeSpan minutes
 %%------------------------------------------------------------------------------------------------------------
 

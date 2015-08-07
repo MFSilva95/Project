@@ -7,8 +7,8 @@
 %%In this file Messages are inserted or defined
 % messages must have the format msg(ID, Message with extra options separated by "-")
 
-msg('hasHighGlucose', 'O seu valor de Glicose encontra-se alto. Um novo teste irá ser agendado para verificar se este valor estabiliza./adviceTimer-Glycemia-600-s/').
-msg('hasLowGlucose', 'O seu valor de Glicose encontra-se baixo. Um novo teste irá ser agendado para verificar se este valor estabiliza./adviceTimer-Glycemia-600-s/').
+msg('hasHighGlucose', 'O seu valor Glicemico encontra-se alto. Um novo teste irá ser agendado para verificar se este valor estabiliza./adviceTimer-Glycemia-600-s/').
+msg('hasLowGlucose', 'O seu valor Glicemico encontra-se baixo. Um novo teste irá ser agendado para verificar se este valor estabiliza./adviceTimer-Glycemia-600-s/').
 
 msg('hasHighHbA1c', 'O seu valor de HbA1c encontra-se alto. Um novo teste irá ser agendado para verificar se este valor estabiliza./adviceTimer-HbA1c-600-s/').
 msg('hasLowHbA1c', 'O seu valor de HbA1c encontra-se baixo. Um novo teste irá ser agendado para verificar se este valor estabiliza./adviceTimer-HbA1c-600-s/').
@@ -37,7 +37,7 @@ msg('mealUserWithHighWeight', 'Modere as suas refeições e tenha cuidado com o se
 %% Essencial Task messages
 %%------------------------------------------------------------------------------------------------------------
 
-msg('Tsk_glucoseReg', 'Já não testa a sua Glicose à demasiado tempo. O último valor registado tem o valor expirado. Por favor faça um novo teste./10').
+msg('Tsk_glycemiaReg', 'Já não testa a sua Glicemia à demasiado tempo. O último valor registado tem o valor expirado. Por favor faça um novo teste./10').
 msg('Tsk_hbA1cReg', 'Já não testa o seu valor de HbA1c à demasiado tempo. O último valor registado tem o valor expirado. Por favor faça um novo teste./10').
 msg('Tsk_arterialPReg', 'Já não testa o seu valor de Pressão Arterial à demasiado tempo. O último valor registado tem o valor expirado. Por favor faça um novo teste./10').
 msg('Tsk_weightReg', 'Já não mede o seu Peso à demasiado tempo. O último valor registado tem o valor expirado. Por favor faça uma nova pesagem./10').

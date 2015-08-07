@@ -7,8 +7,8 @@
 %%In this file Messages are inserted or defined
 % messages must have the format msg(ID, Message with extra options separated by "-")
 
-msg('hasHighGlucose', 'You have a high Glucose value. A new test will be agended to check if your values have estabilized./adviceTimer-Glycemia-600-s/').
-msg('hasLowGlucose', 'You have a low Glucose value. A new test will -be agended to check if your values have estabilized./adviceTimer-Glycemia-600-s/').
+msg('hasHighGlucose', 'You have a high Glycemia value. A new test will be agended to check if your values have estabilized./adviceTimer-Glycemia-600-s/').
+msg('hasLowGlucose', 'You have a low Glycemia value. A new test will -be agended to check if your values have estabilized./adviceTimer-Glycemia-600-s/').
 
 msg('hasHighHbA1c', 'You have a high HbA1c value. A new test will be agended to check if your values have estabilized./adviceTimer-HbA1c-600-s/').
 msg('hasLowHbA1c', 'You have a low HbA1c value. A new test will be agended to check if your values have estabilized./adviceTimer-HbA1c-600-s/').
@@ -37,7 +37,7 @@ msg('mealUserWithHighWeight', 'You should moderate the portion of your meals and
 %% Essencial Task messages
 %%------------------------------------------------------------------------------------------------------------
 
-msg('Tsk_glucoseReg', 'You don't test your Glucose for far too long. The last registrated value has expired. Please perform a new test./10').
+msg('Tsk_glycemiaReg', 'You don't test your Glucose for far too long. The last registrated value has expired. Please perform a new test./10').
 msg('Tsk_hbA1cReg', 'You don't test your HbA1c for far too long. The last registrated value has expired. Please perform a new test./10').
 msg('Tsk_arterialPReg', 'You don't test your Arterial Pressure for far too long. The last registrated value has expired. Please perform a new test./10').
 msg('Tsk_weightReg', 'You don't weight yourself for far too long. The last registrated value has expired. Please perform a new weighing./10').
