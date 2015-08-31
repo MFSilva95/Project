@@ -1,5 +1,4 @@
-package bluetoothHDP;
-
+package bluetooth;
 
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
@@ -8,7 +7,6 @@ import android.bluetooth.BluetoothHealth;
 import android.bluetooth.BluetoothHealthAppConfiguration;
 import android.bluetooth.BluetoothHealthCallback;
 import android.bluetooth.BluetoothProfile;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
@@ -16,15 +14,31 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.ParcelFileDescriptor;
 import android.os.RemoteException;
-import android.util.Log;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import es.libresoft.openhealth.Agent;
-
-public class HDPManager2 extends Service
+public class BluetoothHDPService extends Service
 {
+    public static final int sRESULT_OK = 0;
+    public static final int sRESULT_FAIL = -1;
+
+    public static final int sSTATUS_HEALTH_APP_REGISTER = 100;
+    public static final int sSTATUS_HEALTH_APP_UNREGISTER = 101;
+    public static final int sSTATUS_CREATE_CHANNEL = 102;
+    public static final int sSTATUS_DESTROY_CHANNEL = 103;
+    public static final int sSTATUS_READ_DATA = 104;
+    public static final int sSTATUS_READ_DATA_DONE = 105;
+
+    public static final int sMSG_REGISTER_CLIENT = 200;
+    public static final int sMSG_UNREGISTER_CLIENT = 201;
+    public static final int sMSG_REGISTER_HEALTH_APP = 300;
+    public static final int sMSG_UNREGISTER_HEALTH_APP = 301;
+    public static final int sMSG_CONNECT_CHANNEL = 400;
+    public static final int sMSG_DISCONNECT_CHANNEL = 401;
+
+    private static final String sTAG = "BluetoothHDPService";
+
     private class IncomingHandler extends Handler
     {
         @Override
@@ -32,6 +46,16 @@ public class HDPManager2 extends Service
         {
             switch (msg.what)
             {
+                case sMSG_REGISTER_CLIENT:
+                    log("handleMessage() - Activity client registered.");
+                    mClient = msg.replyTo;
+                    break;
+
+                case sMSG_UNREGISTER_CLIENT:
+                    log("handleMessage() - Activity client unregistered.");
+                    mClient = null;
+                    break;
+
                 default:
                     super.handleMessage(msg);
             }
@@ -90,20 +114,6 @@ public class HDPManager2 extends Service
             sendMessage(sSTATUS_READ_DATA_DONE, 0);
         }
     }
-
-    public static final int sRESULT_OK = 0;
-    public static final int sRESULT_FAIL = -1;
-
-    public static final int sSTATUS_HEALTH_APP_REGISTER = 100;
-    public static final int sSTATUS_HEALTH_APP_UNREGISTER = 101;
-    public static final int sSTATUS_CREATE_CHANNEL = 102;
-    public static final int sSTATUS_DESTROY_CHANNEL = 103;
-    public static final int sSTATUS_READ_DATA = 104;
-    public static final int sSTATUS_READ_DATA_DONE = 105;
-
-    private static final String sTAG = "BluetoothHDPService";
-    private static final int sSCALE = 0x100f;
-    private static final int sBLOOD_MONITOR = 0x1007;
 
     private BluetoothAdapter mBluetoothAdapter;
     private BluetoothHealthAppConfiguration mHealthAppConfig;
@@ -281,12 +291,12 @@ public class HDPManager2 extends Service
         }
     }
 
-    private void log(String message)
+    private static void log(String message)
     {
         System.out.println(message);
     }
 
-    private void error(String message)
+    private static void error(String message)
     {
         System.err.println(message);
     }
