@@ -95,7 +95,7 @@ public class Insulins extends Fragment {
 
     	new AlertDialog.Builder(getActivity())
     	    .setView(v)
-    	    .setPositiveButton("Gravar", new DialogInterface.OnClickListener() {
+    	    .setPositiveButton(getString(R.string.saveButton), new DialogInterface.OnClickListener() {
     	         public void onClick(DialogInterface dialog, int whichButton) {
     	             // deal with the editable
     	        	 EditText iname = (EditText)v.findViewById(R.id.et_dialog_new_insulin_name);
@@ -115,7 +115,7 @@ public class Insulins extends Fragment {
     	             fillListView(insulinList);
     	         }
     	    })
-    	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+    	    .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
     	         public void onClick(DialogInterface dialog, int whichButton) {
     	                // Do nothing.
     	         }

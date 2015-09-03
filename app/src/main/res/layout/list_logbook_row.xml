@@ -50,7 +50,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:gravity="center_horizontal"
-	        android:text="H.Carb"
+	        android:text="@string/Carbs"
 	        android:textSize="16sp" />
          
         <TextView
@@ -68,7 +68,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:gravity="center_horizontal"
-	        android:text="gramas"
+	        android:text="@string/grams"
 	        android:textSize="12sp" />
 	     -->
 	</LinearLayout>
@@ -124,7 +124,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:gravity="center_horizontal"
-	        android:text="Glicemia"
+	        android:text="@string/bloodglucose"
 	        android:textSize="16sp" />
         <TextView
 	        android:id="@+id/tv_list_logbookreg_glycemia_value"
@@ -141,7 +141,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:gravity="center_horizontal"
-	        android:text="mg/dl"
+	        android:text="@string/mg_dl"
 	        android:textSize="12sp" />
          -->
 	</LinearLayout>

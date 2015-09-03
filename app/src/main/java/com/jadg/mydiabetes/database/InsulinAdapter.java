@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +18,7 @@ import com.jadg.mydiabetes.R;
 
 
 public class InsulinAdapter extends BaseAdapter {
-
+    String[] insulin_action = {"insulin_action_rapid","insulin_action_short","insulin_action_intermediate","insulin_action_long"};
     private ArrayList<InsulinDataBinding> _data;
     Context _c;
 
@@ -69,7 +70,12 @@ public class InsulinAdapter extends BaseAdapter {
         iname.setText(insulin.getName());
         iname.setTag(_id);
         itype.setText(insulin.getType());
-        iaction.setText(insulin.getAction());
+
+        int index = Integer.parseInt(insulin.getAction());
+        Resources res = v.getContext().getResources();
+        String[] actions = res.getStringArray(R.array.insulin_action);
+
+        iaction.setText(actions[index]);
         //iduration.setText(insulin.getDuration().toString());
 
 

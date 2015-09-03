@@ -10,7 +10,7 @@
 	        android:id="@+id/tv_DialogH1A1c_Value"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:text="Valor Hemoglobina Glicosilada"
+	        android:text="@string/hemoglobin_value"
 	        android:textSize="16sp"
 	        android:textStyle="bold" />
         <EditText
@@ -18,7 +18,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:textSize="18sp"
-	        android:hint="10 (valor em %)"
+	        android:hint="@string/hint_hemoglobin"
 	        android:inputType="number" >
 	    </EditText>
     
@@ -26,7 +26,7 @@
 	        android:id="@+id/tv_DialogH1A1c_DateTime"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:text="Hora"
+	        android:text="@string/hour"
 	        android:textSize="16sp"
 	        android:textStyle="bold" />
         <EditText
@@ -34,7 +34,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:textSize="18sp"
-	        android:hint="20013-04-06 15:30"
+	        android:hint="@string/hint_date_hour"
 	        android:inputType="datetime" >
 	    </EditText>
     

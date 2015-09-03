@@ -26,7 +26,7 @@
 		        android:id="@+id/tv_MyData_Name"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Nome"
+		        android:text="@string/name"
 		        android:textSize="16sp"
 		        android:textStyle="bold" />
 	        
@@ -35,7 +35,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
 		        android:textSize="18sp"
-		        android:hint="Jorge Mendes"
+		        android:hint="@string/hint_name"
 		        android:inputType="text" >
 		    </EditText>
         </LinearLayout>
@@ -50,7 +50,7 @@
 		        android:id="@+id/tv_MyData_DiabetesType"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Tipo de diabetes"
+		        android:text="@string/diabetes_type"
 		        android:textSize="16sp"
 		        android:textStyle="bold" />
 	        
@@ -71,7 +71,7 @@
 		        android:id="@+id/tv_MyData_InsulinRatio"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Fator de sensibilidade"
+		        android:text="@string/sensivity_factor"
 		        android:textSize="16sp"
 		        android:textStyle="bold" />
 	        
@@ -80,7 +80,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
 		        android:textSize="18sp"
-		        android:hint="ex.: 45"
+		        android:hint="@string/hint_value3"
 		        android:inputType="numberDecimal" >
 		    </EditText>
         </LinearLayout>
@@ -95,7 +95,7 @@
 		        android:id="@+id/tv_MyData_CarbsRatio"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Rácio Hidratos de Carbono"
+		        android:text="@string/carbs_racio"
 		        android:textSize="16sp"
 		        android:textStyle="bold" />
 	        
@@ -104,7 +104,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
 		        android:textSize="18sp"
-		        android:hint="ex.: 10"
+		        android:hint="@string/hint_value4"
 		        android:inputType="numberDecimal" >
 		    </EditText>
         </LinearLayout>
@@ -119,7 +119,7 @@
 		        android:id="@+id/tv_MyData_LowerRange"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Limite para hipoglicemia"
+		        android:text="@string/hypoglycemia_limit"
 		        android:textSize="16sp"
 		        android:textStyle="bold" />
 	        
@@ -128,7 +128,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
 		        android:textSize="18sp"
-		        android:hint="ex.: 70"
+		        android:hint="@string/hint_value5"
 		        android:inputType="numberDecimal" >
 		    </EditText>
         </LinearLayout>
@@ -143,7 +143,7 @@
 		        android:id="@+id/tv_MyData_HigherRange"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Limite para hiperglicemia"
+		        android:text="@string/hyperglycemia_limit"
 		        android:textSize="16sp"
 		        android:textStyle="bold" />
 	        
@@ -152,7 +152,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
 		        android:textSize="18sp"
-		        android:hint="ex.: 150"
+		        android:hint="@string/hint_value6"
 		        android:inputType="numberDecimal" >
 		    </EditText>
         </LinearLayout>
@@ -168,7 +168,7 @@
 		        android:id="@+id/tv_MyData_BirthDate"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Data de Nascimento"
+		        android:text="@string/birth_date"
 		        android:textSize="16sp"
 		        android:textStyle="bold" />
 	        
@@ -177,7 +177,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
 		        android:textSize="18sp"
-		        android:hint="1980-04-22"
+		        android:hint="@string/hint_birth_date"
 		        android:inputType="date"
 		        android:focusable="false"
 		        android:focusableInTouchMode="false"
@@ -195,7 +195,7 @@
 		        android:id="@+id/tv_MyData_Sex"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Sexo"
+		        android:text="@string/gender"
 		        android:textSize="16sp"
 		        android:textStyle="bold" />
 	        
@@ -217,7 +217,7 @@
 		        android:id="@+id/tv_MyData_Height"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Altura"
+		        android:text="@string/height"
 		        android:textSize="16sp"
 		        android:textStyle="bold" />
 	        
@@ -226,7 +226,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
 		        android:textSize="18sp"
-		        android:hint="ex.: 1.82"
+		        android:hint="@string/hint_value7"
 		        android:inputType="numberDecimal" >
 		    </EditText>
         </LinearLayout>

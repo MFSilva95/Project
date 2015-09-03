@@ -25,7 +25,7 @@
 	        android:id="@+id/tv_dialog_new_medicine_title"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:text="Novo medicamento"
+	        android:text="@string/new_medicine"
 	        android:textSize="24sp"
 	        android:gravity="left|center_vertical" />
 	</LinearLayout>
@@ -39,8 +39,8 @@
 	    android:id="@+id/tv_dialog_new_medicine_name"
 	    android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Nome"
-        android:hint="Ben u Ron 1000"
+        android:text="@string/name"
+        android:hint="@string/hint_medicine"
         android:textSize="16sp"
         android:textStyle="bold" />
    	<EditText
@@ -55,14 +55,14 @@
         android:id="@+id/tv_dialog_new_medicine_units"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Unidades"
+        android:text="@string/units"
         android:textSize="16sp"
         android:textStyle="bold" />
 	<EditText
         android:id="@+id/et_dialog_new_medicine_units"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="comprimidos"
+        android:hint="@string/pills"
         android:textSize="16sp"
         android:inputType="text" >
     </EditText>

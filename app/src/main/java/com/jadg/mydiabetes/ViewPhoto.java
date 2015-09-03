@@ -175,34 +175,34 @@ public class ViewPhoto extends Activity {
 		final Bundle args = getIntent().getExtras();
 		final int id = args.getInt("Id");
 		new AlertDialog.Builder(c)
-	    .setTitle("Eliminar foto?")
-	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-	         public void onClick(DialogInterface dialog, int whichButton) {
-	        	 
-	        	 try {
-	        		 if(id!=-1){
-	        			 DB_Write wdb = new DB_Write(c);
-	        			 wdb.Carbs_DeletePhoto(id);
-	        			 wdb.close();
-	        		 }
-	        		 
-	        		 String path = args.getString("Path");
-	        		 File file = new File(Uri.parse(path).getPath());
-	        		 boolean deleted = file.delete();
-	        		 if (deleted) {
-	        			 Log.d("apagado", file.getAbsolutePath());
-	        		 }else {
-	        			 Log.d("não apagado", file.getAbsolutePath());
-	        		 }
-	        		 setResult(RESULT_OK);
-	        		 finish();
-	        		 
-	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "Não pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
-	     		 }
-	         }
-	    })
-	    .setNegativeButton("Não", new DialogInterface.OnClickListener() {
+	    .setTitle(getString(R.string.delete_photo))
+	    .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+
+				try {
+					if (id != -1) {
+						DB_Write wdb = new DB_Write(c);
+						wdb.Carbs_DeletePhoto(id);
+						wdb.close();
+					}
+
+					String path = args.getString("Path");
+					File file = new File(Uri.parse(path).getPath());
+					boolean deleted = file.delete();
+					if (deleted) {
+						Log.d("apagado", file.getAbsolutePath());
+					} else {
+						Log.d("não apagado", file.getAbsolutePath());
+					}
+					setResult(RESULT_OK);
+					finish();
+
+				} catch (Exception e) {
+					Toast.makeText(c, getString(R.string.deleteReading), Toast.LENGTH_LONG).show();
+				}
+			}
+		})
+	    .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	                // Do nothing.
 	         }
@@ -212,8 +212,8 @@ public class ViewPhoto extends Activity {
 	public void DeleteCarbsRead(final int id){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Eliminar leitura?")
-	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+	    .setTitle(getString(R.string.deleteReading))
+	    .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	             //Falta verificar se não está associada a nenhuma entrada da DB
 	        	 DB_Write wdb = new DB_Write(c);
@@ -221,13 +221,13 @@ public class ViewPhoto extends Activity {
 	        		 wdb.Carbs_Delete(id);
 	        		 goUp();
 	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "Não pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
+	        		 Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
 	     		 }
 	             wdb.close();
 	             
 	         }
 	    })
-	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+	    .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	                // Do nothing.
 	         }

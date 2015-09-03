@@ -22,7 +22,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="0.70"
-			android:text="Cópia de Segurança"
+			android:text="@string/backup"
 			android:textSize="16sp"
 			android:gravity="center_vertical|center_horizontal" />
         
@@ -37,7 +37,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_vertical|center_horizontal"
-		android:text="Efectuar Cópia de Segurança"
+		android:text="@string/do_back"
 		android:onClick="backup" />
 
 	
@@ -58,7 +58,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="0.70"
-			android:text="Restaurar Cópia"
+			android:text="@string/restore_backup"
 			android:textSize="16sp"
 			android:gravity="center_vertical|center_horizontal" />
         
@@ -73,7 +73,7 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_vertical|center_horizontal"
-		android:text="Restaurar Cópia de Segurança"
+		android:text="@string/restore_backup_button"
 		android:onClick="restore" />
      
      
@@ -94,7 +94,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="0.40"
-			android:text="Última Cópia de Segurança"
+			android:text="@string/last_backup"
 			android:textSize="16sp"
 			android:gravity="center_vertical|center_horizontal" />
        	

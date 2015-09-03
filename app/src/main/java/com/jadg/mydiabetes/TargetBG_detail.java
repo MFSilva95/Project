@@ -228,8 +228,8 @@ public class TargetBG_detail extends Activity {
 	public void DeleteTarget(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Eliminar Objetivo de Glicemia?")
-	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+	    .setTitle(getString(R.string.targetbg_info))
+	    .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	        	 //Falta verificar se não está associada a nenhuma entrada da DB
 	        	 //Rever porque não elimina o registo de glicemia
@@ -238,13 +238,13 @@ public class TargetBG_detail extends Activity {
 	        		 wdb.Target_Remove(idTarget);
 	        		 goUp();
 	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "Não pode eliminar este objetivo, associado a outros registos!", Toast.LENGTH_LONG).show();
+	        		 Toast.makeText(c, getString(R.string.targetbg_delete_exception), Toast.LENGTH_LONG).show();
 	     		 }
 	             wdb.close();
 	             
 	         }
 	    })
-	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+	    .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	                // Do nothing.
 	         }

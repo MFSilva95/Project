@@ -30,7 +30,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Início"
+		        android:text="@string/start"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -93,7 +93,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.75"
-		        android:text="Exercicio e Duração"
+		        android:text="@string/exercise_duration"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -117,7 +117,7 @@
 		        android:layout_weight="1"
 		        android:singleLine="true"
 		        android:textSize="24sp"
-		        android:hint="corrida"
+		        android:hint="@string/hint_exercise1"
 		        android:layout_marginLeft="16dp"
 		        android:layout_marginRight="16dp" />
             
@@ -126,7 +126,7 @@
 		        android:layout_width="match_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:hint="minutos"
+		        android:hint="@string/minutes"
 		        android:layout_marginLeft="16dp"
 		        android:layout_marginRight="16dp"
 		        android:gravity="center_horizontal"
@@ -152,7 +152,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Esforço"
+		        android:text="@string/effort"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -191,7 +191,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.75"
-		        android:text="Notas"
+		        android:text="@string/notes"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             

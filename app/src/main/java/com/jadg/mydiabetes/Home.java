@@ -109,9 +109,9 @@ public class Home extends Activity {
 	public void ShowDialogAddData(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Informação")
-	    .setMessage("Antes de adicionar qualquer registo deve adicionar a sua informação!")
-	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	    .setTitle(getString(R.string.title_activity_info))
+	    .setMessage(getString(R.string.homeInfo))
+	    .setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	        	 //Falta verificar se não está associada a nenhuma entrada da DB
 	        	 //Rever porque não elimina o registo de glicemia

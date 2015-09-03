@@ -336,9 +336,9 @@ public class Meal extends Activity {
 	public void ShowDialogAddInsulin(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-				.setTitle("Informação")
-				.setMessage("Antes de adicionar uma refeição deve adicionar a insulina a administrar!")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				.setTitle(getString(R.string.title_activity_info))
+				.setMessage(getString(R.string.meal_alert_insulin))
+				.setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						//Falta verificar se não está associada a nenhuma entrada da DB
 						//Rever porque não elimina o registo de glicemia
@@ -353,9 +353,9 @@ public class Meal extends Activity {
 	public void ShowDialogAddTarget(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-				.setTitle("Informação")
-				.setMessage("Antes de adicionar uma refeição deve adicionar os seus objetivos da glicemia!")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				.setTitle(getString(R.string.title_activity_info))
+				.setMessage(getString(R.string.meal_alert_target))
+				.setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						//Falta verificar se não está associada a nenhuma entrada da DB
 						//Rever porque não elimina o registo de glicemia

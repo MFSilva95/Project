@@ -28,7 +28,7 @@
         	        android:layout_width="wrap_content"
         	        android:layout_margin="16dp"
         	        android:padding="8dp"
-		            android:text="Glicemia"
+		            android:text="@string/bloodglucose"
 		            android:textColor="@color/primary_text_holo_dark"
 		            android:textSize="14sp"
 		            android:id="@+id/glicemia"
@@ -39,7 +39,7 @@
         	        android:layout_width="wrap_content"
         	        android:layout_margin="16dp"
         	        android:padding="8dp"
-		            android:text="Insulina"
+		            android:text="@string/insulin"
 		            android:textColor="@color/primary_text_holo_dark"
 		            android:textSize="14sp"
 		            android:id="@+id/insulina"
@@ -57,7 +57,7 @@
         	        android:layout_width="wrap_content"
         	        android:layout_margin="16dp"
         	        android:padding="8dp"
-		            android:text="H.Carb"
+		            android:text="@string/Carbs"
 		            android:textColor="@color/primary_text_holo_dark"
 		            android:textSize="14sp"
 		            android:id="@+id/carbs"
@@ -125,7 +125,7 @@
 		        android:id="@+id/tv_glyinscarbs_glycemia"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Glicemia"
+		        android:text="@string/bloodglucose"
 		        android:textSize="24sp"
 		        android:gravity="left|center_vertical" />
         </LinearLayout>
@@ -153,7 +153,7 @@
 		        android:id="@+id/tv_glyinscarbs_insulin"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Insulina"
+		        android:text="@string/insulin"
 		        android:textSize="24sp"
 		        android:gravity="left|center_vertical" />
         </LinearLayout>

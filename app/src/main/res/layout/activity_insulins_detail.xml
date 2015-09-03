@@ -32,7 +32,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Nome"
+		        android:text="@string/name"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -79,7 +79,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.50"
-		        android:text="Modo de Administração"
+		        android:text="@string/insulin_method"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -102,7 +102,7 @@
 			        android:layout_gravity="center_horizontal"
 			        android:textSize="24sp"
 			        android:inputType="text"
-			        android:hint="ex.: injecção"
+			        android:hint="@string/hint_insulin_type"
 			        android:layout_marginLeft="16dp"
 		        	android:layout_marginRight="16dp" />
         </LinearLayout>
@@ -126,7 +126,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Ação"
+		        android:text="@string/action"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -142,17 +142,61 @@
 	        	android:layout_height="0dp"
 	        	android:layout_weight="1"
 	        	android:gravity="center_vertical" >
-	            <EditText
+	            EditText
 			        android:id="@+id/et_Insulins_Acao"
 			        android:layout_width="fill_parent"
 			        android:layout_height="wrap_content"
 			        android:layout_gravity="center_horizontal"
 			        android:textSize="24sp"
 			        android:inputType="text"
-			        android:hint="ex.: rápida"
+			        android:hint="@string/hint_insulin_action"
 			        android:layout_marginLeft="16dp"
 		        	android:layout_marginRight="16dp" />
-        </LinearLayout>
+
+			<RadioGroup
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:gravity="center"
+				android:id="@+id/et_insulin_action"
+				android:layout_marginLeft="10dp"
+				android:layout_weight="1">
+
+				<RadioButton
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/insulin_action_rapid"
+					android:id="@+id/radioButton"
+					android:gravity="center"
+					android:layout_gravity="center_vertical"
+					android:checked="false" />
+
+				<RadioButton
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/insulin_action_short"
+					android:id="@+id/radioButton2"
+					android:gravity="center"
+					android:layout_gravity="center_vertical" />
+
+				<RadioButton
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/insulin_action_intermediate"
+					android:id="@+id/radioButton3"
+					android:gravity="center"
+					android:layout_gravity="center_vertical" />
+
+				<RadioButton
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/insulin_action_long"
+					android:id="@+id/radioButton4"
+					android:gravity="center"
+					android:layout_gravity="center_vertical" />
+			</RadioGroup>
+
+		</LinearLayout>
         
         
         

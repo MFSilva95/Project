@@ -17,6 +17,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:onClick="transfer"
-        android:text="Transferir" />
+        android:text="@string/transfer" />
 
 </RelativeLayout>

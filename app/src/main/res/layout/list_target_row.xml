@@ -39,7 +39,7 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:gravity="center_horizontal"
-	        android:text="mg/dl"
+	        android:text="@string/mg_dl"
 	        android:textSize="12sp" />
 	</LinearLayout>
     

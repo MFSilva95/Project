@@ -36,7 +36,7 @@
 		        android:id="@+id/tv_datatools_mydata"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Meus Dados"
+		        android:text="@string/title_activity_my_data"
 		        android:textSize="24sp"
 		        android:gravity="left|center_vertical" />
         </LinearLayout>
@@ -64,7 +64,7 @@
 		        android:id="@+id/tv_datatools_preferences"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Configurações"
+		        android:text="@string/title_activity_preferences"
 		        android:textSize="24sp"
 		        android:gravity="left|center_vertical" />
         </LinearLayout>
@@ -92,7 +92,7 @@
 		        android:id="@+id/tv_datatools_impexp"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Import/Export"
+		        android:text="@string/title_activity_import_export"
 		        android:textSize="24sp"
 		        android:gravity="left|center_vertical" />
         </LinearLayout>
@@ -121,7 +121,7 @@
 		        android:id="@+id/tv_datatools_info"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Informação"
+		        android:text="@string/title_activity_info"
 		        android:textSize="24sp"
 		        android:gravity="left|center_vertical" />
         </LinearLayout>

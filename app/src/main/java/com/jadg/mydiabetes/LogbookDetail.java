@@ -405,9 +405,9 @@ public class LogbookDetail extends Activity {
     public void ShowDialogAddInsulin() {
         final Context c = this;
         new AlertDialog.Builder(this)
-                .setTitle("Informação")
-                .setMessage("Antes de gravar deve adicionar a insulina a administrar!")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.title_activity_info))
+                .setMessage(getString(R.string.logbook_alert))
+                .setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         //Falta verificar se não está associada a nenhuma entrada da DB
                         //Rever porque não elimina o registo de glicemia

@@ -2,7 +2,7 @@
 
     <item
         android:id="@+id/menuItem_ViewPhoto_delete"
-        android:title="Eliminar"
+        android:title="@string/delete"
         android:icon="@drawable/ic_action_discard"
         android:orderInCategory="100"
         android:showAsAction="always"

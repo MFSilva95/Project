@@ -257,8 +257,8 @@ public class ExerciseDetail extends Activity {
 	public void DeleteExerciseRead(final int id){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Eliminar leitura?")
-	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+	    .setTitle(getString(R.string.deleteReading))
+	    .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	        	 //Falta verificar se não está associada a nenhuma entrada da DB
 	        	 //Rever porque não elimina o registo de glicemia
@@ -267,13 +267,13 @@ public class ExerciseDetail extends Activity {
 	        		 wdb.Exercise_Delete(id);
 	        		 goUp();
 	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "Nao pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
+	        		 Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
 	     		 }
 	             wdb.close();
 	             
 	         }
 	    })
-	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+	    .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	                // Do nothing.
 	         }

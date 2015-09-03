@@ -59,13 +59,13 @@ public class ScanActivity extends Activity {
 	            }
 	            else
 	            {
-	            	Toast toast = Toast.makeText(this, "QR code inválido", Toast.LENGTH_SHORT);
+	            	Toast toast = Toast.makeText(this, getString(R.string.invalid_qr_code), Toast.LENGTH_SHORT);
 		        	toast.show();
 	            }
 	        }
 	        else if (resultCode == RESULT_CANCELED)
 	        {
-	        	Toast toast = Toast.makeText(this, "Leitura cancelada", Toast.LENGTH_SHORT);
+	        	Toast toast = Toast.makeText(this, getString(R.string.cancel_read), Toast.LENGTH_SHORT);
 	        	toast.show();
 	        }
 	    }

@@ -10,7 +10,7 @@
 	        android:id="@+id/tv_DialogWeight_Value"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:text="Peso"
+	        android:text="@string/weight"
 	        android:textSize="16sp"
 	        android:textStyle="bold" />
         <EditText
@@ -18,7 +18,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:textSize="18sp"
-	        android:hint="120 (em kg)"
+	        android:hint="@string/hint_weight"
 	        android:inputType="numberDecimal" >
 	    </EditText>
     
@@ -26,7 +26,7 @@
 	        android:id="@+id/tv_DialogWeight_DateTime"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:text="Hora"
+	        android:text="@string/hour"
 	        android:textSize="16sp"
 	        android:textStyle="bold" />
         <EditText
@@ -34,7 +34,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:textSize="18sp"
-	        android:hint="20013-04-06 15:30"
+	        android:hint="@string/hint_date_hour"
 	        android:inputType="datetime" >
 	    </EditText>
     

@@ -66,7 +66,7 @@ public class ExerciseRegAdapter extends BaseAdapter {
            
            final ExerciseRegDataBinding exercise_datab = _data.get(position);
            final String _id = ""+exercise_datab.getId();
-           Log.d("id do exercisio", _id);
+           Log.d("id do exercicio", _id);
            data.setText(exercise_datab.getDate());
            hora.setText(exercise_datab.getTime());
            exercise.setText(exercise_datab.getExercise());

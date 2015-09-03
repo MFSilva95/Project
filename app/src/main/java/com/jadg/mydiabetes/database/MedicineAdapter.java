@@ -71,36 +71,36 @@ public class MedicineAdapter extends BaseAdapter {
 		   
 		   
          removemedicine.setOnClickListener(new View.OnClickListener() {
-	
-	    	 @Override
-	    	 public void onClick(final View v) {
-	    		 new AlertDialog.Builder(v.getContext())
-		    	    .setTitle("Eliminar medicamento?")
-		    	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-		    	         public void onClick(DialogInterface dialog, int whichButton) {
-		    	        	//Falta verificar se não está associada a nenhuma entrada da DB
-		    	        	 
-		    	        	 DB_Write wdb = new DB_Write(v.getContext());
-		    	        	 try {
-		    	        		 wdb.Medicine_Remove(medicine.getId());
-		    	        		 Log.d("to delete", String.valueOf(position));
-			    	             _data.remove(position);
-			    	             notifyDataSetChanged();
-		    	        	 }catch (Exception e) {
-		    	        		 Toast.makeText(v.getContext(), "Não pode eliminar este medicamento, referenciado em registos!", Toast.LENGTH_LONG).show();
-		    	     		 }
-		    	             wdb.close();
-		    	             
-		    	         }
-		    	    })
-		    	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-		    	         public void onClick(DialogInterface dialog, int whichButton) {
-		    	                // Do nothing.
-		    	         }
-		    	    }).show();
-	    	 }
-		   
-         });
+
+			 @Override
+			 public void onClick(final View v) {
+				 new AlertDialog.Builder(v.getContext())
+						 .setTitle(v.getResources().getString(R.string.delete_MedicinesFragment))
+						 .setPositiveButton(v.getResources().getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+							 public void onClick(DialogInterface dialog, int whichButton) {
+								 //Falta verificar se não está associada a nenhuma entrada da DB
+
+								 DB_Write wdb = new DB_Write(v.getContext());
+								 try {
+									 wdb.Medicine_Remove(medicine.getId());
+									 Log.d("to delete", String.valueOf(position));
+									 _data.remove(position);
+									 notifyDataSetChanged();
+								 } catch (Exception e) {
+									 Toast.makeText(v.getContext(), v.getResources().getString(R.string.error_MedicinesFragment), Toast.LENGTH_LONG).show();
+								 }
+								 wdb.close();
+
+							 }
+						 })
+								 .setNegativeButton(v.getResources().getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
+									 public void onClick(DialogInterface dialog, int whichButton) {
+										 // Do nothing.
+									 }
+								 }).show();
+			 }
+
+		 });
                                      
                         
         return v;

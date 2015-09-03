@@ -33,7 +33,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Data e Hora"
+		        android:text="@string/date_hour"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -95,7 +95,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Fase do Dia"
+		        android:text="@string/title_activity_tag_detail"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -134,7 +134,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.75"
-		        android:text="Valor de Leitura"
+		        android:text="@string/read_value"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -169,7 +169,7 @@
             <TextView
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
-		        android:text="mg/dl"
+		        android:text="@string/mg_dl"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
         </LinearLayout>
@@ -191,7 +191,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.75"
-		        android:text="Notas"
+		        android:text="@string/notes"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             

@@ -80,7 +80,7 @@ public class MyData extends Activity {
 					DB_Write rdb = new DB_Write(this);
 					rdb.MyData_Save(getMyDataFromActivity());
 					rdb.close();
-					Toast.makeText(this, "Guardado", Toast.LENGTH_LONG).show();
+					Toast.makeText(this, getString(R.string.mydata_saved), Toast.LENGTH_LONG).show();
 					
 					//mandar para a actividade das insulinas
 					DB_Read read = new DB_Read(this);
@@ -95,7 +95,7 @@ public class MyData extends Activity {
 					return true;
 				}else{
 					//toast message
-					Toast.makeText(this, "Antes de guardar preencha todos os campos.", Toast.LENGTH_LONG).show();
+					Toast.makeText(this, getString(R.string.mydata_before_saving), Toast.LENGTH_LONG).show();
 				}
 				
 		}
@@ -204,9 +204,9 @@ public class MyData extends Activity {
 	public void ShowDialogAddInsulin(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Informação")
-	    .setMessage("De seguida deve adicionar a insulina a administrar!")
-	    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+	    .setTitle(getString(R.string.title_activity_info))
+	    .setMessage(getString(R.string.mydata_next_add_insulin))
+	    .setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	        	 //Falta verificar se não está associada a nenhuma entrada da DB
 	        	 //Rever porque não elimina o registo de glicemia

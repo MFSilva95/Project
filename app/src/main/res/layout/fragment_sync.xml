@@ -31,7 +31,7 @@
         android:clickable="false"
         android:longClickable="false"
         android:onClick="syncCloud"
-        android:text="Enviar para Cloud"
+        android:text="@string/send_to_cloud"
         android:visibility="gone" />
 
 </RelativeLayout>

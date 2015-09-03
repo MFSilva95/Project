@@ -123,8 +123,8 @@ public class ExercisesDetail extends Activity {
     public void DeleteExercise(){
         final Context c = this;
         new AlertDialog.Builder(this)
-                .setTitle("Eliminar exercício?")
-                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.delete_Exercise))
+                .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         //Falta verificar se não está associada a nenhuma entrada da DB
 
@@ -136,7 +136,7 @@ public class ExercisesDetail extends Activity {
 
                     }
                 })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Do nothing.
                     }

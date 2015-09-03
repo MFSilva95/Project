@@ -26,20 +26,29 @@
 	        android:layout_weight="1"
 	        android:textSize="16sp"
 	        android:textStyle="bold" />
+		<TextView
+			android:id="@+id/tv_list_glicemia_tag"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:gravity="left"
+			android:textSize="12sp"
+			android:lines="1"
+			android:ellipsize="end" />
 	</LinearLayout>
 	<TextView
 	        android:id="@+id/tv_list_glicemia_value"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_centerVertical="true"
-	        android:text="95"
+	        android:text="@string/hint_value1"
 	        android:textSize="36sp"
 	        android:layout_toLeftOf="@+id/tv_list_glicemia_unit" />
 	<TextView
 	        android:id="@+id/tv_list_glicemia_unit"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:text="mg/dl"
+	        android:text="@string/mg_dl"
 	        android:textSize="16sp"
 	        android:paddingLeft="8dp"
 	        android:layout_centerVertical="true"

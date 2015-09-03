@@ -30,7 +30,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.75"
-		        android:text="Período de doença"
+		        android:text="@string/disease_period"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -55,7 +55,7 @@
 	        	<TextView
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:text="De"
+			        android:text="@string/from"
 			        android:textSize="16sp"
 			        android:layout_gravity="center_horizontal" />
 	            <EditText
@@ -81,7 +81,7 @@
 	        	<TextView
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:text="Até"
+			        android:text="@string/to"
 			        android:textSize="16sp"
 			        android:layout_gravity="center_horizontal" />
 	            <EditText
@@ -116,7 +116,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Doença"
+		        android:text="@string/disease"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -159,7 +159,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Notas"
+		        android:text="@string/notes"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             

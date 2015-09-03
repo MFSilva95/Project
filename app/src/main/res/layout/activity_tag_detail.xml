@@ -31,7 +31,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Fase do Dia"
+		        android:text="@string/title_activity_tag_detail"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -76,7 +76,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Horário"
+		        android:text="@string/schedule"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -101,7 +101,7 @@
 	        	<TextView
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:text="De"
+			        android:text="@string/from"
 			        android:textSize="16sp"
 			        android:layout_gravity="center_horizontal" />
 	            <EditText
@@ -127,7 +127,7 @@
 	        	<TextView
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:text="Até"
+			        android:text="@string/to"
 			        android:textSize="16sp"
 			        android:layout_gravity="center_horizontal" />
 	            <EditText

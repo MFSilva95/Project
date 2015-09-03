@@ -36,31 +36,31 @@ public class Preferences extends Activity {
 		ActionBar.Tab tab = getActionBar().newTab();
 		Fragment tagsFragment = new Tags();
 		tab.setTabListener(new MyTabsListener(tagsFragment));
-		tab.setText("Fases do Dia");
+		tab.setText(getString(R.string.preferences_day));
         getActionBar().addTab(tab);
         
         tab = getActionBar().newTab();
         Fragment targetsFragment = new TargetBG();
         tab.setTabListener(new MyTabsListener(targetsFragment));
-        tab.setText("Objetivos Glicemia");
+        tab.setText(R.string.preferences_target);
         getActionBar().addTab(tab);
         
         tab = getActionBar().newTab();
         Fragment insulinsFragment = new Insulins();
         tab.setTabListener(new MyTabsListener(insulinsFragment));
-        tab.setText("Insulinas");
+        tab.setText(R.string.preferences_insulins);
         getActionBar().addTab(tab);
         
         tab = getActionBar().newTab();
         Fragment diseasesFragment = new Diseases();
         tab.setTabListener(new MyTabsListener(diseasesFragment));
-        tab.setText("Doenças");
+        tab.setText(R.string.preferences_diseases);
         getActionBar().addTab(tab);
         
         tab = getActionBar().newTab();
         Fragment exercisesFragment = new Exercises();
         tab.setTabListener(new MyTabsListener(exercisesFragment));
-        tab.setText("Exercícios");
+        tab.setText(R.string.preferences_exercises);
         getActionBar().addTab(tab);
         
         

@@ -5,7 +5,7 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:icon="@drawable/settings"
-        android:title="Dados e Config."
+        android:title="@string/data_config"
         android:enabled="true" 
         android:visible="true" />
 

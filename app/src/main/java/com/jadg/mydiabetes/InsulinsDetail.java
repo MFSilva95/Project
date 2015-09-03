@@ -2,8 +2,11 @@ package com.jadg.mydiabetes;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -48,8 +51,16 @@ public class InsulinsDetail extends Activity {
 			name.setText(toFill.getName());
 			EditText type = (EditText)findViewById(R.id.et_Insulins_Tipo);
 			type.setText(toFill.getType());
-			EditText acao = (EditText)findViewById(R.id.et_Insulins_Acao);
-			acao.setText(toFill.getAction());
+
+			RadioGroup myRadioGroup = (RadioGroup)findViewById(R.id.et_insulin_action);
+			int index = Integer.parseInt(toFill.getAction());
+			((RadioButton)myRadioGroup.getChildAt(index)).setChecked(true);
+
+
+
+
+//			EditText acao = (EditText)findViewById(R.id.et_Insulins_Acao);
+//			acao.setText(toFill.getAction());
 			//EditText value = (EditText)findViewById(R.id.et_TargetBG_Glycemia);
 			//value.setText(String.valueOf(toFill.get));
 
@@ -102,9 +113,9 @@ public class InsulinsDetail extends Activity {
 	public void ShowDialogAddTarget(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-				.setTitle("Informação")
-				.setMessage("Para adicionar mais insulinas deve carregar no ícone superior direito do menu inicial, de seguida entrar em Configurações e depois seleccionar a aba Insulinas. Para finalizar deve adicionar os seus objetivos da glicemia!")
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				.setTitle(getString(R.string.title_activity_info))
+				.setMessage(getString(R.string.how_to_add_insulins))
+				.setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						//Falta verificar se não está associada a nenhuma entrada da DB
 						//Rever porque não elimina o registo de glicemia
@@ -119,7 +130,11 @@ public class InsulinsDetail extends Activity {
 	public void AddNewInsulin(){
 		EditText name = (EditText)findViewById(R.id.et_Insulins_Nome);
 		EditText type = (EditText)findViewById(R.id.et_Insulins_Tipo);
-		EditText action = (EditText)findViewById(R.id.et_Insulins_Acao);
+//		EditText action = (EditText)findViewById(R.id.et_Insulins_Acao);
+		RadioGroup myRadioGroup = (RadioGroup)findViewById(R.id.et_insulin_action);
+		int index = myRadioGroup.indexOfChild(findViewById(myRadioGroup.getCheckedRadioButtonId()));
+
+
 		//EditText value = (EditText)findViewById(R.id.et_TargetBG_Glycemia);
 
 		//adicionado por zeornelas
@@ -136,10 +151,9 @@ public class InsulinsDetail extends Activity {
 			imm.showSoftInput(type, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if(action.getText().toString().equals("")){
-			action.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(action, InputMethodManager.SHOW_IMPLICIT);
+		if(index==-1){
+			myRadioGroup.requestFocus();
+			Toast.makeText(this, getString(R.string.insulin_message_action), Toast.LENGTH_SHORT).show();
 			return;
 		}
 
@@ -151,7 +165,7 @@ public class InsulinsDetail extends Activity {
 		insulin.setName(name.getText().toString());
 
 		insulin.setType(type.getText().toString());
-		insulin.setAction(action.getText().toString());
+		insulin.setAction(index + "");
 
 
 		wdb.Insulin_Add(insulin);
@@ -170,7 +184,11 @@ public class InsulinsDetail extends Activity {
 	public void UpdateInsulin(){
 		EditText name = (EditText)findViewById(R.id.et_Insulins_Nome);
 		EditText type = (EditText)findViewById(R.id.et_Insulins_Tipo);
-		EditText action = (EditText)findViewById(R.id.et_Insulins_Acao);
+
+		RadioGroup myRadioGroup = (RadioGroup)findViewById(R.id.et_insulin_action);
+		int index = myRadioGroup.indexOfChild(findViewById(myRadioGroup.getCheckedRadioButtonId()));
+
+//		EditText action = (EditText)findViewById(R.id.et_Insulins_Acao);
 		//EditText value = (EditText)findViewById(R.id.et_TargetBG_Glycemia);
 
 		//adicionado por zeornelas
@@ -187,10 +205,10 @@ public class InsulinsDetail extends Activity {
 			imm.showSoftInput(type, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if(action.getText().toString().equals("")){
-			action.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(action, InputMethodManager.SHOW_IMPLICIT);
+		if(index==-1){
+			myRadioGroup.requestFocus();
+			Toast.makeText(this,getString(R.string.insulin_message_action),Toast.LENGTH_SHORT).show();
+
 			return;
 		}
 
@@ -202,7 +220,7 @@ public class InsulinsDetail extends Activity {
 		insulin.setName(name.getText().toString());
 
 		insulin.setType(type.getText().toString());
-		insulin.setAction(action.getText().toString());
+		insulin.setAction(index + "");
 
 
 		wdb.Insulin_Update(insulin);
@@ -222,8 +240,8 @@ public class InsulinsDetail extends Activity {
 	public void DeleteInsulin(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-				.setTitle("Eliminar Insulina?")
-				.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+				.setTitle(R.string.delete_insulin)
+				.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						//Falta verificar se não está associada a nenhuma entrada da DB
 						//Rever porque não elimina o registo de glicemia
@@ -232,13 +250,13 @@ public class InsulinsDetail extends Activity {
 							wdb.Insulin_Remove(idInsulin);
 							goUp();
 						}catch (Exception e) {
-							Toast.makeText(c, "Não pode eliminar esta insulina, associado a outros registos!", Toast.LENGTH_LONG).show();
+							Toast.makeText(c, getString(R.string.delete_insulin_exception), Toast.LENGTH_LONG).show();
 						}
 						wdb.close();
 
 					}
 				})
-				.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+				.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						// Do nothing.
 					}

@@ -10,7 +10,7 @@
 	        android:id="@+id/tv_DialogGlycemia_Glycemia"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:text="Valor de glicemia"
+	        android:text="@string/glycemia_value"
 	        android:textSize="16sp"
 	        android:textStyle="bold" />
         <EditText
@@ -18,7 +18,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:textSize="18sp"
-	        android:hint="120"
+	        android:hint="@string/hint_value"
 	        android:inputType="number" >
 	    </EditText>
 
@@ -26,7 +26,7 @@
 	        android:id="@+id/tv_DialogGlycemia_Hour"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:text="Hora"
+	        android:text="@string/hour"
 	        android:textSize="16sp"
 	        android:textStyle="bold" />
         <EditText
@@ -34,7 +34,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:textSize="18sp"
-	        android:hint="15:30"
+	        android:hint="@string/hint_hour"
 	        android:inputType="datetime" >
 	    </EditText>
 
@@ -42,7 +42,7 @@
 	        android:id="@+id/tv_DialogGlycemia_Tag"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:text="Etiqueta"
+	        android:text="@string/label"
 	        android:textSize="16sp"
 	        android:textStyle="bold" />
         <EditText
@@ -50,7 +50,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:textSize="18sp"
-	        android:hint="Antes do almoço"
+	        android:hint="@string/before_lunch"
 	        android:inputType="text" >
 	    </EditText>
 	    

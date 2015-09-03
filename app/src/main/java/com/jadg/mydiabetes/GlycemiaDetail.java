@@ -318,22 +318,22 @@ public class GlycemiaDetail extends Activity {
 	public void DeleteGlycemiaRead(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-				.setTitle("Eliminar leitura?")
-				.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+				.setTitle(getString(R.string.deleteReading))
+				.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						//Falta verificar se não está associada a nenhuma entrada da DB
 						DB_Write wdb = new DB_Write(c);
 						try {
 							wdb.Glycemia_Delete(idGlycemia);
 							goUp();
-						}catch (Exception e) {
-							Toast.makeText(c, "Não pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
+						} catch (Exception e) {
+							Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
 						}
 						wdb.close();
 
 					}
 				})
-				.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+				.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						// Do nothing.
 					}

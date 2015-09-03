@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@android:style/TextAppearance.Medium"
-        android:text="Dados a exportar:" />
+        android:text="@string/export_data" />
 	<ScrollView 
 	    android:layout_width="match_parent"
 	    android:layout_height="150dp">
@@ -30,7 +30,7 @@
 			        android:layout_height="48dp"
 			        android:textAppearance="@android:style/TextAppearance.Medium"
 			        android:gravity="center_vertical"
-			        android:text="Glicemia" />
+			        android:text="@string/bloodglucose" />
 			    <CheckBox android:id="@+id/cb_pdfexport_glycemia"
 			        android:layout_width="wrap_content"
 			        android:layout_marginRight="8dp"
@@ -50,7 +50,7 @@
 			        android:layout_height="48dp"
 			        android:textAppearance="@android:style/TextAppearance.Medium"
 			        android:gravity="center_vertical"
-			        android:text="Insulina" />
+			        android:text="@string/insulin" />
 			    <CheckBox android:id="@+id/cb_pdfexport_insulin"
 			        android:layout_width="wrap_content"
 			        android:layout_marginRight="8dp"
@@ -70,7 +70,7 @@
 			        android:layout_height="48dp"
 			        android:textAppearance="@android:style/TextAppearance.Medium"
 			        android:gravity="center_vertical"
-			        android:text="Exercicio" />
+			        android:text="@string/Exercise" />
 			    <CheckBox android:id="@+id/cb_pdfexport_exercise"
 			        android:layout_width="wrap_content"
 			        android:layout_marginRight="8dp"
@@ -90,7 +90,7 @@
 			        android:layout_height="48dp"
 			        android:textAppearance="@android:style/TextAppearance.Medium"
 			        android:gravity="center_vertical"
-			        android:text="Hidratos de Carbono" />
+			        android:text="@string/Carbs" />
 			    <CheckBox android:id="@+id/cb_pdfexport_carbs"
 			        android:layout_width="wrap_content"
 			        android:layout_marginRight="8dp"
@@ -110,7 +110,7 @@
 			        android:layout_height="48dp"
 			        android:textAppearance="@android:style/TextAppearance.Medium"
 			        android:gravity="center_vertical"
-			        android:text="Pressão arterial" />
+			        android:text="@string/bloodpressure" />
 			    <CheckBox android:id="@+id/cb_pdfexport_bloodpressure"
 			        android:layout_width="wrap_content"
 			        android:layout_marginRight="8dp"
@@ -130,7 +130,7 @@
 			        android:layout_height="48dp"
 			        android:textAppearance="@android:style/TextAppearance.Medium"
 			        android:gravity="center_vertical"
-			        android:text="Doenças" />
+			        android:text="@string/preferences_diseases" />
 			    <CheckBox android:id="@+id/cb_pdfexport_diseases"
 			        android:layout_width="wrap_content"
 			        android:layout_marginRight="8dp"
@@ -150,7 +150,7 @@
 			        android:layout_height="48dp"
 			        android:textAppearance="@android:style/TextAppearance.Medium"
 			        android:gravity="center_vertical"
-			        android:text="Colesterol" />
+			        android:text="@string/cholesterol" />
 			    <CheckBox android:id="@+id/cb_pdfexport_cholesterol"
 			        android:layout_width="wrap_content"
 			        android:layout_marginRight="8dp"
@@ -170,7 +170,7 @@
 			        android:layout_height="48dp"
 			        android:textAppearance="@android:style/TextAppearance.Medium"
 			        android:gravity="center_vertical"
-			        android:text="Peso" />
+			        android:text="@string/weight" />
 			    <CheckBox android:id="@+id/cb_pdfexport_weight"
 			        android:layout_width="wrap_content"
 			        android:layout_marginRight="8dp"
@@ -190,7 +190,7 @@
 			        android:layout_height="48dp"
 			        android:textAppearance="@android:style/TextAppearance.Medium"
 			        android:gravity="center_vertical"
-			        android:text="HbA1c" />
+			        android:text="@string/HbA1c" />
 			    <CheckBox android:id="@+id/cb_pdfexport_hba1c"
 			        android:layout_width="wrap_content"
 			        android:layout_marginRight="8dp"
@@ -217,7 +217,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="Datas De/Até"
+			android:text="@string/dates_from_until"
 			android:textSize="16sp"
 			android:gravity="center_vertical|center_horizontal" />
         
@@ -278,7 +278,7 @@
 	        android:layout_height="48dp"
 	        android:textAppearance="@android:style/TextAppearance.Medium"
 	        android:gravity="center_vertical"
-	        android:text="Enviar por E-mail" />
+	        android:text="@string/send_email" />
 	    <CheckBox android:id="@+id/cb_pdfexport_email"
 	        android:layout_width="wrap_content"
 	        android:layout_marginRight="8dp"
@@ -293,7 +293,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|center_horizontal"
-        android:text="Exportar"
+        android:text="@string/export"
         android:onClick="createPDF" />
     
 </LinearLayout>

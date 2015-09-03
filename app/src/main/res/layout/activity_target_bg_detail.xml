@@ -32,7 +32,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Descrição"
+		        android:text="@string/description"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -78,7 +78,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Horário"
+		        android:text="@string/schedule"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -103,7 +103,7 @@
 	        	<TextView
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:text="De"
+			        android:text="@string/from"
 			        android:textSize="16sp"
 			        android:layout_gravity="center_horizontal" />
 	            <EditText
@@ -129,7 +129,7 @@
 	        	<TextView
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:text="Até"
+			        android:text="@string/to"
 			        android:textSize="16sp"
 			        android:layout_gravity="center_horizontal" />
 	            <EditText
@@ -167,7 +167,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.60"
-		        android:text="Objetivo de glicemia"
+		        android:text="@string/title_activity_target_bg_detail"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -201,7 +201,7 @@
             <TextView
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
-		        android:text="mg/dl"
+		        android:text="@string/mg_dl"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
         </LinearLayout>

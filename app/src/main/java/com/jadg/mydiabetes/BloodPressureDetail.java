@@ -327,27 +327,27 @@ public class BloodPressureDetail extends Activity {
 	public void DeleteBloodPressureRead(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Eliminar leitura?")
-	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
-	         public void onClick(DialogInterface dialog, int whichButton) {
-	        	//Falta verificar se não está associada a nenhuma entrada da DB
-	        	//Rever porque não elimina o registo de glicemia
-	        	 DB_Write wdb = new DB_Write(c);
-	        	 try {
-	        		 wdb.BloodPressure_Delete(idBP);
-	        		 goUp();
-	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "Não pode eliminar esta leitura!", Toast.LENGTH_LONG).show();
-	     		 }
-	             wdb.close();
-	             
-	         }
-	    })
-	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-	         public void onClick(DialogInterface dialog, int whichButton) {
-	                // Do nothing.
-	         }
-	    }).show();
+	    .setTitle(getString(R.string.deleteReading))
+				.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						//Falta verificar se não está associada a nenhuma entrada da DB
+						//Rever porque não elimina o registo de glicemia
+						DB_Write wdb = new DB_Write(c);
+						try {
+							wdb.BloodPressure_Delete(idBP);
+							goUp();
+						} catch (Exception e) {
+							Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
+						}
+						wdb.close();
+
+					}
+				})
+				.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						// Do nothing.
+					}
+				}).show();
 	}
 	
 	public void goUp(){

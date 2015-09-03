@@ -10,7 +10,7 @@
 	        android:id="@+id/tv_DialogDisease_Name"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:text="Doença"
+	        android:text="@string/disease"
 	        android:textSize="16sp"
 	        android:textStyle="bold" />
         <EditText
@@ -18,7 +18,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:textSize="18sp"
-	        android:hint="Gripe"
+	        android:hint="@string/flu"
 	        android:inputType="text" >
 	    </EditText>
     
@@ -26,7 +26,7 @@
 	        android:id="@+id/tv_DialogDisease_DateFrom"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:text="De"
+	        android:text="@string/from"
 	        android:textSize="16sp"
 	        android:textStyle="bold" />
         <EditText
@@ -34,7 +34,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:textSize="18sp"
-	        android:hint="20013-04-06"
+	        android:hint="@string/hint_date"
 	        android:inputType="datetime" >
 	    </EditText>
 	    
@@ -42,7 +42,7 @@
 	        android:id="@+id/tv_DialogDisease_DateTo"
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
-	        android:text="Até"
+	        android:text="@string/to"
 	        android:textSize="16sp"
 	        android:textStyle="bold" />
         <EditText
@@ -50,7 +50,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="match_parent"
 	        android:textSize="18sp"
-	        android:hint="20013-04-06"
+	        android:hint="@string/hint_date"
 	        android:inputType="datetime" >
 	    </EditText>
     

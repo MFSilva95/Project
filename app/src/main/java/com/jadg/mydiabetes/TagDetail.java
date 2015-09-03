@@ -215,8 +215,8 @@ public class TagDetail extends Activity {
 	public void DeleteTag(){
 		final Context c = this;
 		new AlertDialog.Builder(this)
-	    .setTitle("Eliminar Fase do dia?")
-	    .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+	    .setTitle(getString(R.string.tag_info))
+	    .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	             ///Falta verificar se não está associada a nenhuma entrada da DB
 	        	 //Rever porque não elimina o registo de glicemia
@@ -225,13 +225,13 @@ public class TagDetail extends Activity {
 	        		 wdb.Tag_Remove(idTag);
 	        		 goUp();
 	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, "Não pode eliminar esta leitura, associada a outros registos!", Toast.LENGTH_LONG).show();
+	        		 Toast.makeText(c, getString(R.string.tag_info_delete_exception), Toast.LENGTH_LONG).show();
 	     		 }
 	             wdb.close();
 	             
 	         }
 	    })
-	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+	    .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
 	         public void onClick(DialogInterface dialog, int whichButton) {
 	                // Do nothing.
 	         }

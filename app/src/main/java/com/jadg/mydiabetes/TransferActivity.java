@@ -381,7 +381,7 @@ public class TransferActivity extends Activity {
 		
 		if (d){	
 			builder.setMessage(this.getString(R.string.transf_ConnOK));
-			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			builder.setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					dialog1.dismiss();
 					button2Click();
@@ -390,10 +390,10 @@ public class TransferActivity extends Activity {
 		}
 		else {
 			//TODO set in string
-			builder.setMessage("Ligação Falhou!\n"
-					+ "Verifique se tem o wi-fi ligado\n"
-					+ "ou se está na rede correta.");			
-			builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			builder.setMessage(getString(R.string.transfer_fail_connection )+ "\n"
+					+ getString(R.string.transfer_check_wifi ) + "\n"
+					+ getString(R.string.transfer_correct_network));
+			builder.setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					Intent intent = new Intent(c, ImportExport.class);
 					startActivity(intent);
@@ -410,7 +410,7 @@ public class TransferActivity extends Activity {
 		
 		ProgressDialog pd = new ProgressDialog(this);
 		//TODO set in string
-		pd.setMessage("A transferir...");
+		pd.setMessage(getString(R.string.transfer_transfer));
 		pd.setCanceledOnTouchOutside(false);
 		pd.show();
 	}
@@ -421,7 +421,7 @@ public class TransferActivity extends Activity {
 		builder.setTitle(this.getString(R.string.transf_InfoTitle));
 		if (d){
 			//TODO set in string
-		builder.setMessage("Transferência concluída com sucesso")
+		builder.setMessage(getString(R.string.transfer_success))
 		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			
 			@Override
@@ -435,8 +435,8 @@ public class TransferActivity extends Activity {
 		}
 		else {
 			//TODO set in string
-			builder.setMessage("Ocorreu um erro\n"
-					+ "tente novamente")
+			builder.setMessage(getString(R.string.transfer_error)+"\n"
+					+getString(R.string.transfer_try_again) )
 			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 				
 				@Override

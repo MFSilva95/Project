@@ -127,8 +127,8 @@ public class DiseasesDetail extends Activity {
     public void DeleteDisease(){
         final Context c = this;
         new AlertDialog.Builder(this)
-                .setTitle("Eliminar doença?")
-                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.delete_Disease))
+                .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         //Falta verificar se não está associada a nenhuma entrada da DB
 
@@ -140,7 +140,7 @@ public class DiseasesDetail extends Activity {
 
                     }
                 })
-                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Do nothing.
                     }

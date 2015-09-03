@@ -25,7 +25,7 @@
 		        android:id="@+id/tv_dialog_new_tag_title"
 		        android:layout_width="match_parent"
 		        android:layout_height="match_parent"
-		        android:text="Nova etiqueta"
+		        android:text="@string/new_label"
 		        android:textSize="24sp"
 		        android:gravity="left|center_vertical" />
         </LinearLayout>
@@ -39,7 +39,7 @@
 	        android:id="@+id/tv_dialog_new_tag_Name"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
-	        android:text="Nome"
+	        android:text="@string/name"
 	        android:textSize="16sp"
 	        android:textStyle="bold" />
         <EditText
@@ -47,7 +47,7 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:textSize="16sp"
-	        android:hint="Pequeno almoço"
+	        android:hint="@string/breakfast"
 	        android:inputType="text" >
 	    </EditText>
 	    

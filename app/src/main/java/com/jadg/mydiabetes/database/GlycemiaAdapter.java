@@ -58,6 +58,7 @@ public class GlycemiaAdapter extends BaseAdapter {
            TextView data = (TextView)v.findViewById(R.id.tv_list_glicemia_data);
            TextView hora = (TextView)v.findViewById(R.id.tv_list_glicemia_hora);
            TextView value = (TextView)v.findViewById(R.id.tv_list_glicemia_value);
+		   TextView tag = (TextView)v.findViewById(R.id.tv_list_glicemia_tag);
            final ImageButton viewdetail = (ImageButton)v.findViewById(R.id.ib_list_glicemia_detail);
            
            final GlycemiaDataBinding glycemia = _data.get(position);
@@ -66,7 +67,15 @@ public class GlycemiaAdapter extends BaseAdapter {
            hora.setText(glycemia.getTime());
            value.setTag(_id);
            value.setText(glycemia.getValue().toString());
-           viewdetail.setTag(_id);
+
+		   DB_Read rdb = new DB_Read(_c);
+		   tag.setText(rdb.Tag_GetById(glycemia.getIdTag()).getName());
+		   rdb.close();
+
+		   viewdetail.setTag(_id);
+
+
+
            
            
            viewdetail.setOnClickListener(new View.OnClickListener() {

@@ -94,7 +94,7 @@ public class Tags extends Fragment {
 		
     	new AlertDialog.Builder(getActivity())
     	    .setView(v)
-    	    .setPositiveButton("Gravar", new DialogInterface.OnClickListener() {
+    	    .setPositiveButton(getString(R.string.saveButton), new DialogInterface.OnClickListener() {
     	         public void onClick(DialogInterface dialog, int whichButton) {
     	             // deal with the editable
     	             DB_Write wdb = new DB_Write(getActivity());
@@ -104,7 +104,7 @@ public class Tags extends Fragment {
     	             fillListView(tagList);
     	         }
     	    })
-    	    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+    	    .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
     	         public void onClick(DialogInterface dialog, int whichButton) {
     	                // Do nothing.
     	         }

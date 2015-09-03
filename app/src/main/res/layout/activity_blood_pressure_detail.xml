@@ -31,7 +31,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
-		        android:text="Data e Hora"
+		        android:text="@string/date_hour"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -93,7 +93,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.75"
-		        android:text="Altura do Dia"
+		        android:text="@string/time_of_day"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -132,7 +132,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.75"
-		        android:text="Pressão Arterial"
+		        android:text="@string/bloodpressure"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
@@ -158,7 +158,7 @@
 	        	<TextView
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:text="Sistólica"
+			        android:text="@string/systolic"
 			        android:textSize="16sp"
 			        android:layout_gravity="center_horizontal" />
 	            <EditText
@@ -180,7 +180,7 @@
 	        	<TextView
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
-			        android:text="Diastólica"
+			        android:text="@string/diastolic"
 			        android:textSize="16sp"
 			        android:layout_gravity="center_horizontal" />
 	            <EditText
@@ -212,7 +212,7 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.75"
-		        android:text="Notas"
+		        android:text="@string/notes"
 		        android:textSize="16sp"
 		        android:gravity="center_vertical|center_horizontal" />
             
