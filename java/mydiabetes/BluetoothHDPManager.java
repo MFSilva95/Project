@@ -16,9 +16,11 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
+import java.io.File;
+
 public class BluetoothHDPManager
 {
-	private static final String sTAG = "BluetoothHealthActivity";
+	private static final String sTAG = "BluetoothHDPManager";
 
 	private static final int sHEALTH_PROFILE_BLOOD_MONITOR = 0x1007;
 	private static final int sHEALTH_PROFILE_SCALE = 0x100f;
@@ -56,11 +58,6 @@ public class BluetoothHDPManager
 					Log.d(sTAG, "handleMessage() - Channel destroyed.");
 					break;
 
-				case BluetoothHDPService.sMSG_INITIALIZE_SERVICE:
-					Log.d(sTAG, "handleMessage() - Service initialized.");
-					registerHealthApp(sHEALTH_PROFILE_BLOOD_MONITOR);
-					break;
-
 				default:
 					super.handleMessage(msg);
 			}
@@ -75,6 +72,7 @@ public class BluetoothHDPManager
 	private Messenger mHealthService;
 	private boolean mHealthServiceBound;
 	private final Messenger mMessenger = new Messenger(mIncomingHandler);
+	private File mFilesDirectory;
 
 	public BluetoothHDPManager(Activity activity)
 	{
@@ -155,6 +153,13 @@ public class BluetoothHDPManager
 				Log.d(sTAG, "onServiceConnected() - Unable to register client to service.");
 				e.printStackTrace();
 			}
+
+			// Register blood pressure monitor:
+			registerHealthApp(sHEALTH_PROFILE_BLOOD_MONITOR);
+			// TODO Register scale
+
+			// Send files directory:
+			sendMessageWithObject(BluetoothHDPService.sMSG_SET_FILES_DIRECTORY, mFilesDirectory);
 		}
 
 		public void onServiceDisconnected(ComponentName name)
@@ -182,12 +187,12 @@ public class BluetoothHDPManager
 
 	private void connectChannel()
 	{
-		sendMessageWithDevice(BluetoothHDPService.sMSG_CONNECT_CHANNEL);
+		sendMessageWithObject(BluetoothHDPService.sMSG_CONNECT_CHANNEL, mDevice);
 	}
 
 	private void disconnectChannel()
 	{
-		sendMessageWithDevice(BluetoothHDPService.sMSG_DISCONNECT_CHANNEL);
+		sendMessageWithObject(BluetoothHDPService.sMSG_DISCONNECT_CHANNEL, mDevice);
 	}
 
 	private void initialize()
@@ -248,7 +253,7 @@ public class BluetoothHDPManager
 	// Sends an update message, along with an HDP BluetoothDevice object, to
 	// {@link BluetoothHDPService}.  The BluetoothDevice object is needed by the channel creation
 	// method.
-	private void sendMessageWithDevice(int what)
+	private void sendMessageWithObject(int what, Object object)
 	{
 		if (mHealthService == null)
 		{
@@ -258,13 +263,18 @@ public class BluetoothHDPManager
 
 		try
 		{
-			mHealthService.send(Message.obtain(null, what, mDevice));
+			mHealthService.send(Message.obtain(null, what, object));
 		}
 		catch (RemoteException e)
 		{
 			Log.d(sTAG, "sendMessageWithDevice() - Unable to reach service.");
 			e.printStackTrace();
 		}
+	}
+
+	public void setFilesDirectory(File filesDirectory)
+	{
+		mFilesDirectory = filesDirectory;
 	}
 
 	/**

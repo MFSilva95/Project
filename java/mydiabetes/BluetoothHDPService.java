@@ -16,7 +16,9 @@ import android.os.ParcelFileDescriptor;
 import android.os.RemoteException;
 import android.util.Log;
 
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class BluetoothHDPService extends Service
@@ -37,7 +39,7 @@ public class BluetoothHDPService extends Service
     public static final int sMSG_UNREGISTER_HEALTH_APP = 301;
     public static final int sMSG_CONNECT_CHANNEL = 400;
     public static final int sMSG_DISCONNECT_CHANNEL = 401;
-    public static final int sMSG_INITIALIZE_SERVICE = 501;
+    public static final int sMSG_SET_FILES_DIRECTORY = 501;
 
     private static final String sTAG = "BluetoothHDPService";
 
@@ -78,6 +80,11 @@ public class BluetoothHDPService extends Service
                     disconnectChannel((BluetoothDevice)msg.obj);
                     break;
 
+                case sMSG_SET_FILES_DIRECTORY:
+                    mFilesDirectory = (File) msg.obj;
+                    Log.d(sTAG, "handleMessage() - Set Files Directory to " + mFilesDirectory.getAbsolutePath());
+                    break;
+
                 default:
                     super.handleMessage(msg);
             }
@@ -98,28 +105,31 @@ public class BluetoothHDPService extends Service
         {
             FileInputStream inputStream = new FileInputStream(mFileDescriptor.getFileDescriptor());
 
+            // Call this to save data in a file:
+            // writeDataToFile(inputStream, "bloodPressureSampleData.txt");
+
             final byte data[] = new byte[8192];
+
             try
             {
                 while(inputStream.read(data) > -1)
-                {
+				{
                     // At this point, the application can pass the raw data to a parser that
                     // has implemented the IEEE 11073-xxxxx specifications.  Instead, this sample
                     // simply indicates that some data has been received.
                     sendMessage(sSTATUS_READ_DATA, 0);
 
                     // TODO
-
                     /*BluetoothHDPChannel cHDP = new BluetoothHDPChannel(fd);
-
                     Agent a = new Agent();
                     a.addChannel(cHDP);
                     a.setAddress(device.getAddress());
                     System.out.println("added a new Agent!");*/
-                }
+				}
             }
-            catch(IOException e)
+            catch (IOException e)
             {
+                e.printStackTrace();
             }
 
             if (mFileDescriptor != null)
@@ -135,6 +145,76 @@ public class BluetoothHDPService extends Service
 
             sendMessage(sSTATUS_READ_DATA_DONE, 0);
         }
+
+        @SuppressWarnings("unused")
+        private void writeDataToFile(FileInputStream inputStream, String filename)
+        {
+            if(mFilesDirectory == null)
+            {
+                Log.d(sTAG, "writeDataToFile() - mFilesDirectory is not defined.");
+                return;
+            }
+
+            // Create file if it doesn't exists:
+            File file = new File(mFilesDirectory, filename);
+            if(!mFilesDirectory.exists())
+            {
+                try
+                {
+                    if(!mFilesDirectory.createNewFile())
+					{
+						Log.d(sTAG, "writeDataToFile() - Failed to create file.");
+                        return;
+					}
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                    return;
+                }
+            }
+
+            FileOutputStream outputStream = null;
+
+            try
+            {
+                outputStream = new FileOutputStream(file);
+
+                final byte data[] = new byte[8192];
+                while(true)
+                {
+                    int readBytes = inputStream.read(data);
+                    if(readBytes <= -1)
+                        break;
+
+                    sendMessage(sSTATUS_READ_DATA, 0);
+
+                    outputStream.write(data, 0, readBytes);
+                }
+
+                outputStream.close();
+
+                Log.d(sTAG, "writeToFile() - Data written to " + file.getAbsolutePath());
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+            finally
+            {
+                if(outputStream != null)
+                {
+                    try
+                    {
+                        outputStream.close();
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
     private BluetoothAdapter mBluetoothAdapter;
@@ -144,6 +224,7 @@ public class BluetoothHDPService extends Service
     private int mChannelId;
     private Messenger mClient;
     private final Messenger mMessenger = new Messenger(new IncomingHandler());
+    private File mFilesDirectory;
 
     @Override
     public void onCreate()
@@ -170,7 +251,6 @@ public class BluetoothHDPService extends Service
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         Log.d(sTAG, "onStartCommand() - BluetoothHDPService is running.");
-        sendMessage(sMSG_INITIALIZE_SERVICE, sRESULT_OK);
 
         return START_STICKY;
     }
@@ -303,7 +383,10 @@ public class BluetoothHDPService extends Service
     private void sendMessage(int what, int value)
     {
         if(mClient == null)
+        {
+            Log.d(sTAG, "sendMessage() - Client is not defined!");
             return;
+        }
 
         try
         {
