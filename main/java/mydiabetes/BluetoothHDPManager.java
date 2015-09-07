@@ -18,6 +18,8 @@ import android.util.Log;
 
 import java.io.File;
 
+import healthData.HealthDataReceiver;
+
 public class BluetoothHDPManager
 {
 	private static final String sTAG = "BluetoothHDPManager";
@@ -73,6 +75,7 @@ public class BluetoothHDPManager
 	private boolean mHealthServiceBound;
 	private final Messenger mMessenger = new Messenger(mIncomingHandler);
 	private File mFilesDirectory;
+	private HealthDataReceiver mHealthDataReceiver;
 
 	public BluetoothHDPManager(Activity activity)
 	{
@@ -203,6 +206,13 @@ public class BluetoothHDPManager
 		if(!mActivity.bindService(intent, mConnection, Context.BIND_AUTO_CREATE))
 		{
 			Log.d(sTAG, "initialize() - Failed to bind service.");
+			return;
+		}
+
+		mHealthDataReceiver = new HealthDataReceiver(mActivity);
+		if(!mHealthDataReceiver.initialize())
+		{
+			Log.d(sTAG, "initialize() - Failed to initialize health data receiver.");
 			return;
 		}
 	}
