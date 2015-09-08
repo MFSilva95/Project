@@ -1,3 +1,0 @@
-package healthData;
-
-parcelable AndroidMeasure;
