@@ -1,6 +1,7 @@
 package com.jadg.mydiabetes.database;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import android.annotation.SuppressLint;
@@ -304,6 +305,26 @@ public class DB_Read {
 		return cursor.getCount() > 0;
 		
 	}
+
+	public boolean Insulin_NameExists(String name){
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Insulin where name='" + name +"'", null);
+		if(cursor.getCount()>0){
+			return true;
+		}else{
+			return false;
+		}
+
+	}
+
+	public int Insulin_GetActionTypeByName(String name){
+		Cursor cursor = myDB.rawQuery("SELECT action  FROM Insulin where name ='" + name + "'", null);
+
+		if(cursor.getCount()>0){
+			cursor.moveToFirst();
+			return Integer.parseInt(cursor.getString(0));
+		}
+		return -1;
+	}
 	
 	public HashMap<Integer, String> Insulin_GetAllNames() {
 		Cursor cursor = myDB.rawQuery("SELECT Id, Name FROM Insulin", null);
@@ -338,6 +359,27 @@ public class DB_Read {
 		
 		cursor.close();
 		return insulin;
+	}
+
+	public int[] InsulinReg_GetLastHourAndQuantity(){
+		Cursor cursor = myDB.rawQuery("SELECT ins.action, reg.DateTime, strftime('%H',reg.DateTime), strftime('%M',reg.DateTime), reg.Value FROM Reg_Insulin as reg, Insulin as ins WHERE  reg.Id_Insulin=ins.Id And reg.DateTime > DateTime('now','-4 HOURS') order by 2 DESC", null);
+
+		int[] result = {-1,-1,-1,-1};
+
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+
+
+			result[0]=Integer.parseInt(cursor.getString(0));
+			result[1] = cursor.getInt(2);
+			result[2] = cursor.getInt(3);
+			result[3] = cursor.getInt(4);
+
+		}
+
+
+		cursor.close();
+		return result;
 	}
 
 	public ArrayList<InsulinRegDataBinding> InsulinReg_GetByDate(String from, String to) {

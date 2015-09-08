@@ -1,20 +1,5 @@
 package com.jadg.mydiabetes;
 
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnTouchListener;
-import android.widget.ScrollView;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -35,13 +20,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -61,6 +46,15 @@ import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 import com.jadg.mydiabetes.dialogs.TimePickerFragment;
 import com.jadg.mydiabetes.usability.ActivityEvent;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+
 
 public class Meal extends Activity {
 
@@ -71,6 +65,9 @@ public class Meal extends Activity {
 	Uri imgUri;
 	Bitmap b;
 	//photo variables - end
+
+	//variavel que contem o id da insulina seleccionada
+	int action_type = -1;
 
 	// variavel que contem o nome da janela em que vai ser contado o tempo
 	// contem o tempo de inicio ou abertura dessa janela
@@ -86,6 +83,9 @@ public class Meal extends Activity {
 		getActionBar();
 
 		DB_Read read = new DB_Read(this);
+
+
+
 		if(!read.Insulin_HasInsulins()){
 			ShowDialogAddInsulin();
 		}
@@ -97,6 +97,8 @@ public class Meal extends Activity {
 		SetTagByTime();
 		SetTargetByHour();
 		FillInsulinSpinner();
+
+
 
 		// bloco de codigo que verifica se o utilizador carregou numa zona
 		// "vazia" do ecra. Neste caso regista o click como um missed click
@@ -142,17 +144,19 @@ public class Meal extends Activity {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				if(!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")){
-					Double gli = Double.parseDouble(glycemia.getText().toString());
-					Double tar = Double.parseDouble(target.getText().toString());
-					Double car = Double.parseDouble(carbs.getText().toString());
-					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
-					result = 0.5 * Math.round(result/0.5);
-					if(result<0){
-						result = 0.0;
-					}
-					Log.d("resultado", result.toString());
-					insulinunits.setText(String.valueOf(result));
-				}
+//					Double gli = Double.parseDouble(glycemia.getText().toString());
+//					Double tar = Double.parseDouble(target.getText().toString());
+//					Double car = Double.parseDouble(carbs.getText().toString());
+//					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
+//					result = 0.5 * Math.round(result/0.5);
+//					if(result<0){
+//						result = 0.0;
+//					}
+//					Log.d("resultado", result.toString());
+					double[] result = computeIOB(iRatio,cRatio,glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
+
+
+					insulinunits.setText(String.valueOf(result[4]));				}
 			}
 			@Override
 			public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -164,16 +168,19 @@ public class Meal extends Activity {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				if(!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")){
-					Double gli = Double.parseDouble(glycemia.getText().toString());
-					Double tar = Double.parseDouble(target.getText().toString());
-					Double car = Double.parseDouble(carbs.getText().toString());
-					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
-					result = 0.5 * Math.round(result/0.5);
-					if(result<0){
-						result = 0.0;
-					}
-					Log.d("resultado", result.toString());
-					insulinunits.setText(String.valueOf(result));
+//					Double gli = Double.parseDouble(glycemia.getText().toString());
+//					Double tar = Double.parseDouble(target.getText().toString());
+//					Double car = Double.parseDouble(carbs.getText().toString());
+//					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
+//					result = 0.5 * Math.round(result/0.5);
+//					if(result<0){
+//						result = 0.0;
+//					}
+//					Log.d("resultado", result.toString());
+					double[] result = computeIOB(iRatio,cRatio,glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
+
+
+					insulinunits.setText(String.valueOf(result[4]));
 				}
 			}
 			@Override
@@ -186,16 +193,19 @@ public class Meal extends Activity {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				if(!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")){
-					Double gli = Double.parseDouble(glycemia.getText().toString());
-					Double tar = Double.parseDouble(target.getText().toString());
-					Double car = Double.parseDouble(carbs.getText().toString());
-					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
-					result = 0.5 * Math.round(result/0.5);
-					if(result<0){
-						result = 0.0;
-					}
-					Log.d("resultado", result.toString());
-					insulinunits.setText(String.valueOf(result));
+//					Double gli = Double.parseDouble(glycemia.getText().toString());
+//					Double tar = Double.parseDouble(target.getText().toString());
+//					Double car = Double.parseDouble(carbs.getText().toString());
+//					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
+//					result = 0.5 * Math.round(result/0.5);
+//					if(result<0){
+//						result = 0.0;
+//					}
+//					Log.d("resultado", result.toString());
+					double[] result = computeIOB(iRatio,cRatio,glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
+
+
+					insulinunits.setText(String.valueOf(result[4]));
 				}
 			}
 			@Override
@@ -203,6 +213,30 @@ public class Meal extends Activity {
 			@Override
 			public void afterTextChanged(Editable s) { }
 		});
+
+		Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
+		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+				Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
+				String name = spinner.getSelectedItem().toString();
+				DB_Read read = new DB_Read(view.getContext());
+				action_type = read.Insulin_GetActionTypeByName(name);
+				read.close();
+
+				if(action_type == 0){
+					Toast.makeText(getApplicationContext(), getString(R.string.meal_insulin_calc) + " " + getString(R.string.insulin_action_rapid) + getString(R.string.meal_insulin_calc_1), Toast.LENGTH_SHORT).show();
+				}else{
+					Toast.makeText(getApplicationContext(), getString(R.string.meal_insulin_no_calc), Toast.LENGTH_SHORT).show();
+
+				}
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parent) {}
+		});
+
+
 
 	}
 
@@ -397,7 +431,10 @@ public class Meal extends Activity {
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allInsulins);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
+
 	}
+
+
 
 
 
@@ -785,5 +822,75 @@ public class Meal extends Activity {
 	}
 	//PHOTO - END
 
+
+	private double[] computeIOB(Double iRatio, Double cRatio, String glycemia, String target, String carbs){
+		DB_Read read = new DB_Read(this);
+		int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity();
+		Date now = new Date();
+		SimpleDateFormat sdf = new SimpleDateFormat("k:mm");
+		String[] formattedTime = sdf.format(now).split(":");
+		read.close();
+
+		int insulinType = lastInsulin[0];
+		int insulinDose = lastInsulin[3];
+
+		double[] result = new double[5];
+		int hourNow = Integer.parseInt(formattedTime[0]);
+		int minuteNow = hourNow*60 + Integer.parseInt(formattedTime[1]);
+		int minuteOriginal = lastInsulin[1]*60 + lastInsulin[2];
+
+
+
+		int minuteDiff = minuteNow - minuteOriginal;
+		Log.d("Minute diff: ", minuteDiff +"");
+
+		Double gli = Double.parseDouble(glycemia);
+		Double tar = Double.parseDouble(target);
+		Double car = Double.parseDouble(carbs);
+		Double glicemia = ((gli-tar)/ iRatio); //calculo separado da glicemia
+		result[1] = glicemia;
+		Double glicidos = (car/cRatio); //calculo separado dos glicidos
+		result[3] = glicidos;
+		Double total = ((gli-tar)/ iRatio) + (car/cRatio);
+
+		Log.d("tipo de insulina: : ", insulinType + "");
+		Log.d("glicemia: ", glicemia.toString());
+		Log.d("glicidos: : ", glicidos.toString());
+
+
+		if(insulinType == 0){ //só calcula para insulina rapida que é a 0
+			result[0] = 0;
+			if(minuteDiff <= 60){
+				result[2] = insulinDose * 0.75;
+			}
+			else if(minuteDiff <= 120){
+				result[2] = insulinDose * 0.50;
+			}else if(minuteDiff <= 180){
+				result[2] = insulinDose * 0.25;
+			}else if (minuteDiff > 180){
+				result[2] = 0;
+			}
+
+			result[4] = total - result[2]; //cálculo normal menos o IOB
+
+		}else {
+			result[0] = insulinType;
+			result[2] = -1;
+			result[4] = total;
+		}
+
+
+		result[4] = 0.5 * Math.round(result[4]/0.5);
+		if(result[4]<0){
+			result[4] = 0.0;
+		}
+
+		Log.d("IOB: ", result[2] +"");
+		Log.d("total: ", result[4]+"");
+
+
+
+		return result;
+	}
 
 }

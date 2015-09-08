@@ -31,6 +31,7 @@ import android.annotation.SuppressLint;
 public class InsulinsDetail extends Activity {
 
 	int idInsulin = 0;
+	String originalName;
 
 
 	@Override
@@ -49,6 +50,7 @@ public class InsulinsDetail extends Activity {
 
 			EditText name = (EditText)findViewById(R.id.et_Insulins_Nome);
 			name.setText(toFill.getName());
+			originalName = toFill.getName();
 			EditText type = (EditText)findViewById(R.id.et_Insulins_Tipo);
 			type.setText(toFill.getType());
 
@@ -157,6 +159,21 @@ public class InsulinsDetail extends Activity {
 			return;
 		}
 
+		DB_Read read = new DB_Read(this);
+		boolean name_exists = read.Insulin_NameExists(name.getText().toString());
+		if(name_exists){
+			name.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(name, InputMethodManager.SHOW_IMPLICIT);
+			Toast.makeText(this, getString(R.string.insulin_message_name_exists), Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		read.close();
+
+
+
+
 		DB_Write wdb = new DB_Write(this);
 
 		InsulinDataBinding insulin = new InsulinDataBinding();
@@ -171,7 +188,7 @@ public class InsulinsDetail extends Activity {
 		wdb.Insulin_Add(insulin);
 		wdb.close();
 
-		DB_Read read = new DB_Read(this);
+		read = new DB_Read(this);
 		if(!read.Target_HasTargets()){
 			read.close();
 			ShowDialogAddTarget();
@@ -212,6 +229,19 @@ public class InsulinsDetail extends Activity {
 			return;
 		}
 
+
+		DB_Read read = new DB_Read(this);
+		boolean name_exists = read.Insulin_NameExists(name.getText().toString());
+		if(name_exists && !originalName.equals(name.getText().toString())){
+			name.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(name, InputMethodManager.SHOW_IMPLICIT);
+			Toast.makeText(this, getString(R.string.insulin_message_name_exists), Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		read.close();
+
 		DB_Write wdb = new DB_Write(this);
 
 		InsulinDataBinding insulin = new InsulinDataBinding();
@@ -226,7 +256,7 @@ public class InsulinsDetail extends Activity {
 		wdb.Insulin_Update(insulin);
 		wdb.close();
 
-		DB_Read read = new DB_Read(this);
+		read = new DB_Read(this);
 		if(!read.Target_HasTargets()){
 			read.close();
 			ShowDialogAddTarget();

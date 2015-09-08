@@ -291,6 +291,11 @@
 
     <string name="insulin_message_action">Escolha um tipo de ação.</string>
 
+    <string name="insulin_message_name_exists">Já existe uma insulina com esse nome, escolha outro por favor.</string>
+    <string name="meal_insulin_calc">Seleccionou uma insulina </string>
+    <string name="meal_insulin_calc_1"> . Esta será utilizada para fazer o cálculo da insulina activa"</string>
+
+    <string name="meal_insulin_no_calc">A insulina que seleccionou não será utilizada para fazer o cálculo da insulina activa"</string>
 
 
 
