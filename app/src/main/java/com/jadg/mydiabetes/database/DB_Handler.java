@@ -30,7 +30,6 @@ public class DB_Handler extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// TODO Auto-generated method stub
 		try {
 			BufferedReader localBufferedReader = 
 				new BufferedReader(new InputStreamReader(this.myContext.getAssets().open("DataBase.txt"), "UTF-8"));
@@ -115,25 +114,7 @@ public class DB_Handler extends SQLiteOpenHelper {
 			toInsert = new ContentValues();
 			toInsert.put("Name", daytimes[8]);
 			db.insert("Tag", null, toInsert);
-			
-			//Isto já não é necessário porque a objetivo da insulina é pedido ao início.
-			/*
-			String[] daytargets = res.getStringArray(R.array.bg_targets);
-			
-			toInsert = new ContentValues();
-			toInsert.put("Name", daytargets[0]);
-			toInsert.put("TimeStart", "07:30:00");
-			toInsert.put("TimeEnd", "22:30:00");
-			toInsert.put("Value", "100.0");
-			db.insert("BG_Target", null, toInsert);
-			
-			toInsert = new ContentValues();
-			toInsert.put("Name", daytargets[1]);
-			toInsert.put("TimeStart", "22:30:00");
-			toInsert.put("TimeEnd", "07:30:00");
-			toInsert.put("Value", "90.0");
-			db.insert("BG_Target", null, toInsert);
-			*/
+		
 		}
 
 		
@@ -144,14 +125,5 @@ public class DB_Handler extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		// TODO Auto-generated method stub
 	}
-
-	
-	public void teste() {
-		Log.d("Entrou","No teste");
-		SQLiteDatabase db = this.getWritableDatabase();
-		db.close();
-		Log.d("Saiu","Do teste");
-	}
-	
 	
 }
