@@ -1,7 +1,6 @@
 package com.jadg.mydiabetes.database;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 import android.annotation.SuppressLint;
@@ -316,14 +315,25 @@ public class DB_Read {
 
 	}
 
+	/**
+	 * TODO: Correct the assumption regarding the praseable in in a text field
+	 * Check to see what was the previous usage
+	 * @param name
+	 * @return
+	 */
 	public int Insulin_GetActionTypeByName(String name){
 		Cursor cursor = myDB.rawQuery("SELECT action  FROM Insulin where name ='" + name + "'", null);
-
+		int retVal = -1;
 		if(cursor.getCount()>0){
 			cursor.moveToFirst();
-			return Integer.parseInt(cursor.getString(0));
+			try {
+				retVal = Integer.parseInt(cursor.getString(0));
+			} catch (NumberFormatException nfe) {
+				// retVal will get -1
+				Log.e ("Insulin_GetActionTypeByName", "Read a text that was not a number from action"+ nfe);
+			}
 		}
-		return -1;
+		return retVal;
 	}
 	
 	public HashMap<Integer, String> Insulin_GetAllNames() {
@@ -1145,7 +1155,6 @@ public class DB_Read {
 
 
 		//Log.d("LOGBOOK", String.valueOf(cursor.getCount()));
-		int a = cursor.getCount();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			

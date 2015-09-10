@@ -55,7 +55,13 @@ public class InsulinsDetail extends Activity {
 			type.setText(toFill.getType());
 
 			RadioGroup myRadioGroup = (RadioGroup)findViewById(R.id.et_insulin_action);
-			int index = Integer.parseInt(toFill.getAction());
+			int index = 0;
+			try {
+				index = Integer.parseInt(toFill.getAction());
+			} catch (NumberFormatException nfe) {
+				// index will get 0
+				Log.e ("onCreate", "Read a text that was not a number from action"+ nfe);
+			}
 			((RadioButton)myRadioGroup.getChildAt(index)).setChecked(true);
 
 

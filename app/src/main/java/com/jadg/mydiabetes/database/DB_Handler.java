@@ -15,7 +15,7 @@ import com.jadg.mydiabetes.R;
 public class DB_Handler extends SQLiteOpenHelper {
 	
 	// Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 	
     // Database Name
     private static final String DATABASE_NAME = "DB_Diabetes";
@@ -121,9 +121,17 @@ public class DB_Handler extends SQLiteOpenHelper {
 		
 	}
 
+	/**
+	 * TODO: update from version where clicks do not exist and action (see below) is just a text
+	 * @see android.database.sqlite.SQLiteOpenHelper#onUpgrade(android.database.sqlite.SQLiteDatabase, int, int)
+	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO Auto-generated method stub
+		if (oldVersion == 1) {
+			//for version 2
+			//need to create the new tables for usability
+			//need to change the action type in Insulin as the DB_Read::Insulin_GetActionTypeByName expects action to be a parseable int
+		}
 	}
 	
 }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,6 @@ public class InsulinAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        // TODO Auto-generated method stub
         View v = convertView;
         if (v == null) {
             LayoutInflater vi = (LayoutInflater) _c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -71,7 +71,13 @@ public class InsulinAdapter extends BaseAdapter {
         iname.setTag(_id);
         itype.setText(insulin.getType());
 
-        int index = Integer.parseInt(insulin.getAction());
+        int index = 0; //note that below can give and error and we'll get position 0 (-1) could throw error
+        try {
+			index = Integer.parseInt(insulin.getAction());
+		} catch (NumberFormatException nfe) {
+			// index will get 0
+			Log.e ("getView", "Read a text that was not a number from action"+ nfe);
+		}
         Resources res = v.getContext().getResources();
         String[] actions = res.getStringArray(R.array.insulin_action);
 
