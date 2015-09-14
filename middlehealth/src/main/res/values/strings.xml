@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Health Basestation</string>
+    <string name="title_activity_main">Health Basestation</string>
+    <string name="hello_world">Hello world!</string>
+    <color name="red">#049bac</color>
+
+    <dimen name="two">2dp</dimen>
+    <dimen name="twenty">20dp</dimen>
+    <dimen name="one_hundred">100dp</dimen>
+    <dimen name="fifteen">15dp</dimen>
+    
+    
+    
+</resources>

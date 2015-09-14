@@ -1,0 +1,131 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="@color/red"
+    android:orientation="vertical"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true" 
+        android:id="@+id/scrolly"
+        >
+		
+        <LinearLayout
+            android:id="@+id/entryHolder"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:orientation="vertical" >
+			
+            	<View 
+            	    android:layout_width="match_parent"
+            	    android:layout_height="2dp"
+            	    android:background="@android:color/darker_gray"/>
+            
+            <!--  
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+            	
+                <LinearLayout 
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="100"
+                    >
+	                
+	                <TextView 
+	            	    android:layout_width="wrap_content"
+	            	    android:layout_height="fill_parent"
+	            	    android:gravity="left"
+	            	    android:text="12h:30m:12s"
+	            	    android:layout_weight="50"
+	            	    android:textAppearance="?android:attr/textAppearanceSmall"/>
+	                
+	                <TextView 
+	            	    android:layout_width="wrap_content"
+	            	    android:layout_height="fill_parent"
+	            	    android:gravity="right"
+	            	    android:text="23/08/1990"
+	            	    android:layout_weight="50"
+	            	    android:textAppearance="?android:attr/textAppearanceSmall"/>
+	                
+                </LinearLayout>
+                
+            	<TextView 
+            	    android:layout_width="match_parent"
+            	    android:layout_height="wrap_content"
+            	    android:gravity="center"
+            	    android:text="Blood pressure"
+            	    android:textAppearance="?android:attr/textAppearanceLarge"/>
+            	
+            	<LinearLayout 
+            	    android:layout_width="match_parent"
+            	    android:layout_height="wrap_content"
+            	    android:orientation="horizontal"
+            	    android:weightSum="100"
+            	    >
+                    
+            	    <ImageView
+            	        android:layout_width="100dp"
+            	        android:layout_height="100dp"
+            	        android:layout_marginRight="2dp"
+            	        android:layout_weight="20"
+            	        android:scaleType="fitCenter"
+            	        android:src="@drawable/oximeter" />
+            	 
+                   <TextView
+                       android:id="@+id/textView111"
+                       android:layout_width="wrap_content"
+                       android:layout_height="fill_parent"
+                       android:gravity="left|center"
+                       android:layout_weight="40"
+                       android:text="Systolic:\nDiastolic:\nMean:"
+                       android:textAppearance="?android:attr/textAppearanceMedium" 
+                       android:textSize="15dp"/>
+       	        
+                   <TextView
+                       android:id="@+id/textView333"
+                       android:layout_width="wrap_content"
+                       android:layout_height="fill_parent"
+                       android:gravity="right|center"
+                       android:layout_weight="40"
+                       android:text="180 lols\n80 lols\n60 lols"
+                       android:textAppearance="?android:attr/textAppearanceMedium" 
+                       android:textSize="15dp"/>
+            	  
+            	</LinearLayout>
+            	
+                
+            	<View 
+            	    android:layout_width="match_parent"
+            	    android:layout_height="2dp"
+            	    android:background="@android:color/darker_gray"/>
+            
+            </LinearLayout>
+          	-->
+          	
+            
+            
+            
+            
+            
+            
+            	
+                
+        </LinearLayout>
+            
+            
+            
+             
+           
+    </ScrollView>
+    
+</LinearLayout>
