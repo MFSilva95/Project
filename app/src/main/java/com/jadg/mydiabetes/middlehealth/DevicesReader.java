@@ -1,92 +1,91 @@
-package middleHealth.es.libresoft.openhealth.android;
+package com.jadg.mydiabetes.middlehealth;
 
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 
-public class MyActivity2 extends Activity{
-	
-	IApplicationRegister mAppRegister;
-	IDevice mDevice;
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		//setContentView(R.layout.activity_main);
-		Intent intent = new Intent(IApplicationRegister.class.getName());
-		Intent intent2 = new Intent(IDevice.class.getName());
-		bindService(intent,this.connection,Context.BIND_AUTO_CREATE);
-		bindService(intent2,this.connection2 , Context.BIND_AUTO_CREATE);
-		startService(new Intent(this,MiddleHealthService.class));
-	}	
-	
-	
-	protected void onStart(){
-		super.onStart();
-		
-	}
-	
-	
-	
-	private ServiceConnection connection = new ServiceConnection(){
+import es.libresoft.openhealth.android.AndroidHealthDevice;
+import es.libresoft.openhealth.android.AndroidMeasure;
+import es.libresoft.openhealth.android.IApplicationRegister;
+import es.libresoft.openhealth.android.IDevice;
+import es.libresoft.openhealth.android.IEventCallback;
+import es.libresoft.openhealth.android.MiddleHealth;
 
+public class DevicesReader
+{
+	private Activity mActivity;
+	private IApplicationRegister mAppRegister;
+	private IDevice mDevice;
+
+	public DevicesReader(Activity activity)
+	{
+		mActivity = activity;
+	}
+
+	public void initialize()
+	{
+		Intent applicationRegisterService = new Intent(IApplicationRegister.class.getName());
+		mActivity.bindService(applicationRegisterService, mApplicationRegisterConnection, Context.BIND_AUTO_CREATE);
+
+		Intent deviceService = new Intent(IDevice.class.getName());
+		mActivity.bindService(deviceService, mDeviceConnection, Context.BIND_AUTO_CREATE);
+
+		mActivity.startService(new Intent(mActivity, MiddleHealth.class));
+	}
+
+	private ServiceConnection mApplicationRegisterConnection = new ServiceConnection()
+	{
 		@Override
-		public void onServiceConnected(ComponentName name, IBinder service) {
+		public void onServiceConnected(ComponentName name, IBinder service)
+		{
+			System.out.println("Service connected");
+
 			mAppRegister = IApplicationRegister.Stub.asInterface(service);
-			try {
+
+			try
+			{
 				mAppRegister.registerApplication(mCallbacks);
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
+			}
+			catch (RemoteException e)
+			{
 				e.printStackTrace();
 			}
-			
 		}
 
 		@Override
-		public void onServiceDisconnected(ComponentName name){
+		public void onServiceDisconnected(ComponentName name)
+		{
 			System.out.println("service disconnected");
-			
 		}
 		
 	};
 	
-	private ServiceConnection connection2 = new ServiceConnection(){
+	private ServiceConnection mDeviceConnection = new ServiceConnection()
+	{
 		@Override
-		public void onServiceConnected(ComponentName name, IBinder service) {
+		public void onServiceConnected(ComponentName name, IBinder service)
+		{
 			mDevice = IDevice.Stub.asInterface(service);
-			
 		}
 
 		@Override
-		public void onServiceDisconnected(ComponentName name) {
-			// TODO Auto-generated method stub
-			
+		public void onServiceDisconnected(ComponentName name)
+		{
 		}
-		
 	};
-	
-	
-	
+
 	/************************************************************
 	 * Deal with callbacks
 	 ************************************************************/
-	
-	private final IEventCallback.Stub mCallbacks = new IEventCallback.Stub() {
-		
+	private final IEventCallback.Stub mCallbacks = new IEventCallback.Stub()
+	{
 		@Override
-		public void deviceDisconnected(String systemID) throws RemoteException {
-			// TODO Auto-generated method stub
-			System.out.println("FROM ACTIVITY: DEVICE DISCONNECTED");
-			
-		}
-		
-		@Override
-		public void deviceConnected(String systemID) throws RemoteException {
+		public void deviceConnected(String systemID) throws RemoteException
+		{
 			System.out.println("FROM ACTIVITY: DEVICE CONNECTED!!");
 			System.out.println("MYCLIENT: now reading device...");
 			AndroidHealthDevice dev = mDevice.getDeviceInfo(systemID);
@@ -104,21 +103,17 @@ public class MyActivity2 extends Activity{
 			for(String name : dev.getSystemTypes()){
 				System.out.println("MYCLIENT: " + name);
 			}
-			
 		}
 		
 		@Override
-		public void deviceChangeStatus(String systemID, String prevState,
-				String newState) throws RemoteException {
+		public void deviceChangeStatus(String systemID, String prevState, String newState) throws RemoteException
+		{
 			System.out.println("FROM ACTIVITY: STATE CHANGE " + prevState + " -> " + newState);
-			// TODO Auto-generated method stub
-			
-			
 		}
 		
 		@Override
-		public void MeasureReceived(String systemID, AndroidMeasure m)
-				throws RemoteException {
+		public void MeasureReceived(String systemID, AndroidMeasure m) throws RemoteException
+		{
 			System.out.println("MYCLIENT: systemID -> " + systemID);
 			System.out.println("MYCLIENT: measureID -> " + m.getMeasureId());
 			System.out.println("MYCLIENT: measureName -> " + m.getMeasureName());
@@ -138,8 +133,12 @@ public class MyActivity2 extends Activity{
 				System.out.print("MYCLIENT: " + n );
 			}
 			System.out.println();
-			
+		}
+
+		@Override
+		public void deviceDisconnected(String systemID) throws RemoteException
+		{
+			System.out.println("FROM ACTIVITY: DEVICE DISCONNECTED");
 		}
 	};
-	
 }

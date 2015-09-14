@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
+import com.jadg.mydiabetes.middlehealth.DevicesReader;
 import com.jadg.mydiabetes.usability.ActivityEvent;
 
 
@@ -29,6 +30,8 @@ public class Home extends Activity {
 	// no fim de fechar a janela vai conter o tempo em que a janela foi fechada
 	// e vai criar uma entrada na base de dados a registar os tempos
 	ActivityEvent activityEvent;
+
+	private DevicesReader devicesReader;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -65,6 +68,8 @@ public class Home extends Activity {
 			}
 		});
 
+		devicesReader = new DevicesReader(this);
+		devicesReader.initialize();
 	}
 
 	
