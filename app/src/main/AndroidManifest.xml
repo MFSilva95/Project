@@ -343,6 +343,15 @@
             android:label="@string/title_activity_cloud_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity> -->
+
+        <activity
+            android:name="bluetooth.glucometer.GlucometerReader"
+            android:label="Glucometer Reader"
+            android:parentActivityName="com.jadg.mydiabetes.Home" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.jadg.mydiabetes.Preferences" />
+        </activity>
         
     </application>
 

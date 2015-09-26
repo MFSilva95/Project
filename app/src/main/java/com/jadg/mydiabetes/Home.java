@@ -22,6 +22,8 @@ import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.middlehealth.DevicesReader;
 import com.jadg.mydiabetes.usability.ActivityEvent;
 
+import bluetooth.glucometer.GlucometerReader;
+
 
 public class Home extends Activity {
 
@@ -190,6 +192,15 @@ public class Home extends Activity {
 		write.newClick("Call_Logbook");			// regista o clique na base de dados
 
 		Intent intent = new Intent(this, Logbook.class);
+		startActivity(intent);
+	}
+
+	public void Call_GetGlycemiaBluetoothData(View view)
+	{
+		DB_Write write = new DB_Write(this);				// gera uma nova instancia de escrita na base de dados
+		write.newClick("GetGlycemiaBluetoothData");			// regista o clique na base de dados
+
+		Intent intent = new Intent(this, GlucometerReader.class);
 		startActivity(intent);
 	}
 	

@@ -135,4 +135,5 @@
 	
 	
 	<string name="qr">Ler QR</string>
+    <string name="GetDataByBluetooth">Recolher Dados</string>
 </resources>

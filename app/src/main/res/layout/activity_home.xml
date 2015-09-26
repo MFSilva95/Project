@@ -146,8 +146,35 @@
         	        android:textSize="14sp"
         	        android:width="80dp" />
             </TableRow>
-        
-        </TableLayout>
+
+			<TableRow
+				android:id="@+id/tableRow4"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:gravity="left"
+				android:padding="5dp">
+
+				<Button
+					android:id="@+id/button"
+					android:layout_width="80dp"
+					android:layout_height="80dp"
+					android:layout_marginBottom="8dp"
+					android:layout_marginLeft="16dp"
+					android:layout_marginRight="16dp"
+					android:layout_marginTop="8dp"
+					android:background="@color/background_holo_dark"
+					android:drawableTop="@drawable/carbs"
+					android:height="80dp"
+					android:onClick="Call_GetGlycemiaBluetoothData"
+					android:paddingTop="8dp"
+					android:text="@string/GetDataByBluetooth"
+					android:textColor="@color/primary_text_holo_dark"
+					android:textSize="14sp"
+					android:width="80dp"/>
+
+			</TableRow>
+
+		</TableLayout>
         
         <RelativeLayout
             android:layout_width="fill_parent"
