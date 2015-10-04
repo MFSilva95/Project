@@ -3,7 +3,10 @@ package CustomDevices;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -223,7 +226,7 @@ public class Glucometer implements ICustomDevice{
 					m.add((double) record.getResult());
 					
 					GregorianCalendar c = new GregorianCalendar(2000 + record.getYear(), record.getMon(), record.getDay(), record.getHour(), record.getMin());
-					m.setTimestamp(c.getTimeInMillis());
+					m.setTimestamp(c.getTime().getTime());
 					System.out.println(record.getYear() + " " +  record.getMon() + " " +  record.getDay() + " " +  record.getHour() + " " +  record.getMin());
 					
 					ieManager.receivedMeasure(System_ID, m);

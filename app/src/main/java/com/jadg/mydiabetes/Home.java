@@ -19,7 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
-import es.libresoft.openhealth.android.DevicesReader;
+import com.jadg.mydiabetes.middleHealth.DevicesReader;
 import com.jadg.mydiabetes.usability.ActivityEvent;
 
 

@@ -1,4 +1,4 @@
-package es.libresoft.openhealth.android;
+package com.jadg.mydiabetes.middleHealth;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -12,6 +12,15 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
+
+import com.jadg.mydiabetes.GlycemiaDetail;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
 
 import es.libresoft.openhealth.android.AndroidHealthDevice;
 import es.libresoft.openhealth.android.AndroidMeasure;
@@ -186,23 +195,58 @@ public class DevicesReader
 			switch (msg.what)
 			{
 				case MiddleHealth.MSG_DEVICE_CONNECTED:
+					onDeviceConnected();
 					break;
+
 				case MiddleHealth.MSG_DEVICE_DISCONNECTED:
+					onDeviceDisconnected();
 					break;
 
 				case MiddleHealth.MSG_MEASURE_RECEIVED:
-					Log.d(TAG, "Measure Received!");
-					final Bundle bundle = msg.getData();
-					bundle.setClassLoader(mActivity.getClassLoader());
-
-					AndroidMeasure measure = (AndroidMeasure) bundle.getParcelable("data");
-
+					onMeasureReceived(msg);
 					break;
+
 				default:
 					super.handleMessage(msg);
 			}
 		}
 	};
+
+	private List<AndroidMeasure> mMeasures = new ArrayList<>();
+	private void onDeviceConnected()
+	{
+
+	}
+	private void onMeasureReceived(Message message)
+	{
+		Log.d(TAG, "Measure Received!");
+		final Bundle bundle = message.getData();
+		bundle.setClassLoader(mActivity.getClassLoader());
+
+		AndroidMeasure measure = bundle.getParcelable("data");
+		mMeasures.add(measure);
+	}
+	private void onDeviceDisconnected()
+	{
+		if(mMeasures.size() == 0)
+			return;
+
+		if(mMeasures.size() >= 1) // TODO
+		{
+			AndroidMeasure measure = mMeasures.get(0);
+			if(measure.getMeasureName().equals("glucose"))
+			{
+				Intent intent = new Intent(mActivity, GlycemiaDetail.class);
+				intent.putExtra("value", measure.getValues().get(0)); // TODO convert units
+				intent.putExtra("timestamp", measure.getTimestamp());
+				mActivity.startActivity(intent);
+			}
+
+			return;
+		}
+
+		mMeasures.clear();
+	}
 
 	private final Messenger mMessenger = new Messenger(mIncomingHandler);
 

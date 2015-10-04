@@ -1,9 +1,12 @@
 package com.jadg.mydiabetes;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,6 +40,7 @@ import com.jadg.mydiabetes.database.TagDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 import com.jadg.mydiabetes.dialogs.TimePickerFragment;
 import com.jadg.mydiabetes.usability.ActivityEvent;
+import com.jadg.mydiabetes.utils.Utils;
 
 
 public class GlycemiaDetail extends Activity {
@@ -63,9 +67,12 @@ public class GlycemiaDetail extends Activity {
 		// bloco de codigo que verifica se o utilizador carregou numa zona
 		// "vazia" do ecra. Neste caso regista o click como um missed click
 		ScrollView sv = (ScrollView)findViewById(R.id.glycemiaDetailScrollView);
-		sv.setOnTouchListener(new View.OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
+		sv.setOnTouchListener(new View.OnTouchListener()
+		{
+			public boolean onTouch(View v, MotionEvent event)
+			{
+				if (event.getAction() == MotionEvent.ACTION_DOWN)
+				{
 					DB_Write write = new DB_Write(GlycemiaDetail.this);    // gera uma nova instancia de escrita na base de dados
 					write.newClick("GlycemiaDetail_Missed_Click");                // regista o clique na base de dados
 
@@ -77,7 +84,7 @@ public class GlycemiaDetail extends Activity {
 		});
 
 		Bundle args = getIntent().getExtras();
-		if(args!=null){
+		if(args!=null && args.containsKey("id")){ // && args.containsKey("id") added by Joao Maia
 			DB_Read rdb = new DB_Read(this);
 			String id = args.getString("Id");
 			idGlycemia = Integer.parseInt(id);
@@ -117,6 +124,20 @@ public class GlycemiaDetail extends Activity {
 			@Override
 			public void afterTextChanged(Editable s) { }
 		});
+
+
+		Bundle extras = getIntent().getExtras();
+		if(extras != null && extras.containsKey("value"))
+		{
+			double glycemiaValue = extras.getDouble("value");
+			EditText glycemiaEditText = (EditText) findViewById(R.id.et_GlycemiaDetail_Glycemia);
+			glycemiaEditText.setText(String.valueOf(glycemiaValue));
+
+			long timestamp = extras.getLong("timestamp");
+			Date date = Utils.getDateFromTimestamp(timestamp);
+			fillDate(date);
+			fillHour(date);
+		}
 	}
 
 
@@ -185,17 +206,30 @@ public class GlycemiaDetail extends Activity {
 
 	@SuppressLint("SimpleDateFormat")
 	public void FillDateHour(){
-		EditText date = (EditText)findViewById(R.id.et_GlycemiaDetail_Data);
+
 		final Calendar c = Calendar.getInstance();
 		Date newDate = c.getTime();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		String dateString = formatter.format(newDate);
-		date.setText(dateString);
 
-		EditText hour = (EditText)findViewById(R.id.et_GlycemiaDetail_Hora);
-		formatter = new SimpleDateFormat("HH:mm:ss");
-		String timeString = formatter.format(newDate);
-		hour.setText(timeString);
+		fillDate(newDate);
+		fillHour(newDate);
+	}
+	private void fillDate(Date date)
+	{
+		// Get edit text for date:
+		EditText dateEditText = (EditText)findViewById(R.id.et_GlycemiaDetail_Data);
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = formatter.format(date);
+		dateEditText.setText(dateString);
+	}
+	private void fillHour(Date date)
+	{
+		// Get edit text for hour:
+		EditText hourEditText = (EditText)findViewById(R.id.et_GlycemiaDetail_Hora);
+
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+		String timeString = formatter.format(date);
+		hourEditText.setText(timeString);
 	}
 
 	public void FillTagSpinner(){
