@@ -25,10 +25,16 @@ import es.libresoft.openhealth.events.application.SetEvent;
 import es.libresoft.openhealth.utils.ASN1_Values;
 import CustomDevices.CustomDeviceProvider;
 import android.app.Service;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.util.Log;
+
 import bluetoothHDP.HDPManager;
 
 public class MiddleHealth extends Service{
@@ -60,7 +66,7 @@ public class MiddleHealth extends Service{
         	return mScannerService;
         }else if (IAgentActionService.class.getName().equals(arg0.getAction())){
         	return mAgentActionService;	
-        } else return null;
+        } else return mMessenger.getBinder();
 	}
 	
 	
@@ -132,17 +138,15 @@ public class MiddleHealth extends Service{
 
 		@Override
 		public void registerApplication(IEventCallback mc) throws RemoteException {
-			if (mc != null) mCallbacks.register(mc);
+			mCallbacks.register(mc);
 			
 		}
 
 		@Override
 		public void unregisterApplication(IEventCallback mc) throws RemoteException {
-			if (mc != null) mCallbacks.unregister(mc);
+			mCallbacks.unregister(mc);
 			
 		}
-		
-		
 	};
 	
 	private final IExternalDeviceApplication.Stub mExternalApplication = new IExternalDeviceApplication.Stub() {
@@ -322,22 +326,6 @@ public class MiddleHealth extends Service{
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/************************************************************
 	 * Event Manager
 	 ************************************************************/
@@ -351,22 +339,27 @@ public class MiddleHealth extends Service{
 				System.out.println("SystemID was null");
 				return;
 			}
-			
-			
+
+			AndroidMeasure androidMeasure = new AndroidMeasure(m.getMeasureId(), m.getMeasureName(), m.getUnitId(), m.getUnitName(), m.getTimestamp(), m.getValues(), m.getMetricIds(), m.getMetricNames());
+			Log.d(TAG, "Sending android measure");
+			Message message = Message.obtain(null, MSG_MEASURE_RECEIVED);
+			message.getData().putParcelable("data", androidMeasure);
+			sendMessage(message);
+
 			final int N = mCallbacks.beginBroadcast();
 			for(int i = 0; i < N; i++){
 				try {
-					mCallbacks.getBroadcastItem(i).MeasureReceived(system_id, new AndroidMeasure(m.getMeasureId(), m.getMeasureName(), m.getUnitId(), m.getUnitName(), m.getTimestamp(), m.getValues(), m.getMetricIds(), m.getMetricNames()));
+					mCallbacks.getBroadcastItem(i).MeasureReceived(system_id, androidMeasure);
 				} catch (RemoteException e) {
 					e.printStackTrace();
 				}
 			}
 			mCallbacks.finishBroadcast();
-			
 		}
 
 		@Override
 		public void deviceChangeStatus(String system_id, String prevState, String newState) {
+
 			final int N = mCallbacks.beginBroadcast();
 			for(int i = 0; i < N; i++){
 				try {
@@ -383,6 +376,8 @@ public class MiddleHealth extends Service{
 		@Override
 		public void deviceConnected(String system_id, HealthDevice dev) {
 			if(dev!=null){RecentDeviceInformation.addDevice(dev);}
+
+			sendMessage(Message.obtain(null, MSG_DEVICE_CONNECTED));
 			
 			final int N = mCallbacks.beginBroadcast();
 			for(int i = 0; i < N; i++){
@@ -399,6 +394,9 @@ public class MiddleHealth extends Service{
 
 		@Override
 		public void deviceDisconnected(String system_id) {
+
+			sendMessage(Message.obtain(null, MSG_DEVICE_DISCONNECTED));
+
 			final int N = mCallbacks.beginBroadcast();
 			for(int i = 0; i < N; i++){
 				try {
@@ -414,6 +412,57 @@ public class MiddleHealth extends Service{
 		
 		
 	};
-	
+
+
+	public static final int MSG_REG_CLIENT = 200;
+	public static final int MSG_UNREG_CLIENT = 201;
+	public static final int MSG_DEVICE_CONNECTED = 203;
+	public static final int MSG_MEASURE_RECEIVED = 204;
+	public static final int MSG_DEVICE_DISCONNECTED = 205;
+	private Messenger mClient;
+	private static final String TAG = "MiddleHealth";
+
+	// Handles events sent by {@link HealthHDPActivity}.
+	private class IncomingHandler extends Handler
+	{
+		@Override
+		public void handleMessage(Message msg)
+		{
+			switch (msg.what)
+			{
+				case MSG_REG_CLIENT:
+					Log.d(TAG, "Client registered!");
+					mClient = msg.replyTo;
+					break;
+
+				case MSG_UNREG_CLIENT:
+					mClient = null;
+					break;
+
+				default:
+					super.handleMessage(msg);
+			}
+		}
+	}
+
+	final Messenger mMessenger = new Messenger(new IncomingHandler());
+
+	private void sendMessage(Message message)
+	{
+		if (mClient == null)
+		{
+			Log.d(TAG, "No clients registered.");
+			return;
+		}
+
+		try
+		{
+			mClient.send(message);
+		}
+		catch (RemoteException e)
+		{
+			e.printStackTrace();
+		}
+	}
 	
 }

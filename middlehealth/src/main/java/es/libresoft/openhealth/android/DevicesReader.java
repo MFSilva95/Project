@@ -1,12 +1,17 @@
-package com.jadg.mydiabetes.middlehealth;
+package es.libresoft.openhealth.android;
 
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.Log;
 
 import es.libresoft.openhealth.android.AndroidHealthDevice;
 import es.libresoft.openhealth.android.AndroidMeasure;
@@ -17,9 +22,12 @@ import es.libresoft.openhealth.android.MiddleHealth;
 
 public class DevicesReader
 {
+	private static final String TAG = "DevicesReader";
+
 	private Activity mActivity;
 	private IApplicationRegister mAppRegister;
 	private IDevice mDevice;
+	private Messenger mMiddleHealthMessenger;
 
 	public DevicesReader(Activity activity)
 	{
@@ -28,14 +36,42 @@ public class DevicesReader
 
 	public void initialize()
 	{
+		Intent middleHealthService = new Intent(mActivity, MiddleHealth.class);
+		mActivity.startService(middleHealthService);
+		mActivity.bindService(middleHealthService, mMiddleHealthConnection, Context.BIND_AUTO_CREATE);
+
 		Intent applicationRegisterService = new Intent(IApplicationRegister.class.getName());
 		mActivity.bindService(applicationRegisterService, mApplicationRegisterConnection, Context.BIND_AUTO_CREATE);
 
 		Intent deviceService = new Intent(IDevice.class.getName());
 		mActivity.bindService(deviceService, mDeviceConnection, Context.BIND_AUTO_CREATE);
-
-		mActivity.startService(new Intent(mActivity, MiddleHealth.class));
 	}
+
+	private ServiceConnection mMiddleHealthConnection = new ServiceConnection()
+	{
+		@Override
+		public void onServiceConnected(ComponentName name, IBinder service)
+		{
+			Message msg = Message.obtain(null, MiddleHealth.MSG_REG_CLIENT);
+			msg.replyTo = mMessenger;
+			mMiddleHealthMessenger = new Messenger(service);
+			try
+			{
+				mMiddleHealthMessenger.send(msg);
+			}
+			catch (RemoteException e)
+			{
+				Log.w(TAG, "Unable to register client to service.");
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName name)
+		{
+			mMiddleHealthMessenger = null;
+		}
+	};
 
 	private ServiceConnection mApplicationRegisterConnection = new ServiceConnection()
 	{
@@ -141,4 +177,51 @@ public class DevicesReader
 			System.out.println("FROM ACTIVITY: DEVICE DISCONNECTED");
 		}
 	};
+
+	private Handler mIncomingHandler = new Handler()
+	{
+		@Override
+		public void handleMessage(Message msg)
+		{
+			switch (msg.what)
+			{
+				case MiddleHealth.MSG_DEVICE_CONNECTED:
+					break;
+				case MiddleHealth.MSG_DEVICE_DISCONNECTED:
+					break;
+
+				case MiddleHealth.MSG_MEASURE_RECEIVED:
+					Log.d(TAG, "Measure Received!");
+					final Bundle bundle = msg.getData();
+					bundle.setClassLoader(mActivity.getClassLoader());
+
+					AndroidMeasure measure = (AndroidMeasure) bundle.getParcelable("data");
+
+					break;
+				default:
+					super.handleMessage(msg);
+			}
+		}
+	};
+
+	private final Messenger mMessenger = new Messenger(mIncomingHandler);
+
+	private void sendMessage(int what, int value)
+	{
+		if (mMiddleHealthMessenger == null)
+		{
+			Log.d(TAG, "Health Service not connected.");
+			return;
+		}
+
+		try
+		{
+			mMiddleHealthMessenger.send(Message.obtain(null, what, value, 0));
+		}
+		catch (RemoteException e)
+		{
+			Log.w(TAG, "Unable to reach service.");
+			e.printStackTrace();
+		}
+	}
 }

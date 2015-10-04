@@ -27,20 +27,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     android:versionCode="1"
     android:versionName="1.0.0" 
     android:installLocation="preferExternal">
-	
+
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
     <application>
         
-        <service
-            android:name=".MiddleHealth"
+        <!--<service
+            android:name="es.libresoft.openhealth.android.MiddleHealth"
             android:enabled="true"
             android:launchMode="singleTask"
             android:process=":remote" >
             <intent-filter>
-
-                <!--
-                     These are the interfaces supported by the service, which
-                     you can bind to.
-                -->
                 <action android:name="es.libresoft.openhealth.android.IApplicationRegister" />
                 <action android:name="es.libresoft.openhealth.android.IEventCallback" />
                 <action android:name="es.libresoft.openhealth.android.IDevice" />
@@ -48,13 +44,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <action android:name="es.libresoft.openhealth.android.IPM_StoreActionService" />
                 <action android:name="es.libresoft.openhealth.android.IScannerActionService" />
                 <action android:name="es.libresoft.openhealth.android.IExternalDeviceApplication" />
-                <!--
-                     This is an action code you can use to select the service
-                     without explicitly supplying the implementation class.
-                -->
+
                 <action android:name="es.libresoft.openhealth.android.DRDROID_SERVICE" />
             </intent-filter>
-        </service>
+        </service>-->
 
     </application>
 
@@ -63,9 +56,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     <uses-sdk android:minSdkVersion="14" />
 
-    <uses-permission android:name="android.permission.BLUETOOTH" >
+    <!--<uses-permission android:name="android.permission.BLUETOOTH" >
     </uses-permission>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" >
-    </uses-permission>
+    </uses-permission>-->
 
 </manifest>

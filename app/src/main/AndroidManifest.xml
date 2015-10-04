@@ -8,6 +8,8 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <uses-sdk
         android:minSdkVersion="14"
@@ -344,14 +346,31 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity> -->
 
-        <activity
-            android:name="bluetooth.glucometer.GlucometerReader"
-            android:label="Glucometer Reader"
-            android:parentActivityName="com.jadg.mydiabetes.Home" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.jadg.mydiabetes.Preferences" />
-        </activity>
+        <service
+            android:name="es.libresoft.openhealth.android.MiddleHealth"
+            android:enabled="true"
+            android:launchMode="singleTask"
+            android:process=":remote" >
+            <intent-filter>
+
+                <!--
+                     These are the interfaces supported by the service, which
+                     you can bind to.
+                -->
+                <action android:name="es.libresoft.openhealth.android.IApplicationRegister" />
+                <action android:name="es.libresoft.openhealth.android.IEventCallback" />
+                <action android:name="es.libresoft.openhealth.android.IDevice" />
+                <action android:name="es.libresoft.openhealth.android.IAgentActionService" />
+                <action android:name="es.libresoft.openhealth.android.IPM_StoreActionService" />
+                <action android:name="es.libresoft.openhealth.android.IScannerActionService" />
+                <action android:name="es.libresoft.openhealth.android.IExternalDeviceApplication" />
+                <!--
+                     This is an action code you can use to select the service
+                     without explicitly supplying the implementation class.
+                -->
+                <action android:name="es.libresoft.openhealth.android.DRDROID_SERVICE" />
+            </intent-filter>
+        </service>
         
     </application>
 

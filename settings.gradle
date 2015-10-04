@@ -1,1 +1,1 @@
-include ':app', ':middlehealth', ':glucometer'
+include ':app', ':middlehealth'

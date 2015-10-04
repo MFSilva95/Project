@@ -19,10 +19,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
-import com.jadg.mydiabetes.middlehealth.DevicesReader;
+import es.libresoft.openhealth.android.DevicesReader;
 import com.jadg.mydiabetes.usability.ActivityEvent;
-
-import bluetooth.glucometer.GlucometerReader;
 
 
 public class Home extends Activity {
@@ -200,8 +198,7 @@ public class Home extends Activity {
 		DB_Write write = new DB_Write(this);				// gera uma nova instancia de escrita na base de dados
 		write.newClick("GetGlycemiaBluetoothData");			// regista o clique na base de dados
 
-		Intent intent = new Intent(this, GlucometerReader.class);
-		startActivity(intent);
+
 	}
 	
 	private class MyGestureDetector extends SimpleOnGestureListener {
