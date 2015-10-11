@@ -19,7 +19,7 @@ import android.util.Log;
 import es.libresoft.openhealth.HealthDevice;
 import es.libresoft.openhealth.Measure;
 import es.libresoft.openhealth.events.EventManager;
-
+import ieee_11073.part_10101.Nomenclature;
 
 
 public class Glucometer implements ICustomDevice{
@@ -219,15 +219,15 @@ public class Glucometer implements ICustomDevice{
 				} else {
 					lastRecord = record;
 					Measure m = new Measure();
-					m.setMeasureId(28948);
+					m.setMeasureId(Nomenclature.MDC_CONC_GLU_GEN);
 					m.setMeasureName("glucose");
-					m.setUnitId(2130);
+					m.setUnitId(Nomenclature.MDC_DIM_MILLI_G_PER_DL);
 					m.setUnitName("mg/dl");
 					m.add((double) record.getResult());
 					
-					GregorianCalendar c = new GregorianCalendar(2000 + record.getYear(), record.getMon(), record.getDay(), record.getHour(), record.getMin());
+					GregorianCalendar c = new GregorianCalendar(2000 + record.getYear(), record.getMon() - 1, record.getDay(), record.getHour(), record.getMin());
 					m.setTimestamp(c.getTime().getTime());
-					System.out.println(record.getYear() + " " +  record.getMon() + " " +  record.getDay() + " " +  record.getHour() + " " +  record.getMin());
+					System.out.println(record.getYear() + " " +  (record.getMon() - 1) + " " +  record.getDay() + " " +  record.getHour() + " " +  record.getMin());
 					
 					ieManager.receivedMeasure(System_ID, m);
 					try {

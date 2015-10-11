@@ -84,7 +84,7 @@ public class GlycemiaDetail extends Activity {
 		});
 
 		Bundle args = getIntent().getExtras();
-		if(args!=null && args.containsKey("id")){ // && args.containsKey("id") added by Joao Maia
+		if(args!=null && args.containsKey("id")){
 			DB_Read rdb = new DB_Read(this);
 			String id = args.getString("Id");
 			idGlycemia = Integer.parseInt(id);
@@ -124,20 +124,6 @@ public class GlycemiaDetail extends Activity {
 			@Override
 			public void afterTextChanged(Editable s) { }
 		});
-
-
-		Bundle extras = getIntent().getExtras();
-		if(extras != null && extras.containsKey("value"))
-		{
-			double glycemiaValue = extras.getDouble("value");
-			EditText glycemiaEditText = (EditText) findViewById(R.id.et_GlycemiaDetail_Glycemia);
-			glycemiaEditText.setText(String.valueOf(glycemiaValue));
-
-			long timestamp = extras.getLong("timestamp");
-			Date date = Utils.getDateFromTimestamp(timestamp);
-			fillDate(date);
-			fillHour(date);
-		}
 	}
 
 

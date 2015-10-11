@@ -235,4 +235,6 @@ public interface Nomenclature {
 	public static final int MDC_RET_CODE_STORE_OFFLN 			=	2001;	/* Storage such as disk is offline             */
 
 
+		public static final int MDC_CONC_GLU_GEN = 28948;
+		public static final int MDC_DIM_MILLI_G_PER_DL = 2130;
 }

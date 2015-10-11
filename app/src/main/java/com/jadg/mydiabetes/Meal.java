@@ -60,6 +60,7 @@ import com.jadg.mydiabetes.database.TagDataBinding;
 import com.jadg.mydiabetes.dialogs.DatePickerFragment;
 import com.jadg.mydiabetes.dialogs.TimePickerFragment;
 import com.jadg.mydiabetes.usability.ActivityEvent;
+import com.jadg.mydiabetes.utils.Utils;
 
 
 public class Meal extends Activity {
@@ -204,6 +205,19 @@ public class Meal extends Activity {
 			public void afterTextChanged(Editable s) { }
 		});
 
+
+		Bundle extras = getIntent().getExtras();
+		if(extras != null && extras.containsKey("value"))
+		{
+			double glycemiaValue = extras.getDouble("value");
+			EditText glycemiaEditText = glycemia;
+			glycemiaEditText.setText(String.valueOf(glycemiaValue));
+
+			long timestamp = extras.getLong("timestamp");
+			Date date = Utils.getDateFromTimestamp(timestamp);
+			fillDate(date);
+			fillHour(date);
+		}
 	}
 
 	// Esta funcao e chamada sempre que a actividade atual passa a ser a Meal
@@ -786,4 +800,22 @@ public class Meal extends Activity {
 	//PHOTO - END
 
 
+	private void fillDate(Date date)
+	{
+		// Get edit text for date:
+		EditText dateEditText = (EditText)findViewById(R.id.et_MealDetail_Data);
+
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = formatter.format(date);
+		dateEditText.setText(dateString);
+	}
+	private void fillHour(Date date)
+	{
+		// Get edit text for hour:
+		EditText hourEditText = (EditText)findViewById(R.id.et_MealDetail_Hora);
+
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+		String timeString = formatter.format(date);
+		hourEditText.setText(timeString);
+	}
 }
