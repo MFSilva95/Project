@@ -18,6 +18,8 @@ maxTimeUntested(cholesterol, 2592000). %1mes
 maxTimeUntested(weight, 2592000). %1 mes
 maxTimeUntested(hbA1c, 86400). %24h
 
+maxTimeToBeRecent(glucose, 86400). 
+
 maxValue(glucose, 120).
 maxValue(insulin, 120).
 maxValue(weight, 120).
@@ -25,8 +27,8 @@ maxValue(hbA1c, 120).
 maxValue(cholesterol, 120).
 maxValue(arterialPressure, 120).
 
-minValue(glucose, 50).
-minValue(insulin, 50).
+minValue(glucose, 70).
+minValue(insulin, 0).
 minValue(weight, 50).
 minValue(hbA1c, 50).
 minValue(cholesterol, 50).
