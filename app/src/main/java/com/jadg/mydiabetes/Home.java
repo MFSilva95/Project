@@ -98,7 +98,7 @@ public class Home extends Activity {
 	@Override
 	public void onResume(){
 		activityEvent = new ActivityEvent(new DB_Write(this), "Home");
-		super.onPause();
+		super.onResume();
 	}
 
 	// Esta funcao e chamada sempre que a actividade atual deixa de ser a Home
@@ -109,7 +109,14 @@ public class Home extends Activity {
 		activityEvent.stop();
 		super.onPause();
 	}
-	
+
+	@Override
+	public void onDestroy()
+	{
+		super.onDestroy();
+
+		devicesReader.shutdown();
+	}
 	
 	public void ShowDialogAddData(){
 		final Context c = this;

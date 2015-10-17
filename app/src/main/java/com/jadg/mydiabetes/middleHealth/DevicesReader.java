@@ -38,7 +38,7 @@ public class DevicesReader
 	private static final String TAG = "DevicesReader";
 
 	private Activity mActivity;
-	private IApplicationRegister mAppRegister;
+	private IApplicationRegister mApplicationRegister;
 	private IDevice mDevice;
 	private Messenger mMiddleHealthMessenger;
 
@@ -49,15 +49,29 @@ public class DevicesReader
 
 	public void initialize()
 	{
+		Log.d(TAG, "initialize()");
+
 		Intent middleHealthService = new Intent(mActivity, MiddleHealth.class);
 		mActivity.startService(middleHealthService);
 		mActivity.bindService(middleHealthService, mMiddleHealthConnection, Context.BIND_AUTO_CREATE);
 
-		Intent applicationRegisterService = new Intent(mActivity, IApplicationRegister.class);
-		mActivity.bindService(applicationRegisterService, mApplicationRegisterConnection, Context.BIND_AUTO_CREATE);
+		Intent applicationRegisterInterface = new Intent();
+		applicationRegisterInterface.setClassName("es.libresoft.openhealth.android.MiddleHealth", "MiddleHealth");
+		applicationRegisterInterface.setAction("IApplicationRegister");
+		mActivity.bindService(applicationRegisterInterface, mApplicationRegisterConnection, Context.BIND_AUTO_CREATE);
 
-		Intent deviceService = new Intent(mActivity, IDevice.class);
-		mActivity.bindService(deviceService, mDeviceConnection, Context.BIND_AUTO_CREATE);
+		Intent deviceInterface = new Intent();
+		deviceInterface.setClassName("es.libresoft.openhealth.android.MiddleHealth", "MiddleHealth");
+		deviceInterface.setAction("IDevice");
+		mActivity.bindService(deviceInterface, mDeviceConnection, Context.BIND_AUTO_CREATE);
+	}
+	public void shutdown()
+	{
+		Log.d(TAG, "shutdown()");
+
+		mActivity.unbindService(mDeviceConnection);
+		mActivity.unbindService(mApplicationRegisterConnection);
+		mActivity.stopService(); // TODO
 	}
 
 	private ServiceConnection mMiddleHealthConnection = new ServiceConnection()
@@ -65,6 +79,8 @@ public class DevicesReader
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service)
 		{
+			Log.d(TAG, "mMiddleHealthConnection.onServiceConnected()");
+
 			Message msg = Message.obtain(null, MiddleHealth.MSG_REG_CLIENT);
 			msg.replyTo = mMessenger;
 			mMiddleHealthMessenger = new Messenger(service);
@@ -74,7 +90,7 @@ public class DevicesReader
 			}
 			catch (RemoteException e)
 			{
-				Log.w(TAG, "Unable to register client to service.");
+				Log.d(TAG, "Unable to register client to service.");
 				e.printStackTrace();
 			}
 		}
@@ -82,6 +98,7 @@ public class DevicesReader
 		@Override
 		public void onServiceDisconnected(ComponentName name)
 		{
+			Log.d(TAG, "mMiddleHealthConnection.onServiceDisconnected()");
 			mMiddleHealthMessenger = null;
 		}
 	};
@@ -91,16 +108,17 @@ public class DevicesReader
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service)
 		{
-			System.out.println("Service connected");
+			Log.d(TAG, "mApplicationRegisterConnection.onServiceConnected()");
 
-			mAppRegister = IApplicationRegister.Stub.asInterface(service);
+			mApplicationRegister = IApplicationRegister.Stub.asInterface(service);
 
 			try
 			{
-				mAppRegister.registerApplication(mCallbacks);
+				mApplicationRegister.registerApplication(mCallbacks);
 			}
 			catch (RemoteException e)
 			{
+				Log.d(TAG, "Unable to register application.");
 				e.printStackTrace();
 			}
 		}
@@ -108,9 +126,9 @@ public class DevicesReader
 		@Override
 		public void onServiceDisconnected(ComponentName name)
 		{
-			System.out.println("service disconnected");
+			Log.d(TAG, "mApplicationRegisterConnection.onServiceDisconnected()");
+			mApplicationRegister = null;
 		}
-		
 	};
 	
 	private ServiceConnection mDeviceConnection = new ServiceConnection()
@@ -118,76 +136,81 @@ public class DevicesReader
 		@Override
 		public void onServiceConnected(ComponentName name, IBinder service)
 		{
+			Log.d(TAG, "mDeviceConnection.onServiceConnected()");
+
 			mDevice = IDevice.Stub.asInterface(service);
 		}
 
 		@Override
 		public void onServiceDisconnected(ComponentName name)
 		{
+			Log.d(TAG, "mDeviceConnection.onServiceDisconnected()");
+
+			mDevice = null;
 		}
 	};
 
-	/************************************************************
-	 * Deal with callbacks
-	 ************************************************************/
 	private final IEventCallback.Stub mCallbacks = new IEventCallback.Stub()
 	{
 		@Override
 		public void deviceConnected(String systemID) throws RemoteException
 		{
-			System.out.println("FROM ACTIVITY: DEVICE CONNECTED!!");
-			System.out.println("MYCLIENT: now reading device...");
+			Log.d(TAG, "mCallbacks.deviceConnected()");
+
+			Log.d(TAG, "FROM ACTIVITY: DEVICE CONNECTED!!");
+			Log.d(TAG, "MYCLIENT: now reading device...");
+
 			AndroidHealthDevice dev = mDevice.getDeviceInfo(systemID);
-			System.out.println("MYCLIENT: powerStatus -> " + dev.getPowerStatus());
-			System.out.println("MYCLIENT: batteryLevel -> " + dev.getBatteryLever());
-			System.out.println("MYCLIENT: macAddress -> " + dev.getMacAddress());
-			System.out.println("MYCLIENT: manufacturer -> " + dev.getManufacturer());
-			System.out.println("MYCLIENT: modelNumber -> " + dev.getModelNumber());
-			System.out.println("MYCLIENT: is11073 -> " + dev.is11073());
-			System.out.println("MYCLIENT: systemTypeIds -> ");
-			for(int id : dev.getSystemTypeIds()){
-				System.out.println("MYCLIENT: " + id);
-			}
-			System.out.println("MYCLIENT: System types -> ");
-			for(String name : dev.getSystemTypes()){
-				System.out.println("MYCLIENT: " + name);
-			}
-		}
-		
-		@Override
-		public void deviceChangeStatus(String systemID, String prevState, String newState) throws RemoteException
-		{
-			System.out.println("FROM ACTIVITY: STATE CHANGE " + prevState + " -> " + newState);
-		}
-		
-		@Override
-		public void MeasureReceived(String systemID, AndroidMeasure m) throws RemoteException
-		{
-			System.out.println("MYCLIENT: systemID -> " + systemID);
-			System.out.println("MYCLIENT: measureID -> " + m.getMeasureId());
-			System.out.println("MYCLIENT: measureName -> " + m.getMeasureName());
-			System.out.println("MYCLIENT: unitId -> " + m.getUnitId());
-			System.out.println("MYCLIENT: unitName -> " + m.getUnitName());
-			System.out.println("MYCLIENT: values -> ");
-			for(double v : m.getValues()){
-				System.out.println("MYCLIENT: " + v);
-			};
-			System.out.print("MYCLIENT: metricIds -> ");
-			for(int v: m.getMetricIds()){
-				System.out.println(v + " ");
-			}
-			System.out.println();
-			System.out.print("MYCLIENT: metricNames -> ");
-			for(String n: m.getMetricNames()){
-				System.out.print("MYCLIENT: " + n );
-			}
-			System.out.println();
+			Log.d(TAG, "MYCLIENT: powerStatus -> " + dev.getPowerStatus());
+			Log.d(TAG, "MYCLIENT: batteryLevel -> " + dev.getBatteryLever());
+			Log.d(TAG, "MYCLIENT: macAddress -> " + dev.getMacAddress());
+			Log.d(TAG, "MYCLIENT: manufacturer -> " + dev.getManufacturer());
+			Log.d(TAG, "MYCLIENT: modelNumber -> " + dev.getModelNumber());
+			Log.d(TAG, "MYCLIENT: is11073 -> " + dev.is11073());
+
+			Log.d(TAG, "MYCLIENT: systemTypeIds -> ");
+			for(int id : dev.getSystemTypeIds())
+				Log.d(TAG, "MYCLIENT: " + id);
+
+			Log.d(TAG, "MYCLIENT: System types -> ");
+			for(String name : dev.getSystemTypes())
+				Log.d(TAG, "MYCLIENT: " + name);
 		}
 
 		@Override
 		public void deviceDisconnected(String systemID) throws RemoteException
 		{
-			System.out.println("FROM ACTIVITY: DEVICE DISCONNECTED");
+			Log.d(TAG, "mCallbacks.deviceDisconnected()");
+		}
+
+		@Override
+		public void deviceChangeStatus(String systemID, String previous, String newState) throws RemoteException
+		{
+			Log.d(TAG, "mCallbacks.deviceChangeStatus() - State changed from " + previous + " to " + newState);
+		}
+		
+		@Override
+		public void MeasureReceived(String systemID, AndroidMeasure m) throws RemoteException
+		{
+			Log.d(TAG, "mCallbacks.MeasureReceived()");
+
+			Log.d(TAG, "MYCLIENT: systemID -> " + systemID);
+			Log.d(TAG, "MYCLIENT: measureID -> " + m.getMeasureId());
+			Log.d(TAG, "MYCLIENT: measureName -> " + m.getMeasureName());
+			Log.d(TAG, "MYCLIENT: unitId -> " + m.getUnitId());
+			Log.d(TAG, "MYCLIENT: unitName -> " + m.getUnitName());
+
+			Log.d(TAG, "MYCLIENT: values -> ");
+			for(double v : m.getValues())
+				Log.d(TAG, "MYCLIENT: " + v);
+
+			Log.d(TAG, "MYCLIENT: metricIds -> ");
+			for(int v: m.getMetricIds())
+				Log.d(TAG, v + " ");
+
+			Log.d(TAG, "MYCLIENT: metricNames -> ");
+			for(String n : m.getMetricNames())
+				Log.d(TAG, "MYCLIENT: " + n);
 		}
 	};
 
@@ -219,7 +242,6 @@ public class DevicesReader
 	private List<AndroidMeasure> mMeasures = new ArrayList<>();
 	private void onDeviceConnected()
 	{
-
 	}
 	private void onMeasureReceived(Message message)
 	{

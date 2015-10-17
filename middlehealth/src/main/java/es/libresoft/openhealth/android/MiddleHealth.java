@@ -9,7 +9,6 @@ import ieee_11073.part_20601.asn1.OperationalState;
 import ieee_11073.part_20601.phd.dim.Attribute;
 import ieee_11073.part_20601.phd.dim.InvalidAttributeException;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,7 +24,6 @@ import es.libresoft.openhealth.events.application.SetEvent;
 import es.libresoft.openhealth.utils.ASN1_Values;
 import CustomDevices.CustomDeviceProvider;
 import android.app.Service;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
@@ -37,142 +35,108 @@ import android.util.Log;
 
 import bluetoothHDP.HDPManager;
 
-public class MiddleHealth extends Service{
-	
+public class MiddleHealth extends Service
+{
 	private HDPManager mHDPmanager;
-	private CustomDeviceProvider cdProvider;
-	private final RemoteCallbackList<IEventCallback> mCallbacks = new RemoteCallbackList<IEventCallback>(); 
-	
-	public static final String droidEvent = "es.libresoft.openhealth.android.DRDROID_SERVICE";
-	
-	
-	
-	
-	/************************************************************
-	 * Binder
-	 ************************************************************/
+	private CustomDeviceProvider mCustomDeviceProvider;
+	private RemoteCallbackList<IEventCallback> mCallbacks = new RemoteCallbackList<IEventCallback>();
+
+
+	// -------- Service Overrides --------
+
 	@Override
-	public IBinder onBind(Intent arg0) {
-		// Select the interface to return
-        if (IApplicationRegister.class.getName().equals(arg0.getAction())) {
-            return mAppRegister;
-        } else if (IDevice.class.getName().equals(arg0.getAction())){
-        	return mDevice;
-        }else if (IExternalDeviceApplication.class.getName().equals(arg0.getAction())){
-        	return mExternalApplication;	
-        }else if (IPM_StoreActionService.class.getName().equals(arg0.getAction())){
-        	return mPMactionService;	
-        }else if (IScannerActionService.class.getName().equals(arg0.getAction())){
-        	return mScannerService;
-        }else if (IAgentActionService.class.getName().equals(arg0.getAction())){
-        	return mAgentActionService;	
-        } else return mMessenger.getBinder();
-	}
-	
-	
-	
-	
-	
-	/************************************************************
-	 * Android callbacks
-	 ************************************************************/
-	@Override
-	public void onCreate(){
-		InternalEventReporter.setDefaultEventManager(ieManager);
+	public void onCreate()
+	{
+		Log.d(TAG, "onCreate()");
+
 		super.onCreate();
-		System.out.println("MiddleHealth Service created!");
+
+		// Set default event manager:
+		InternalEventReporter.setDefaultEventManager(mEventManager);
 	}
-	
-	
-	
+
 	@Override
-	public int onStartCommand(Intent intent,int Flags, int startId) {
+	public int onStartCommand(Intent intent,int Flags, int startId)
+	{
+		Log.d(TAG, "onStartCommand()");
+
+		int result = super.onStartCommand(intent,Flags, startId);
+
 		mHDPmanager = new HDPManager(this);
 		RecentDeviceInformation.init();
-		cdProvider = new CustomDeviceProvider(this.getApplicationContext());
-		cdProvider.initCustomDevices(ieManager);
-		System.out.println("Service started!");
-		return super.onStartCommand(intent,Flags, startId);
-	}
-	
-	public void onPause(){
-		System.out.println("Service paused!");
+		mCustomDeviceProvider = new CustomDeviceProvider(this.getApplicationContext());
+		mCustomDeviceProvider.initCustomDevices(mEventManager);
+
+		return result;
 	}
 
-	public void onResume(){
-		System.out.println("Service resumed!");
-	}
+	@Override
+	public void onDestroy()
+	{
+		Log.d(TAG, "onDestroy()");
 
-	public void onStop(){
-		System.out.println("Service Stopped!");
-	}
-
-	public void onDestroy(){
 		//TODO: terminate HdpManager gracefully
-		
-		//abort all agents and free resources
-		RecentDeviceInformation.abortAgents();
-		
-		//terminate custom Devices
-		cdProvider.stopCustomDevices();
-		
-		//unregister callbacks
-		mCallbacks.kill();
-		super.onDestroy();
-		System.out.println("Service destroyed");
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	/************************************************************
-	 * All interface definitions
-	 ************************************************************/
-	private final IApplicationRegister.Stub mAppRegister = new IApplicationRegister.Stub() {
 
+		// Abort all agents and free resources:
+		RecentDeviceInformation.abortAgents();
+
+		// Terminate custom devices:
+		mCustomDeviceProvider.stopCustomDevices();
+
+		// Unregister callbacks
+		mCallbacks.kill();
+
+		Log.d(TAG, "Service destroyed");
+
+		super.onDestroy();
+	}
+
+	@Override
+	public IBinder onBind(Intent intent)
+	{
+		String action = intent.getAction();
+		Log.d(TAG, "onBind() - Intent action: " + action);
+		if(action == null)
+			return mMessenger.getBinder();
+
+		if(action.equals("IApplicationRegister"))
+			return mApplicationRegister;
+		else if(action.equals("IDevice"))
+			return mDevice;
+
+		return null;
+	}
+
+
+	// -------- Interfaces --------
+
+	private final IApplicationRegister.Stub mApplicationRegister = new IApplicationRegister.Stub()
+	{
 		@Override
-		public void registerApplication(IEventCallback mc) throws RemoteException {
-			mCallbacks.register(mc);
-			
+		public void registerApplication(IEventCallback mc) throws RemoteException
+		{
+			Log.d(TAG, "mApplicationRegister.registerApplication()");
+
+			boolean result = mCallbacks.register(mc);
+			Log.d(TAG, "Registering callback: " + result);
 		}
 
 		@Override
-		public void unregisterApplication(IEventCallback mc) throws RemoteException {
+		public void unregisterApplication(IEventCallback mc) throws RemoteException
+		{
+			Log.d(TAG, "mApplicationRegister.unregisterApplication()");
+
 			mCallbacks.unregister(mc);
-			
 		}
 	};
 	
-	private final IExternalDeviceApplication.Stub mExternalApplication = new IExternalDeviceApplication.Stub() {
-		
+	private final IExternalDeviceApplication.Stub mExternalApplication = new IExternalDeviceApplication.Stub()
+	{
 		@Override
-		public void uploadMeasure(String system_id,AndroidMeasure m) throws RemoteException {
-			final int N = mCallbacks.beginBroadcast();
-			for(int i = 0; i < N; i++){
-				try {
-					mCallbacks.getBroadcastItem(i).MeasureReceived(system_id, m );
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
-			}
-			mCallbacks.finishBroadcast();
-			
-		}
-		
-		@Override
-		public void deviceDisconnected(String systID) throws RemoteException {
-			ieManager.deviceDisconnected(systID);
-			
-		}
-		
-		@Override
-		public void deviceConnected(AndroidHealthDevice hd) throws RemoteException {
+		public void deviceConnected(AndroidHealthDevice hd) throws RemoteException
+		{
+			Log.d(TAG, "mExternalApplication.deviceConnected()");
+
 			HealthDevice dev = new HealthDevice();
 			dev.setSystId(hd.getSystemId());
 			dev.setBatteryLevel(hd.getBatteryLever());
@@ -181,42 +145,77 @@ public class MiddleHealth extends Service{
 			dev.setModel(hd.getModelNumber());
 			dev.setPowerStatus(hd.getPowerStatus());
 			RecentDeviceInformation.addDevice(dev);
-			ieManager.deviceConnected(hd.getSystemId(), null);
-			
+			mEventManager.deviceConnected(hd.getSystemId(), null);
 		}
-		
+
 		@Override
-		public void deviceChangeStatus(String sysId,String prevState,String newState) throws RemoteException {
-			ieManager.deviceChangeStatus(sysId, prevState, newState);
-			
+		public void deviceDisconnected(String systemId) throws RemoteException
+		{
+			Log.d(TAG, "mExternalApplication.deviceDisconnected()");
+
+			mEventManager.deviceDisconnected(systemId);
+		}
+
+		@Override
+		public void deviceChangeStatus(String systemId, String previousState, String newState) throws RemoteException
+		{
+			Log.d(TAG, "mExternalApplication.deviceChangeStatus()");
+
+			mEventManager.deviceChangeStatus(systemId, previousState, newState);
+		}
+
+		@Override
+		public void uploadMeasure(String systemId, AndroidMeasure measure) throws RemoteException
+		{
+			Log.d(TAG, "mExternalApplication.uploadMeasure()");
+
+			final int N = mCallbacks.beginBroadcast();
+			for(int i = 0; i < N; i++)
+			{
+				try
+				{
+					mCallbacks.getBroadcastItem(i).MeasureReceived(systemId, measure);
+				}
+				catch (RemoteException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			mCallbacks.finishBroadcast();
 		}
 	};
-	private final IDevice.Stub mDevice = new IDevice.Stub() {
-		
+
+	private final IDevice.Stub mDevice = new IDevice.Stub()
+	{
 		@Override
-		public List<String> runCommand(String systemID,List<String> args) throws RemoteException {
-			return cdProvider.invokeCommand(systemID, args);
+		public List<String> runCommand(String systemID,List<String> args) throws RemoteException
+		{
+			Log.d(TAG, "mDevice.runCommand()");
+
+			return mCustomDeviceProvider.invokeCommand(systemID, args);
 		}
 		
 		@Override
-		public AndroidHealthDevice getDeviceInfo(String systemId) throws RemoteException {
+		public AndroidHealthDevice getDeviceInfo(String systemId) throws RemoteException
+		{
+			Log.d(TAG, "mDevice.getDeviceInfo()");
+
 			HealthDevice dev = RecentDeviceInformation.getHealthDevice(systemId);
-			System.out.println("MYCLIENT: powerStatus -> " + dev.getPowerStatus());
-			System.out.println("MYCLIENT: batteryLevel -> " + dev.getBatteryLevel());
-			System.out.println("MYCLIENT: macAddress -> " + dev.getAddress());
-			System.out.println("MYCLIENT: manufacturer -> " + dev.getManufacturer());
-			System.out.println("MYCLIENT: modelNumber -> " + dev.getModel());
-			System.out.println("MYCLIENT: is11073 -> " + dev.is11073());
-			System.out.println("MYCLIENT: systemTypeIds -> ");
-			for(int id : dev.getSystemTypeIds()){
-				System.out.print(id + " ");
-			}
-			System.out.println();
-			System.out.print("MYCLIENT: System types -> ");
-			for(String name : dev.getSystemTypes()){
-				System.out.print(name + " ");
-			}
-			System.out.println();
+			Log.d(TAG, "MYCLIENT: powerStatus -> " + dev.getPowerStatus());
+			Log.d(TAG, "MYCLIENT: batteryLevel -> " + dev.getBatteryLevel());
+			Log.d(TAG, "MYCLIENT: macAddress -> " + dev.getAddress());
+			Log.d(TAG, "MYCLIENT: manufacturer -> " + dev.getManufacturer());
+			Log.d(TAG, "MYCLIENT: modelNumber -> " + dev.getModel());
+			Log.d(TAG, "MYCLIENT: is11073 -> " + dev.is11073());
+			Log.d(TAG, "MYCLIENT: systemTypeIds -> ");
+
+			for(int id : dev.getSystemTypeIds())
+				Log.d(TAG, id + " ");
+
+			Log.d(TAG, "MYCLIENT: System types -> ");
+			for(String name : dev.getSystemTypes())
+				Log.d(TAG, name + " ");
+
 			return new AndroidHealthDevice(
 					dev.getPowerStatus(),
 					dev.getBatteryLevel(),
@@ -226,15 +225,18 @@ public class MiddleHealth extends Service{
 					dev.getModel(),
 					dev.is11073(),
 					dev.getSystemTypeIds(),
-					dev.getSystemTypes());
+					dev.getSystemTypes()
+			);
 		}
 	};
-	
-	
-	private final IPM_StoreActionService.Stub mPMactionService = new IPM_StoreActionService.Stub() {
 
+	private final IPM_StoreActionService.Stub mPMStoreActionService = new IPM_StoreActionService.Stub()
+	{
 		@Override
-		public void getStorage(String systemId, List<PM_Store> pmStoreList) throws RemoteException {
+		public void getStorage(String systemId, List<PM_Store> pmStoreList) throws RemoteException
+		{
+			Log.d(TAG, "mPMStoreActionService.getStorage()");
+
 			Agent agt = RecentDeviceInformation.getAgent(systemId);
 			Iterator<Integer> i;
 
@@ -247,22 +249,27 @@ public class MiddleHealth extends Service{
 		}
 
 		@Override
-		public void getPM_Store(PM_Store pmstore) throws RemoteException {
+		public void getPM_Store(PM_Store pmstore) throws RemoteException
+		{
+			Log.d(TAG, "mPMStoreActionService.getPM_Store()");
+
 			Agent agt = RecentDeviceInformation.getAgent(pmstore.getPM_StoreAgentId());
 			HANDLE handler = new HANDLE();
 			handler.setValue(new INT_U16(new Integer(pmstore.getPM_StoreHandler())));
 
-			System.out.println("Send Event");
+			Log.d(TAG, "Send Event");
 			GetPmStoreEvent event = new GetPmStoreEvent(handler);
 			agt.sendEvent(event);
 		}
     };
-	
-	
-    private final IScannerActionService.Stub mScannerService = new IScannerActionService.Stub() {
 
+    private final IScannerActionService.Stub mScannerService = new IScannerActionService.Stub()
+	{
 		@Override
-		public void Set(Scanner scanner, boolean enable) throws RemoteException {
+		public void Set(Scanner scanner, boolean enable) throws RemoteException
+		{
+			Log.d(TAG, "mScannerService.Set()");
+
 			Agent agt = RecentDeviceInformation.getAgent(scanner.getSystemId());
 			HANDLE handle = new HANDLE();
 			INT_U16 value = new INT_U16();
@@ -274,19 +281,23 @@ public class MiddleHealth extends Service{
 			else
 				os.setValue(ASN1_Values.OP_STATE_DISABLED);
 
-			try {
+			try
+			{
 				Attribute attr = new Attribute(Nomenclature.MDC_ATTR_OP_STAT, os);
 				SetEvent event = new SetEvent(handle, attr);
 				agt.sendEvent(event);
-			} catch (InvalidAttributeException e) {
-				// TODO Auto-generated catch block
+			}
+			catch (InvalidAttributeException e)
+			{
 				e.printStackTrace();
 			}
 		}
 
 		@Override
-		public void getScanner(String systemId, List<Scanner> scannerList)
-				throws RemoteException {
+		public void getScanner(String systemId, List<Scanner> scannerList) throws RemoteException
+		{
+			Log.d(TAG, "mScannerService.getScanner()");
+
 			Agent agt = RecentDeviceInformation.getAgent(systemId);
 			Iterator<Integer> i;
 
@@ -299,126 +310,146 @@ public class MiddleHealth extends Service{
 		}
 	};
 	
-	private final IAgentActionService.Stub mAgentActionService = new IAgentActionService.Stub() {
-
+	private final IAgentActionService.Stub mAgentActionService = new IAgentActionService.Stub()
+	{
 			@Override
-			public void getService(String system_id) throws RemoteException {
-				// TODO Auto-generated method stub
-				System.out.println("get service invoke on " + system_id);
+			public void getService(String systemId) throws RemoteException
+			{
+				Log.d(TAG, "mAgentActionService.getService()");
 			}
 
 			@Override
-			public void sendEvent(String system_id, int eventType)
-					throws RemoteException {
-				System.out.println("disconnect service invoke on " + system_id);
-				Agent agt = RecentDeviceInformation.getAgent(system_id);
+			public void sendEvent(String systemId, int eventType) throws RemoteException
+			{
+				Log.d(TAG, "mAgentActionService.sendEvent()");
+
+				Agent agt = RecentDeviceInformation.getAgent(systemId);
 				if (agt==null)
 					return;
 				agt.sendEvent(new Event(eventType));
 			}
 
 			@Override
-			public void setService(String system_id) throws RemoteException {
-				// TODO Auto-generated method stub
-				System.out.println("set service invoke on " + system_id);
+			public void setService(String systemId) throws RemoteException
+			{
+				Log.d(TAG, "mAgentActionService.setService()");
 			}
-	    };
-	
-	
-	
-	/************************************************************
-	 * Event Manager
-	 ************************************************************/
+	};
 
-	private final EventManager ieManager = new EventManager(){
+
+	// -------- Event Manager --------
+
+	private final EventManager mEventManager = new EventManager()
+	{
+		@Override
+		public void deviceConnected(String systemId, HealthDevice device)
+		{
+			Log.d(TAG, "mEventManager.deviceConnected()");
+
+			if(device != null)
+				RecentDeviceInformation.addDevice(device);
+
+			sendMessage(Message.obtain(null, MSG_DEVICE_CONNECTED));
+			
+			int size = mCallbacks.beginBroadcast();
+			for(int i = 0; i < size; i++)
+			{
+				try
+				{
+					mCallbacks.getBroadcastItem(i).deviceConnected(systemId);
+				}
+				catch (RemoteException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			mCallbacks.finishBroadcast();
+		}
 
 		@Override
-		public void receivedMeasure(String system_id, Measure m) {
-			
-			if (system_id==null){
-				System.out.println("SystemID was null");
+		public void deviceDisconnected(String systemId)
+		{
+			Log.d(TAG, "mEventManager.deviceDisconnected()");
+
+			sendMessage(Message.obtain(null, MSG_DEVICE_DISCONNECTED));
+
+			final int size = mCallbacks.beginBroadcast();
+			for(int i = 0; i < size; i++)
+			{
+				try
+				{
+					mCallbacks.getBroadcastItem(i).deviceDisconnected(systemId);
+				}
+				catch (RemoteException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			mCallbacks.finishBroadcast();
+		}
+
+		@Override
+		public void deviceChangeStatus(String system_id, String prevState, String newState)
+		{
+			Log.d(TAG, "mEventManager.deviceChangeStatus()");
+
+			int size = mCallbacks.beginBroadcast();
+			for(int i = 0; i < size; i++)
+			{
+				try
+				{
+					mCallbacks.getBroadcastItem(i).deviceChangeStatus(system_id, prevState, newState);
+				}
+				catch (RemoteException e)
+				{
+					e.printStackTrace();
+				}
+			}
+			mCallbacks.finishBroadcast();
+		}
+
+		@Override
+		public void receivedMeasure(String systemId, Measure measure)
+		{
+			Log.d(TAG, "mEventManager.receivedMeasure()");
+
+			if (systemId ==null)
+			{
+				Log.d(TAG, "mEventManager.receivedMeasure() - systemId was null");
 				return;
 			}
 
-			AndroidMeasure androidMeasure = new AndroidMeasure(m.getMeasureId(), m.getMeasureName(), m.getUnitId(), m.getUnitName(), m.getTimestamp(), m.getValues(), m.getMetricIds(), m.getMetricNames());
-			Log.d(TAG, "Sending android measure");
+			AndroidMeasure androidMeasure = new AndroidMeasure(measure.getMeasureId(), measure.getMeasureName(), measure.getUnitId(), measure.getUnitName(), measure.getTimestamp(), measure.getValues(), measure.getMetricIds(), measure.getMetricNames());
+			Log.d(TAG, "mEventManager.receivedMeasure() - Sending android measure");
 			Message message = Message.obtain(null, MSG_MEASURE_RECEIVED);
 			message.getData().putParcelable("data", androidMeasure);
 			sendMessage(message);
 
-			final int N = mCallbacks.beginBroadcast();
-			for(int i = 0; i < N; i++){
-				try {
-					mCallbacks.getBroadcastItem(i).MeasureReceived(system_id, androidMeasure);
-				} catch (RemoteException e) {
+			int size = mCallbacks.beginBroadcast();
+			for(int i = 0; i < size; i++)
+			{
+				try
+				{
+					mCallbacks.getBroadcastItem(i).MeasureReceived(systemId, androidMeasure);
+				}
+				catch (RemoteException e)
+				{
 					e.printStackTrace();
 				}
 			}
 			mCallbacks.finishBroadcast();
 		}
-
-		@Override
-		public void deviceChangeStatus(String system_id, String prevState, String newState) {
-
-			final int N = mCallbacks.beginBroadcast();
-			for(int i = 0; i < N; i++){
-				try {
-					mCallbacks.getBroadcastItem(i).deviceChangeStatus(system_id, prevState, newState);
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
-			}
-			mCallbacks.finishBroadcast();
-
-			
-		}
-
-		@Override
-		public void deviceConnected(String system_id, HealthDevice dev) {
-			if(dev!=null){RecentDeviceInformation.addDevice(dev);}
-
-			sendMessage(Message.obtain(null, MSG_DEVICE_CONNECTED));
-			
-			final int N = mCallbacks.beginBroadcast();
-			for(int i = 0; i < N; i++){
-				try {
-					mCallbacks.getBroadcastItem(i).deviceConnected(system_id);
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			mCallbacks.finishBroadcast();
-			
-		}
-
-		@Override
-		public void deviceDisconnected(String system_id) {
-
-			sendMessage(Message.obtain(null, MSG_DEVICE_DISCONNECTED));
-
-			final int N = mCallbacks.beginBroadcast();
-			for(int i = 0; i < N; i++){
-				try {
-					mCallbacks.getBroadcastItem(i).deviceDisconnected(system_id);
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			mCallbacks.finishBroadcast();
-			
-		}
-		
-		
 	};
 
+
+	// -------- Messenger --------
 
 	public static final int MSG_REG_CLIENT = 200;
 	public static final int MSG_UNREG_CLIENT = 201;
 	public static final int MSG_DEVICE_CONNECTED = 203;
 	public static final int MSG_MEASURE_RECEIVED = 204;
 	public static final int MSG_DEVICE_DISCONNECTED = 205;
+	public static final int MSG_REGISTER_CALLBACK = 206;
 	private Messenger mClient;
 	private static final String TAG = "MiddleHealth";
 
@@ -437,6 +468,11 @@ public class MiddleHealth extends Service{
 
 				case MSG_UNREG_CLIENT:
 					mClient = null;
+					break;
+
+				case MSG_REGISTER_CALLBACK:
+					//boolean result = mCallbacks.register((IEventCallback) msg.obj);
+					Log.d(TAG, "Registering callback: " + true);
 					break;
 
 				default:
@@ -464,5 +500,4 @@ public class MiddleHealth extends Service{
 			e.printStackTrace();
 		}
 	}
-	
 }

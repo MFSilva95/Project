@@ -30,13 +30,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <application>
-        
-        <!--<service
+
+        <service
             android:name="es.libresoft.openhealth.android.MiddleHealth"
             android:enabled="true"
             android:launchMode="singleTask"
-            android:process=":remote" >
+            android:process=":remote"
+            android:exported="true"
+            >
             <intent-filter>
+
+                <!--
+                     These are the interfaces supported by the service, which
+                     you can bind to.
+                -->
                 <action android:name="es.libresoft.openhealth.android.IApplicationRegister" />
                 <action android:name="es.libresoft.openhealth.android.IEventCallback" />
                 <action android:name="es.libresoft.openhealth.android.IDevice" />
@@ -44,10 +51,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
                 <action android:name="es.libresoft.openhealth.android.IPM_StoreActionService" />
                 <action android:name="es.libresoft.openhealth.android.IScannerActionService" />
                 <action android:name="es.libresoft.openhealth.android.IExternalDeviceApplication" />
-
+                <!--
+                     This is an action code you can use to select the service
+                     without explicitly supplying the implementation class.
+                -->
                 <action android:name="es.libresoft.openhealth.android.DRDROID_SERVICE" />
             </intent-filter>
-        </service>-->
+        </service>
 
     </application>
 
