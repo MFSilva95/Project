@@ -1,4 +1,4 @@
-package com.jadg.mydiabetes.middleHealth.controller.connections;
+package com.jadg.mydiabetes.middleHealth.controller;
 
 import android.content.ComponentName;
 import android.content.ServiceConnection;
