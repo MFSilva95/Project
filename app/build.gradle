@@ -21,5 +21,4 @@ android {
 dependencies {
     compile 'com.android.support:support-v4:22.2.0'
     compile files('libs/droidText.0.4.jar')
-    compile project(':middlehealth')
 }

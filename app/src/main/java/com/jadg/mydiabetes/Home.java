@@ -19,11 +19,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
-import com.jadg.mydiabetes.middleHealth.DevicesReader;
+import com.jadg.mydiabetes.middleHealth.controller.DevicesReader;
 import com.jadg.mydiabetes.usability.ActivityEvent;
 
 
 public class Home extends Activity {
+
+	private static final String TAG = "Home";
 
 	// variavel que contem o nome da janela em que vai ser contado o tempo
 	// contem o tempo de inicio ou abertura dessa janela
@@ -69,7 +71,8 @@ public class Home extends Activity {
 		});
 
 		devicesReader = new DevicesReader(this);
-		devicesReader.initialize();
+		if(!devicesReader.initialize())
+			Log.d(TAG, "onCreate() - Failed to initialize Devices Reader!");
 	}
 
 	
@@ -113,9 +116,9 @@ public class Home extends Activity {
 	@Override
 	public void onDestroy()
 	{
-		super.onDestroy();
-
 		devicesReader.shutdown();
+
+		super.onDestroy();
 	}
 	
 	public void ShowDialogAddData(){
