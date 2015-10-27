@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:scrollbars="vertical"
-    tools:context=".ExercisesDetail" >
+    tools:context=".ui.activities.ExercisesDetail" >
 
     <LinearLayout
         android:paddingTop="8dp"

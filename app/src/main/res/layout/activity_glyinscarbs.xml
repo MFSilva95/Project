@@ -6,7 +6,7 @@
     android:scrollbars="vertical"
     android:fillViewport="true"
     android:id="@+id/glyinscarbsScrollView"
-    tools:context=".GlyInsCarbs" >
+    tools:context=".ui.activities.GlyInsCarbs" >
 
     <LinearLayout
         android:paddingTop="16dp"

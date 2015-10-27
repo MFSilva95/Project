@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:scrollbars="vertical"
-    tools:context=".DiseasesDetail" >
+    tools:context=".ui.activities.DiseasesDetail" >
 
     <LinearLayout
         android:paddingTop="8dp"

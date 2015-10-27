@@ -9,6 +9,22 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.jadg.mydiabetes.ui.listAdapters.BloodPressureDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.CarbsDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.CholesterolDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.DiseaseDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.DiseaseRegDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.ExerciseRegDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.HbA1cDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.InsulinDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.LogbookDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.NoteDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.TagDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.TargetDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.WeightDataBinding;
+
 @SuppressLint("UseSparseArrays")
 public class DB_Read {
 

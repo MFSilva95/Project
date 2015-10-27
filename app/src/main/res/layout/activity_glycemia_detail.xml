@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:scrollbars="vertical"
-    tools:context=".GlycemiaDetail" >
+    tools:context=".ui.activities.GlycemiaDetail" >
 
     <LinearLayout
         android:paddingTop="8dp"

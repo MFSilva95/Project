@@ -6,7 +6,7 @@
     android:scrollbars="vertical"
     android:fillViewport="true"
     android:id="@+id/exbpchodisweiScrollView"
-    tools:context=".ExBPChoDisWei" >
+    tools:context=".ui.activities.ExBPChoDisWei" >
 
     <LinearLayout
         android:paddingTop="16dp"

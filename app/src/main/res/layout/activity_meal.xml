@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:scrollbars="vertical"
-    tools:context=".Meal" >
+    tools:context=".ui.activities.Meal" >
 
     <LinearLayout
         android:paddingTop="8dp"

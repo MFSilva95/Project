@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:scrollbars="vertical"
-    tools:context=".TargetBG_detail" >
+    tools:context=".ui.activities.TargetBG_detail" >
 
     <LinearLayout
         android:paddingTop="8dp"
