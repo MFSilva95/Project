@@ -1,23 +1,18 @@
 package com.jadg.mydiabetes;
 
 import android.app.Activity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ScrollView;
-
-import android.view.Menu;
-import android.view.MenuItem;
-
-
-import android.annotation.SuppressLint;
 
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.usability.ActivityEvent;
@@ -29,9 +24,8 @@ public class ExBPChoDisWei extends Activity {
 	// contem o tempo de inicio ou abertura dessa janela
 	// no fim de fechar a janela vai conter o tempo em que a janela foi fechada
 	// e vai criar uma entrada na base de dados a registar os tempos
-	ActivityEvent activityEvent;
+	private ActivityEvent activityEvent;
 
-	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,8 +34,8 @@ public class ExBPChoDisWei extends Activity {
 		getActionBar();
 
 		final GestureDetector gestureDetector;
-		gestureDetector = new GestureDetector(new MyGestureDetector());
-		ScrollView sv = (ScrollView)findViewById(R.id.exbpchodisweiScrollView);
+		gestureDetector = new GestureDetector(this, new MyGestureDetector());
+		ScrollView sv = (ScrollView) findViewById(R.id.exbpchodisweiScrollView);
 		sv.setOnTouchListener(new OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent event) {
@@ -53,15 +47,10 @@ public class ExBPChoDisWei extends Activity {
 					Log.d("test", event.toString());
 				}
 
-				if (gestureDetector.onTouchEvent(event)) {
-					return false;
-				} else {
-					return true;
-				}
+				return !gestureDetector.onTouchEvent(event);
 			}
 		});
 	}
-
 
 
 	@Override
@@ -75,8 +64,8 @@ public class ExBPChoDisWei extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				DB_Write write = new DB_Write(this);						// gera uma nova instancia de escrita na base de dados
-				write.newClick("menuItem_ExBPChoDisWei_Home");		// regista o clique na base de dados
+				DB_Write write = new DB_Write(this);                        // gera uma nova instancia de escrita na base de dados
+				write.newClick("menuItem_ExBPChoDisWei_Home");        // regista o clique na base de dados
 				// This ID represents the Home or Up button. In the case of this
 				// activity, the Up button is shown. Use NavUtils to allow users
 				// to navigate up one level in the application structure. For
@@ -97,9 +86,9 @@ public class ExBPChoDisWei extends Activity {
 	// ou seja, quando a janela a mostrar � a janela da ExBPChoDisWei. Assim, � nesta
 	// funcao que o timer inicia.
 	@Override
-	public void onResume(){
+	public void onResume() {
 		activityEvent = new ActivityEvent(new DB_Write(this), "ExBPChoDisWei");
-		super.onPause();
+		super.onResume();
 	}
 
 	// Esta funcao e chamada sempre que a actividade atual deixa de ser a ExBPChoDisWei
@@ -111,7 +100,7 @@ public class ExBPChoDisWei extends Activity {
 		super.onPause();
 	}
 
-	public void Call_DataTools(){
+	public void Call_DataTools() {
 		DB_Write write = new DB_Write(this);
 		write.newClick("Call_DataTools");
 
@@ -119,7 +108,7 @@ public class ExBPChoDisWei extends Activity {
 		startActivity(intent);
 	}
 
-	public void Call_BloodPressure(View view){
+	public void Call_BloodPressure(View view) {
 		DB_Write write = new DB_Write(this);
 		write.newClick("Call_BloodPressure");
 
@@ -127,7 +116,7 @@ public class ExBPChoDisWei extends Activity {
 		startActivity(intent);
 	}
 
-	public void Call_Cholesterol(View view){
+	public void Call_Cholesterol(View view) {
 		DB_Write write = new DB_Write(this);
 		write.newClick("Call_Cholesterol");
 
@@ -135,7 +124,7 @@ public class ExBPChoDisWei extends Activity {
 		startActivity(intent);
 	}
 
-	public void Call_Disease(View view){
+	public void Call_Disease(View view) {
 		DB_Write write = new DB_Write(this);
 		write.newClick("Call_Disease");
 
@@ -144,7 +133,7 @@ public class ExBPChoDisWei extends Activity {
 	}
 
 
-	public void Call_Weight(View view){
+	public void Call_Weight(View view) {
 		DB_Write write = new DB_Write(this);
 		write.newClick("Call_Weight");
 
@@ -152,7 +141,7 @@ public class ExBPChoDisWei extends Activity {
 		startActivity(intent);
 	}
 
-	public void Call_H1A1c(View view){
+	public void Call_H1A1c(View view) {
 		DB_Write write = new DB_Write(this);
 		write.newClick("Call_H1A1c");
 
@@ -160,7 +149,7 @@ public class ExBPChoDisWei extends Activity {
 		startActivity(intent);
 	}
 
-	public void Call_Middle(View view){
+	public void Call_Middle(View view) {
 		DB_Write write = new DB_Write(this);
 		write.newClick("Call_Middle");
 
