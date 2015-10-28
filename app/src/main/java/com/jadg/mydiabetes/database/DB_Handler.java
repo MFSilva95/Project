@@ -3,6 +3,7 @@ package com.jadg.mydiabetes.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -15,7 +16,7 @@ import java.io.InputStreamReader;
 public class DB_Handler extends SQLiteOpenHelper {
 
 	// Database Version
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 
 	// Database Name
 	private static final String DATABASE_NAME = "DB_Diabetes";
@@ -30,32 +31,8 @@ public class DB_Handler extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		try {
-			BufferedReader localBufferedReader =
-					new BufferedReader(new InputStreamReader(this.myContext.getAssets().open("DataBase.txt"), "UTF-8"));
-			while (true) {
-				String str = localBufferedReader.readLine();
-				if (str == null)
-					return;
-				try {
-					db.execSQL(str);
-					Log.d("DB:", str);
-				} catch (Exception localException) {
-					Log.i("sql", str);
-					Log.e("Error", localException.getMessage());
-				}
-			}
+		initDatabaseTables(db);
 
-			//pre fill DB
-
-
-		} catch (Exception e) {
-			Log.d("Erro", e.toString());
-			e.printStackTrace();
-			return;
-		} finally {
-			//db.close();
-			Log.d("DB:", "Sai do finally");
 			Resources res = this.myContext.getResources();
 			String[] daytimes = res.getStringArray(R.array.daytimes);
 
@@ -110,24 +87,36 @@ public class DB_Handler extends SQLiteOpenHelper {
 			toInsert = new ContentValues();
 			toInsert.put("Name", daytimes[8]);
 			db.insert("Tag", null, toInsert);
-
-		}
-
-
 	}
 
 	/**
-	 * TODO: update from version where clicks do not exist and action (see below) is just a text
-	 *
 	 * @see android.database.sqlite.SQLiteOpenHelper#onUpgrade(android.database.sqlite.SQLiteDatabase, int, int)
 	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if (oldVersion == 1) {
+		if (oldVersion < 3) {
+			initDatabaseTables(db);
 			//for version 2
-			//need to create the new tables for usability
 			//need to change the action type in Insulin as the DB_Read::Insulin_GetActionTypeByName expects action to be a parseable int
 		}
 	}
 
+	private void initDatabaseTables(SQLiteDatabase db) {
+		try {
+			BufferedReader localBufferedReader =
+					new BufferedReader(new InputStreamReader(this.myContext.getAssets().open("DataBase.sql"), "UTF-8"));
+			String str;
+			while ((str = localBufferedReader.readLine()) != null) {
+				try {
+					db.execSQL(str);
+				} catch (Exception localException) {
+					Log.i("sql", str);
+					Log.e("Error", localException.getMessage());
+				}
+			}
+		} catch (Exception e) {
+			Log.d("Erro", e.toString());
+			e.printStackTrace();
+		}
+	}
 }
