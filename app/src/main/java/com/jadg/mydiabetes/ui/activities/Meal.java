@@ -23,29 +23,26 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.jadg.mydiabetes.R;
-import com.jadg.mydiabetes.ui.listAdapters.CarbsDataBinding;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
+import com.jadg.mydiabetes.ui.dialogs.DatePickerFragment;
+import com.jadg.mydiabetes.ui.dialogs.TimePickerFragment;
+import com.jadg.mydiabetes.ui.listAdapters.CarbsDataBinding;
 import com.jadg.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
 import com.jadg.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
 import com.jadg.mydiabetes.ui.listAdapters.NoteDataBinding;
 import com.jadg.mydiabetes.ui.listAdapters.TagDataBinding;
-import com.jadg.mydiabetes.ui.dialogs.DatePickerFragment;
-import com.jadg.mydiabetes.ui.dialogs.TimePickerFragment;
-import com.jadg.mydiabetes.ui.usability.ActivityEvent;
 
 import java.io.File;
 import java.io.IOException;
@@ -69,12 +66,6 @@ public class Meal extends Activity {
 	//variavel que contem o id da insulina seleccionada
 	int action_type = -1;
 
-	// variavel que contem o nome da janela em que vai ser contado o tempo
-	// contem o tempo de inicio ou abertura dessa janela
-	// no fim de fechar a janela vai conter o tempo em que a janela foi fechada
-	// e vai criar uma entrada na base de dados a registar os tempos
-	ActivityEvent activityEvent;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -85,8 +76,7 @@ public class Meal extends Activity {
 		DB_Read read = new DB_Read(this);
 
 
-
-		if(!read.Insulin_HasInsulins()){
+		if (!read.Insulin_HasInsulins()) {
 			ShowDialogAddInsulin();
 		}
 		read.close();
@@ -99,32 +89,20 @@ public class Meal extends Activity {
 		FillInsulinSpinner();
 
 
-
-		// bloco de codigo que verifica se o utilizador carregou numa zona
-		// "vazia" do ecra. Neste caso regista o click como um missed click
-		ScrollView sv = (ScrollView)findViewById(R.id.mealScrollView);
-		sv.setOnTouchListener(new View.OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					DB_Write write = new DB_Write(Meal.this);    // gera uma nova instancia de escrita na base de dados
-					write.newClick("Meal_Missed_Click");                // regista o clique na base de dados
-
-					write.newMissed(event.getX(), event.getY(), "Meal");
-					Log.d("test", event.toString());
-				}
-				return true;
-			}
-		});
-
-		EditText hora = (EditText)findViewById(R.id.et_MealDetail_Hora);
+		EditText hora = (EditText) findViewById(R.id.et_MealDetail_Hora);
 		hora.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				SetTagByTime(); }
+				SetTagByTime();
+			}
+
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
 			@Override
-			public void afterTextChanged(Editable s) { }
+			public void afterTextChanged(Editable s) {
+			}
 		});
 
 
@@ -134,16 +112,16 @@ public class Meal extends Activity {
 		final double cRatio = Double.valueOf(obj[4].toString());
 		rdb.close();
 
-		final EditText insulinunits = (EditText)findViewById(R.id.et_MealDetail_InsulinUnits);
-		final EditText target = (EditText)findViewById(R.id.et_MealDetail_TargetGlycemia);
-		final EditText glycemia = (EditText)findViewById(R.id.et_MealDetail_Glycemia);
-		final EditText carbs = (EditText)findViewById(R.id.et_MealDetail_Carbs);
+		final EditText insulinunits = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
+		final EditText target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);
+		final EditText glycemia = (EditText) findViewById(R.id.et_MealDetail_Glycemia);
+		final EditText carbs = (EditText) findViewById(R.id.et_MealDetail_Carbs);
 
 
 		target.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if(!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")){
+				if (!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")) {
 //					Double gli = Double.parseDouble(glycemia.getText().toString());
 //					Double tar = Double.parseDouble(target.getText().toString());
 //					Double car = Double.parseDouble(carbs.getText().toString());
@@ -153,21 +131,26 @@ public class Meal extends Activity {
 //						result = 0.0;
 //					}
 //					Log.d("resultado", result.toString());
-					double[] result = computeIOB(iRatio,cRatio,glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
+					double[] result = computeIOB(iRatio, cRatio, glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
 
 
-					insulinunits.setText(String.valueOf(result[4]));				}
+					insulinunits.setText(String.valueOf(result[4]));
+				}
 			}
+
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
 			@Override
-			public void afterTextChanged(Editable s) { }
+			public void afterTextChanged(Editable s) {
+			}
 		});
 
 		glycemia.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if(!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")){
+				if (!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")) {
 //					Double gli = Double.parseDouble(glycemia.getText().toString());
 //					Double tar = Double.parseDouble(target.getText().toString());
 //					Double car = Double.parseDouble(carbs.getText().toString());
@@ -177,22 +160,26 @@ public class Meal extends Activity {
 //						result = 0.0;
 //					}
 //					Log.d("resultado", result.toString());
-					double[] result = computeIOB(iRatio,cRatio,glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
+					double[] result = computeIOB(iRatio, cRatio, glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
 
 
 					insulinunits.setText(String.valueOf(result[4]));
 				}
 			}
+
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
 			@Override
-			public void afterTextChanged(Editable s) { }
+			public void afterTextChanged(Editable s) {
+			}
 		});
 
 		carbs.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if(!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")){
+				if (!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")) {
 //					Double gli = Double.parseDouble(glycemia.getText().toString());
 //					Double tar = Double.parseDouble(target.getText().toString());
 //					Double car = Double.parseDouble(carbs.getText().toString());
@@ -202,16 +189,20 @@ public class Meal extends Activity {
 //						result = 0.0;
 //					}
 //					Log.d("resultado", result.toString());
-					double[] result = computeIOB(iRatio,cRatio,glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
+					double[] result = computeIOB(iRatio, cRatio, glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
 
 
 					insulinunits.setText(String.valueOf(result[4]));
 				}
 			}
+
 			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
 			@Override
-			public void afterTextChanged(Editable s) { }
+			public void afterTextChanged(Editable s) {
+			}
 		});
 
 		Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
@@ -224,40 +215,21 @@ public class Meal extends Activity {
 				action_type = read.Insulin_GetActionTypeByName(name);
 				read.close();
 
-				if(action_type == 0){
+				if (action_type == 0) {
 					Toast.makeText(getApplicationContext(), getString(R.string.meal_insulin_calc) + " " + getString(R.string.insulin_action_rapid) + getString(R.string.meal_insulin_calc_1), Toast.LENGTH_SHORT).show();
-				}else{
+				} else {
 					Toast.makeText(getApplicationContext(), getString(R.string.meal_insulin_no_calc), Toast.LENGTH_SHORT).show();
 
 				}
 			}
 
 			@Override
-			public void onNothingSelected(AdapterView<?> parent) {}
+			public void onNothingSelected(AdapterView<?> parent) {
+			}
 		});
 
 
-
 	}
-
-	// Esta funcao e chamada sempre que a actividade atual passa a ser a Meal
-	// ou seja, quando a janela a mostrar é a janela da Meal. Assim, é nesta
-	// funcao que o timer inicia.
-	@Override
-	public void onResume(){
-		activityEvent = new ActivityEvent(new DB_Write(this), "Meal");
-		super.onPause();
-	}
-
-	// Esta funcao e chamada sempre que a actividade atual deixa de ser a Meal
-	// ou seja, quando a janela a mostrar deixa de ser a janela da Meal. Assim,
-	// é nesta funcao que o timer para e que guardamos a nova entrada na base de dados.
-	@Override
-	public void onPause(){
-		activityEvent.stop();
-		super.onPause();
-	}
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -271,17 +243,11 @@ public class Meal extends Activity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		DB_Write write = new DB_Write(this);			// gera uma nova instancia de escrita na base de dados
-
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				write.newClick("menuItem_Meal_Home");	// regista o clique na base de dados
-
 				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_MealDetail_Save:
-				write.newClick("menuItem_MealDetail_Save");		// regista o clique na base de dados
-
 				VerifySaveReads();
 				//Toast.makeText(this, "Clicado em gravar", Toast.LENGTH_LONG).show();
 				//NavUtils.navigateUpFromSameTask(this);
@@ -292,21 +258,21 @@ public class Meal extends Activity {
 
 
 	@SuppressLint("SimpleDateFormat")
-	public void FillDateHour(){
-		EditText date = (EditText)findViewById(R.id.et_MealDetail_Data);
+	public void FillDateHour() {
+		EditText date = (EditText) findViewById(R.id.et_MealDetail_Data);
 		final Calendar c = Calendar.getInstance();
 		Date newDate = c.getTime();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String dateString = formatter.format(newDate);
 		date.setText(dateString);
 
-		EditText hour = (EditText)findViewById(R.id.et_MealDetail_Hora);
+		EditText hour = (EditText) findViewById(R.id.et_MealDetail_Hora);
 		formatter = new SimpleDateFormat("HH:mm:ss");
 		String timeString = formatter.format(newDate);
 		hour.setText(timeString);
 	}
 
-	public void FillTagSpinner(){
+	public void FillTagSpinner() {
 		Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
 		ArrayList<String> allTags = new ArrayList<String>();
 		DB_Read rdb = new DB_Read(this);
@@ -314,8 +280,8 @@ public class Meal extends Activity {
 		rdb.close();
 
 
-		if(t!=null){
-			for (TagDataBinding i : t){
+		if (t != null) {
+			for (TagDataBinding i : t) {
 				allTags.add(i.getName());
 			}
 		}
@@ -326,10 +292,10 @@ public class Meal extends Activity {
 	}
 
 	//@SuppressWarnings("deprecation")
-	public void showDatePickerDialog(View v){
+	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = new DatePickerFragment();
 		Bundle args = new Bundle();
-		args.putInt("textbox",R.id.et_MealDetail_Data);
+		args.putInt("textbox", R.id.et_MealDetail_Data);
 		newFragment.setArguments(args);
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
@@ -338,28 +304,25 @@ public class Meal extends Activity {
 	public void showTimePickerDialog(View v) {
 		DialogFragment newFragment = new TimePickerFragment();
 		Bundle args = new Bundle();
-		args.putInt("textbox",R.id.et_MealDetail_Hora);
+		args.putInt("textbox", R.id.et_MealDetail_Hora);
 		newFragment.setArguments(args);
 		newFragment.show(getFragmentManager(), "timePicker");
 
 	}
 
-	public void SetTagByTime(){
-		Spinner tagSpinner = (Spinner)findViewById(R.id.sp_MealDetail_Tag);
-		EditText hora = (EditText)findViewById(R.id.et_MealDetail_Hora);
+	public void SetTagByTime() {
+		Spinner tagSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
+		EditText hora = (EditText) findViewById(R.id.et_MealDetail_Hora);
 		DB_Read rdb = new DB_Read(this);
 		String name = rdb.Tag_GetByTime(hora.getText().toString()).getName();
 		rdb.close();
 		SelectSpinnerItemByValue(tagSpinner, name);
 	}
 
-	public static void SelectSpinnerItemByValue(Spinner spnr, String value)
-	{
+	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
 		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
-		for (int position = 0; position < adapter.getCount(); position++)
-		{
-			if(adapter.getItem(position).equals(value))
-			{
+		for (int position = 0; position < adapter.getCount(); position++) {
+			if (adapter.getItem(position).equals(value)) {
 				spnr.setSelection(position);
 				return;
 			}
@@ -367,7 +330,7 @@ public class Meal extends Activity {
 	}
 
 
-	public void ShowDialogAddInsulin(){
+	public void ShowDialogAddInsulin() {
 		final Context c = this;
 		new AlertDialog.Builder(this)
 				.setTitle(getString(R.string.title_activity_info))
@@ -384,7 +347,7 @@ public class Meal extends Activity {
 				}).show();
 	}
 
-	public void ShowDialogAddTarget(){
+	public void ShowDialogAddTarget() {
 		final Context c = this;
 		new AlertDialog.Builder(this)
 				.setTitle(getString(R.string.title_activity_info))
@@ -401,30 +364,30 @@ public class Meal extends Activity {
 				}).show();
 	}
 
-	public void end(){
+	public void end() {
 		finish();
 	}
 
-	public void SetTargetByHour(){
-		EditText target = (EditText)findViewById(R.id.et_MealDetail_TargetGlycemia);
-		EditText hora = (EditText)findViewById(R.id.et_MealDetail_Hora);
+	public void SetTargetByHour() {
+		EditText target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);
+		EditText hora = (EditText) findViewById(R.id.et_MealDetail_Hora);
 		DB_Read rdb = new DB_Read(this);
 		double d = rdb.Target_GetTargetByTime(hora.getText().toString());
-		if(d!=0){
+		if (d != 0) {
 			target.setText(String.valueOf(d));
 		}
 		rdb.close();
 	}
 
-	public void FillInsulinSpinner(){
+	public void FillInsulinSpinner() {
 		Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
 		allInsulins = new ArrayList<String>();
 		DB_Read rdb = new DB_Read(this);
 		HashMap<Integer, String> val = rdb.Insulin_GetAllNames();
 		rdb.close();
 
-		if(val!=null){
-			for (int i : val.keySet()){
+		if (val != null) {
+			for (int i : val.keySet()) {
 				allInsulins.add(val.get(i));
 			}
 		}
@@ -435,16 +398,13 @@ public class Meal extends Activity {
 	}
 
 
-
-
-
 	//-------------------------------------------
-	public void AddGlycemiaRead(){
-		Spinner TagSpinner = (Spinner)findViewById(R.id.sp_MealDetail_Tag);
-		EditText glycemia = (EditText)findViewById(R.id.et_MealDetail_Glycemia);
-		EditText data = (EditText)findViewById(R.id.et_MealDetail_Data);
-		EditText hora = (EditText)findViewById(R.id.et_MealDetail_Hora);
-		EditText note = (EditText)findViewById(R.id.et_MealDetail_Notes);
+	public void AddGlycemiaRead() {
+		Spinner TagSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
+		EditText glycemia = (EditText) findViewById(R.id.et_MealDetail_Glycemia);
+		EditText data = (EditText) findViewById(R.id.et_MealDetail_Data);
+		EditText hora = (EditText) findViewById(R.id.et_MealDetail_Hora);
+		EditText note = (EditText) findViewById(R.id.et_MealDetail_Notes);
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
@@ -460,7 +420,7 @@ public class Meal extends Activity {
 		DB_Write reg = new DB_Write(this);
 		GlycemiaDataBinding gly = new GlycemiaDataBinding();
 
-		if(!note.getText().toString().equals("")){
+		if (!note.getText().toString().equals("")) {
 			NoteDataBinding n = new NoteDataBinding();
 			n.setNote(note.getText().toString());
 			gly.setIdNote(reg.Note_Add(n));
@@ -480,14 +440,13 @@ public class Meal extends Activity {
 	}
 
 
-
-	public void AddCarbsRead(){
-		Spinner tagSpinner = (Spinner)findViewById(R.id.sp_MealDetail_Tag);
-		EditText carbs = (EditText)findViewById(R.id.et_MealDetail_Carbs);
-		EditText data = (EditText)findViewById(R.id.et_MealDetail_Data);
-		EditText hora = (EditText)findViewById(R.id.et_MealDetail_Hora);
-		EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
-		EditText note = (EditText)findViewById(R.id.et_MealDetail_Notes);
+	public void AddCarbsRead() {
+		Spinner tagSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
+		EditText carbs = (EditText) findViewById(R.id.et_MealDetail_Carbs);
+		EditText data = (EditText) findViewById(R.id.et_MealDetail_Data);
+		EditText hora = (EditText) findViewById(R.id.et_MealDetail_Hora);
+		EditText photopath = (EditText) findViewById(R.id.et_MealDetail_Photo);
+		EditText note = (EditText) findViewById(R.id.et_MealDetail_Notes);
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
@@ -502,7 +461,7 @@ public class Meal extends Activity {
 		DB_Write reg = new DB_Write(this);
 		CarbsDataBinding carb = new CarbsDataBinding();
 
-		if(!note.getText().toString().equals("")){
+		if (!note.getText().toString().equals("")) {
 			NoteDataBinding n = new NoteDataBinding();
 			n.setNote(note.getText().toString());
 			carb.setId_Note(reg.Note_Add(n));
@@ -517,20 +476,19 @@ public class Meal extends Activity {
 		carb.setTime(hora.getText().toString());
 
 
-
 		reg.Carbs_Save(carb);
 		reg.close();
 	}
 
-	public void AddInsulinRead(){
-		Spinner tagSpinner = (Spinner)findViewById(R.id.sp_MealDetail_Tag);
-		Spinner insulinSpinner = (Spinner)findViewById(R.id.sp_MealDetail_Insulin);
-		EditText glycemia = (EditText)findViewById(R.id.et_MealDetail_Glycemia);
-		EditText data = (EditText)findViewById(R.id.et_MealDetail_Data);
-		EditText hora = (EditText)findViewById(R.id.et_MealDetail_Hora);
-		EditText target = (EditText)findViewById(R.id.et_MealDetail_TargetGlycemia);
-		EditText insulinunits = (EditText)findViewById(R.id.et_MealDetail_InsulinUnits);
-		EditText note = (EditText)findViewById(R.id.et_MealDetail_Notes);
+	public void AddInsulinRead() {
+		Spinner tagSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
+		Spinner insulinSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
+		EditText glycemia = (EditText) findViewById(R.id.et_MealDetail_Glycemia);
+		EditText data = (EditText) findViewById(R.id.et_MealDetail_Data);
+		EditText hora = (EditText) findViewById(R.id.et_MealDetail_Hora);
+		EditText target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);
+		EditText insulinunits = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
+		EditText note = (EditText) findViewById(R.id.et_MealDetail_Notes);
 
 
 		//Get id of user 
@@ -557,14 +515,14 @@ public class Meal extends Activity {
 
 		int idnote = 0;
 
-		if(!note.getText().toString().equals("")){
+		if (!note.getText().toString().equals("")) {
 			NoteDataBinding n = new NoteDataBinding();
 			n.setNote(note.getText().toString());
 			idnote = reg.Note_Add(n);
 			ins.setIdNote(idnote);
 		}
 
-		if(!glycemia.getText().toString().equals("")){
+		if (!glycemia.getText().toString().equals("")) {
 			GlycemiaDataBinding gly = new GlycemiaDataBinding();
 
 			gly.setIdUser(idUser);
@@ -572,7 +530,7 @@ public class Meal extends Activity {
 			gly.setDate(data.getText().toString());
 			gly.setTime(hora.getText().toString());
 			gly.setIdTag(idTag);
-			if(idnote > 0){
+			if (idnote > 0) {
 				gly.setIdNote(idnote);
 			}
 
@@ -598,51 +556,50 @@ public class Meal extends Activity {
 	}
 
 	//-----------------------------------------
-	public void VerifySaveReads(){
-		EditText insulinunits = (EditText)findViewById(R.id.et_MealDetail_InsulinUnits);
-		EditText target = (EditText)findViewById(R.id.et_MealDetail_TargetGlycemia);
-		EditText glycemia = (EditText)findViewById(R.id.et_MealDetail_Glycemia);
-		EditText carbs = (EditText)findViewById(R.id.et_MealDetail_Carbs);
+	public void VerifySaveReads() {
+		EditText insulinunits = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
+		EditText target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);
+		EditText glycemia = (EditText) findViewById(R.id.et_MealDetail_Glycemia);
+		EditText carbs = (EditText) findViewById(R.id.et_MealDetail_Carbs);
 
 		//tem de ter um target inserido
 		DB_Read read = new DB_Read(this);
-		if(!read.Target_HasTargets()){
+		if (!read.Target_HasTargets()) {
 			read.close();
 			ShowDialogAddTarget();
 			return;
 		}
 
 
-		if(glycemia.getText().toString().equals("")){
+		if (glycemia.getText().toString().equals("")) {
 			glycemia.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(glycemia, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if(carbs.getText().toString().equals("")){
+		if (carbs.getText().toString().equals("")) {
 			carbs.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(carbs, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if(target.getText().toString().equals("")){
+		if (target.getText().toString().equals("")) {
 			target.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(target, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if(insulinunits.getText().toString().equals("")){
+		if (insulinunits.getText().toString().equals("")) {
 			insulinunits.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(insulinunits, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
 		//spinner das insulinas tem de ter valores
-		if(allInsulins.isEmpty()){
+		if (allInsulins.isEmpty()) {
 			ShowDialogAddInsulin();
 			return;
 		}
-
 
 
 		//AddGlycemiaRead();
@@ -652,14 +609,13 @@ public class Meal extends Activity {
 	}
 
 
-
 	//PHOTO - START
 
 	public Uri setImageUri() {
 		// Store image in /MyDiabetes
 		File file = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes", new Date().getTime() + ".jpg");
 		File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
-		if(!dir.exists()){
+		if (!dir.exists()) {
 			dir.mkdir();
 		}
 		imgUri = Uri.fromFile(file);
@@ -668,15 +624,15 @@ public class Meal extends Activity {
 
 
 	public void TakePhoto(View v) {
-		EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
-		if(!photopath.getText().toString().equals("")){
+		EditText photopath = (EditText) findViewById(R.id.et_MealDetail_Photo);
+		if (!photopath.getText().toString().equals("")) {
 			final Intent intent = new Intent(this, ViewPhoto.class);
 			Bundle argsToPhoto = new Bundle();
 			argsToPhoto.putString("Path", photopath.getText().toString());
 			argsToPhoto.putInt("Id", -1);
 			intent.putExtras(argsToPhoto);
 			startActivityForResult(intent, 101010);
-		}else{
+		} else {
 			final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
 			startActivityForResult(intent, CAPTURE_IMAGE);
@@ -686,27 +642,27 @@ public class Meal extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
-		ImageView img = (ImageView)findViewById(R.id.iv_MealDetail_Photo);
+		EditText photopath = (EditText) findViewById(R.id.et_MealDetail_Photo);
+		ImageView img = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
 		if (resultCode != Activity.RESULT_CANCELED) {
 			if (requestCode == CAPTURE_IMAGE) {
-				Toast.makeText(getApplicationContext(), getString(R.string.photoSaved) +" " + imgUri.getPath(), Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), getString(R.string.photoSaved) + " " + imgUri.getPath(), Toast.LENGTH_LONG).show();
 				DisplayMetrics displaymetrics = new DisplayMetrics();
 				getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-				int height = (int)(displaymetrics.heightPixels * 0.1);
-				int width = (int)(displaymetrics.widthPixels * 0.1);
-				b = decodeSampledBitmapFromPath(imgUri.getPath(),width,height );
+				int height = (int) (displaymetrics.heightPixels * 0.1);
+				int width = (int) (displaymetrics.widthPixels * 0.1);
+				b = decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
 				img.setImageBitmap(b);
 				photopath.setText(imgUri.getPath());
-			}else if (requestCode == 101010){
-				Log.d("Result:", resultCode+"");
+			} else if (requestCode == 101010) {
+				Log.d("Result:", resultCode + "");
 				//se tivermos apagado a foto dá result code -1
 				//se voltarmos por um return por exemplo o resultcode é 0
-				if(resultCode==-1){
+				if (resultCode == -1) {
 					photopath.setText("");
 					img.setImageDrawable(getResources().getDrawable(R.drawable.newphoto));
 				}
-			}else {
+			} else {
 				super.onActivityResult(requestCode, resultCode, data);
 			}
 		}
@@ -727,14 +683,14 @@ public class Meal extends Activity {
 		super.onRestoreInstanceState(savedInstanceState);
 		if (savedInstanceState.containsKey("cameraImageUri")) {
 			imgUri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
-			EditText photopath = (EditText)findViewById(R.id.et_MealDetail_Photo);
-			ImageView img = (ImageView)findViewById(R.id.iv_MealDetail_Photo);
+			EditText photopath = (EditText) findViewById(R.id.et_MealDetail_Photo);
+			ImageView img = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
 
 			DisplayMetrics displaymetrics = new DisplayMetrics();
 			getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-			int height = (int)(displaymetrics.heightPixels * 0.1);
-			int width = (int)(displaymetrics.widthPixels * 0.1);
-			b = decodeSampledBitmapFromPath(imgUri.getPath(),width,height );
+			int height = (int) (displaymetrics.heightPixels * 0.1);
+			int width = (int) (displaymetrics.widthPixels * 0.1);
+			b = decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
 			img.setImageBitmap(b);
 			photopath.setText(imgUri.getPath());
 		}
@@ -776,11 +732,11 @@ public class Meal extends Activity {
 
 		// Decode bitmap with inSampleSize set
 		options.inJustDecodeBounds = false;
-		return adjustImageOrientation(BitmapFactory.decodeFile(path, options),path);
+		return adjustImageOrientation(BitmapFactory.decodeFile(path, options), path);
 	}
 
 
-	private static Bitmap adjustImageOrientation(Bitmap image, String picturePath ) {
+	private static Bitmap adjustImageOrientation(Bitmap image, String picturePath) {
 		ExifInterface exif;
 		try {
 			exif = new ExifInterface(picturePath);
@@ -823,7 +779,7 @@ public class Meal extends Activity {
 	//PHOTO - END
 
 
-	private double[] computeIOB(Double iRatio, Double cRatio, String glycemia, String target, String carbs){
+	private double[] computeIOB(Double iRatio, Double cRatio, String glycemia, String target, String carbs) {
 		DB_Read read = new DB_Read(this);
 		int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity();
 		Date now = new Date();
@@ -836,58 +792,55 @@ public class Meal extends Activity {
 
 		double[] result = new double[5];
 		int hourNow = Integer.parseInt(formattedTime[0]);
-		int minuteNow = hourNow*60 + Integer.parseInt(formattedTime[1]);
-		int minuteOriginal = lastInsulin[1]*60 + lastInsulin[2];
-
+		int minuteNow = hourNow * 60 + Integer.parseInt(formattedTime[1]);
+		int minuteOriginal = lastInsulin[1] * 60 + lastInsulin[2];
 
 
 		int minuteDiff = minuteNow - minuteOriginal;
-		Log.d("Minute diff: ", minuteDiff +"");
+		Log.d("Minute diff: ", minuteDiff + "");
 
 		Double gli = Double.parseDouble(glycemia);
 		Double tar = Double.parseDouble(target);
 		Double car = Double.parseDouble(carbs);
-		Double glicemia = ((gli-tar)/ iRatio); //calculo separado da glicemia
+		Double glicemia = ((gli - tar) / iRatio); //calculo separado da glicemia
 		result[1] = glicemia;
-		Double glicidos = (car/cRatio); //calculo separado dos glicidos
+		Double glicidos = (car / cRatio); //calculo separado dos glicidos
 		result[3] = glicidos;
-		Double total = ((gli-tar)/ iRatio) + (car/cRatio);
+		Double total = ((gli - tar) / iRatio) + (car / cRatio);
 
 		Log.d("tipo de insulina: : ", insulinType + "");
 		Log.d("glicemia: ", glicemia.toString());
 		Log.d("glicidos: : ", glicidos.toString());
 
 
-		if(insulinType == 0){ //só calcula para insulina rapida que é a 0
+		if (insulinType == 0) { //só calcula para insulina rapida que é a 0
 			result[0] = 0;
-			if(minuteDiff <= 60){
+			if (minuteDiff <= 60) {
 				result[2] = insulinDose * 0.75;
-			}
-			else if(minuteDiff <= 120){
+			} else if (minuteDiff <= 120) {
 				result[2] = insulinDose * 0.50;
-			}else if(minuteDiff <= 180){
+			} else if (minuteDiff <= 180) {
 				result[2] = insulinDose * 0.25;
-			}else if (minuteDiff > 180){
+			} else if (minuteDiff > 180) {
 				result[2] = 0;
 			}
 
 			result[4] = total - result[2]; //cálculo normal menos o IOB
 
-		}else {
+		} else {
 			result[0] = insulinType;
 			result[2] = -1;
 			result[4] = total;
 		}
 
 
-		result[4] = 0.5 * Math.round(result[4]/0.5);
-		if(result[4]<0){
+		result[4] = 0.5 * Math.round(result[4] / 0.5);
+		if (result[4] < 0) {
 			result[4] = 0.0;
 		}
 
-		Log.d("IOB: ", result[2] +"");
-		Log.d("total: ", result[4]+"");
-
+		Log.d("IOB: ", result[2] + "");
+		Log.d("total: ", result[4] + "");
 
 
 		return result;

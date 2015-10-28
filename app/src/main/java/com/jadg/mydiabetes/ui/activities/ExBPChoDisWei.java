@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Menu;
@@ -15,17 +14,9 @@ import android.view.View.OnTouchListener;
 import android.widget.ScrollView;
 
 import com.jadg.mydiabetes.R;
-import com.jadg.mydiabetes.database.DB_Write;
-import com.jadg.mydiabetes.ui.usability.ActivityEvent;
 
 
 public class ExBPChoDisWei extends Activity {
-
-	// variavel que contem o nome da janela em que vai ser contado o tempo
-	// contem o tempo de inicio ou abertura dessa janela
-	// no fim de fechar a janela vai conter o tempo em que a janela foi fechada
-	// e vai criar uma entrada na base de dados a registar os tempos
-	private ActivityEvent activityEvent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,14 +31,6 @@ public class ExBPChoDisWei extends Activity {
 		sv.setOnTouchListener(new OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					DB_Write write = new DB_Write(ExBPChoDisWei.this);    // gera uma nova instancia de escrita na base de dados
-					write.newClick("ExBPChoDisWei_Missed_Click");                // regista o clique na base de dados
-
-					write.newMissed(event.getX(), event.getY(), "ExBPChoDisWei");
-					Log.d("test", event.toString());
-				}
-
 				return !gestureDetector.onTouchEvent(event);
 			}
 		});
@@ -65,15 +48,6 @@ public class ExBPChoDisWei extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				DB_Write write = new DB_Write(this);                        // gera uma nova instancia de escrita na base de dados
-				write.newClick("menuItem_ExBPChoDisWei_Home");        // regista o clique na base de dados
-				// This ID represents the Home or Up button. In the case of this
-				// activity, the Up button is shown. Use NavUtils to allow users
-				// to navigate up one level in the application structure. For
-				// more details, see the Navigation pattern on Android Design:
-				//
-				// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-				//
 				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_Home:
@@ -83,77 +57,39 @@ public class ExBPChoDisWei extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	// Esta funcao e chamada sempre que a actividade atual passa a ser a ExBPChoDisWei
-	// ou seja, quando a janela a mostrar � a janela da ExBPChoDisWei. Assim, � nesta
-	// funcao que o timer inicia.
-	@Override
-	public void onResume() {
-		activityEvent = new ActivityEvent(new DB_Write(this), "ExBPChoDisWei");
-		super.onResume();
-	}
-
-	// Esta funcao e chamada sempre que a actividade atual deixa de ser a ExBPChoDisWei
-	// ou seja, quando a janela a mostrar deixa de ser a janela da ExBPChoDisWei. Assim,
-	// � nesta funcao que o timer para e que guardamos a nova entrada na base de dados.
-	@Override
-	public void onPause() {
-		activityEvent.stop();
-		super.onPause();
-	}
 
 	public void Call_DataTools() {
-		DB_Write write = new DB_Write(this);
-		write.newClick("Call_DataTools");
-
 		Intent intent = new Intent(this, DataTools.class);
 		startActivity(intent);
 	}
 
 	public void Call_BloodPressure(View view) {
-		DB_Write write = new DB_Write(this);
-		write.newClick("Call_BloodPressure");
-
 		Intent intent = new Intent(this, BloodPressure.class);
 		startActivity(intent);
 	}
 
 	public void Call_Cholesterol(View view) {
-		DB_Write write = new DB_Write(this);
-		write.newClick("Call_Cholesterol");
-
 		Intent intent = new Intent(this, Cholesterol.class);
 		startActivity(intent);
 	}
 
 	public void Call_Disease(View view) {
-		DB_Write write = new DB_Write(this);
-		write.newClick("Call_Disease");
-
 		Intent intent = new Intent(this, Disease.class);
 		startActivity(intent);
 	}
 
 
 	public void Call_Weight(View view) {
-		DB_Write write = new DB_Write(this);
-		write.newClick("Call_Weight");
-
 		Intent intent = new Intent(this, Weight.class);
 		startActivity(intent);
 	}
 
 	public void Call_H1A1c(View view) {
-		DB_Write write = new DB_Write(this);
-		write.newClick("Call_H1A1c");
-
 		Intent intent = new Intent(this, HbA1c.class);
 		startActivity(intent);
 	}
 
 	public void Call_Middle(View view) {
-		DB_Write write = new DB_Write(this);
-		write.newClick("Call_Middle");
-
 		finish();
 		//Intent intent = new Intent(this, CarboHydrate.class);
 		//startActivity(intent);

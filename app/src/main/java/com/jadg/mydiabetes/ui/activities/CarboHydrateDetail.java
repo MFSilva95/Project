@@ -1,12 +1,5 @@
 package com.jadg.mydiabetes.ui.activities;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -42,14 +35,20 @@ import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.jadg.mydiabetes.R;
-import com.jadg.mydiabetes.ui.listAdapters.CarbsDataBinding;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
-import com.jadg.mydiabetes.ui.listAdapters.NoteDataBinding;
-import com.jadg.mydiabetes.ui.listAdapters.TagDataBinding;
 import com.jadg.mydiabetes.ui.dialogs.DatePickerFragment;
 import com.jadg.mydiabetes.ui.dialogs.TimePickerFragment;
-import com.jadg.mydiabetes.ui.usability.ActivityEvent;
+import com.jadg.mydiabetes.ui.listAdapters.CarbsDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.NoteDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.TagDataBinding;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class CarboHydrateDetail extends Activity {
@@ -62,13 +61,6 @@ public class CarboHydrateDetail extends Activity {
 	int idNote = 0;
 	int id_ch = -1;
 
-	// variavel que contem o nome da janela em que vai ser contado o tempo
-	// contem o tempo de inicio ou abertura dessa janela
-	// no fim de fechar a janela vai conter o tempo em que a janela foi fechada
-	// e vai criar uma entrada na base de dados a registar os tempos
-	ActivityEvent activityEvent;
-
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -76,58 +68,42 @@ public class CarboHydrateDetail extends Activity {
 		// Show the Up button in the action bar.
 		getActionBar();
 		FillTagSpinner();
-		EditText hora = (EditText)findViewById(R.id.et_CarboHydrateDetail_Hora);
-
-		// bloco de codigo que verifica se o utilizador carregou numa zona
-		// "vazia" do ecra. Neste caso regista o click como um missed click
-		ScrollView sv = (ScrollView)findViewById(R.id.carboHydrateDetailScrollView);
-		sv.setOnTouchListener(new View.OnTouchListener() {
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					DB_Write write = new DB_Write(CarboHydrateDetail.this);    // gera uma nova instancia de escrita na base de dados
-					write.newClick("CarboHydrateDetail_Missed_Click");                // regista o clique na base de dados
-
-					write.newMissed(event.getX(), event.getY(), "CarboHydrateDetail");
-					Log.d("test", event.toString());
-				}
-				return true;
-			}
-		});
+		EditText hora = (EditText) findViewById(R.id.et_CarboHydrateDetail_Hora);
 
 		Bundle args = getIntent().getExtras();
-		if(args!=null){
+		if (args != null) {
 			DB_Read rdb = new DB_Read(this);
 			String id = args.getString("Id");
 			id_ch = Integer.parseInt(args.getString("Id"));
 			CarbsDataBinding toFill = rdb.CarboHydrate_GetById(Integer.parseInt(id));
 
-			Spinner tagSpinner = (Spinner)findViewById(R.id.sp_CarboHydrateDetail_Tag);
+			Spinner tagSpinner = (Spinner) findViewById(R.id.sp_CarboHydrateDetail_Tag);
 			SelectSpinnerItemByValue(tagSpinner, rdb.Tag_GetById(toFill.getId_Tag()).getName());
-			EditText carbs = (EditText)findViewById(R.id.et_CarboHydrateDetail_Value);
+			EditText carbs = (EditText) findViewById(R.id.et_CarboHydrateDetail_Value);
 			carbs.setText(toFill.getCarbsValue().toString());
-			EditText data = (EditText)findViewById(R.id.et_CarboHydrateDetail_Data);
+			EditText data = (EditText) findViewById(R.id.et_CarboHydrateDetail_Data);
 			data.setText(toFill.getDate());
 			Log.d("data reg carb", toFill.getDate());
 			hora.setText(toFill.getTime());
 
-			EditText note = (EditText)findViewById(R.id.et_CarboHydrateDetail_Notes);
-			if(toFill.getId_Note()!=-1){
+			EditText note = (EditText) findViewById(R.id.et_CarboHydrateDetail_Notes);
+			if (toFill.getId_Note() != -1) {
 				NoteDataBinding n = new NoteDataBinding();
-				n=rdb.Note_GetById(toFill.getId_Note());
+				n = rdb.Note_GetById(toFill.getId_Note());
 				note.setText(n.getNote());
-				idNote=n.getId();
+				idNote = n.getId();
 			}
 
-			EditText photopath = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
-			if(!toFill.getPhotoPath().equals("")){
+			EditText photopath = (EditText) findViewById(R.id.et_CarboHydrateDetail_Photo);
+			if (!toFill.getPhotoPath().equals("")) {
 				photopath.setText(toFill.getPhotoPath());
 				Log.d("foto path", "foto: " + toFill.getPhotoPath());
-				ImageView img = (ImageView)findViewById(R.id.iv_CarboHydrateDetail_Photo);
+				ImageView img = (ImageView) findViewById(R.id.iv_CarboHydrateDetail_Photo);
 				DisplayMetrics displaymetrics = new DisplayMetrics();
 				getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-				int height = (int)(displaymetrics.heightPixels * 0.1);
-				int width = (int)(displaymetrics.widthPixels * 0.1);
-				b = decodeSampledBitmapFromPath(toFill.getPhotoPath(),width,height );
+				int height = (int) (displaymetrics.heightPixels * 0.1);
+				int width = (int) (displaymetrics.widthPixels * 0.1);
+				b = decodeSampledBitmapFromPath(toFill.getPhotoPath(), width, height);
 
 				img.setImageBitmap(b);
 
@@ -136,20 +112,24 @@ public class CarboHydrateDetail extends Activity {
 			Log.d("photopath", toFill.getPhotoPath());
 
 			rdb.close();
-		}else{
+		} else {
 			FillDateHour();
 			SetTagByTime();
 			hora.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
-					SetTagByTime(); }
+					SetTagByTime();
+				}
+
 				@Override
-				public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				}
+
 				@Override
-				public void afterTextChanged(Editable s) { }
+				public void afterTextChanged(Editable s) {
+				}
 			});
 		}
-
 
 
 	}
@@ -160,9 +140,9 @@ public class CarboHydrateDetail extends Activity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		MenuInflater inflater = getMenuInflater();
 		Bundle args = getIntent().getExtras();
-		if(args!=null){
+		if (args != null) {
 			inflater.inflate(R.menu.carbo_hydrate_detail_edit, menu);
-		}else{
+		} else {
 			inflater.inflate(R.menu.carbo_hydrate_detail, menu);
 		}
 
@@ -172,29 +152,20 @@ public class CarboHydrateDetail extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Bundle args = getIntent().getExtras();
-		DB_Write write = new DB_Write(this);							// gera uma nova instancia de escrita na base de dados
 
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				write.newClick("menuItem_CarboHydrateDetail_Home");	// regista o clique na base de dados
-
 				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_CarboHydrateDetail_Save:
-				write.newClick("menuItem_CarboHydrateDetail_Save");		// regista o clique na base de dados
-
 				AddCarbsRead();
 				//NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_CarboHydrateDetail_Delete:
-				write.newClick("menuItem_CarboHydrateDetail_Delete");	// regista o clique na base de dados
-
 				DeleteCarbsRead(Integer.parseInt(args.getString("Id")));
 				//NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_CarboHydrateDetail_EditSave:
-				write.newClick("menuItem_CarboHydrateDetail_EditSave");	// regista o clique na base de dados
-
 				UpdateCarbsRead(Integer.parseInt(args.getString("Id")));
 				//NavUtils.navigateUpFromSameTask(this);
 				return true;
@@ -202,27 +173,9 @@ public class CarboHydrateDetail extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	// Esta funcao e chamada sempre que a actividade atual passa a ser a CarboHydrateDetail
-	// ou seja, quando a janela a mostrar é a janela da CarboHydrateDetail. Assim, é nesta
-	// funcao que o timer inicia.
-	@Override
-	public void onResume(){
-		activityEvent = new ActivityEvent(new DB_Write(this), "CarboHydrateDetail");
-		super.onPause();
-	}
-
-	// Esta funcao e chamada sempre que a actividade atual deixa de ser a CarboHydrateDetail
-	// ou seja, quando a janela a mostrar deixa de ser a janela da CarboHydrateDetail. Assim,
-	// é nesta funcao que o timer para e que guardamos a nova entrada na base de dados.
-	@Override
-	public void onPause(){
-		activityEvent.stop();
-		super.onPause();
-	}
-
-	public void SetTagByTime(){
-		Spinner tagSpinner = (Spinner)findViewById(R.id.sp_CarboHydrateDetail_Tag);
-		EditText hora = (EditText)findViewById(R.id.et_CarboHydrateDetail_Hora);
+	public void SetTagByTime() {
+		Spinner tagSpinner = (Spinner) findViewById(R.id.sp_CarboHydrateDetail_Tag);
+		EditText hora = (EditText) findViewById(R.id.et_CarboHydrateDetail_Hora);
 		DB_Read rdb = new DB_Read(this);
 		String name = rdb.Tag_GetByTime(hora.getText().toString()).getName();
 		rdb.close();
@@ -230,36 +183,38 @@ public class CarboHydrateDetail extends Activity {
 	}
 
 	@SuppressLint("SimpleDateFormat")
-	public void FillDateHour(){
-		EditText date = (EditText)findViewById(R.id.et_CarboHydrateDetail_Data);
+	public void FillDateHour() {
+		EditText date = (EditText) findViewById(R.id.et_CarboHydrateDetail_Data);
 		final Calendar c = Calendar.getInstance();
 		Date newDate = c.getTime();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String dateString = formatter.format(newDate);
 		date.setText(dateString);
 
-		EditText hour = (EditText)findViewById(R.id.et_CarboHydrateDetail_Hora);
+		EditText hour = (EditText) findViewById(R.id.et_CarboHydrateDetail_Hora);
 		formatter = new SimpleDateFormat("HH:mm:ss");
 		String timeString = formatter.format(newDate);
 		hour.setText(timeString);
 	}
-	public void showDatePickerDialog(View v){
+
+	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = new DatePickerFragment();
 		Bundle args = new Bundle();
-		args.putInt("textbox",R.id.et_CarboHydrateDetail_Data);
+		args.putInt("textbox", R.id.et_CarboHydrateDetail_Data);
 		newFragment.setArguments(args);
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
+
 	public void showTimePickerDialog(View v) {
 		DialogFragment newFragment = new TimePickerFragment();
 		Bundle args = new Bundle();
-		args.putInt("textbox",R.id.et_CarboHydrateDetail_Hora);
+		args.putInt("textbox", R.id.et_CarboHydrateDetail_Hora);
 		newFragment.setArguments(args);
 		newFragment.show(getFragmentManager(), "timePicker");
 
 	}
 
-	public void FillTagSpinner(){
+	public void FillTagSpinner() {
 		Spinner spinner = (Spinner) findViewById(R.id.sp_CarboHydrateDetail_Tag);
 		ArrayList<String> allTags = new ArrayList<String>();
 		DB_Read rdb = new DB_Read(this);
@@ -267,8 +222,8 @@ public class CarboHydrateDetail extends Activity {
 		rdb.close();
 
 
-		if(t!=null){
-			for (TagDataBinding i : t){
+		if (t != null) {
+			for (TagDataBinding i : t) {
 				allTags.add(i.getName());
 			}
 		}
@@ -278,17 +233,17 @@ public class CarboHydrateDetail extends Activity {
 		spinner.setAdapter(adapter);
 	}
 
-	public void AddCarbsRead(){
-		Spinner tagSpinner = (Spinner)findViewById(R.id.sp_CarboHydrateDetail_Tag);
-		EditText carbs = (EditText)findViewById(R.id.et_CarboHydrateDetail_Value);
-		EditText data = (EditText)findViewById(R.id.et_CarboHydrateDetail_Data);
-		EditText hora = (EditText)findViewById(R.id.et_CarboHydrateDetail_Hora);
-		EditText photopath = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
-		EditText note = (EditText)findViewById(R.id.et_CarboHydrateDetail_Notes);
+	public void AddCarbsRead() {
+		Spinner tagSpinner = (Spinner) findViewById(R.id.sp_CarboHydrateDetail_Tag);
+		EditText carbs = (EditText) findViewById(R.id.et_CarboHydrateDetail_Value);
+		EditText data = (EditText) findViewById(R.id.et_CarboHydrateDetail_Data);
+		EditText hora = (EditText) findViewById(R.id.et_CarboHydrateDetail_Hora);
+		EditText photopath = (EditText) findViewById(R.id.et_CarboHydrateDetail_Photo);
+		EditText note = (EditText) findViewById(R.id.et_CarboHydrateDetail_Notes);
 
 		//adicionado por zeornelas
 		//para obrigar a colocar o valor dos hidratos e nao crashar
-		if(carbs.getText().toString().equals("")){
+		if (carbs.getText().toString().equals("")) {
 			carbs.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(carbs, InputMethodManager.SHOW_IMPLICIT);
@@ -309,7 +264,7 @@ public class CarboHydrateDetail extends Activity {
 		DB_Write reg = new DB_Write(this);
 		CarbsDataBinding carb = new CarbsDataBinding();
 
-		if(!note.getText().toString().equals("")){
+		if (!note.getText().toString().equals("")) {
 			NoteDataBinding n = new NoteDataBinding();
 			n.setNote(note.getText().toString());
 			carb.setId_Note(reg.Note_Add(n));
@@ -324,7 +279,6 @@ public class CarboHydrateDetail extends Activity {
 		carb.setTime(hora.getText().toString());
 
 
-
 		reg.Carbs_Save(carb);
 		reg.close();
 		goUp();
@@ -337,7 +291,7 @@ public class CarboHydrateDetail extends Activity {
 		// Store image in /MyDiabetes
 		File file = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes", new Date().getTime() + ".jpg");
 		File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
-		if(!dir.exists()){
+		if (!dir.exists()) {
 			dir.mkdir();
 		}
 		imgUri = Uri.fromFile(file);
@@ -345,17 +299,16 @@ public class CarboHydrateDetail extends Activity {
 	}
 
 
-
 	public void TakePhoto(View v) {
-		EditText photopath = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
-		if(!photopath.getText().toString().equals("")){
+		EditText photopath = (EditText) findViewById(R.id.et_CarboHydrateDetail_Photo);
+		if (!photopath.getText().toString().equals("")) {
 			final Intent intent = new Intent(this, ViewPhoto.class);
 			Bundle argsToPhoto = new Bundle();
 			argsToPhoto.putString("Path", photopath.getText().toString());
 			argsToPhoto.putInt("Id", id_ch);
 			intent.putExtras(argsToPhoto);
 			startActivityForResult(intent, 101010);
-		}else{
+		} else {
 			final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
 			startActivityForResult(intent, CAPTURE_IMAGE);
@@ -365,35 +318,34 @@ public class CarboHydrateDetail extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		EditText photopath = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
-		ImageView img = (ImageView)findViewById(R.id.iv_CarboHydrateDetail_Photo);
+		EditText photopath = (EditText) findViewById(R.id.et_CarboHydrateDetail_Photo);
+		ImageView img = (ImageView) findViewById(R.id.iv_CarboHydrateDetail_Photo);
 		if (resultCode != Activity.RESULT_CANCELED) {
 			if (requestCode == CAPTURE_IMAGE) {
-				Toast.makeText(getApplicationContext(), getString(R.string.photoSaved) +" " + imgUri.getPath(), Toast.LENGTH_LONG).show();
+				Toast.makeText(getApplicationContext(), getString(R.string.photoSaved) + " " + imgUri.getPath(), Toast.LENGTH_LONG).show();
 				DisplayMetrics displaymetrics = new DisplayMetrics();
 				getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-				int height = (int)(displaymetrics.heightPixels * 0.1);
-				int width = (int)(displaymetrics.widthPixels * 0.1);
-				b = decodeSampledBitmapFromPath(imgUri.getPath(),width,height );
+				int height = (int) (displaymetrics.heightPixels * 0.1);
+				int width = (int) (displaymetrics.widthPixels * 0.1);
+				b = decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
 
 				img.setImageBitmap(b);
 				photopath.setText(imgUri.getPath());
 
-			}else if (requestCode == 101010){
-				Log.d("Result:", resultCode+"");
+			} else if (requestCode == 101010) {
+				Log.d("Result:", resultCode + "");
 				//se tivermos apagado a foto dá result code -1
 				//se voltarmos por um return por exemplo o resultcode é 0
-				if(resultCode==-1){
+				if (resultCode == -1) {
 					photopath.setText("");
 					img.setImageDrawable(getResources().getDrawable(R.drawable.newphoto));
 				}
-			}else {
+			} else {
 				super.onActivityResult(requestCode, resultCode, data);
 			}
 		}
 
 	}
-
 
 
 	@Override
@@ -409,14 +361,14 @@ public class CarboHydrateDetail extends Activity {
 		super.onRestoreInstanceState(savedInstanceState);
 		if (savedInstanceState.containsKey("cameraImageUri")) {
 			imgUri = Uri.parse(savedInstanceState.getString("cameraImageUri"));
-			EditText photopath = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
-			ImageView img = (ImageView)findViewById(R.id.iv_CarboHydrateDetail_Photo);
+			EditText photopath = (EditText) findViewById(R.id.et_CarboHydrateDetail_Photo);
+			ImageView img = (ImageView) findViewById(R.id.iv_CarboHydrateDetail_Photo);
 
 			DisplayMetrics displaymetrics = new DisplayMetrics();
 			getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-			int height = (int)(displaymetrics.heightPixels * 0.1);
-			int width = (int)(displaymetrics.widthPixels * 0.1);
-			b = decodeSampledBitmapFromPath(imgUri.getPath(),width,height );
+			int height = (int) (displaymetrics.heightPixels * 0.1);
+			int width = (int) (displaymetrics.widthPixels * 0.1);
+			b = decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
 
 			img.setImageBitmap(b);
 			photopath.setText(imgUri.getPath());
@@ -458,11 +410,11 @@ public class CarboHydrateDetail extends Activity {
 
 		// Decode bitmap with inSampleSize set
 		options.inJustDecodeBounds = false;
-		return adjustImageOrientation(BitmapFactory.decodeFile(path, options),path);
+		return adjustImageOrientation(BitmapFactory.decodeFile(path, options), path);
 	}
 
 
-	private static Bitmap adjustImageOrientation(Bitmap image, String picturePath ) {
+	private static Bitmap adjustImageOrientation(Bitmap image, String picturePath) {
 		ExifInterface exif;
 		try {
 			exif = new ExifInterface(picturePath);
@@ -507,24 +459,17 @@ public class CarboHydrateDetail extends Activity {
 	//PHOTO - END
 
 
-
-
-
-
-	public static void SelectSpinnerItemByValue(Spinner spnr, String value)
-	{
+	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
 		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
-		for (int position = 0; position < adapter.getCount(); position++)
-		{
-			if(adapter.getItem(position).equals(value))
-			{
+		for (int position = 0; position < adapter.getCount(); position++) {
+			if (adapter.getItem(position).equals(value)) {
 				spnr.setSelection(position);
 				return;
 			}
 		}
 	}
 
-	public void DeleteCarbsRead(final int id){
+	public void DeleteCarbsRead(final int id) {
 		final Context c = this;
 		new AlertDialog.Builder(this)
 				.setTitle(getString(R.string.deleteReading))
@@ -535,7 +480,7 @@ public class CarboHydrateDetail extends Activity {
 						try {
 							wdb.Carbs_Delete(id);
 							goUp();
-						}catch (Exception e) {
+						} catch (Exception e) {
 							Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
 						}
 						wdb.close();
@@ -549,19 +494,19 @@ public class CarboHydrateDetail extends Activity {
 				}).show();
 	}
 
-	public void goUp(){
+	public void goUp() {
 		NavUtils.navigateUpFromSameTask(this);
 	}
 
-	public void UpdateCarbsRead(int id){
-		Spinner tagSpinner = (Spinner)findViewById(R.id.sp_CarboHydrateDetail_Tag);
-		EditText carbs = (EditText)findViewById(R.id.et_CarboHydrateDetail_Value);
-		EditText data = (EditText)findViewById(R.id.et_CarboHydrateDetail_Data);
-		EditText hora = (EditText)findViewById(R.id.et_CarboHydrateDetail_Hora);
-		EditText photopath = (EditText)findViewById(R.id.et_CarboHydrateDetail_Photo);
-		EditText note = (EditText)findViewById(R.id.et_CarboHydrateDetail_Notes);
+	public void UpdateCarbsRead(int id) {
+		Spinner tagSpinner = (Spinner) findViewById(R.id.sp_CarboHydrateDetail_Tag);
+		EditText carbs = (EditText) findViewById(R.id.et_CarboHydrateDetail_Value);
+		EditText data = (EditText) findViewById(R.id.et_CarboHydrateDetail_Data);
+		EditText hora = (EditText) findViewById(R.id.et_CarboHydrateDetail_Hora);
+		EditText photopath = (EditText) findViewById(R.id.et_CarboHydrateDetail_Photo);
+		EditText note = (EditText) findViewById(R.id.et_CarboHydrateDetail_Notes);
 
-		if(carbs.getText().toString().equals("")){
+		if (carbs.getText().toString().equals("")) {
 			carbs.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(carbs, InputMethodManager.SHOW_IMPLICIT);
@@ -581,12 +526,12 @@ public class CarboHydrateDetail extends Activity {
 		DB_Write reg = new DB_Write(this);
 		CarbsDataBinding carb = new CarbsDataBinding();
 
-		if(!note.getText().toString().equals("") && idNote==0){
+		if (!note.getText().toString().equals("") && idNote == 0) {
 			NoteDataBinding n = new NoteDataBinding();
 			n.setNote(note.getText().toString());
 			carb.setId_Note(reg.Note_Add(n));
 		}
-		if(idNote!=0){
+		if (idNote != 0) {
 			NoteDataBinding n = new NoteDataBinding();
 			n.setNote(note.getText().toString());
 			n.setId(idNote);
