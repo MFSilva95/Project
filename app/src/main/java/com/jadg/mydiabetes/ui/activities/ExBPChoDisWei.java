@@ -1,6 +1,5 @@
 package com.jadg.mydiabetes.ui.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -16,7 +15,7 @@ import android.widget.ScrollView;
 import com.jadg.mydiabetes.R;
 
 
-public class ExBPChoDisWei extends Activity {
+public class ExBPChoDisWei extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

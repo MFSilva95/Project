@@ -18,7 +18,7 @@ import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.DB_Read;
 
 
-public class Home extends Activity {
+public class Home extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

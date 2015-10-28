@@ -53,7 +53,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 
-public class Meal extends Activity {
+public class Meal extends BaseActivity {
 
 
 	ArrayList<String> allInsulins;
