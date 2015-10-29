@@ -209,9 +209,8 @@ public class Meal extends BaseActivity {
 		spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-				Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
-				String name = spinner.getSelectedItem().toString();
-				DB_Read read = new DB_Read(view.getContext());
+				String name = parent.getSelectedItem().toString();
+				DB_Read read = new DB_Read(Meal.this);
 				action_type = read.Insulin_GetActionTypeByName(name);
 				read.close();
 
