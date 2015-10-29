@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -58,7 +59,8 @@ public class Meal extends BaseActivity {
 
 	ArrayList<String> allInsulins;
 	//photo variables - start
-	final private int CAPTURE_IMAGE = 2;
+	final private int IMAGE_CAPTURE = 2;
+	final private int IMAGE_VIEW = 3;
 	Uri imgUri;
 	Bitmap b;
 	//photo variables - end
@@ -630,11 +632,11 @@ public class Meal extends BaseActivity {
 			argsToPhoto.putString("Path", photopath.getText().toString());
 			argsToPhoto.putInt("Id", -1);
 			intent.putExtras(argsToPhoto);
-			startActivityForResult(intent, 101010);
+			startActivityForResult(intent, IMAGE_VIEW);
 		} else {
 			final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
-			startActivityForResult(intent, CAPTURE_IMAGE);
+			startActivityForResult(intent, IMAGE_CAPTURE);
 		}
 
 	}
@@ -644,7 +646,7 @@ public class Meal extends BaseActivity {
 		EditText photopath = (EditText) findViewById(R.id.et_MealDetail_Photo);
 		ImageView img = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
 		if (resultCode != Activity.RESULT_CANCELED) {
-			if (requestCode == CAPTURE_IMAGE) {
+			if (requestCode == IMAGE_CAPTURE) {
 				Toast.makeText(getApplicationContext(), getString(R.string.photoSaved) + " " + imgUri.getPath(), Toast.LENGTH_LONG).show();
 				DisplayMetrics displaymetrics = new DisplayMetrics();
 				getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -653,13 +655,14 @@ public class Meal extends BaseActivity {
 				b = decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
 				img.setImageBitmap(b);
 				photopath.setText(imgUri.getPath());
-			} else if (requestCode == 101010) {
+			} else if (requestCode == IMAGE_VIEW) {
 				Log.d("Result:", resultCode + "");
 				//se tivermos apagado a foto dá result code -1
 				//se voltarmos por um return por exemplo o resultcode é 0
 				if (resultCode == -1) {
 					photopath.setText("");
-					img.setImageDrawable(getResources().getDrawable(R.drawable.newphoto));
+					img.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.newphoto, null));
+					imgUri=null;
 				}
 			} else {
 				super.onActivityResult(requestCode, resultCode, data);
