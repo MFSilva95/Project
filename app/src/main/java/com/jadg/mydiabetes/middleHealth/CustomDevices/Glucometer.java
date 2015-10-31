@@ -41,7 +41,6 @@ public class Glucometer implements ICustomDevice
 	private static final UUID MY_UUID_SECURE = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
 	private static final UUID MY_UUID_INSECURE = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    private int mNumberRecords;
     private final static byte STX = (byte) 0x80;
 	private final static byte CMD_NUM_RECORDS = (byte)0x00;
 	private final static byte CMD_UNITS = (byte)0x05;
@@ -55,8 +54,8 @@ public class Glucometer implements ICustomDevice
 	private BluetoothAdapter mAdapter;
     private InputStream mInputStream;
     private OutputStream mOutputStream;
-    BluetoothServerSocket mBluetoothServerSocket;
-    BluetoothSocket mBluetoothSocket;
+    private BluetoothServerSocket mBluetoothServerSocket;
+    private BluetoothSocket mBluetoothSocket;
 	private boolean mRepeat = true;
 
 	@Override
@@ -167,7 +166,7 @@ public class Glucometer implements ICustomDevice
 
 			return false;
 		}
-		mNumberRecords = sc_receiveBuf1[4];
+		int numberRecords = sc_receiveBuf1[4];
 
 		String currentSync = "";
 		byte  sc_sendBuf2[] = new byte[7];
@@ -345,6 +344,10 @@ public class Glucometer implements ICustomDevice
 		return arrayOfByte;
 	}
 
+	private void eraseDateFromGlucometer()
+	{
+
+	}
 
 	private synchronized boolean getRepeat()
 	{

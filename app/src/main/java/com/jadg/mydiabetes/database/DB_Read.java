@@ -219,8 +219,8 @@ public class DB_Read {
 	}
 
 	public ArrayList<GlycemiaDataBinding> Glycemia_GetByDate(String from, String to) {
-		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE DateTime > '" 
-										+ from + " 00:00:00' AND DateTime < '" 
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE DateTime >= '"
+										+ from + " 00:00:00' AND DateTime <= '"
 										+ to + " 23:59:59' ORDER BY DateTime DESC;", null);
 		ArrayList<GlycemiaDataBinding> allreads = new ArrayList<GlycemiaDataBinding>();
 		if (cursor.getCount() > 0) {

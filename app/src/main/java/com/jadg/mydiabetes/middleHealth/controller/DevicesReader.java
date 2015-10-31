@@ -3,8 +3,6 @@ package com.jadg.mydiabetes.middleHealth.controller;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 
 public class DevicesReader
@@ -12,7 +10,7 @@ public class DevicesReader
 	private static final String TAG = "DevicesReader";
 
 	private Activity mActivity;
-	private ApplicationRegisterService mApplicationRegisterConnection;
+	private ApplicationRegisterConnection mApplicationRegisterConnection;
 
 	public DevicesReader(Activity activity)
 	{
@@ -38,7 +36,7 @@ public class DevicesReader
 	private boolean initializeApplicationRegisterService()
 	{
 		EventCallback eventCallback = new EventCallback(mActivity);
-		mApplicationRegisterConnection = new ApplicationRegisterService(eventCallback);
+		mApplicationRegisterConnection = new ApplicationRegisterConnection(eventCallback);
 
 		Intent applicationRegisterIntent = new Intent(mActivity, com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.MiddleHealth.class);
 		applicationRegisterIntent.setAction("IApplicationRegister");

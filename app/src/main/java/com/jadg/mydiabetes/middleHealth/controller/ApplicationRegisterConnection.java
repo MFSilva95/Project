@@ -11,14 +11,14 @@ import com.jadg.mydiabetes.middleHealth.controller.EventCallback;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.IApplicationRegister;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.IEventCallback;
 
-public class ApplicationRegisterService implements ServiceConnection
+public class ApplicationRegisterConnection implements ServiceConnection
 {
 	private static final String TAG = "ApplicationRegisterServ";
 
 	private IApplicationRegister mApplicationRegister;
 	private EventCallback mEventCallback;
 
-	public ApplicationRegisterService(EventCallback eventCallback)
+	public ApplicationRegisterConnection(EventCallback eventCallback)
 	{
 		mEventCallback = eventCallback;
 	}
