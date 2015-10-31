@@ -37,6 +37,8 @@ import com.jadg.mydiabetes.middleHealth.bluetoothHDP.HDPManager;
 
 public class MiddleHealth extends Service
 {
+	private static final String TAG = "MiddleHealth";
+
 	private HDPManager mHDPManager;
 	private CustomDeviceProvider mCustomDeviceProvider;
 	private RemoteCallbackList<IEventCallback> mRemoteCallbackList = new RemoteCallbackList<IEventCallback>();
@@ -89,8 +91,6 @@ public class MiddleHealth extends Service
 	{
 		String action = intent.getAction();
 		Log.d(TAG, "onBind() - Intent action: " + action);
-		if(action == null)
-			return mMessenger.getBinder();
 
 		if(action.equals("IApplicationRegister"))
 			return mApplicationRegister;
@@ -341,8 +341,6 @@ public class MiddleHealth extends Service
 
 			if(device != null)
 				RecentDeviceInformation.addDevice(device);
-
-			sendMessage(Message.obtain(null, MSG_DEVICE_CONNECTED));
 			
 			int size = mRemoteCallbackList.beginBroadcast();
 			for(int i = 0; i < size; i++)
@@ -363,8 +361,6 @@ public class MiddleHealth extends Service
 		public void deviceDisconnected(String systemId)
 		{
 			Log.d(TAG, "mEventManager.deviceDisconnected()");
-
-			sendMessage(Message.obtain(null, MSG_DEVICE_DISCONNECTED));
 
 			final int size = mRemoteCallbackList.beginBroadcast();
 			for(int i = 0; i < size; i++)
@@ -412,11 +408,8 @@ public class MiddleHealth extends Service
 				return;
 			}
 
+			// Create android measure:
 			AndroidMeasure androidMeasure = new AndroidMeasure(measure.getMeasureId(), measure.getMeasureName(), measure.getUnitId(), measure.getUnitName(), measure.getTimestamp(), measure.getValues(), measure.getMetricIds(), measure.getMetricNames());
-			Log.d(TAG, "mEventManager.receivedMeasure() - Sending android measure");
-			Message message = Message.obtain(null, MSG_MEASURE_RECEIVED);
-			message.getData().putParcelable("data", androidMeasure);
-			sendMessage(message);
 
 			int size = mRemoteCallbackList.beginBroadcast();
 			for(int i = 0; i < size; i++)
@@ -433,63 +426,4 @@ public class MiddleHealth extends Service
 			mRemoteCallbackList.finishBroadcast();
 		}
 	};
-
-
-	// -------- Messenger --------
-
-	public static final int MSG_REG_CLIENT = 200;
-	public static final int MSG_UNREG_CLIENT = 201;
-	public static final int MSG_DEVICE_CONNECTED = 203;
-	public static final int MSG_MEASURE_RECEIVED = 204;
-	public static final int MSG_DEVICE_DISCONNECTED = 205;
-	public static final int MSG_REGISTER_CALLBACK = 206;
-	private Messenger mClient;
-	private static final String TAG = "MiddleHealth";
-
-	// Handles events sent by {@link HealthHDPActivity}.
-	private class IncomingHandler extends Handler
-	{
-		@Override
-		public void handleMessage(Message msg)
-		{
-			switch (msg.what)
-			{
-				case MSG_REG_CLIENT:
-					Log.d(TAG, "Client registered!");
-					mClient = msg.replyTo;
-					break;
-
-				case MSG_UNREG_CLIENT:
-					mClient = null;
-					break;
-
-				case MSG_REGISTER_CALLBACK:
-					Log.d(TAG, "Registering callback: " + true);
-					break;
-
-				default:
-					super.handleMessage(msg);
-			}
-		}
-	}
-
-	final Messenger mMessenger = new Messenger(new IncomingHandler());
-
-	private void sendMessage(Message message)
-	{
-		if (mClient == null)
-		{
-			Log.d(TAG, "No clients registered.");
-			return;
-		}
-
-		try
-		{
-			mClient.send(message);
-		}
-		catch (RemoteException e)
-		{
-			e.printStackTrace();
-		}
-	}
 }

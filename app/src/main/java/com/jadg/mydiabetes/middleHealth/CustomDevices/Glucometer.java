@@ -20,6 +20,8 @@ import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
 public class Glucometer implements ICustomDevice
 {
 	private static final String TAG = "Glucometer";
+
+	private static final boolean ERASE_ALL_DATA_AFTER_READ = true;
 	
 	// Constants that indicate the current connection state
     public static final int STATE_NONE = 0;       // we're doing nothing
@@ -46,6 +48,12 @@ public class Glucometer implements ICustomDevice
 	private final static byte CMD_UNITS = (byte)0x05;
 	private final static byte CMD_RECORD = (byte)0x01;
 	private final static byte CMD_SERIAL = (byte)0x09;
+	private final static byte CMD_ERASE = (byte) 0x14;
+
+	private final static byte[] REQUEST_ALL_DATA_MEMORY_ERASE =
+			{
+					STX, 0x01, (byte)0xFE, CMD_ERASE, (byte)0x81, (byte)0xEA
+			};
 
 
 	private static EventManager sEventManager = null;
@@ -61,14 +69,28 @@ public class Glucometer implements ICustomDevice
 	@Override
 	public void run()
 	{
+		// Get default adapter:
 		mAdapter = BluetoothAdapter.getDefaultAdapter();
+
+		// Create device:
 		sDevice = new HealthDevice();
 		sDevice.setSystId(SYSTEM_ID);
 		sDevice.setManufacturer("Entra Health Systems");
+
 		while(getRepeat())
 		{
+			// Wait for connection:
 			waitForConnection();
-			readDataFromMeter();
+
+			// Read data from glucometer:
+			if(!readDataFromMeter())
+				continue;
+
+			// Erase all data if configured to do so:
+			if(ERASE_ALL_DATA_AFTER_READ)
+				eraseDateFromGlucometer();
+
+			// Close connection:
 			closeConnection();
 		}
 	}
@@ -76,7 +98,7 @@ public class Glucometer implements ICustomDevice
 	@Override
 	public void setEventHandler(EventManager eventManager)
 	{
-		this.sEventManager = eventManager;
+		sEventManager = eventManager;
 	}
 
 	@Override
@@ -163,7 +185,6 @@ public class Glucometer implements ICustomDevice
 		}
 		catch(Exception e)
 		{
-
 			return false;
 		}
 		int numberRecords = sc_receiveBuf1[4];
@@ -344,9 +365,29 @@ public class Glucometer implements ICustomDevice
 		return arrayOfByte;
 	}
 
-	private void eraseDateFromGlucometer()
+	private boolean eraseDateFromGlucometer()
 	{
+		// Send a request to erase all the data from memory:
+		if(!writeToMeter(REQUEST_ALL_DATA_MEMORY_ERASE))
+		{
+			Log.d(TAG, "eraseDateFromGlucometer() - Couldn't send erase memory request to glucometer.");
+			return false;
+		}
 
+		try
+		{
+			// Wait for response:
+			byte[] receiveBuffer = readFromMeter(1);
+			if(receiveBuffer != null && receiveBuffer.length > 0 && receiveBuffer[0] == CMD_ERASE)
+				return true;
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		Log.d(TAG, "eraseDateFromGlucometer() - Bad response from glucometer.");
+		return false;
 	}
 
 	private synchronized boolean getRepeat()
