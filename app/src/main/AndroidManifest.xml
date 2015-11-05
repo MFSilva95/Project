@@ -334,6 +334,13 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity> -->
 
+        <activity android:name=".ui.activities.GraphsActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

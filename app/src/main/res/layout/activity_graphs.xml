@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#dedede"
+    android:orientation="vertical"
+    android:id="@+id/frame"
+    tools:context=".ui.activities.GraphsActivity">
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_width="fill_parent"
+        android:layout_height="220dp"
+        android:padding="0dp"
+        android:layout_marginLeft="-20dp"
+        android:layout_marginRight="-20dp"
+        android:layout_margin="0dp"
+        android:id="@+id/chart"
+        />
+
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:background="@android:color/black"-->
+        <!--android:layout_height="2dp"/>-->
+
+    <org.lucasr.twowayview.widget.TwoWayView
+        android:id="@+id/list_vals"
+        android:layout_marginTop="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:elevation="2dp"
+        android:scrollbars="vertical"
+        android:background="@drawable/divider_shadow"
+        app:twowayview_layoutManager="ListLayoutManager"
+        tools:listitem="@layout/list_item_graph_weights">
+
+    </org.lucasr.twowayview.widget.TwoWayView>
+
+</FrameLayout>
