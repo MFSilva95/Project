@@ -117,7 +117,7 @@ public class GraphsActivity extends Activity {
 
 		chart.getLegend().setEnabled(false);
 
-		chart.setVisibleXRangeMaximum(20); // allow 20 values to be displayed at once on the x-axis, not more
+		chart.setVisibleXRangeMaximum(5); // allow 5 values to be displayed at once on the x-axis, not more
 		chart.setVisibleXRangeMinimum(2); // allow 5 values to be displayed at once on the x-axis, not less
 
 
@@ -153,6 +153,7 @@ public class GraphsActivity extends Activity {
 		chart.animateY(2000);
 
 		chart.invalidate();
+		chart.moveViewToX(chart.getLineData().getXValCount()-5);
 
 		chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
 
