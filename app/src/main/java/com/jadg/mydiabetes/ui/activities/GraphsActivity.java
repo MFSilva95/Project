@@ -79,12 +79,15 @@ public class GraphsActivity extends Activity {
 	private void setupContent() {
 		listView = (TwoWayView) findViewById(R.id.list_vals);
 		listView.setHasFixedSize(true);
-		listView.setAdapter(new WeightAdapter(MyDiabetesStorage.getInstance(this).getAllWeights()));
+		listView.setAdapter(new WeightAdapter(MyDiabetesStorage.getInstance(this).getAllWeights(null)));
 		final Drawable divider = ContextCompat.getDrawable(this, R.drawable.divider);
 		listView.addItemDecoration(new DividerItemDecoration(divider));
 
 		chart = (LineChart) findViewById(R.id.chart);
-		chart.setData(getData());
+		chart.setData(convertToGraphPoints(
+				MyDiabetesStorage.getInstance(this)
+						.getAllWeights(new MyDiabetesStorage.QueryOptions()
+								.setSortOrder(MyDiabetesStorage.QueryOptions.ORDER_DESC))));
 
 //		chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
 		chart.getXAxis().setEnabled(false);
@@ -153,20 +156,36 @@ public class GraphsActivity extends Activity {
 	}
 
 
-	private LineData getData() {
-		List<String> xs = new ArrayList<>(4);
-		xs.add(String.valueOf(System.currentTimeMillis()));
-		xs.add(String.valueOf(System.currentTimeMillis() + 1));
-		xs.add(String.valueOf(System.currentTimeMillis() + 12 * 1000));
-		xs.add(String.valueOf(System.currentTimeMillis() + 13 * 1000));
-		LineData result = new LineData(xs);
-		List<Entry> set = new ArrayList<>();
+	private LineData convertToGraphPoints(Cursor cursor) {
+		cursor.moveToFirst();
+		numberOfElementsInGraph = cursor.getCount() > MAX_VALUES_IN_GRAPH ? MAX_VALUES_IN_GRAPH : cursor.getCount();
 
-		set.add(new Entry(60, 0));
-		set.add(new Entry(65, 1));
-		set.add(new Entry(60, 2));
-		set.add(new Entry(55, 3));
-		LineDataSet lineSet = new LineDataSet(set, "");
+		String[] xs = new String[numberOfElementsInGraph];
+		Entry[] set = new Entry[numberOfElementsInGraph];
+
+
+		String date;
+		double value;
+		int i = numberOfElementsInGraph - 1;
+		while (i >= 0) {
+			date = cursor.getString(cursor.getColumnIndex(MyDiabetesContract.Reg_Weight.COLUMN_NAME_DATETIME));
+			value = cursor.getDouble(cursor.getColumnIndex(MyDiabetesContract.Reg_Weight.COLUMN_NAME_VALUE));
+			xs[i] = date;
+			set[i] = new Entry((float) value, i);
+			i--;
+			cursor.moveToNext();
+		}
+
+		LineData result = new LineData(xs);
+		LineDataSet lineSet = new LineDataSet(Arrays.asList(set), "");
+		setupStyleLineSet(lineSet);
+
+		result.addDataSet(lineSet);
+		result.setHighlightEnabled(true);
+		return result;
+	}
+
+	public void setupStyleLineSet(LineDataSet lineSet) {
 		lineSet.setLineWidth(0f);
 		lineSet.setDrawCircles(true);
 		lineSet.setCircleSize(5f);
@@ -180,13 +199,6 @@ public class GraphsActivity extends Activity {
 
 		lineSet.setFillColor(Color.RED);
 		lineSet.setCircleColor(Color.RED);
-
-		result.addDataSet(lineSet);
-		result.setHighlightEnabled(true);
-
-
-		return result;
-	}
 
 	private class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
 
