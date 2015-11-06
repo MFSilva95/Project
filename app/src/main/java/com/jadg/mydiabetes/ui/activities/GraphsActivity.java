@@ -1,7 +1,5 @@
 package com.jadg.mydiabetes.ui.activities;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -9,8 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Property;
-import android.view.GestureDetector;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,6 +27,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.MyDiabetesContract;
 import com.jadg.mydiabetes.database.MyDiabetesStorage;
+import com.jadg.mydiabetes.ui.charts.BodyOverlapHeaderGesture;
 
 import org.lucasr.twowayview.widget.DividerItemDecoration;
 import org.lucasr.twowayview.widget.TwoWayView;
@@ -37,19 +35,20 @@ import org.lucasr.twowayview.widget.TwoWayView;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 public class GraphsActivity extends Activity {
 
 
 	private static final SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+	private static final int MAX_VALUES_IN_GRAPH = 100;
 
 	TwoWayView listView;
 	LineChart chart;
-	private GestureDetector gestureDetector;
+	private BodyOverlapHeaderGesture bodyOverlapHeaderGesture;
+	private int numberOfElementsInGraph;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +61,29 @@ public class GraphsActivity extends Activity {
 	}
 
 	private void setupScrool() {
-		ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) listView.getLayoutParams();
+		bodyOverlapHeaderGesture = new BodyOverlapHeaderGesture(chart, listView) {
+			@Override
+			public void onExpand() {
+			}
 
-		gestureDetector = new GestureDetector(this, new MyGestureDetector(chart, listView));
-		listView.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public void onCollapse() {
+			}
+		};
+
+		chart.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View view, MotionEvent motionEvent) {
-				return gestureDetector.onTouchEvent(motionEvent);
+				if (bodyOverlapHeaderGesture.isExpanded()) {
+					bodyOverlapHeaderGesture.collapse();
+					return true;
+				} else {
+					return false;
+			}
+
 			}
 		});
-
+		bodyOverlapHeaderGesture.collapse();
 
 	}
 
@@ -143,9 +155,27 @@ public class GraphsActivity extends Activity {
 		chart.invalidate();
 
 		chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+
+			View previewsSelected;
+
 			@Override
 			public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
 //				listView.scrollToPosition(dataSetIndex);
+				Log.d("ChartSelect", String.valueOf(numberOfElementsInGraph - h.getXIndex() - 1));
+				listView.smoothScrollToPosition(numberOfElementsInGraph - h.getXIndex() - 1);
+				RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(numberOfElementsInGraph - h.getXIndex() - 1);
+				if (holder != null && holder.itemView != null) {
+					if (previewsSelected != null) {
+						previewsSelected.setHovered(false);
+						previewsSelected.setPressed(false);
+					}
+					holder.itemView.setHovered(true);
+					holder.itemView.setPressed(true);
+					previewsSelected = holder.itemView;
+//					listView.invalidate();
+				}
+//				listView.setHovered(true);
+				bodyOverlapHeaderGesture.expand();
 			}
 
 			@Override
@@ -199,112 +229,6 @@ public class GraphsActivity extends Activity {
 
 		lineSet.setFillColor(Color.RED);
 		lineSet.setCircleColor(Color.RED);
-
-	private class MyGestureDetector extends GestureDetector.SimpleOnGestureListener {
-
-		private static final int SWIPE_MIN_DISTANCE = 10;
-		//		private static final int SWIPE_MIN_DISTANCE = 100;
-		private static final int SWIPE_ERROR_MARGIN = 50;
-
-		private View viewHeader;
-		private View viewBody;
-		private boolean isExpanded = false;
-		private int collapseHeight;
-		private int diffHeight;
-		private int originalTopMargin;
-
-
-		public MyGestureDetector(View viewHeader, View viewBody) {
-			this.viewHeader = viewHeader;
-			this.viewBody = viewBody;
-
-			collapseHeight = viewBody.getHeight();
-			diffHeight = viewHeader.getLayoutParams().height / 2;
-			originalTopMargin = ((ViewGroup.MarginLayoutParams) viewBody.getLayoutParams()).topMargin;
-		}
-
-		private MotionEvent mLastOnDownEvent = null;
-
-		@Override
-		public boolean onDown(MotionEvent e) {
-			//Android 4.0 bug means e1 in onFling may be NULL due to onLongPress eating it.
-			mLastOnDownEvent = e;
-			return super.onDown(e);
-		}
-
-		@Override
-		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-			if (e1 == null)
-				e1 = mLastOnDownEvent;
-			if (e1 == null || e2 == null)
-				return false;
-			if ((e1.getY() - e2.getY()) > SWIPE_MIN_DISTANCE) {
-//				listView.animate().translationY(-translateY).start();
-				expand();
-			} else if ((e1.getY() - e2.getY()) < -SWIPE_MIN_DISTANCE) {
-//				listView.animate().translationY(0).start();
-				collapse();
-			}
-
-
-			return super.
-
-					onScroll(e1, e2, distanceX, distanceY);
-		}
-
-		public void expand() {
-			if (!isExpanded) {
-				isExpanded = true;
-				if (collapseHeight == 0) {
-					collapseHeight = viewBody.getHeight();
-				}
-				ObjectAnimator heightAnimator = ObjectAnimator.ofInt(viewBody, VIEW_LAYOUT_HEIGHT, collapseHeight, collapseHeight + diffHeight);
-				ObjectAnimator marginAnimator = ObjectAnimator.ofInt(viewBody, VIEW_LAYOUT_MARGIN_TOP, originalTopMargin, diffHeight);
-				AnimatorSet set = new AnimatorSet();
-				set.play(heightAnimator).with(marginAnimator);
-				set.start();
-			}
-		}
-
-		public void collapse() {
-			if (isExpanded) {
-				isExpanded = false;
-				ObjectAnimator heightAnimator = ObjectAnimator.ofInt(viewBody, VIEW_LAYOUT_HEIGHT, collapseHeight + diffHeight, collapseHeight);
-				ObjectAnimator marginAnimator = ObjectAnimator.ofInt(viewBody, VIEW_LAYOUT_MARGIN_TOP, diffHeight, originalTopMargin);
-				AnimatorSet set = new AnimatorSet();
-				set.play(heightAnimator).with(marginAnimator);
-				set.start();
-			}
-		}
-
-		public boolean isExpanded() {
-			return isExpanded;
-		}
-
-		Property<View, Integer> VIEW_LAYOUT_MARGIN_TOP = new Property<View, Integer>(Integer.class, "viewMarginTop") {
-
-			public void set(View object, Integer value) {
-				((ViewGroup.MarginLayoutParams) object.getLayoutParams()).topMargin = value.intValue();
-				object.requestLayout();
-			}
-
-			public Integer get(View object) {
-				return ((ViewGroup.MarginLayoutParams) object.getLayoutParams()).topMargin;
-			}
-		};
-
-		Property<View, Integer> VIEW_LAYOUT_HEIGHT = new Property<View, Integer>(Integer.class, "viewLayoutHeight") {
-
-			public void set(View object, Integer value) {
-				object.getLayoutParams().height = value.intValue();
-				object.requestLayout();
-			}
-
-			public Integer get(View object) {
-				return object.getLayoutParams().height;
-			}
-		};
-
 	}
 
 
