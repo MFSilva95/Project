@@ -1,13 +1,13 @@
 package com.jadg.mydiabetes.middleHealth.customDevices;
 
+import android.util.Log;
+
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.EventManager;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
-
-import android.util.Log;
-
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.EventManager;
 
 public class CustomDeviceProvider
 {

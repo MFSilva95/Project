@@ -23,17 +23,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim;
 
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.AVA_Type;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.AttributeList;
-
-import java.util.Hashtable;
-import java.util.Iterator;
-
-import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1OctetString;
-
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Tools;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.DIM_Tools;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.OctetStringASN1;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.AVA_Type;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.AttributeList;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1OctetString;
+
+import java.util.Hashtable;
+import java.util.Iterator;
 
 public abstract class DIM {
 

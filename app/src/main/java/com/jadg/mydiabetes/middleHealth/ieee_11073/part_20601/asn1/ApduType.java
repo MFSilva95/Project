@@ -30,10 +30,11 @@ package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1;
 //
 
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.channel.ApduChannelType;
-
-import com.jadg.mydiabetes.middleHealth.org.bn.*;
-import com.jadg.mydiabetes.middleHealth.org.bn.annotations.*;
-import com.jadg.mydiabetes.middleHealth.org.bn.coders.*;
+import com.jadg.mydiabetes.middleHealth.org.bn.CoderFactory;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1Choice;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1Element;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1PreparedElement;
+import com.jadg.mydiabetes.middleHealth.org.bn.coders.IASN1PreparedElementData;
 
 
 @ASN1PreparedElement

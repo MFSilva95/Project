@@ -1,6 +1,5 @@
 package com.jadg.mydiabetes.middleHealth.bluetoothHDP;
 
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Agent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothHealth;
@@ -10,6 +9,8 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.os.ParcelFileDescriptor;
 import android.util.Log;
+
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Agent;
 
 public class HDPManager
 {

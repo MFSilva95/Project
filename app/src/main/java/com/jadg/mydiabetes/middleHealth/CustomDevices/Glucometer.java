@@ -1,12 +1,5 @@
 package com.jadg.mydiabetes.middleHealth.customDevices;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.UUID;
-
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
@@ -17,11 +10,18 @@ import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Measure;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.EventManager;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
 
-public class Glucometer implements ICustomDevice
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.UUID;
+
+public class Glucometer implements com.jadg.mydiabetes.middleHealth.customDevices.ICustomDevice
 {
 	private static final String TAG = "Glucometer";
 
-	private static final boolean ERASE_ALL_DATA_AFTER_READ = true;
+	private static final boolean ERASE_ALL_DATA_AFTER_READ = false;
 	
 	// Constants that indicate the current connection state
     public static final int STATE_NONE = 0;       // we're doing nothing

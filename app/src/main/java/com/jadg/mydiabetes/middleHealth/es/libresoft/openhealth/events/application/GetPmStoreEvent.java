@@ -25,8 +25,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.application;
 
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.HANDLE;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.EventType;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.HANDLE;
 
 public class GetPmStoreEvent extends ExternalEvent {
 

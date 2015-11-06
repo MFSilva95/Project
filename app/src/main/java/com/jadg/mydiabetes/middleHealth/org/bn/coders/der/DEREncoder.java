@@ -18,12 +18,6 @@
  */
  package com.jadg.mydiabetes.middleHealth.org.bn.coders.der;
 
-import java.io.OutputStream;
-
-import java.lang.reflect.Field;
-
-import java.util.SortedMap;
-
 import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1Sequence;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.CoderUtils;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.ElementInfo;
@@ -32,6 +26,10 @@ import com.jadg.mydiabetes.middleHealth.org.bn.coders.TagClass;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.UniversalTag;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.ber.BERCoderUtils;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.ber.BEREncoder;
+
+import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.util.SortedMap;
 
 public class DEREncoder<T> extends BEREncoder<T> {
     public DEREncoder() {

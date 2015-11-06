@@ -25,13 +25,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim;
 
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.StateHandler;
-
-import java.util.TimerTask;
-
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.Event;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.EventType;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Values;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.StateHandler;
+
+import java.util.TimerTask;
 
 	/**************************************************************************************************************
 	 * 8.4.3 Timeout variables:

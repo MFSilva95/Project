@@ -24,10 +24,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim;
 
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
+
 import java.util.Hashtable;
 import java.util.Iterator;
-
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
 
 /**
 	 * An instance of the PM-segment class represents a persistently stored episode of measurement

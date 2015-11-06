@@ -23,8 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils;
 
-import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1OctetString;
-
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.AbsoluteTime;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.AbsoluteTimeAdjust;
@@ -75,6 +73,7 @@ import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.SupplementalT
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.SystemModel;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.TYPE;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.TypeVerList;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1OctetString;
 
 public class DIM_Tools {
 

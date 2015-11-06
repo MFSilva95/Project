@@ -26,8 +26,8 @@ package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events;
 
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Agent;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.HealthDevice;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.RecentDeviceInformation;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Measure;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.RecentDeviceInformation;
 
 
 public class InternalEventReporter {

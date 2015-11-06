@@ -19,17 +19,16 @@
 
 package com.jadg.mydiabetes.middleHealth.org.bn.metadata;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import java.lang.reflect.AnnotatedElement;
-
 import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1String;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.DecodedObject;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.ElementInfo;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.IASN1TypesDecoder;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.IASN1TypesEncoder;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.UniversalTag;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.AnnotatedElement;
 
 /**
  * @author jcfinley@users.sourceforge.net

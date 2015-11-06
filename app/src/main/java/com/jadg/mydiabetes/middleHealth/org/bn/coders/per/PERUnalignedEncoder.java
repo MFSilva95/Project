@@ -18,10 +18,10 @@
  */
 package com.jadg.mydiabetes.middleHealth.org.bn.coders.per;
 
-import java.io.OutputStream;
-
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.ElementInfo;
 import com.jadg.mydiabetes.middleHealth.org.bn.utils.BitArrayOutputStream;
+
+import java.io.OutputStream;
 
 public class PERUnalignedEncoder<T> extends PERAlignedEncoder<T> {
     public PERUnalignedEncoder() {

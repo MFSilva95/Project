@@ -23,11 +23,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.manager;
 
-import java.util.Hashtable;
-
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.Attribute;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.InvalidAttributeException;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.PeriCfgScanner;
+
+import java.util.Hashtable;
 
 public class MPeriCfgScanner extends PeriCfgScanner {
 

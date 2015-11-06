@@ -23,11 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.manager;
 
-import java.io.ByteArrayOutputStream;
-
-import com.jadg.mydiabetes.middleHealth.org.bn.CoderFactory;
-import com.jadg.mydiabetes.middleHealth.org.bn.IEncoder;
-
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.Event;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.EventType;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.messages.MessageFactory;
@@ -38,15 +33,19 @@ import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ApduType;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ConfigReport;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ConfigReportRsp;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.DataApdu;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.DataApdu.MessageChoiceType;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.EventReportArgumentSimple;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.EventReportResultSimple;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.HANDLE;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.INT_U32;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.PrstApdu;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.RelativeTime;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.DataApdu.MessageChoiceType;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.Configuring;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.StateHandler;
+import com.jadg.mydiabetes.middleHealth.org.bn.CoderFactory;
+import com.jadg.mydiabetes.middleHealth.org.bn.IEncoder;
+
+import java.io.ByteArrayOutputStream;
 
 public final class CheckingConfig extends Configuring {
 

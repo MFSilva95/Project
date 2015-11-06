@@ -1,14 +1,12 @@
 package com.jadg.mydiabetes.middleHealth.bluetoothHDP;
 
+import android.os.ParcelFileDescriptor;
+
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.channel.Channel;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
-import android.os.ParcelFileDescriptor;
-
-
-
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.channel.Channel;
 
 public class BluetoothHDPChannel extends Channel {
 	private int id;

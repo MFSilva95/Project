@@ -2,16 +2,15 @@
 
 package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android;
 
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.HANDLE;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.INT_U16;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.OperationalState;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.Attribute;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.InvalidAttributeException;
+import android.app.Service;
+import android.content.Intent;
+import android.os.IBinder;
+import android.os.RemoteCallbackList;
+import android.os.RemoteException;
+import android.util.Log;
 
-import java.util.Iterator;
-import java.util.List;
-
+import com.jadg.mydiabetes.middleHealth.bluetoothHDP.HDPManager;
+import com.jadg.mydiabetes.middleHealth.customDevices.CustomDeviceProvider;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Agent;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.HealthDevice;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Measure;
@@ -22,18 +21,15 @@ import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.InternalE
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.application.GetPmStoreEvent;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.application.SetEvent;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Values;
-import com.jadg.mydiabetes.middleHealth.customDevices.CustomDeviceProvider;
-import android.app.Service;
-import android.content.Intent;
-import android.os.Handler;
-import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
-import android.os.RemoteCallbackList;
-import android.os.RemoteException;
-import android.util.Log;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.HANDLE;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.INT_U16;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.OperationalState;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.Attribute;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.InvalidAttributeException;
 
-import com.jadg.mydiabetes.middleHealth.bluetoothHDP.HDPManager;
+import java.util.Iterator;
+import java.util.List;
 
 public class MiddleHealth extends Service
 {

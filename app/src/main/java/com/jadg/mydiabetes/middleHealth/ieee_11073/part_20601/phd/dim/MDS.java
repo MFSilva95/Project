@@ -30,6 +30,7 @@ package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim;
 	 * through its attributes.
 	 */
 
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.DeviceConfig;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ConfigId;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.HANDLE;
@@ -39,8 +40,6 @@ import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.StateHandler;
 
 import java.util.Hashtable;
 import java.util.Set;
-
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.DeviceConfig;
 
 	/**
 	 * Each personal health device agent is defined by an object-oriented model. The top-level object

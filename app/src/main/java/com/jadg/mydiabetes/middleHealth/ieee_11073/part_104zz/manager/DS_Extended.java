@@ -23,13 +23,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_104zz.manager;
 
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.messages.MessageFactory;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ApduType;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ConfigId;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.DataApdu;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ScanReportInfoMPVar;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.manager.MDSManager;
-
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.messages.MessageFactory;
 
 public class DS_Extended extends MDSManager {
 

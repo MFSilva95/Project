@@ -23,9 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_104zz.manager;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Hashtable;
-
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ConfigId;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.HANDLE;
@@ -37,6 +34,9 @@ import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.TypeVerList;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.StateHandler;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.Attribute;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.InvalidAttributeException;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Hashtable;
 
 /**
  * DeviceSpecializationFactory is used to instantiate an standard device specialization defined in 104zz

@@ -19,11 +19,11 @@
 
 package com.jadg.mydiabetes.middleHealth.org.bn.coders;
 
-import java.lang.reflect.Field;
-
 import com.jadg.mydiabetes.middleHealth.org.bn.metadata.ASN1ElementMetadata;
 import com.jadg.mydiabetes.middleHealth.org.bn.metadata.ASN1Metadata;
 import com.jadg.mydiabetes.middleHealth.org.bn.metadata.constraints.IASN1ConstraintMetadata;
+
+import java.lang.reflect.Field;
 
 public interface IASN1PreparedElementData {
     ASN1Metadata getTypeMetadata();

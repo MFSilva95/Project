@@ -19,12 +19,12 @@
 
 package com.jadg.mydiabetes.middleHealth.org.bn.coders.per;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.DecodedObject;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.ElementInfo;
 import com.jadg.mydiabetes.middleHealth.org.bn.utils.BitArrayInputStream;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 public class PERUnalignedDecoder extends PERAlignedDecoder {
 

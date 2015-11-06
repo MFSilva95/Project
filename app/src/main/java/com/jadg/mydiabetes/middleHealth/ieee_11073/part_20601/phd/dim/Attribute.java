@@ -23,9 +23,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim;
 
-import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1OctetString;
-
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.DIM_Tools;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1OctetString;
 
 public class Attribute {
 	/* Qualifier of this attribute */

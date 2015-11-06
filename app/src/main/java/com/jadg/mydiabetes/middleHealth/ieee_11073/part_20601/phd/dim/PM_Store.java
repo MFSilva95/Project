@@ -23,12 +23,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim;
 
-import java.util.Hashtable;
-
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.InstNumber;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.SegmSelection;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.TrigSegmDataXferReq;
+
+import java.util.Hashtable;
 
 	/**
 	 * An instance of the PM-store class provides long-term storage capabilities for metric

@@ -19,7 +19,6 @@
 package com.jadg.mydiabetes.middleHealth.org.bn.coders;
 
 import java.io.InputStream;
-
 import java.lang.reflect.Field;
 
 public interface IASN1TypesDecoder {

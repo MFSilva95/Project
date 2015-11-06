@@ -18,13 +18,12 @@
  */
 package com.jadg.mydiabetes.middleHealth.org.bn.coders;
 
-import java.lang.reflect.AnnotatedElement;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Type;
-
 import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1Element;
 import com.jadg.mydiabetes.middleHealth.org.bn.metadata.ASN1ElementMetadata;
+
+import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 
 public final class ElementInfo {
     private ASN1Element element;

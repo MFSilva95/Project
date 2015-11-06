@@ -1,10 +1,10 @@
 package com.jadg.mydiabetes.ui.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Menu;
@@ -16,9 +16,14 @@ import android.widget.ScrollView;
 
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.DB_Read;
+import com.jadg.mydiabetes.middleHealth.controller.DevicesReader;
 
 
 public class Home extends BaseActivity {
+
+	private static final String TAG = "Home";
+
+	private DevicesReader devicesReader;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,10 @@ public class Home extends BaseActivity {
 			}
 		});
 
+		// Create the devices reader which will create a service to communicate with the medical devices:
+		devicesReader = new DevicesReader(this);
+		if(!devicesReader.initialize())
+			Log.d(TAG, "onCreate() - Failed to initialize Devices Reader!");
 	}
 
 

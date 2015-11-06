@@ -1,9 +1,9 @@
 package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android;
 
-import java.util.ArrayList;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.ArrayList;
 
 public class AndroidMeasure implements Parcelable{
 	

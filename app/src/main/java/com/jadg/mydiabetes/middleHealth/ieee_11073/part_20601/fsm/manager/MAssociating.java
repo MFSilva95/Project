@@ -23,10 +23,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.manager;
 
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.Event;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ApduType;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.Associating;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.StateHandler;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.Event;
 
 public final class MAssociating extends Associating {
 

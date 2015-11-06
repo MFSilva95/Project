@@ -19,11 +19,6 @@
 
 package com.jadg.mydiabetes.middleHealth.org.bn.metadata;
 
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import java.lang.reflect.Field;
-
 import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1BoxedType;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.ASN1PreparedElementData;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.CoderUtils;
@@ -33,6 +28,10 @@ import com.jadg.mydiabetes.middleHealth.org.bn.coders.IASN1PreparedElement;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.IASN1PreparedElementData;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.IASN1TypesDecoder;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.IASN1TypesEncoder;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
 
 public class ASN1BoxedTypeMetadata  extends ASN1FieldMetadata {
     private Field valueField;

@@ -24,10 +24,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils;
 
-import com.jadg.mydiabetes.middleHealth.org.bn.*;
-import com.jadg.mydiabetes.middleHealth.org.bn.annotations.*;
-import com.jadg.mydiabetes.middleHealth.org.bn.coders.*;
-import com.jadg.mydiabetes.middleHealth.org.bn.types.*;
+import com.jadg.mydiabetes.middleHealth.org.bn.CoderFactory;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1BoxedType;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1OctetString;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1PreparedElement;
+import com.jadg.mydiabetes.middleHealth.org.bn.coders.IASN1PreparedElement;
+import com.jadg.mydiabetes.middleHealth.org.bn.coders.IASN1PreparedElementData;
+import com.jadg.mydiabetes.middleHealth.org.bn.types.BitString;
 
 /* Wrapper class to encode/decode pure variable OctectString structures in Binary Notes */
 

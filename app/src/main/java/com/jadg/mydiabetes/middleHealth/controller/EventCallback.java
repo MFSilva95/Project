@@ -4,22 +4,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.jadg.mydiabetes.Glycemia;
-import com.jadg.mydiabetes.Meal;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
-import com.jadg.mydiabetes.database.GlycemiaDataBinding;
-
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Measure;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.AndroidMeasure;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.IEventCallback;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
-import com.jadg.mydiabetes.utils.Utils;
+import com.jadg.mydiabetes.middleHealth.utils.Utils;
+import com.jadg.mydiabetes.ui.activities.Meal;
+import com.jadg.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +23,7 @@ import java.util.List;
 public class EventCallback extends IEventCallback.Stub
 {
 	private static final String TAG = "EventCallback";
+	private static final int TIME_INTERVAL_TO_START_MEAL = 300000; // 5 minutes = 300 s = 300.000 ms
 
 	private Context mContext;
 	private List<AndroidMeasure> mMeasures = new ArrayList<>();
@@ -164,7 +160,7 @@ public class EventCallback extends IEventCallback.Stub
 		long difference = now.getTime() - mostRecentMeasure.getTimestamp();
 
 		// If it was not taken longer than five minutes ago:
-		if(difference <= 300000)
+		if(difference <= TIME_INTERVAL_TO_START_MEAL)
 		{
 			if(mostRecentMeasure.getMeasureId() == Nomenclature.MDC_CONC_GLU_GEN)
 			{

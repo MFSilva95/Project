@@ -29,11 +29,14 @@ package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1;
 // Any modifications to this file will be lost upon recompilation of the source ASN.1.
 //
 
-import com.jadg.mydiabetes.middleHealth.org.bn.*;
-import com.jadg.mydiabetes.middleHealth.org.bn.annotations.*;
-import com.jadg.mydiabetes.middleHealth.org.bn.annotations.constraints.*;
-import com.jadg.mydiabetes.middleHealth.org.bn.coders.*;
-import com.jadg.mydiabetes.middleHealth.org.bn.types.*;
+import com.jadg.mydiabetes.middleHealth.org.bn.CoderFactory;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1BoxedType;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1OctetString;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1PreparedElement;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.constraints.ASN1SizeConstraint;
+import com.jadg.mydiabetes.middleHealth.org.bn.coders.IASN1PreparedElement;
+import com.jadg.mydiabetes.middleHealth.org.bn.coders.IASN1PreparedElementData;
+import com.jadg.mydiabetes.middleHealth.org.bn.types.BitString;
 
 
 

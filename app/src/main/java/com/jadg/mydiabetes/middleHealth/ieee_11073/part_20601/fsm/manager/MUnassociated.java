@@ -23,6 +23,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.manager;
 
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Device11073;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.DeviceConfig;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.DeviceConfigCreator;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.ManagerConfig;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.Event;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.EventType;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.messages.MessageFactory;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Tools;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Values;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_104zz.manager.DS_Extended;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_104zz.manager.DeviceSpecializationFactory;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.AarqApdu;
@@ -34,17 +43,8 @@ import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.PhdAssociatio
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.StateHandler;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.Unassociated;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.MDS;
-import java.util.Iterator;
 
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Device11073;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.DeviceConfig;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.DeviceConfigCreator;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.ManagerConfig;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.Event;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.EventType;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.messages.MessageFactory;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Tools;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Values;
+import java.util.Iterator;
 
 public final class MUnassociated extends Unassociated {
 

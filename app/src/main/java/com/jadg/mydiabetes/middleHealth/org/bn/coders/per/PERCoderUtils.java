@@ -18,14 +18,13 @@
  */
 package com.jadg.mydiabetes.middleHealth.org.bn.coders.per;
 
-import java.lang.reflect.Field;
-
-import java.util.LinkedList;
-import java.util.List;
-
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.CoderUtils;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.ElementInfo;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.UniversalTag;
+
+import java.lang.reflect.Field;
+import java.util.LinkedList;
+import java.util.List;
 
 public class PERCoderUtils {
     public static int getMaxBitLength(long value) {

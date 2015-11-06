@@ -23,6 +23,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.messages;
 
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Device11073;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.DeviceConfig;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.ManagerConfig;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Tools;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Values;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.AVA_Type;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.AareApdu;
@@ -74,21 +79,14 @@ import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.Attribute;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.DIM;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.MDS;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.PM_Store;
+import com.jadg.mydiabetes.middleHealth.org.bn.CoderFactory;
+import com.jadg.mydiabetes.middleHealth.org.bn.IEncoder;
+import com.jadg.mydiabetes.middleHealth.org.bn.types.BitString;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-
-import com.jadg.mydiabetes.middleHealth.org.bn.CoderFactory;
-import com.jadg.mydiabetes.middleHealth.org.bn.IEncoder;
-import com.jadg.mydiabetes.middleHealth.org.bn.types.BitString;
-
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Device11073;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.DeviceConfig;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.ManagerConfig;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Tools;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Values;
 
 public class MessageFactory {
 

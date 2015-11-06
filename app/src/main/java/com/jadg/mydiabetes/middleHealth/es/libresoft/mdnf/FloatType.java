@@ -23,8 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.es.libresoft.mdnf;
 
-import java.lang.Math;
-
 public class FloatType {
 
 	public static final int MINEXP = -128;				//-1*(2^7)

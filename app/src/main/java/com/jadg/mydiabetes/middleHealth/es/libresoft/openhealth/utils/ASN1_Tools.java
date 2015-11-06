@@ -23,13 +23,13 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
-
 import com.jadg.mydiabetes.middleHealth.org.bn.CoderFactory;
 import com.jadg.mydiabetes.middleHealth.org.bn.IDecoder;
 import com.jadg.mydiabetes.middleHealth.org.bn.IEncoder;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
 
 public class ASN1_Tools {
 	/**

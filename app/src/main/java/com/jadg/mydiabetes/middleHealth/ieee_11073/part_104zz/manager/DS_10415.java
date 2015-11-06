@@ -24,12 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_104zz.manager;
 
-import java.util.Hashtable;
-
-import com.jadg.mydiabetes.middleHealth.org.bn.types.BitString;
-
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Values;
-
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.AttrValMap;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.AttrValMapEntry;
@@ -45,6 +40,9 @@ import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.Attribute;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.InvalidAttributeException;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.Numeric;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.manager.MDSManager;
+import com.jadg.mydiabetes.middleHealth.org.bn.types.BitString;
+
+import java.util.Hashtable;
 
 /**
  *

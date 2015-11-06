@@ -18,10 +18,7 @@
  */
 package com.jadg.mydiabetes.middleHealth.org.bn.coders.ber;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
-import com.jadg.mydiabetes.middleHealth.org.bn.annotations.*;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1EnumItem;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.CoderUtils;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.DecodedObject;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.ElementInfo;
@@ -33,6 +30,10 @@ import com.jadg.mydiabetes.middleHealth.org.bn.metadata.ASN1SequenceOfMetadata;
 import com.jadg.mydiabetes.middleHealth.org.bn.types.BitString;
 import com.jadg.mydiabetes.middleHealth.org.bn.types.ObjectIdentifier;
 import com.jadg.mydiabetes.middleHealth.org.bn.utils.ReverseByteArrayOutputStream;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
 
 public class BEREncoder<T> extends Encoder<T> {
 

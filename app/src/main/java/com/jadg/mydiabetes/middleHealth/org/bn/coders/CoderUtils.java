@@ -18,17 +18,29 @@
  */
 package com.jadg.mydiabetes.middleHealth.org.bn.coders;
 
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1Any;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1Element;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1Null;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1Sequence;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1SequenceOf;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1String;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.constraints.ASN1SizeConstraint;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.constraints.ASN1ValueRangeConstraint;
+import com.jadg.mydiabetes.middleHealth.org.bn.metadata.ASN1AnyMetadata;
+import com.jadg.mydiabetes.middleHealth.org.bn.metadata.ASN1NullMetadata;
+import com.jadg.mydiabetes.middleHealth.org.bn.metadata.ASN1SequenceMetadata;
+import com.jadg.mydiabetes.middleHealth.org.bn.metadata.ASN1SequenceOfMetadata;
+import com.jadg.mydiabetes.middleHealth.org.bn.metadata.ASN1StringMetadata;
+import com.jadg.mydiabetes.middleHealth.org.bn.types.BitString;
+
 import java.io.UnsupportedEncodingException;
-
-import java.lang.reflect.*;
-
+import java.lang.reflect.Field;
+import java.lang.reflect.GenericArrayType;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.SortedMap;
 import java.util.TreeMap;
-
-import com.jadg.mydiabetes.middleHealth.org.bn.annotations.*;
-import com.jadg.mydiabetes.middleHealth.org.bn.annotations.constraints.*;
-import com.jadg.mydiabetes.middleHealth.org.bn.metadata.*;
-import com.jadg.mydiabetes.middleHealth.org.bn.types.*;
 
 public class CoderUtils {
     public static int getIntegerLength(int value) {

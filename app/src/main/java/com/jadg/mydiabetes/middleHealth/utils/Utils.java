@@ -1,6 +1,6 @@
-package com.jadg.mydiabetes.utils;
+package com.jadg.mydiabetes.middleHealth.utils;
 
-import com.jadg.mydiabetes.database.GlycemiaDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
 
 import java.text.DateFormat;
 import java.text.ParseException;

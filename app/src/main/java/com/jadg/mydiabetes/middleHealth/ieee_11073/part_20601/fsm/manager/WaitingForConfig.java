@@ -23,23 +23,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.manager;
 
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ApduType;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.DataApdu;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.EventReportArgumentSimple;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.PrstApdu;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.DataApdu.MessageChoiceType;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.Configuring;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.StateHandler;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.TimeOut;
-
-import java.util.concurrent.Semaphore;
-
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.Event;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.EventType;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.messages.MessageFactory;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Tools;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Values;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ApduType;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.DataApdu;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.DataApdu.MessageChoiceType;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.EventReportArgumentSimple;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.PrstApdu;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.Configuring;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.StateHandler;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.TimeOut;
+
+import java.util.concurrent.Semaphore;
 
 public final class WaitingForConfig extends Configuring {
 

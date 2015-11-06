@@ -29,7 +29,7 @@ package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1;
 // Any modifications to this file will be lost upon recompilation of the source ASN.1.
 //
 
-import com.jadg.mydiabetes.middleHealth.org.bn.annotations.*;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.ASN1Module;
 
 
 @ASN1Module ( name = "IEEE_11073_20601_ASN1", isImplicitTags =  false  )

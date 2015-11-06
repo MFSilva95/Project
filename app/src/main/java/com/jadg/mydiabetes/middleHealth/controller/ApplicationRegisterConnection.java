@@ -6,8 +6,6 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.jadg.mydiabetes.middleHealth.controller.EventCallback;
-
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.IApplicationRegister;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.IEventCallback;
 

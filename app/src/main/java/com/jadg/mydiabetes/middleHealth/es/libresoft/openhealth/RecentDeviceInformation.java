@@ -2,10 +2,10 @@ package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth;
 
 import android.util.Log;
 
-import java.util.HashMap;
-
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.Event;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.EventType;
+
+import java.util.HashMap;
 
 public class RecentDeviceInformation
 {

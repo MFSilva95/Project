@@ -1,10 +1,9 @@
 package com.jadg.mydiabetes.middleHealth.customDevices;
 
 
+import android.util.Log;
 
 import java.util.StringTokenizer;
-
-import android.util.Log;
 
 public class Record {
 	private static final String TAG = "Meter Record";

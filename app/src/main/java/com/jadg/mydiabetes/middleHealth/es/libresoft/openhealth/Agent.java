@@ -23,8 +23,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth;
 
-import java.util.Iterator;
-
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.Event;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.InternalEventReporter;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.DIM_Tools;
@@ -33,6 +31,8 @@ import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.manager.Manage
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.channel.InitializedException;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.IMDS_Handler;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.MDS;
+
+import java.util.Iterator;
 
 public final class Agent extends Device11073{
 

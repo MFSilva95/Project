@@ -18,7 +18,7 @@
  */
 package com.jadg.mydiabetes.middleHealth.org.bn.metadata.constraints;
 
-import com.jadg.mydiabetes.middleHealth.org.bn.annotations.constraints.*;
+import com.jadg.mydiabetes.middleHealth.org.bn.annotations.constraints.ASN1ValueRangeConstraint;
 
 public class ASN1ValueRangeConstraintMetadata implements IASN1ConstraintMetadata {
     private long minValue, maxValue;

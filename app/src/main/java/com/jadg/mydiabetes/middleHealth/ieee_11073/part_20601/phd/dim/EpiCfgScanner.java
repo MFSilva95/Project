@@ -23,9 +23,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim;
 
-import java.util.Hashtable;
-
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
+
+import java.util.Hashtable;
 
 	/**
 	 * The EpiCfgScanner class represents a class that can be instantiated. EpiCfgScanner

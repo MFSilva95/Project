@@ -23,20 +23,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.channel;
 
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ApduType;
-
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.concurrent.Semaphore;
-
-import com.jadg.mydiabetes.middleHealth.org.bn.CoderFactory;
-import com.jadg.mydiabetes.middleHealth.org.bn.IDecoder;
-import com.jadg.mydiabetes.middleHealth.org.bn.IEncoder;
-
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Device11073;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.Event;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.EventType;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.IFIFO;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ApduType;
+import com.jadg.mydiabetes.middleHealth.org.bn.CoderFactory;
+import com.jadg.mydiabetes.middleHealth.org.bn.IDecoder;
+import com.jadg.mydiabetes.middleHealth.org.bn.IEncoder;
+
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.concurrent.Semaphore;
 
 public abstract class Channel {
 	private InputStream input;

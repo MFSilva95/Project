@@ -25,6 +25,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils;
 
+import com.jadg.mydiabetes.middleHealth.es.libresoft.mdnf.FloatType;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.mdnf.SFloatType;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Measure;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.BITS_32;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.BasicNuObsValue;
@@ -32,18 +35,13 @@ import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.BasicNuObsVal
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.INT_U16;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.INT_U32;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.OID_Type;
+import com.jadg.mydiabetes.middleHealth.org.bn.CoderFactory;
+import com.jadg.mydiabetes.middleHealth.org.bn.IDecoder;
 
 import java.io.ByteArrayInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
-
-import com.jadg.mydiabetes.middleHealth.org.bn.CoderFactory;
-import com.jadg.mydiabetes.middleHealth.org.bn.IDecoder;
-
-import com.jadg.mydiabetes.middleHealth.es.libresoft.mdnf.FloatType;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.mdnf.SFloatType;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Measure;
 
 public class RawDataExtractor {
 	private int index;

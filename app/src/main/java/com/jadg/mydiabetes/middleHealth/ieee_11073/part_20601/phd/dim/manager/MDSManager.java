@@ -27,6 +27,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.manager;
 
+import com.jadg.mydiabetes.middleHealth.es.libresoft.mdnf.SFloatType;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.HealthDevice;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Measure;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.InternalEventReporter;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.messages.MessageFactory;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Values;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.DIM_Tools;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.RawDataExtractor;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.AVA_Type;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.AbsoluteTime;
@@ -45,6 +53,7 @@ import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.HANDLE;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.INT_U16;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.InvokeIDType;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.MdsTimeInfo;
+import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.MetricIdList;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.MetricSpecSmall;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.OID_Type;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ObservationScan;
@@ -64,7 +73,6 @@ import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.SystemModel;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.TYPE;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.TypeVer;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.TypeVerList;
-import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.MetricIdList;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.Attribute;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.DIM;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.DimTimeOut;
@@ -76,15 +84,6 @@ import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.TimeOut;
 
 import java.util.Hashtable;
 import java.util.Iterator;
-
-import com.jadg.mydiabetes.middleHealth.es.libresoft.mdnf.SFloatType;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.HealthDevice;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Measure;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.InternalEventReporter;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.messages.MessageFactory;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Values;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.DIM_Tools;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.RawDataExtractor;
 
 public abstract class MDSManager extends MDS {
 

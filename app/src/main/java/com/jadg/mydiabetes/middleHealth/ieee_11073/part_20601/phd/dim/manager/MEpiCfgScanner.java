@@ -23,17 +23,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.manager;
 
-import java.util.HashMap;
-import java.util.Hashtable;
-
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.messages.MessageFactory;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.ASN1_Values;
-
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.ApduType;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.asn1.DataApdu;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.Attribute;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.EpiCfgScanner;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.InvalidAttributeException;
+
+import java.util.HashMap;
+import java.util.Hashtable;
 
 public class MEpiCfgScanner extends EpiCfgScanner {
 

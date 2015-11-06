@@ -22,8 +22,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
 package com.jadg.mydiabetes.middleHealth.org.bn.coders.mder;
-import java.io.OutputStream;
-import java.lang.reflect.Field;
 
 import com.jadg.mydiabetes.middleHealth.org.bn.annotations.constraints.ASN1ValueRangeConstraint;
 import com.jadg.mydiabetes.middleHealth.org.bn.coders.CoderUtils;
@@ -34,6 +32,9 @@ import com.jadg.mydiabetes.middleHealth.org.bn.metadata.constraints.ASN1ValueRan
 import com.jadg.mydiabetes.middleHealth.org.bn.metadata.constraints.IASN1ConstraintMetadata;
 import com.jadg.mydiabetes.middleHealth.org.bn.types.BitString;
 import com.jadg.mydiabetes.middleHealth.org.bn.utils.ReverseByteArrayOutputStream;
+
+import java.io.OutputStream;
+import java.lang.reflect.Field;
 
 public class MDEREncoder <T> extends Encoder<T> {
 

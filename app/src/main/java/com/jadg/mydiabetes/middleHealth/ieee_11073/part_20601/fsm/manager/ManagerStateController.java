@@ -25,10 +25,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 package com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.fsm.manager;
 
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.concurrent.Semaphore;
-
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.Event;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.InternalEventReporter;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.utils.IFIFO;
@@ -43,6 +39,10 @@ import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.DimTimeOut
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.IMDS_Handler;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.MDS;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_20601.phd.dim.TimeOut;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.concurrent.Semaphore;
 
 
 public class ManagerStateController implements StateController {
