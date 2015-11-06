@@ -36,15 +36,32 @@ public class MyDiabetesStorage {
 
 	}
 
-	public Cursor getAllWeights() {
+	public Cursor getAllWeights(QueryOptions options) {
 		SQLiteDatabase db = mHandler.getReadableDatabase();
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 		queryBuilder.setTables(MyDiabetesContract.Reg_Weight.TABLE_NAME);
 
 		Cursor cursor = queryBuilder.query(db, new String[]{MyDiabetesContract.Reg_Weight.COLUMN_NAME_ID,
 						MyDiabetesContract.Reg_Weight.COLUMN_NAME_DATETIME, MyDiabetesContract.Reg_Weight.COLUMN_NAME_VALUE},
-				null, null, null, null, null);
+				null, null, null, null,
+				MyDiabetesContract.Reg_Weight.COLUMN_NAME_DATETIME + " " + (options != null ? options.getSortOrder() : QueryOptions.ORDER_DESC));
 		return cursor;
 
+	}
+
+	public static class QueryOptions {
+		public static final String ORDER_ASC = "ASC";
+		public static final String ORDER_DESC = "DESC";
+
+		private String sortOrder;
+
+		public QueryOptions setSortOrder(String sortOrder) {
+			this.sortOrder = sortOrder;
+			return this;
+		}
+
+		public String getSortOrder() {
+			return sortOrder;
+		}
 	}
 }
