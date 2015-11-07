@@ -24,19 +24,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android;
 
-interface IAgentActionService {
+interface IAgentActionService
+ {
     /**
      * Send event to some agent
      */
-    void sendEvent (String system_id, int eventType);
+    void sendEvent (String systemId, int eventType);
 
     /**
      * invoke get Service in agent
      */
-    void getService (String system_id);
+    void getService (String systemId);
 
     /**
      * invoke set Service in agent
      */
-    void setService (String system_id);
+    void setService (String systemId);
 }

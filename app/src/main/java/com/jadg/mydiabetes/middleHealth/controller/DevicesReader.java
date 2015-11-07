@@ -1,9 +1,10 @@
 package com.jadg.mydiabetes.middleHealth.controller;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
+
+import com.jadg.mydiabetes.middleHealth.controller.connections.ApplicationRegisterConnection;
+import com.jadg.mydiabetes.middleHealth.controller.connections.CustomDeviceManagerConnection;
 
 public class DevicesReader
 {
@@ -11,17 +12,27 @@ public class DevicesReader
 
 	private Activity mActivity;
 	private ApplicationRegisterConnection mApplicationRegisterConnection;
+	private CustomDeviceManagerConnection mCustomDeviceManagerConnection;
 
 	public DevicesReader(Activity activity)
 	{
 		mActivity = activity;
+
+		EventCallback eventCallback = new EventCallback(activity);
+		mApplicationRegisterConnection = new ApplicationRegisterConnection(eventCallback);
+		mCustomDeviceManagerConnection = new CustomDeviceManagerConnection();
 	}
 
 	public boolean initialize()
 	{
 		Log.d(TAG, "initialize()");
 
-		if(!initializeApplicationRegisterService())
+		// Initialize application register connection:
+		if(!mApplicationRegisterConnection.initialize(mActivity))
+			return false;
+
+		// Initialize custom device manager connection:
+		if(!mCustomDeviceManagerConnection.initialize(mActivity, false)) // TODO create a settings class to store this value
 			return false;
 
 		return true;
@@ -30,23 +41,7 @@ public class DevicesReader
 	{
 		Log.d(TAG, "shutdown()");
 
-		shutdownApplicationRegisterService();
-	}
-
-	private boolean initializeApplicationRegisterService()
-	{
-		EventCallback eventCallback = new EventCallback(mActivity);
-		mApplicationRegisterConnection = new ApplicationRegisterConnection(eventCallback);
-
-		Intent applicationRegisterIntent = new Intent(mActivity, com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.MiddleHealth.class);
-		applicationRegisterIntent.setAction("IApplicationRegister");
-		if(!mActivity.bindService(applicationRegisterIntent, mApplicationRegisterConnection, Context.BIND_AUTO_CREATE))
-			return false;
-
-		return true;
-	}
-	private void shutdownApplicationRegisterService()
-	{
-		mActivity.unbindService(mApplicationRegisterConnection);
+		mCustomDeviceManagerConnection.shutdown();
+		mApplicationRegisterConnection.shutdown();
 	}
 }

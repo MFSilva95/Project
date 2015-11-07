@@ -2,7 +2,7 @@ package com.jadg.mydiabetes.middleHealth.customDevices;
 
 import android.util.Log;
 
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.EventManager;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.IEventManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +17,7 @@ public class CustomDeviceProvider
 			{
 					new Glucometer()
 			};
-	private HashMap<String,ICustomDevice> deviceList;
+	private HashMap<String, ICustomDevice> deviceList;
 	private ArrayList<Thread> threadList;
 
 	public CustomDeviceProvider()
@@ -37,7 +37,7 @@ public class CustomDeviceProvider
 		}
 	}
 
-	public void initializeCustomDevices(EventManager eventManager)
+	public void initializeCustomDevices(IEventManager eventManager)
 	{
 		Log.d(TAG, "initializeCustomDevices()");
 

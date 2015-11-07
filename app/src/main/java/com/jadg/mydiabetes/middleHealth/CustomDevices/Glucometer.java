@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.HealthDevice;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Measure;
-import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.EventManager;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events.IEventManager;
 import com.jadg.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
 
 import java.io.IOException;
@@ -20,8 +20,6 @@ import java.util.UUID;
 public class Glucometer implements com.jadg.mydiabetes.middleHealth.customDevices.ICustomDevice
 {
 	private static final String TAG = "Glucometer";
-
-	private static final boolean ERASE_ALL_DATA_AFTER_READ = false;
 	
 	// Constants that indicate the current connection state
     public static final int STATE_NONE = 0;       // we're doing nothing
@@ -56,7 +54,7 @@ public class Glucometer implements com.jadg.mydiabetes.middleHealth.customDevice
 			};
 
 
-	private static EventManager sEventManager = null;
+	private static IEventManager sEventManager = null;
 	private static HealthDevice sDevice = null;
 
 	private BluetoothAdapter mAdapter;
@@ -65,6 +63,7 @@ public class Glucometer implements com.jadg.mydiabetes.middleHealth.customDevice
     private BluetoothServerSocket mBluetoothServerSocket;
     private BluetoothSocket mBluetoothSocket;
 	private boolean mRepeat = true;
+	private boolean mEraseAllDataOption = false;
 
 	@Override
 	public void run()
@@ -87,7 +86,7 @@ public class Glucometer implements com.jadg.mydiabetes.middleHealth.customDevice
 				continue;
 
 			// Erase all data if configured to do so:
-			if(ERASE_ALL_DATA_AFTER_READ)
+			if(mEraseAllDataOption)
 				eraseDateFromGlucometer();
 
 			// Close connection:
@@ -96,7 +95,7 @@ public class Glucometer implements com.jadg.mydiabetes.middleHealth.customDevice
 	}
 
 	@Override
-	public void setEventHandler(EventManager eventManager)
+	public void setEventHandler(IEventManager eventManager)
 	{
 		sEventManager = eventManager;
 	}
@@ -119,7 +118,16 @@ public class Glucometer implements com.jadg.mydiabetes.middleHealth.customDevice
 		return null;
 	}
 
-	public void waitForConnection()
+	public boolean getEraseAllDataOption()
+	{
+		return mEraseAllDataOption;
+	}
+	public void setEraseAllDataOption(boolean value)
+	{
+		mEraseAllDataOption = value;
+	}
+
+	private void waitForConnection()
 	{
 		try
 		{
@@ -138,7 +146,7 @@ public class Glucometer implements com.jadg.mydiabetes.middleHealth.customDevice
 		}
 	}
 	
-	public void closeConnection()
+	private void closeConnection()
 	{
 		try
 		{
@@ -162,7 +170,7 @@ public class Glucometer implements com.jadg.mydiabetes.middleHealth.customDevice
     	sEventManager.deviceDisconnected(SYSTEM_ID);
 	}
 	
-	public boolean readDataFromMeter()
+	private boolean readDataFromMeter()
 	{
 		Record record;
 		Record lastRecord = null;
@@ -338,7 +346,6 @@ public class Glucometer implements com.jadg.mydiabetes.middleHealth.customDevice
 		return false;
 	}
 
-	
 	private byte[] readFromMeter(int paramInt) throws Exception
 	{
 		int i;

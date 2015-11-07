@@ -1,15 +1,17 @@
-package com.jadg.mydiabetes.middleHealth.controller;
+package com.jadg.mydiabetes.middleHealth.controller.connections;
 
 import android.content.ComponentName;
-import android.content.ServiceConnection;
+import android.content.Context;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 
+import com.jadg.mydiabetes.middleHealth.controller.EventCallback;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.IApplicationRegister;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.IEventCallback;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.serviceInterfaces.ApplicationRegisterService;
 
-public class ApplicationRegisterConnection implements ServiceConnection
+public class ApplicationRegisterConnection extends AbstractConnection
 {
 	private static final String TAG = "ApplicationRegisterServ";
 
@@ -19,6 +21,11 @@ public class ApplicationRegisterConnection implements ServiceConnection
 	public ApplicationRegisterConnection(EventCallback eventCallback)
 	{
 		mEventCallback = eventCallback;
+	}
+
+	public boolean initialize(Context context)
+	{
+		return super.initialize(context, com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.MiddleHealth.class, ApplicationRegisterService.TAG);
 	}
 
 	@Override

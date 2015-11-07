@@ -27,7 +27,8 @@ package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.events;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.HealthDevice;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.Measure;
 
-public interface EventManager {
+public interface IEventManager
+{
 	/**
 	 * Agent event to indicate that new measure has been received from agent
 	 * @param value

@@ -102,7 +102,7 @@ public final class Agent extends Device11073{
 		return system_id.hashCode();
 	}
 
-	public Iterator<Integer> getPM_StoresHandlers() {
+	public Iterator<Integer> getPMStoresHandlers() {
 		return mdsObj.getPM_StoresHandlers().iterator();
 	}
 

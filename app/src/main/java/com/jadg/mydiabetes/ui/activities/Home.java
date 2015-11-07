@@ -53,6 +53,14 @@ public class Home extends BaseActivity {
 			Log.d(TAG, "onCreate() - Failed to initialize Devices Reader!");
 	}
 
+	@Override
+	protected void onDestroy()
+	{
+		// Free resources:
+		devicesReader.shutdown();
+
+		super.onDestroy();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

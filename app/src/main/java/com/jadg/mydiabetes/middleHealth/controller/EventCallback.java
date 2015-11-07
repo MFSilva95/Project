@@ -1,10 +1,12 @@
 package com.jadg.mydiabetes.middleHealth.controller;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.AndroidMeasure;
@@ -25,12 +27,12 @@ public class EventCallback extends IEventCallback.Stub
 	private static final String TAG = "EventCallback";
 	private static final int TIME_INTERVAL_TO_START_MEAL = 300000; // 5 minutes = 300 s = 300.000 ms
 
-	private Context mContext;
+	private Activity mActivity;
 	private List<AndroidMeasure> mMeasures = new ArrayList<>();
 
-	public EventCallback(Context activity)
+	public EventCallback(Activity activity)
 	{
-		mContext = activity;
+		mActivity = activity;
 	}
 
 	@Override
@@ -56,9 +58,9 @@ public class EventCallback extends IEventCallback.Stub
 	}
 
 	@Override
-	public void MeasureReceived(String systemId, AndroidMeasure measure) throws RemoteException
+	public void measureReceived(String systemId, AndroidMeasure measure) throws RemoteException
 	{
-		Log.d(TAG, "MeasureReceived()");
+		Log.d(TAG, "measureReceived()");
 
 		mMeasures.add(measure);
 	}
@@ -84,7 +86,10 @@ public class EventCallback extends IEventCallback.Stub
 		// Remove duplicates:
 		removeDuplicates(measures, minTimestamp, maxTimestamp);
 		if(measures.isEmpty())
+		{
+			showMessage(0);
 			return;
+		}
 
 		// If not older than 5 minutes, remove from the "measures" list and start Meal activity:
 		processMostRecentMeasure(measures);
@@ -92,6 +97,9 @@ public class EventCallback extends IEventCallback.Stub
 		// Save the measures:
 		for (AndroidMeasure measure : measures)
 			saveGlycemia(measure);
+
+		// Show a message on the user interface:
+		showMessage(measures.size());
 	}
 
 	private void removeDuplicates(List<AndroidMeasure> measures, Long minTimestamp, Long maxTimestamp)
@@ -102,7 +110,7 @@ public class EventCallback extends IEventCallback.Stub
 		String finalDate = dateFormat.format(Utils.getDateFromTimestamp(maxTimestamp));
 
 		// Read glycemia values:
-		DB_Read readDatabase = new DB_Read(mContext);
+		DB_Read readDatabase = new DB_Read(mActivity);
 		ArrayList<GlycemiaDataBinding> glycemiaValues = readDatabase.Glycemia_GetByDate(initialDate, finalDate);
 		readDatabase.close();
 
@@ -164,10 +172,10 @@ public class EventCallback extends IEventCallback.Stub
 		{
 			if(mostRecentMeasure.getMeasureId() == Nomenclature.MDC_CONC_GLU_GEN)
 			{
-				Intent intent = new Intent(mContext, Meal.class);
+				Intent intent = new Intent(mActivity, Meal.class);
 				intent.putExtra("value", mostRecentMeasure.getValues().get(0));
 				intent.putExtra("timestamp", mostRecentMeasure.getTimestamp());
-				mContext.startActivity(intent);
+				mActivity.startActivity(intent);
 
 				// Remove the most recent measure from the list, if the Meal activity is started:
 				measures.remove(mostRecentMeasure);
@@ -190,7 +198,7 @@ public class EventCallback extends IEventCallback.Stub
 
 
 		// Open database to read:
-		DB_Read readDatabase = new DB_Read(mContext);
+		DB_Read readDatabase = new DB_Read(mActivity);
 
 		// Get ID of user:
 		Object[] obj = readDatabase.MyData_Read();
@@ -204,7 +212,7 @@ public class EventCallback extends IEventCallback.Stub
 		readDatabase.close();
 
 		// Open database to write:
-		DB_Write writeDatabase = new DB_Write(mContext);
+		DB_Write writeDatabase = new DB_Write(mActivity);
 
 		// Save glycemia value:
 		GlycemiaDataBinding glycemia = new GlycemiaDataBinding();
@@ -217,5 +225,25 @@ public class EventCallback extends IEventCallback.Stub
 
 		// Close database:
 		writeDatabase.close();
+	}
+
+	private void showMessage(final int numberOfMeasuresAdded)
+	{
+		final String message;
+		if(numberOfMeasuresAdded == 0)
+			message = mActivity.getString(R.string.no_measures_added_to_database);
+		else
+			message = mActivity.getString(R.string.measures_added_to_database, numberOfMeasuresAdded);
+
+		mActivity.runOnUiThread(
+			new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					Toast.makeText(mActivity, message, Toast.LENGTH_LONG).show();
+				}
+			}
+		);
 	}
 }

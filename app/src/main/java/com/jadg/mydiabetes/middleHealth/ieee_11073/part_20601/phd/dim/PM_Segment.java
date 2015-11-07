@@ -77,7 +77,7 @@ public class PM_Segment extends DIM {
 		/* Check mandatory attributes of the PM_Segments object */
 		for (int i=0; i<mandatoryIds.length; i++){
 			if (!attributes.containsKey(mandatoryIds[i]))
-				throw new InvalidAttributeException("Attribute id " + mandatoryIds[i] + " is not assigned in PM_Store Object.");
+				throw new InvalidAttributeException("Attribute id " + mandatoryIds[i] + " is not assigned in PMStore Object.");
 		}
 	}
 }

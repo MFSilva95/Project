@@ -32,8 +32,8 @@ import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.RecentDeviceInfo
 
 public class InternalEventReporter {
 
-	private static EventManager iEvent;
-	public static synchronized void setDefaultEventManager (EventManager handler){
+	private static IEventManager iEvent;
+	public static synchronized void setDefaultEventManager (IEventManager handler){
 		iEvent = handler;
 	}
 	

@@ -27,7 +27,8 @@ package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android;
 
 import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.Scanner;
 
-interface IScannerActionService {
-	void getScanner(String system_id, out List<Scanner> scannerList);
-	void Set(in Scanner scanner, in boolean enable);
+interface IScannerActionService
+{
+	void getScanner(String systemId, out List<Scanner> scannerList);
+	void setScanner(in Scanner scanner, in boolean enable);
 }

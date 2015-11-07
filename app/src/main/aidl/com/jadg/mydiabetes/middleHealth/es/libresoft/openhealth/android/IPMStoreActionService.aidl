@@ -24,4 +24,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android;
 
-parcelable PM_Store;
+import com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android.PMStore;
+
+interface IPMStoreActionService
+{
+    void getStorage(String systemId, out List<PMStore> pmStoreList);
+    void getPMStore(in PMStore pmStore);
+}

@@ -3,27 +3,27 @@ package com.jadg.mydiabetes.middleHealth.es.libresoft.openhealth.android;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class PM_Store implements Parcelable {
+public class PMStore implements Parcelable {
 	private int handler;
 	private String systId;
 
-	public static final Creator<PM_Store> CREATOR =
-			new Creator<PM_Store>() {
-	    public PM_Store createFromParcel(Parcel in) {
-	        return new PM_Store(in);
+	public static final Creator<PMStore> CREATOR =
+			new Creator<PMStore>() {
+	    public PMStore createFromParcel(Parcel in) {
+	        return new PMStore(in);
 	    }
 
-	    public PM_Store[] newArray(int size) {
-	        return new PM_Store[size];
+	    public PMStore[] newArray(int size) {
+	        return new PMStore[size];
 	    }
 	};
 
-	private PM_Store (Parcel in) {
+	private PMStore(Parcel in) {
 		handler = in.readInt();
 		systId = in.readString();
 	}
 
-	public PM_Store(int pmHandler, String systemId) {
+	public PMStore(int pmHandler, String systemId) {
 		handler = pmHandler;
 		systId = systemId;
 	}
@@ -39,11 +39,11 @@ public class PM_Store implements Parcelable {
 		dest.writeString(systId);
 	}
 
-	public int getPM_StoreHandler() {
+	public int getPMStoreHandler() {
 		return handler;
 	}
 
-	public String getPM_StoreAgentId() {
+	public String getPMStoreAgentId() {
 		return systId;
 	}
 }

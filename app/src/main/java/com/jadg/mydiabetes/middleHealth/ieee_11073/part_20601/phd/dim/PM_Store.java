@@ -72,10 +72,10 @@ public abstract class PM_Store extends DIM implements PM_Store_Events, GET_Servi
 	protected void checkAttributes(
 			Hashtable<Integer, Attribute> attributes)
 			throws InvalidAttributeException {
-		/* Check mandatory attributes of the PM_Store object */
+		/* Check mandatory attributes of the PMStore object */
 		for (int i=0; i<mandatoryIds.length; i++){
 			if (!attributes.containsKey(mandatoryIds[i]))
-				throw new InvalidAttributeException("Attribute id " + mandatoryIds[i] + " is not assigned in PM_Store Object.");
+				throw new InvalidAttributeException("Attribute id " + mandatoryIds[i] + " is not assigned in PMStore Object.");
 		}
 	}
 
@@ -83,7 +83,7 @@ public abstract class PM_Store extends DIM implements PM_Store_Events, GET_Servi
 		return Nomenclature.MDC_MOC_VMO_PMSTORE;
 	}
 
-	/* PM_Store Object methods */
+	/* PMStore Object methods */
 
 	/**
 	 * This method allows the manager to delete the data currently stored in one or more selected
