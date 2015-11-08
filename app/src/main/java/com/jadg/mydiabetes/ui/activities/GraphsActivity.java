@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,6 +28,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.MyDiabetesContract;
 import com.jadg.mydiabetes.database.MyDiabetesStorage;
+import com.jadg.mydiabetes.ui.charts.BodyExpandFrameLayout;
 import com.jadg.mydiabetes.ui.charts.BodyOverlapHeaderGesture;
 
 import org.lucasr.twowayview.widget.DividerItemDecoration;
@@ -48,6 +50,7 @@ public class GraphsActivity extends Activity {
 	TwoWayView listView;
 	LineChart chart;
 	private BodyOverlapHeaderGesture bodyOverlapHeaderGesture;
+	private GestureDetector gestureDetector;
 	private int numberOfElementsInGraph;
 
 	@Override
@@ -71,6 +74,8 @@ public class GraphsActivity extends Activity {
 			}
 		};
 
+		((BodyExpandFrameLayout) findViewById(R.id.frame)).setBodyOverlapHeaderGesture(bodyOverlapHeaderGesture);
+
 		chart.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -79,12 +84,10 @@ public class GraphsActivity extends Activity {
 					return true;
 				} else {
 					return false;
-			}
+				}
 
 			}
 		});
-		bodyOverlapHeaderGesture.collapse();
-
 	}
 
 
@@ -239,6 +242,7 @@ public class GraphsActivity extends Activity {
 
 		public WeightAdapter(Cursor cursor) {
 			this.cursor = cursor;
+//			setHasStableIds(true);
 		}
 
 		@Override
