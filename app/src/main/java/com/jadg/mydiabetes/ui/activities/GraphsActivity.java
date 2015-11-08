@@ -1,6 +1,5 @@
 package com.jadg.mydiabetes.ui.activities;
 
-import android.app.Activity;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -8,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -40,7 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-public class GraphsActivity extends Activity {
+public class GraphsActivity extends BaseActivity {
 
 
 	private static final SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -50,13 +48,13 @@ public class GraphsActivity extends Activity {
 	TwoWayView listView;
 	LineChart chart;
 	private BodyOverlapHeaderGesture bodyOverlapHeaderGesture;
-	private GestureDetector gestureDetector;
 	private int numberOfElementsInGraph;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_graphs);
+		getSupportActionBar();
 
 		setupContent();
 
@@ -156,7 +154,7 @@ public class GraphsActivity extends Activity {
 		chart.animateY(2000);
 
 		chart.invalidate();
-		chart.moveViewToX(chart.getLineData().getXValCount()-5);
+		chart.moveViewToX(chart.getLineData().getXValCount() - 5);
 
 		chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
 

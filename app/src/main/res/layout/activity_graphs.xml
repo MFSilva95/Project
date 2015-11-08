@@ -15,15 +15,8 @@
         android:layout_width="fill_parent"
         android:layout_height="220dp"
         android:layout_margin="0dp"
-        android:layout_marginLeft="-20dp"
-        android:layout_marginRight="-20dp"
         android:padding="0dp"
         />
-
-    <!--<View-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:background="@android:color/black"-->
-    <!--android:layout_height="2dp"/>-->
 
     <org.lucasr.twowayview.widget.TwoWayView
         android:id="@+id/list_vals"
@@ -33,8 +26,8 @@
         android:background="@drawable/divider_shadow"
         android:choiceMode="singleChoice"
         android:clipToPadding="false"
-        android:paddingBottom="120dp"
         android:elevation="2dp"
+        android:paddingBottom="120dp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical"
         app:twowayview_layoutManager="ListLayoutManager"
