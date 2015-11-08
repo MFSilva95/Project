@@ -1,10 +1,11 @@
 package com.jadg.mydiabetes.ui.activities;
 
 import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 
-public class BaseActivity extends Activity {
+public class BaseActivity extends AppCompatActivity {
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {

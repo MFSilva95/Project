@@ -334,7 +334,9 @@
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity> -->
 
-        <activity android:name=".ui.activities.GraphsActivity">
+        <activity android:name=".ui.activities.GraphsActivity"
+            android:label="@string/chart_activity_label"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

@@ -70,11 +70,11 @@
     <string name="deleteException">Não pode eliminar esta leitura!</string>
     <string name="deleteAlert">Alerta!</string>
     <string name="deleteConfirmationSingular">O item seguinte será apagado:</string>
-	<string name="deleteConfirmationPlural">Os itens seguintes serão apagados:</string>
-	<string name="deleteCarbsReg">Registo de Hidratos de Carbonos</string>
-	<string name="deleteGlycemiaReg">Registo de Glicemia</string>
-	<string name="deleteInsulinReg">Registo de Insulina</string>
-	
+    <string name="deleteConfirmationPlural">Os itens seguintes serão apagados:</string>
+    <string name="deleteCarbsReg">Registo de Hidratos de Carbonos</string>
+    <string name="deleteGlycemiaReg">Registo de Glicemia</string>
+    <string name="deleteInsulinReg">Registo de Insulina</string>
+
     <string-array name="Effort">
         <item>Muito Leve</item>
         <item>Leve</item>
@@ -119,28 +119,26 @@
     <string name="Carbs">H.Carb</string>
     <string name="Exercise">Exercício</string>
     <string name="delete_Exercise">Eliminar exercício?</string>
-	<string name="Logbook">Logbook</string>
-	<string name="photoSaved">Guardada em: </string>
-	<string name="information_about">Aplicação desenvolvida no âmbito do projeto interno do Instituto de Telecomunicações \"S-Dia-SelMan - Smart Diabetes Self Management System\" na Fac. de Ciências e Fac. de Medicina da Universidade do Porto. Trabalho realizado em colaboração com o Hospital de S. João.</string>
-	<string name="information_about_using">A utilização da aplicação apenas está disponível se estiver envolvido(a) na fase de teste da mesma (Serviço de Endocrinologia do Hospital de São João, EPE), tendo assinado o Consentimento Informado que lhe foi fornecido e estando totalmente informado(a) acerca da metodologia a desenvolver durante o estudo.</string>
-	<string name="information_about_developers">Aplicação desenvolvida por João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
-	<string name="information_about_libraries">Esta aplicação utiliza a biblioteca DroidText.</string>
-	<string name="information_about_version">Versão </string>
-	
-	<string name="diseaseInputAlert" >Insira o nome de doença antes de gravar!</string>
-	<string name="exerciseInputAlert" >Insira o nome do exercício antes de gravar!</string>
-	
-	
-	<string name="information_about_contact">mydiabetes@dcc.fc.up.pt\n\nhttp://mydiabetes.dcc.fc.up.pt/</string>
-	<string name="uporto">Univ. Porto</string>
-	
-	
-	
-	<string name="sync">Sincronizar com PC</string>
-	
-	
-	
-	<string name="qr">Ler QR</string>
+    <string name="Logbook">Logbook</string>
+    <string name="photoSaved">Guardada em: </string>
+    <string name="information_about">Aplicação desenvolvida no âmbito do projeto interno do Instituto de Telecomunicações \"S-Dia-SelMan - Smart Diabetes Self Management System\" na Fac. de Ciências e Fac. de Medicina da Universidade do Porto. Trabalho realizado em colaboração com o Hospital de S. João.</string>
+    <string name="information_about_using">A utilização da aplicação apenas está disponível se estiver envolvido(a) na fase de teste da mesma (Serviço de Endocrinologia do Hospital de São João, EPE), tendo assinado o Consentimento Informado que lhe foi fornecido e estando totalmente informado(a) acerca da metodologia a desenvolver durante o estudo.</string>
+    <string name="information_about_developers">Aplicação desenvolvida por João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
+    <string name="information_about_libraries">Esta aplicação utiliza a biblioteca DroidText.</string>
+    <string name="information_about_version">Versão </string>
+
+    <string name="diseaseInputAlert">Insira o nome de doença antes de gravar!</string>
+    <string name="exerciseInputAlert">Insira o nome do exercício antes de gravar!</string>
+
+
+    <string name="information_about_contact">mydiabetes@dcc.fc.up.pt\n\nhttp://mydiabetes.dcc.fc.up.pt/</string>
+    <string name="uporto">Univ. Porto</string>
+
+
+    <string name="sync">Sincronizar com PC</string>
+
+
+    <string name="qr">Ler QR</string>
 
     <string name="homeInfo">Antes de adicionar qualquer registo deve adicionar a sua informação!</string>
     <string name="insulin_info_insulins">Antes de adicionar registos de insulina deve adicionar a insulina a administrar!</string>
@@ -296,10 +294,7 @@
     <string name="meal_insulin_calc_1"> . Esta será utilizada para fazer o cálculo da insulina activa"</string>
 
     <string name="meal_insulin_no_calc">A insulina que seleccionou não será utilizada para fazer o cálculo da insulina activa"</string>
-
-
-
-
+    <string name="chart_activity_label">Peso</string>
 
 
 </resources>
