@@ -45,6 +45,7 @@ public class ChartFragment extends Fragment {
 
 	private OnFragmentInteractionListener mListener;
 
+	private View listItemSelected;
 
 	/**
 	 * Use this factory method to create a new instance of
@@ -126,13 +127,13 @@ public class ChartFragment extends Fragment {
 		chart.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View view, MotionEvent motionEvent) {
+				removeSelection();
 				if (bodyOverlapHeaderGesture.isExpanded()) {
 					bodyOverlapHeaderGesture.collapse();
 					return true;
 				} else {
 					return false;
 				}
-
 			}
 		});
 	}
@@ -221,45 +222,49 @@ public class ChartFragment extends Fragment {
 
 		chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
 
-			View previewsSelected;
 
 			@Override
 			public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
-				if(previewsSelected!=null && bodyOverlapHeaderGesture.isExpanded()){
-					previewsSelected.setHovered(false);
-					previewsSelected.setPressed(false);
+				if (listItemSelected != null && bodyOverlapHeaderGesture.isExpanded()) {
+					removeSelection();
 					bodyOverlapHeaderGesture.collapse();
-					previewsSelected=null;
-					chart.highlightValue(null);
 					return;
 				}
 				Log.d("ChartSelect", String.valueOf(numberOfElementsInGraph - h.getXIndex() - 1));
 				listView.smoothScrollToPosition(numberOfElementsInGraph - h.getXIndex() - 1);
 				RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(numberOfElementsInGraph - h.getXIndex() - 1);
 				if (holder != null && holder.itemView != null) {
-					if (previewsSelected != null) {
-						previewsSelected.setHovered(false);
-						previewsSelected.setPressed(false);
-					}
-					holder.itemView.setHovered(true);
-					holder.itemView.setPressed(true);
-					previewsSelected = holder.itemView;
+					removeSelection();
+					selectItem(holder.itemView);
 				}
 				bodyOverlapHeaderGesture.expand();
 			}
 
 			@Override
 			public void onNothingSelected() {
-				if (previewsSelected != null) {
-					previewsSelected.setHovered(false);
-					previewsSelected.setPressed(false);
+				if (listItemSelected != null) {
+					removeSelection();
 					bodyOverlapHeaderGesture.collapse();
-					previewsSelected=null;
 				}
 			}
 		});
 	}
 
+
+	private void removeSelection() {
+		if (listItemSelected != null) {
+			listItemSelected.setHovered(false);
+			listItemSelected.setPressed(false);
+			listItemSelected = null;
+		}
+		chart.highlightValue(null);
+	}
+
+	private void selectItem(View newView) {
+		listItemSelected = newView;
+		listItemSelected.setHovered(true);
+		listItemSelected.setPressed(true);
+	}
 
 	public void endSetup() {
 		setupScrool();
