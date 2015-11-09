@@ -183,6 +183,7 @@ public class ChartFragment extends Fragment {
 
 		chart.setVisibleXRangeMaximum(5); // allow 5 values to be displayed at once on the x-axis, not more
 		chart.setVisibleXRangeMinimum(2); // allow 5 values to be displayed at once on the x-axis, not less
+		chart.setDragOffsetX(10);
 
 
 //		chart.setBackgroundColor(Color.WHITE);
