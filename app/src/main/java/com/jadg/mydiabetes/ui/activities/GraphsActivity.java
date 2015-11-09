@@ -19,15 +19,13 @@ import com.jadg.mydiabetes.database.MyDiabetesContract;
 import com.jadg.mydiabetes.database.MyDiabetesStorage;
 import com.jadg.mydiabetes.ui.fragments.ChartFragment;
 
-import org.lucasr.twowayview.widget.TwoWayView;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-public class GraphsActivity extends BaseActivity implements ChartFragment.OnFragmentInteractionListener{
+public class GraphsActivity extends BaseActivity implements ChartFragment.OnFragmentInteractionListener {
 
 
 	private static final SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -107,7 +105,7 @@ public class GraphsActivity extends BaseActivity implements ChartFragment.OnFrag
 	}
 
 
-	class WeightAdapter extends TwoWayView.Adapter<WeightAdapter.WeightViewHolder> {
+	class WeightAdapter extends RecyclerView.Adapter<WeightAdapter.WeightViewHolder> {
 
 		private Cursor cursor;
 

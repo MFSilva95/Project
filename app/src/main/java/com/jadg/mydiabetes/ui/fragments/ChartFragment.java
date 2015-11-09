@@ -2,11 +2,10 @@ package com.jadg.mydiabetes.ui.fragments;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,9 +23,7 @@ import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.ui.charts.BodyExpandFrameLayout;
 import com.jadg.mydiabetes.ui.charts.BodyOverlapHeaderGesture;
-
-import org.lucasr.twowayview.widget.DividerItemDecoration;
-import org.lucasr.twowayview.widget.TwoWayView;
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -107,7 +104,7 @@ public class ChartFragment extends Fragment {
 	}
 
 
-	TwoWayView listView;
+	RecyclerView listView;
 	LineChart chart;
 	private BodyOverlapHeaderGesture bodyOverlapHeaderGesture;
 	private int numberOfElementsInGraph;
@@ -154,12 +151,12 @@ public class ChartFragment extends Fragment {
 		void onItemSelected(int position);
 	}
 
-	public void setListAdapter(TwoWayView.Adapter adapter) {
-		listView = (TwoWayView) getView().findViewById(R.id.list_vals);
+	public void setListAdapter(RecyclerView.Adapter adapter) {
+		listView = (RecyclerView) getView().findViewById(R.id.list_vals);
 		listView.setHasFixedSize(true);
 		listView.setAdapter(adapter);
-		final Drawable divider = ContextCompat.getDrawable(getContext(), R.drawable.divider);
-		listView.addItemDecoration(new DividerItemDecoration(divider));
+		listView.setLayoutManager(new LinearLayoutManager(getContext()));
+		listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).build());
 	}
 
 	public void setChartData(LineData data) {

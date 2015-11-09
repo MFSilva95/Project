@@ -18,7 +18,7 @@
         android:padding="0dp"
         />
 
-    <org.lucasr.twowayview.widget.TwoWayView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/list_vals"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -30,9 +30,8 @@
         android:paddingBottom="120dp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical"
-        app:twowayview_layoutManager="ListLayoutManager"
         tools:listitem="@layout/list_item_graph_weights">
 
-    </org.lucasr.twowayview.widget.TwoWayView>
+    </android.support.v7.widget.RecyclerView>
 
 </com.jadg.mydiabetes.ui.charts.BodyExpandFrameLayout>
