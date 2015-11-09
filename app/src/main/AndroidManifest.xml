@@ -333,7 +333,9 @@
             android:label="@string/title_activity_cloud_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity> -->
-
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="7601388bb7cc37077c533c82536ee42dbc14d1a0"/>
     </application>
 
 </manifest>
