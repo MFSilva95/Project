@@ -14,8 +14,10 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ScrollView;
 
+import com.crashlytics.android.Crashlytics;
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.DB_Read;
+import io.fabric.sdk.android.Fabric;
 
 
 public class Home extends BaseActivity {
@@ -23,6 +25,7 @@ public class Home extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Fabric.with(this, new Crashlytics());
 		setContentView(R.layout.activity_home);
 		getActionBar();
 
