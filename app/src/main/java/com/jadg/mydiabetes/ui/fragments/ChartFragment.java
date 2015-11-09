@@ -170,6 +170,7 @@ public class ChartFragment extends Fragment {
 		chart.getXAxis().setEnabled(false);
 		chart.getAxisLeft().setEnabled(false);
 		chart.getAxisRight().setEnabled(false);
+		chart.setViewPortOffsets(0, 20, 10,20);
 
 		chart.getAxisRight().setDrawGridLines(false);
 		chart.getAxisLeft().setDrawGridLines(false);
