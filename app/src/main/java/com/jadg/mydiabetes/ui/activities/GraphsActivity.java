@@ -1,7 +1,6 @@
 package com.jadg.mydiabetes.ui.activities;
 
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,11 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.DefaultFillFormatter;
-import com.github.mikephil.charting.utils.Utils;
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.MyDiabetesContract;
 import com.jadg.mydiabetes.database.MyDiabetesStorage;
@@ -22,8 +16,11 @@ import com.jadg.mydiabetes.ui.fragments.ChartFragment;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import lecho.lib.hellocharts.model.PointValue;
 
 public class GraphsActivity extends BaseActivity implements ChartFragment.OnFragmentInteractionListener {
 
@@ -54,49 +51,30 @@ public class GraphsActivity extends BaseActivity implements ChartFragment.OnFrag
 	}
 
 
-	private LineData convertToGraphPoints(Cursor cursor) {
+	private List<PointValue> convertToGraphPoints(Cursor cursor) {
 		cursor.moveToFirst();
 		numberOfElementsInGraph = cursor.getCount() > MAX_VALUES_IN_GRAPH ? MAX_VALUES_IN_GRAPH : cursor.getCount();
 
-		String[] xs = new String[numberOfElementsInGraph];
-		Entry[] set = new Entry[numberOfElementsInGraph];
-
+		List<PointValue> xss = new ArrayList<>(numberOfElementsInGraph);
 
 		String date;
 		double value;
 		int i = numberOfElementsInGraph - 1;
 		while (i >= 0) {
 			date = cursor.getString(cursor.getColumnIndex(MyDiabetesContract.Reg_Weight.COLUMN_NAME_DATETIME));
+			float dateTimeStamp = 0;
+			try {
+				dateTimeStamp = iso8601Format.parse(date).getTime();
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			value = cursor.getDouble(cursor.getColumnIndex(MyDiabetesContract.Reg_Weight.COLUMN_NAME_VALUE));
-			xs[i] = date;
-			set[i] = new Entry((float) value, i);
+			xss.add(new PointValue(dateTimeStamp, (float) value));
 			i--;
 			cursor.moveToNext();
 		}
 
-		LineData result = new LineData(xs);
-		LineDataSet lineSet = new LineDataSet(Arrays.asList(set), "");
-		setupStyleLineSet(lineSet);
-
-		result.addDataSet(lineSet);
-		result.setHighlightEnabled(true);
-		return result;
-	}
-
-	public void setupStyleLineSet(LineDataSet lineSet) {
-		lineSet.setLineWidth(0f);
-		lineSet.setDrawCircles(true);
-		lineSet.setCircleSize(5f);
-		lineSet.setFillFormatter(new DefaultFillFormatter());
-		lineSet.setDrawFilled(true);
-
-		lineSet.setDrawCubic(true);
-		lineSet.setCubicIntensity(0.2f);
-
-		lineSet.setValueTextSize(Utils.convertDpToPixel(6));
-
-		lineSet.setFillColor(Color.RED);
-		lineSet.setCircleColor(Color.RED);
+		return xss;
 	}
 
 	@Override

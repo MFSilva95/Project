@@ -7,27 +7,32 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.formatter.XAxisValueFormatter;
-import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.ui.charts.BodyExpandFrameLayout;
 import com.jadg.mydiabetes.ui.charts.BodyOverlapHeaderGesture;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import lecho.lib.hellocharts.formatter.AxisValueFormatter;
+import lecho.lib.hellocharts.gesture.ZoomType;
+import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener;
+import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
+import lecho.lib.hellocharts.model.Line;
+import lecho.lib.hellocharts.model.LineChartData;
+import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.model.ValueShape;
+import lecho.lib.hellocharts.model.Viewport;
+import lecho.lib.hellocharts.view.LineChartView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +45,7 @@ import java.util.Date;
 public class ChartFragment extends Fragment {
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 	private static final String ARG_NAME = "param1";
+	private static final String TAG = "ChartFragment";
 
 	private String name;
 
@@ -106,7 +112,7 @@ public class ChartFragment extends Fragment {
 
 
 	RecyclerView listView;
-	LineChart chart;
+	LineChartView chart;
 	private BodyOverlapHeaderGesture bodyOverlapHeaderGesture;
 	private int numberOfElementsInGraph;
 
@@ -160,80 +166,63 @@ public class ChartFragment extends Fragment {
 		listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).build());
 	}
 
-	public void setChartData(LineData data) {
-		numberOfElementsInGraph = data.getXValCount();
-		chart = (LineChart) getView().findViewById(R.id.chart);
+	public void setChartData(List<PointValue> values) {
+		numberOfElementsInGraph = values.size();
+		chart = (LineChartView) getView().findViewById(R.id.chart);
 
-		chart.setData(data);
+		List<Line> lines = new ArrayList<>(1);
+		Line line = new Line(values);
 
-//		chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
-		chart.getXAxis().setEnabled(false);
-		chart.getAxisLeft().setEnabled(false);
-		chart.getAxisRight().setEnabled(false);
-		chart.setViewPortOffsets(0, 20, 10,20);
-
-		chart.getAxisRight().setDrawGridLines(false);
-		chart.getAxisLeft().setDrawGridLines(false);
-		chart.getAxisRight().setStartAtZero(false);
-		chart.getAxisLeft().setStartAtZero(false);
-		chart.setDrawGridBackground(false);
-
-		chart.getXAxis().setAvoidFirstLastClipping(true);
-		chart.getXAxis().setDrawGridLines(false);
-
-		chart.getLegend().setEnabled(false);
-
-		chart.setVisibleXRangeMaximum(5); // allow 5 values to be displayed at once on the x-axis, not more
-		chart.setVisibleXRangeMinimum(2); // allow 5 values to be displayed at once on the x-axis, not less
-		chart.setDragOffsetX(10);
+		line.setColor(Color.RED);
+		line.setShape(ValueShape.CIRCLE);
+		line.setFilled(false);
+		line.setHasLabels(true);
+		line.setHasLines(true);
+		line.setCubic(false);
 
 
-//		chart.setBackgroundColor(Color.WHITE);
-		chart.setBackgroundColor(Color.TRANSPARENT);
-//		chart.setViewPortOffsets(0, 20, 0, 0);
+		lines.add(0, line);
+		chart.setLineChartData(new LineChartData(lines));
 
-		chart.setTouchEnabled(true);
-//
-		chart.setDragEnabled(true);
-//		chart.setScaleEnabled(false);
-		chart.setScaleYEnabled(false);
-		chart.setScaleXEnabled(true);
-//		chart.setBackgroundColor(ContextCompat.getColor(this, android.R.color.transparent));
+		chart.setZoomType(ZoomType.HORIZONTAL);
+		Viewport tempViewPort = new Viewport(chart.getMaximumViewport());
+		float dx = tempViewPort.width() / 3;
+		tempViewPort.inset(dx, 0);
+		tempViewPort.offset(dx, 0);
+		chart.setCurrentViewport(tempViewPort);
+
+		chart.getLineChartData().setAxisXBottom(new Axis().setMaxLabelChars(10).setHasLines(true).setInside(false).setHasSeparationLine(false)
+				.setTextColor(Color.RED).setFormatter(new AxisValueFormatter() {
+					public final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-d");
+
+					@Override
+					public int formatValueForManualAxis(char[] chars, AxisValue axisValue) {
+						return 0;
+					}
+
+					@Override
+					public int formatValueForAutoGeneratedAxis(char[] chars, float v, int i) {
+						char[] label = dateFormat.format(new Date((long) v)).toCharArray();
+						System.arraycopy(label, 0, chars, chars.length - label.length, label.length);
+//				Log.d(TAG, String.valueOf(chars));
+						return label.length;
+					}
+				}));
 
 
-		chart.getXAxis().setValueFormatter(new XAxisValueFormatter() {
-			DateFormat format = new SimpleDateFormat("hh:mm:ss");
-
+		chart.setOnValueTouchListener(new LineChartOnValueSelectListener() {
 			@Override
-			public String getXValue(String original, int index, ViewPortHandler viewPortHandler) {
-				return format.format(new Date(Long.valueOf(original)));
-			}
-		});
-
-
-		chart.setDescription(null);
-		chart.setExtraTopOffset(10f);
-
-		chart.setDrawBorders(false);
-
-		chart.animateY(2000);
-
-		chart.invalidate();
-		chart.moveViewToX(chart.getLineData().getXValCount() - 5);
-
-		chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-
-
-			@Override
-			public void onValueSelected(Entry e, int dataSetIndex, Highlight h) {
+			public void onValueSelected(int i, int i1, PointValue pointValue) {
 				if (listItemSelected != null && bodyOverlapHeaderGesture.isExpanded()) {
 					removeSelection();
 					bodyOverlapHeaderGesture.collapse();
 					return;
 				}
-				Log.d("ChartSelect", String.valueOf(numberOfElementsInGraph - h.getXIndex() - 1));
-				listView.smoothScrollToPosition(numberOfElementsInGraph - h.getXIndex() - 1);
-				RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(numberOfElementsInGraph - h.getXIndex() - 1);
+
+//				Log.d("ChartSelect", String.valueOf(numberOfElementsInGraph - h.getXIndex() - 1));
+//				Log.d("ChartSelect", "lineIndex: " + String.valueOf(i) + " pointIndex: " + String.valueOf(i1) + " numberOfElements: "+String.valueOf(numberOfElementsInGraph));
+				listView.smoothScrollToPosition(i1);
+				RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(i1);
 				if (holder != null && holder.itemView != null) {
 					removeSelection();
 					selectItem(holder.itemView);
@@ -242,7 +231,7 @@ public class ChartFragment extends Fragment {
 			}
 
 			@Override
-			public void onNothingSelected() {
+			public void onValueDeselected() {
 				if (listItemSelected != null) {
 					removeSelection();
 					bodyOverlapHeaderGesture.collapse();
@@ -258,7 +247,7 @@ public class ChartFragment extends Fragment {
 			listItemSelected.setPressed(false);
 			listItemSelected = null;
 		}
-		chart.highlightValue(null);
+//		chart.highlightValue(null);
 	}
 
 	private void selectItem(View newView) {
