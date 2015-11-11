@@ -295,6 +295,15 @@
 
     <string name="meal_insulin_no_calc">A insulina que seleccionou não será utilizada para fazer o cálculo da insulina activa"</string>
     <string name="chart_activity_label">Peso</string>
+    <string name="title_activity_welcome">Registo</string>
 
+    <!-- Strings related to login -->
+    <string name="prompt_name">Nome</string>
+    <string name="prompt_height">Altura (em metros)</string>
+    <string name="error_invalid_height">Altura errada, tem de ser em metros. (Falta um ponto algures?)</string>
+    <string name="error_field_required">Campo necessário</string>
+    <string name="height_hint">1.65</string>
+    <string name="gender_male">Masculino</string>
+    <string name="gender_female">Feminino</string>
 
 </resources>

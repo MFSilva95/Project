@@ -6,5 +6,6 @@
 	<color name="transparent" >@android:color/transparent</color>
 	<color name="primary_material_dark">#ba2a31</color>
 	<color name="primary_dark_material_dark">#661114</color>
-	<color name="accent_material_light">#e3e8e1</color>
+	<color name="accent_material_light">#ba2a31</color>
+	<color name="black">#000000</color>
 </resources>
