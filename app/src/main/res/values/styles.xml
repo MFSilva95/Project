@@ -18,4 +18,27 @@
 
     </style>
 
+    <style name="Regist">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Regist.EditText">
+        <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingLeft">@dimen/abc_edit_text_inset_horizontal_material</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/abc_edit_text_inset_horizontal_material</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="Regist.TextView" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:layout_marginLeft">@dimen/abc_edit_text_inset_horizontal_material</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
 </resources>
