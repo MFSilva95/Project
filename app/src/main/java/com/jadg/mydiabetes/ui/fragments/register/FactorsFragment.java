@@ -1,26 +1,18 @@
 package com.jadg.mydiabetes.ui.fragments.register;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.ui.activities.WelcomeActivity;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Locale;
 
 
 /**
@@ -35,10 +27,11 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 
 	private OnFormEnd mListener;
-	private EditText mNameView;
-	private EditText mHeightView;
-	private EditText mDateView;
-	private RadioGroup mGenderGroup;
+	private Spinner diabetesType;
+	private EditText sensibilityFactor;
+	private EditText carbsRatio;
+	private EditText hypoglycemiaLimit;
+	private EditText hyperglycemiaLimit;
 
 	/**
 	 * Use this factory method to create a new instance of
@@ -63,18 +56,14 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View layout = inflater.inflate(R.layout.fragment_register_personal_data, container, false);
-		mNameView = (EditText) layout.findViewById(R.id.name);
+		View layout = inflater.inflate(R.layout.fragment_register_factors, container, false);
 
+		diabetesType = (Spinner) layout.findViewById(R.id.diabetes_type);
+		sensibilityFactor = (EditText) layout.findViewById(R.id.sensibility_factor);
+		carbsRatio = (EditText) layout.findViewById(R.id.carbs_ratio);
+		hypoglycemiaLimit = (EditText) layout.findViewById(R.id.hypoglycemia_limit);
+		hyperglycemiaLimit = (EditText) layout.findViewById(R.id.hyperglycemia_limit);
 
-		mGenderGroup = (RadioGroup) layout.findViewById(R.id.gender_group);
-		mGenderGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(RadioGroup radioGroup, int i) {
-				// clears error state if needed
-				((RadioButton) mGenderGroup.getChildAt(1)).setError(null);
-			}
-		});
 		return layout;
 	}
 
@@ -104,38 +93,67 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 	@Override
 	public boolean allFieldsAreValid() {
 		// Reset errors.
-		mNameView.setError(null);
-		mHeightView.setError(null);
+		sensibilityFactor.setError(null);
+		carbsRatio.setError(null);
+		hypoglycemiaLimit.setError(null);
+		hyperglycemiaLimit.setError(null);
+
 
 		// Store values at the time of the login attempt.
-		String name = mNameView.getText().toString();
-		String height = mHeightView.getText().toString();
+		String sensibilityFactorVal = sensibilityFactor.getText().toString();
+		String carbsRatioVal = carbsRatio.getText().toString();
+		String hypoglycemiaLimitVal = hypoglycemiaLimit.getText().toString();
+		String hyperglycemiaLimitVal = hyperglycemiaLimit.getText().toString();
 
 		boolean cancel = false;
 		View focusView = null;
 
-		// Checks if name isn't empty
-		if (TextUtils.isEmpty(name)) {
-			mNameView.setError(getString(R.string.error_field_required));
-			focusView = mNameView;
+		// Checks if sensibility Factor is valid
+		float val = getNumber(sensibilityFactorVal);
+		if (TextUtils.isEmpty(sensibilityFactorVal) && Float.compare(val, -1) <= 0) {
+			sensibilityFactor.setError(getString(R.string.error_field_required));
+			focusView = sensibilityFactor;
 			cancel = true;
 		}
 
-		// Check if gender is selected
-		if (mGenderGroup.getCheckedRadioButtonId() == -1) {
-			((RadioButton) mGenderGroup.getChildAt(1)).setError(getString(R.string.error_field_required));
-			focusView = mGenderGroup;
+		// Checks if carbs Ratio is valid
+		val = getNumber(carbsRatioVal);
+		if (TextUtils.isEmpty(carbsRatioVal) && Float.compare(val, -1) <= 0) {
+			carbsRatio.setError(getString(R.string.error_field_required));
+			focusView = carbsRatio;
 			cancel = true;
 		}
 
+		// Checks if hypoglycemia limit is valid
+		val = getNumber(hypoglycemiaLimitVal);
+		if (TextUtils.isEmpty(hypoglycemiaLimitVal) && Float.compare(val, -1) <= 0) {
+			hypoglycemiaLimit.setError(getString(R.string.error_field_required));
+			focusView = hypoglycemiaLimit;
+			cancel = true;
+		}
 
+		// Checks if hyperglycemia limit is valid
+		val = getNumber(hyperglycemiaLimitVal);
+		if (TextUtils.isEmpty(hyperglycemiaLimitVal) && Float.compare(val, -1) <= 0) {
+			hyperglycemiaLimit.setError(getString(R.string.error_field_required));
+			focusView = hyperglycemiaLimit;
+			cancel = true;
+		}
 
 		if (cancel) {
 			// There was an error;
 			// form field with an error.
 			focusView.requestFocus();
 		}
-		return cancel;
+		return !cancel;
 	}
 
+	private float getNumber(String val) {
+		float result = -1;
+		try {
+			result = Float.parseFloat(val);
+		} catch (NumberFormatException ignored) {
+		}
+		return result;
+	}
 }

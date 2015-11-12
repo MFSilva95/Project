@@ -1,0 +1,71 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".ui.fragments.register.PersonalDataFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
+
+        <TextView
+            style="@style/Regist.TextView"
+            android:text="@string/diabetes_type"/>
+
+        <Spinner
+            android:id="@+id/diabetes_type"
+            style="@style/Regist.Spinner"
+            android:entries="@array/diabetes_Type"/>
+
+
+        <TextView
+            style="@style/Regist.TextView"
+            android:text="@string/sensivity_factor"/>
+
+        <EditText
+            android:id="@+id/sensibility_factor"
+            style="@style/Regist.EditText"
+            android:hint="@string/hint_value3"
+            android:inputType="numberDecimal"/>
+
+        <TextView
+            style="@style/Regist.TextView"
+            android:text="@string/carbs_racio"/>
+
+        <EditText
+            android:id="@+id/carbs_ratio"
+            style="@style/Regist.EditText"
+            android:hint="@string/hint_value4"
+            android:inputType="numberDecimal"/>
+
+
+        <TextView
+            style="@style/Regist.TextView"
+            android:text="@string/hypoglycemia_limit"/>
+
+
+        <EditText
+            android:id="@+id/hypoglycemia_limit"
+            style="@style/Regist.EditText"
+            android:hint="@string/hint_value5"
+            android:inputType="numberDecimal"/>
+
+
+        <TextView
+            style="@style/Regist.TextView"
+            android:text="@string/hyperglycemia_limit"/>
+
+
+        <EditText
+            android:id="@+id/hyperglycemia_limit"
+            style="@style/Regist.EditText"
+            android:hint="@string/hint_value6"
+            android:inputType="numberDecimal"/>
+    </LinearLayout>
+
+</FrameLayout>
