@@ -20,6 +20,9 @@ import com.jadg.mydiabetes.ui.fragments.register.PersonalDataFragment;
  */
 public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 
+	// save state
+	private final static String BUNDLE_CURRENT_FRAGMENT = "current_fragment";
+	private final static String BUNDLE_DATA = "data";
 
 	// constants to save data
 	public static final String USER_DATA_NAME = "name";
@@ -49,9 +52,18 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 		mLoginFormView = findViewById(R.id.login_form);
 		pageIndicators = (LinearLayout) findViewById(R.id.page_indicator);
 
-//		FrameLayout contentFragment = (FrameLayout) findViewById(R.id.content_fragment);
-		getSupportFragmentManager().beginTransaction().add(R.id.content_fragment, fragmentPages[currentFragment]).commit();
-
+		if (savedInstanceState != null) {
+			currentFragment = savedInstanceState.getInt(BUNDLE_CURRENT_FRAGMENT, 0);
+			data = savedInstanceState.getBundle(BUNDLE_DATA);
+			if(data==null){
+				data=new Bundle();
+			}
+			if (currentFragment != 0) {
+				setPageIndicator(0, currentFragment);
+			}
+		} else {
+			getSupportFragmentManager().beginTransaction().add(R.id.content_fragment, fragmentPages[currentFragment]).commit();
+		}
 		Button nextButton = (Button) findViewById(R.id.nextBT);
 		nextButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -61,6 +73,13 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 		});
 	}
 
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt(BUNDLE_CURRENT_FRAGMENT, currentFragment);
+		outState.putBundle(BUNDLE_DATA, data);
+	}
 
 	/**
 	 * Attempts to sign in or register the account specified by the login form.
