@@ -21,12 +21,26 @@ import com.jadg.mydiabetes.ui.fragments.register.PersonalDataFragment;
 public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 
 
-	// UI references.
+	// constants to save data
+	public static final String USER_DATA_NAME = "name";
+	public static final String USER_DATA_HEIGHT = "height";
+	public static final String USER_DATA_GENDER = "gender";
+	public static final String USER_DATA_BIRTHDAY_DATE = "birthday_date";
+	public static final String USER_DATA_DIABETES_TYPE = "diabetes_type";
+	public static final String USER_DATA_SENSIBILITY_FACTOR = "sensibility_factor";
+	public static final String USER_DATA_CARBS_RATIO = "carbs_ratio";
+	public static final String USER_DATA_HYPOGLYCEMIA_LIMIT = "hypoglycemia_limit";
+	public static final String USER_DATA_HYPERGLYCEMIA_LIMIT = "hyperglycemia_limit";
 
+
+	// UI references.
 	private View mLoginFormView;
 	private LinearLayout pageIndicators;
 	private int currentFragment = 0;
 	private Fragment[] fragmentPages = new Fragment[]{new PersonalDataFragment(), new FactorsFragment()};
+
+	// user inserted data
+	private Bundle data = new Bundle();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +68,8 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	private void next() {
+		fragmentPages[currentFragment]=getSupportFragmentManager().findFragmentById(R.id.content_fragment);
+		((RegistryFragamentPage) fragmentPages[currentFragment]).saveData(data);
 		if (((RegistryFragamentPage) fragmentPages[currentFragment]).allFieldsAreValid()) {
 			if (currentFragment + 1 == fragmentPages.length) {
 				// we are in the last fragment page
@@ -109,6 +125,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 
 	public interface RegistryFragamentPage {
 		boolean allFieldsAreValid();
+		void saveData(Bundle container);
 	}
 
 }

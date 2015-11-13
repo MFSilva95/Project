@@ -169,6 +169,15 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 		return !cancel;
 	}
 
+	@Override
+	public void saveData(Bundle container) {
+		container.putString(WelcomeActivity.USER_DATA_NAME, mNameView.getText().toString());
+		container.putString(WelcomeActivity.USER_DATA_GENDER, ((RadioButton) mGenderGroup.findViewById(mGenderGroup.getCheckedRadioButtonId())).getText().toString().toLowerCase());
+		container.putString(WelcomeActivity.USER_DATA_HEIGHT, mHeightView.getText().toString());
+		container.putString(WelcomeActivity.USER_DATA_BIRTHDAY_DATE, new StringBuilder(10).append(birthdayDate.get(Calendar.DAY_OF_MONTH))
+				.append('-').append(birthdayDate.get(Calendar.MONTH)).append('-').append(birthdayDate.get(Calendar.YEAR)).toString());
+	}
+
 	private boolean isHeightValid(String height) {
 		float val = 0;
 		try {

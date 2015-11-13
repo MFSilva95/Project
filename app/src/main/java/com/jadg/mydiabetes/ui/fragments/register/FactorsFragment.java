@@ -148,6 +148,11 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		return !cancel;
 	}
 
+	@Override
+	public void saveData(Bundle container) {
+		//TODO
+	}
+
 	private float getNumber(String val) {
 		float result = -1;
 		try {
