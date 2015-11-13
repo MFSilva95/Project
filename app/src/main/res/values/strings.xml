@@ -298,7 +298,8 @@
     <string name="meal_insulin_no_calc">A insulina que seleccionou não será utilizada para fazer o cálculo da insulina activa"</string>
 
 
-
+    <string name="no_measures_added_to_database">Não foram adicionadas novas medições.</string>
+    <string name="measures_added_to_database">Foram adicionadas %d novas medições!</string>
 
 
 

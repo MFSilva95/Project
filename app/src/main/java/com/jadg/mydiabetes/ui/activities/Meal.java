@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.database.DB_Write;
+import com.jadg.mydiabetes.middleHealth.utils.Utils;
 import com.jadg.mydiabetes.ui.dialogs.DatePickerFragment;
 import com.jadg.mydiabetes.ui.dialogs.TimePickerFragment;
 import com.jadg.mydiabetes.ui.listAdapters.CarbsDataBinding;
@@ -230,6 +231,7 @@ public class Meal extends BaseActivity {
 		});
 
 
+		handleExtras();
 	}
 
 	@Override
@@ -848,4 +850,43 @@ public class Meal extends BaseActivity {
 		return result;
 	}
 
+
+	private void handleExtras()
+	{
+		// Check if there are any extras in the intent:
+		Bundle extras = getIntent().getExtras();
+		if(extras != null && extras.containsKey("value") && extras.containsKey("timestamp"))
+		{
+			// Fill the glycemia text box:
+			double glycemiaValue = extras.getDouble("value");
+			EditText glycemiaEditText = (EditText) findViewById(R.id.et_MealDetail_Glycemia);
+			glycemiaEditText.setText(String.valueOf(glycemiaValue));
+
+			// Fill the timestamp text box:
+			long timestamp = extras.getLong("timestamp");
+			Date date = Utils.getDateFromTimestamp(timestamp);
+			fillDate(date);
+			fillHour(date);
+		}
+	}
+	private void fillDate(Date date)
+	{
+		// Get edit text for date:
+		EditText dateEditText = (EditText)findViewById(R.id.et_MealDetail_Data);
+
+		// Fill the text box for date:
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		String dateString = formatter.format(date);
+		dateEditText.setText(dateString);
+	}
+	private void fillHour(Date date)
+	{
+		// Get edit text for the hours:
+		EditText hourEditText = (EditText)findViewById(R.id.et_MealDetail_Hora);
+
+		// Fill the text box for the hours:
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+		String timeString = formatter.format(date);
+		hourEditText.setText(timeString);
+	}
 }
