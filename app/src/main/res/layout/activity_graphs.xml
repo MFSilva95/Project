@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/chart_fragment"
-        android:name="com.jadg.mydiabetes.ui.fragments.ChartFragment"
+        android:name="pt.it.porto.mydiabetes.ui.fragments.ChartFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />

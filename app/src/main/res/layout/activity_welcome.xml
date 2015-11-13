@@ -4,7 +4,7 @@
               android:layout_height="match_parent"
               android:gravity="center_horizontal"
               android:orientation="vertical"
-              tools:context="com.jadg.mydiabetes.ui.activities.WelcomeActivity">
+              tools:context=".ui.activities.WelcomeActivity">
 
     <FrameLayout
         android:id="@+id/content_fragment"
