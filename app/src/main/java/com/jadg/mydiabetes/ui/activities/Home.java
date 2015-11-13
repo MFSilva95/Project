@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ScrollView;
 
+import com.crashlytics.android.Crashlytics;
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.DB_Read;
 import com.jadg.mydiabetes.middleHealth.controller.DevicesReader;
