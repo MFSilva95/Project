@@ -95,8 +95,10 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 				// save data and exit
 			} else {
 				// moves to next page
-				getSupportFragmentManager().beginTransaction().remove(fragmentPages[currentFragment]).
-						add(R.id.content_fragment, fragmentPages[currentFragment + 1]).commit();
+				getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
+						.remove(fragmentPages[currentFragment])
+						.add(R.id.content_fragment, fragmentPages[currentFragment + 1])
+						.commit();
 				setPageIndicator(currentFragment, currentFragment + 1);
 				currentFragment++;
 			}
