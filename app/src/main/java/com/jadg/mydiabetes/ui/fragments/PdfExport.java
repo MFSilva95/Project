@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.view.LayoutInflater;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.widget.EditText;
 
 import android.annotation.SuppressLint;
@@ -25,7 +25,6 @@ public class PdfExport extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
 	}
 
 	@Override

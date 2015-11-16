@@ -1,15 +1,15 @@
 package com.jadg.mydiabetes.ui.activities;
 
 import android.app.Activity;
-import android.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.view.View;
 
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,46 +21,46 @@ import com.jadg.mydiabetes.ui.fragments.Tags;
 import com.jadg.mydiabetes.ui.fragments.TargetBG;
 
 
-public class Preferences extends Activity {
+public class Preferences extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_preferences);
 		// Show the Up button in the action bar.
-		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		
-		ActionBar.Tab tab = getActionBar().newTab();
+		ActionBar.Tab tab = getSupportActionBar().newTab();
 		Fragment tagsFragment = new Tags();
 		tab.setTabListener(new MyTabsListener(tagsFragment));
 		tab.setText(getString(R.string.preferences_day));
-        getActionBar().addTab(tab);
+		getSupportActionBar().addTab(tab);
         
-        tab = getActionBar().newTab();
+        tab = getSupportActionBar().newTab();
         Fragment targetsFragment = new TargetBG();
         tab.setTabListener(new MyTabsListener(targetsFragment));
         tab.setText(R.string.preferences_target);
-        getActionBar().addTab(tab);
+		getSupportActionBar().addTab(tab);
         
-        tab = getActionBar().newTab();
+        tab = getSupportActionBar().newTab();
         Fragment insulinsFragment = new Insulins();
         tab.setTabListener(new MyTabsListener(insulinsFragment));
         tab.setText(R.string.preferences_insulins);
-        getActionBar().addTab(tab);
+		getSupportActionBar().addTab(tab);
         
-        tab = getActionBar().newTab();
+        tab = getSupportActionBar().newTab();
         Fragment diseasesFragment = new Diseases();
         tab.setTabListener(new MyTabsListener(diseasesFragment));
         tab.setText(R.string.preferences_diseases);
-        getActionBar().addTab(tab);
+		getSupportActionBar().addTab(tab);
         
-        tab = getActionBar().newTab();
+        tab = getSupportActionBar().newTab();
         Fragment exercisesFragment = new Exercises();
         tab.setTabListener(new MyTabsListener(exercisesFragment));
         tab.setText(R.string.preferences_exercises);
-        getActionBar().addTab(tab);
+		getSupportActionBar().addTab(tab);
         
         
         
@@ -73,7 +73,7 @@ public class Preferences extends Activity {
         
         Bundle args = getIntent().getExtras();
         if(args!=null){
-        	getActionBar().getTabAt(args.getInt("tabPosition")).select();
+			getSupportActionBar().getTabAt(args.getInt("tabPosition")).select();
         }
         
 	}
@@ -109,26 +109,21 @@ public class Preferences extends Activity {
         public MyTabsListener(Fragment fragment) {
         this.fragment = fragment;
         }
-		
 
 		@Override
-		public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
-			ft.replace(R.id.preferences_FragmentContainer, fragment);
+		public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
+
 		}
 
 		@Override
-		public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
-			
+		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
 		}
 
 		@Override
-		public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
-			
+		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
 		}
-		
 	}
 
 }

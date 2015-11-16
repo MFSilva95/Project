@@ -34,7 +34,7 @@ import com.jadg.mydiabetes.ui.dialogs.TimePickerFragment;
 
 
 
-public class WeightDetail extends Activity {
+public class WeightDetail extends BaseActivity {
 
 	int idWeight = 0;
 	int idNote = 0;
@@ -44,7 +44,7 @@ public class WeightDetail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_weight_detail);
 		// Show the Up button in the action bar.
-		getActionBar();
+		getSupportActionBar();
 		
 		Bundle args = getIntent().getExtras();
 		if(args!=null){

@@ -5,9 +5,8 @@ package com.jadg.mydiabetes.ui.fragments;
 import java.util.ArrayList;
 
 
-
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.app.Fragment;
 import android.app.AlertDialog;
 import android.widget.ListView;
 import android.content.DialogInterface;

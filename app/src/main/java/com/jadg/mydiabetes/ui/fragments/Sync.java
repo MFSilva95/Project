@@ -4,7 +4,7 @@
 package com.jadg.mydiabetes.ui.fragments;
 
 import android.view.LayoutInflater;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 
 import android.os.Bundle;
 import android.view.View;
@@ -23,7 +23,6 @@ public class Sync extends Fragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
 	}
 
 	@Override

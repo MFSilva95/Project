@@ -1,5 +1,51 @@
 package com.jadg.mydiabetes.ui.activities;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.jadg.mydiabetes.R;
+import com.jadg.mydiabetes.database.DB_Read;
+import com.jadg.mydiabetes.sync.crypt.KeyGenerator;
+import com.jadg.mydiabetes.ui.dialogs.DatePickerFragment;
+import com.jadg.mydiabetes.ui.fragments.DB_BackupRestore;
+import com.jadg.mydiabetes.ui.fragments.PdfExport;
+import com.jadg.mydiabetes.ui.fragments.Sync;
+import com.jadg.mydiabetes.ui.listAdapters.BloodPressureDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.CarbsDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.CholesterolDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.DiseaseRegDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.ExerciseRegDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.HbA1cDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
+import com.jadg.mydiabetes.ui.listAdapters.WeightDataBinding;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.Font;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.draw.LineSeparator;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,84 +56,35 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DialogFragment;
-import android.app.Fragment;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
-import android.support.v4.app.NavUtils;
-import android.util.Log;
-import android.view.View;
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import com.jadg.mydiabetes.R;
-import com.jadg.mydiabetes.ui.listAdapters.BloodPressureDataBinding;
-import com.jadg.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import com.jadg.mydiabetes.ui.listAdapters.CholesterolDataBinding;
-import com.jadg.mydiabetes.database.DB_Read;
-import com.jadg.mydiabetes.ui.listAdapters.DiseaseRegDataBinding;
-import com.jadg.mydiabetes.ui.listAdapters.ExerciseRegDataBinding;
-import com.jadg.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
-import com.jadg.mydiabetes.ui.listAdapters.HbA1cDataBinding;
-import com.jadg.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
-import com.jadg.mydiabetes.ui.listAdapters.WeightDataBinding;
-import com.jadg.mydiabetes.ui.dialogs.DatePickerFragment;
-import com.jadg.mydiabetes.ui.fragments.DB_BackupRestore;
-import com.jadg.mydiabetes.ui.fragments.PdfExport;
-import com.jadg.mydiabetes.ui.fragments.Sync;
-import com.jadg.mydiabetes.sync.crypt.KeyGenerator;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Font;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.pdf.draw.LineSeparator;
-
-
-
-
-public class ImportExport extends Activity {
+public class ImportExport extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_import_export);
 		// Show the Up button in the action bar.
-		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		ActionBar.Tab tab = getActionBar().newTab();
+		ActionBar.Tab tab = getSupportActionBar().newTab();
 		Fragment syncFragment = new Sync();
 		tab.setTabListener(new MyTabsListener(syncFragment));
 		tab.setText("Sincronização");
-		getActionBar().addTab(tab);
-		
-		
-		tab = getActionBar().newTab();
+		getSupportActionBar().addTab(tab);
+
+
+		tab = getSupportActionBar().newTab();
 		Fragment bacuprestoreFragment = new DB_BackupRestore();
 		tab.setTabListener(new MyTabsListener(bacuprestoreFragment));
 		tab.setText("Cópia de Segurança");
-		getActionBar().addTab(tab);
+		getSupportActionBar().addTab(tab);
 
-		 tab = getActionBar().newTab();
+		tab = getSupportActionBar().newTab();
 		Fragment impexpFragment = new PdfExport();
 		tab.setTabListener(new MyTabsListener(impexpFragment));
 		tab.setText("Relatório");
-		getActionBar().addTab(tab);
-	
+		getSupportActionBar().addTab(tab);
+
 
 	}
 
@@ -101,9 +98,9 @@ public class ImportExport extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
+			case android.R.id.home:
+				NavUtils.navigateUpFromSameTask(this);
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -797,11 +794,11 @@ public class ImportExport extends Activity {
 	public void syncCloud(View view) {
 		Intent intent = new Intent(this, TransferActivity.class);
 		intent.putExtra("host", "192.168.1.44");
-        byte[] key = new KeyGenerator().generateKey();
-        byte[] iv = new KeyGenerator().generateKey();
-        intent.putExtra("key", key);
-        intent.putExtra("iv",iv);
-        intent.putExtra("onPC", false);
+		byte[] key = new KeyGenerator().generateKey();
+		byte[] iv = new KeyGenerator().generateKey();
+		intent.putExtra("key", key);
+		intent.putExtra("iv", iv);
+		intent.putExtra("onPC", false);
 		startActivity(intent);
 	}
 
@@ -813,23 +810,19 @@ public class ImportExport extends Activity {
 			this.fragment = fragment;
 		}
 
-				@Override
-		public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
+		@Override
+		public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
 			ft.replace(R.id.importexport_FragmentContainer, fragment);
 		}
 
 		@Override
-		public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
-			
+		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+
 		}
 
 		@Override
-		public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
-			
-		}
+		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
+		}
 	}
 }

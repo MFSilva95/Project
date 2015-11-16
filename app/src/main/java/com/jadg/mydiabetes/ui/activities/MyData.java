@@ -26,14 +26,14 @@ import android.content.Intent;
 
 
 
-public class MyData extends Activity {
+public class MyData extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_data);
 		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		
 		Spinner sp_MyData_Sex = (Spinner) findViewById(R.id.sp_MyData_Sex);
