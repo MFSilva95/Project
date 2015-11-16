@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import com.jadg.mydiabetes.R;
@@ -150,7 +151,11 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 	@Override
 	public void saveData(Bundle container) {
-		//TODO
+		container.putString(WelcomeActivity.USER_DATA_DIABETES_TYPE,String.valueOf(diabetesType.getSelectedItemPosition()));
+		container.putString(WelcomeActivity.USER_DATA_SENSIBILITY_FACTOR,sensibilityFactor.getText().toString());
+		container.putString(WelcomeActivity.USER_DATA_CARBS_RATIO, carbsRatio.getText().toString());
+		container.putString(WelcomeActivity.USER_DATA_HYPOGLYCEMIA_LIMIT, hypoglycemiaLimit.getText().toString());
+		container.putString(WelcomeActivity.USER_DATA_HYPERGLYCEMIA_LIMIT, hyperglycemiaLimit.getText().toString());
 	}
 
 	private float getNumber(String val) {
