@@ -62,16 +62,12 @@
 
                 <Button
                     android:id="@+id/nextBT"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/Regist.Button"
                     android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="bottom|end"
-                    android:padding="32dp"
                     android:text="Seguinte"
-                    android:textSize="@dimen/abc_text_size_subhead_material"
                     />
             </RelativeLayout>
 

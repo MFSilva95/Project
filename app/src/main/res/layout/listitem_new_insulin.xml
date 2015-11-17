@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <TextView
+        style="@style/Regist.TextView"
+        android:text="@string/insulin_name"/>
+
+    <EditText
+        android:id="@+id/name"
+        style="@style/Regist.EditText"
+        android:layout_marginBottom="0dp"
+        android:hint="@string/insulin"
+        android:inputType="textShortMessage"/>
+
+    <TextView
+        style="@style/Regist.TextView"
+        android:text="@string/insulin_method"/>
+
+    <EditText
+        android:id="@+id/admininistration_method"
+        style="@style/Regist.EditText"
+        android:layout_marginBottom="0dp"
+        android:hint="@string/hint_insulin_type"
+        android:inputType="textShortMessage"/>
+
+    <TextView
+        style="@style/Regist.TextView"
+        android:text="@string/diabetes_type"/>
+
+    <Spinner
+        android:id="@+id/insulin_type"
+        style="@style/Regist.Spinner"
+        android:layout_marginBottom="0dp"
+        android:entries="@array/insulin_action"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/material_grey_600"
+        />
+</LinearLayout>

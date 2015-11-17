@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.jadg.mydiabetes.R;
+import com.jadg.mydiabetes.ui.fragments.register.AddInsulinsFragment;
 import com.jadg.mydiabetes.ui.fragments.register.FactorsFragment;
 import com.jadg.mydiabetes.ui.fragments.register.OnFormEnd;
 import com.jadg.mydiabetes.ui.fragments.register.PersonalDataFragment;
@@ -40,7 +41,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 	private View mLoginFormView;
 	private LinearLayout pageIndicators;
 	private int currentFragment = 0;
-	private Fragment[] fragmentPages = new Fragment[]{new PersonalDataFragment(), new FactorsFragment()};
+	private Fragment[] fragmentPages = new Fragment[]{new PersonalDataFragment(), new FactorsFragment(), new AddInsulinsFragment()};
 
 	// user inserted data
 	private Bundle data = new Bundle();

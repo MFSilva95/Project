@@ -305,5 +305,6 @@
     <string name="height_hint">1.65</string>
     <string name="gender_male">Masculino</string>
     <string name="gender_female">Feminino</string>
+    <string name="insulin_name">Nome para a Insulina</string>
 
 </resources>
