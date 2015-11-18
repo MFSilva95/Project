@@ -6,17 +6,16 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.view.KeyEvent;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.ui.activities.WelcomeActivity;
@@ -43,7 +42,7 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 	private EditText mNameView;
 	private EditText mHeightView;
 	private RadioGroup mGenderGroup;
-	private LinearLayout list;
+	private RecyclerView list;
 	private ArrayList<InsulinData> items = new ArrayList<>(3);
 
 	/**
@@ -76,70 +75,67 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View layout = inflater.inflate(R.layout.fragment_register_insulins, container, false);
-		list = (LinearLayout) layout.findViewById(R.id.insulin_list);
+		list = (RecyclerView) layout.findViewById(R.id.insulin_list);
 
-		Button button = (Button) layout.findViewById(R.id.new_insulin);
-		button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				addInsulin();
-			}
-		});
+		list.setAdapter(new InsulinAdapter());
+		list.setLayoutManager(new LinearLayoutManager(getContext()));
+		list.setItemAnimator(new DefaultItemAnimator());
+
+//		Button button = (Button) layout.findViewById(R.id.new_insulin);
+//		button.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View view) {
+//				addInsulin();
+//			}
+//		});
 		if (savedInstanceState == null) {
 			addInsulin();
 		} else {
-			items = (ArrayList<InsulinData>) savedInstanceState.getSerializable(STATE_ITEMS);
-			updateInsulinUI();
+			items = (ArrayList) savedInstanceState.getSerializable(STATE_ITEMS);
+//			updateInsulinUI();
 		}
 
 		return layout;
 	}
 
-	private void updateInsulinUI() {
-		for (int i = 0; i < items.size(); i++) {
-			InsulinData item = items.get(i);
-			View view = getLayoutInflater(null).inflate(R.layout.listitem_new_insulin, list, true);
-			view.setTag(i);
-			((EditText) view.findViewById(R.id.name)).setText(item.name);
-			((EditText) view.findViewById(R.id.admininistration_method)).setText(item.administrationMethod);
-			((Spinner) view.findViewById(R.id.insulin_type)).setSelection(item.action);
-
-			((EditText) view.findViewById(R.id.name)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
-				@Override
-				public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-					if (i == EditorInfo.IME_ACTION_DONE) {
-						items.get((int) (((View) textView.getParent())).getTag()).name = textView.getText().toString();
-					}
-					return false;
-				}
-			});
-			view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-				@Override
-				public void onFocusChange(View view, boolean b) {
-					if (!b) {
-						items.get((int) view.getTag()).name = ((EditText) view.findViewById(R.id.name)).getText().toString();
-						items.get((int) view.getTag()).administrationMethod = ((EditText) view.findViewById(R.id.admininistration_method)).getText().toString();
-						items.get((int) view.getTag()).action = ((Spinner) view.findViewById(R.id.insulin_type)).getSelectedItemPosition();
-					}
-				}
-			});
-		}
-	}
-
+	//	private void updateInsulinUI() {
+//		for (int i = 0; i < items.size(); i++) {
+//			Object obj = items.get(i);
+//			if (!(obj instanceof InsulinData)) {
+//				continue;
+//			}
+//			InsulinData item = (InsulinData) obj;
+//			View view = getLayoutInflater(null).inflate(R.layout.listitem_new_insulin, list, true);
+//			view.setTag(i);
+//			((EditText) view.findViewById(R.id.name)).setText(item.name);
+//			((EditText) view.findViewById(R.id.admininistration_method)).setText(item.administrationMethod);
+//			((Spinner) view.findViewById(R.id.insulin_type)).setSelection(item.action);
+//
+//			((EditText) view.findViewById(R.id.name)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//				@Override
+//				public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+//					if (i == EditorInfo.IME_ACTION_DONE) {
+//						items.get((int) (((View) textView.getParent())).getTag()).name = textView.getText().toString();
+//					}
+//					return false;
+//				}
+//			});
+//			view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//				@Override
+//				public void onFocusChange(View view, boolean b) {
+//					if (!b) {
+//						items.get((int) view.getTag()).name = ((EditText) view.findViewById(R.id.name)).getText().toString();
+//						items.get((int) view.getTag()).administrationMethod = ((EditText) view.findViewById(R.id.admininistration_method)).getText().toString();
+//						items.get((int) view.getTag()).action = ((Spinner) view.findViewById(R.id.insulin_type)).getSelectedItemPosition();
+//					}
+//				}
+//			});
+//		}
+//	}
+//
 	private void addInsulin() {
 		items.add(new InsulinData());
-		View view = getLayoutInflater(null).inflate(R.layout.listitem_new_insulin, list, true);
-		view.setTag(items.size() - 1);
-		view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View view, boolean b) {
-				if (!b) {
-					items.get((int) view.getTag()).name = ((EditText) view.findViewById(R.id.name)).getText().toString();
-					items.get((int) view.getTag()).administrationMethod = ((EditText) view.findViewById(R.id.admininistration_method)).getText().toString();
-					items.get((int) view.getTag()).action = ((Spinner) view.findViewById(R.id.insulin_type)).getSelectedItemPosition();
-				}
-			}
-		});
+		list.getAdapter().notifyItemInserted(items.size());
 	}
 
 	public void onButtonPressed(Uri uri) {
@@ -243,4 +239,108 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 		}
 	}
 
+	class Holder extends RecyclerView.ViewHolder {
+
+		public Holder(View itemView) {
+			super(itemView);
+		}
+	}
+
+	class InsulinHolder extends Holder {
+		EditText name;
+		EditText adminMethod;
+		Spinner insulinType;
+		InsulinData element;
+
+		public InsulinHolder(View itemView) {
+			super(itemView);
+			name = (EditText) itemView.findViewById(R.id.name);
+			adminMethod = (EditText) itemView.findViewById(R.id.admininistration_method);
+			insulinType = (Spinner) itemView.findViewById(R.id.insulin_type);
+		}
+	}
+
+	class ButtonHolder extends Holder {
+
+		public ButtonHolder(View itemView) {
+			super(itemView);
+			itemView.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					addInsulin();
+				}
+			});
+		}
+	}
+
+	class InsulinAdapter extends RecyclerView.Adapter<Holder> {
+		private static final int TYPE_NEW_INSULIN = 0;
+		private static final int TYPE_FOOTER_BUTTON = 1;
+
+
+		@Override
+		public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
+			LayoutInflater layoutInflator = getLayoutInflater(null);
+			if (viewType == TYPE_FOOTER_BUTTON) {
+				return new ButtonHolder(layoutInflator.inflate(R.layout.list_item_new_insulin_button, parent, false));
+			}
+			return new InsulinHolder(layoutInflator.inflate(R.layout.listitem_new_insulin, parent, false));
+		}
+
+		@Override
+		public int getItemViewType(int position) {
+			return position == items.size() ? TYPE_FOOTER_BUTTON : TYPE_NEW_INSULIN;
+		}
+
+		@Override
+		public void onBindViewHolder(Holder holder, int position) {
+			if (holder instanceof InsulinHolder) {
+				InsulinData data = items.get(position);
+				setBinding((InsulinHolder) holder, data);
+			}
+		}
+
+		@Override
+		public int getItemCount() {
+			return items.size() + 1;
+		}
+	}
+
+
+	private void setBinding(InsulinHolder holder, InsulinData data) {
+		holder.name.setText(data.name);
+		holder.name.setTag(data);
+		holder.name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View view, boolean b) {
+				if (!b) {
+					((InsulinData) view.getTag()).name = ((EditText) view).getText().toString();
+				}
+			}
+		});
+
+		holder.adminMethod.setText(data.administrationMethod);
+		holder.adminMethod.setTag(data);
+		holder.adminMethod.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View view, boolean b) {
+				if (!b) {
+					((InsulinData) view.getTag()).administrationMethod = ((EditText) view).getText().toString();
+				}
+			}
+		});
+
+		holder.insulinType.setSelection(data.action);
+		holder.insulinType.setTag(data);
+		holder.insulinType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+				((InsulinData) ((View) view.getParent()).getTag()).action = position;
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> adapterView) {
+			}
+		});
+	}
 }
