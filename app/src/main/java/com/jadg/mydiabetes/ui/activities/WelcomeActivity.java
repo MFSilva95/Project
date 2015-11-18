@@ -38,7 +38,6 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 
 
 	// UI references.
-	private View mLoginFormView;
 	private LinearLayout pageIndicators;
 	private int currentFragment = 0;
 	private Fragment[] fragmentPages = new Fragment[]{new PersonalDataFragment(), new FactorsFragment(), new AddInsulinsFragment()};
@@ -50,7 +49,6 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
-		mLoginFormView = findViewById(R.id.login_form);
 		pageIndicators = (LinearLayout) findViewById(R.id.page_indicator);
 
 		if (savedInstanceState != null) {
