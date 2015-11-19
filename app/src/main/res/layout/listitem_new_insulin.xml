@@ -1,44 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
+<com.jadg.mydiabetes.ui.views.InsulinElement xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:layout_marginBottom="8dp"
+                                             android:layout_marginTop="8dp">
 
-    <TextView
-        style="@style/Regist.TextView"
-        android:text="@string/insulin_name"/>
-
-    <EditText
-        android:id="@+id/name"
-        style="@style/Regist.EditText"
-        android:layout_marginBottom="0dp"
-        android:hint="@string/insulin"
-        android:inputType="textShortMessage"/>
-
-    <TextView
-        style="@style/Regist.TextView"
-        android:text="@string/insulin_method"/>
-
-    <EditText
-        android:id="@+id/admininistration_method"
-        style="@style/Regist.EditText"
-        android:layout_marginBottom="0dp"
-        android:hint="@string/hint_insulin_type"
-        android:inputType="textShortMessage"/>
-
-    <TextView
-        style="@style/Regist.TextView"
-        android:text="@string/diabetes_type"/>
-
-    <Spinner
-        android:id="@+id/insulin_type"
-        style="@style/Regist.Spinner"
-        android:layout_marginBottom="0dp"
-        android:entries="@array/insulin_action"/>
-
-    <View
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/material_grey_600"
-        />
-</LinearLayout>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/insulin_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:visibility="invisible"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Regist.TextView.Mini"
+                    android:text="@string/insulin_name"/>
+
+                <TextView
+                    android:id="@+id/name"
+                    style="@style/Regist.TextView"
+                    tools:text="@string/insulin"/>
+
+                <TextView
+                    style="@style/Regist.TextView.Mini"
+                    android:text="@string/insulin_method"/>
+
+                <TextView
+                    android:id="@+id/admininistration_method"
+                    style="@style/Regist.TextView"
+                    tools:text="@string/insulin_method"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Regist.TextView.Mini"
+                    android:text="@string/diabetes_type"/>
+
+                <TextView
+                    android:id="@+id/insulin_type"
+                    style="@style/Regist.TextView"
+                    tools:text="Rápida"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/insulin_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                style="@style/Regist.TextView"
+                android:text="@string/insulin_name"/>
+
+            <EditText
+                android:id="@id/name"
+                style="@style/Regist.EditText"
+                android:layout_marginBottom="0dp"
+                android:hint="@string/insulin"
+                android:inputType="textShortMessage"/>
+
+            <TextView
+                style="@style/Regist.TextView"
+                android:text="@string/insulin_method"/>
+
+            <EditText
+                android:id="@id/admininistration_method"
+                style="@style/Regist.EditText"
+                android:layout_marginBottom="0dp"
+                android:hint="@string/hint_insulin_type"
+                android:inputType="textShortMessage"/>
+
+            <TextView
+                style="@style/Regist.TextView"
+                android:text="@string/diabetes_type"/>
+
+            <Spinner
+                android:id="@id/insulin_type"
+                style="@style/Regist.Spinner"
+                android:layout_marginBottom="0dp"
+                android:entries="@array/insulin_action"/>
+
+            <LinearLayout
+                android:id="@+id/buttons_edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:visibility="gone"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/cancelButton"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Cancelar"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/material_grey_300"/>
+
+                <Button
+                    android:id="@+id/removeButton"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Remover"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/material_grey_300"/>
+
+                <Button
+                    android:id="@+id/okButton"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Ok"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttons_create"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:visibility="visible"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@id/cancelButton"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Cancelar"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/material_grey_300"/>
+
+                <Button
+                    android:id="@id/okButton"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Ok"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+</com.jadg.mydiabetes.ui.views.InsulinElement>

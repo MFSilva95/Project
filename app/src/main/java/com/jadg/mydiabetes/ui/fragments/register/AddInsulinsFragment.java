@@ -3,8 +3,6 @@ package com.jadg.mydiabetes.ui.fragments.register;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,15 +10,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.ui.activities.WelcomeActivity;
+import com.jadg.mydiabetes.ui.views.InsulinData;
+import com.jadg.mydiabetes.ui.views.InsulinElement;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 
@@ -80,61 +78,17 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 		list.setAdapter(new InsulinAdapter());
 		list.setLayoutManager(new LinearLayoutManager(getContext()));
 		list.setItemAnimator(new DefaultItemAnimator());
-
-//		Button button = (Button) layout.findViewById(R.id.new_insulin);
-//		button.setOnClickListener(new View.OnClickListener() {
-//			@Override
-//			public void onClick(View view) {
-//				addInsulin();
-//			}
-//		});
 		if (savedInstanceState == null) {
 			addInsulin();
 		} else {
 			items = (ArrayList) savedInstanceState.getSerializable(STATE_ITEMS);
-//			updateInsulinUI();
 		}
 
 		return layout;
 	}
 
-	//	private void updateInsulinUI() {
-//		for (int i = 0; i < items.size(); i++) {
-//			Object obj = items.get(i);
-//			if (!(obj instanceof InsulinData)) {
-//				continue;
-//			}
-//			InsulinData item = (InsulinData) obj;
-//			View view = getLayoutInflater(null).inflate(R.layout.listitem_new_insulin, list, true);
-//			view.setTag(i);
-//			((EditText) view.findViewById(R.id.name)).setText(item.name);
-//			((EditText) view.findViewById(R.id.admininistration_method)).setText(item.administrationMethod);
-//			((Spinner) view.findViewById(R.id.insulin_type)).setSelection(item.action);
-//
-//			((EditText) view.findViewById(R.id.name)).setOnEditorActionListener(new TextView.OnEditorActionListener() {
-//				@Override
-//				public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
-//					if (i == EditorInfo.IME_ACTION_DONE) {
-//						items.get((int) (((View) textView.getParent())).getTag()).name = textView.getText().toString();
-//					}
-//					return false;
-//				}
-//			});
-//			view.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//				@Override
-//				public void onFocusChange(View view, boolean b) {
-//					if (!b) {
-//						items.get((int) view.getTag()).name = ((EditText) view.findViewById(R.id.name)).getText().toString();
-//						items.get((int) view.getTag()).administrationMethod = ((EditText) view.findViewById(R.id.admininistration_method)).getText().toString();
-//						items.get((int) view.getTag()).action = ((Spinner) view.findViewById(R.id.insulin_type)).getSelectedItemPosition();
-//					}
-//				}
-//			});
-//		}
-//	}
-//
 	private void addInsulin() {
-		items.add(new InsulinData());
+		items.add(new InsulinData(items.size(), getContext()));
 		list.getAdapter().notifyItemInserted(items.size());
 	}
 
@@ -147,6 +101,7 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 	@Override
 	public void onAttach(Context context) {
 		super.onAttach(context);
+
 		if (context instanceof OnFormEnd) {
 			mListener = (OnFormEnd) context;
 		} else {
@@ -200,45 +155,6 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 	}
 
 
-	static class InsulinData implements Serializable, Parcelable {
-		String name;
-		String administrationMethod;
-		int action;
-
-		public InsulinData() {
-		}
-
-		protected InsulinData(Parcel in) {
-			name = in.readString();
-			administrationMethod = in.readString();
-			action = in.readInt();
-		}
-
-		public static final Creator<InsulinData> CREATOR = new Creator<InsulinData>() {
-			@Override
-			public InsulinData createFromParcel(Parcel in) {
-				return new InsulinData(in);
-			}
-
-			@Override
-			public InsulinData[] newArray(int size) {
-				return new InsulinData[size];
-			}
-		};
-
-		@Override
-		public int describeContents() {
-			return 0;
-		}
-
-		@Override
-		public void writeToParcel(Parcel parcel, int i) {
-			parcel.writeString(name);
-			parcel.writeString(administrationMethod);
-			parcel.writeInt(action);
-		}
-	}
-
 	class Holder extends RecyclerView.ViewHolder {
 
 		public Holder(View itemView) {
@@ -247,16 +163,11 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 	}
 
 	class InsulinHolder extends Holder {
-		EditText name;
-		EditText adminMethod;
-		Spinner insulinType;
-		InsulinData element;
+		InsulinElement view;
 
 		public InsulinHolder(View itemView) {
 			super(itemView);
-			name = (EditText) itemView.findViewById(R.id.name);
-			adminMethod = (EditText) itemView.findViewById(R.id.admininistration_method);
-			insulinType = (Spinner) itemView.findViewById(R.id.insulin_type);
+			view = (InsulinElement) itemView;
 		}
 	}
 
@@ -276,7 +187,6 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 	class InsulinAdapter extends RecyclerView.Adapter<Holder> {
 		private static final int TYPE_NEW_INSULIN = 0;
 		private static final int TYPE_FOOTER_BUTTON = 1;
-
 
 		@Override
 		public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -308,38 +218,20 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 
 
 	private void setBinding(InsulinHolder holder, InsulinData data) {
-		holder.name.setText(data.name);
-		holder.name.setTag(data);
-		holder.name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+		holder.view.setData(data);
+		holder.view.setListener(new InsulinElement.ElementChangesListener() {
 			@Override
-			public void onFocusChange(View view, boolean b) {
-				if (!b) {
-					((InsulinData) view.getTag()).name = ((EditText) view).getText().toString();
+			public void dataUpdated(InsulinData data) {
+//				items.add(data.getPosition(), data);
+			}
+
+			@Override
+			public void viewRemoved(int pox) {
+				items.remove(pox);
+				for (int i = pox; i < items.size(); i++) {
+					items.get(i).setPosition(items.get(i).getPosition() - 1);
 				}
-			}
-		});
-
-		holder.adminMethod.setText(data.administrationMethod);
-		holder.adminMethod.setTag(data);
-		holder.adminMethod.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View view, boolean b) {
-				if (!b) {
-					((InsulinData) view.getTag()).administrationMethod = ((EditText) view).getText().toString();
-				}
-			}
-		});
-
-		holder.insulinType.setSelection(data.action);
-		holder.insulinType.setTag(data);
-		holder.insulinType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-				((InsulinData) ((View) view.getParent()).getTag()).action = position;
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> adapterView) {
+				list.getAdapter().notifyItemRemoved(pox);
 			}
 		});
 	}
