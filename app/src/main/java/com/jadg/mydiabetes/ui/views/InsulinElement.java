@@ -110,6 +110,22 @@ public class InsulinElement extends CardView {
 		this.data = data;
 		setupUI();
 		setDataOnUI();
+		setErrors();
+	}
+
+	private void setErrors() {
+		switch (data.error) {
+			case InsulinData.ERROR_EMPTY_NAME:
+				((TextView) layoutEdit.findViewById(R.id.name)).setError(getContext().getString(R.string.error_field_required));
+				break;
+			case InsulinData.ERROR_REPEATED_NAME:
+				((TextView) layoutEdit.findViewById(R.id.name)).setError(getContext().getString(R.string.error_repeated_name));
+				break;
+			case InsulinData.ERROR_EMPTY_ADMINISTRATION_METHOD:
+				((TextView) layoutEdit.findViewById(R.id.admininistration_method)).setError(getContext().getString(R.string.error_field_required));
+
+				break;
+		}
 	}
 
 	@SuppressLint("WrongViewCast")
@@ -121,10 +137,11 @@ public class InsulinElement extends CardView {
 		} else {
 			currentView = layoutShow;
 			((TextView) currentView.findViewById(R.id.insulin_type)).setText(getInsulinActionType(data.action));
-
 		}
 		((TextView) currentView.findViewById(R.id.name)).setText(data.name);
+		((TextView) currentView.findViewById(R.id.name)).setError(null);
 		((TextView) currentView.findViewById(R.id.admininistration_method)).setText(data.administrationMethod);
+		((TextView) currentView.findViewById(R.id.admininistration_method)).setError(null);
 	}
 
 	private void setupUI() {

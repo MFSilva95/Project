@@ -306,5 +306,6 @@
     <string name="gender_male">Masculino</string>
     <string name="gender_female">Feminino</string>
     <string name="insulin_name">Nome para a Insulina</string>
+    <string name="error_repeated_name">O Nome não pode ser repetido</string>
 
 </resources>

@@ -3,21 +3,29 @@ package com.jadg.mydiabetes.ui.views;
 import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.TextUtils;
 
 import com.jadg.mydiabetes.R;
 
 import java.io.Serializable;
 
 public class InsulinData implements Serializable, Parcelable {
+	public static final int NO_ERROR = 0;
+	public static final int ERROR_REPEATED_NAME = 1;
+	public static final int ERROR_EMPTY_NAME = 2;
+	public static final int ERROR_EMPTY_ADMINISTRATION_METHOD = 3;
+
 	String name;
 	String administrationMethod;
 	int action;
 	int visibilityState;
+	int error = NO_ERROR;
 	int pox;
+
 
 	public InsulinData(int pox, Context context) {
 		this.pox = pox;
-		this.name = context.getResources().getString(R.string.insulin) + " " + String.valueOf(pox+1);
+		this.name = context.getResources().getString(R.string.insulin) + " " + String.valueOf(pox + 1);
 	}
 
 	protected InsulinData(Parcel in) {
@@ -80,5 +88,26 @@ public class InsulinData implements Serializable, Parcelable {
 
 	public void setPosition(int position) {
 		this.pox = position;
+	}
+
+	public boolean isValid() {
+		error = NO_ERROR;
+		if (TextUtils.isEmpty(name)) {
+			error = ERROR_EMPTY_NAME;
+			return false;
+		}
+		if (TextUtils.isEmpty(administrationMethod)) {
+			error = ERROR_EMPTY_ADMINISTRATION_METHOD;
+			return false;
+		}
+		return true;
+	}
+
+	public void setInvalid() {
+		visibilityState = InsulinElement.MODE_EDIT;
+		if (isValid()) {
+			// then the problem is a repeated name
+			error = ERROR_REPEATED_NAME;
+		}
 	}
 }

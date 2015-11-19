@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.Spinner;
 
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.ui.activities.WelcomeActivity;
@@ -118,13 +117,25 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 
 	@Override
 	public boolean allFieldsAreValid() {
-		// Reset errors.
+		boolean cancel = false;
+
+		ArrayList<String> names = new ArrayList<>(items.size());
+		for (int i = 0; i < items.size(); i++) {
+			if (!items.get(i).isValid() || names.contains(items.get(i).getName())) {
+				list.scrollToPosition(i);
+				items.get(i).setInvalid();
+				list.getAdapter().notifyItemChanged(i);
+				return false;
+			} else {
+				names.add(items.get(i).getName());
+			}
+		}
+
 //		mNameView.setError(null);
 //		mHeightView.setError(null);
 //		mDateView.setError(null);
 //		((RadioButton) mGenderGroup.getChildAt(1)).setError(null);
 
-		boolean cancel = false;
 		View focusView = null;
 
 //		// Checks if name isn't empty
