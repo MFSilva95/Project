@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 
 import com.jadg.mydiabetes.R;
+import com.jadg.mydiabetes.database.MyDiabetesStorage;
 import com.jadg.mydiabetes.ui.activities.WelcomeActivity;
 import com.jadg.mydiabetes.ui.views.InsulinData;
 import com.jadg.mydiabetes.ui.views.InsulinElement;
@@ -135,7 +137,16 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 	}
 
 	@Override
-	public void saveData(Bundle container) {//TODO
+	public void saveData(Bundle container) {
+		MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
+		for (int i = 0; i < items.size(); i++) {
+			boolean failed = storage.addInsulin(items.get(i).getName(), items.get(i).getAdministrationMethod(), items.get(i).getAction());
+			if (!failed) {
+				// Do something
+				// Or maybe not! This is used in welcome screen, in there it cannot fail since there arent repeated insulin names
+				Log.d("AddInsulinFragment", "Failed to add! Already exists?");
+			}
+		}
 	}
 
 

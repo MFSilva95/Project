@@ -1,5 +1,6 @@
 package com.jadg.mydiabetes.database;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -47,6 +48,34 @@ public class MyDiabetesStorage {
 				MyDiabetesContract.Reg_Weight.COLUMN_NAME_DATETIME + " " + (options != null ? options.getSortOrder() : QueryOptions.ORDER_DESC));
 		return cursor;
 
+	}
+
+	/**
+	 * Adds a insulin to the database and returns of sucessfull
+	 *
+	 * @param name
+	 * @param type
+	 * @param action
+	 * @return
+	 */
+	public boolean addInsulin(String name, String type, int action) {
+		if (insulinExists(name)) {
+			return false;
+		}
+		SQLiteDatabase db = mHandler.getWritableDatabase();
+		ContentValues toInsert = new ContentValues();
+		toInsert.put(MyDiabetesContract.Insulin.COLUMN_NAME_NAME, name);
+		toInsert.put(MyDiabetesContract.Insulin.COLUMN_NAME_TYPE, type);
+		toInsert.put(MyDiabetesContract.Insulin.COLUMN_NAME_ACTION, action);
+
+		return db.insert(MyDiabetesContract.Insulin.TABLE_NAME, null, toInsert) != -1;
+	}
+
+	public boolean insulinExists(String name) {
+		SQLiteDatabase db = mHandler.getReadableDatabase();
+		Cursor cursor = db.query(MyDiabetesContract.Insulin.TABLE_NAME, new String[]{MyDiabetesContract.Insulin.COLUMN_NAME_NAME},
+				MyDiabetesContract.Insulin.COLUMN_NAME_NAME + "==?", new String[]{name}, null, null, null, null);
+		return cursor.getCount() != 0;
 	}
 
 	public static class QueryOptions {
