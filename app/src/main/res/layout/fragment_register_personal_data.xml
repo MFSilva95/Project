@@ -27,7 +27,7 @@
             android:id="@+id/name"
             style="@style/Regist.EditText"
             android:hint="@string/name_hint"
-            android:inputType="textAutoCorrect|textAutoComplete|textCapWords"/>
+            android:inputType="textPersonName"/>
 
 
         <TextView

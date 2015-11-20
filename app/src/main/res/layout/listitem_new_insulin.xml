@@ -88,7 +88,7 @@
                 style="@style/Regist.EditText"
                 android:layout_marginBottom="0dp"
                 android:hint="@string/insulin"
-                android:inputType="textShortMessage"/>
+                android:inputType="textPersonName|textCapSentences"/>
 
             <TextView
                 style="@style/Regist.TextView"
@@ -100,7 +100,7 @@
                 android:layout_marginBottom="0dp"
                 android:hint="@string/hint_insulin_type"
                 android:imeOptions="actionDone"
-                android:inputType="textShortMessage"/>
+                android:inputType="text|textCapSentences"/>
 
             <TextView
                 style="@style/Regist.TextView"
