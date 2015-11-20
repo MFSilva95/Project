@@ -96,6 +96,7 @@
                 style="@style/Regist.EditText"
                 android:layout_marginBottom="0dp"
                 android:hint="@string/hint_insulin_type"
+                android:imeOptions="actionDone"
                 android:inputType="textShortMessage"/>
 
             <TextView
