@@ -184,7 +184,7 @@ public class InsulinElement extends CardView {
 			public void onClick(View view) {
 				saveData();
 				if (data.isValid()) {
-				setMode(MODE_VIEW);
+					setMode(MODE_VIEW);
 				} else {
 					setErrors();
 				}
