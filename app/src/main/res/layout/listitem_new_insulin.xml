@@ -58,7 +58,7 @@
 
                 <TextView
                     style="@style/Regist.TextView.Mini"
-                    android:text="@string/diabetes_type"/>
+                    android:text="@string/action"/>
 
                 <TextView
                     android:id="@+id/insulin_type"
@@ -100,7 +100,7 @@
 
             <TextView
                 style="@style/Regist.TextView"
-                android:text="@string/diabetes_type"/>
+                android:text="@string/action"/>
 
             <Spinner
                 android:id="@id/insulin_type"
