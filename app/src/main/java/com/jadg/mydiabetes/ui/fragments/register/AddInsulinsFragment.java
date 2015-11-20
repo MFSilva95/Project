@@ -118,45 +118,18 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 	@Override
 	public boolean allFieldsAreValid() {
 		boolean cancel = false;
-
 		ArrayList<String> names = new ArrayList<>(items.size());
 		for (int i = 0; i < items.size(); i++) {
 			if (!items.get(i).isValid() || names.contains(items.get(i).getName())) {
-				list.scrollToPosition(i);
 				items.get(i).setInvalid();
 				list.getAdapter().notifyItemChanged(i);
-				return false;
+				if (!cancel) {
+					list.scrollToPosition(i);
+					cancel = true;
+				}
 			} else {
 				names.add(items.get(i).getName());
 			}
-		}
-
-//		mNameView.setError(null);
-//		mHeightView.setError(null);
-//		mDateView.setError(null);
-//		((RadioButton) mGenderGroup.getChildAt(1)).setError(null);
-
-		View focusView = null;
-
-//		// Checks if name isn't empty
-//		if (TextUtils.isEmpty(name)) {
-//			mNameView.setError(getString(R.string.error_field_required));
-//			focusView = mNameView;
-//			cancel = true;
-//		}
-
-		// Check if gender is selected
-//		if (mGenderGroup.getCheckedRadioButtonId() == -1) {
-//			((RadioButton) mGenderGroup.getChildAt(1)).setError(getString(R.string.error_field_required));
-//			focusView = mGenderGroup;
-//			cancel = true;
-//		}
-
-
-		if (cancel) {
-			// There was an error;
-			// form field with an error.
-			focusView.requestFocus();
 		}
 		return !cancel;
 	}
