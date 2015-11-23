@@ -11,8 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.RadioGroup;
+import android.widget.Button;
 
 import com.jadg.mydiabetes.R;
 import com.jadg.mydiabetes.database.MyDiabetesStorage;
@@ -38,9 +37,6 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 	private static final String STATE_ITEMS = "items";
 
 	private OnFormEnd mListener;
-	private EditText mNameView;
-	private EditText mHeightView;
-	private RadioGroup mGenderGroup;
 	private RecyclerView list;
 	private ArrayList<InsulinData> items = new ArrayList<>(3);
 
@@ -168,8 +164,9 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 
 	class ButtonHolder extends Holder {
 
-		public ButtonHolder(View itemView) {
+		public ButtonHolder(View itemView, String text) {
 			super(itemView);
+			((Button) itemView).setText(text);
 			itemView.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
@@ -187,7 +184,7 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 		public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
 			LayoutInflater layoutInflator = getLayoutInflater(null);
 			if (viewType == TYPE_FOOTER_BUTTON) {
-				return new ButtonHolder(layoutInflator.inflate(R.layout.list_item_new_insulin_button, parent, false));
+				return new ButtonHolder(layoutInflator.inflate(R.layout.list_item_new_element_button, parent, false), getContext().getString(R.string.new_insulin));
 			}
 			return new InsulinHolder(layoutInflator.inflate(R.layout.listitem_new_insulin, parent, false));
 		}

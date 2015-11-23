@@ -3,10 +3,11 @@
     android:id="@+id/new_insulin"
     style="@style/Regist.Button"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:gravity="center_horizontal"
-    android:text="@string/new_insulin">
+    tools:text="@string/new_insulin">
 
 </Button>
