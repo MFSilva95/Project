@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.jadg.mydiabetes.R;
+import com.jadg.mydiabetes.ui.fragments.register.AddGlycemiaObjectivesFragment;
 import com.jadg.mydiabetes.ui.fragments.register.AddInsulinsFragment;
 import com.jadg.mydiabetes.ui.fragments.register.FactorsFragment;
 import com.jadg.mydiabetes.ui.fragments.register.OnFormEnd;
@@ -40,7 +41,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 	// UI references.
 	private LinearLayout pageIndicators;
 	private int currentFragment = 0;
-	private Fragment[] fragmentPages = new Fragment[]{new PersonalDataFragment(), new FactorsFragment(), new AddInsulinsFragment()};
+	private Fragment[] fragmentPages = new Fragment[]{new PersonalDataFragment(), new FactorsFragment(), new AddInsulinsFragment(), new AddGlycemiaObjectivesFragment()};
 
 	// user inserted data
 	private Bundle data = new Bundle();
@@ -54,8 +55,8 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 		if (savedInstanceState != null) {
 			currentFragment = savedInstanceState.getInt(BUNDLE_CURRENT_FRAGMENT, 0);
 			data = savedInstanceState.getBundle(BUNDLE_DATA);
-			if(data==null){
-				data=new Bundle();
+			if (data == null) {
+				data = new Bundle();
 			}
 			if (currentFragment != 0) {
 				setPageIndicator(0, currentFragment);
@@ -86,7 +87,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 	 * errors are presented and no actual login attempt is made.
 	 */
 	private void next() {
-		fragmentPages[currentFragment]=getSupportFragmentManager().findFragmentById(R.id.content_fragment);
+		fragmentPages[currentFragment] = getSupportFragmentManager().findFragmentById(R.id.content_fragment);
 		if (((RegistryFragamentPage) fragmentPages[currentFragment]).allFieldsAreValid()) {
 			((RegistryFragamentPage) fragmentPages[currentFragment]).saveData(data);
 			if (currentFragment + 1 == fragmentPages.length) {
@@ -145,6 +146,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 
 	public interface RegistryFragamentPage {
 		boolean allFieldsAreValid();
+
 		void saveData(Bundle container);
 	}
 
