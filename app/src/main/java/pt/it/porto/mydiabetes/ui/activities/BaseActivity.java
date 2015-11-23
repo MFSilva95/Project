@@ -8,13 +8,16 @@ import android.view.MotionEvent;
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
+import pt.it.porto.mydiabetes.BuildConfig;
 
 public class BaseActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Fabric.with(this, new Crashlytics());
+		if (BuildConfig.USE_FABRIC) {
+			Fabric.with(this, new Crashlytics());
+		}
 	}
 
 	@Override

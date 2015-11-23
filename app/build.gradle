@@ -11,6 +11,15 @@ android {
         targetSdkVersion 22
     }
 
+    productFlavors {
+        prod {
+            buildConfigField "boolean", "USE_FABRIC", "false"
+        }
+        devel {
+            buildConfigField "boolean", "USE_FABRIC", "true"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
