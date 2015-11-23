@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Menu;
@@ -130,18 +129,20 @@ public class Home extends BaseActivity {
 
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 							   float velocityY) {
-			System.out.println(" in onFling() :: ");
-			if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-				return false;
-			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
-					&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+			if (e1 != null && e2 != null) {
+				System.out.println(" in onFling() :: ");
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					return false;
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 
-				//Right
-				Call_OutrasLeituras(getCurrentFocus());
+					//Right
+					Call_OutrasLeituras(getCurrentFocus());
 
-			} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
-					&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-				//Left
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					//Left
+				}
 			}
 			return super.onFling(e1, e2, velocityX, velocityY);
 		}

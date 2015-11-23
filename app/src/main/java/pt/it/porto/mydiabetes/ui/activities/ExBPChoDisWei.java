@@ -102,19 +102,21 @@ public class ExBPChoDisWei extends BaseActivity {
 
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 							   float velocityY) {
-			System.out.println(" in onFling() :: ");
-			if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-				return false;
-			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
-					&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+			if (e1 != null || e2 != null) {
+				System.out.println(" in onFling() :: ");
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					return false;
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 
-				//Right
+					//Right
 
 
-			} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
-					&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-				//Left
-				finish();
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					//Left
+					finish();
+				}
 			}
 			return super.onFling(e1, e2, velocityX, velocityY);
 		}
