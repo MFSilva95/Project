@@ -16,14 +16,11 @@ import android.widget.ScrollView;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.middleHealth.controller.DevicesReader;
 
 
 public class Home extends BaseActivity {
 
 	private static final String TAG = "Home";
-
-	private DevicesReader devicesReader;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +44,6 @@ public class Home extends BaseActivity {
 			}
 		});
 
-		// Create the devices reader which will create a service to communicate with the medical devices:
-		devicesReader = new DevicesReader(this);
-		if(!devicesReader.initialize())
-			Log.d(TAG, "onCreate() - Failed to initialize Devices Reader!");
-	}
-
-	@Override
-	protected void onDestroy()
-	{
-		// Free resources:
-		devicesReader.shutdown();
-
-		super.onDestroy();
 	}
 
 	@Override
