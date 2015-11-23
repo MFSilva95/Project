@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.jadg.mydiabetes.ui.views.GlycemiaObjetivesElement xmlns:android="http://schemas.android.com/apk/res/android"
+                                                       xmlns:tools="http://schemas.android.com/tools"
+                                                       android:layout_width="match_parent"
+                                                       android:layout_height="match_parent"
+                                                       android:layout_marginTop="@dimen/activity_vertical_margin">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/glycemia_objective_show"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:paddingBottom="8dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="8dp"
+            android:visibility="invisible"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Regist.TextView.Mini"
+                    android:text="@string/description"/>
+
+                <TextView
+                    android:id="@+id/description"
+                    style="@style/Regist.TextView"
+                    tools:text="Manhã"/>
+
+                <TextView
+                    style="@style/Regist.TextView.Mini"
+                    android:text="@string/schedule"/>
+
+                <TextView
+                    android:id="@+id/time"
+                    style="@style/Regist.TextView"
+                    tools:text="11:50 até 15:20"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/Regist.TextView.Mini"
+                    android:text="@string/title_activity_target_bg_detail"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/glycemia_objective"
+                        style="@style/Regist.TextView"
+                        android:layout_width="wrap_content"
+                        tools:text="45"/>
+
+                    <TextView
+                        style="@style/Regist.TextView"
+                        android:layout_width="wrap_content"
+                        android:text="@string/mg_dl"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/glycemia_objective_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:visibility="visible">
+
+            <TextView
+                style="@style/Regist.TextView"
+                android:text="@string/description"/>
+
+            <EditText
+                android:id="@id/description"
+                style="@style/Regist.EditText"
+                android:layout_marginBottom="0dp"
+                android:inputType="textPersonName|textCapSentences"
+                tools:text="Manhã"/>
+
+            <TextView
+                style="@style/Regist.TextView"
+                android:text="@string/schedule"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="2">
+
+                <EditText
+                    android:id="@+id/time_start"
+                    style="@style/Regist.EditText"
+                    android:layout_width="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="1"
+                    android:nextFocusForward="@+id/time_end"
+                    android:nextFocusDown="@+id/time_end"
+                    android:gravity="center"
+                    android:inputType="time"
+                    tools:text="11:50"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="A"/>
+
+                <EditText
+                    android:id="@id/time_end"
+                    style="@style/Regist.EditText"
+                    android:layout_width="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:inputType="time"
+                    tools:text="13:50"/>
+            </LinearLayout>
+
+            <TextView
+                style="@style/Regist.TextView"
+                android:text="@string/title_activity_target_bg_detail"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@id/glycemia_objective"
+                    style="@style/Regist.EditText"
+                    android:layout_width="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:layout_weight="1"
+                    android:inputType="number"
+                    android:imeOptions="actionDone"
+                    tools:text="15"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/mg_dl"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttons_edit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:visibility="gone"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/cancelButton"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Cancelar"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/material_grey_300"/>
+
+                <Button
+                    android:id="@+id/removeButton"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Remover"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/material_grey_300"/>
+
+                <Button
+                    android:id="@+id/okButton"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Ok"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/buttons_create"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:visibility="visible"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@id/cancelButton"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Cancelar"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/material_grey_300"/>
+
+                <Button
+                    android:id="@id/okButton"
+                    style="@style/Base.Widget.AppCompat.Button.Borderless.Colored"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="Ok"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </FrameLayout>
+</com.jadg.mydiabetes.ui.views.GlycemiaObjetivesElement>
