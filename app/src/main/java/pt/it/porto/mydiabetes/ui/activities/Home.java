@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.Menu;
@@ -16,14 +15,11 @@ import android.widget.ScrollView;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.middleHealth.controller.DevicesReader;
 
 
 public class Home extends BaseActivity {
 
 	private static final String TAG = "Home";
-
-	private DevicesReader devicesReader;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,19 +43,6 @@ public class Home extends BaseActivity {
 			}
 		});
 
-		// Create the devices reader which will create a service to communicate with the medical devices:
-		devicesReader = new DevicesReader(this);
-		if(!devicesReader.initialize())
-			Log.d(TAG, "onCreate() - Failed to initialize Devices Reader!");
-	}
-
-	@Override
-	protected void onDestroy()
-	{
-		// Free resources:
-		devicesReader.shutdown();
-
-		super.onDestroy();
 	}
 
 	@Override
@@ -146,18 +129,20 @@ public class Home extends BaseActivity {
 
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
 							   float velocityY) {
-			System.out.println(" in onFling() :: ");
-			if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-				return false;
-			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
-					&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+			if (e1 != null && e2 != null) {
+				System.out.println(" in onFling() :: ");
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
+					return false;
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 
-				//Right
-				Call_OutrasLeituras(getCurrentFocus());
+					//Right
+					Call_OutrasLeituras(getCurrentFocus());
 
-			} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
-					&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-				//Left
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
+						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+					//Left
+				}
 			}
 			return super.onFling(e1, e2, velocityX, velocityY);
 		}
