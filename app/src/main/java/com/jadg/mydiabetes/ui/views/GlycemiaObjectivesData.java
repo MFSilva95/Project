@@ -30,6 +30,7 @@ public class GlycemiaObjectivesData implements Serializable, Parcelable {
 	private int objective = -1;
 	int visibilityState;
 	int error = NO_ERROR;
+	boolean[] errors = new boolean[6];
 	int pox;
 
 
@@ -109,18 +110,26 @@ public class GlycemiaObjectivesData implements Serializable, Parcelable {
 
 	public boolean isValid() {
 		error = NO_ERROR;
+		for (int i = 0; i < errors.length; i++) {
+			errors[i] = false;
+		}
 		if (TextUtils.isEmpty(description)) {
 			error = ERROR_EMPTY_DESCRIPTION;
+			errors[ERROR_REPEATED_DESCRIPTION] = true;
 		}
 		if (TextUtils.isEmpty(startTime)) {
 			error = ERROR_EMPTY_START_TIME;
+			errors[ERROR_EMPTY_START_TIME] = true;
 		}
 		if (TextUtils.isEmpty(endTime)) {
 			error = ERROR_EMPTY_END_TIME;
+			errors[ERROR_EMPTY_END_TIME] = true;
 		}
 		if (objective == -1) {
 			error = ERROR_EMPTY_OBJECTIVE;
+			errors[ERROR_EMPTY_OBJECTIVE] = true;
 		}
+		errors[NO_ERROR] = error == NO_ERROR;
 		return error == NO_ERROR;
 	}
 
@@ -129,6 +138,8 @@ public class GlycemiaObjectivesData implements Serializable, Parcelable {
 		if (isValid()) {
 			// then the problem is a repeated name
 			error = ERROR_REPEATED_DESCRIPTION;
+			errors[ERROR_REPEATED_DESCRIPTION] = true;
+			errors[NO_ERROR] = false;
 		}
 	}
 }

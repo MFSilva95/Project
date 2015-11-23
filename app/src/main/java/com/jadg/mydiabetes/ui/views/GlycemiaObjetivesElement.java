@@ -120,22 +120,30 @@ public class GlycemiaObjetivesElement extends CardView {
 	}
 
 	private void setErrors() {
-		switch (data.error) {
-			case GlycemiaObjectivesData.ERROR_EMPTY_DESCRIPTION:
-				((TextView) layoutEdit.findViewById(R.id.description)).setError(getContext().getString(R.string.error_field_required));
-				break;
-			case GlycemiaObjectivesData.ERROR_REPEATED_DESCRIPTION:
-				((TextView) layoutEdit.findViewById(R.id.description)).setError(getContext().getString(R.string.error_repeated_description));
-				break;
-			case GlycemiaObjectivesData.ERROR_EMPTY_OBJECTIVE:
-				((TextView) layoutEdit.findViewById(R.id.glycemia_objective)).setError(getContext().getString(R.string.error_field_required));
-				break;
-			case GlycemiaObjectivesData.ERROR_EMPTY_START_TIME:
-				((TextView) layoutEdit.findViewById(R.id.time_start)).setError(getContext().getString(R.string.error_field_required));
-				break;
-			case GlycemiaObjectivesData.ERROR_EMPTY_END_TIME:
-				((TextView) layoutEdit.findViewById(R.id.time_end)).setError(getContext().getString(R.string.error_field_required));
-				break;
+		if (data.errors[GlycemiaObjectivesData.NO_ERROR]) {
+			return;
+		}
+		if (data.errors[GlycemiaObjectivesData.ERROR_EMPTY_DESCRIPTION]) {
+			((TextView) layoutEdit.findViewById(R.id.description)).setError(getContext().getString(R.string.error_field_required));
+		}
+
+		if (data.errors[GlycemiaObjectivesData.ERROR_EMPTY_DESCRIPTION]) {
+		}
+		if (data.errors[GlycemiaObjectivesData.ERROR_REPEATED_DESCRIPTION]) {
+			((TextView) layoutEdit.findViewById(R.id.description)).setError(getContext().getString(R.string.error_repeated_description));
+		}
+
+		if (data.errors[GlycemiaObjectivesData.ERROR_EMPTY_OBJECTIVE]) {
+			((TextView) layoutEdit.findViewById(R.id.glycemia_objective)).setError(getContext().getString(R.string.error_field_required));
+		}
+
+		if (data.errors[GlycemiaObjectivesData.ERROR_EMPTY_START_TIME]) {
+			((TextView) layoutEdit.findViewById(R.id.time_start)).setError(getContext().getString(R.string.error_field_required));
+		}
+
+		if (data.errors[GlycemiaObjectivesData.ERROR_EMPTY_END_TIME]) {
+			((TextView) layoutEdit.findViewById(R.id.time_end)).setError(getContext().getString(R.string.error_field_required));
+
 		}
 	}
 
