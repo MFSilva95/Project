@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,12 +136,12 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 	public void saveData(Bundle container) {
 		MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
 		for (int i = 0; i < items.size(); i++) {
-//			boolean failed = storage.addG(items.get(i).getDescription(), items.get(i).getAdministrationMethod(), items.get(i).getAction());
-//			if (!failed) {
-//				// Do something
-//				// Or maybe not! This is used in welcome screen, in there it cannot fail since there arent repeated insulin names
-//				Log.d("AddInsulinFragment", "Failed to add! Already exists?");
-//			}
+			boolean failed = storage.addGlycemiaObjective(items.get(i).getDescription(), items.get(i).getStartTime(), items.get(i).getEndTime(), items.get(i).getObjective());
+			if (!failed) {
+				// Do something
+				// Or maybe not! This is used in welcome screen, in there it cannot fail since there arent repeated insulin names
+				Log.d(TAG, "Failed to add glycemia objective! Already exists?");
+			}
 		}
 	}
 

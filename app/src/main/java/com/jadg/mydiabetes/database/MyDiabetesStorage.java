@@ -78,6 +78,26 @@ public class MyDiabetesStorage {
 		return cursor.getCount() != 0;
 	}
 
+	public boolean addGlycemiaObjective(String description, String timeStart, String timeEnd, int objective) {
+		if (glycemiaObjectiveExists(description)) {
+			return false;
+		}
+		SQLiteDatabase db = mHandler.getWritableDatabase();
+		ContentValues toInsert = new ContentValues();
+		toInsert.put(MyDiabetesContract.BG_Target.COLUMN_NAME_NAME, description);
+		toInsert.put(MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_START, timeStart);
+		toInsert.put(MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_END, timeEnd);
+		toInsert.put(MyDiabetesContract.BG_Target.COLUMN_NAME_VALUE, objective);
+
+		return db.insert(MyDiabetesContract.BG_Target.TABLE_NAME, null, toInsert) != -1;
+	}
+
+	public boolean glycemiaObjectiveExists(String description) {
+		SQLiteDatabase db = mHandler.getReadableDatabase();
+		Cursor cursor = null;
+		return cursor.getCount() != 0;
+	}
+
 	public static class QueryOptions {
 		public static final String ORDER_ASC = "ASC";
 		public static final String ORDER_DESC = "DESC";

@@ -80,6 +80,13 @@ public class GlycemiaObjectivesData implements Serializable, Parcelable {
 		}
 	}
 
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
 
 	@Override
 	public int describeContents() {

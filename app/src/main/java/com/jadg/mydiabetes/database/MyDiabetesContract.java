@@ -48,4 +48,14 @@ public class MyDiabetesContract {
 		public static final String COLUMN_NAME_Note = "Note";
 	}
 
+	public static class BG_Target {
+		public static final String TABLE_NAME = "BG_Target";
+
+		public static final String COLUMN_NAME_ID = "Id";
+		public static final String COLUMN_NAME_NAME = "Name";
+		public static final String COLUMN_NAME_TIME_START = "TimeStart";
+		public static final String COLUMN_NAME_TIME_END = "TimeEnd";
+		public static final String COLUMN_NAME_VALUE = "Value";
+	}
+
 }
