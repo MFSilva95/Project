@@ -67,7 +67,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 		Date cal = c.getTime();
 		
 		
-		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
 		String timeString = formatter.format(cal);
 		Log.d("time", timeString);
 		item.setText(timeString);

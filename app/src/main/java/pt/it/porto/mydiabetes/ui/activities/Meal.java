@@ -263,7 +263,7 @@ public class Meal extends BaseActivity {
 		date.setText(dateString);
 
 		EditText hour = (EditText) findViewById(R.id.et_MealDetail_Hora);
-		formatter = new SimpleDateFormat("HH:mm:ss");
+		formatter = new SimpleDateFormat("HH:mm");
 		String timeString = formatter.format(newDate);
 		hour.setText(timeString);
 	}
@@ -878,7 +878,7 @@ public class Meal extends BaseActivity {
 		EditText hourEditText = (EditText)findViewById(R.id.et_MealDetail_Hora);
 
 		// Fill the text box for the hours:
-		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
 		String timeString = formatter.format(date);
 		hourEditText.setText(timeString);
 	}
