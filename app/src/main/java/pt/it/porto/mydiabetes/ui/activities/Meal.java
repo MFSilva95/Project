@@ -216,13 +216,6 @@ public class Meal extends BaseActivity {
 				DB_Read read = new DB_Read(Meal.this);
 				action_type = read.Insulin_GetActionTypeByName(name);
 				read.close();
-
-				if (action_type == 0) {
-					Toast.makeText(getApplicationContext(), getString(R.string.meal_insulin_calc) + " " + getString(R.string.insulin_action_rapid) + getString(R.string.meal_insulin_calc_1), Toast.LENGTH_SHORT).show();
-				} else {
-					Toast.makeText(getApplicationContext(), getString(R.string.meal_insulin_no_calc), Toast.LENGTH_SHORT).show();
-
-				}
 			}
 
 			@Override
