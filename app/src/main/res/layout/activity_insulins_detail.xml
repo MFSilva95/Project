@@ -151,17 +151,6 @@
             android:gravity="center_vertical"
             android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/et_Insulins_Acao"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:hint="@string/hint_insulin_action"
-                android:inputType="text"
-                android:textSize="24sp"/>
-
             <RadioGroup
                 android:id="@+id/et_insulin_action"
                 android:layout_width="fill_parent"
