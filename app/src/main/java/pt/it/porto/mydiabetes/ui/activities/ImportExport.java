@@ -697,11 +697,11 @@ public class ImportExport extends Activity {
 				try {
 					fileBackup.createNewFile();
 					copyFile(inputFile, fileBackup);
-					ShowDialogMsg("Cópia de segurançaa efectuada com sucesso!");
+					ShowDialogMsg(getString(R.string.dbcopy_success));
 				} catch (IOException ioException) {
-					ShowDialogMsg("Ocurreu um erro durante a cópia de segurançaa, verifique se a memória externa está disponivel!");
+					ShowDialogMsg(getString(R.string.dbcopy_error));
 				} catch (Exception exception) {
-					ShowDialogMsg("Ocurreu um erro durante a cópia de segurançaa, verifique se a memória externa está disponivel!");
+					ShowDialogMsg(getString(R.string.dbcopy_error));
 				}
 			}
 		}
