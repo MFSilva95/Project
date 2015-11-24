@@ -10,6 +10,7 @@ import android.app.Fragment;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -42,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
@@ -814,20 +816,34 @@ public class ImportExport extends Activity {
 		DB_Read read = new DB_Read(this);
 		String patientName = (String) read.MyData_Read()[1];
 		Intent intent = ShareCompat.IntentBuilder.from(this)
-				.setType("text/plain")
+				.setType("message/rfc822")
 				.addEmailTo(PROJECT_MANAGER_EMAIL)
 				.setSubject(String.format(getResources().getString(R.string.share_subject), patientName))
-				.setText(getResources().getString(R.string.share_text)).getIntent();
-		intent.setAction(Intent.ACTION_SENDTO);
-		intent.setData(Uri.parse("mailto:"));
-		intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION)));
-		ComponentName activityResolved = intent.resolveActivity(getPackageManager());
+				.setText(getResources().getString(R.string.share_text))
+				.setStream(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION)))
+				.getIntent();
+
+		// get apps that resolve email
+		Intent justEmailAppsIntent = new Intent(Intent.ACTION_SENDTO);
+		justEmailAppsIntent.setType("text/plain");
+		justEmailAppsIntent.setData(Uri.parse("mailto:"));
+		List<ResolveInfo> activities = getPackageManager().queryIntentActivities(justEmailAppsIntent, 0);
+
+		Intent[] extraIntents = new Intent[activities.size() - 1];
+		for (int i = 0; i < activities.size() - 1; i++) {
+			extraIntents[i] = (Intent) intent.clone();
+			extraIntents[i].setClassName(activities.get(i).activityInfo.packageName, activities.get(i).activityInfo.name);
+		}
+		Intent one = (Intent) intent.clone();
+		one.setClassName(activities.get(activities.size() - 1).activityInfo.packageName, activities.get(activities.size() - 1).activityInfo.name);
+
+		Intent openInChooser = Intent.createChooser(one, null);
+		openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+
+		ComponentName activityResolved = openInChooser.resolveActivity(getPackageManager());
 		if (activityResolved != null) {
-			if (activityResolved.getPackageName().equalsIgnoreCase("com.google.android.apps.inbox")) {
-				intent.setClassName("com.google.android.gm", "com.google.android.gm.ComposeActivityGmail");// set gmail instead of inbox, inbox doesn't support
-			}
 			if (intent.resolveActivity(getPackageManager()) != null) {
-				startActivity(intent);
+				startActivity(openInChooser);
 			}
 		} else {
 			Log.e("Share", "No email client found!");
