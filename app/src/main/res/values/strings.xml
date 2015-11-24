@@ -175,6 +175,11 @@
     <string name="transfer_success">Transferência concluída com sucesso</string>
     <string name="transfer_error">Ocorreu um erro</string>
     <string name="transfer_try_again">tente novamente</string>
+
+
+    <string name="dbcopy_success">Cópia de segurança efectuada com sucesso!</string>
+    <string name="dbcopy_error">Ocorreu um erro durante a cópia de segurança, verifique se a memória externa está disponivel!</string>
+
     <string name="date_hour">Data e Hora</string>
     <string name="hour">Hora</string>
     <string name="time_of_day">Altura do Dia</string>
