@@ -248,7 +248,7 @@
     <string name="send_to_cloud">Enviar para Cloud</string>
     <string name="description">Descrição</string>
     <string name="cholesterol">Colesterol</string>
-    <string name="HbA1c">HbA1c</string>
+    <string name="HbA1c" translatable="false">HbA1c</string>
     <string name="hint_name">Jorge Mendes</string>
     <string name="diabetes_type">Tipo de diabetes</string>
     <string name="sensivity_factor">Fator de sensibilidade</string>

@@ -16,5 +16,11 @@
     <string name="title_activity_gly_ins_carbs">My Diabetes</string>
     <string name="title_activity_view_photo">Photograph</string>
     <string name="photoSaved">Stored in: </string>
+    <string name="action">Action</string>
+    <string name="add_DiseasesFragment">Add Disease</string>
+    <string name="height">Height</string>
+    <string name="goal">Goal</string>
+    <string name="gender">Gender</string>
+    <string name="flu">Flu</string>
 
 </resources>
