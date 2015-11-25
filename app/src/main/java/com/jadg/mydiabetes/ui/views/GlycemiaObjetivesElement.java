@@ -143,7 +143,18 @@ public class GlycemiaObjetivesElement extends CardView {
 
 		if (data.errors[GlycemiaObjectivesData.ERROR_EMPTY_END_TIME]) {
 			((TextView) layoutEdit.findViewById(R.id.time_end)).setError(getContext().getString(R.string.error_field_required));
+		}
 
+		if(data.errors[GlycemiaObjectivesData.ERROR_START_TIME_OVERLAPS]){
+			((TextView) layoutEdit.findViewById(R.id.time_start)).setError(getContext().getString(R.string.error_start_time_overlaps));
+		}
+
+		if(data.errors[GlycemiaObjectivesData.ERROR_END_TIME_OVERLAPS]){
+			((TextView) layoutEdit.findViewById(R.id.time_end)).setError(getContext().getString(R.string.error_end_time_overlaps));
+		}
+
+		if(data.errors[GlycemiaObjectivesData.ERROR_END_TIME_BEFORE_START_TIME]){
+			((TextView) layoutEdit.findViewById(R.id.time_end)).setError(getContext().getString(R.string.error_end_time_before_start_time));
 		}
 	}
 

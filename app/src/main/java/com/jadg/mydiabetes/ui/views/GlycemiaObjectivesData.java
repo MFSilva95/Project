@@ -13,6 +13,10 @@ public class GlycemiaObjectivesData implements Serializable, Parcelable {
 	public static final int ERROR_EMPTY_OBJECTIVE = 3;
 	public static final int ERROR_EMPTY_START_TIME = 4;
 	public static final int ERROR_EMPTY_END_TIME = 5;
+	public static final int ERROR_START_TIME_OVERLAPS = 6;
+	public static final int ERROR_END_TIME_OVERLAPS = 7;
+	public static final int ERROR_END_TIME_BEFORE_START_TIME = 8;
+
 	public static final Creator<GlycemiaObjectivesData> CREATOR = new Creator<GlycemiaObjectivesData>() {
 		@Override
 		public GlycemiaObjectivesData createFromParcel(Parcel in) {
@@ -30,7 +34,7 @@ public class GlycemiaObjectivesData implements Serializable, Parcelable {
 	private int objective = -1;
 	int visibilityState;
 	int error = NO_ERROR;
-	boolean[] errors = new boolean[6];
+	boolean[] errors = new boolean[9];
 	int pox;
 
 
@@ -133,13 +137,11 @@ public class GlycemiaObjectivesData implements Serializable, Parcelable {
 		return error == NO_ERROR;
 	}
 
-	public void setInvalid() {
+	public void setInvalid(int reason) {
 		visibilityState = GlycemiaObjetivesElement.MODE_EDIT;
-		if (isValid()) {
-			// then the problem is a repeated name
-			error = ERROR_REPEATED_DESCRIPTION;
-			errors[ERROR_REPEATED_DESCRIPTION] = true;
-			errors[NO_ERROR] = false;
-		}
+		// then the problem is a repeated name
+		error = reason;
+		errors[reason] = true;
+		errors[NO_ERROR] = false;
 	}
 }

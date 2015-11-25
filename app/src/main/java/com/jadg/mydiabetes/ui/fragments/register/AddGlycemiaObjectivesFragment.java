@@ -119,16 +119,51 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		ArrayList<String> names = new ArrayList<>(items.size());
 		for (int i = 0; i < items.size(); i++) {
 			if (!items.get(i).isValid() || names.contains(items.get(i).getDescription())) {
-				items.get(i).setInvalid();
+				items.get(i).setInvalid(GlycemiaObjectivesData.ERROR_REPEATED_DESCRIPTION);
 				list.getAdapter().notifyItemChanged(i);
 				if (!cancel) {
 					list.scrollToPosition(i);
 					cancel = true;
 				}
-			} else {
-				names.add(items.get(i).getDescription());
 			}
+			names.add(items.get(i).getDescription());
 		}
+		// validate time intervals
+		int[] startTimes = new int[items.size()];
+		int[] intervalDuration = new int[items.size()];
+		String[] temp;
+		for (int i = 0; i < items.size(); i++) {
+			temp = items.get(i).getStartTime().split(":");
+			int startTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+
+			temp = items.get(i).getEndTime().split(":");
+			int endTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+			int duration = endTime - startTime;
+			boolean shouldCancel = true;
+			for (int p = 0; p < i; p++) {
+				if (startTimes[p] <= startTime && startTimes[p] + intervalDuration[p] >= startTime) {
+					// startTime inside a previews interval
+					items.get(i).setInvalid(GlycemiaObjectivesData.ERROR_START_TIME_OVERLAPS);
+				} else if (startTimes[p] <= endTime && startTimes[p] + intervalDuration[p] >= endTime) {
+					// endTime inside a interval
+					items.get(i).setInvalid(GlycemiaObjectivesData.ERROR_END_TIME_OVERLAPS);
+				} else if (duration <= 0) {
+					// endTime needs to be bigger than startTime
+					items.get(i).setInvalid(GlycemiaObjectivesData.ERROR_END_TIME_BEFORE_START_TIME);
+				} else {
+					shouldCancel = false;
+				}
+				if (shouldCancel) {
+					cancel = true;
+					list.getAdapter().notifyItemChanged(i);
+					list.scrollToPosition(i);
+					break;
+				}
+			}
+			startTimes[i] = startTime;
+			intervalDuration[i] = endTime - startTimes[i];
+		}
+
 		return !cancel;
 	}
 
