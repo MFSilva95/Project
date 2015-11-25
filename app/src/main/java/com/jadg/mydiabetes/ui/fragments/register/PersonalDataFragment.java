@@ -31,7 +31,7 @@ import java.util.Locale;
  * Use the {@link PersonalDataFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class PersonalDataFragment extends Fragment implements WelcomeActivity.RegistryFragamentPage {
+public class PersonalDataFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
 
 	public static final int DEFAULT_BIRTHDAY_YEAR = 1980;
 	public static final int DEFAULT_BIRTHDAY_MONTH = 6;

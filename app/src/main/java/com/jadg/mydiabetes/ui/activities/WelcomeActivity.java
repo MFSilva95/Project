@@ -88,8 +88,8 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 	 */
 	private void next() {
 		fragmentPages[currentFragment] = getSupportFragmentManager().findFragmentById(R.id.content_fragment);
-		if (((RegistryFragamentPage) fragmentPages[currentFragment]).allFieldsAreValid()) {
-			((RegistryFragamentPage) fragmentPages[currentFragment]).saveData(data);
+		if (((RegistryFragmentPage) fragmentPages[currentFragment]).allFieldsAreValid()) {
+			((RegistryFragmentPage) fragmentPages[currentFragment]).saveData(data);
 			if (currentFragment + 1 == fragmentPages.length) {
 				// we are in the last fragment page
 				// save data and exit
@@ -144,7 +144,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 		next();
 	}
 
-	public interface RegistryFragamentPage {
+	public interface RegistryFragmentPage {
 		boolean allFieldsAreValid();
 
 		void saveData(Bundle container);

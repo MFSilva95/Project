@@ -30,7 +30,7 @@ import java.util.ArrayList;
  * Use the {@link AddInsulinsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddInsulinsFragment extends Fragment implements WelcomeActivity.RegistryFragamentPage {
+public class AddInsulinsFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
 
 	private static final String TAG = AddInsulinsFragment.class.getCanonicalName();
 

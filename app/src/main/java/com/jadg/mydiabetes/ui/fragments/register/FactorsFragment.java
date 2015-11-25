@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import com.jadg.mydiabetes.R;
@@ -24,7 +23,7 @@ import com.jadg.mydiabetes.ui.activities.WelcomeActivity;
  * Use the {@link FactorsFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FactorsFragment extends Fragment implements WelcomeActivity.RegistryFragamentPage {
+public class FactorsFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
 
 
 	private OnFormEnd mListener;
