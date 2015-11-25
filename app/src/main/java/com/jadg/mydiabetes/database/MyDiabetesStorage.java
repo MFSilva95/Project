@@ -94,7 +94,8 @@ public class MyDiabetesStorage {
 
 	public boolean glycemiaObjectiveExists(String description) {
 		SQLiteDatabase db = mHandler.getReadableDatabase();
-		Cursor cursor = null;
+		Cursor cursor = db.query(MyDiabetesContract.BG_Target.TABLE_NAME, new String[]{MyDiabetesContract.BG_Target.COLUMN_NAME_NAME},
+				MyDiabetesContract.BG_Target.COLUMN_NAME_NAME + "==?", new String[]{description}, null, null, null, null);
 		return cursor.getCount() != 0;
 	}
 
