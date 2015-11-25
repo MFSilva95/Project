@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.text.format.Time;
 
 public class MyDiabetesStorage {
 
@@ -97,6 +98,24 @@ public class MyDiabetesStorage {
 		Cursor cursor = db.query(MyDiabetesContract.BG_Target.TABLE_NAME, new String[]{MyDiabetesContract.BG_Target.COLUMN_NAME_NAME},
 				MyDiabetesContract.BG_Target.COLUMN_NAME_NAME + "==?", new String[]{description}, null, null, null, null);
 		return cursor.getCount() != 0;
+	}
+
+	public boolean addUserData(String name, String diabetesType, int insulinRatio, int carbsRatio, float lowerRange, float higherRange, String birthday, String gender, float height) {
+		ContentValues toInsert = new ContentValues();
+		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_NAME, name);
+		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_DIABETES_TYPE, diabetesType);
+		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_RATIO_INSULIN, insulinRatio);
+		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_RATIO_CARBS, carbsRatio);
+		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_RANGE_LOWER, lowerRange);
+		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_RANGE_HIGHER, higherRange);
+		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_BIRTHDATE, birthday);
+		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_GENDER, gender);
+		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_HEIGHT, height);
+		Time now = new Time(Time.getCurrentTimezone());
+		now.setToNow();
+		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_LAST_UPDATE, now.format("%Y-%m-%d %H:%M:%S"));
+		SQLiteDatabase db = mHandler.getWritableDatabase();
+		return db.insert(MyDiabetesContract.UserInfo.TABLE_NAME, null, toInsert) != -1;
 	}
 
 	public static class QueryOptions {

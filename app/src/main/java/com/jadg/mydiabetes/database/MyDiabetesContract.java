@@ -58,4 +58,20 @@ public class MyDiabetesContract {
 		public static final String COLUMN_NAME_VALUE = "Value";
 	}
 
+	public static class UserInfo{
+		public static final String TABLE_NAME = "UserInfo";
+
+		public static final String COLUMN_NAME_ID = "Id";
+		public static final String COLUMN_NAME_NAME = "Name";
+		public static final String COLUMN_NAME_DIABETES_TYPE= "DType";
+		public static final String COLUMN_NAME_RATIO_INSULIN = "InsulinRatio";
+		public static final String COLUMN_NAME_RATIO_CARBS = "CarbsRatio";
+		public static final String COLUMN_NAME_RANGE_LOWER = "LowerRange";
+		public static final String COLUMN_NAME_RANGE_HIGHER = "HigherRange";
+		public static final String COLUMN_NAME_BIRTHDATE = "BDate";
+		public static final String COLUMN_NAME_GENDER = "Gender";
+		public static final String COLUMN_NAME_HEIGHT = "Height";
+		public static final String COLUMN_NAME_LAST_UPDATE = "DateTimeUpdate";
+	}
+
 }

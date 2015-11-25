@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.jadg.mydiabetes.R;
+import com.jadg.mydiabetes.database.MyDiabetesStorage;
 import com.jadg.mydiabetes.ui.activities.WelcomeActivity;
 
 
@@ -26,6 +28,7 @@ import com.jadg.mydiabetes.ui.activities.WelcomeActivity;
 public class FactorsFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
 
 
+	private static final String TAG = FactorsFragment.class.getCanonicalName();
 	private OnFormEnd mListener;
 	private Spinner diabetesType;
 	private EditText sensibilityFactor;
@@ -150,11 +153,19 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 	@Override
 	public void saveData(Bundle container) {
-		container.putString(WelcomeActivity.USER_DATA_DIABETES_TYPE,String.valueOf(diabetesType.getSelectedItemPosition()));
-		container.putString(WelcomeActivity.USER_DATA_SENSIBILITY_FACTOR,sensibilityFactor.getText().toString());
-		container.putString(WelcomeActivity.USER_DATA_CARBS_RATIO, carbsRatio.getText().toString());
-		container.putString(WelcomeActivity.USER_DATA_HYPOGLYCEMIA_LIMIT, hypoglycemiaLimit.getText().toString());
-		container.putString(WelcomeActivity.USER_DATA_HYPERGLYCEMIA_LIMIT, hyperglycemiaLimit.getText().toString());
+		MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
+		boolean success = storage.addUserData(container.getString(WelcomeActivity.USER_DATA_NAME),
+				String.valueOf(diabetesType.getSelectedItemPosition()),
+				Integer.parseInt(sensibilityFactor.getText().toString(), 10),
+				Integer.parseInt(carbsRatio.getText().toString(), 10),
+				Integer.parseInt(hypoglycemiaLimit.getText().toString(), 10),
+				Integer.parseInt(hyperglycemiaLimit.getText().toString(), 10),
+				container.getString(WelcomeActivity.USER_DATA_BIRTHDAY_DATE),
+				container.getString(WelcomeActivity.USER_DATA_GENDER),
+				Float.parseFloat(container.getString(WelcomeActivity.USER_DATA_HEIGHT)));
+		if(!success){
+			Log.w(TAG, "Failed to save user data!");
+		}
 	}
 
 	@Override
