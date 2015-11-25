@@ -178,6 +178,11 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 				.append('-').append(birthdayDate.get(Calendar.MONTH)).append('-').append(birthdayDate.get(Calendar.YEAR)).toString());
 	}
 
+	@Override
+	public int getSubtitle() {
+		return R.string.subtitle_personal_data;
+	}
+
 	private boolean isHeightValid(String height) {
 		float val = 0;
 		try {

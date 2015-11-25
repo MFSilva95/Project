@@ -180,6 +180,11 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		}
 	}
 
+	@Override
+	public int getSubtitle() {
+		return R.string.title_activity_target_bg_detail;
+	}
+
 
 	class Holder extends RecyclerView.ViewHolder {
 

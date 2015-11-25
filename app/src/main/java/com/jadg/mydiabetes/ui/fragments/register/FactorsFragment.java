@@ -157,6 +157,11 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		container.putString(WelcomeActivity.USER_DATA_HYPERGLYCEMIA_LIMIT, hyperglycemiaLimit.getText().toString());
 	}
 
+	@Override
+	public int getSubtitle() {
+		return R.string.subtitle_diabetes_factors;
+	}
+
 	private float getNumber(String val) {
 		float result = -1;
 		try {

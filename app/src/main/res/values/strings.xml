@@ -314,4 +314,6 @@
     <string name="error_end_time_overlaps">Tempo final coincide com outro intervalo</string>
     <string name="error_end_time_before_start_time">Tempo de fim antes do tempo de inicio</string>
     <string name="time_separator_preposition">A</string>
+    <string name="subtitle_diabetes_factors">Detalhes e Factores</string>
+    <string name="subtitle_personal_data">Dados Pessoais</string>
 </resources>

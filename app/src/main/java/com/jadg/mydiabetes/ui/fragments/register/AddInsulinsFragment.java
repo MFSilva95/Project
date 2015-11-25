@@ -145,6 +145,11 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 		}
 	}
 
+	@Override
+	public int getSubtitle() {
+		return R.string.preferences_insulins;
+	}
+
 
 	class Holder extends RecyclerView.ViewHolder {
 

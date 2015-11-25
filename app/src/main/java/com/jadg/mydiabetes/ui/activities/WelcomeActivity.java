@@ -71,6 +71,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 				next();
 			}
 		});
+		getSupportActionBar().setSubtitle(((RegistryFragmentPage) fragmentPages[currentFragment]).getSubtitle());
 	}
 
 
@@ -101,6 +102,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 						.commit();
 				setPageIndicator(currentFragment, currentFragment + 1);
 				currentFragment++;
+				getSupportActionBar().setSubtitle(((RegistryFragmentPage) fragmentPages[currentFragment]).getSubtitle());
 			}
 		}
 	}
@@ -148,6 +150,8 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 		boolean allFieldsAreValid();
 
 		void saveData(Bundle container);
+
+		int getSubtitle();
 	}
 
 }
