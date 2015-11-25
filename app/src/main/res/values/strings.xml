@@ -307,7 +307,7 @@
     <string name="gender_female">Feminino</string>
     <string name="insulin_name">Nome para a Insulina</string>
     <string name="error_repeated_name">O Nome não pode ser repetido</string>
-    <string name="new_glycemia_objective">Novo objectivo de glycemia</string>
+    <string name="new_glycemia_objective">Novo objectivo de glicemia</string>
     <string name="error_repeated_description">Descrição repetida</string>
     <string name="glycemia_objective_time_start_end">Das %1$s até %2$s</string>
     <string name="error_start_time_overlaps">Tempo inicial coincide com outro intervalo</string>
