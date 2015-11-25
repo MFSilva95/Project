@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.jadg.mydiabetes.R;
 
@@ -91,6 +93,32 @@ public class GlycemiaObjetivesElement extends CardView {
 				}
 			}
 		});
+
+		((TextView) layoutEdit.findViewById(R.id.time_start)).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+					@Override
+					public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+						((TextView) layoutEdit.findViewById(R.id.time_start)).setText(String.format("%s:%s", String.valueOf(hour), String.valueOf(minute)));
+
+					}
+				}, 12, 0, true).show();
+			}
+		});
+
+		((TextView) layoutEdit.findViewById(R.id.time_end)).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+					@Override
+					public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+						((TextView) layoutEdit.findViewById(R.id.time_end)).setText(String.format("%s:%s", String.valueOf(hour), String.valueOf(minute)));
+
+					}
+				}, 12, 0, true).show();
+			}
+		});
 	}
 
 	private void setupRemoveButton(Button button) {
@@ -145,15 +173,15 @@ public class GlycemiaObjetivesElement extends CardView {
 			((TextView) layoutEdit.findViewById(R.id.time_end)).setError(getContext().getString(R.string.error_field_required));
 		}
 
-		if(data.errors[GlycemiaObjectivesData.ERROR_START_TIME_OVERLAPS]){
+		if (data.errors[GlycemiaObjectivesData.ERROR_START_TIME_OVERLAPS]) {
 			((TextView) layoutEdit.findViewById(R.id.time_start)).setError(getContext().getString(R.string.error_start_time_overlaps));
 		}
 
-		if(data.errors[GlycemiaObjectivesData.ERROR_END_TIME_OVERLAPS]){
+		if (data.errors[GlycemiaObjectivesData.ERROR_END_TIME_OVERLAPS]) {
 			((TextView) layoutEdit.findViewById(R.id.time_end)).setError(getContext().getString(R.string.error_end_time_overlaps));
 		}
 
-		if(data.errors[GlycemiaObjectivesData.ERROR_END_TIME_BEFORE_START_TIME]){
+		if (data.errors[GlycemiaObjectivesData.ERROR_END_TIME_BEFORE_START_TIME]) {
 			((TextView) layoutEdit.findViewById(R.id.time_end)).setError(getContext().getString(R.string.error_end_time_before_start_time));
 		}
 	}
