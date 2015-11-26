@@ -34,7 +34,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 
 
 
-public class WeightDetail extends Activity {
+public class WeightDetail extends BaseOldActivity {
 
 	int idWeight = 0;
 	int idNote = 0;
@@ -115,7 +115,7 @@ public class WeightDetail extends Activity {
         date.setText(dateString);
         
         EditText hour = (EditText)findViewById(R.id.et_WeightDetail_Hora);
-        formatter = new SimpleDateFormat("HH:mm:ss");
+        formatter = new SimpleDateFormat("HH:mm");
         String timeString = formatter.format(newDate);
         hour.setText(timeString);
 	}

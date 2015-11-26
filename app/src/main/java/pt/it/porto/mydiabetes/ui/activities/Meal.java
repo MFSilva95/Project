@@ -34,6 +34,14 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
@@ -46,16 +54,8 @@ import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 
-
-public class Meal extends BaseActivity {
+public class Meal extends BaseOldActivity {
 
 
 	ArrayList<String> allInsulins;
@@ -216,13 +216,6 @@ public class Meal extends BaseActivity {
 				DB_Read read = new DB_Read(Meal.this);
 				action_type = read.Insulin_GetActionTypeByName(name);
 				read.close();
-
-				if (action_type == 0) {
-					Toast.makeText(getApplicationContext(), getString(R.string.meal_insulin_calc) + " " + getString(R.string.insulin_action_rapid) + getString(R.string.meal_insulin_calc_1), Toast.LENGTH_SHORT).show();
-				} else {
-					Toast.makeText(getApplicationContext(), getString(R.string.meal_insulin_no_calc), Toast.LENGTH_SHORT).show();
-
-				}
 			}
 
 			@Override
@@ -270,7 +263,7 @@ public class Meal extends BaseActivity {
 		date.setText(dateString);
 
 		EditText hour = (EditText) findViewById(R.id.et_MealDetail_Hora);
-		formatter = new SimpleDateFormat("HH:mm:ss");
+		formatter = new SimpleDateFormat("HH:mm");
 		String timeString = formatter.format(newDate);
 		hour.setText(timeString);
 	}
@@ -409,7 +402,7 @@ public class Meal extends BaseActivity {
 		EditText hora = (EditText) findViewById(R.id.et_MealDetail_Hora);
 		EditText note = (EditText) findViewById(R.id.et_MealDetail_Notes);
 
-		//Get id of user 
+		//Get id of user
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
@@ -451,7 +444,7 @@ public class Meal extends BaseActivity {
 		EditText photopath = (EditText) findViewById(R.id.et_MealDetail_Photo);
 		EditText note = (EditText) findViewById(R.id.et_MealDetail_Notes);
 
-		//Get id of user 
+		//Get id of user
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
@@ -494,7 +487,7 @@ public class Meal extends BaseActivity {
 		EditText note = (EditText) findViewById(R.id.et_MealDetail_Notes);
 
 
-		//Get id of user 
+		//Get id of user
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
@@ -664,7 +657,7 @@ public class Meal extends BaseActivity {
 				if (resultCode == -1) {
 					photopath.setText("");
 					img.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.newphoto, null));
-					imgUri=null;
+					imgUri = null;
 				}
 			} else {
 				super.onActivityResult(requestCode, resultCode, data);
@@ -851,12 +844,10 @@ public class Meal extends BaseActivity {
 	}
 
 
-	private void handleExtras()
-	{
+	private void handleExtras() {
 		// Check if there are any extras in the intent:
 		Bundle extras = getIntent().getExtras();
-		if(extras != null && extras.containsKey("value") && extras.containsKey("timestamp"))
-		{
+		if (extras != null && extras.containsKey("value") && extras.containsKey("timestamp")) {
 			// Fill the glycemia text box:
 			double glycemiaValue = extras.getDouble("value");
 			EditText glycemiaEditText = (EditText) findViewById(R.id.et_MealDetail_Glycemia);
@@ -869,23 +860,23 @@ public class Meal extends BaseActivity {
 			fillHour(date);
 		}
 	}
-	private void fillDate(Date date)
-	{
+
+	private void fillDate(Date date) {
 		// Get edit text for date:
-		EditText dateEditText = (EditText)findViewById(R.id.et_MealDetail_Data);
+		EditText dateEditText = (EditText) findViewById(R.id.et_MealDetail_Data);
 
 		// Fill the text box for date:
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String dateString = formatter.format(date);
 		dateEditText.setText(dateString);
 	}
-	private void fillHour(Date date)
-	{
+
+	private void fillHour(Date date) {
 		// Get edit text for the hours:
-		EditText hourEditText = (EditText)findViewById(R.id.et_MealDetail_Hora);
+		EditText hourEditText = (EditText) findViewById(R.id.et_MealDetail_Hora);
 
 		// Fill the text box for the hours:
-		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
 		String timeString = formatter.format(date);
 		hourEditText.setText(timeString);
 	}

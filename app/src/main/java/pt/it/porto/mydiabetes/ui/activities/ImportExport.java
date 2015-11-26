@@ -1,53 +1,29 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
-import android.app.Activity;
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.annotation.SuppressLint;
+import android.app.FragmentTransaction;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.NavUtils;
+import android.support.v4.app.ShareCompat;
 import android.util.Log;
-import android.view.View;
-import android.app.ActionBar;
-import android.app.ActionBar.Tab;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
 
-import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.ui.listAdapters.BloodPressureDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.CholesterolDataBinding;
-import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.WeightDataBinding;
-import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestore;
-import pt.it.porto.mydiabetes.ui.fragments.PdfExport;
-import pt.it.porto.mydiabetes.ui.fragments.Sync;
-import pt.it.porto.mydiabetes.sync.crypt.KeyGenerator;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Font;
@@ -57,10 +33,38 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfWriter;
 import com.lowagie.text.pdf.draw.LineSeparator;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
+import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.sync.crypt.KeyGenerator;
+import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
+import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestore;
+import pt.it.porto.mydiabetes.ui.fragments.PdfExport;
+import pt.it.porto.mydiabetes.ui.fragments.Sync;
+import pt.it.porto.mydiabetes.ui.listAdapters.BloodPressureDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.CholesterolDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseRegDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.WeightDataBinding;
 
+public class ImportExport extends BaseOldActivity {
 
-public class ImportExport extends Activity {
+	public static final String BACKUP_LOCATION = "/MyDiabetes/backup/DB_Diabetes";
+	public static final String PROJECT_MANAGER_EMAIL = "mydiabetes@dcc.fc.up.pt";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -74,20 +78,19 @@ public class ImportExport extends Activity {
 		tab.setTabListener(new MyTabsListener(syncFragment));
 		tab.setText("Sincronização");
 		getActionBar().addTab(tab);
-		
-		
+
 		tab = getActionBar().newTab();
 		Fragment bacuprestoreFragment = new DB_BackupRestore();
 		tab.setTabListener(new MyTabsListener(bacuprestoreFragment));
 		tab.setText("Cópia de Segurança");
 		getActionBar().addTab(tab);
 
-		 tab = getActionBar().newTab();
+		tab = getActionBar().newTab();
 		Fragment impexpFragment = new PdfExport();
 		tab.setTabListener(new MyTabsListener(impexpFragment));
 		tab.setText("Relatório");
 		getActionBar().addTab(tab);
-	
+
 
 	}
 
@@ -101,9 +104,9 @@ public class ImportExport extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
+			case android.R.id.home:
+				NavUtils.navigateUpFromSameTask(this);
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -766,8 +769,7 @@ public class ImportExport extends Activity {
 	@SuppressLint("SimpleDateFormat")
 	public boolean fillBackup() {
 		if (isSDWriteable()) {
-			File inputFile = new File(Environment.getExternalStorageDirectory()
-					+ "/MyDiabetes/backup/DB_Diabetes");
+			File inputFile = new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION);
 			if (inputFile.exists()) {
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(inputFile.lastModified());
@@ -780,6 +782,7 @@ public class ImportExport extends Activity {
 				lastbackup.setText(dateString);
 				Button restore = (Button) findViewById(R.id.bt_Restore);
 				restore.setEnabled(true);
+				findViewById(R.id.share).setEnabled(true);
 				return true;
 			} else {
 				return false;
@@ -797,12 +800,52 @@ public class ImportExport extends Activity {
 	public void syncCloud(View view) {
 		Intent intent = new Intent(this, TransferActivity.class);
 		intent.putExtra("host", "192.168.1.44");
-        byte[] key = new KeyGenerator().generateKey();
-        byte[] iv = new KeyGenerator().generateKey();
-        intent.putExtra("key", key);
-        intent.putExtra("iv",iv);
-        intent.putExtra("onPC", false);
+		byte[] key = new KeyGenerator().generateKey();
+		byte[] iv = new KeyGenerator().generateKey();
+		intent.putExtra("key", key);
+		intent.putExtra("iv", iv);
+		intent.putExtra("onPC", false);
 		startActivity(intent);
+	}
+
+	public void share(View view) {
+		new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION).setReadable(true, false); // making sure that other apps can read the file
+		DB_Read read = new DB_Read(this);
+		String patientName = (String) read.MyData_Read()[1];
+		Intent intent = ShareCompat.IntentBuilder.from(this)
+				.setType("message/rfc822")
+				.addEmailTo(PROJECT_MANAGER_EMAIL)
+				.setSubject(String.format(getResources().getString(R.string.share_subject), patientName))
+				.setText(getResources().getString(R.string.share_text))
+				.setStream(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION)))
+				.getIntent();
+
+		// get apps that resolve email
+		Intent justEmailAppsIntent = new Intent(Intent.ACTION_SENDTO);
+		justEmailAppsIntent.setType("text/plain");
+		justEmailAppsIntent.setData(Uri.parse("mailto:"));
+		List<ResolveInfo> activities = getPackageManager().queryIntentActivities(justEmailAppsIntent, 0);
+
+		Intent[] extraIntents = new Intent[activities.size() - 1];
+		for (int i = 0; i < activities.size() - 1; i++) {
+			extraIntents[i] = (Intent) intent.clone();
+			extraIntents[i].setClassName(activities.get(i).activityInfo.packageName, activities.get(i).activityInfo.name);
+		}
+		Intent one = (Intent) intent.clone();
+		one.setClassName(activities.get(activities.size() - 1).activityInfo.packageName, activities.get(activities.size() - 1).activityInfo.name);
+
+		Intent openInChooser = Intent.createChooser(one, null);
+		openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+
+		ComponentName activityResolved = openInChooser.resolveActivity(getPackageManager());
+		if (activityResolved != null) {
+			if (intent.resolveActivity(getPackageManager()) != null) {
+				startActivity(openInChooser);
+			}
+		} else {
+			Log.e("Share", "No email client found!");
+			//TODO do something to show the error
+		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -813,23 +856,17 @@ public class ImportExport extends Activity {
 			this.fragment = fragment;
 		}
 
-				@Override
-		public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
+		@Override
+		public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
 			ft.replace(R.id.importexport_FragmentContainer, fragment);
 		}
 
 		@Override
-		public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
-			
+		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
 		}
 
 		@Override
-		public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
-			
+		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 		}
-
 	}
 }

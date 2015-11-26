@@ -33,7 +33,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 
 
 
-public class Weight extends Activity {
+public class Weight extends BaseOldActivity {
 
 	ListView weightList;
 	
