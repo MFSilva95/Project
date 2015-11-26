@@ -34,7 +34,7 @@ import java.util.Locale;
 public class PersonalDataFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
 
 	public static final int DEFAULT_BIRTHDAY_YEAR = 1980;
-	public static final int DEFAULT_BIRTHDAY_MONTH = 6;
+	public static final int DEFAULT_BIRTHDAY_MONTH = 5;
 	public static final int DEFAULT_BIRTHDAY_DAY = 15;
 
 	private OnFormEnd mListener;
@@ -175,7 +175,7 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 		container.putString(WelcomeActivity.USER_DATA_GENDER, ((RadioButton) mGenderGroup.findViewById(mGenderGroup.getCheckedRadioButtonId())).getText().toString().toLowerCase());
 		container.putString(WelcomeActivity.USER_DATA_HEIGHT, mHeightView.getText().toString());
 		container.putString(WelcomeActivity.USER_DATA_BIRTHDAY_DATE, new StringBuilder(10).append(birthdayDate.get(Calendar.DAY_OF_MONTH))
-				.append('-').append(birthdayDate.get(Calendar.MONTH)).append('-').append(birthdayDate.get(Calendar.YEAR)).toString());
+				.append('-').append(birthdayDate.get(Calendar.MONTH)+1).append('-').append(birthdayDate.get(Calendar.YEAR)).toString());
 	}
 
 	@Override
