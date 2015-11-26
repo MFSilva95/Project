@@ -65,19 +65,10 @@ public class Home extends BaseOldActivity {
 
 
 	public void ShowDialogAddData() {
-		new AlertDialog.Builder(this)
-				.setTitle(getString(R.string.title_activity_info))
-				.setMessage(getString(R.string.homeInfo))
-				.setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						//Falta verificar se não está associada a nenhuma entrada da DB
-						//Rever porque não elimina o registo de glicemia
-						Intent intent = new Intent(Home.this, MyData.class);
-						intent.putExtra("tabPosition", 2);
-						startActivity(intent);
-
-					}
-				}).show();
+		Intent intent =new Intent(this, WelcomeActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		startActivity(intent);
+		finish();
 	}
 
 	public void Call_DataTools() {

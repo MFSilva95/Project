@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.View;
@@ -94,6 +95,10 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 			if (currentFragment + 1 == fragmentPages.length) {
 				// we are in the last fragment page
 				// save data and exit
+				Intent intent = new Intent(this, Home.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				startActivity(intent);
+				finish();
 			} else {
 				// moves to next page
 				getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
