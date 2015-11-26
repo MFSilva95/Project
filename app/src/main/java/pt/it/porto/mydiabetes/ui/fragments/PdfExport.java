@@ -5,7 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.view.LayoutInflater;
-import android.support.v4.app.Fragment;
+import android.app.Fragment;
 import android.widget.EditText;
 
 import android.annotation.SuppressLint;

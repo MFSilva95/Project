@@ -34,7 +34,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 
 
 
-public class WeightDetail extends BaseActivity {
+public class WeightDetail extends BaseOldActivity {
 
 	int idWeight = 0;
 	int idNote = 0;
@@ -44,7 +44,7 @@ public class WeightDetail extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_weight_detail);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		getActionBar();
 		
 		Bundle args = getIntent().getExtras();
 		if(args!=null){

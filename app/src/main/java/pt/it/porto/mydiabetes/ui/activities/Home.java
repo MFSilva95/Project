@@ -1,5 +1,6 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,7 +18,7 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 
 
-public class Home extends BaseActivity {
+public class Home extends BaseOldActivity {
 
 	private static final String TAG = "Home";
 

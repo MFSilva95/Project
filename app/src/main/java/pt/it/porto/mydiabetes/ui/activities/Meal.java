@@ -55,7 +55,7 @@ import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
 
 
-public class Meal extends BaseActivity {
+public class Meal extends BaseOldActivity {
 
 
 	ArrayList<String> allInsulins;

@@ -1,11 +1,11 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,10 +13,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.ShareCompat;
 import android.util.Log;
 import android.view.Menu;
@@ -26,23 +23,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.ui.listAdapters.BloodPressureDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.CholesterolDataBinding;
-import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.WeightDataBinding;
-import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestore;
-import pt.it.porto.mydiabetes.ui.fragments.PdfExport;
-import pt.it.porto.mydiabetes.ui.fragments.Sync;
-import pt.it.porto.mydiabetes.sync.crypt.KeyGenerator;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -64,7 +44,24 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class ImportExport extends BaseActivity {
+import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.sync.crypt.KeyGenerator;
+import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
+import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestore;
+import pt.it.porto.mydiabetes.ui.fragments.PdfExport;
+import pt.it.porto.mydiabetes.ui.fragments.Sync;
+import pt.it.porto.mydiabetes.ui.listAdapters.BloodPressureDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.CholesterolDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseRegDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
+import pt.it.porto.mydiabetes.ui.listAdapters.WeightDataBinding;
+
+public class ImportExport extends BaseOldActivity {
 
 	public static final String BACKUP_LOCATION = "/MyDiabetes/backup/DB_Diabetes";
 	public static final String PROJECT_MANAGER_EMAIL = "mydiabetes@dcc.fc.up.pt";
@@ -74,25 +71,25 @@ public class ImportExport extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_import_export);
 		// Show the Up button in the action bar.
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-		ActionBar.Tab tab = getSupportActionBar().newTab();
+		ActionBar.Tab tab = getActionBar().newTab();
 		Fragment syncFragment = new Sync();
 		tab.setTabListener(new MyTabsListener(syncFragment));
 		tab.setText("Sincronização");
-		getSupportActionBar().addTab(tab);
+		getActionBar().addTab(tab);
 
-		tab = getSupportActionBar().newTab();
+		tab = getActionBar().newTab();
 		Fragment bacuprestoreFragment = new DB_BackupRestore();
 		tab.setTabListener(new MyTabsListener(bacuprestoreFragment));
 		tab.setText("Cópia de Segurança");
-		getSupportActionBar().addTab(tab);
+		getActionBar().addTab(tab);
 
-		tab = getSupportActionBar().newTab();
+		tab = getActionBar().newTab();
 		Fragment impexpFragment = new PdfExport();
 		tab.setTabListener(new MyTabsListener(impexpFragment));
 		tab.setText("Relatório");
-		getSupportActionBar().addTab(tab);
+		getActionBar().addTab(tab);
 
 
 	}

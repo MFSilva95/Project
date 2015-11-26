@@ -15,7 +15,7 @@ import android.widget.ScrollView;
 import pt.it.porto.mydiabetes.R;
 
 
-public class ExBPChoDisWei extends BaseActivity {
+public class ExBPChoDisWei extends BaseOldActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

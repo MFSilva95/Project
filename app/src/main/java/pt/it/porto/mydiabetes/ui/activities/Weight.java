@@ -33,7 +33,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 
 
 
-public class Weight extends BaseActivity {
+public class Weight extends BaseOldActivity {
 
 	ListView weightList;
 	
@@ -42,7 +42,7 @@ public class Weight extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_weight);
 		// Show the Up button in the action bar.
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		
 		FillDates();
 		weightList = (ListView)findViewById(R.id.WeightActivityList);
