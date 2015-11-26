@@ -116,6 +116,11 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 	@Override
 	public boolean allFieldsAreValid() {
 		boolean cancel = false;
+		if(items.size()==0){
+			items.add(new InsulinData(0, getContext()));
+			list.getAdapter().notifyItemInserted(0);
+			return false;
+		}
 		ArrayList<String> names = new ArrayList<>(items.size());
 		for (int i = 0; i < items.size(); i++) {
 			if (!items.get(i).isValid() || names.contains(items.get(i).getName())) {

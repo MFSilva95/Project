@@ -18,6 +18,7 @@ import com.jadg.mydiabetes.database.MyDiabetesStorage;
 import com.jadg.mydiabetes.ui.activities.WelcomeActivity;
 import com.jadg.mydiabetes.ui.views.GlycemiaObjectivesData;
 import com.jadg.mydiabetes.ui.views.GlycemiaObjetivesElement;
+import com.jadg.mydiabetes.ui.views.InsulinData;
 
 import java.util.ArrayList;
 
@@ -116,6 +117,11 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 	@Override
 	public boolean allFieldsAreValid() {
 		boolean cancel = false;
+		if(items.size()==0){
+			items.add(new GlycemiaObjectivesData(0));
+			list.getAdapter().notifyItemInserted(0);
+			return false;
+		}
 		ArrayList<String> names = new ArrayList<>(items.size());
 		for (int i = 0; i < items.size(); i++) {
 			if (!items.get(i).isValid() || names.contains(items.get(i).getDescription())) {
