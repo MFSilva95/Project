@@ -34,7 +34,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 
 
 
-public class WeightDetail extends Activity {
+public class WeightDetail extends BaseOldActivity {
 
 	int idWeight = 0;
 	int idNote = 0;

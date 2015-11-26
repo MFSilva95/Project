@@ -124,8 +124,7 @@ public class Medicines extends Fragment {
 				medicine.setUnits(row[1]);
 				allmedicines.add(medicine);
 			}
-		}
-		else{
+		} else {
 			
 		}
 		

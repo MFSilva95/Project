@@ -5,9 +5,8 @@ package pt.it.porto.mydiabetes.ui.fragments;
 import java.util.ArrayList;
 
 
-
-import android.view.LayoutInflater;
 import android.app.Fragment;
+import android.view.LayoutInflater;
 import android.app.AlertDialog;
 import android.widget.ListView;
 import android.content.DialogInterface;
@@ -53,8 +52,7 @@ public class Tags extends Fragment {
 	@Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuInflater tagsmenu = getActivity().getMenuInflater();
-        tagsmenu.inflate(R.menu.tags_menu, menu);
+        inflater.inflate(R.menu.tags_menu, menu);
     }
 	
 	

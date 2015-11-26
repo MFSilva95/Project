@@ -4,8 +4,9 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import android.view.LayoutInflater;
+
 import android.app.Fragment;
+import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.TextView;
 import android.annotation.SuppressLint;
@@ -63,8 +64,7 @@ public class DB_BackupRestore extends Fragment {
 			    TextView lastbackup = (TextView)v.findViewById(R.id.tv_lastBackup);
 			    lastbackup.setText(dateString);
 			    return true;
-			}
-			else{
+			} else {
 				return false;
 			}
 		}else{

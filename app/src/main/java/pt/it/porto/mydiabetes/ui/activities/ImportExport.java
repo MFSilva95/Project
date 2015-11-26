@@ -2,11 +2,10 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
-import android.app.ActionBar.Tab;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -62,8 +61,7 @@ import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.WeightDataBinding;
 
-
-public class ImportExport extends Activity {
+public class ImportExport extends BaseOldActivity {
 
 	public static final String BACKUP_LOCATION = "/MyDiabetes/backup/DB_Diabetes";
 	public static final String PROJECT_MANAGER_EMAIL = "mydiabetes@dcc.fc.up.pt";
@@ -80,7 +78,6 @@ public class ImportExport extends Activity {
 		tab.setTabListener(new MyTabsListener(syncFragment));
 		tab.setText("Sincronização");
 		getActionBar().addTab(tab);
-
 
 		tab = getActionBar().newTab();
 		Fragment bacuprestoreFragment = new DB_BackupRestore();
@@ -860,22 +857,16 @@ public class ImportExport extends Activity {
 		}
 
 		@Override
-		public void onTabSelected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
+		public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
 			ft.replace(R.id.importexport_FragmentContainer, fragment);
 		}
 
 		@Override
-		public void onTabUnselected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
-
+		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
 		}
 
 		@Override
-		public void onTabReselected(Tab tab, android.app.FragmentTransaction ft) {
-			// TODO Auto-generated method stub
-
+		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 		}
-
 	}
 }
