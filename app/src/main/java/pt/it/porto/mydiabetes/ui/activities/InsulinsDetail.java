@@ -2,6 +2,9 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -59,13 +62,6 @@ public class InsulinsDetail extends Activity {
 			}
 			((RadioButton)myRadioGroup.getChildAt(index)).setChecked(true);
 
-
-
-
-//			EditText acao = (EditText)findViewById(R.id.et_Insulins_Acao);
-//			acao.setText(toFill.getAction());
-			//EditText value = (EditText)findViewById(R.id.et_TargetBG_Glycemia);
-			//value.setText(String.valueOf(toFill.get));
 
 			rdb.close();
 
@@ -133,7 +129,6 @@ public class InsulinsDetail extends Activity {
 	public void AddNewInsulin(){
 		EditText name = (EditText)findViewById(R.id.et_Insulins_Nome);
 		EditText type = (EditText)findViewById(R.id.et_Insulins_Tipo);
-//		EditText action = (EditText)findViewById(R.id.et_Insulins_Acao);
 		RadioGroup myRadioGroup = (RadioGroup)findViewById(R.id.et_insulin_action);
 		int index = myRadioGroup.indexOfChild(findViewById(myRadioGroup.getCheckedRadioButtonId()));
 
@@ -183,7 +178,7 @@ public class InsulinsDetail extends Activity {
 		insulin.setName(name.getText().toString());
 
 		insulin.setType(type.getText().toString());
-		insulin.setAction(index + "");
+		insulin.setAction(String.valueOf(index));
 
 
 		wdb.Insulin_Add(insulin);
@@ -206,7 +201,6 @@ public class InsulinsDetail extends Activity {
 		RadioGroup myRadioGroup = (RadioGroup)findViewById(R.id.et_insulin_action);
 		int index = myRadioGroup.indexOfChild(findViewById(myRadioGroup.getCheckedRadioButtonId()));
 
-//		EditText action = (EditText)findViewById(R.id.et_Insulins_Acao);
 		//EditText value = (EditText)findViewById(R.id.et_TargetBG_Glycemia);
 
 		//adicionado por zeornelas
@@ -251,7 +245,7 @@ public class InsulinsDetail extends Activity {
 		insulin.setName(name.getText().toString());
 
 		insulin.setType(type.getText().toString());
-		insulin.setAction(index + "");
+		insulin.setAction(String.valueOf(index));
 
 
 		wdb.Insulin_Update(insulin);

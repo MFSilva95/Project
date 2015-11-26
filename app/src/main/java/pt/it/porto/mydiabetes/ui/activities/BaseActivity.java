@@ -1,11 +1,25 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.os.Bundle;
+
+import com.crashlytics.android.Crashlytics;
+
+import io.fabric.sdk.android.Fabric;
+import pt.it.porto.mydiabetes.BuildConfig;
+
 
 public class BaseActivity extends AppCompatActivity {
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (BuildConfig.USE_FABRIC) {
+			Fabric.with(this, new Crashlytics());
+		}
+	}
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {

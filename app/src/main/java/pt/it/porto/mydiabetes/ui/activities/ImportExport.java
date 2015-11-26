@@ -3,8 +3,13 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -12,6 +17,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v4.app.ShareCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +43,7 @@ import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestore;
 import pt.it.porto.mydiabetes.ui.fragments.PdfExport;
 import pt.it.porto.mydiabetes.ui.fragments.Sync;
 import pt.it.porto.mydiabetes.sync.crypt.KeyGenerator;
+
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Font;
@@ -55,9 +62,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
+import java.util.List;
 
 public class ImportExport extends BaseActivity {
+
+	public static final String BACKUP_LOCATION = "/MyDiabetes/backup/DB_Diabetes";
+	public static final String PROJECT_MANAGER_EMAIL = "mydiabetes@dcc.fc.up.pt";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +81,6 @@ public class ImportExport extends BaseActivity {
 		tab.setTabListener(new MyTabsListener(syncFragment));
 		tab.setText("Sincronização");
 		getSupportActionBar().addTab(tab);
-
 
 		tab = getSupportActionBar().newTab();
 		Fragment bacuprestoreFragment = new DB_BackupRestore();
@@ -690,11 +699,11 @@ public class ImportExport extends BaseActivity {
 				try {
 					fileBackup.createNewFile();
 					copyFile(inputFile, fileBackup);
-					ShowDialogMsg("Cópia de segurançaa efectuada com sucesso!");
+					ShowDialogMsg(getString(R.string.dbcopy_success));
 				} catch (IOException ioException) {
-					ShowDialogMsg("Ocurreu um erro durante a cópia de segurançaa, verifique se a memória externa está disponivel!");
+					ShowDialogMsg(getString(R.string.dbcopy_error));
 				} catch (Exception exception) {
-					ShowDialogMsg("Ocurreu um erro durante a cópia de segurançaa, verifique se a memória externa está disponivel!");
+					ShowDialogMsg(getString(R.string.dbcopy_error));
 				}
 			}
 		}
@@ -763,8 +772,7 @@ public class ImportExport extends BaseActivity {
 	@SuppressLint("SimpleDateFormat")
 	public boolean fillBackup() {
 		if (isSDWriteable()) {
-			File inputFile = new File(Environment.getExternalStorageDirectory()
-					+ "/MyDiabetes/backup/DB_Diabetes");
+			File inputFile = new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION);
 			if (inputFile.exists()) {
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(inputFile.lastModified());
@@ -777,6 +785,7 @@ public class ImportExport extends BaseActivity {
 				lastbackup.setText(dateString);
 				Button restore = (Button) findViewById(R.id.bt_Restore);
 				restore.setEnabled(true);
+				findViewById(R.id.share).setEnabled(true);
 				return true;
 			} else {
 				return false;
@@ -802,6 +811,46 @@ public class ImportExport extends BaseActivity {
 		startActivity(intent);
 	}
 
+	public void share(View view) {
+		new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION).setReadable(true, false); // making sure that other apps can read the file
+		DB_Read read = new DB_Read(this);
+		String patientName = (String) read.MyData_Read()[1];
+		Intent intent = ShareCompat.IntentBuilder.from(this)
+				.setType("message/rfc822")
+				.addEmailTo(PROJECT_MANAGER_EMAIL)
+				.setSubject(String.format(getResources().getString(R.string.share_subject), patientName))
+				.setText(getResources().getString(R.string.share_text))
+				.setStream(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION)))
+				.getIntent();
+
+		// get apps that resolve email
+		Intent justEmailAppsIntent = new Intent(Intent.ACTION_SENDTO);
+		justEmailAppsIntent.setType("text/plain");
+		justEmailAppsIntent.setData(Uri.parse("mailto:"));
+		List<ResolveInfo> activities = getPackageManager().queryIntentActivities(justEmailAppsIntent, 0);
+
+		Intent[] extraIntents = new Intent[activities.size() - 1];
+		for (int i = 0; i < activities.size() - 1; i++) {
+			extraIntents[i] = (Intent) intent.clone();
+			extraIntents[i].setClassName(activities.get(i).activityInfo.packageName, activities.get(i).activityInfo.name);
+		}
+		Intent one = (Intent) intent.clone();
+		one.setClassName(activities.get(activities.size() - 1).activityInfo.packageName, activities.get(activities.size() - 1).activityInfo.name);
+
+		Intent openInChooser = Intent.createChooser(one, null);
+		openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+
+		ComponentName activityResolved = openInChooser.resolveActivity(getPackageManager());
+		if (activityResolved != null) {
+			if (intent.resolveActivity(getPackageManager()) != null) {
+				startActivity(openInChooser);
+			}
+		} else {
+			Log.e("Share", "No email client found!");
+			//TODO do something to show the error
+		}
+	}
+
 	@SuppressWarnings("deprecation")
 	class MyTabsListener implements ActionBar.TabListener {
 		public Fragment fragment;
@@ -817,12 +866,10 @@ public class ImportExport extends BaseActivity {
 
 		@Override
 		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
 		}
 
 		@Override
 		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-
 		}
 	}
 }

@@ -137,7 +137,7 @@ public class ExerciseDetail extends Activity {
         date.setText(dateString);
         
         EditText hour = (EditText)findViewById(R.id.et_ExerciseDetail_Hora);
-        formatter = new SimpleDateFormat("HH:mm:ss");
+        formatter = new SimpleDateFormat("HH:mm");
         String timeString = formatter.format(newDate);
         hour.setText(timeString);
 	}
