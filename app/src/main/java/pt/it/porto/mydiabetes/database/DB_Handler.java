@@ -3,19 +3,20 @@ package pt.it.porto.mydiabetes.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import pt.it.porto.mydiabetes.R;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+
+import pt.it.porto.mydiabetes.R;
 
 public class DB_Handler extends SQLiteOpenHelper {
 
 	// Database Version
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 
 	// Database Name
 	private static final String DATABASE_NAME = "DB_Diabetes";
@@ -32,60 +33,60 @@ public class DB_Handler extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		initDatabaseTables(db);
 
-			Resources res = this.myContext.getResources();
-			String[] daytimes = res.getStringArray(R.array.daytimes);
+		Resources res = this.myContext.getResources();
+		String[] daytimes = res.getStringArray(R.array.daytimes);
 
-			ContentValues toInsert = new ContentValues();
-			toInsert.put("Name", daytimes[0]);
-			toInsert.put("TimeStart", "06:00:00");
-			toInsert.put("TimeEnd", "07:30:00");
-			db.insert("Tag", null, toInsert);
+		ContentValues toInsert = new ContentValues();
+		toInsert.put("Name", daytimes[0]);
+		toInsert.put("TimeStart", "06:00");
+		toInsert.put("TimeEnd", "07:30");
+		db.insert("Tag", null, toInsert);
 
-			toInsert = new ContentValues();
-			toInsert.put("Name", daytimes[1]);
-			toInsert.put("TimeStart", "07:30:00");
-			toInsert.put("TimeEnd", "09:00:00");
-			db.insert("Tag", null, toInsert);
+		toInsert = new ContentValues();
+		toInsert.put("Name", daytimes[1]);
+		toInsert.put("TimeStart", "07:30");
+		toInsert.put("TimeEnd", "09:00");
+		db.insert("Tag", null, toInsert);
 
-			toInsert = new ContentValues();
-			toInsert.put("Name", daytimes[2]);
-			toInsert.put("TimeStart", "09:00:00");
-			toInsert.put("TimeEnd", "10:30:00");
-			db.insert("Tag", null, toInsert);
+		toInsert = new ContentValues();
+		toInsert.put("Name", daytimes[2]);
+		toInsert.put("TimeStart", "09:00");
+		toInsert.put("TimeEnd", "10:30");
+		db.insert("Tag", null, toInsert);
 
-			toInsert = new ContentValues();
-			toInsert.put("Name", daytimes[3]);
-			toInsert.put("TimeStart", "10:30:00");
-			toInsert.put("TimeEnd", "13:00:00");
-			db.insert("Tag", null, toInsert);
+		toInsert = new ContentValues();
+		toInsert.put("Name", daytimes[3]);
+		toInsert.put("TimeStart", "10:30");
+		toInsert.put("TimeEnd", "13:00");
+		db.insert("Tag", null, toInsert);
 
-			toInsert = new ContentValues();
-			toInsert.put("Name", daytimes[4]);
-			toInsert.put("TimeStart", "13:00:00");
-			toInsert.put("TimeEnd", "15:30:00");
-			db.insert("Tag", null, toInsert);
+		toInsert = new ContentValues();
+		toInsert.put("Name", daytimes[4]);
+		toInsert.put("TimeStart", "13:00");
+		toInsert.put("TimeEnd", "15:30");
+		db.insert("Tag", null, toInsert);
 
-			toInsert = new ContentValues();
-			toInsert.put("Name", daytimes[5]);
-			toInsert.put("TimeStart", "18:00:00");
-			toInsert.put("TimeEnd", "20:30:00");
-			db.insert("Tag", null, toInsert);
+		toInsert = new ContentValues();
+		toInsert.put("Name", daytimes[5]);
+		toInsert.put("TimeStart", "18:00");
+		toInsert.put("TimeEnd", "20:30");
+		db.insert("Tag", null, toInsert);
 
-			toInsert = new ContentValues();
-			toInsert.put("Name", daytimes[6]);
-			toInsert.put("TimeStart", "20:30:00");
-			toInsert.put("TimeEnd", "22:30:00");
-			db.insert("Tag", null, toInsert);
+		toInsert = new ContentValues();
+		toInsert.put("Name", daytimes[6]);
+		toInsert.put("TimeStart", "20:30");
+		toInsert.put("TimeEnd", "22:30");
+		db.insert("Tag", null, toInsert);
 
-			toInsert = new ContentValues();
-			toInsert.put("Name", daytimes[7]);
-			toInsert.put("TimeStart", "22:30:00");
-			toInsert.put("TimeEnd", "01:00:00");
-			db.insert("Tag", null, toInsert);
+		toInsert = new ContentValues();
+		toInsert.put("Name", daytimes[7]);
+		toInsert.put("TimeStart", "22:30");
+		toInsert.put("TimeEnd", "01:00");
+		db.insert("Tag", null, toInsert);
 
-			toInsert = new ContentValues();
-			toInsert.put("Name", daytimes[8]);
-			db.insert("Tag", null, toInsert);
+		toInsert = new ContentValues();
+		toInsert.put("Name", daytimes[8]);
+		db.insert("Tag", null, toInsert);
 	}
 
 	/**
@@ -95,8 +96,30 @@ public class DB_Handler extends SQLiteOpenHelper {
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		if (oldVersion < 3) {
 			initDatabaseTables(db);
-			//for version 2
-			//need to change the action type in Insulin as the DB_Read::Insulin_GetActionTypeByName expects action to be a parseable int
+		}
+		if (oldVersion < 4) {
+			// convert timestamps to don't have seconds
+			Cursor data = db.query(MyDiabetesContract.Tag.TABLE_NAME, new String[]{MyDiabetesContract.Tag.COLUMN_NAME_ID,
+					MyDiabetesContract.Tag.COLUMN_NAME_TIME_START, MyDiabetesContract.Tag.COLUMN_NAME_TIME_END},
+					MyDiabetesContract.Tag.COLUMN_NAME_TIME_START+" LIKE '__:__:00' OR "+
+							MyDiabetesContract.Tag.COLUMN_NAME_TIME_END+" LIKE '__:__:00'", null, null, null, null);
+			data.moveToFirst();
+			ContentValues contentValues=new ContentValues();
+			String[] tmp;
+			while(!data.isAfterLast()){
+				int id = data.getInt(0);
+				String timeStart=data.getString(1);
+				String timeEnd=data.getString(2);
+
+				tmp = timeEnd.split(":");
+				contentValues.put(MyDiabetesContract.Tag.COLUMN_NAME_TIME_END, tmp[0]+":"+tmp[1]);
+				tmp = timeStart.split(":");
+				contentValues.put(MyDiabetesContract.Tag.COLUMN_NAME_TIME_START, tmp[0]+":"+tmp[1]);
+				db.update(MyDiabetesContract.Tag.TABLE_NAME, contentValues, MyDiabetesContract.Tag.COLUMN_NAME_ID+" = ?", new String[] {String.valueOf(id)});
+
+				data.moveToNext();
+			}
+			data.close();
 		}
 	}
 

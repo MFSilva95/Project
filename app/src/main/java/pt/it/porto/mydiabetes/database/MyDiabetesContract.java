@@ -74,4 +74,14 @@ public class MyDiabetesContract {
 		public static final String COLUMN_NAME_LAST_UPDATE = "DateTimeUpdate";
 	}
 
+	public static class Tag{
+
+		public static final String TABLE_NAME = "Tag";
+
+		public static final String COLUMN_NAME_ID = "Id";
+		public static final String COLUMN_NAME_NAME = "Name";
+		public static final String COLUMN_NAME_TIME_START = "TimeStart";
+		public static final String COLUMN_NAME_TIME_END = "TimeEnd";
+	}
+
 }
