@@ -133,6 +133,16 @@ public class GlycemiaObjectivesData implements Serializable, Parcelable {
 			error = ERROR_EMPTY_OBJECTIVE;
 			errors[ERROR_EMPTY_OBJECTIVE] = true;
 		}
+		if (!TextUtils.isEmpty(startTime) && !TextUtils.isEmpty(endTime)) {
+			String[] temp = startTime.split(":");
+			int startTimeMinutes = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+			temp = endTime.split(":");
+			int endTimeMinutes = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+			if (endTimeMinutes <= startTimeMinutes) {
+				error = ERROR_END_TIME_BEFORE_START_TIME;
+				errors[ERROR_END_TIME_BEFORE_START_TIME] = true;
+			}
+		}
 		errors[NO_ERROR] = error == NO_ERROR;
 		return error == NO_ERROR;
 	}
