@@ -13,13 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.ArrayList;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjetivesElement;
-
-import java.util.ArrayList;
 
 
 /**
@@ -75,11 +75,10 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		list.setAdapter(new InsulinAdapter());
 		list.setLayoutManager(new LinearLayoutManager(getContext()));
 		list.setItemAnimator(new DefaultItemAnimator());
-		if (savedInstanceState == null) {
-			addGlycemiaObjective();
-		} else {
+		if (savedInstanceState != null) {
 			items = (ArrayList) savedInstanceState.getSerializable(STATE_ITEMS);
 		}
+
 
 		return layout;
 	}
@@ -101,6 +100,11 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 
 		if (context instanceof OnFormEnd) {
 			mListener = (OnFormEnd) context;
+			if (items.size() == 0) {
+				mListener.desactivateNextButton();
+			} else {
+				mListener.activateNextButton();
+			}
 		} else {
 			throw new RuntimeException(context.toString()
 					+ " must implement OnFormEnd");
@@ -116,7 +120,7 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 	@Override
 	public boolean allFieldsAreValid() {
 		boolean cancel = false;
-		if(items.size()==0){
+		if (items.size() == 0) {
 			items.add(new GlycemiaObjectivesData(0));
 			list.getAdapter().notifyItemInserted(0);
 			return false;
@@ -133,6 +137,10 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 			}
 			names.add(items.get(i).getDescription());
 		}
+		if (cancel) {
+			return false;
+		}
+
 		// validate time intervals
 		int[] startTimes = new int[items.size()];
 		int[] intervalDuration = new int[items.size()];
@@ -260,6 +268,9 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 			@Override
 			public void dataUpdated(GlycemiaObjectivesData data) {
 //				items.add(data.getPosition(), data);
+				if (mListener != null) {
+					mListener.activateNextButton();
+				}
 			}
 
 			@Override

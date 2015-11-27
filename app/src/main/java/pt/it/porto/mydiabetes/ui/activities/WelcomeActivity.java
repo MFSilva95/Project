@@ -151,6 +151,16 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 		next();
 	}
 
+	@Override
+	public void activateNextButton() {
+		findViewById(R.id.nextBT).setEnabled(true);
+	}
+
+	@Override
+	public void desactivateNextButton() {
+		findViewById(R.id.nextBT).setEnabled(false);
+	}
+
 	public interface RegistryFragmentPage {
 		boolean allFieldsAreValid();
 
