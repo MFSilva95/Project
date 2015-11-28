@@ -19,12 +19,7 @@ import android.view.ViewGroup;
 import pt.it.porto.mydiabetes.R;
 
 /**
- * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
- * contain this fragment must implement the
- * {@link DB_BackupRestore.OnFragmentInteractionListener} interface to handle
- * interaction events. Use the {@link DB_BackupRestore#newInstance} factory
- * method to create an instance of this fragment.
- * 
+ * A simple {@link android.support.v4.app.Fragment} subclass.
  */
 
 
@@ -44,6 +39,7 @@ public class DB_BackupRestore extends Fragment {
 		if(!fillBackup(v)){
 			Button restore = (Button)v.findViewById(R.id.bt_Restore);
 			restore.setEnabled(false);
+			v.findViewById(R.id.share).setEnabled(false);
 		}
 		
 		return v;

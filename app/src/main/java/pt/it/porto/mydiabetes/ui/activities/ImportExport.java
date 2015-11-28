@@ -809,7 +809,12 @@ public class ImportExport extends BaseOldActivity {
 	}
 
 	public void share(View view) {
-		new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION).setReadable(true, false); // making sure that other apps can read the file
+		File backupFile = new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION);
+		if (backupFile.exists()) {
+			backupFile.setReadable(true, false); // making sure that other apps can read the file
+		} else {
+			return;
+		}
 		DB_Read read = new DB_Read(this);
 		String patientName = (String) read.MyData_Read()[1];
 		Intent intent = ShareCompat.IntentBuilder.from(this)
