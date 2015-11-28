@@ -128,8 +128,8 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 		dest.setBackgroundResource(R.drawable.dot_big);
 		AnimatorSet animatorSet = new AnimatorSet();
 
-		ObjectAnimator originAnimator = ObjectAnimator.ofFloat(orig, "alpha", (float) 1.0, (float) 0.2);
-		ObjectAnimator destAnimator = ObjectAnimator.ofFloat(dest, "alpha", (float) 0.2, (float) 1.0);
+		ObjectAnimator originAnimator = ObjectAnimator.ofFloat(orig, "alpha", (float) 1.0, (float) 0.25);
+		ObjectAnimator destAnimator = ObjectAnimator.ofFloat(dest, "alpha", (float) 0.25, (float) 1.0);
 		animatorSet.play(originAnimator).with(destAnimator);
 		animatorSet.start();
 		animatorSet.addListener(new Animator.AnimatorListener() {
@@ -141,6 +141,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 			@Override
 			public void onAnimationEnd(Animator animator) {
 				orig.setBackgroundResource(R.drawable.dot_small);
+				orig.setAlpha(1);
 			}
 
 			@Override
