@@ -101,7 +101,7 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		if (context instanceof OnFormEnd) {
 			mListener = (OnFormEnd) context;
 			if (items.size() == 0) {
-				mListener.desactivateNextButton();
+				mListener.deactivateNextButton();
 			} else {
 				mListener.activateNextButton();
 			}

@@ -4,5 +4,5 @@ public interface OnFormEnd {
 	void formFillEnded();
 
 	void activateNextButton();
-	void desactivateNextButton();
+	void deactivateNextButton();
 }
