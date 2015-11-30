@@ -327,6 +327,7 @@
     <string name="backup_share">Enviar Cópia de Segurança para o \nGestor do Projecto</string>
     <string name="share_subject">Dados do paciente %1$s</string>
     <string name="share_text">Enviado da aplicação: A Minha Diabetes</string>
+    <string name="information_about_developers">Aplicação desenvolvida por Eduardo Soares, João Maia, João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
 
 
 </resources>
