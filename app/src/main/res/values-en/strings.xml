@@ -25,7 +25,7 @@
     <string name="information_about_developers">Developed by Eduardo Soares, João Maia, João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
     <string name="information_about_libraries">This application uses the DroidText library.</string>
     <string name="insulin">Insulin</string>
-    <string name="information_about_version">Version</string>
+    <string name="information_about_version">Version </string>
     <string name="weight">Weight</string>
     <string name="Logbook">Logbook</string>
     <string name="cholesterol">Cholesterol</string>
