@@ -67,8 +67,8 @@ public class GraphsActivity extends BaseActivity implements ChartFragment.OnFrag
 		double value;
 		int i = numberOfElementsInGraph - 1;
 		while (i >= 0) {
-			date = cursor.getString(cursor.getColumnIndex(MyDiabetesContract.Reg_Weight.COLUMN_NAME_DATETIME));
-			value = cursor.getDouble(cursor.getColumnIndex(MyDiabetesContract.Reg_Weight.COLUMN_NAME_VALUE));
+			date = cursor.getString(cursor.getColumnIndex(MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME));
+			value = cursor.getDouble(cursor.getColumnIndex(MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE));
 			xs[i] = date;
 			set[i] = new Entry((float) value, i);
 			i--;
@@ -126,13 +126,13 @@ public class GraphsActivity extends BaseActivity implements ChartFragment.OnFrag
 			cursor.moveToPosition(position);
 			Date date = null;
 			try {
-				date = iso8601Format.parse(cursor.getString(cursor.getColumnIndex(MyDiabetesContract.Reg_Weight.COLUMN_NAME_DATETIME)));
+				date = iso8601Format.parse(cursor.getString(cursor.getColumnIndex(MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME)));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 			holder.date.setText(DateFormat.getDateInstance().format(date));
 //			holder.date.setText(dateFormat.format(date));
-			holder.value.setText(String.format("%.1f", (Double) cursor.getDouble(cursor.getColumnIndex(MyDiabetesContract.Reg_Weight.COLUMN_NAME_VALUE))));
+			holder.value.setText(String.format("%.1f", (Double) cursor.getDouble(cursor.getColumnIndex(MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE))));
 		}
 
 		@Override
