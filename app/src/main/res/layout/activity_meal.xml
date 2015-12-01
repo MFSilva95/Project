@@ -411,12 +411,14 @@
 
         <Button
             android:id="@+id/addTargetObjective"
+            android:background="@drawable/btn_holo_tip"
             style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="match_parent"
+            android:layout_width="220dp"
+            android:layout_gravity="center_horizontal"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:onClick="addGlycemiaObjective"
-            android:text="Adicionar objectivo de glicémia"
+            android:text="@string/button_add_glicemia_objective"
             android:textSize="16sp"
             android:visibility="gone"
             tools:visibility="visible"/>
