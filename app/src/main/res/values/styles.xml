@@ -4,17 +4,67 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppNewTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/primary_material_dark</item>
+        <item name="colorAccent">@color/primary_material_dark</item>
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
+    <style name="AppTheme" parent="@android:style/Theme.Holo">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
     <style name="Holo.Spinner" parent="AppTheme">
 
+    </style>
+
+    <style name="Regist">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="Regist.EditText">
+        <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingLeft">@dimen/abc_edit_text_inset_horizontal_material</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/abc_edit_text_inset_horizontal_material</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="Regist.TextView" parent="TextAppearance.AppCompat.Body2">
+        <item name="android:layout_marginLeft">@dimen/abc_edit_text_inset_horizontal_material</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="Regist.Spinner" parent="Base.Widget.AppCompat.EditText">
+
+        <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/abc_edit_text_inset_horizontal_material</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="Regist.Button" parent="Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">32dp</item>
+        <item name="android:paddingTop">32dp</item>
+        <item name="android:paddingLeft">32dp</item>
+        <item name="android:paddingRight">32dp</item>
+        <item name="android:textSize">@dimen/abc_text_size_subhead_material</item>
+    </style>
+
+    <style name="Regist.TextView.Mini">
+        <!--<item name="android:textSize">@dimen/abc_text_size_small_material</item>-->
+        <item name="android:textColor">?android:attr/textColorTertiary</item>
     </style>
 
 </resources>

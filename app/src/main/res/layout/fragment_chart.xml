@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.jadg.mydiabetes.ui.charts.BodyExpandFrameLayout
+<pt.it.porto.mydiabetes.ui.charts.BodyExpandFrameLayout
     android:id="@+id/frame"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -32,4 +32,4 @@
 
     </android.support.v7.widget.RecyclerView>
 
-</com.jadg.mydiabetes.ui.charts.BodyExpandFrameLayout>
+</pt.it.porto.mydiabetes.ui.charts.BodyExpandFrameLayout>

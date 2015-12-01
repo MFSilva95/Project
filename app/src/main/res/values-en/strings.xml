@@ -16,5 +16,22 @@
     <string name="title_activity_gly_ins_carbs">My Diabetes</string>
     <string name="title_activity_view_photo">Photograph</string>
     <string name="photoSaved">Stored in: </string>
+    <string name="action">Action</string>
+    <string name="add_DiseasesFragment">Add Disease</string>
+    <string name="height">Height</string>
+    <string name="goal">Goal</string>
+    <string name="gender">Gender</string>
+    <string name="flu">Flu</string>
+    <string name="information_about_developers">Developed by Eduardo Soares, João Maia, João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
+    <string name="information_about_libraries">This application uses the DroidText library.</string>
+    <string name="insulin">Insulin</string>
+    <string name="information_about_version">Version </string>
+    <string name="weight">Weight</string>
+    <string name="Logbook">Logbook</string>
+    <string name="cholesterol">Cholesterol</string>
+    <string name="from">From</string>
+    <string name="export">Export</string>
+    <string name="grams">grams</string>
+    <string name="hint_value3"></string>
 
 </resources>
