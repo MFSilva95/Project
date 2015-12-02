@@ -65,7 +65,7 @@
     <string name="deleteReading">Eliminar leitura?</string>
     <string name="positiveButton">Sim</string>
     <string name="negativeButton">Cancelar</string>
-    <string name="okButton">OK</string>
+    <string name="okButton" translatable="false">OK</string>
     <string name="saveButton">Gravar</string>
     <string name="deleteException">Não pode eliminar esta leitura!</string>
     <string name="deleteAlert">Alerta!</string>
@@ -123,7 +123,6 @@
     <string name="photoSaved">Guardada em: </string>
     <string name="information_about">Aplicação desenvolvida no âmbito do projeto interno do Instituto de Telecomunicações \"S-Dia-SelMan - Smart Diabetes Self Management System\" na Fac. de Ciências e Fac. de Medicina da Universidade do Porto. Trabalho realizado em colaboração com o Hospital de S. João.</string>
     <string name="information_about_using">A utilização da aplicação apenas está disponível se estiver envolvido(a) na fase de teste da mesma (Serviço de Endocrinologia do Hospital de São João, EPE), tendo assinado o Consentimento Informado que lhe foi fornecido e estando totalmente informado(a) acerca da metodologia a desenvolver durante o estudo.</string>
-    <string name="information_about_developers">Aplicação desenvolvida por João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
     <string name="information_about_libraries">Esta aplicação utiliza a biblioteca DroidText.</string>
     <string name="information_about_version">Versão </string>
 
@@ -131,8 +130,8 @@
     <string name="exerciseInputAlert">Insira o nome do exercício antes de gravar!</string>
 
 
-    <string name="information_about_contact">mydiabetes@dcc.fc.up.pt\n\nhttp://mydiabetes.dcc.fc.up.pt/</string>
-    <string name="uporto">Univ. Porto</string>
+    <string name="information_about_contact" translatable="false">mydiabetes@dcc.fc.up.pt\n\nhttp://mydiabetes.dcc.fc.up.pt/</string>
+    <string name="uporto" translatable="false">Univ. Porto</string>
 
 
     <string name="sync">Sincronizar com PC</string>
@@ -194,7 +193,7 @@
     <string name="label">Etiqueta</string>
     <string name="before_lunch">Antes de almoço</string>
     <string name="insulin">Insulina</string>
-    <string name="mg_dl">mg/dl</string>
+    <string name="mg_dl" translatable="false">mg/dl</string>
     <string name="from">De</string>
     <string name="to">Até</string>
     <string name="data_config">Dados e Config.</string>
@@ -207,15 +206,15 @@
     <string name="effort">Esforço</string>
     <string name="very_light">Muito leve</string>
     <string name="start">Inicio</string>
-    <string name="hint_value">120</string>
-    <string name="hint_value1">95</string>
-    <string name="hint_hour">15:30</string>
-    <string name="hint_value2">90</string>
+    <string name="hint_value" translatable="false">120</string>
+    <string name="hint_value1" translatable="false">95</string>
+    <string name="hint_hour" translatable="false">15:30</string>
+    <string name="hint_value2" translatable="false">90</string>
     <string name="glycemia_value">Valor de glicemia</string>
     <string name="hemoglobin_value">Valor Hemoglobina Glicosilada</string>
     <string name="hint_hemoglobin">10 (valor em %)</string>
-    <string name="hint_date_hour">2013-04-06 15:30</string>
-    <string name="hint_date">2013-04-06</string>
+    <string name="hint_date_hour" translatable="false">2013-04-06 15:30</string>
+    <string name="hint_date" translatable="false">2013-04-06</string>
     <string name="weight">Peso</string>
     <string name="export_data">Dados a exportar:</string>
     <string name="select_all">Selecionar Tudo</string>
@@ -250,7 +249,7 @@
     <string name="hint_name">Jorge Mendes</string>
     <string name="diabetes_type">Tipo de diabetes</string>
     <string name="sensivity_factor">Fator de sensibilidade</string>
-    <string name="hint_value3">ex.: 45</string>
+    <string name="hint_value3" translatable="false">ex.: 45</string>
     <string name="carbs_racio">Rácio Hidratos de Carbono</string>
     <string name="hint_value4">ex.: 10</string>
     <string name="hypoglycemia_limit">Limite para hipoglicemia</string>
@@ -258,13 +257,13 @@
     <string name="hyperglycemia_limit">Limite para hiperglicemia</string>
     <string name="hint_value6">ex.: 150</string>
     <string name="birth_date">Data de Nascimento</string>
-    <string name="hint_birth_date">1980-04-22</string>
+    <string name="hint_birth_date" translatable="false">1980-04-22</string>
     <string name="gender">Sexo</string>
     <string name="height">Altura</string>
     <string name="hint_value7">ex.: 1.82</string>
     <string name="grams">gramas</string>
-    <string name="percent">%</string>
-    <string name="kg">Kg</string>
+    <string name="percent" translatable="false">%</string>
+    <string name="kg" translatable="false">Kg</string>
     <string name="uni">uni.</string>
     <string name="insulin_method">Modo de Administração</string>
     <string name="read_value">Valor de Leitura</string>
@@ -307,7 +306,7 @@
     <string name="prompt_height">Altura (em metros)</string>
     <string name="error_invalid_height">Altura errada, tem de ser em metros. (Falta um ponto algures?)</string>
     <string name="error_field_required">Campo necessário</string>
-    <string name="height_hint">1.65</string>
+    <string name="height_hint" translatable="false">1.65</string>
     <string name="gender_male">Masculino</string>
     <string name="gender_female">Feminino</string>
     <string name="insulin_name">Nome para a Insulina</string>
@@ -327,6 +326,8 @@
     <string name="backup_share">Enviar Cópia de Segurança para o \nGestor do Projecto</string>
     <string name="share_subject">Dados do paciente %1$s</string>
     <string name="share_text">Enviado da aplicação: A Minha Diabetes</string>
+    <string name="information_about_developers">Aplicação desenvolvida por Eduardo Soares, João Maia, João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
+    <string name="button_add_glicemia_objective">Adicionar objectivo de glicemia</string>
 
 
 </resources>

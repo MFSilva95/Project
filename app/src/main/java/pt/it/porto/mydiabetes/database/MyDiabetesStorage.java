@@ -28,11 +28,11 @@ public class MyDiabetesStorage {
 	public Cursor getWeightRegist(int id) {
 		SQLiteDatabase db = mHandler.getReadableDatabase();
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-		queryBuilder.setTables(MyDiabetesContract.Reg_Weight.TABLE_NAME + " INNER JOIN " + MyDiabetesContract.Note.TABLE_NAME
-				+ "ON " + MyDiabetesContract.Reg_Weight.COLUMN_NAME_NOTE_ID + "=" + MyDiabetesContract.Note.COLUMN_NAME_ID);
+		queryBuilder.setTables(MyDiabetesContract.Regist.Weight.TABLE_NAME + " INNER JOIN " + MyDiabetesContract.Note.TABLE_NAME
+				+ "ON " + MyDiabetesContract.Regist.Weight.COLUMN_NAME_NOTE_ID + "=" + MyDiabetesContract.Note.COLUMN_NAME_ID);
 
-		Cursor cursor = queryBuilder.query(db, new String[]{MyDiabetesContract.Reg_Weight.COLUMN_NAME_ID, MyDiabetesContract.Reg_Weight.COLUMN_NAME_DATETIME,
-						MyDiabetesContract.Reg_Weight.COLUMN_NAME_VALUE, MyDiabetesContract.Note.COLUMN_NAME_Note},
+		Cursor cursor = queryBuilder.query(db, new String[]{MyDiabetesContract.Regist.Weight.COLUMN_NAME_ID, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME,
+						MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE, MyDiabetesContract.Note.COLUMN_NAME_Note},
 				null, null, null, null, null, "1");
 		return cursor;
 
@@ -41,12 +41,12 @@ public class MyDiabetesStorage {
 	public Cursor getAllWeights(QueryOptions options) {
 		SQLiteDatabase db = mHandler.getReadableDatabase();
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-		queryBuilder.setTables(MyDiabetesContract.Reg_Weight.TABLE_NAME);
+		queryBuilder.setTables(MyDiabetesContract.Regist.Weight.TABLE_NAME);
 
-		Cursor cursor = queryBuilder.query(db, new String[]{MyDiabetesContract.Reg_Weight.COLUMN_NAME_ID,
-						MyDiabetesContract.Reg_Weight.COLUMN_NAME_DATETIME, MyDiabetesContract.Reg_Weight.COLUMN_NAME_VALUE},
+		Cursor cursor = queryBuilder.query(db, new String[]{MyDiabetesContract.Regist.Weight.COLUMN_NAME_ID,
+						MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE},
 				null, null, null, null,
-				MyDiabetesContract.Reg_Weight.COLUMN_NAME_DATETIME + " " + (options != null ? options.getSortOrder() : QueryOptions.ORDER_DESC));
+				MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME + " " + (options != null ? options.getSortOrder() : QueryOptions.ORDER_DESC));
 		return cursor;
 
 	}
@@ -114,8 +114,44 @@ public class MyDiabetesStorage {
 		Time now = new Time(Time.getCurrentTimezone());
 		now.setToNow();
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_LAST_UPDATE, now.format("%Y-%m-%d %H:%M:%S"));
+		return insertNewData(MyDiabetesContract.UserInfo.TABLE_NAME, toInsert) != -1;
+	}
+
+	public boolean editUserData(int id, ContentValues newData) {
 		SQLiteDatabase db = mHandler.getWritableDatabase();
-		return db.insert(MyDiabetesContract.UserInfo.TABLE_NAME, null, toInsert) != -1;
+		return db.update(MyDiabetesContract.UserInfo.TABLE_NAME, newData, MyDiabetesContract.UserInfo.COLUMN_NAME_ID + " = ?", new String[]{String.valueOf(id)}) == 1;
+	}
+
+	public boolean addNote(String note) {
+		ContentValues values = new ContentValues();
+		values.put(MyDiabetesContract.Note.COLUMN_NAME_Note, note);
+		return insertNewData(MyDiabetesContract.Note.TABLE_NAME, values) != -1;
+	}
+
+
+	public Cursor getAllInsulins(QueryOptions options) {
+		SQLiteDatabase db = mHandler.getReadableDatabase();
+		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+		// TODO untested!
+		queryBuilder.setTables(MyDiabetesContract.Regist.Insulin.TABLE_NAME + " INNER JOIN " + MyDiabetesContract.Regist.BloodGlucose.TABLE_NAME
+				+ " ON " + MyDiabetesContract.Regist.Insulin.COLUMN_NAME_BLOODGLUCOSE_ID + "=" + MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_ID
+				+ " INNER JOIN " + MyDiabetesContract.Insulin.TABLE_NAME + " ON "
+				+ MyDiabetesContract.Regist.Insulin.COLUMN_NAME_INSULIN_ID + "=" + MyDiabetesContract.Insulin.COLUMN_NAME_ID
+				+ "INNER JOIN" + MyDiabetesContract.Tag.TABLE_NAME + " ON "
+				+ MyDiabetesContract.Regist.Insulin.COLUMN_NAME_TAG_ID + "=" + MyDiabetesContract.Tag.COLUMN_NAME_ID);
+
+		Cursor cursor = queryBuilder.query(db, new String[]{MyDiabetesContract.Regist.Insulin.COLUMN_NAME_ID,
+						MyDiabetesContract.Regist.Insulin.COLUMN_NAME_VALUE, MyDiabetesContract.Insulin.COLUMN_NAME_NAME,
+						MyDiabetesContract.Regist.Insulin.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.Insulin.COLUMN_NAME_DURATION,
+						MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_VALUE, MyDiabetesContract.Tag.COLUMN_NAME_NAME},
+				null, null, null, null,
+				MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME + " " + (options != null ? options.getSortOrder() : QueryOptions.ORDER_DESC));
+		return cursor;
+	}
+
+	public long insertNewData(String table, ContentValues data) {
+		SQLiteDatabase db = mHandler.getWritableDatabase();
+		return db.insert(table, null, data);
 	}
 
 	public static class QueryOptions {

@@ -119,7 +119,7 @@ public class GlycemiaObjectivesData implements Serializable, Parcelable {
 		}
 		if (TextUtils.isEmpty(description)) {
 			error = ERROR_EMPTY_DESCRIPTION;
-			errors[ERROR_REPEATED_DESCRIPTION] = true;
+			errors[ERROR_EMPTY_DESCRIPTION] = true;
 		}
 		if (TextUtils.isEmpty(startTime)) {
 			error = ERROR_EMPTY_START_TIME;

@@ -18,6 +18,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -83,7 +84,6 @@ public class Meal extends BaseOldActivity {
 			ShowDialogAddInsulin();
 		}
 		read.close();
-
 
 		FillDateHour();
 		FillTagSpinner();
@@ -371,6 +371,9 @@ public class Meal extends BaseOldActivity {
 		double d = rdb.Target_GetTargetByTime(hora.getText().toString());
 		if (d != 0) {
 			target.setText(String.valueOf(d));
+			findViewById(R.id.addTargetObjective).setVisibility(View.GONE);
+		} else {
+			findViewById(R.id.addTargetObjective).setVisibility(View.VISIBLE);
 		}
 		rdb.close();
 	}
@@ -879,5 +882,17 @@ public class Meal extends BaseOldActivity {
 		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
 		String timeString = formatter.format(date);
 		hourEditText.setText(timeString);
+	}
+
+	public void addGlycemiaObjective(View view) {
+		Intent intent = new Intent(this, TargetBG_detail.class);
+		String goal=((EditText) findViewById(R.id.et_MealDetail_TargetGlycemia)).getText().toString();
+		if(!TextUtils.isEmpty(goal)) {
+			float target = Float.parseFloat(goal);
+			Bundle bundle = new Bundle();
+			bundle.putFloat(TargetBG_detail.BUNDLE_GOAL, target);
+			intent.putExtras(bundle);
+		}
+		startActivity(intent);
 	}
 }

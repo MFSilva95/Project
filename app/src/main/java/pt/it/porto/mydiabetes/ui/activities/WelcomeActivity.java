@@ -25,6 +25,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 
 	// save state
 	private final static String BUNDLE_CURRENT_FRAGMENT = "current_fragment";
+	private final static String BUNDLE_SHOW_BUTTON_ACTIVE = "next_button_active";
 	private final static String BUNDLE_DATA = "data";
 
 	// constants to save data
@@ -46,6 +47,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 
 	// user inserted data
 	private Bundle data = new Bundle();
+	private boolean nextButtonActive=true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 
 		if (savedInstanceState != null) {
 			currentFragment = savedInstanceState.getInt(BUNDLE_CURRENT_FRAGMENT, 0);
+			nextButtonActive = savedInstanceState.getBoolean(BUNDLE_SHOW_BUTTON_ACTIVE, true);
 			data = savedInstanceState.getBundle(BUNDLE_DATA);
 			if (data == null) {
 				data = new Bundle();
@@ -73,6 +76,11 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 			}
 		});
 		getSupportActionBar().setSubtitle(((RegistryFragmentPage) fragmentPages[currentFragment]).getSubtitle());
+		if(nextButtonActive){
+			activateNextButton();
+		}else{
+			deactivateNextButton();
+		}
 	}
 
 
@@ -80,6 +88,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt(BUNDLE_CURRENT_FRAGMENT, currentFragment);
+		outState.putBoolean(BUNDLE_SHOW_BUTTON_ACTIVE, nextButtonActive);
 		outState.putBundle(BUNDLE_DATA, data);
 	}
 
@@ -119,8 +128,8 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 		dest.setBackgroundResource(R.drawable.dot_big);
 		AnimatorSet animatorSet = new AnimatorSet();
 
-		ObjectAnimator originAnimator = ObjectAnimator.ofFloat(orig, "alpha", (float) 1.0, (float) 0.2);
-		ObjectAnimator destAnimator = ObjectAnimator.ofFloat(dest, "alpha", (float) 0.2, (float) 1.0);
+		ObjectAnimator originAnimator = ObjectAnimator.ofFloat(orig, "alpha", (float) 1.0, (float) 0.25);
+		ObjectAnimator destAnimator = ObjectAnimator.ofFloat(dest, "alpha", (float) 0.25, (float) 1.0);
 		animatorSet.play(originAnimator).with(destAnimator);
 		animatorSet.start();
 		animatorSet.addListener(new Animator.AnimatorListener() {
@@ -132,6 +141,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 			@Override
 			public void onAnimationEnd(Animator animator) {
 				orig.setBackgroundResource(R.drawable.dot_small);
+				orig.setAlpha(1);
 			}
 
 			@Override
@@ -149,6 +159,24 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 	@Override
 	public void formFillEnded() {
 		next();
+	}
+
+	@Override
+	public void activateNextButton() {
+		View v=findViewById(R.id.nextBT);
+		if(v!=null){
+			v.setEnabled(true);
+		}
+		nextButtonActive=true;
+	}
+
+	@Override
+	public void deactivateNextButton() {
+		View v=findViewById(R.id.nextBT);
+		if(v!=null){
+			v.setEnabled(false);
+		}
+		nextButtonActive=false;
 	}
 
 	public interface RegistryFragmentPage {

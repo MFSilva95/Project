@@ -100,7 +100,7 @@ public class GlycemiaObjetivesElement extends CardView {
 				new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
 					@Override
 					public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-						((TextView) layoutEdit.findViewById(R.id.time_start)).setText(String.format("%s:%s", String.valueOf(hour), String.valueOf(minute)));
+						((TextView) layoutEdit.findViewById(R.id.time_start)).setText(String.format("%02d:%02d", hour, minute));
 
 					}
 				}, 12, 0, true).show();
@@ -113,7 +113,7 @@ public class GlycemiaObjetivesElement extends CardView {
 				new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
 					@Override
 					public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-						((TextView) layoutEdit.findViewById(R.id.time_end)).setText(String.format("%s:%s", String.valueOf(hour), String.valueOf(minute)));
+						((TextView) layoutEdit.findViewById(R.id.time_end)).setText(String.format("%02d:%02d",hour, minute));
 
 					}
 				}, 12, 0, true).show();
