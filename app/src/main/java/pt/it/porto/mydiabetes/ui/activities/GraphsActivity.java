@@ -29,7 +29,7 @@ import pt.it.porto.mydiabetes.ui.fragments.ChartFragment;
 public class GraphsActivity extends BaseActivity implements ChartFragment.OnFragmentInteractionListener {
 
 
-	private static final SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static final SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
 	private static final int MAX_VALUES_IN_GRAPH = 100;
 
@@ -108,10 +108,10 @@ public class GraphsActivity extends BaseActivity implements ChartFragment.OnFrag
 			Date date = null;
 			try {
 				date = iso8601Format.parse(cursor.getString(cursor.getColumnIndex(MyDiabetesContract.Reg_Weight.COLUMN_NAME_DATETIME)));
+				holder.date.setText(DateFormat.getDateInstance().format(date));
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			holder.date.setText(DateFormat.getDateInstance().format(date));
 //			holder.date.setText(dateFormat.format(date));
 			holder.value.setText(String.format("%.1f", (Double) cursor.getDouble(cursor.getColumnIndex(MyDiabetesContract.Reg_Weight.COLUMN_NAME_VALUE))));
 		}
