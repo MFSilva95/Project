@@ -20,6 +20,7 @@ import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjetivesElement;
+import pt.it.porto.mydiabetes.utils.ArraysUtils;
 
 
 /**
@@ -142,8 +143,8 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		}
 
 		// validate time intervals
-		int[] startTimes = new int[items.size()];
-		int[] intervalDuration = new int[items.size()];
+		ArrayList<Integer> startTimes = new ArrayList<>(items.size());
+		ArrayList<Integer> intervalDuration = new ArrayList<>(items.size());
 		String[] temp;
 		for (int i = 0; i < items.size(); i++) {
 			temp = items.get(i).getStartTime().split(":");
@@ -153,16 +154,18 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 			int endTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
 			int duration = endTime - startTime;
 			boolean shouldCancel = true;
-			for (int p = 0; p < i; p++) {
-				if (startTimes[p] <= startTime && startTimes[p] + intervalDuration[p] >= startTime) {
+			for (int p = 0; p < startTimes.size(); p++) {
+				if (startTimes.get(p) <= startTime && startTimes.get(p) + intervalDuration.get(p) >= startTime) {
 					// startTime inside a previews interval
 					items.get(i).setInvalid(GlycemiaObjectivesData.ERROR_START_TIME_OVERLAPS);
-				} else if (startTimes[p] <= endTime && startTimes[p] + intervalDuration[p] >= endTime) {
+				} else if (startTimes.get(p) <= endTime && startTimes.get(p) + intervalDuration.get(p) >= endTime) {
 					// endTime inside a interval
 					items.get(i).setInvalid(GlycemiaObjectivesData.ERROR_END_TIME_OVERLAPS);
-				} else if (duration <= 0) {
-					// endTime needs to be bigger than startTime
-					items.get(i).setInvalid(GlycemiaObjectivesData.ERROR_END_TIME_BEFORE_START_TIME);
+				} else if (duration <= 0 && ArraysUtils.min(startTimes) < endTime) {
+					// endTime in the next day
+					// compares if endTime will be after a startTime of other interval
+					// if true than it should fail
+					items.get(i).setInvalid(GlycemiaObjectivesData.ERROR_END_TIME_OVERLAPS);
 				} else {
 					shouldCancel = false;
 				}
@@ -173,8 +176,16 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 					break;
 				}
 			}
-			startTimes[i] = startTime;
-			intervalDuration[i] = endTime - startTimes[i];
+			if (duration < 0) {
+				// endTime in the next day
+				// adds interval from 0 to endTime
+				startTimes.add(0);
+				intervalDuration.add(endTime);
+				duration += 24 * 60;
+				// to add interval from startTime to 24+
+			}
+			startTimes.add(startTime);
+			intervalDuration.add(duration);
 		}
 
 		return !cancel;
