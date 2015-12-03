@@ -3,15 +3,27 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="?android:attr/selectableItemBackground"
-              tools:background="@android:color/white"
               android:clickable="true"
               android:longClickable="true"
               android:orientation="horizontal"
               android:paddingBottom="@dimen/activity_vertical_margin"
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="@dimen/activity_vertical_margin">
+              android:paddingTop="@dimen/activity_vertical_margin"
+              tools:background="@android:color/white">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:src="@drawable/weight"
+        android:id="@+id/img_icon"
+        app:civ_border_width="2dp"
+        app:civ_fill_color="@android:color/black"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
 
     <TextView
         android:id="@+id/txt_date"

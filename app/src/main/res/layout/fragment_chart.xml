@@ -28,7 +28,7 @@
         android:paddingBottom="140dp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical"
-        tools:listitem="@layout/list_item_single_type">
+        tools:listitem="@layout/list_item_multi_type">
 
     </android.support.v7.widget.RecyclerView>
 
