@@ -128,7 +128,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 		View currentFocus = getCurrentFocus();
 		if(currentFocus!=null) {
-			imm.hideSoftInputFromInputMethod(currentFocus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+			imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		}
 	}
 
