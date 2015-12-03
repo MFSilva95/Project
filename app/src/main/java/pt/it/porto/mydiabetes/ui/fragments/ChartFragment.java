@@ -170,22 +170,10 @@ public class ChartFragment extends Fragment {
 		listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).build());
 	}
 
-	public void setChartData(List<PointValue> values) {
-		numberOfElementsInGraph = values.size();
+	public void setChartData(List<Line> lines) {
+//		numberOfElementsInGraph = lines.get(0)..size();
 		chart = (LineChartView) getView().findViewById(R.id.chart);
 
-		List<Line> lines = new ArrayList<>(1);
-		Line line = new Line(values);
-
-		line.setColor(Color.RED);
-		line.setShape(ValueShape.CIRCLE);
-		line.setFilled(false);
-		line.setHasLabels(true);
-		line.setHasLines(true);
-		line.setCubic(false);
-
-
-		lines.add(0, line);
 		chart.setLineChartData(new LineChartData(lines));
 
 		chart.setZoomType(ZoomType.HORIZONTAL);

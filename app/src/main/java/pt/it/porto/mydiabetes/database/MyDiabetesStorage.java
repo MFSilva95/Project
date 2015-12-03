@@ -154,6 +154,16 @@ public class MyDiabetesStorage {
 		return db.insert(table, null, data);
 	}
 
+	Cursor query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderby){
+		SQLiteDatabase db = mHandler.getReadableDatabase();
+		return db.query(table, columns, selection, selectionArgs, groupBy, having, orderby);
+	}
+
+	Cursor rawQuert(String query){
+		SQLiteDatabase db = mHandler.getReadableDatabase();
+		return db.rawQuery(query, null);
+	}
+
 	public static class QueryOptions {
 		public static final String ORDER_ASC = "ASC";
 		public static final String ORDER_DESC = "DESC";

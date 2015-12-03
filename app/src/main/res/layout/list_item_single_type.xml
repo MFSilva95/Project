@@ -28,7 +28,7 @@
         android:layout_weight="1"/>
 
     <TextView
-        android:id="@+id/txt_weight"
+        android:id="@+id/txt_value"
         style="@android:style/TextAppearance.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

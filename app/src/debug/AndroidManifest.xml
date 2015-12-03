@@ -5,7 +5,7 @@
 
     <application>
 
-        <activity android:name="pt.it.porto.mydiabetes.ui.activities.GraphsActivity"
+        <activity android:name="pt.it.porto.mydiabetes.ui.activities.MultiDataChartActivity"
                   android:theme="@style/AppNewTheme">
             <intent-filter >
                 <action android:name="android.intent.action.MAIN"/>
