@@ -2,11 +2,10 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.util.SparseIntArray;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import lecho.lib.hellocharts.model.Line;
@@ -25,22 +24,21 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 	private Cursor cursor;
 	private String[] tables;
 
-	private Cursor getCursor(){
-		if(cursor==null){
+	private Cursor getCursor() {
+		if (cursor == null) {
 			initCursor();
 		}
 		return cursor;
 	}
 
-	private void initCursor(){
+	private void initCursor() {
 		tables = new String[]{MyDiabetesContract.Regist.Insulin.TABLE_NAME, MyDiabetesContract.Regist.CarboHydrate.TABLE_NAME};
-		cursor=new ListDataSource(MyDiabetesStorage.getInstance(this))
+		cursor = new ListDataSource(MyDiabetesStorage.getInstance(this))
 				.getMultiData(tables,
 						new String[]{MyDiabetesContract.Regist.Insulin.COLUMN_NAME_VALUE, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_VALUE},
 						new String[]{MyDiabetesContract.Regist.Insulin.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_DATETIME},
-						MAX_VALUES_IN_GRAPH);
+						dateFormat.format(getTimeStart().getTime()), dateFormat.format(getTimeEnd().getTime()), MAX_VALUES_IN_GRAPH);
 	}
-
 
 
 	@Override
@@ -51,7 +49,7 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 
 	@Override
 	public List<Line> getChartLines() {
-		Cursor cursor=getCursor();
+		Cursor cursor = getCursor();
 		cursor.moveToLast();
 
 		int numberOfElementsInGraph = cursor.getCount() > MAX_VALUES_IN_GRAPH ? MAX_VALUES_IN_GRAPH : cursor.getCount();
@@ -108,6 +106,11 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 	}
 
 	@Override
+	public void updateTimeRange() {
+		initCursor();
+	}
+
+	@Override
 	public void onItemSelected(int position) {
 
 	}
@@ -127,7 +130,7 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 
 		@Override
 		public int getListPosition(int line, int positionInLine) {
-			return listToPositions[line].get( positionInLine);
+			return listToPositions[line].get(positionInLine);
 		}
 	}
 }

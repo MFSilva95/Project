@@ -19,16 +19,18 @@ public class SingleDataChartActivity extends AbstractChartActivity {
 
 	private Cursor cursor;
 
-	private Cursor getCursor(){
-		if(cursor==null){
+	private Cursor getCursor() {
+		if (cursor == null) {
 			initCursor();
 		}
 		return cursor;
 	}
+
 	private void initCursor() {
 		cursor = new ListDataSource(MyDiabetesStorage.getInstance(this))
 				.getSimpleData(MyDiabetesContract.Regist.Weight.TABLE_NAME, MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE,
-						MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME, MAX_VALUES_IN_GRAPH);
+						MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME,
+						dateFormat.format(getTimeStart()), dateFormat.format(getTimeEnd()), MAX_VALUES_IN_GRAPH);
 	}
 
 	@Override
@@ -38,7 +40,7 @@ public class SingleDataChartActivity extends AbstractChartActivity {
 
 	@Override
 	public List<Line> getChartLines() {
-		Cursor cursor=getCursor();
+		Cursor cursor = getCursor();
 		cursor.moveToLast();
 		int numberOfElementsInGraph = cursor.getCount() > MAX_VALUES_IN_GRAPH ? MAX_VALUES_IN_GRAPH : cursor.getCount();
 
@@ -70,6 +72,11 @@ public class SingleDataChartActivity extends AbstractChartActivity {
 	@Override
 	public String getName() {
 		return getString(R.string.title_activity_weight);
+	}
+
+	@Override
+	public void updateTimeRange() {
+		initCursor();
 	}
 
 
