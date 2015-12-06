@@ -31,12 +31,14 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 	private void setupContent() {
 		ChartFragment fragment = (ChartFragment) getSupportFragmentManager().findFragmentById(R.id.chart_fragment);
 		fragment.setListAdapter(getRecyclerViewAdapter());
-		fragment.setChartData(getChartLines());
+		List<Line> chartLines = getChartLines();
+		fragment.setChartData(chartLines);
+		fragment.setSelectItemToListCalculation(getSelectItemToListCalculation(chartLines));
 		fragment.setName(getName());
 		fragment.endSetup();
 	}
 
-	public Line getLine(){
+	public Line getLine() {
 		Line line = new Line();
 		line.setColor(Color.RED);
 		line.setShape(ValueShape.CIRCLE);
@@ -52,4 +54,21 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 	public abstract List<Line> getChartLines();
 
 	public abstract String getName();
+
+	public ChartFragment.SelectItemToListCalculation getSelectItemToListCalculation(List<Line> chartLines) {
+		return new DefaultSelectItemToListCalculation(chartLines);
+	}
+
+	private static class DefaultSelectItemToListCalculation implements ChartFragment.SelectItemToListCalculation{
+		private final int numberOfValues;
+
+		public DefaultSelectItemToListCalculation(List<Line> chartLines) {
+			this.numberOfValues=chartLines.get(0).getValues().size();
+		}
+
+		@Override
+		public int getListPosition(int line, int positionInLine) {
+			return numberOfValues-positionInLine-1;
+		}
+	}
 }

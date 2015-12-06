@@ -17,27 +17,29 @@ import pt.it.porto.mydiabetes.ui.recyclerviewAdapters.GenericSingleTypeAdapter;
 
 public class SingleDataChartActivity extends AbstractChartActivity {
 
+	private Cursor cursor;
+
+	private Cursor getCursor(){
+		if(cursor==null){
+			initCursor();
+		}
+		return cursor;
+	}
+	private void initCursor() {
+		cursor = new ListDataSource(MyDiabetesStorage.getInstance(this))
+				.getSimpleData(MyDiabetesContract.Regist.Weight.TABLE_NAME, MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE,
+						MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME, MAX_VALUES_IN_GRAPH);
+	}
+
 	@Override
 	public RecyclerView.Adapter getRecyclerViewAdapter() {
-		return new GenericSingleTypeAdapter(new ListDataSource(MyDiabetesStorage.getInstance(this))
-				.getSimpleData(MyDiabetesContract.Regist.Weight.TABLE_NAME, MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE,
-						MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME));
+		return new GenericSingleTypeAdapter(getCursor());
 	}
 
 	@Override
 	public List<Line> getChartLines() {
-		return convertToGraphPoints(MyDiabetesStorage.getInstance(this)
-				.getAllWeights(new MyDiabetesStorage.QueryOptions().setSortOrder(MyDiabetesStorage.QueryOptions.ORDER_DESC)));
-	}
-
-	@Override
-	public String getName() {
-		return getString(R.string.title_activity_weight);
-	}
-
-
-	private List<Line> convertToGraphPoints(Cursor cursor) {
-		cursor.moveToFirst();
+		Cursor cursor=getCursor();
+		cursor.moveToLast();
 		int numberOfElementsInGraph = cursor.getCount() > MAX_VALUES_IN_GRAPH ? MAX_VALUES_IN_GRAPH : cursor.getCount();
 
 		List<PointValue> xss = new ArrayList<>(numberOfElementsInGraph);
@@ -56,15 +58,19 @@ public class SingleDataChartActivity extends AbstractChartActivity {
 			value = cursor.getDouble(cursor.getColumnIndex(MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE));
 			xss.add(new PointValue(dateTimeStamp, (float) value));
 			i--;
-			cursor.moveToNext();
+			cursor.moveToPrevious();
 		}
 		Line line = getLine();
 		line.setValues(xss);
-		List<Line> lines=new ArrayList<>(1);
+		List<Line> lines = new ArrayList<>(1);
 		lines.add(line);
 		return lines;
 	}
 
+	@Override
+	public String getName() {
+		return getString(R.string.title_activity_weight);
+	}
 
 
 	@Override

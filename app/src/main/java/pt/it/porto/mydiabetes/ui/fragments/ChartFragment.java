@@ -57,6 +57,8 @@ public class ChartFragment extends Fragment {
 
 	private View listItemSelected;
 
+	private SelectItemToListCalculation selectItemToListCalculation;
+
 	/**
 	 * Use this factory method to create a new instance of
 	 * this fragment using the provided parameters.
@@ -204,7 +206,7 @@ public class ChartFragment extends Fragment {
 
 		chart.setOnValueTouchListener(new LineChartOnValueSelectListener() {
 			@Override
-			public void onValueSelected(int i, int i1, PointValue pointValue) {
+			public void onValueSelected(int lineIndex, int pointIndex, PointValue pointValue) {
 				if (listItemSelected != null && bodyOverlapHeaderGesture.isExpanded()) {
 					removeSelection();
 					bodyOverlapHeaderGesture.collapse();
@@ -213,11 +215,14 @@ public class ChartFragment extends Fragment {
 
 //				Log.d("ChartSelect", String.valueOf(numberOfElementsInGraph - h.getXIndex() - 1));
 //				Log.d("ChartSelect", "lineIndex: " + String.valueOf(i) + " pointIndex: " + String.valueOf(i1) + " numberOfElements: "+String.valueOf(numberOfElementsInGraph));
-				listView.smoothScrollToPosition(i1);
-				RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(i1);
-				if (holder != null && holder.itemView != null) {
-					removeSelection();
-					selectItem(holder.itemView);
+				if(selectItemToListCalculation!=null) {
+					int position=selectItemToListCalculation.getListPosition(lineIndex, pointIndex);
+					listView.smoothScrollToPosition(position);
+					RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(position);
+					if (holder != null && holder.itemView != null) {
+						removeSelection();
+						selectItem(holder.itemView);
+					}
 				}
 				bodyOverlapHeaderGesture.expand();
 			}
@@ -255,5 +260,13 @@ public class ChartFragment extends Fragment {
 	public void setName(String name) {
 		this.name = name;
 		((AppCompatActivity) mListener).getSupportActionBar().setTitle(name);
+	}
+
+	public void setSelectItemToListCalculation(SelectItemToListCalculation selectItemToListCalculation) {
+		this.selectItemToListCalculation = selectItemToListCalculation;
+	}
+
+	public interface SelectItemToListCalculation{
+		int getListPosition(int line, int positionInLine);
 	}
 }
