@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.recyclerviewAdapters;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,6 @@ import java.util.Date;
 import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.ListDataSource;
-import pt.it.porto.mydiabetes.database.MyDiabetesContract;
 
 public class GenericMultiTypeAdapter extends RecyclerView.Adapter<GenericMultiTypeAdapter.Holder> {
 	private static final SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -49,12 +49,14 @@ public class GenericMultiTypeAdapter extends RecyclerView.Adapter<GenericMultiTy
 			e.printStackTrace();
 		}
 		holder.icon.setImageResource(resourceIcons[tables.indexOf(cursor.getString(cursor.getColumnIndex(ListDataSource.ROW_TABLE_NAME)))]);
-		if (cursor.getString(cursor.getColumnIndex(ListDataSource.ROW_TABLE_NAME)).split(" JOIN")[0].equals(MyDiabetesContract.Regist.Insulin.TABLE_NAME)) {
-			holder.extra.setText(cursor.getString(cursor.getColumnIndex(ListDataSource.ROW_EXTRAS)));
+		String extras = cursor.getString(cursor.getColumnIndex(ListDataSource.ROW_EXTRAS));
+		if (!TextUtils.isEmpty(extras)) {
+			holder.extra.setText(extras);
 			holder.extra.setVisibility(View.VISIBLE);
+		} else {
+			holder.extra.setVisibility(View.GONE);
 		}
 	}
-
 
 	@Override
 	public int getItemViewType(int position) {
