@@ -30,7 +30,7 @@ public class SingleDataChartActivity extends AbstractChartActivity {
 		cursor = new ListDataSource(MyDiabetesStorage.getInstance(this))
 				.getSimpleData(MyDiabetesContract.Regist.Weight.TABLE_NAME, MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE,
 						MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME,
-						dateFormat.format(getTimeStart()), dateFormat.format(getTimeEnd()), MAX_VALUES_IN_GRAPH);
+						dateFormat.format(getTimeStart().getTime()), dateFormat.format(getTimeEnd().getTime()), MAX_VALUES_IN_GRAPH);
 	}
 
 	@Override
