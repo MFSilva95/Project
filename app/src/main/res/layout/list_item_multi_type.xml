@@ -1,52 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:background="?android:attr/selectableItemBackground"
               android:clickable="true"
               android:longClickable="true"
               android:orientation="horizontal"
-              android:paddingBottom="@dimen/activity_vertical_margin"
+              android:paddingBottom="@dimen/list_item_vertical_margin"
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
-              android:paddingTop="@dimen/activity_vertical_margin"
+              android:paddingTop="@dimen/list_item_vertical_margin"
               tools:background="@android:color/white">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_icon"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
         android:visibility="gone"
-        tools:visibility="visible"
-        tools:src="@drawable/weight"
-        android:id="@+id/img_icon"
         app:civ_border_width="2dp"
         app:civ_fill_color="@android:color/black"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"/>
+        tools:src="@drawable/weight"
+        tools:visibility="visible"/>
 
-    <TextView
-        android:id="@+id/txt_date"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start|center_vertical"
-        android:lines="1"
-        android:textColor="@android:color/background_dark"
-        tools:text="03-11-2015"/>
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:lines="1"
+            android:textColor="@android:color/background_dark"
+            tools:text="03-11-2015"/>
+
+        <TextView
+            android:id="@+id/txt_time"
+            android:textStyle=""
+            android:layout_width="wrap_content"
+            android:fontFamily="sans-serif-light"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:lines="1"
+            android:textColor="@android:color/background_dark"
+            android:visibility="gone"
+            tools:text="21:50"
+            tools:visibility="visible"/>
+    </LinearLayout>
 
     <View
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"/>
 
-    <TextView
-        android:id="@+id/txt_value"
-        style="@android:style/TextAppearance.Large"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|center_vertical"
-        android:gravity="end"
-        android:lines="1"
-        android:textColor="@android:color/background_dark"
-        tools:text="53"/>
+        android:gravity="center_vertical"
+        android:layout_gravity="start|center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_value"
+            style="@android:style/TextAppearance.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:gravity="end"
+            android:lines="1"
+            android:textColor="@android:color/background_dark"
+            tools:text="53"/>
+
+        <TextView
+            android:id="@+id/txt_extra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:lines="1"
+            android:fontFamily="sans-serif-light"
+            android:visibility="gone"
+            style="@style/TextAppearance.AppCompat.Caption"
+            tools:visibility="visible"
+            android:textColor="@android:color/background_dark"
+            tools:text="Insulina 1"/>
+    </LinearLayout>
 </LinearLayout>

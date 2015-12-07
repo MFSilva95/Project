@@ -5,32 +5,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.ListDataSource;
+import pt.it.porto.mydiabetes.database.MyDiabetesContract;
 
 public class GenericMultiTypeAdapter extends RecyclerView.Adapter<GenericMultiTypeAdapter.Holder> {
 	private static final SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	private static final SimpleDateFormat hourFormat = new SimpleDateFormat("HH:mm");
 
 	private Cursor cursor;
 	private ArrayList<String> tables;
 	private int[] resourceIcons;
 
-	public GenericMultiTypeAdapter(Cursor cursor, String[] tables, int[] resourceIcons) {
+	public GenericMultiTypeAdapter(Cursor cursor, ArrayList<String> tables, int[] resourceIcons) {
 		this.cursor = cursor;
-		this.tables = new ArrayList<>(Arrays.asList(tables));
+		this.tables = tables;
 		this.resourceIcons = resourceIcons;
 	}
 
@@ -46,10 +44,15 @@ public class GenericMultiTypeAdapter extends RecyclerView.Adapter<GenericMultiTy
 		try {
 			Date date = iso8601Format.parse(cursor.getString(cursor.getColumnIndex(ListDataSource.ROW_DATETIME)));
 			holder.date.setText(DateFormat.getDateInstance().format(date));
+			holder.time.setText(hourFormat.format(date));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		holder.icon.setImageResource(resourceIcons[tables.indexOf(cursor.getString(cursor.getColumnIndex(ListDataSource.ROW_TABLE_NAME)))]);
+		if (cursor.getString(cursor.getColumnIndex(ListDataSource.ROW_TABLE_NAME)).split(" JOIN")[0].equals(MyDiabetesContract.Regist.Insulin.TABLE_NAME)) {
+			holder.extra.setText(cursor.getString(cursor.getColumnIndex(ListDataSource.ROW_EXTRAS)));
+			holder.extra.setVisibility(View.VISIBLE);
+		}
 	}
 
 
@@ -68,14 +71,19 @@ public class GenericMultiTypeAdapter extends RecyclerView.Adapter<GenericMultiTy
 	static class Holder extends RecyclerView.ViewHolder {
 		CircleImageView icon;
 		TextView date;
+		TextView time;
 		TextView value;
+		TextView extra;
 
 		public Holder(View itemView) {
 			super(itemView);
 			date = (TextView) itemView.findViewById(R.id.txt_date);
 			value = (TextView) itemView.findViewById(R.id.txt_value);
 			icon = (CircleImageView) itemView.findViewById(R.id.img_icon);
+			time = (TextView) itemView.findViewById(R.id.txt_time);
+			extra = (TextView) itemView.findViewById(R.id.txt_extra);
 			icon.setVisibility(View.VISIBLE);
+			time.setVisibility(View.VISIBLE);
 		}
 	}
 }

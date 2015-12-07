@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 
 import lecho.lib.hellocharts.model.Line;
@@ -22,7 +22,7 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 	private ChartFragment.SelectItemToListCalculation selectItemToListCalculator;
 
 	private Cursor cursor;
-	private String[] tables;
+	private ArrayList<String> tables;
 
 	private Cursor getCursor() {
 		if (cursor == null) {
@@ -32,12 +32,15 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 	}
 
 	private void initCursor() {
-		tables = new String[]{MyDiabetesContract.Regist.Insulin.TABLE_NAME, MyDiabetesContract.Regist.CarboHydrate.TABLE_NAME};
+		String[] tables = new String[]{MyDiabetesContract.Regist.Insulin.TABLE_NAME + " JOIN " + MyDiabetesContract.Insulin.TABLE_NAME,
+				MyDiabetesContract.Regist.CarboHydrate.TABLE_NAME};
 		cursor = new ListDataSource(MyDiabetesStorage.getInstance(this))
 				.getMultiData(tables,
 						new String[]{MyDiabetesContract.Regist.Insulin.COLUMN_NAME_VALUE, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_VALUE},
 						new String[]{MyDiabetesContract.Regist.Insulin.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_DATETIME},
+						new String[]{MyDiabetesContract.Insulin.COLUMN_NAME_NAME, null},
 						dateFormat.format(getTimeStart().getTime()), dateFormat.format(getTimeEnd().getTime()), MAX_VALUES_IN_GRAPH);
+		this.tables = new ArrayList<>(Arrays.asList(tables));
 	}
 
 
@@ -54,8 +57,11 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 
 		int numberOfElementsInGraph = cursor.getCount() > MAX_VALUES_IN_GRAPH ? MAX_VALUES_IN_GRAPH : cursor.getCount();
 
-		List<PointValue> xss1 = new ArrayList<>(numberOfElementsInGraph * 3 / 4);
-		List<PointValue> xss2 = new ArrayList<>(numberOfElementsInGraph * 3 / 4);
+		List<PointValue> xss[] = new List[tables.size()];
+		for (int i = 0; i < tables.size(); i++) {
+			xss[i] = new ArrayList<>(numberOfElementsInGraph * 3 / 4);
+		}
+
 		ArrayList<Integer>[] positionInList = new ArrayList[2];
 		for (int i = 0; i < positionInList.length; i++) {
 			positionInList[i] = new ArrayList<>(numberOfElementsInGraph);
@@ -63,8 +69,8 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 
 		String date;
 		double value;
-		String table;
 		int i = numberOfElementsInGraph - 1;
+		int pox;
 		while (i >= 0) {
 			date = cursor.getString(cursor.getColumnIndex(ListDataSource.ROW_DATETIME));
 			float dateTimeStamp = 0;
@@ -74,27 +80,19 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 				e.printStackTrace();
 			}
 			value = cursor.getDouble(cursor.getColumnIndex(ListDataSource.ROW_VALUE));
-			table = cursor.getString(cursor.getColumnIndex(ListDataSource.ROW_TABLE_NAME));
-			if (table.equals(MyDiabetesContract.Regist.Insulin.TABLE_NAME)) {
-				xss1.add(new PointValue(dateTimeStamp, (float) value));
-				positionInList[0].add(i);
-			} else {
-				xss2.add(new PointValue(dateTimeStamp, (float) value));
-				positionInList[1].add(i);
-			}
+			pox = tables.indexOf(cursor.getString(cursor.getColumnIndex(ListDataSource.ROW_TABLE_NAME)));
+			xss[pox].add(new PointValue(dateTimeStamp, (float) value));
+			positionInList[pox].add(i);
 			i--;
 			cursor.moveToPrevious();
 		}
-		Line line1 = getLine();
-		line1.setValues(xss1);
-
-		Line line2 = getLine();
-		line2.setColor(R.color.holo_blue_dark);
-		line2.setValues(xss2);
-
-		List<Line> lines = new ArrayList<>(1);
-		lines.add(line1);
-		lines.add(line2);
+		List<Line> lines = new ArrayList<>(xss.length);
+		for (i = 0; i < xss.length; i++) {
+			Line line = getLine();
+			line.setValues(xss[i]);
+			line.setColor(CHART_LINE_COLORS[i]);
+			lines.add(line);
+		}
 
 		selectItemToListCalculator = new MyChartToListCalculator(positionInList);
 		return lines;
