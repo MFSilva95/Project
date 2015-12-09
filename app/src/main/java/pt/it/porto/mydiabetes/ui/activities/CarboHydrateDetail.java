@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -32,6 +31,12 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
@@ -40,13 +45,6 @@ import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 
 public class CarboHydrateDetail extends Activity {
@@ -180,36 +178,25 @@ public class CarboHydrateDetail extends Activity {
 		SelectSpinnerItemByValue(tagSpinner, name);
 	}
 
-	@SuppressLint("SimpleDateFormat")
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_CarboHydrateDetail_Data);
-		final Calendar c = Calendar.getInstance();
-		Date newDate = c.getTime();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		String dateString = formatter.format(newDate);
-		date.setText(dateString);
+		final Calendar calendar = Calendar.getInstance();
+		date.setText(DatePickerFragment.getFormatedDate(calendar));
 
 		EditText hour = (EditText) findViewById(R.id.et_CarboHydrateDetail_Hora);
-		formatter = new SimpleDateFormat("HH:mm");
-		String timeString = formatter.format(newDate);
-		hour.setText(timeString);
+		hour.setText(TimePickerFragment.getFormatedDate(calendar));
 	}
 
 	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment = new DatePickerFragment();
-		Bundle args = new Bundle();
-		args.putInt("textbox", R.id.et_CarboHydrateDetail_Data);
-		newFragment.setArguments(args);
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_CarboHydrateDetail_Data,
+				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showTimePickerDialog(View v) {
-		DialogFragment newFragment = new TimePickerFragment();
-		Bundle args = new Bundle();
-		args.putInt("textbox", R.id.et_CarboHydrateDetail_Hora);
-		newFragment.setArguments(args);
-		newFragment.show(getFragmentManager(), "timePicker");
-
+		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_CarboHydrateDetail_Hora,
+				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void FillTagSpinner() {

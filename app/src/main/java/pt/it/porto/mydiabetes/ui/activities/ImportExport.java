@@ -668,18 +668,14 @@ public class ImportExport extends BaseOldActivity {
 	}
 
 	public void showDatePickerDialogFrom(View v) {
-		DialogFragment newFragment = new DatePickerFragment();
-		Bundle args = new Bundle();
-		args.putInt("textbox", R.id.et_pdfexport_DataFrom);
-		newFragment.setArguments(args);
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_pdfexport_DataFrom,
+				DatePickerFragment.getCalendar(((EditText)v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
-		DialogFragment newFragment = new DatePickerFragment();
-		Bundle args = new Bundle();
-		args.putInt("textbox", R.id.et_pdfexport_DataTo);
-		newFragment.setArguments(args);
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_pdfexport_DataTo,
+				DatePickerFragment.getCalendar(((EditText)v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 

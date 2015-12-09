@@ -139,19 +139,13 @@ public class GlycemiaDetail extends Activity {
 	}
 
 
-	@SuppressLint("SimpleDateFormat")
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_GlycemiaDetail_Data);
-		final Calendar c = Calendar.getInstance();
-		Date newDate = c.getTime();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		String dateString = formatter.format(newDate);
-		date.setText(dateString);
+		final Calendar calendar = Calendar.getInstance();
+		date.setText(DatePickerFragment.getFormatedDate(calendar));
 
 		EditText hour = (EditText) findViewById(R.id.et_GlycemiaDetail_Hora);
-		formatter = new SimpleDateFormat("HH:mm");
-		String timeString = formatter.format(newDate);
-		hour.setText(timeString);
+		hour.setText(TimePickerFragment.getFormatedDate(calendar));
 	}
 
 	public void FillTagSpinner() {
@@ -312,20 +306,15 @@ public class GlycemiaDetail extends Activity {
 	}
 
 	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment = new DatePickerFragment();
-		Bundle args = new Bundle();
-		args.putInt("textbox", R.id.et_GlycemiaDetail_Data);
-		newFragment.setArguments(args);
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_GlycemiaDetail_Data,
+				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showTimePickerDialog(View v) {
-		DialogFragment newFragment = new TimePickerFragment();
-		Bundle args = new Bundle();
-		args.putInt("textbox", R.id.et_GlycemiaDetail_Hora);
-		newFragment.setArguments(args);
+		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_GlycemiaDetail_Hora,
+				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
-
 	}
 
 	public void SetTagByTime() {
