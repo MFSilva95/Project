@@ -50,14 +50,14 @@ public class SingleDataChartActivity extends AbstractChartActivity {
 		double value;
 		int i = numberOfElementsInGraph - 1;
 		while (i >= 0) {
-			date = cursor.getString(cursor.getColumnIndex(MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME));
+			date = cursor.getString(cursor.getColumnIndex(ListDataSource.ROW_DATETIME));
 			float dateTimeStamp = 0;
 			try {
 				dateTimeStamp = iso8601Format.parse(date).getTime();
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			value = cursor.getDouble(cursor.getColumnIndex(MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE));
+			value = cursor.getDouble(cursor.getColumnIndex(ListDataSource.ROW_VALUE));
 			xss.add(new PointValue(dateTimeStamp, (float) value));
 			i--;
 			cursor.moveToPrevious();
