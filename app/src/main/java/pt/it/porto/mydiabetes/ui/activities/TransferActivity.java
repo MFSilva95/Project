@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CheckBox;
@@ -395,7 +396,9 @@ public class TransferActivity extends Activity {
 	 * Dialogo progresso transfeencia
 	 */
 	public void showDialogProg(){
-		
+		if(isFinishing()){
+			return;
+		}
 		ProgressDialog pd = new ProgressDialog(this);
 		pd.setMessage(getString(R.string.transfer_transfer));
 		pd.setCanceledOnTouchOutside(false);
@@ -413,8 +416,8 @@ public class TransferActivity extends Activity {
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
 				Intent intent = new Intent(c, ImportExport.class);
-				startActivity(intent);
-				
+				NavUtils.navigateUpTo(TransferActivity.this, intent);
+				finish();
 			}
 		}).show();
 		}
