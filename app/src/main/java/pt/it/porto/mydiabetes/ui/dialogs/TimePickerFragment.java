@@ -1,76 +1,75 @@
 package pt.it.porto.mydiabetes.ui.dialogs;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.text.format.DateFormat;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-import android.annotation.SuppressLint;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.text.format.DateFormat;
-import android.util.Log;
-
-
-
-
-
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
-	EditText item;
-	@Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        // Use the current date as the default date in the picker
-        
-		// Use the current time as the default values for the picker
-        final Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
-
-       
-        
-        Bundle args = getArguments();
-        item=(EditText)getActivity().findViewById(args.getInt("textbox"));
-        
-        
-        // Create a new instance of DatePickerDialog and return it
-        TimePickerDialog dpdialog = new TimePickerDialog(getActivity(), this, hour, minute,
-                DateFormat.is24HourFormat(getActivity()));
-        dpdialog.setButton(DialogInterface.BUTTON_NEGATIVE, 
-        					getString(android.R.string.cancel), 
-    						new DialogInterface.OnClickListener() {
-				           		public void onClick(DialogInterface dialog, int which) {
-					               if (which == DialogInterface.BUTTON_NEGATIVE) {
-					            	   dismiss();
-					               }
-					            }
-        					}
-        );  
-        
-        return dpdialog;
-    }
+	public static final String ARG_TIME = "time";
+	public static final String ARG_TEXT_BOX = "textbox";
 
 	@SuppressLint("SimpleDateFormat")
+	private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+
+	EditText item;
+
+	@Override
+	public Dialog onCreateDialog(Bundle savedInstanceState) {
+		// Use the current date as the default date in the picker
+
+		// Use the current time as the default values for the picker
+		Calendar calendar;
+		Bundle args = getArguments();
+		if (args != null) {
+			calendar = (Calendar) args.getSerializable(ARG_TIME);
+			if (calendar == null) {
+				calendar = Calendar.getInstance();
+			}
+			item = (EditText) getActivity().findViewById(args.getInt(ARG_TEXT_BOX));
+		} else {
+			calendar = Calendar.getInstance();
+		}
+		int hour = calendar.get(Calendar.HOUR_OF_DAY);
+		int minute = calendar.get(Calendar.MINUTE);
+		// Create a new instance of DatePickerDialog and return it
+		TimePickerDialog dpdialog = new TimePickerDialog(getActivity(), this, hour, minute,
+				DateFormat.is24HourFormat(getActivity()));
+		dpdialog.setButton(DialogInterface.BUTTON_NEGATIVE,
+				getString(android.R.string.cancel),
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						if (which == DialogInterface.BUTTON_NEGATIVE) {
+							dismiss();
+						}
+					}
+				}
+		);
+
+		return dpdialog;
+	}
+
 	@Override
 	public void onTimeSet(TimePicker arg0, int hour, int min) {
-		// TODO Auto-generated method stub
 		final Calendar c = Calendar.getInstance();
 		c.set(Calendar.HOUR_OF_DAY, hour);
 		c.set(Calendar.MINUTE, min);
-		Date cal = c.getTime();
-		
-		
-		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
-		String timeString = formatter.format(cal);
+
+		String timeString = timeFormat.format(c.getTime());
 		Log.d("time", timeString);
-		if(item!=null) {
+		if (item != null) {
 			item.setText(timeString);
 		}
 		/*
@@ -80,6 +79,32 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 		        .append(min).append(":00")
 		        );*/
 		dismiss();
+	}
+
+	public static DialogFragment getTimePickerFragment(int textbox, @Nullable Calendar time) {
+		DialogFragment newFragment = new TimePickerFragment();
+		Bundle args = new Bundle();
+		args.putInt(ARG_TEXT_BOX, textbox);
+		if (time != null) {
+			args.putSerializable(ARG_TIME, time);
+		}
+		newFragment.setArguments(args);
+		return newFragment;
+	}
+
+	public static Calendar getCalendar(String date) {
+		try {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(timeFormat.parse(date));
+			return calendar;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static String getFormatedDate(Calendar calendar) {
+		return timeFormat.format(calendar.getTime());
 	}
 }
 

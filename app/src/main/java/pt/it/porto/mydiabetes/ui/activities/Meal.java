@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -253,19 +252,13 @@ public class Meal extends BaseOldActivity {
 	}
 
 
-	@SuppressLint("SimpleDateFormat")
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_MealDetail_Data);
 		final Calendar c = Calendar.getInstance();
-		Date newDate = c.getTime();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		String dateString = formatter.format(newDate);
-		date.setText(dateString);
+		date.setText(DatePickerFragment.getFormatedDate(c));
 
 		EditText hour = (EditText) findViewById(R.id.et_MealDetail_Hora);
-		formatter = new SimpleDateFormat("HH:mm");
-		String timeString = formatter.format(newDate);
-		hour.setText(timeString);
+		hour.setText(TimePickerFragment.getFormatedDate(c));
 	}
 
 	public void FillTagSpinner() {
@@ -287,23 +280,16 @@ public class Meal extends BaseOldActivity {
 		spinner.setAdapter(adapter);
 	}
 
-	//@SuppressWarnings("deprecation")
 	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment = new DatePickerFragment();
-		Bundle args = new Bundle();
-		args.putInt("textbox", R.id.et_MealDetail_Data);
-		newFragment.setArguments(args);
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MealDetail_Data,
+				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
-	//@SuppressWarnings("deprecation")
 	public void showTimePickerDialog(View v) {
-		DialogFragment newFragment = new TimePickerFragment();
-		Bundle args = new Bundle();
-		args.putInt("textbox", R.id.et_MealDetail_Hora);
-		newFragment.setArguments(args);
-		newFragment.show(getFragmentManager(), "timePicker");
-
+		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_MealDetail_Hora,
+				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void SetTagByTime() {
@@ -813,25 +799,25 @@ public class Meal extends BaseOldActivity {
 		Log.d("glicidos: : ", glicidos.toString());
 
 
-		if (insulinType == 0) { //só calcula para insulina rapida que é a 0
-			result[0] = 0;
-			if (minuteDiff <= 60) {
-				result[2] = insulinDose * 0.75;
-			} else if (minuteDiff <= 120) {
-				result[2] = insulinDose * 0.50;
-			} else if (minuteDiff <= 180) {
-				result[2] = insulinDose * 0.25;
-			} else if (minuteDiff > 180) {
-				result[2] = 0;
-			}
-
-			result[4] = total - result[2]; //cálculo normal menos o IOB
-
-		} else {
+// 		if (insulinType == 0) { //só calcula para insulina rapida que é a 0
+// 			result[0] = 0;
+// 			if (minuteDiff <= 60) {
+// 				result[2] = insulinDose * 0.75;
+// 			} else if (minuteDiff <= 120) {
+// 				result[2] = insulinDose * 0.50;
+// 			} else if (minuteDiff <= 180) {
+// 				result[2] = insulinDose * 0.25;
+// 			} else if (minuteDiff > 180) {
+// 				result[2] = 0;
+// 			}
+// 
+// 			result[4] = total - result[2]; //cálculo normal menos o IOB
+// 
+// 		} else {
 			result[0] = insulinType;
 			result[2] = -1;
 			result[4] = total;
-		}
+//		}
 
 
 		result[4] = 0.5 * Math.round(result[4] / 0.5);
@@ -886,8 +872,8 @@ public class Meal extends BaseOldActivity {
 
 	public void addGlycemiaObjective(View view) {
 		Intent intent = new Intent(this, TargetBG_detail.class);
-		String goal=((EditText) findViewById(R.id.et_MealDetail_TargetGlycemia)).getText().toString();
-		if(!TextUtils.isEmpty(goal)) {
+		String goal = ((EditText) findViewById(R.id.et_MealDetail_TargetGlycemia)).getText().toString();
+		if (!TextUtils.isEmpty(goal)) {
 			float target = Float.parseFloat(goal);
 			Bundle bundle = new Bundle();
 			bundle.putFloat(TargetBG_detail.BUNDLE_GOAL, target);

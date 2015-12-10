@@ -106,21 +106,15 @@ public class TargetBG_detail extends Activity {
 	}
 
 
-	//@SuppressWarnings("deprecation")
 	public void showTimePickerDialogFrom(View v) {
-		DialogFragment newFragment = new TimePickerFragment();
-		Bundle args = new Bundle();
-		args.putInt("textbox", R.id.et_TargetBG_HourFrom);
-		newFragment.setArguments(args);
+		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourFrom,
+				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
 	}
 
-	//@SuppressWarnings("deprecation")
 	public void showTimePickerDialogTo(View v) {
-		DialogFragment newFragment = new TimePickerFragment();
-		Bundle args = new Bundle();
-		args.putInt("textbox", R.id.et_TargetBG_HourTo);
-		newFragment.setArguments(args);
+		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourTo,
+				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
 	}
 

@@ -32,5 +32,14 @@
     <string name="from">From</string>
     <string name="export">Export</string>
     <string name="grams">grams</string>
-
+    <string name="hint_value3">e.g.: 45</string>
+    <string name="add_H1A1c">Add HbA1C</string>
+    <string name="add_InsulinsFragment"></string>
+    <string name="app_name">My Diabetes</string>
+    <string name="hint_value4">e.g.: 10</string>
+    <string name="hint_value5">e.g.: 70</string>
+    <string name="hint_value6">e.g.: 150</string>
+    <string name="hint_value7">e.g.: 1.82</string>
+    <string name="hint_weight">80 (in kg)</string>
+    <string name="hour">Hour</string>
 </resources>

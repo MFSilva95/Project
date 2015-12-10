@@ -60,6 +60,7 @@ public class ScanActivity extends Activity {
 					intent.putExtra("key", key);
 					intent.putExtra("iv", iv);
 					startActivity(intent);
+					finish();// avoid coming back to this one after transfers
 				} else {
 					Toast toast = Toast.makeText(this, getString(R.string.invalid_qr_code), Toast.LENGTH_SHORT);
 					toast.show();

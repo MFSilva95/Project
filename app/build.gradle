@@ -29,6 +29,10 @@ android {
             applicationIdSuffix ".debug"
         }
     }
+
+    lintOptions{
+        abortOnError false
+    }
 }
 
 repositories {

@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -14,16 +13,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.CarbsAdapter;
 import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 
 public class CarboHydrate extends Activity {
@@ -95,47 +92,27 @@ public class CarboHydrate extends Activity {
 	}
 
 
-	@SuppressLint("SimpleDateFormat")
 	public void FillDates() {
 		EditText dateago = (EditText) findViewById(R.id.et_Carbs_DataFrom);
-		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DAY_OF_YEAR, -3);
-		int year = c.get(Calendar.YEAR);
-		int month = c.get(Calendar.MONTH);
-		int day = c.get(Calendar.DAY_OF_MONTH);
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_YEAR, -3);
 
-		Calendar cal = Calendar.getInstance();
-		cal.set(year, month, day);
-		Date newDate = cal.getTime();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-		String dateString = formatter.format(newDate);
-
-		dateago.setText(dateString);
+		dateago.setText(DatePickerFragment.getFormatedDate(calendar));
 
 		EditText datenow = (EditText) findViewById(R.id.et_Carbs_DataTo);
-		c = Calendar.getInstance();
-		year = c.get(Calendar.YEAR);
-		month = c.get(Calendar.MONTH);
-		day = c.get(Calendar.DAY_OF_MONTH);
-		cal.set(year, month, day);
-		newDate = cal.getTime();
-		dateString = formatter.format(newDate);
-		datenow.setText(dateString);
+		calendar = Calendar.getInstance();
+		datenow.setText(DatePickerFragment.getFormatedDate(calendar));
 	}
 
 	public void showDatePickerDialogFrom(View v) {
-		DialogFragment newFragment = new DatePickerFragment();
-		Bundle args = new Bundle();
-		args.putInt("textbox", R.id.et_Carbs_DataFrom);
-		newFragment.setArguments(args);
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Carbs_DataFrom,
+				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
-		DialogFragment newFragment = new DatePickerFragment();
-		Bundle args = new Bundle();
-		args.putInt("textbox", R.id.et_Carbs_DataTo);
-		newFragment.setArguments(args);
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Carbs_DataTo,
+				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 

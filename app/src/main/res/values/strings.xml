@@ -22,7 +22,7 @@
     <string name="title_activity_disease">Registos de Doenças</string>
     <string name="add_Disease">Adicionar Doença</string>
     <string name="title_activity_h1_a1c">Registos de A1c</string>
-    <string name="add_H1A1c">Adicionar H1A1c</string>
+    <string name="add_H1A1c">Adicionar HbA1c</string>
     <string name="title_activity_weight">Registos de Peso</string>
     <string name="add_Weight">Adicionar Peso</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -220,7 +220,7 @@
     <string name="select_all">Selecionar Tudo</string>
     <string name="transfer_db">Transferir Base de Dados</string>
     <string name="transfer">Transferir</string>
-    <string name="hint_weight">120 (em kg)</string>
+    <string name="hint_weight">80 (em kg)</string>
     <string name="backup">Cópia de Segurança</string>
     <string name="do_back">Efectuar Cópia de Segurança</string>
     <string name="restore_backup">Restaurar Cópia</string>
@@ -249,7 +249,7 @@
     <string name="hint_name">Jorge Mendes</string>
     <string name="diabetes_type">Tipo de diabetes</string>
     <string name="sensivity_factor">Fator de sensibilidade</string>
-    <string name="hint_value3" translatable="false">ex.: 45</string>
+    <string name="hint_value3" >ex.: 45</string>
     <string name="carbs_racio">Rácio Hidratos de Carbono</string>
     <string name="hint_value4">ex.: 10</string>
     <string name="hypoglycemia_limit">Limite para hipoglicemia</string>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
+                 xmlns:tools="http://schemas.android.com/tools"
+                 android:layout_width="match_parent"
+                 android:layout_height="48dp"
+                 android:layout_marginTop="5dp"
+                 android:baselineAligned="false"
+                 android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+                 android:checked="false"
+                 android:clickable="true"
+                 android:gravity="center"
+                 tools:text="@string/transfer_db"/>

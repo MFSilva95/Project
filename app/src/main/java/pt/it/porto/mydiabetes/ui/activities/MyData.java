@@ -101,12 +101,9 @@ public class MyData extends BaseOldActivity {
 
 	//@SuppressWarnings("deprecation")
 	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment = new DatePickerFragment();
-		Bundle args = new Bundle();
-		args.putInt("textbox", R.id.et_MyData_BirthDate);
-		newFragment.setArguments(args);
+		DialogFragment newFragment =  DatePickerFragment.getDatePickerFragment(R.id.et_MyData_BirthDate,
+				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
-
 	}
 
 	//added ze ornelas
