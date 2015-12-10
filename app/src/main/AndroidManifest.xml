@@ -269,6 +269,7 @@
         <activity
             android:name=".ui.activities.TransferActivity"
             android:label="@string/title_activity_transfer"
+            android:screenOrientation="portrait"
             android:parentActivityName=".ui.activities.ImportExport">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
