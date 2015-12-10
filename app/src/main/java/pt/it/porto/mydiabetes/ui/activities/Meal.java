@@ -799,25 +799,25 @@ public class Meal extends BaseOldActivity {
 		Log.d("glicidos: : ", glicidos.toString());
 
 
-		if (insulinType == 0) { //só calcula para insulina rapida que é a 0
-			result[0] = 0;
-			if (minuteDiff <= 60) {
-				result[2] = insulinDose * 0.75;
-			} else if (minuteDiff <= 120) {
-				result[2] = insulinDose * 0.50;
-			} else if (minuteDiff <= 180) {
-				result[2] = insulinDose * 0.25;
-			} else if (minuteDiff > 180) {
-				result[2] = 0;
-			}
-
-			result[4] = total - result[2]; //cálculo normal menos o IOB
-
-		} else {
+// 		if (insulinType == 0) { //só calcula para insulina rapida que é a 0
+// 			result[0] = 0;
+// 			if (minuteDiff <= 60) {
+// 				result[2] = insulinDose * 0.75;
+// 			} else if (minuteDiff <= 120) {
+// 				result[2] = insulinDose * 0.50;
+// 			} else if (minuteDiff <= 180) {
+// 				result[2] = insulinDose * 0.25;
+// 			} else if (minuteDiff > 180) {
+// 				result[2] = 0;
+// 			}
+// 
+// 			result[4] = total - result[2]; //cálculo normal menos o IOB
+// 
+// 		} else {
 			result[0] = insulinType;
 			result[2] = -1;
 			result[4] = total;
-		}
+//		}
 
 
 		result[4] = 0.5 * Math.round(result[4] / 0.5);
