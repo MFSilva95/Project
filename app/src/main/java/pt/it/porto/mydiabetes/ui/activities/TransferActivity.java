@@ -17,6 +17,7 @@ import android.os.Messenger;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -158,20 +159,18 @@ public class TransferActivity extends Activity {
 	private ArrayList<FileInfo> getSelectFiles(LinearLayout ll) {
 		ArrayList<FileInfo> fil = new ArrayList<FileInfo>();
 		LinearLayout ll2;
-		CheckBox cb;
+		CheckedTextView cb;
 		TextView tv;
 		FileInfo fi;
-		for (int i = 0; i < ll.getChildCount(); i++) {
-			ll2 = (LinearLayout) ll.getChildAt(i);
-			if (ll2.getChildAt(0) instanceof LinearLayout) {
-				fil.addAll(getSelectFiles(ll2));
+		for (int i = 1; i < ll.getChildCount(); i++) {
+			if (ll.getChildAt(i) instanceof LinearLayout) {
+				fil.addAll(getSelectFiles((LinearLayout) ll.getChildAt(i)));
 			} else {
-				cb = (CheckBox) ll2.getChildAt(0);
+				cb = (CheckedTextView) ll.getChildAt(i);
 				if (cb == null)
 					System.out.println("CheckBox is null");
 				else if (cb.isChecked()) {
-					tv = (TextView) ll2.getChildAt(1);
-					fi = htFileInfo.get(tv.getText().toString());
+					fi = htFileInfo.get(cb.getText().toString());
 					if (fi != null && !fi.isDir() && fi.checkFileExists()) {
 						fil.add(fi);
 					}
@@ -192,10 +191,10 @@ public class TransferActivity extends Activity {
 				System.out.println("Ainda não obteve fi do Servidor");
 			} else {
 				LinearLayout ll = (LinearLayout) findViewById(R.id.llFiles);
-				if (ll != null && ll.getChildCount() > 0) {
+				if (ll != null && ll.getChildCount() > 1) {
 					try {
 						System.out.println("Entrou if button2Click --->"+ll.getChildCount());
-						ll.removeViews(0, ll.getChildCount());
+						ll.removeViews(1, ll.getChildCount());
 						htFileInfo.clear();
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -229,9 +228,6 @@ public class TransferActivity extends Activity {
 
 	public void addFiles2(LinearLayout ll, FileInfo fi) {
 		LinearLayout ll2;
-		CheckBox cb;
-		TextView text;
-		ImageView androidImage;
 		String fileName;
 
 		for (FileInfo fiChild : fi.getFileList()) {
@@ -239,24 +235,18 @@ public class TransferActivity extends Activity {
 			if (!htFileInfo.containsKey(fiChild.getName())) {
 
 				if (fiChild.getName().contains(".jpg")){
-					ll2 = new LinearLayout(this);
-
-					cb = new CheckBox(this);
-					ll2.addView(cb);
-
-					text = new TextView(this);
-					System.out.println("Nome do ficheiro --->"+fiChild.getName());
+					CheckedTextView layout2= (CheckedTextView) getLayoutInflater().inflate(R.layout.list_item_tranfere_activity, ll, false);
+					layout2.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							((CheckedTextView)v).toggle();
+						}
+					});
 					fileName = fiChild.getName();
-					text.setText(fileName);
+					System.out.println("Nome do ficheiro --->"+fiChild.getName());
 					htFileInfo.put(fileName, fiChild);
-					ll2.addView(text);
-
-					androidImage = new ImageView(this);
-					androidImage.setImageResource(R.drawable.android_icon);
-					androidImage.setMaxWidth(50);
-					androidImage.setAdjustViewBounds(true);
-					ll2.addView(androidImage);
-					ll.addView(ll2);
+					layout2.setText(fileName);
+					ll.addView(layout2);
 				}
 			}
 
@@ -279,15 +269,12 @@ public class TransferActivity extends Activity {
 	}
 
 	public void selectAll2(LinearLayout ll) {
-		LinearLayout ll2;
 		try {
-
-			for (int i = 0; i < ll.getChildCount(); i++) {
-				ll2 = (LinearLayout) ll.getChildAt(i);
-				if (ll2.getChildAt(0) instanceof LinearLayout) {
-					selectAll2(ll2);
-				} else if (ll2.getChildAt(0) instanceof CheckBox) {
-					((CheckBox) ll2.getChildAt(0)).setChecked(true);
+			for (int i = 1; i < ll.getChildCount(); i++) {
+				if (ll.getChildAt(i) instanceof LinearLayout) {
+					selectAll2((LinearLayout) ll.getChildAt(i));
+				} else if (ll.getChildAt(i) instanceof CheckedTextView) {
+					((CheckedTextView) ll.getChildAt(i)).setChecked(true);
 				}
 			}
 		} catch (Exception e) {
