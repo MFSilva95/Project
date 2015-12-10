@@ -1,8 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -24,6 +21,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.sync.transfer.FileInfo;
@@ -91,7 +91,6 @@ public class TransferActivity extends Activity {
 		iv = extras.getByteArray("iv").clone();
 		onPC = extras.getBoolean("onPC");
 		showDialogLig();
-
 	}
 
 	@Override
@@ -144,7 +143,7 @@ public class TransferActivity extends Activity {
 		ArrayList<FileInfo> alfi = getSelectFiles((LinearLayout) findViewById(R.id.llFiles));
 		FileInfo fi = new FileInfo(getApplicationInfo().dataDir + "/databases",
 				"/DB_Diabetes");
-		alfi.add(fi);
+		alfi.add(0, fi); // ensure the database is the first file to send
 		intent.putExtra("files", alfi);
 		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 		//Messenger messenger1 = new Messenger(handler3);
