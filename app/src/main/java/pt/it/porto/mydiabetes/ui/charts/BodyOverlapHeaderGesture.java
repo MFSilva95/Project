@@ -1,11 +1,14 @@
 package pt.it.porto.mydiabetes.ui.charts;
 
-import android.animation.AnimatorSet;
+import android.animation.Animator;
 import android.animation.ObjectAnimator;
+import android.graphics.Rect;
+import android.os.Build;
 import android.util.Property;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 
 public abstract class BodyOverlapHeaderGesture extends GestureDetector.SimpleOnGestureListener {
 
@@ -77,9 +80,33 @@ public abstract class BodyOverlapHeaderGesture extends GestureDetector.SimpleOnG
 
 			ObjectAnimator heightAnimator = ObjectAnimator.ofFloat(viewBody, "translationY", 0);
 			viewBody.setPadding(0, 0, 0, 0);
-			AnimatorSet set = new AnimatorSet();
-			set.play(heightAnimator);
-			set.start();
+			heightAnimator.addListener(new Animator.AnimatorListener() {
+				@Override
+				public void onAnimationStart(Animator animation) {
+
+				}
+
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					if(isExpanded()) {
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+							viewHeader.setClipBounds(new Rect(0, 0, viewHeader.getRight(), ((FrameLayout.LayoutParams) viewBody.getLayoutParams()).topMargin));
+						}
+						viewHeader.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+					}
+				}
+
+				@Override
+				public void onAnimationCancel(Animator animation) {
+
+				}
+
+				@Override
+				public void onAnimationRepeat(Animator animation) {
+
+				}
+			});
+			heightAnimator.start();
 
 			onExpand();
 		}
@@ -91,10 +118,13 @@ public abstract class BodyOverlapHeaderGesture extends GestureDetector.SimpleOnG
 		if (isExpanded) {
 			isExpanded = false;
 
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+				viewHeader.setClipBounds(null);
+			}
+			viewHeader.setLayerType(View.LAYER_TYPE_NONE, null);
+
 			ObjectAnimator heightAnimator = ObjectAnimator.ofFloat(viewBody, "translationY", diffHeight);
-			AnimatorSet set = new AnimatorSet();
-			set.play(heightAnimator);
-			set.start();
+			heightAnimator.start();
 			viewBody.setPadding(0, 0, 0, diffHeight);
 
 			onCollapse();

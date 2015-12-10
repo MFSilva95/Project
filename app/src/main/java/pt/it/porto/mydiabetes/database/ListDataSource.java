@@ -5,6 +5,8 @@ import android.text.TextUtils;
 
 public class ListDataSource {
 	public static final String ROW_VALUE = "Value";
+	public static final String ROW_DATE = "Date";
+	public static final String ROW_TIME = "Time";
 	public static final String ROW_DATETIME = "DateTime";
 	public static final String ROW_EXTRAS = "Extras";
 	public static final String ROW_TABLE_NAME = "Table_name";
@@ -25,7 +27,23 @@ public class ListDataSource {
 
 	public Cursor getMultiData(String[] tables, String[] valueColumns, String[] datetimeColumns, String[] extras, String dateStart, String dateEnd, int limit) {
 		StringBuilder query = new StringBuilder(100);
-		query.append("SELECT * FROM (");
+		query.append("SELECT ");
+		query.append(ROW_VALUE);
+		query.append(", strftime('%d-%m-%Y', ");
+		query.append(ROW_DATETIME);
+		query.append(") AS ");
+		query.append(ROW_DATE);
+		query.append(", strftime('%H:%M', ");
+		query.append(ROW_DATETIME);
+		query.append(") AS ");
+		query.append(ROW_TIME);
+		query.append(", ");
+		query.append(ROW_TABLE_NAME);
+		query.append(", ");
+		query.append(ROW_EXTRAS);
+		query.append(", ");
+		query.append(ROW_DATETIME);
+		query.append(" FROM (");
 		for (int i = 0; i < tables.length; i++) {
 			query.append("SELECT ");
 			query.append(valueColumns[i]);
@@ -44,7 +62,7 @@ public class ListDataSource {
 				if (!TextUtils.isEmpty(extras[i])) {
 					query.append(extras[i]);
 				} else {
-					query.append("''");
+					query.append("NULL");
 				}
 				query.append(" AS ");
 				query.append(ROW_EXTRAS);
