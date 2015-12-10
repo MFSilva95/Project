@@ -16,7 +16,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.Messenger; 
+import android.os.Messenger;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CheckBox;
@@ -374,14 +374,16 @@ public class TransferActivity extends Activity {
 
 	/**
 	 * Diálogo para a ligação
-	 * @param d
+	 * @param success
 	 */
-	public void showDialogTransf(boolean d){
-		final Context c = this;
+	public void showDialogTransf(boolean success){
+		if(isFinishing()){
+			return;
+		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(this.getString(R.string.transf_InfoTitle));
 		
-		if (d){	
+		if (success){
 			builder.setMessage(this.getString(R.string.transf_ConnOK));
 			builder.setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
@@ -389,15 +391,13 @@ public class TransferActivity extends Activity {
 					button2Click();
 				}
 			}).show();
-		}
-		else {
-			//TODO set in string
+		} else {
 			builder.setMessage(getString(R.string.transfer_fail_connection )+ "\n"
 					+ getString(R.string.transfer_check_wifi ) + "\n"
 					+ getString(R.string.transfer_correct_network));
 			builder.setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
-					Intent intent = new Intent(c, ImportExport.class);
+					Intent intent = new Intent(TransferActivity.this, ImportExport.class);
 					startActivity(intent);
 				}
 			}).show();
@@ -411,7 +411,6 @@ public class TransferActivity extends Activity {
 	public void showDialogProg(){
 		
 		ProgressDialog pd = new ProgressDialog(this);
-		//TODO set in string
 		pd.setMessage(getString(R.string.transfer_transfer));
 		pd.setCanceledOnTouchOutside(false);
 		pd.show();
@@ -422,13 +421,11 @@ public class TransferActivity extends Activity {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(this.getString(R.string.transf_InfoTitle));
 		if (d){
-			//TODO set in string
 		builder.setMessage(getString(R.string.transfer_success))
 		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
-				// TODO Auto-generated method stub
 				Intent intent = new Intent(c, ImportExport.class);
 				startActivity(intent);
 				
