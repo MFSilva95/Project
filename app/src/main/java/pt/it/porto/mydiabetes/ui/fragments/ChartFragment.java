@@ -12,13 +12,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import pt.it.porto.mydiabetes.ui.charts.BodyExpandFrameLayout;
-import pt.it.porto.mydiabetes.ui.charts.BodyOverlapHeaderGesture;
-
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -30,10 +26,8 @@ import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
-import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
-
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.charts.BodyExpandFrameLayout;
 import pt.it.porto.mydiabetes.ui.charts.BodyOverlapHeaderGesture;
@@ -124,30 +118,34 @@ public class ChartFragment extends Fragment {
 
 
 	private void setupScrool() {
-		bodyOverlapHeaderGesture = new BodyOverlapHeaderGesture(chart, listView) {
-			@Override
-			public void onExpand() {
-			}
-
-			@Override
-			public void onCollapse() {
-			}
-		};
-
-		((BodyExpandFrameLayout) getView()).setBodyOverlapHeaderGesture(bodyOverlapHeaderGesture);
-
-		chart.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View view, MotionEvent motionEvent) {
-				removeSelection();
-				if (bodyOverlapHeaderGesture.isExpanded()) {
-					bodyOverlapHeaderGesture.collapse();
-					return true;
-				} else {
-					return false;
+		if (bodyOverlapHeaderGesture == null) {
+			bodyOverlapHeaderGesture = new BodyOverlapHeaderGesture(chart, listView) {
+				@Override
+				public void onExpand() {
 				}
-			}
-		});
+
+				@Override
+				public void onCollapse() {
+				}
+			};
+
+			((BodyExpandFrameLayout) getView()).setBodyOverlapHeaderGesture(bodyOverlapHeaderGesture);
+		}
+		bodyOverlapHeaderGesture.collapse();
+		if (chart.getOnValueTouchListener() != null) {
+			chart.setOnTouchListener(new View.OnTouchListener() {
+				@Override
+				public boolean onTouch(View view, MotionEvent motionEvent) {
+					removeSelection();
+					if (bodyOverlapHeaderGesture.isExpanded()) {
+						bodyOverlapHeaderGesture.collapse();
+						return true;
+					} else {
+						return false;
+					}
+				}
+			});
+		}
 	}
 
 	/**
@@ -215,8 +213,8 @@ public class ChartFragment extends Fragment {
 
 //				Log.d("ChartSelect", String.valueOf(numberOfElementsInGraph - h.getXIndex() - 1));
 //				Log.d("ChartSelect", "lineIndex: " + String.valueOf(i) + " pointIndex: " + String.valueOf(i1) + " numberOfElements: "+String.valueOf(numberOfElementsInGraph));
-				if(selectItemToListCalculation!=null) {
-					int position=selectItemToListCalculation.getListPosition(lineIndex, pointIndex);
+				if (selectItemToListCalculation != null) {
+					int position = selectItemToListCalculation.getListPosition(lineIndex, pointIndex);
 					listView.smoothScrollToPosition(position);
 					RecyclerView.ViewHolder holder = listView.findViewHolderForAdapterPosition(position);
 					if (holder != null && holder.itemView != null) {
@@ -266,7 +264,7 @@ public class ChartFragment extends Fragment {
 		this.selectItemToListCalculation = selectItemToListCalculation;
 	}
 
-	public interface SelectItemToListCalculation{
+	public interface SelectItemToListCalculation {
 		int getListPosition(int line, int positionInLine);
 	}
 }
