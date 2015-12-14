@@ -5,15 +5,12 @@ import android.support.v7.widget.RecyclerView;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.PointValue;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.ListDataSource;
-import pt.it.porto.mydiabetes.database.MyDiabetesContract;
-import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.fragments.ChartFragment;
 import pt.it.porto.mydiabetes.ui.recyclerviewAdapters.GenericMultiTypeAdapter;
 
@@ -32,22 +29,24 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 	}
 
 	private void initCursor() {
-		String[] tables = new String[]{MyDiabetesContract.Regist.Insulin.TABLE_NAME + " JOIN " + MyDiabetesContract.Insulin.TABLE_NAME,
-				MyDiabetesContract.Regist.CarboHydrate.TABLE_NAME};
-		cursor = new ListDataSource(MyDiabetesStorage.getInstance(this))
-				.getMultiData(tables,
-						new String[]{MyDiabetesContract.Regist.Insulin.COLUMN_NAME_VALUE, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_VALUE},
-						new String[]{MyDiabetesContract.Regist.Insulin.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_DATETIME},
-						new String[]{MyDiabetesContract.Insulin.COLUMN_NAME_NAME, null},
-						dateFormat.format(getTimeStart().getTime()), dateFormat.format(getTimeEnd().getTime()), MAX_VALUES_IN_GRAPH);
-		this.tables = new ArrayList<>(Arrays.asList(tables));
+		cursor=getChartData().getCursor(this);
+		tables=getChartData().getTables();
+//		String[] tables = new String[]{MyDiabetesContract.Regist.Insulin.TABLE_NAME + " JOIN " + MyDiabetesContract.Insulin.TABLE_NAME,
+//				MyDiabetesContract.Regist.CarboHydrate.TABLE_NAME};
+//		cursor = new ListDataSource(MyDiabetesStorage.getInstance(this))
+//				.getMultiData(tables,
+//						new String[]{MyDiabetesContract.Regist.Insulin.COLUMN_NAME_VALUE, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_VALUE},
+//						new String[]{MyDiabetesContract.Regist.Insulin.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_DATETIME},
+//						new String[]{MyDiabetesContract.Insulin.COLUMN_NAME_NAME, null},
+//						dateFormat.format(getTimeStart().getTime()), dateFormat.format(getTimeEnd().getTime()), MAX_VALUES_IN_GRAPH);
+//		this.tables = new ArrayList<>(Arrays.asList(tables));
 	}
 
 
 	@Override
 	public RecyclerView.Adapter getRecyclerViewAdapter() {
 		return new GenericMultiTypeAdapter(getCursor(),
-				tables, new int[]{R.drawable.insulin, R.drawable.carbs});
+				tables, getChartData().getIcons());
 	}
 
 	@Override

@@ -39,8 +39,10 @@ public class ListDataSource {
 		query.append(ROW_TIME);
 		query.append(", ");
 		query.append(ROW_TABLE_NAME);
-		query.append(", ");
-		query.append(ROW_EXTRAS);
+		if (extras != null) {
+			query.append(", ");
+			query.append(ROW_EXTRAS);
+		}
 		query.append(", ");
 		query.append(ROW_DATETIME);
 		query.append(" FROM (");
