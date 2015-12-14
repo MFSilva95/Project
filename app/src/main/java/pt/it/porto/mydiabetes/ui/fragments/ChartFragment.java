@@ -84,7 +84,12 @@ public class ChartFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		return inflater.inflate(R.layout.fragment_chart, container, false);
+		View view = inflater.inflate(R.layout.fragment_chart, container, false);
+		RecyclerView listView = (RecyclerView) view.findViewById(R.id.list_vals);
+		listView.setHasFixedSize(true);
+		listView.setLayoutManager(new LinearLayoutManager(getContext()));
+		listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).build());
+		return view;
 	}
 
 	public void onItemSelected(int position) {
@@ -164,10 +169,7 @@ public class ChartFragment extends Fragment {
 
 	public void setListAdapter(RecyclerView.Adapter adapter) {
 		listView = (RecyclerView) getView().findViewById(R.id.list_vals);
-		listView.setHasFixedSize(true);
 		listView.setAdapter(adapter);
-		listView.setLayoutManager(new LinearLayoutManager(getContext()));
-		listView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getContext()).build());
 	}
 
 	public void setChartData(List<Line> lines) {
