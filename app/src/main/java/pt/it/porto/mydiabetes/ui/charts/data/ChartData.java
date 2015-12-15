@@ -11,23 +11,30 @@ import android.widget.CheckedTextView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.ui.activities.AbstractChartActivity;
 
 public abstract class ChartData implements Parcelable {
 
-	public static final int DATA_TYPE_WEIGHT=1;
+	public static final int DATA_TYPE_WEIGHT = 1;
+	public static final int DATA_TYPE_CARBS = 2;
 
 	private String startDate;
 	private String endDate;
 
 	ChartData(Context context) {
 		super();
+		Calendar calendar = Calendar.getInstance();
+		startDate = AbstractChartActivity.dateFormat.format(calendar.getTime());
+		calendar.roll(Calendar.WEEK_OF_YEAR, false);
+		endDate = AbstractChartActivity.dateFormat.format(calendar.getTime());
 	}
 
-	ChartData(Parcel source){
-		startDate=source.readString();
-		endDate=source.readString();
+	ChartData(Parcel source) {
+		startDate = source.readString();
+		endDate = source.readString();
 	}
 
 	public abstract boolean hasFilters();
@@ -60,7 +67,9 @@ public abstract class ChartData implements Parcelable {
 	}
 
 	public abstract void toggleFilter(int pox);
+
 	public abstract boolean isFilterActive(int pox);
+
 	public abstract int[] getIcons();
 
 	class Adapter extends ArrayAdapter<String> {
@@ -111,9 +120,11 @@ public abstract class ChartData implements Parcelable {
 	};
 
 	private static ChartData getConcreteClass(Parcel source) {
-		switch (source.readInt()){
+		switch (source.readInt()) {
 			case DATA_TYPE_WEIGHT:
 				return new Weight(source);
+			case DATA_TYPE_CARBS:
+				return new Carbs(source);
 			default:
 				return null;
 		}

@@ -23,7 +23,7 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 	public static final SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	public static final int MAX_VALUES_IN_GRAPH = 100;
-	public static final int[] CHART_LINE_COLORS = {Color.RED, R.color.holo_blue_dark};
+	public static final int[] CHART_LINE_COLORS = {Color.RED, R.color.holo_blue_dark, Color.DKGRAY};
 
 	public static final String EXTRAS_CHART_DATA = "chartData";
 	public static final String EXTRAS_TIME_START = "time_start";

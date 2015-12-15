@@ -61,7 +61,7 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 			xss[i] = new ArrayList<>(numberOfElementsInGraph * 3 / 4);
 		}
 
-		ArrayList<Integer>[] positionInList = new ArrayList[2];
+		ArrayList<Integer>[] positionInList = new ArrayList[xss.length];
 		for (int i = 0; i < positionInList.length; i++) {
 			positionInList[i] = new ArrayList<>(numberOfElementsInGraph);
 		}
