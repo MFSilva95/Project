@@ -20,6 +20,9 @@
         <activity
             android:name="pt.it.porto.mydiabetes.ui.activities.SingleDataChartActivity"
             android:theme="@style/AppNewTheme"/>
+        <activity
+            android:name="pt.it.porto.mydiabetes.ui.activities.ListTestActivity"
+            android:theme="@style/AppNewTheme"/>
 
         <service
             android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.MiddleHealth"
