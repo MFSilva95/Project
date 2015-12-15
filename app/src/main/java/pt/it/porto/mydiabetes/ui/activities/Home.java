@@ -1,9 +1,10 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
@@ -14,8 +15,14 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.ScrollView;
 
+import java.text.ParseException;
+import java.util.Calendar;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
+import pt.it.porto.mydiabetes.database.Usage;
+import pt.it.porto.mydiabetes.utils.SyncAlarm;
 
 
 public class Home extends BaseOldActivity {
@@ -43,7 +50,36 @@ public class Home extends BaseOldActivity {
 				return !gestureDetector.onTouchEvent(event);
 			}
 		});
+		setupSyncAlarm();
+	}
 
+	private void setupSyncAlarm() {
+		SharedPreferences preferences = pt.it.porto.mydiabetes.database.Preferences.getPreferences(this);
+		if (!preferences.contains(SyncAlarm.SYNC_ALARM_PREFERENCE)) { // only sets it if needed
+			AlarmManager alm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+			Intent intent = new Intent(this, SyncAlarm.class);
+			PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+			Calendar calendar = Calendar.getInstance();
+			if (preferences.contains(SyncAlarm.SYNC_ALARM_LAST_SYNC)) {
+				calendar.setTimeInMillis(preferences.getLong(SyncAlarm.SYNC_ALARM_LAST_SYNC, System.currentTimeMillis()));
+			} else {
+				Usage usage = new Usage(MyDiabetesStorage.getInstance(this));
+				String date = usage.getOldestRegist();
+				try {
+					calendar.setTime(AbstractChartActivity.iso8601Format.parse(date));
+				} catch (ParseException e) {
+					e.printStackTrace();
+					return;
+				}
+			}
+			calendar.roll(Calendar.DAY_OF_YEAR, 7);
+			calendar.set(Calendar.HOUR_OF_DAY, 21); // Maybe change later?
+
+			alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
+
+			preferences.edit().putInt(SyncAlarm.SYNC_ALARM_PREFERENCE, 1).apply();
+		}
 	}
 
 	@Override
@@ -65,7 +101,7 @@ public class Home extends BaseOldActivity {
 
 
 	public void ShowDialogAddData() {
-		Intent intent =new Intent(this, WelcomeActivity.class);
+		Intent intent = new Intent(this, WelcomeActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		startActivity(intent);
 		finish();

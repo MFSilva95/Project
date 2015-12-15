@@ -14,7 +14,6 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-
         <activity
             android:name=".ui.activities.Home"
             android:label="@string/app_name"
@@ -289,7 +288,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.ImportExport"/>
         </activity>
-
         <activity
             android:name=".ui.activities.Logbook"
             android:label="@string/title_activity_logbook"
@@ -298,7 +296,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
         </activity>
-
         <activity
             android:name=".ui.activities.LogbookDetail"
             android:label="@string/title_activity_logbook_detail"
@@ -307,7 +304,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Logbook"/>
         </activity>
-
         <activity
             android:name=".ui.activities.DiseasesDetail"
             android:label="@string/add_DiseasesFragment"
@@ -316,8 +312,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Preferences"/>
         </activity>
-
-
         <activity
             android:name=".ui.activities.ExercisesDetail"
             android:label="@string/add_ExercisesFragment"
@@ -343,6 +337,12 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="7601388bb7cc37077c533c82536ee42dbc14d1a0"/>
+
+        <receiver
+            android:name=".utils.SyncAlarm"
+            android:enabled="true"
+            android:exported="true">
+        </receiver>
     </application>
 
 </manifest>
