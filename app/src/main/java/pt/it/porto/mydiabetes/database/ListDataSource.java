@@ -71,7 +71,7 @@ public class ListDataSource {
 			}
 			query.append(" FROM ");
 			query.append(tables[i]);
-			if (!TextUtils.isEmpty(dateStart) || TextUtils.isEmpty(dateEnd)) {
+			if (!TextUtils.isEmpty(dateStart) || !TextUtils.isEmpty(dateEnd)) {
 				query.append(" WHERE ");
 				if (!TextUtils.isEmpty(dateStart)) {
 					query.append(ROW_DATETIME);
