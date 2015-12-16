@@ -22,6 +22,7 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.database.Usage;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.SyncAlarm;
 
 
@@ -66,8 +67,9 @@ public class Home extends BaseOldActivity {
 			} else {
 				Usage usage = new Usage(MyDiabetesStorage.getInstance(this));
 				String date = usage.getOldestRegist();
+
 				try {
-					calendar.setTime(AbstractChartActivity.iso8601Format.parse(date));
+					calendar.setTime(DateUtils.iso8601Format.parse(date));
 				} catch (ParseException e) {
 					e.printStackTrace();
 					return;
