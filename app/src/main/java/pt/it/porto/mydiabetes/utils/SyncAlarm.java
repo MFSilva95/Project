@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 
 import pt.it.porto.mydiabetes.R;
@@ -23,14 +24,19 @@ public class SyncAlarm extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-		builder.setSmallIcon(R.drawable.ic_launcher);
+		builder.setSmallIcon(R.drawable.gota_white);
+		builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
 		builder.setContentTitle(context.getString(R.string.app_name));
+		NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
+		builder.setContentText("Envie os dados ao gestor do projecto");
 		if (Preferences.getPreferences(context).contains(SYNC_ALARM_LAST_SYNC)) {
-			builder.setContentText("Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?");
+			bigTextStyle.bigText("Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?");
 		} else {
-			builder.setContentText("Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?");
+			bigTextStyle.bigText("Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?");
 		}
+
 		builder.setPriority(NotificationCompat.PRIORITY_LOW);
+		builder.setStyle(bigTextStyle);
 
 		Intent resultIntent = new Intent(context, ImportExport.class);
 		builder.setContentIntent(PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT));
