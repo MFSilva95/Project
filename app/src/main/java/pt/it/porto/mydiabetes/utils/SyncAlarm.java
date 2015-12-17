@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.Preferences;
@@ -38,12 +39,17 @@ public class SyncAlarm extends BroadcastReceiver {
 
 		builder.setPriority(NotificationCompat.PRIORITY_LOW);
 		builder.setStyle(bigTextStyle);
+		builder.setAutoCancel(true);
 
 		Intent resultIntent = new Intent(context, ImportExport.class);
 		Bundle extras = new Bundle();
 		extras.putInt(ImportExport.EXTRAS_TAB, ImportExport.EXTRAS_TAB_IMPORT_EXPORT);
 		resultIntent.putExtras(extras);
-		builder.setContentIntent(PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT));
+
+		TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
+		taskStackBuilder.addParentStack(ImportExport.class);
+		taskStackBuilder.addNextIntent(resultIntent);
+		builder.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
 
 		NotificationManager mNotificationManager =
 				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
