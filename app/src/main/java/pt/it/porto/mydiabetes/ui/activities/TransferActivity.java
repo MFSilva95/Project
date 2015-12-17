@@ -86,6 +86,12 @@ public class TransferActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_transfer);
+		findViewById(R.id.checkedTextView1).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				((CheckedTextView)v).toggle();
+			}
+		});
 		starter = getIntent();
 		Bundle extras = starter.getExtras();
 		host = extras.getString("host");
@@ -184,7 +190,6 @@ public class TransferActivity extends Activity {
 
 	/**
 	 * Button refresh, call method addFiles to put images from FileInfo in ll
-	 * @param view
 	 */
 	public void button2Click() {
 		if (mBound) {

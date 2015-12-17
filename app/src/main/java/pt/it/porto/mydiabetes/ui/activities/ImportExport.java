@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.ShareCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,32 +66,40 @@ public class ImportExport extends BaseOldActivity {
 
 	public static final String BACKUP_LOCATION = "/MyDiabetes/backup/DB_Diabetes";
 	public static final String PROJECT_MANAGER_EMAIL = "mydiabetes@dcc.fc.up.pt";
+	public static final String EXTRAS_TAB = "tab";
+	public static final int EXTRAS_TAB_SYNC = 0;
+	public static final int EXTRAS_TAB_IMPORT_EXPORT = 1;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_import_export);
 		// Show the Up button in the action bar.
-		getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-		ActionBar.Tab tab = getActionBar().newTab();
+		ActionBar actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		ActionBar.Tab tab = actionBar.newTab();
 		Fragment syncFragment = new Sync();
 		tab.setTabListener(new MyTabsListener(syncFragment));
 		tab.setText("Sincronização");
-		getActionBar().addTab(tab);
+		actionBar.addTab(tab);
 
-		tab = getActionBar().newTab();
+		tab = actionBar.newTab();
 		Fragment bacuprestoreFragment = new DB_BackupRestore();
 		tab.setTabListener(new MyTabsListener(bacuprestoreFragment));
 		tab.setText("Cópia de Segurança");
-		getActionBar().addTab(tab);
+		actionBar.addTab(tab);
 
-		tab = getActionBar().newTab();
+		tab = actionBar.newTab();
 		Fragment impexpFragment = new PdfExport();
 		tab.setTabListener(new MyTabsListener(impexpFragment));
 		tab.setText("Relatório");
-		getActionBar().addTab(tab);
+		actionBar.addTab(tab);
 
+		Bundle extras = getIntent().getExtras();
+		if (extras != null) {
+			int tabToFocus = extras.getInt(EXTRAS_TAB, EXTRAS_TAB_SYNC);
+			actionBar.selectTab(actionBar.getTabAt(tabToFocus));
+		}
 
 	}
 
@@ -105,6 +114,20 @@ public class ImportExport extends BaseOldActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
+				Intent upIntent = NavUtils.getParentActivityIntent(this);
+				if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
+					// This activity is NOT part of this app's task, so create a new task
+					// when navigating up, with a synthesized back stack.
+					TaskStackBuilder.create(this)
+							// Add all of this activity's parents to the back stack
+							.addNextIntentWithParentStack(upIntent)
+							// Navigate up to the closest parent
+							.startActivities();
+				} else {
+					// This activity is part of this app's task, so simply
+					// navigate up to the logical parent activity.
+					NavUtils.navigateUpTo(this, upIntent);
+				}
 				NavUtils.navigateUpFromSameTask(this);
 				return true;
 		}
@@ -669,13 +692,13 @@ public class ImportExport extends BaseOldActivity {
 
 	public void showDatePickerDialogFrom(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_pdfexport_DataFrom,
-				DatePickerFragment.getCalendar(((EditText)v).getText().toString()));
+				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_pdfexport_DataTo,
-				DatePickerFragment.getCalendar(((EditText)v).getText().toString()));
+				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
