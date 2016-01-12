@@ -3,6 +3,8 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,6 +27,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,6 +37,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,12 +47,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import io.fabric.sdk.android.Fabric;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.middleHealth.utils.Utils;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
+import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc;
 import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
@@ -57,6 +64,7 @@ import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
 
 public class Meal extends BaseOldActivity {
 
+	private static final String SHOW_INSULIN_CALCS_EXPANDED = "SHOW_INSULIN_CALCS_EXPANDED";
 
 	ArrayList<String> allInsulins;
 	//photo variables - start
@@ -68,6 +76,19 @@ public class Meal extends BaseOldActivity {
 
 	//variavel que contem o id da insulina seleccionada
 	int action_type = -1;
+
+	private EditText insulinunits;
+	private EditText glycemia;
+	private EditText carbs;
+	private EditText target;
+
+	private double iRatio;
+	private double cRatio;
+	private float insulinTarget;
+	private float carbsVal;
+	private float glycemiaVal;
+
+	private boolean expandInsulinCalcsAuto = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,34 +131,19 @@ public class Meal extends BaseOldActivity {
 
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
-		final double iRatio = Double.valueOf(obj[3].toString());
-		final double cRatio = Double.valueOf(obj[4].toString());
+		iRatio = Double.valueOf(obj[3].toString());
+		cRatio = Double.valueOf(obj[4].toString());
 		rdb.close();
 
-		final EditText insulinunits = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
-		final EditText target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);
-		final EditText glycemia = (EditText) findViewById(R.id.et_MealDetail_Glycemia);
-		final EditText carbs = (EditText) findViewById(R.id.et_MealDetail_Carbs);
+		insulinunits = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
+		target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);
+		glycemia = (EditText) findViewById(R.id.et_MealDetail_Glycemia);
+		carbs = (EditText) findViewById(R.id.et_MealDetail_Carbs);
 
 
 		target.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")) {
-//					Double gli = Double.parseDouble(glycemia.getText().toString());
-//					Double tar = Double.parseDouble(target.getText().toString());
-//					Double car = Double.parseDouble(carbs.getText().toString());
-//					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
-//					result = 0.5 * Math.round(result/0.5);
-//					if(result<0){
-//						result = 0.0;
-//					}
-//					Log.d("resultado", result.toString());
-					double[] result = computeIOB(iRatio, cRatio, glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
-
-
-					insulinunits.setText(String.valueOf(result[4]));
-				}
 			}
 
 			@Override
@@ -146,27 +152,23 @@ public class Meal extends BaseOldActivity {
 
 			@Override
 			public void afterTextChanged(Editable s) {
+				String text = s.toString();
+				if (text.isEmpty()) {
+					insulinTarget = 0;
+				} else {
+					try {
+						insulinTarget = Float.parseFloat(s.toString());
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+				}
+				setInsulinIntake();
 			}
 		});
 
 		glycemia.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")) {
-//					Double gli = Double.parseDouble(glycemia.getText().toString());
-//					Double tar = Double.parseDouble(target.getText().toString());
-//					Double car = Double.parseDouble(carbs.getText().toString());
-//					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
-//					result = 0.5 * Math.round(result/0.5);
-//					if(result<0){
-//						result = 0.0;
-//					}
-//					Log.d("resultado", result.toString());
-					double[] result = computeIOB(iRatio, cRatio, glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
-
-
-					insulinunits.setText(String.valueOf(result[4]));
-				}
 			}
 
 			@Override
@@ -175,27 +177,23 @@ public class Meal extends BaseOldActivity {
 
 			@Override
 			public void afterTextChanged(Editable s) {
+				String text = s.toString();
+				if (text.isEmpty()) {
+					glycemiaVal = 0;
+				} else {
+					try {
+						glycemiaVal = Float.parseFloat(s.toString());
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+				}
+				setInsulinIntake();
 			}
 		});
 
 		carbs.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")) {
-//					Double gli = Double.parseDouble(glycemia.getText().toString());
-//					Double tar = Double.parseDouble(target.getText().toString());
-//					Double car = Double.parseDouble(carbs.getText().toString());
-//					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
-//					result = 0.5 * Math.round(result/0.5);
-//					if(result<0){
-//						result = 0.0;
-//					}
-//					Log.d("resultado", result.toString());
-					double[] result = computeIOB(iRatio, cRatio, glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
-
-
-					insulinunits.setText(String.valueOf(result[4]));
-				}
 			}
 
 			@Override
@@ -204,6 +202,17 @@ public class Meal extends BaseOldActivity {
 
 			@Override
 			public void afterTextChanged(Editable s) {
+				String text = s.toString();
+				if (text.isEmpty()) {
+					carbsVal = 0;
+				} else {
+					try {
+						carbsVal = Float.parseFloat(s.toString());
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+				}
+				setInsulinIntake();
 			}
 		});
 
@@ -222,6 +231,9 @@ public class Meal extends BaseOldActivity {
 			}
 		});
 
+		if (!expandInsulinCalcsAuto) {
+			expandInsulinCalcsAuto = pt.it.porto.mydiabetes.database.Preferences.showFeatureForFirstTime(this, SHOW_INSULIN_CALCS_EXPANDED);
+		}
 
 		handleExtras();
 	}
@@ -662,6 +674,7 @@ public class Meal extends BaseOldActivity {
 		if (imgUri != null) {
 			outState.putString("cameraImageUri", imgUri.toString());
 		}
+		outState.putBoolean(SHOW_INSULIN_CALCS_EXPANDED, expandInsulinCalcsAuto);
 	}
 
 	@Override
@@ -679,6 +692,9 @@ public class Meal extends BaseOldActivity {
 			b = decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
 			img.setImageBitmap(b);
 			photopath.setText(imgUri.getPath());
+		}
+		if (savedInstanceState.containsKey(SHOW_INSULIN_CALCS_EXPANDED)) {
+			expandInsulinCalcsAuto = savedInstanceState.getBoolean(SHOW_INSULIN_CALCS_EXPANDED);
 		}
 	}
 
@@ -765,7 +781,7 @@ public class Meal extends BaseOldActivity {
 	//PHOTO - END
 
 
-	private double[] computeIOB(Double iRatio, Double cRatio, String glycemia, String target, String carbs) {
+	private double[] computeIOB(Double iRatio, Double cRatio, float glycemia, float target, float carbs) {
 		DB_Read read = new DB_Read(this);
 		int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity();
 		Date now = new Date();
@@ -785,22 +801,20 @@ public class Meal extends BaseOldActivity {
 		int minuteDiff = minuteNow - minuteOriginal;
 		Log.d("Minute diff: ", minuteDiff + "");
 
-		Double gli = Double.parseDouble(glycemia);
-		Double tar = Double.parseDouble(target);
-		Double car = Double.parseDouble(carbs);
-		Double glicemia = ((gli - tar) / iRatio); //calculo separado da glicemia
+		Double glicemia = ((glycemia - target) / iRatio); //calculo separado da glicemia
 		result[1] = glicemia;
-		Double glicidos = (car / cRatio); //calculo separado dos glicidos
+		Double glicidos = (carbs / cRatio); //calculo separado dos glicidos
 		result[3] = glicidos;
-		Double total = ((gli - tar) / iRatio) + (car / cRatio);
+		Double total = ((glycemia - target) / iRatio) + (carbs / cRatio);
 
 		Log.d("tipo de insulina: : ", insulinType + "");
 		Log.d("glicemia: ", glicemia.toString());
 		Log.d("glicidos: : ", glicidos.toString());
 
 
-// 		if (insulinType == 0) { //só calcula para insulina rapida que é a 0
-// 			result[0] = 0;
+		if (insulinType == 0) { //só calcula para insulina rapida que é a 0
+			result[0] = 0;
+			result[2] = insulinDose - insulinDose * ((int) (minuteDiff / 30) * 0.1);
 // 			if (minuteDiff <= 60) {
 // 				result[2] = insulinDose * 0.75;
 // 			} else if (minuteDiff <= 120) {
@@ -810,14 +824,14 @@ public class Meal extends BaseOldActivity {
 // 			} else if (minuteDiff > 180) {
 // 				result[2] = 0;
 // 			}
-// 
-// 			result[4] = total - result[2]; //cálculo normal menos o IOB
-// 
-// 		} else {
+
+			result[4] = total - result[2]; //cálculo normal menos o IOB
+
+		} else {
 			result[0] = insulinType;
 			result[2] = -1;
 			result[4] = total;
-//		}
+		}
 
 
 		result[4] = 0.5 * Math.round(result[4] / 0.5);
@@ -880,5 +894,101 @@ public class Meal extends BaseOldActivity {
 			intent.putExtras(bundle);
 		}
 		startActivity(intent);
+	}
+
+
+	private InsulinCalc fragmentInsulinCalcs;
+
+	private void showCalcs(double glycimeaActual, double glycimeaTarget, double glycimeaRatio, double carbs, double carbsRatio, double insulinOnBoard) {
+		Log.d("showCalcs", "showCalcs() called with: " + "glycimeaActual = [" + glycimeaActual + "], glycimeaTarget = [" + glycimeaTarget + "], glycimeaRatio = [" + glycimeaRatio + "], carbs = [" + carbs + "], carbsRatio = [" + carbsRatio + "], insulinOnBoard = [" + insulinOnBoard + "]");
+		double correctionGlycimea = ((glycimeaActual - glycimeaTarget) / glycimeaRatio);
+		double correctionCarbs = carbs / carbsRatio;
+
+		double result = ((glycimeaActual - glycimeaTarget) / glycimeaRatio) + (carbs / carbsRatio) - (insulinOnBoard > 0 ? insulinOnBoard : 0);
+
+		if (fragmentInsulinCalcs == null) {
+			FragmentManager fragmentManager = getFragmentManager();
+			Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_calcs);
+			if (fragment != null) {
+				fragmentInsulinCalcs = (InsulinCalc) fragment;
+			} else {
+				fragmentInsulinCalcs = InsulinCalc.newInstance((int) correctionGlycimea, (int) correctionCarbs);
+				fragmentManager.beginTransaction()
+						.add(R.id.fragment_calcs, fragmentInsulinCalcs)
+						.commit();
+				fragmentManager.executePendingTransactions();
+
+				ScaleAnimation animation = new ScaleAnimation(1, 1, 0, 1, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
+				animation.setDuration(700);
+				findViewById(R.id.fragment_calcs).startAnimation(animation);
+				((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setChecked(true);
+			}
+		}
+		fragmentInsulinCalcs.setCorrectionGlycemia((float) correctionGlycimea);
+		fragmentInsulinCalcs.setCorrectionCarbs((float) correctionCarbs);
+		fragmentInsulinCalcs.setResult((float) result);
+		if (insulinOnBoard > 0) {
+			fragmentInsulinCalcs.setInsulinOnBoard((float) insulinOnBoard);
+		}
+	}
+
+
+	private void hideCalcs() {
+		if (fragmentInsulinCalcs != null) {
+			ScaleAnimation animation = new ScaleAnimation(1, 1, 1, 0, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
+			animation.setDuration(700);
+			findViewById(R.id.fragment_calcs).startAnimation(animation);
+			animation.setAnimationListener(new Animation.AnimationListener() {
+				@Override
+				public void onAnimationStart(Animation animation) {
+
+				}
+
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					getFragmentManager().beginTransaction()
+							.remove(fragmentInsulinCalcs)
+							.commit();
+					fragmentInsulinCalcs = null;
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+
+				}
+			});
+		}
+	}
+
+	private double insulinOnBoard = -1;
+
+	public void toggleInsulinCalcDetails(View view) {
+		expandInsulinCalcsAuto = false;
+		if (((ToggleButton) view).isChecked()) {
+			showCalcs(glycemiaVal, insulinTarget, iRatio, carbsVal, cRatio, insulinOnBoard);
+		} else {
+			hideCalcs();
+		}
+	}
+
+	private void setInsulinIntake() {
+		if (Float.compare(carbsVal, 0) >= 0 && Float.compare(glycemiaVal, 0) >= 0 && Float.compare(insulinTarget, 0) >= 0) {
+			double[] result = computeIOB(iRatio, cRatio, glycemiaVal, insulinTarget, carbsVal);
+			insulinOnBoard = result[2];
+			if (expandInsulinCalcsAuto || isFragmentShowing()) {
+				showCalcs(glycemiaVal, insulinTarget, iRatio, carbsVal, cRatio, result[2]);
+			}
+			insulinunits.setText(String.valueOf(result[4]));
+		}
+	}
+
+	private boolean isFragmentShowing() {
+		FragmentManager fragmentManager = getFragmentManager();
+		Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_calcs);
+		if (fragment != null) {
+			fragmentInsulinCalcs = (InsulinCalc) fragment;
+			return true;
+		}
+		return false;
 	}
 }
