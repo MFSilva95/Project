@@ -65,9 +65,9 @@ public class InsulinCalc extends Fragment {
 	}
 
 
-	public void setResult(float result) {
+	public void setResult(float result, float resultRound) {
 		this.resultTotal.setText(String.format("%.1f", result));
-		this.resultRound.setText(String.format("(%d)", Math.round(result > 0 ? result : 0))); // if lower than one, the recommendation is 0
+		this.resultRound.setText(String.format("(%.1f)", resultRound>0?resultRound:0)); // if lower than one, the recommendation is 0
 	}
 
 	public void setInsulinOnBoard(float insulinOnBoard) {

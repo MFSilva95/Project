@@ -62,11 +62,10 @@ import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 public class Meal extends BaseOldActivity {
 
 	private static final String SHOW_INSULIN_CALCS_EXPANDED = "SHOW_INSULIN_CALCS_EXPANDED";
-
-	ArrayList<String> allInsulins;
 	//photo variables - start
 	final private int IMAGE_CAPTURE = 2;
 	final private int IMAGE_VIEW = 3;
+	ArrayList<String> allInsulins;
 	Uri imgUri;
 	Bitmap b;
 	//photo variables - end
@@ -82,6 +81,17 @@ public class Meal extends BaseOldActivity {
 	private InsulinCalculator insulinCalculator;
 
 	private boolean expandInsulinCalcsAuto = false;
+	private InsulinCalc fragmentInsulinCalcs;
+
+	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
+		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
+		for (int position = 0; position < adapter.getCount(); position++) {
+			if (adapter.getItem(position).equals(value)) {
+				spnr.setSelection(position);
+				return;
+			}
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -258,7 +268,6 @@ public class Meal extends BaseOldActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_MealDetail_Data);
 		final Calendar c = Calendar.getInstance();
@@ -307,17 +316,6 @@ public class Meal extends BaseOldActivity {
 		rdb.close();
 		SelectSpinnerItemByValue(tagSpinner, name);
 	}
-
-	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
-		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
-		for (int position = 0; position < adapter.getCount(); position++) {
-			if (adapter.getItem(position).equals(value)) {
-				spnr.setSelection(position);
-				return;
-			}
-		}
-	}
-
 
 	public void ShowDialogAddInsulin() {
 		final Context c = this;
@@ -389,7 +387,6 @@ public class Meal extends BaseOldActivity {
 
 	}
 
-
 	//-------------------------------------------
 	public void AddGlycemiaRead() {
 		Spinner TagSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
@@ -430,7 +427,6 @@ public class Meal extends BaseOldActivity {
 		reg.close();
 
 	}
-
 
 	public void AddCarbsRead() {
 		Spinner tagSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
@@ -547,6 +543,9 @@ public class Meal extends BaseOldActivity {
 		rdb.close();
 	}
 
+
+	//PHOTO - START
+
 	//-----------------------------------------
 	public void VerifySaveReads() {
 		EditText insulinunits = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
@@ -600,9 +599,6 @@ public class Meal extends BaseOldActivity {
 		NavUtils.navigateUpFromSameTask(this);
 	}
 
-
-	//PHOTO - START
-
 	public Uri setImageUri() {
 		// Store image in /MyDiabetes
 		File file = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes", new Date().getTime() + ".jpg");
@@ -612,7 +608,6 @@ public class Meal extends BaseOldActivity {
 		}
 		return Uri.fromFile(file);
 	}
-
 
 	public void TakePhoto(View v) {
 		EditText photopath = (EditText) findViewById(R.id.et_MealDetail_Photo);
@@ -659,7 +654,6 @@ public class Meal extends BaseOldActivity {
 
 	}
 
-
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
@@ -690,7 +684,6 @@ public class Meal extends BaseOldActivity {
 		}
 	}
 
-
 	private void setupLasInsulin() {
 		DB_Read read = new DB_Read(this);
 		int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity();
@@ -702,7 +695,6 @@ public class Meal extends BaseOldActivity {
 
 		insulinCalculator.setLastInsulin(insulinDose, minuteOriginal, insulinType);
 	}
-
 
 	private void handleExtras() {
 		// Check if there are any extras in the intent:
@@ -753,9 +745,6 @@ public class Meal extends BaseOldActivity {
 		startActivity(intent);
 	}
 
-
-	private InsulinCalc fragmentInsulinCalcs;
-
 	private void showCalcs() {
 		if (fragmentInsulinCalcs == null) {
 			FragmentManager fragmentManager = getFragmentManager();
@@ -777,7 +766,7 @@ public class Meal extends BaseOldActivity {
 		}
 		fragmentInsulinCalcs.setCorrectionGlycemia(insulinCalculator.getInsulinGlycemia());
 		fragmentInsulinCalcs.setCorrectionCarbs(insulinCalculator.getInsulinCarbs());
-		fragmentInsulinCalcs.setResult(insulinCalculator.getInsulinTotal(true));
+		fragmentInsulinCalcs.setResult(insulinCalculator.getInsulinTotal(true), insulinCalculator.getInsulinTotal(true, true));
 		float insulinOnBoard = insulinCalculator.getInsulinOnBoard();
 		if (insulinOnBoard > 0) {
 			fragmentInsulinCalcs.setInsulinOnBoard(insulinOnBoard);
