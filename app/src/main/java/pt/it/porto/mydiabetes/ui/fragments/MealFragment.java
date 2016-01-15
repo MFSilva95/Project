@@ -1,5 +1,6 @@
 package pt.it.porto.mydiabetes.ui.fragments;
 
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -15,6 +16,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +61,7 @@ public class MealFragment extends Fragment {
 	public final static int IMAGE_VIEW = 3;
 
 	private static final String ARG_SHOW_ADD_GLYCEMIA_TARGET = "param1"; // optional argument to create fragment
+	private static final String GENERATED_IMAGE_URI = "generated_image_uri";
 
 
 	private ArrayList<String> allInsulins; // insulins in the database
@@ -118,7 +121,6 @@ public class MealFragment extends Fragment {
 		if (!showAddGlycemiaTarget) {
 			view.findViewById(R.id.addTargetObjective).setVisibility(View.GONE);
 		}
-		setUpdateListeners(view);
 		fillDateHour(view);
 		fillTagSpinner(view);
 		setTagByTime(view);
@@ -126,7 +128,22 @@ public class MealFragment extends Fragment {
 		FillInsulinSpinner(view);
 		setupClickListeners(view);
 		setupMealImage(view);
+		setUpdateListeners(view);
 		return view;
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putParcelable(GENERATED_IMAGE_URI, generatedImageUri);
+	}
+
+	@Override
+	public void onViewStateRestored(Bundle savedInstanceState) {
+		super.onViewStateRestored(savedInstanceState);
+		if (savedInstanceState != null && savedInstanceState.containsKey(GENERATED_IMAGE_URI)) {
+			generatedImageUri = savedInstanceState.getParcelable(GENERATED_IMAGE_URI);
+		}
 	}
 
 	public void SelectSpinnerItemByValue(Spinner spinner, String value) {
@@ -166,7 +183,7 @@ public class MealFragment extends Fragment {
 					startActivityForResult(intent, IMAGE_VIEW);
 				} else {
 					final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-					intent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
+					intent.putExtra(MediaStore.EXTRA_OUTPUT, getImageUri());
 					startActivityForResult(intent, IMAGE_CAPTURE);
 				}
 			}
@@ -187,6 +204,19 @@ public class MealFragment extends Fragment {
 		});
 	}
 
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode != Activity.RESULT_CANCELED && requestCode == MealFragment.IMAGE_CAPTURE) {
+			setImageUri(generatedImageUri);
+		} else if (requestCode == MealFragment.IMAGE_VIEW) {
+			//se tivermos apagado a foto dá result code -1
+			//se voltarmos por um return por exemplo o resultcode é 0
+			if (resultCode == -1) {
+				setImageUri(null);
+			}
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 
 	private void setUpdateListeners(View view) {
 		target.addTextChangedListener(new TextWatcher() {
@@ -391,7 +421,9 @@ public class MealFragment extends Fragment {
 
 	}
 
-	public Uri setImageUri() {
+	private Uri generatedImageUri;
+
+	public Uri getImageUri() {
 		// Store image in /MyDiabetes
 		File file = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes", new Date().getTime() + ".jpg");
 		File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
@@ -401,7 +433,8 @@ public class MealFragment extends Fragment {
 				// todo report and recover
 			}
 		}
-		return Uri.fromFile(file);
+		this.generatedImageUri = Uri.fromFile(file);
+		return generatedImageUri;
 	}
 
 	public void save() {

@@ -47,23 +47,6 @@ public class Test_meal_fragment extends Activity implements MealFragment.MealFra
 		return insulinCalculator;
 	}
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (resultCode != Activity.RESULT_CANCELED && requestCode == MealFragment.IMAGE_CAPTURE) {
-			getFragment().setImageUri(data.getData());
-		} else if (requestCode == MealFragment.IMAGE_VIEW) {
-			Log.d("Result:", resultCode + "");
-			//se tivermos apagado a foto dá result code -1
-			//se voltarmos por um return por exemplo o resultcode é 0
-			if (resultCode == -1) {
-				getFragment().setImageUri(null);
-			}
-		} else {
-			super.onActivityResult(requestCode, resultCode, data);
-		}
-
-	}
-
 	public void ShowDialogAddInsulin() {
 		final Context c = this;
 		new AlertDialog.Builder(this)
