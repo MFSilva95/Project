@@ -2,7 +2,7 @@ package pt.it.porto.mydiabetes.utils;
 
 import java.util.Calendar;
 
-public class InsulinCalculator {
+public class InsulinCalculator implements Cloneable {
 
 	private float glycemiaRatio;
 	private float carbsRatio;
@@ -90,5 +90,15 @@ public class InsulinCalculator {
 
 	public void setGlycemia(float glycemia) {
 		this.glycemia = glycemia;
+	}
+
+	@Override
+	public InsulinCalculator clone() {
+		InsulinCalculator newCalculator = new InsulinCalculator(glycemiaRatio, carbsRatio);
+		newCalculator.setCarbs(carbs);
+		newCalculator.setGlycemia(glycemia);
+		newCalculator.setInsulinTarget(insulinTarget);
+		newCalculator.insulinOnBoard = insulinOnBoard;
+		return newCalculator;
 	}
 }

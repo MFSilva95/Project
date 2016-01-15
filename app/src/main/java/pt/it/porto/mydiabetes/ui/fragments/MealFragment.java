@@ -81,6 +81,10 @@ public class MealFragment extends Fragment {
 	private Uri imgUri;
 	private Bitmap b;
 
+	// support update indicator
+	private boolean showUpdateIndicator = false;
+	private InsulinCalculator oldInsulinCalculator = null; // the old insulincalculator to compare
+
 
 	public MealFragment() {
 		// Required empty public constructor
@@ -231,16 +235,19 @@ public class MealFragment extends Fragment {
 			@Override
 			public void afterTextChanged(Editable s) {
 				String text = s.toString();
-				if (text.isEmpty()) {
-					insulinCalculator.setInsulinTarget(0);
-				} else {
+				float val = 0;
+				if (!text.isEmpty()) {
 					try {
-						insulinCalculator.setInsulinTarget(Float.parseFloat(s.toString()));
+						val = Float.parseFloat(s.toString());
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}
 				}
+				insulinCalculator.setInsulinTarget(val);
 				setInsulinIntake();
+				if (oldInsulinCalculator != null) {
+					updateIndicator(target, Float.compare(oldInsulinCalculator.getInsulinTarget(), val) != 0);
+				}
 			}
 		});
 
@@ -256,16 +263,21 @@ public class MealFragment extends Fragment {
 			@Override
 			public void afterTextChanged(Editable s) {
 				String text = s.toString();
+				int val = 0;
 				if (text.isEmpty()) {
-					insulinCalculator.setGlycemia(0);
+					val = 0;
 				} else {
 					try {
-						insulinCalculator.setGlycemia(Integer.parseInt(s.toString()));
+						val = Integer.parseInt(s.toString());
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}
 				}
+				insulinCalculator.setGlycemia(val);
 				setInsulinIntake();
+				if (oldInsulinCalculator != null) {
+					updateIndicator(glycemia, ((int) oldInsulinCalculator.getGlycemia()) != val);
+				}
 			}
 		});
 
@@ -281,16 +293,19 @@ public class MealFragment extends Fragment {
 			@Override
 			public void afterTextChanged(Editable s) {
 				String text = s.toString();
-				if (text.isEmpty()) {
-					insulinCalculator.setCarbs(0);
-				} else {
+				int val = 0;
+				if (!text.isEmpty()) {
 					try {
-						insulinCalculator.setCarbs(Integer.parseInt(s.toString()));
+						val = Integer.parseInt(s.toString());
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}
 				}
+				insulinCalculator.setCarbs(val);
 				setInsulinIntake();
+				if (oldInsulinCalculator != null) {
+					updateIndicator(carbs, ((int) oldInsulinCalculator.getGlycemia()) != val);
+				}
 			}
 		});
 
@@ -310,6 +325,43 @@ public class MealFragment extends Fragment {
 			public void afterTextChanged(Editable s) {
 			}
 		});
+
+		insulinunits.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				String text = s.toString();
+				float val = 0;
+				if (!text.isEmpty()) {
+					try {
+						val = Float.parseFloat(s.toString());
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+				}
+				if (oldInsulinCalculator != null) {
+					updateIndicator(insulinunits, ((int) oldInsulinCalculator.getInsulinTotal(true, true)) != val);
+				}
+			}
+		});
+	}
+
+	private void updateIndicator(EditText view, boolean valueChanged) {
+		Log.d("MealFragment", "updateIndicator() called with: " + "view = [" + view + "], valueChanged = [" + valueChanged + "]");
+		if (valueChanged) {
+			view.setBackgroundResource(R.drawable.edit_text_holo_dark_changed);
+		} else {
+			view.setBackgroundResource(R.drawable.default_edit_text_holo_dark);
+		}
 	}
 
 	private void fillDateHour(View view) {
@@ -602,6 +654,11 @@ public class MealFragment extends Fragment {
 		if (insulinTotal > 0) {
 			insulinunits.setText(String.format("%d", (int) insulinTotal));
 		}
+	}
+
+	public void setShowUpdateIndicator(boolean showUpdateIndicator) {
+		this.showUpdateIndicator = showUpdateIndicator;
+		this.oldInsulinCalculator = insulinCalculator.clone();
 	}
 
 	/**

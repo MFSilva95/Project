@@ -23,6 +23,7 @@ public class Test_meal_fragment extends Activity implements MealFragment.MealFra
 		setContentView(R.layout.activity_test_meal_fragment);
 		insulinCalculator=getLastInsulin();
 		getFragment().setInsulinCalculator(insulinCalculator);
+		getFragment().setShowUpdateIndicator(true);
 	}
 
 
