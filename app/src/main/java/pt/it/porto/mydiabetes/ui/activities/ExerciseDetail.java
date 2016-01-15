@@ -117,7 +117,7 @@ public class ExerciseDetail extends Activity {
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_ExerciseDetail_Data);
 		final Calendar calendar = Calendar.getInstance();
-		date.setText(TimePickerFragment.getFormatedDate(calendar));
+		date.setText(DatePickerFragment.getFormatedDate(calendar));
 
 		EditText hour = (EditText) findViewById(R.id.et_ExerciseDetail_Hora);
 		hour.setText(TimePickerFragment.getFormatedDate(calendar));
