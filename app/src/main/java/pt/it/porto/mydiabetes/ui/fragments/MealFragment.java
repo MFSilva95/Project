@@ -124,8 +124,8 @@ public class MealFragment extends Fragment {
 		fillDateHour(view);
 		fillTagSpinner(view);
 		setTagByTime(view);
-		SetTargetByHour(view);
-		FillInsulinSpinner(view);
+		setTargetByHour(view);
+		fillInsulinSpinner(view);
 		setupClickListeners(view);
 		setupMealImage(view);
 		setUpdateListeners(view);
@@ -146,7 +146,7 @@ public class MealFragment extends Fragment {
 		}
 	}
 
-	public void SelectSpinnerItemByValue(Spinner spinner, String value) {
+	private void selectSpinnerItemByValue(Spinner spinner, String value) {
 		SpinnerAdapter adapter = spinner.getAdapter();
 		for (int position = 0; position < adapter.getCount(); position++) {
 			if (adapter.getItem(position).equals(value)) {
@@ -312,7 +312,7 @@ public class MealFragment extends Fragment {
 		});
 	}
 
-	public void fillDateHour(View view) {
+	private void fillDateHour(View view) {
 		EditText date = (EditText) view.findViewById(R.id.et_MealDetail_Data);
 		final Calendar c = Calendar.getInstance();
 		date.setText(DatePickerFragment.getFormatedDate(c));
@@ -333,7 +333,7 @@ public class MealFragment extends Fragment {
 		});
 	}
 
-	public void fillTagSpinner(View view) {
+	private void fillTagSpinner(View view) {
 		Spinner spinner = (Spinner) view.findViewById(R.id.sp_MealDetail_Tag);
 		ArrayList<String> allTags = new ArrayList<>();
 		DB_Read rdb = new DB_Read(getActivity());
@@ -352,19 +352,19 @@ public class MealFragment extends Fragment {
 		spinner.setAdapter(adapter);
 	}
 
-	public void showDatePickerDialog(View v) {
+	private void showDatePickerDialog(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MealDetail_Data,
 				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
-	public void showTimePickerDialog(View v) {
+	private void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_MealDetail_Hora,
 				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
-	public void setTagByTime(View viewArg) {
+	private void setTagByTime(View viewArg) {
 		View view = viewArg != null ? viewArg : getView();
 		if (view == null) {
 			return;
@@ -374,7 +374,7 @@ public class MealFragment extends Fragment {
 		DB_Read rdb = new DB_Read(getActivity());
 		String name = rdb.Tag_GetByTime(hora.getText().toString()).getName();
 		rdb.close();
-		SelectSpinnerItemByValue(tagSpinner, name);
+		selectSpinnerItemByValue(tagSpinner, name);
 	}
 
 
@@ -389,7 +389,7 @@ public class MealFragment extends Fragment {
 	}
 
 
-	public void SetTargetByHour(View view) {
+	private void setTargetByHour(View view) {
 		EditText target = (EditText) view.findViewById(R.id.et_MealDetail_TargetGlycemia);
 		EditText hora = (EditText) view.findViewById(R.id.et_MealDetail_Hora);
 		DB_Read rdb = new DB_Read(getActivity());
@@ -403,7 +403,7 @@ public class MealFragment extends Fragment {
 		rdb.close();
 	}
 
-	public void FillInsulinSpinner(View view) {
+	private void fillInsulinSpinner(View view) {
 		Spinner spinner = (Spinner) view.findViewById(R.id.sp_MealDetail_Insulin);
 		allInsulins = new ArrayList<>();
 		DB_Read rdb = new DB_Read(getActivity());
@@ -423,7 +423,7 @@ public class MealFragment extends Fragment {
 
 	private Uri generatedImageUri;
 
-	public Uri getImageUri() {
+	private Uri getImageUri() {
 		// Store image in /MyDiabetes
 		File file = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes", new Date().getTime() + ".jpg");
 		File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
@@ -461,7 +461,7 @@ public class MealFragment extends Fragment {
 		mListener = null;
 	}
 
-	public void addGlycemiaObjective(View view) {
+	private void addGlycemiaObjective(View view) {
 		Intent intent = new Intent(getActivity(), TargetBG_detail.class);
 		View viewParent = getView();
 		String goal = null;
@@ -540,7 +540,7 @@ public class MealFragment extends Fragment {
 		}
 	}
 
-	public void toggleInsulinCalcDetails(View view) {
+	private void toggleInsulinCalcDetails(View view) {
 		expandInsulinCalcsAuto = false;
 		if (((ToggleButton) view).isChecked()) {
 			showCalcs();
