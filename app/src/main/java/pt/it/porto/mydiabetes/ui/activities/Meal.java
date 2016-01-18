@@ -159,10 +159,10 @@ public class Meal extends BaseOldActivity {
 			public void afterTextChanged(Editable s) {
 				String text = s.toString();
 				if (text.isEmpty()) {
-					insulinCalculator.setInsulinTarget(0);
+					insulinCalculator.setGlycemiaTarget(0);
 				} else {
 					try {
-						insulinCalculator.setInsulinTarget(Float.parseFloat(s.toString()));
+						insulinCalculator.setGlycemiaTarget(Float.parseFloat(s.toString()));
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}

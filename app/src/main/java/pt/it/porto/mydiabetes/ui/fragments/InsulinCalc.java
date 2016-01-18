@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -66,21 +67,21 @@ public class InsulinCalc extends Fragment {
 
 
 	public void setResult(float result, float resultRound) {
-		this.resultTotal.setText(String.format("%.1f", result));
-		this.resultRound.setText(String.format("(%.1f)", resultRound>0?resultRound:0)); // if lower than one, the recommendation is 0
+		this.resultTotal.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", result));// using ENGLISH locale to have dot instead of comma
+		this.resultRound.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "(%.1f)", resultRound > 0 ? resultRound : 0)); // if lower than one, the recommendation is 0
 	}
 
 	public void setInsulinOnBoard(float insulinOnBoard) {
-		this.insulinOnBoard.setText(String.format("%.1f", insulinOnBoard));
+		this.insulinOnBoard.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", insulinOnBoard));
 		this.blockIOB.setVisibility(View.VISIBLE);
 	}
 
 	public void setCorrectionCarbs(float correctionCarbs) {
-		this.correctionCarbs.setText(String.format("%.1f", correctionCarbs));
+		this.correctionCarbs.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", correctionCarbs));
 	}
 
 	public void setCorrectionGlycemia(float correctionGlycemia) {
-		this.correctionGlycemia.setText(String.format("%.1f", correctionGlycemia));
+		this.correctionGlycemia.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", correctionGlycemia));
 	}
 
 

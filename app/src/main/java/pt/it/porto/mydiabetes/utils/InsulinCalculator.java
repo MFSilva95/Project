@@ -72,7 +72,7 @@ public class InsulinCalculator implements Cloneable {
 		return insulinTarget;
 	}
 
-	public void setInsulinTarget(float insulinTarget) {
+	public void setGlycemiaTarget(float insulinTarget) {
 		this.insulinTarget = insulinTarget;
 	}
 
@@ -97,7 +97,7 @@ public class InsulinCalculator implements Cloneable {
 		InsulinCalculator newCalculator = new InsulinCalculator(glycemiaRatio, carbsRatio);
 		newCalculator.setCarbs(carbs);
 		newCalculator.setGlycemia(glycemia);
-		newCalculator.setInsulinTarget(insulinTarget);
+		newCalculator.setGlycemiaTarget(insulinTarget);
 		newCalculator.insulinOnBoard = insulinOnBoard;
 		return newCalculator;
 	}
