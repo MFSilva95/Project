@@ -551,7 +551,6 @@ public class MealFragment extends Fragment {
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		save();
 		mListener = null;
 	}
 
@@ -660,24 +659,6 @@ public class MealFragment extends Fragment {
 		return false;
 	}
 
-	public void setInsulinCalculator(InsulinCalculator insulinCalculator) {
-		this.insulinCalculator = insulinCalculator;
-		if (insulinCalculator.getCarbs() > 0) {
-			carbs.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getCarbs()));
-		}
-		if (insulinCalculator.getGlycemia() > 0) {
-			glycemia.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getGlycemia()));
-		}
-		if (insulinCalculator.getInsulinTarget() > 0) {
-			target.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getInsulinTarget()));
-		}
-		setGlycemiaTarget(insulinCalculator.getInsulinTarget());
-		float insulinTotal = insulinCalculator.getInsulinTotal(true, true);
-		if (insulinTotal > 0) {
-			insulinIntake.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinTotal));
-		}
-	}
-
 	public void setShowUpdateIndicator(boolean showUpdateIndicator) {
 		if (showUpdateIndicator) {
 			this.oldInsulinCalculator = insulinCalculator.clone();
@@ -721,6 +702,75 @@ public class MealFragment extends Fragment {
 		} else {
 			view.findViewById(R.id.addTargetObjective).setVisibility(View.VISIBLE);
 		}
+	}
+
+	public InsulinCalculator getInsulinCalculator() {
+		return insulinCalculator;
+	}
+
+	public void setInsulinCalculator(InsulinCalculator insulinCalculator) {
+		this.insulinCalculator = insulinCalculator;
+		if (insulinCalculator.getCarbs() > 0) {
+			carbs.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getCarbs()));
+		}
+		if (insulinCalculator.getGlycemia() > 0) {
+			glycemia.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getGlycemia()));
+		}
+		if (insulinCalculator.getInsulinTarget() > 0) {
+			target.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getInsulinTarget()));
+		}
+		setGlycemiaTarget(insulinCalculator.getInsulinTarget());
+		float insulinTotal = insulinCalculator.getInsulinTotal(true, true);
+		if (insulinTotal > 0) {
+			insulinIntake.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinTotal));
+		}
+	}
+
+	public Uri getImgUri() {
+		return imgUri;
+	}
+
+	public float getInsulinIntake() {
+		return Float.parseFloat(insulinIntake.getText().toString());
+	}
+
+	public String getTime() {
+		return time.getText().toString();
+	}
+
+	public String getDate() {
+		return date.getText().toString();
+	}
+
+	public String getPhaseOfDay(){
+		View view = getView();
+		if (view == null) {
+			return null;
+		}
+		Spinner spinner = (Spinner) view.findViewById(R.id.sp_MealDetail_Tag);
+		return spinner.getSelectedItem().toString();
+	}
+
+	public String getNote(){
+		View view = getView();
+		if (view == null) {
+			return null;
+		}
+		EditText note = (EditText) view.findViewById(R.id.et_MealDetail_Notes);
+		return note.getText().toString();
+	}
+
+	public boolean canSave(){
+		return !carbs.getText().toString().isEmpty() && !glycemia.getText().toString().isEmpty();
+	}
+
+	public String getInsulin() {
+		View view = getView();
+		if (view == null) {
+			return null;
+		}
+		Spinner insulin = (Spinner) view.findViewById(R.id.sp_MealDetail_Insulin);
+		return insulin.getSelectedItem().toString();
 	}
 
 	/**

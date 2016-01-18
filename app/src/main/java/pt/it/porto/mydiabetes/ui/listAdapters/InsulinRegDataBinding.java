@@ -5,7 +5,7 @@ public class InsulinRegDataBinding {
 
 	private int id;
 	private int idUser;
-	private int idBloodGlucose;
+	private int idBloodGlucose=-1;
 	private int idInsulin;
 	private String date;
 	private String time;
