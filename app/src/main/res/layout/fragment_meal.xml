@@ -163,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:width="100dp"
                 android:gravity="center_horizontal"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 android:textSize="24sp"/>
         </LinearLayout>
 
@@ -264,7 +264,7 @@
                     android:layout_gravity="center_horizontal"
                     android:width="100dp"
                     android:gravity="center_horizontal"
-                    android:inputType="numberDecimal"
+                    android:inputType="number"
                     android:textSize="24sp"/>
 
                 <TextView
@@ -353,7 +353,7 @@
                     android:layout_gravity="center_horizontal"
                     android:width="100dp"
                     android:gravity="center_horizontal"
-                    android:inputType="numberDecimal"
+                    android:inputType="number"
                     android:textSize="24sp"/>
 
                 <TextView

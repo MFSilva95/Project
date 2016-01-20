@@ -4,15 +4,15 @@ import java.util.Calendar;
 
 public class InsulinCalculator implements Cloneable {
 
-	private float glycemiaRatio;
-	private float carbsRatio;
-	private float insulinTarget;
-	private float carbs;
-	private float glycemia;
+	private int glycemiaRatio;
+	private int carbsRatio;
+	private int insulinTarget;
+	private int carbs;
+	private int glycemia;
 
 	private float insulinOnBoard = 0.0f;
 
-	public InsulinCalculator(float glycemiaRatio, float carbsRatio) {
+	public InsulinCalculator(int glycemiaRatio, int carbsRatio) {
 		this.glycemiaRatio = glycemiaRatio;
 		this.carbsRatio = carbsRatio;
 	}
@@ -56,7 +56,7 @@ public class InsulinCalculator implements Cloneable {
 		return glycemiaRatio;
 	}
 
-	public void setGlycemiaRatio(float glycemiaRatio) {
+	public void setGlycemiaRatio(int glycemiaRatio) {
 		this.glycemiaRatio = glycemiaRatio;
 	}
 
@@ -64,15 +64,15 @@ public class InsulinCalculator implements Cloneable {
 		return carbsRatio;
 	}
 
-	public void setCarbsRatio(float carbsRatio) {
+	public void setCarbsRatio(int carbsRatio) {
 		this.carbsRatio = carbsRatio;
 	}
 
-	public float getInsulinTarget() {
+	public int getInsulinTarget() {
 		return insulinTarget;
 	}
 
-	public void setGlycemiaTarget(float insulinTarget) {
+	public void setGlycemiaTarget(int insulinTarget) {
 		this.insulinTarget = insulinTarget;
 	}
 
@@ -80,7 +80,7 @@ public class InsulinCalculator implements Cloneable {
 		return carbs;
 	}
 
-	public void setCarbs(float carbs) {
+	public void setCarbs(int carbs) {
 		this.carbs = carbs;
 	}
 
@@ -88,7 +88,7 @@ public class InsulinCalculator implements Cloneable {
 		return glycemia;
 	}
 
-	public void setGlycemia(float glycemia) {
+	public void setGlycemia(int glycemia) {
 		this.glycemia = glycemia;
 	}
 

@@ -137,7 +137,7 @@ public class Meal extends BaseOldActivity {
 		rdb.close();
 		double iRatio = Double.valueOf(obj[3].toString());
 		double cRatio = Double.valueOf(obj[4].toString());
-		insulinCalculator = new InsulinCalculator((float) iRatio, (float) cRatio);
+		insulinCalculator = new InsulinCalculator((int) iRatio, (int) cRatio);
 		setupLasInsulin();
 
 		insulinunits = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
@@ -162,7 +162,7 @@ public class Meal extends BaseOldActivity {
 					insulinCalculator.setGlycemiaTarget(0);
 				} else {
 					try {
-						insulinCalculator.setGlycemiaTarget(Float.parseFloat(s.toString()));
+						insulinCalculator.setGlycemiaTarget(Integer.parseInt(s.toString()));
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}
@@ -187,7 +187,7 @@ public class Meal extends BaseOldActivity {
 					insulinCalculator.setGlycemia(0);
 				} else {
 					try {
-						insulinCalculator.setGlycemia(Float.parseFloat(s.toString()));
+						insulinCalculator.setGlycemia(Integer.parseInt(s.toString()));
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}
@@ -212,7 +212,7 @@ public class Meal extends BaseOldActivity {
 					insulinCalculator.setCarbs(0);
 				} else {
 					try {
-						insulinCalculator.setCarbs(Float.parseFloat(s.toString()));
+						insulinCalculator.setCarbs(Integer.parseInt(s.toString()));
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}

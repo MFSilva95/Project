@@ -264,7 +264,7 @@ public class MealFragment extends Fragment {
 						e.printStackTrace();
 					}
 				}
-				insulinCalculator.setGlycemiaTarget(val);
+				insulinCalculator.setGlycemiaTarget((int) val);
 				setInsulinIntake();
 				if (oldInsulinCalculator != null) {
 					updateIndicator(target, Float.compare(oldInsulinCalculator.getInsulinTarget(), val) != 0);

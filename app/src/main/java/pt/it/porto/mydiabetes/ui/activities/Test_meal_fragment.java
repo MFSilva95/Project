@@ -62,7 +62,7 @@ public class Test_meal_fragment extends Activity implements MealFragment.MealFra
 		rdb.close();
 		double iRatio = Double.valueOf(obj[3].toString());
 		double cRatio = Double.valueOf(obj[4].toString());
-		InsulinCalculator insulinCalculator = new InsulinCalculator((float) iRatio, (float) cRatio);
+		InsulinCalculator insulinCalculator = new InsulinCalculator((int) iRatio, (int) cRatio);
 
 		DB_Read read = new DB_Read(this);
 		int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity();
@@ -77,11 +77,11 @@ public class Test_meal_fragment extends Activity implements MealFragment.MealFra
 		return insulinCalculator;
 	}
 
-	private float getTargetByHour(String time) {
+	private int getTargetByHour(String time) {
 		DB_Read rdb = new DB_Read(this);
 		double d = rdb.Target_GetTargetByTime(time);
 		rdb.close();
-		return (float) d;
+		return (int) d;
 	}
 
 	private String getTagByHour(String time) {
