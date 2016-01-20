@@ -1,6 +1,7 @@
 package pt.it.porto.mydiabetes.ui.fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,8 @@ public class InsulinCalc extends Fragment {
 	private TextView resultTotal;
 	private TextView resultRound;
 	private LinearLayout blockIOB;
+
+	private CalcListener mListener;
 
 	public InsulinCalc() {
 		// Required empty public constructor
@@ -54,15 +57,36 @@ public class InsulinCalc extends Fragment {
 		this.blockIOB = (LinearLayout) view.findViewById(R.id.block_iob);
 
 
-		Bundle args = getArguments();
+//		Bundle args = getArguments();
 
-		if (args != null) {
-			TextView txtView = (TextView) view.findViewById(R.id.txt_correction_carbs);
-			txtView.setText(String.format(txtView.getText().toString(), args.getInt(ARG_FACTOR_CARBS)));
-			txtView = (TextView) view.findViewById(R.id.txt_correction_glycemia);
-			txtView.setText(String.format(txtView.getText().toString(), args.getInt(ARG_FACTOR_GLYCEMIA)));
+//		if (args != null) {
+//			TextView txtView = (TextView) view.findViewById(R.id.txt_correction_carbs);
+//			txtView.setText(String.format(txtView.getText().toString(), args.getInt(ARG_FACTOR_CARBS)));
+//			txtView = (TextView) view.findViewById(R.id.txt_correction_glycemia);
+//			txtView.setText(String.format(txtView.getText().toString(), args.getInt(ARG_FACTOR_GLYCEMIA)));
+//		}
+
+		if(mListener!=null){
+			mListener.setup();
 		}
+
 		return view;
+	}
+
+	@Override
+	public void onAttach(Context context) {
+		super.onAttach(context);
+		if (context instanceof CalcListener) {
+			mListener = (CalcListener) context;
+		} else {
+			throw new RuntimeException(context.toString() + " must implement CalcListener");
+		}
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		mListener = null;
 	}
 
 
@@ -84,5 +108,8 @@ public class InsulinCalc extends Fragment {
 		this.correctionGlycemia.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", correctionGlycemia));
 	}
 
+	public interface CalcListener {
+		void setup();
+	}
 
 }
