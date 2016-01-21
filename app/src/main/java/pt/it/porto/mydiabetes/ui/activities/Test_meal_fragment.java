@@ -148,7 +148,7 @@ public class Test_meal_fragment extends Activity implements MealFragment.MealFra
 
 
 			carb.setId_User(idUser);
-			carb.setCarbsValue((double) insulinCalculator.getCarbs());
+			carb.setCarbsValue( insulinCalculator.getCarbs());
 			carb.setId_Tag(idTag);
 			if (imgUri != null) {
 				carb.setPhotoPath(imgUri.getPath()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
@@ -170,7 +170,7 @@ public class Test_meal_fragment extends Activity implements MealFragment.MealFra
 				GlycemiaDataBinding gly = new GlycemiaDataBinding();
 
 				gly.setIdUser(idUser);
-				gly.setValue((double) insulinCalculator.getGlycemia());
+				gly.setValue( insulinCalculator.getGlycemia());
 				gly.setDate(date);
 				gly.setTime(time);
 				gly.setIdTag(idTag);
@@ -186,8 +186,8 @@ public class Test_meal_fragment extends Activity implements MealFragment.MealFra
 			ins.setIdInsulin(insulinId);
 			ins.setDate(date);
 			ins.setTime(time);
-			ins.setTargetGlycemia((double) insulinCalculator.getInsulinTarget());
-			ins.setInsulinUnits((double) insulinIntake);
+			ins.setTargetGlycemia( insulinCalculator.getInsulinTarget());
+			ins.setInsulinUnits( insulinIntake);
 			ins.setIdTag(idTag);
 
 			reg.Insulin_Save(ins);

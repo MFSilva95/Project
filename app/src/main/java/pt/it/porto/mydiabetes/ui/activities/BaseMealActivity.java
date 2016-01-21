@@ -600,6 +600,10 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 		return note.getText().toString();
 	}
 
+	void setNote(String note) {
+		((EditText) findViewById(R.id.et_MealDetail_Notes)).setText(note);
+	}
+
 	public boolean canSave() {
 		return !carbs.getText().toString().isEmpty() && !glycemia.getText().toString().isEmpty();
 	}
@@ -613,5 +617,18 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	public void setup() {
 		fragmentInsulinCalcs = (InsulinCalc) getFragmentManager().findFragmentById(R.id.fragment_calcs);
 		showCalcs();
+	}
+
+	public void setInsulin(String insulinName, float value) {
+		insulinIntake.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", value));
+
+		Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
+		SpinnerAdapter adapter = spinner.getAdapter();
+		for (int position = 0; position < adapter.getCount(); position++) {
+			if (adapter.getItem(position).equals(insulinName)) {
+				spinner.setSelection(position);
+				return;
+			}
+		}
 	}
 }

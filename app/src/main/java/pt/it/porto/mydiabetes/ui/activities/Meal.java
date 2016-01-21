@@ -417,7 +417,7 @@ public class Meal extends BaseOldActivity {
 
 
 		gly.setIdUser(idUser);
-		gly.setValue(Double.parseDouble(glycemia.getText().toString()));
+		gly.setValue(Integer.parseInt(glycemia.getText().toString()));
 		gly.setDate(data.getText().toString());
 		gly.setTime(hora.getText().toString());
 		gly.setIdTag(idTag);
@@ -457,7 +457,7 @@ public class Meal extends BaseOldActivity {
 
 
 		carb.setId_User(idUser);
-		carb.setCarbsValue(Double.parseDouble(carbs.getText().toString()));
+		carb.setCarbsValue(Integer.parseInt(carbs.getText().toString()));
 		carb.setId_Tag(idTag);
 		carb.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
 		carb.setDate(data.getText().toString());
@@ -514,7 +514,7 @@ public class Meal extends BaseOldActivity {
 			GlycemiaDataBinding gly = new GlycemiaDataBinding();
 
 			gly.setIdUser(idUser);
-			gly.setValue(Double.parseDouble(glycemia.getText().toString()));
+			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
 			gly.setDate(data.getText().toString());
 			gly.setTime(hora.getText().toString());
 			gly.setIdTag(idTag);
@@ -532,8 +532,8 @@ public class Meal extends BaseOldActivity {
 		ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
 		ins.setDate(data.getText().toString());
 		ins.setTime(hora.getText().toString());
-		ins.setTargetGlycemia(Double.parseDouble(target.getText().toString()));
-		ins.setInsulinUnits(Double.parseDouble(insulinunits.getText().toString()));
+		ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
+		ins.setInsulinUnits(Float.parseFloat(insulinunits.getText().toString()));
 		ins.setIdTag(idTag);
 
 

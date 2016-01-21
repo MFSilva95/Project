@@ -67,7 +67,7 @@ public class GlycemiaAdapter extends BaseAdapter {
            data.setText(glycemia.getDate());
            hora.setText(glycemia.getTime());
            value.setTag(_id);
-           value.setText(glycemia.getValue().toString());
+           value.setText(String.valueOf(glycemia.getValue()));
 
 		   DB_Read rdb = new DB_Read(_c);
 		   tag.setText(rdb.Tag_GetById(glycemia.getIdTag()).getName());

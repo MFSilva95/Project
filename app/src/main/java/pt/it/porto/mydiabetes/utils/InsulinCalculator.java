@@ -76,7 +76,7 @@ public class InsulinCalculator implements Cloneable {
 		this.insulinTarget = insulinTarget;
 	}
 
-	public float getCarbs() {
+	public int getCarbs() {
 		return carbs;
 	}
 
@@ -84,7 +84,7 @@ public class InsulinCalculator implements Cloneable {
 		this.carbs = carbs;
 	}
 
-	public float getGlycemia() {
+	public int getGlycemia() {
 		return glycemia;
 	}
 

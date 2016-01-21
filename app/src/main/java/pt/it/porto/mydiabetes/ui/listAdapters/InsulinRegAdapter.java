@@ -69,12 +69,12 @@ public class InsulinRegAdapter extends BaseAdapter {
         Log.d("id da insulina", _id);
         data.setText(insulin_datab.getDate());
         hora.setText(insulin_datab.getTime());
-        ivalue.setText(insulin_datab.getInsulinUnits().toString());
+        ivalue.setText(String.valueOf(insulin_datab.getInsulinUnits()));
         DB_Read rdb = new DB_Read(_c);
         if(insulin_datab.getIdBloodGlucose() != -1){
         	Log.d("if glycemia", "entrou");
         	GlycemiaDataBinding glycemia = rdb.Glycemia_GetById(insulin_datab.getIdBloodGlucose());
-        	gvalue.setText(glycemia.getValue().toString());
+        	gvalue.setText(String.valueOf(glycemia.getValue()));
         	gtag.setVisibility(View.VISIBLE);
         	gvalue.setVisibility(View.VISIBLE);
             gunit.setVisibility(View.VISIBLE);

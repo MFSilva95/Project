@@ -409,7 +409,7 @@ public class InsulinDetail extends Activity {
 			GlycemiaDataBinding gly = new GlycemiaDataBinding();
 
 			gly.setIdUser(idUser);
-			gly.setValue(Double.parseDouble(glycemia.getText().toString()));
+			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
 			gly.setDate(data.getText().toString());
 			gly.setTime(hora.getText().toString());
 			gly.setIdTag(idTag);
@@ -427,8 +427,8 @@ public class InsulinDetail extends Activity {
 		ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
 		ins.setDate(data.getText().toString());
 		ins.setTime(hora.getText().toString());
-		ins.setTargetGlycemia(Double.parseDouble(target.getText().toString()));
-		ins.setInsulinUnits(Double.parseDouble(insulinunits.getText().toString()));
+		ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
+		ins.setInsulinUnits(Float.parseFloat(insulinunits.getText().toString()));
 		ins.setIdTag(idTag);
 
 
@@ -510,7 +510,7 @@ public class InsulinDetail extends Activity {
 			GlycemiaDataBinding gly = new GlycemiaDataBinding();
 
 			gly.setIdUser(idUser);
-			gly.setValue(Double.parseDouble(glycemia.getText().toString()));
+			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
 			gly.setDate(data.getText().toString());
 			gly.setTime(hora.getText().toString());
 			gly.setIdTag(idTag);
@@ -524,7 +524,7 @@ public class InsulinDetail extends Activity {
 			GlycemiaDataBinding gly = new GlycemiaDataBinding();
 			gly.setId(id_BG);
 			gly.setIdUser(idUser);
-			gly.setValue((!glycemia.getText().toString().equals("")) ? Double.parseDouble(glycemia.getText().toString()) : 0);
+			gly.setValue((!glycemia.getText().toString().equals("")) ? Integer.parseInt(glycemia.getText().toString()) : 0);
 			gly.setDate(data.getText().toString());
 			gly.setTime(hora.getText().toString());
 			gly.setIdTag(idTag);
@@ -542,8 +542,8 @@ public class InsulinDetail extends Activity {
 		ins.setIdBloodGlucose((id_BG > 0) ? id_BG : (idglycemia > 0) ? idglycemia : -1);
 		ins.setDate(data.getText().toString());
 		ins.setTime(hora.getText().toString());
-		ins.setTargetGlycemia(Double.parseDouble(target.getText().toString()));
-		ins.setInsulinUnits(Double.parseDouble(insulinunits.getText().toString()));
+		ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
+		ins.setInsulinUnits(Integer.parseInt(insulinunits.getText().toString()));
 		ins.setIdTag(idTag);
 
 

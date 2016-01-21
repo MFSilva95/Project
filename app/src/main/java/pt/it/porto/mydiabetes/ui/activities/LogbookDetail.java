@@ -186,7 +186,7 @@ public class LogbookDetail extends Activity {
         //coloca a photo
         if (ch != null) {
             EditText photopath = (EditText) findViewById(R.id.et_MealDetail_Photo);
-            if (!ch.getPhotoPath().equals("")) {
+            if (ch.hasPhotoPath()) {
                 photopath.setText(ch.getPhotoPath());
                 Log.d("foto path", "foto: " + ch.getPhotoPath());
                 ImageView img = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
@@ -208,13 +208,13 @@ public class LogbookDetail extends Activity {
             tagId = ins.getIdTag();
             String aux = rdb.Tag_GetById(tagId).getName();
             SelectSpinnerItemByValue(TagSpinner, aux);
-            glycemia.setText(bg.getValue().toString());
-            carbs.setText(ch.getCarbsValue().toString());
+            glycemia.setText(String.valueOf(bg.getValue()));
+            carbs.setText(String.valueOf(ch.getCarbsValue()));
             insulinId = ins.getIdInsulin();
             String aux1 = rdb.Insulin_GetById(insulinId).getName();
             SelectSpinnerItemByValue(InsulinSpinner, aux1);
-            target.setText(ins.getTargetGlycemia().toString());
-            insulin.setText(ins.getInsulinUnits().toString());
+            target.setText(String.valueOf(ins.getTargetGlycemia()));
+            insulin.setText(String.valueOf(ins.getInsulinUnits()));
             noteId = ins.getIdNote();
             if (noteId != -1) {
                 note.setText(rdb.Note_GetById(noteId).getNote());
@@ -227,7 +227,7 @@ public class LogbookDetail extends Activity {
             String aux = rdb.Tag_GetById(tagId).getName();
             SelectSpinnerItemByValue(TagSpinner, aux);
             glycemia.setText("");
-            carbs.setText(ch.getCarbsValue().toString());
+            carbs.setText(String.valueOf(ch.getCarbsValue()));
             target.setText("");
             insulin.setText("");
             noteId = ch.getId_Note();
@@ -242,13 +242,13 @@ public class LogbookDetail extends Activity {
             tagId = ins.getIdTag();
             String aux = rdb.Tag_GetById(tagId).getName();
             SelectSpinnerItemByValue(TagSpinner, aux);
-            glycemia.setText(bg.getValue().toString());
+            glycemia.setText(String.valueOf(bg.getValue()));
             carbs.setText("");
             insulinId = ins.getIdInsulin();
             String aux1 = rdb.Insulin_GetById(insulinId).getName();
             SelectSpinnerItemByValue(InsulinSpinner, aux1);
-            target.setText(ins.getTargetGlycemia().toString());
-            insulin.setText(ins.getInsulinUnits().toString());
+            target.setText(String.valueOf(ins.getTargetGlycemia()));
+            insulin.setText(String.valueOf(ins.getInsulinUnits()));
             noteId = ins.getIdNote();
             if (noteId != -1) {
                 note.setText(rdb.Note_GetById(noteId).getNote());
@@ -260,7 +260,7 @@ public class LogbookDetail extends Activity {
             tagId = bg.getIdTag();
             String aux = rdb.Tag_GetById(tagId).getName();
             SelectSpinnerItemByValue(TagSpinner, aux);
-            glycemia.setText(bg.getValue().toString());
+            glycemia.setText(String.valueOf(bg.getValue()));
             carbs.setText("");
             target.setText("");
             insulin.setText("");
@@ -281,8 +281,8 @@ public class LogbookDetail extends Activity {
             insulinId = ins.getIdInsulin();
             String aux1 = rdb.Insulin_GetById(insulinId).getName();
             SelectSpinnerItemByValue(InsulinSpinner, aux1);
-            target.setText(ins.getTargetGlycemia().toString());
-            insulin.setText(ins.getInsulinUnits().toString());
+            target.setText(String.valueOf(ins.getTargetGlycemia()));
+            insulin.setText(String.valueOf(ins.getInsulinUnits()));
             noteId = ins.getIdNote();
             if (noteId != -1) {
                 note.setText(rdb.Note_GetById(noteId).getNote());
@@ -295,12 +295,12 @@ public class LogbookDetail extends Activity {
             String aux = rdb.Tag_GetById(tagId).getName();
             SelectSpinnerItemByValue(TagSpinner, aux);
             glycemia.setText("");
-            carbs.setText(ch.getCarbsValue().toString());
+            carbs.setText(String.valueOf(ch.getCarbsValue()));
             insulinId = ins.getIdInsulin();
             String aux1 = rdb.Insulin_GetById(insulinId).getName();
             SelectSpinnerItemByValue(InsulinSpinner, aux1);
-            target.setText(ins.getTargetGlycemia().toString());
-            insulin.setText(ins.getInsulinUnits().toString());
+            target.setText(String.valueOf(ins.getTargetGlycemia()));
+            insulin.setText(String.valueOf(ins.getInsulinUnits()));
             noteId = ins.getIdNote();
             if (noteId != -1) {
                 note.setText(rdb.Note_GetById(noteId).getNote());
@@ -312,8 +312,8 @@ public class LogbookDetail extends Activity {
             tagId = ch.getId_Tag();
             String aux = rdb.Tag_GetById(tagId).getName();
             SelectSpinnerItemByValue(TagSpinner, aux);
-            glycemia.setText(bg.getValue().toString());
-            carbs.setText(ch.getCarbsValue().toString());
+            glycemia.setText(String.valueOf(bg.getValue()));
+            carbs.setText(String.valueOf(ch.getCarbsValue()));
             target.setText("");
             insulin.setText("");
             noteId = ch.getId_Note();
@@ -599,7 +599,7 @@ public class LogbookDetail extends Activity {
 
 
             ch.setId_User(userId);
-            ch.setCarbsValue(Double.parseDouble(carbs.getText().toString()));
+            ch.setCarbsValue(Integer.parseInt(carbs.getText().toString()));
             DB_Read rdb = new DB_Read(this);
             String tagSelected = TagSpinner.getSelectedItem().toString();
             Log.d("selected Spinner", tagSelected);
@@ -621,7 +621,7 @@ public class LogbookDetail extends Activity {
 
             ch.setId(id_ch);
             ch.setId_User(userId);
-            ch.setCarbsValue(Double.parseDouble(carbs.getText().toString()));
+            ch.setCarbsValue(Integer.parseInt(carbs.getText().toString()));
             DB_Read rdb = new DB_Read(this);
             String tagSelected = TagSpinner.getSelectedItem().toString();
             Log.d("selected Spinner", tagSelected);
@@ -649,7 +649,7 @@ public class LogbookDetail extends Activity {
                 bg.setIdNote(noteId);
             }
             bg.setIdUser(userId);
-            bg.setValue(Double.parseDouble(glycemia.getText().toString()));
+            bg.setValue(Integer.parseInt(glycemia.getText().toString()));
             bg.setDate(d);
             bg.setTime(h);
 
@@ -668,7 +668,7 @@ public class LogbookDetail extends Activity {
                 bg.setIdNote(noteId);
             }
             bg.setIdUser(userId);
-            bg.setValue(Double.parseDouble(glycemia.getText().toString()));
+            bg.setValue(Integer.parseInt(glycemia.getText().toString()));
             bg.setDate(d);
             bg.setTime(h);
 
@@ -721,8 +721,8 @@ public class LogbookDetail extends Activity {
             ins.setIdBloodGlucose(id_bg != -1 ? id_bg : -1);
             ins.setDate(d);
             ins.setTime(h);
-            ins.setTargetGlycemia(Double.parseDouble(target.getText().toString()));
-            ins.setInsulinUnits(Double.parseDouble(insulin.getText().toString()));
+            ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
+            ins.setInsulinUnits(Float.parseFloat(insulin.getText().toString()));
 
             String tagSelected = TagSpinner.getSelectedItem().toString();
             Log.d("selected Spinner", tagSelected);
@@ -762,8 +762,8 @@ public class LogbookDetail extends Activity {
             ins.setIdBloodGlucose(id_bg != -1 ? id_bg : -1);
             ins.setDate(d);
             ins.setTime(h);
-            ins.setTargetGlycemia(Double.parseDouble(target.getText().toString()));
-            ins.setInsulinUnits(Double.parseDouble(insulin.getText().toString()));
+            ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
+            ins.setInsulinUnits(Float.parseFloat(insulin.getText().toString()));
 
             String tagSelected = TagSpinner.getSelectedItem().toString();
             Log.d("selected Spinner", tagSelected);

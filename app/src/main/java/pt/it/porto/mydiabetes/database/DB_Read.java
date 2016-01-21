@@ -246,7 +246,7 @@ public class DB_Read {
 				tmp = new GlycemiaDataBinding();
 				tmp.setId(cursor.getInt(0));
 				tmp.setIdUser(cursor.getInt(1));
-				tmp.setValue(cursor.getDouble(2));
+				tmp.setValue(cursor.getInt(2));
 				String t = cursor.getString(3);
 				tmp.setDate(t.split(" ")[0]);
 				tmp.setTime(t.split(" ")[1]);
@@ -274,7 +274,7 @@ public class DB_Read {
 		
 		g.setId(cursor.getInt(0));
 		g.setIdUser(cursor.getInt(1));
-		g.setValue(cursor.getDouble(2));
+		g.setValue(cursor.getInt(2));
 		String t = cursor.getString(3);
 		g.setDate(t.split(" ")[0]);
 		g.setTime(t.split(" ")[1]);
@@ -346,7 +346,7 @@ public class DB_Read {
 				retVal = Integer.parseInt(cursor.getString(0));
 			} catch (NumberFormatException nfe) {
 				// retVal will get -1
-				Log.e ("Insulin_GetActionTypeByName", "Read a text that was not a number from action"+ nfe);
+				Log.e ("DB_Read", "Insulin_GetActionTypeByName: Read a text that was not a number from action"+ nfe);
 			}
 		}
 		return retVal;
@@ -408,6 +408,27 @@ public class DB_Read {
 		return result;
 	}
 
+	public int[] InsulinReg_GetLastHourAndQuantity(String time){
+		Cursor cursor = myDB.rawQuery("SELECT ins.action, reg.DateTime, strftime('%H',reg.DateTime), strftime('%M',reg.DateTime), reg.Value FROM Reg_Insulin as reg, Insulin as ins WHERE  reg.Id_Insulin=ins.Id And reg.DateTime > DateTime('"+time+"','-5 HOURS') order by 2 DESC", null);
+
+		int[] result = {-1,-1,-1,-1};
+
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+
+
+			result[0]=Integer.parseInt(cursor.getString(0));
+			result[1] = cursor.getInt(2);
+			result[2] = cursor.getInt(3);
+			result[3] = cursor.getInt(4);
+
+		}
+
+
+		cursor.close();
+		return result;
+	}
+
 	public ArrayList<InsulinRegDataBinding> InsulinReg_GetByDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Id_BloodGlucose, Id_Insulin, DateTime, Target_BG, Value, Id_Tag, Id_Note FROM Reg_Insulin WHERE DateTime > '" 
 										+ from + " 00:00:00' AND DateTime < '" 
@@ -427,8 +448,8 @@ public class DB_Read {
 				String t = cursor.getString(4);
 				insulin.setDate(t.split(" ")[0]);
 				insulin.setTime(t.split(" ")[1]);
-				insulin.setTargetGlycemia(cursor.getDouble(5));
-				insulin.setInsulinUnits(cursor.getDouble(6));
+				insulin.setTargetGlycemia(cursor.getInt(5));
+				insulin.setInsulinUnits(cursor.getFloat(6));
 				insulin.setIdTag(cursor.getInt(7));
 				insulin.setIdNote((!cursor.isNull(8)) ? cursor.getInt(8) : -1);
 				allreads.add(insulin);
@@ -504,8 +525,8 @@ public class DB_Read {
 		String t = cursor.getString(4);
 		insulin.setDate(t.split(" ")[0]);
 		insulin.setTime(t.split(" ")[1]);
-		insulin.setTargetGlycemia(cursor.getDouble(5));
-		insulin.setInsulinUnits(cursor.getDouble(6));
+		insulin.setTargetGlycemia(cursor.getInt(5));
+		insulin.setInsulinUnits(cursor.getFloat(6));
 		insulin.setIdTag(cursor.getInt(7));
 		insulin.setIdNote((!cursor.isNull(8)) ? cursor.getInt(8) : -1);
 		/*
@@ -665,7 +686,7 @@ public class DB_Read {
 				tmp = new CarbsDataBinding();
 				tmp.setId(cursor.getInt(0));
 				tmp.setId_User(cursor.getInt(1));
-				tmp.setCarbsValue(cursor.getDouble(2));
+				tmp.setCarbsValue(cursor.getInt(2));
 				tmp.setPhotoPath(cursor.getString(3));
 				tmp.setDate(cursor.getString(4).split(" ")[0]);
 				tmp.setTime(cursor.getString(4).split(" ")[1]);
@@ -692,7 +713,7 @@ public class DB_Read {
 		CarbsDataBinding tmp = new CarbsDataBinding();
 		tmp.setId(cursor.getInt(0));
 		tmp.setId_User(cursor.getInt(1));
-		tmp.setCarbsValue(cursor.getDouble(2));
+		tmp.setCarbsValue(cursor.getInt(2));
 		tmp.setPhotoPath(cursor.getString(3));
 		tmp.setDate(cursor.getString(4).split(" ")[0]);
 		tmp.setTime(cursor.getString(4).split(" ")[1]);
@@ -1203,17 +1224,17 @@ public class DB_Read {
 					bg.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
 
 					ch.setId(cursor.getInt(4));
-					ch.setCarbsValue(cursor.getDouble(5));
+					ch.setCarbsValue(cursor.getInt(5));
 					ch.setPhotoPath(cursor.getString(6));
 					
 					ins.setId(cursor.getInt(7));
 					ins.setIdInsulin(cursor.getInt(8));
 					ins.setIdBloodGlucose(cursor.getInt(9));
-					ins.setTargetGlycemia(cursor.getDouble(10));
-					ins.setInsulinUnits(cursor.getDouble(11));
+					ins.setTargetGlycemia(cursor.getInt(10));
+					ins.setInsulinUnits(cursor.getFloat(11));
 					
 					bg.setId(cursor.getInt(9));
-					bg.setValue(cursor.getDouble(12));
+					bg.setValue(cursor.getInt(12));
 					
 					row.set_bg(bg);
 					row.set_ch(ch);
@@ -1225,7 +1246,7 @@ public class DB_Read {
 					ch.setId_Tag(cursor.getInt(2));
 					ch.setId_Note((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
 					ch.setId(cursor.getInt(4));
-					ch.setCarbsValue(cursor.getDouble(5));
+					ch.setCarbsValue(cursor.getInt(5));
 					ch.setPhotoPath(cursor.getString(6));
 					
 					row.set_bg(null);
@@ -1249,11 +1270,11 @@ public class DB_Read {
 					ins.setId(cursor.getInt(7));
 					ins.setIdInsulin(cursor.getInt(8));
 					ins.setIdBloodGlucose(cursor.getInt(9));
-					ins.setTargetGlycemia(cursor.getDouble(10));
-					ins.setInsulinUnits(cursor.getDouble(11));
+					ins.setTargetGlycemia(cursor.getInt(10));
+					ins.setInsulinUnits(cursor.getFloat(11));
 					
 					bg.setId(cursor.getInt(9));
-					bg.setValue(cursor.getDouble(12));
+					bg.setValue(cursor.getInt(12));
 					
 					row.set_bg(bg);
 					row.set_ch(null);
@@ -1265,7 +1286,7 @@ public class DB_Read {
 					bg.setIdTag(cursor.getInt(2));
 					bg.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
 					bg.setId(cursor.getInt(9));
-					bg.setValue(cursor.getDouble(12));
+					bg.setValue(cursor.getInt(12));
 					
 					row.set_bg(bg);
 					row.set_ch(null);
@@ -1279,8 +1300,8 @@ public class DB_Read {
 					ins.setId(cursor.getInt(7));
 					ins.setIdInsulin(cursor.getInt(8));
 					ins.setIdBloodGlucose(cursor.getInt(9));
-					ins.setTargetGlycemia(cursor.getDouble(10));
-					ins.setInsulinUnits(cursor.getDouble(11));
+					ins.setTargetGlycemia(cursor.getInt(10));
+					ins.setInsulinUnits(cursor.getFloat(11));
 					
 					row.set_bg(null);
 					row.set_ch(null);
@@ -1294,8 +1315,8 @@ public class DB_Read {
 					ins.setId(cursor.getInt(7));
 					ins.setIdInsulin(cursor.getInt(8));
 					ins.setIdBloodGlucose(cursor.getInt(9));
-					ins.setTargetGlycemia(cursor.getDouble(10));
-					ins.setInsulinUnits(cursor.getDouble(11));
+					ins.setTargetGlycemia(cursor.getInt(10));
+					ins.setInsulinUnits(cursor.getFloat(11));
 
 					ch.setDate(t.split(" ")[0]);
 					ch.setTime(t.split(" ")[1]);
@@ -1303,7 +1324,7 @@ public class DB_Read {
 					ch.setId_Tag(cursor.getInt(2));
 					ch.setId_Note((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
 					ch.setId(cursor.getInt(4));
-					ch.setCarbsValue(cursor.getDouble(5));
+					ch.setCarbsValue(cursor.getInt(5));
 					ch.setPhotoPath(cursor.getString(6));
 
 					row.set_bg(null);
@@ -1316,7 +1337,7 @@ public class DB_Read {
 					ch.setId_Tag(cursor.getInt(2));
 					ch.setId_Note((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
 					ch.setId(cursor.getInt(4));
-					ch.setCarbsValue(cursor.getDouble(5));
+					ch.setCarbsValue(cursor.getInt(5));
 					ch.setPhotoPath(cursor.getString(6));
 
 					bg.setDate(t.split(" ")[0]);
@@ -1325,7 +1346,7 @@ public class DB_Read {
 					bg.setIdTag(cursor.getInt(2));
 					bg.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
 					bg.setId(cursor.getInt(9));
-					bg.setValue(cursor.getDouble(12));
+					bg.setValue(cursor.getInt(12));
 
 					row.set_bg(bg);
 					row.set_ch(ch);
