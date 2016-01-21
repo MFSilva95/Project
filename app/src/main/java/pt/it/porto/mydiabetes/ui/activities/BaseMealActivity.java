@@ -525,13 +525,20 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 		}
 	}
 
-	private void setInsulinIntake() {
+	void setInsulinIntake() {
+		if(!shouldSetInsulin()){
+			return;
+		}
 		if (expandInsulinCalcsAuto || isFragmentShowing()) {
 			showCalcs();
 		}
 
 		float insulin = insulinCalculator.getInsulinTotal(true, true);
 		insulinIntake.setText(String.valueOf(insulin > 0 ? insulin : 0));
+	}
+
+	boolean shouldSetInsulin() {
+		return true;
 	}
 
 	private boolean isFragmentShowing() {

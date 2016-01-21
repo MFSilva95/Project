@@ -239,7 +239,7 @@ public class LogbookAdapter extends BaseAdapter {
           {
               @Override
               public void onClick(final View v) {
-                  Intent intent = new Intent(v.getContext(), LogbookDetail.class);
+                  Intent intent = new Intent(v.getContext(), DetailLogbookActivity.class);
                   Bundle args = new Bundle();
                   args.putString("ch", id_ch); //ch id
                   args.putString("ins", id_ins); //ins id
