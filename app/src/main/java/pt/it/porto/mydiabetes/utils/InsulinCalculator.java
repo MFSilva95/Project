@@ -45,7 +45,11 @@ public class InsulinCalculator implements Cloneable {
 		Calendar currentDateTime = Calendar.getInstance();
 		int currentTime = currentDateTime.get(Calendar.HOUR_OF_DAY) * 60 + currentDateTime.get(Calendar.MINUTE);
 		int minuteDiff = currentTime - minute;
-		insulinOnBoard = (float) (dose - dose * ((int) (minuteDiff / 30) * 0.1));
+		if (minuteDiff < 0) {
+			insulinOnBoard = 0;
+		} else {
+			insulinOnBoard = (float) (dose - dose * (minuteDiff / 30 * 0.1));
+		}
 	}
 
 	public float getInsulinOnBoard() {
