@@ -164,6 +164,7 @@
                 android:width="100dp"
                 android:gravity="center_horizontal"
                 android:inputType="number"
+                android:maxLength="3"
                 android:textSize="24sp"/>
         </LinearLayout>
 
@@ -265,6 +266,7 @@
                     android:width="100dp"
                     android:gravity="center_horizontal"
                     android:inputType="number"
+                    android:maxLength="3"
                     android:textSize="24sp"/>
 
                 <TextView
@@ -354,6 +356,7 @@
                     android:width="100dp"
                     android:gravity="center_horizontal"
                     android:inputType="number"
+                    android:maxLength="4"
                     android:textSize="24sp"/>
 
                 <TextView
@@ -386,6 +389,7 @@
                     android:width="100dp"
                     android:gravity="center_horizontal"
                     android:inputType="numberDecimal"
+                    android:maxLength="4"
                     android:textSize="24sp"/>
 
                 <TextView
@@ -435,11 +439,11 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_gravity="center"
-                        android:gravity="center"
-                        android:textOn=""
-                        android:textOff=""
                         android:background="@drawable/ic_bt_toggle_pointing"
-                        android:drawableTop="@android:drawable/ic_menu_info_details"/>
+                        android:drawableTop="@android:drawable/ic_menu_info_details"
+                        android:gravity="center"
+                        android:textOff=""
+                        android:textOn=""/>
                 </FrameLayout>
             </LinearLayout>
         </FrameLayout>
