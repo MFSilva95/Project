@@ -65,7 +65,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	private boolean showAddGlycemiaTarget;
 	private InsulinCalc fragmentInsulinCalcs;
 	private boolean expandInsulinCalcsAuto = false;
-	private InsulinCalculator insulinCalculator = null;
+	protected InsulinCalculator insulinCalculator = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

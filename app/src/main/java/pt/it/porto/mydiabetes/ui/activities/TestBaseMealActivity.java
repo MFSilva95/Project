@@ -127,7 +127,7 @@ public class TestBaseMealActivity extends BaseMealActivity {
 
 
 		carb.setId_User(idUser);
-		carb.setCarbsValue(getInsulinCalculator().getCarbs());
+		carb.setCarbsValue(insulinCalculator.getCarbs());
 		carb.setId_Tag(idTag);
 		carb.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
 		carb.setDate(getDate());
