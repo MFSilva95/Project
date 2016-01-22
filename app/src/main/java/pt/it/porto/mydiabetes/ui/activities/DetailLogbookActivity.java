@@ -26,10 +26,14 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	public static final String ARG_INSULIN = "ARG_INSULIN";
 	public static final String ARG_BLOOD_GLUCOSE = "ARG_BLOOD_GLUCOSE";
 
+	public static final String SAVE_SHOWING_ERROR = "SAVE_SHOWING_ERROR";
+	public static final String SAVE_AUTO_UPDATE = "SAVE_AUTO_UPDATE";
+
+	boolean showingError = true;
+	boolean autoUpdate = false;
 	private GlycemiaDataBinding glycemiaData;
 	private CarbsDataBinding carbsData;
 	private InsulinRegDataBinding insulinData;
-
 	private InsulinCalculator insulinCalculator;
 	private int noteId;
 	private String date = "";
@@ -98,6 +102,11 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		}
 		super.onCreate(savedInstanceState);
 
+		// set date
+		fillDateHour(date, time);
+		insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
+		setupInsulinCalculator();
+
 		// set insulin
 		if (insulinData != null) {
 			DB_Read rdb = new DB_Read(this);
@@ -107,8 +116,6 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		}
 
 		// set note
-
-
 		if (noteId != -1) {
 			DB_Read db_read = new DB_Read(this);
 			String note = db_read.Note_GetById(noteId).getNote();
@@ -116,6 +123,24 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			setNote(note);
 		}
 
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putBoolean(SAVE_AUTO_UPDATE, autoUpdate);
+		outState.putBoolean(SAVE_SHOWING_ERROR, showingError);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		if (savedInstanceState != null && savedInstanceState.containsKey(SAVE_AUTO_UPDATE)) {
+			autoUpdate = savedInstanceState.getBoolean(SAVE_AUTO_UPDATE);
+		}
+		if (savedInstanceState != null && savedInstanceState.containsKey(SAVE_SHOWING_ERROR)) {
+			showingError = savedInstanceState.getBoolean(SAVE_SHOWING_ERROR);
+		}
 	}
 
 	@Override
@@ -158,7 +183,12 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	@Override
 	protected void glycemiaTargetChanged(EditText view, String text) {
 		int newVal = !text.isEmpty() ? Integer.parseInt(text) : 0;
-		boolean changed = insulinData.getTargetGlycemia() != newVal;
+		boolean changed;
+		if (insulinData != null) {
+			changed = insulinData.getTargetGlycemia() != newVal;
+		} else {
+			changed = newVal != 0;
+		}
 		updateIndicator(view, changed);
 		setInconsistentInsulin(changed);
 	}
@@ -166,7 +196,12 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	@Override
 	protected void glycemiaChanged(EditText view, String text) {
 		int newVal = !text.isEmpty() ? Integer.parseInt(text) : 0;
-		boolean changed = glycemiaData.getValue() != newVal;
+		boolean changed;
+		if (glycemiaData != null) {
+			changed = glycemiaData.getValue() != newVal;
+		} else {
+			changed = newVal != 0;
+		}
 		updateIndicator(view, changed);
 		setInconsistentInsulin(changed);
 	}
@@ -174,7 +209,12 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	@Override
 	protected void carbsChanged(EditText view, String text) {
 		int newVal = !text.isEmpty() ? Integer.parseInt(text) : 0;
-		boolean changed = carbsData.getCarbsValue() != newVal;
+		boolean changed;
+		if (carbsData != null) {
+			changed = carbsData.getCarbsValue() != newVal;
+		} else {
+			changed = newVal != 0;
+		}
 		updateIndicator(view, changed);
 		setInconsistentInsulin(changed);
 	}
@@ -182,7 +222,12 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	@Override
 	protected void insulinIntakeChanged(EditText view, String text) {
 		float newVal = !text.isEmpty() ? Float.parseFloat(text) : 0;
-		boolean changed = Float.compare(insulinData.getInsulinUnits(), newVal) != 0;
+		boolean changed;
+		if (insulinData != null) {
+			changed = Float.compare(insulinData.getInsulinUnits(), newVal) != 0;
+		} else {
+			changed = newVal != 0;
+		}
 		updateIndicator(view, changed);
 		setInconsistentInsulin(changed);
 	}
@@ -210,21 +255,30 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		}
 	}
 
-	boolean showingError=true;
-
-	private void setInconsistentInsulin(boolean inconsistent) {
-		ToggleButton button = (ToggleButton) findViewById(R.id.bt_insulin_calc_info);
-		button.setCompoundDrawables(null, null, null, null);
-		ImageSpan imageSpan;
-		showingError=inconsistent;
+	private void setInconsistentInsulin(boolean changed) {
+		if (autoUpdate || !changed) { // if already set to auto update calc, just udpate it
+			return;
+		}
+		boolean inconsistent = Float.compare(getInsulinCalculator().getInsulinTotal(true, true), insulinData.getInsulinUnits()) != 0;
+		showingError = inconsistent;
 		if (inconsistent) {
-			imageSpan = new ImageSpan(this, R.drawable.ic_report_grey_400_24dp);
+			hideCalcs();
+			setToggleIconImage(R.drawable.ic_report_grey_400_24dp);
 //			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setCompoundDrawables(null, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_report_problem_grey_500_18dp, null), null, null);
+			setInsulin(null, insulinData.getInsulinUnits());
+			findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.edit_text_holo_dark_error);
 		} else {
-			imageSpan = new ImageSpan(this, android.R.drawable.ic_menu_info_details);
+			setToggleIconImage(android.R.drawable.ic_menu_info_details);
 //			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setCompoundDrawables(null, ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_menu_info_details, null), null, null);
 //			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setButtonDrawable(android.R.drawable.ic_menu_info_details);
+			findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.default_edit_text_holo_dark);
 		}
+	}
+
+	void setToggleIconImage(int resource) {
+		ToggleButton button = (ToggleButton) findViewById(R.id.bt_insulin_calc_info);
+		button.setCompoundDrawables(null, null, null, null);
+		ImageSpan imageSpan = new ImageSpan(this, resource);
 		SpannableString content = new SpannableString("X");
 		content.setSpan(imageSpan, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 		button.setText(content);
@@ -233,8 +287,22 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	}
 
 	@Override
+	public void showCalcs() {
+		if (showingError) {
+			showingError = false;
+			autoUpdate = true;
+			setInsulinIntake();
+			findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.default_edit_text_holo_dark);
+			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setChecked(false);
+			setToggleIconImage(android.R.drawable.ic_menu_info_details);
+		} else {
+			super.showCalcs();
+		}
+	}
+
+	@Override
 	boolean shouldSetInsulin() {
-		return !showingError;
+		return !showingError || autoUpdate;
 	}
 
 	@Override
