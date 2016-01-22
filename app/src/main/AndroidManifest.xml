@@ -242,7 +242,7 @@
                 android:value=".ui.activities.Preferences"/>
         </activity>
         <activity
-            android:name=".ui.activities.Meal"
+            android:name=".ui.activities.TestBaseMealActivity"
             android:label="@string/title_activity_meal"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
@@ -297,7 +297,7 @@
                 android:value=".ui.activities.Home"/>
         </activity>
         <activity
-            android:name=".ui.activities.LogbookDetail"
+            android:name=".ui.activities.DetailLogbookActivity"
             android:label="@string/title_activity_logbook_detail"
             android:parentActivityName=".ui.activities.Logbook">
             <meta-data
@@ -335,8 +335,6 @@
             android:label="@string/title_activity_welcome"
             android:theme="@style/AppNewTheme"/>
 
-        <activity
-            android:name=".ui.activities.DetailLogbookActivity"/>
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="7601388bb7cc37077c533c82536ee42dbc14d1a0"/>

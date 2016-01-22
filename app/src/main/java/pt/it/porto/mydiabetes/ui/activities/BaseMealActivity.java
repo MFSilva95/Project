@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -18,6 +19,7 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -69,6 +71,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_meal);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 
 		insulinIntake = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
 		target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);
@@ -79,7 +82,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 
 
 		fillTagSpinner();
-		fillDateHour();
+		fillDateHour(null, null);
 		fillInsulinSpinner();
 		setupClickListeners();
 		setupMealImage();
@@ -345,24 +348,24 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 		}
 	}
 
-	private void fillDateHour() {
+	void fillDateHour(String date, String time) {
 		Calendar c = Calendar.getInstance();
-		date.setText(DatePickerFragment.getFormatedDate(c));
-		date.setOnClickListener(new View.OnClickListener() {
+		this.date.setText(date == null ? DatePickerFragment.getFormatedDate(c) : date);
+		this.date.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showDatePickerDialog(v);
 			}
 		});
 
-		time.setText(TimePickerFragment.getFormatedDate(c));
-		time.setOnClickListener(new View.OnClickListener() {
+		this.time.setText(time == null ? TimePickerFragment.getFormatedDate(c) : time);
+		this.time.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showTimePickerDialog(v);
 			}
 		});
-		setPhaseOfDayByValue(TimePickerFragment.getFormatedDate(c));
+		setPhaseOfDayByValue(time == null ? TimePickerFragment.getFormatedDate(c) : time);
 	}
 
 	private void fillTagSpinner() {
@@ -526,7 +529,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	}
 
 	void setInsulinIntake() {
-		if(!shouldSetInsulin()){
+		if (!shouldSetInsulin()) {
 			return;
 		}
 		if (expandInsulinCalcsAuto || isFragmentShowing()) {
@@ -612,7 +615,17 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	}
 
 	public boolean canSave() {
-		return !carbs.getText().toString().isEmpty() && !glycemia.getText().toString().isEmpty();
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (carbs.getText().toString().isEmpty()) {
+			carbs.requestFocus();
+			imm.showSoftInput(carbs, InputMethodManager.SHOW_IMPLICIT);
+		}else if(glycemia.getText().toString().isEmpty()){
+			glycemia.requestFocus();
+			imm.showSoftInput(glycemia, InputMethodManager.SHOW_IMPLICIT);
+		}else {
+			return true;
+		}
+		return false;
 	}
 
 	public String getInsulin() {
@@ -629,12 +642,14 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	public void setInsulin(String insulinName, float value) {
 		insulinIntake.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", value));
 
-		Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
-		SpinnerAdapter adapter = spinner.getAdapter();
-		for (int position = 0; position < adapter.getCount(); position++) {
-			if (adapter.getItem(position).equals(insulinName)) {
-				spinner.setSelection(position);
-				return;
+		if (insulinName != null) {
+			Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
+			SpinnerAdapter adapter = spinner.getAdapter();
+			for (int position = 0; position < adapter.getCount(); position++) {
+				if (adapter.getItem(position).equals(insulinName)) {
+					spinner.setSelection(position);
+					return;
+				}
 			}
 		}
 	}

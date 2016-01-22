@@ -120,7 +120,7 @@ public class Home extends BaseOldActivity {
 	}
 
 	public void Call_Meal(View view) {
-		Intent intent = new Intent(this, Meal.class);
+		Intent intent = new Intent(this, TestBaseMealActivity.class);
 		startActivity(intent);
 	}
 

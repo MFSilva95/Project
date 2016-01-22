@@ -174,7 +174,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 					}).show();
 			return true;
 		} else if (item.getItemId() == R.id.menuItem_LogbookDetail_EditSave) {
-
+			// TODO support edits in logbook detail
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
