@@ -7,9 +7,12 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import java.util.Calendar;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
@@ -71,6 +74,25 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		rdb.close();
 		setGlycemiaTarget((int) d);
 
+		// load correct insulin for Insulin On Board
+		Calendar time = TimePickerFragment.getCalendar(text);
+		if(time!=null) {
+			insulinCalculator.setTime(time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
+		}
+		setupInsulinOnBoard(text, insulinCalculator);
+	}
+
+	private void setupInsulinOnBoard(String time, InsulinCalculator insulinCalculator) {
+
+		DB_Read read = new DB_Read(this);
+		int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity(time);
+		read.close();
+
+		int minuteOriginal = lastInsulin[1] * 60 + lastInsulin[2];
+		int insulinType = lastInsulin[0];
+		int insulinDose = lastInsulin[3];
+
+		insulinCalculator.setLastInsulin(insulinDose, minuteOriginal, insulinType);
 	}
 
 	@Override
@@ -87,15 +109,7 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		double cRatio = Double.valueOf(obj[4].toString());
 		InsulinCalculator insulinCalculator = new InsulinCalculator((int) iRatio, (int) cRatio);
 
-		DB_Read read = new DB_Read(this);
-		int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity();
-		read.close();
-
-		int minuteOriginal = lastInsulin[1] * 60 + lastInsulin[2];
-		int insulinType = lastInsulin[0];
-		int insulinDose = lastInsulin[3];
-
-		insulinCalculator.setLastInsulin(insulinDose, minuteOriginal, insulinType);
+		setupInsulinOnBoard("now", insulinCalculator);
 
 		return insulinCalculator;
 	}

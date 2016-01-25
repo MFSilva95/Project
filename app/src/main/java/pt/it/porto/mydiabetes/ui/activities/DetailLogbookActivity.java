@@ -15,9 +15,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.util.Calendar;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
@@ -91,7 +94,10 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			} else if (glycemiaData != null) {
 				time = glycemiaData.getTime();
 			}
-
+			Calendar timeCalendar = TimePickerFragment.getCalendar(time);
+			if (timeCalendar != null) {
+				insulinCalculator.setTime(timeCalendar.get(Calendar.HOUR_OF_DAY), timeCalendar.get(Calendar.MINUTE));
+			}
 			DB_Read read = new DB_Read(this);
 			int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity(time);
 			read.close();

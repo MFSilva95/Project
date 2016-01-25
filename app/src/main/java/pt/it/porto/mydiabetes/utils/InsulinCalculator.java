@@ -10,11 +10,16 @@ public class InsulinCalculator implements Cloneable {
 	private int carbs;
 	private int glycemia;
 
+	private int time; // time of intake in minutes
+
 	private float insulinOnBoard = 0.0f;
+
 
 	public InsulinCalculator(int glycemiaRatio, int carbsRatio) {
 		this.glycemiaRatio = glycemiaRatio;
 		this.carbsRatio = carbsRatio;
+		Calendar currentDateTime = Calendar.getInstance();
+		time = currentDateTime.get(Calendar.HOUR_OF_DAY) * 60 + currentDateTime.get(Calendar.MINUTE);
 	}
 
 	public float getInsulinTotal(boolean withIOB, boolean round) {
@@ -39,16 +44,18 @@ public class InsulinCalculator implements Cloneable {
 	}
 
 	public void setLastInsulin(int dose, int minute, int type) {
+		insulinOnBoard=0;
 		if (type != 0) {
 			return;
 		}
-		Calendar currentDateTime = Calendar.getInstance();
-		int currentTime = currentDateTime.get(Calendar.HOUR_OF_DAY) * 60 + currentDateTime.get(Calendar.MINUTE);
-		int minuteDiff = currentTime - minute;
+		int minuteDiff = time - minute;
 		if (minuteDiff < 0) {
 			insulinOnBoard = 0;
 		} else {
 			insulinOnBoard = (float) (dose - dose * (minuteDiff / 30 * 0.1));
+			if(insulinOnBoard<0){
+				insulinOnBoard=0;
+			}
 		}
 	}
 
@@ -95,6 +102,15 @@ public class InsulinCalculator implements Cloneable {
 	public void setGlycemia(int glycemia) {
 		this.glycemia = glycemia;
 	}
+
+	public void setTime(int time) {
+		this.time = time;
+	}
+
+	public void setTime(int hour, int minute) {
+		this.time = hour*60+minute;
+	}
+
 
 	@Override
 	public InsulinCalculator clone() {
