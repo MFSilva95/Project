@@ -72,6 +72,9 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 		if (item != null) {
 			item.setText(timeString);
 		}
+		if(listener!=null){
+			listener.onTimeSet(timeString);
+		}
 		/*
 		item.setText(new StringBuilder()
 		        // Month is 0 based so add 1
@@ -105,6 +108,16 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 
 	public static String getFormatedDate(Calendar calendar) {
 		return timeFormat.format(calendar.getTime());
+	}
+
+	TimePickerChangeListener listener;
+
+	public void setListener(TimePickerChangeListener listener) {
+		this.listener = listener;
+	}
+
+	public interface TimePickerChangeListener{
+		void onTimeSet(String time);
 	}
 }
 

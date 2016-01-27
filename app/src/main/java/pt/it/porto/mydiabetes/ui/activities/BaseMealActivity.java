@@ -490,6 +490,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 				if (fragmentInsulinCalcs != null) {
 					showCalcs();
 				}
+				setInsulinIntake();
 			}
 		});
 	}

@@ -3,24 +3,30 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,18 +37,34 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
+import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc;
 import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 
-public class InsulinDetail extends Activity {
+public class InsulinDetail extends Activity implements InsulinCalc.CalcListener {
 
 	int id_BG = 0;
 	int idNote = 0;
 	int idIns = 0;
 	ArrayList<String> allInsulins;
+
+	private InsulinCalculator insulinCalculator = null;
+	private InsulinCalc fragmentInsulinCalcs;
+	private EditText insulinIntake;
+
+	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
+		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
+		for (int position = 0; position < adapter.getCount(); position++) {
+			if (adapter.getItem(position).equals(value)) {
+				spnr.setSelection(position);
+				return;
+			}
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +76,10 @@ public class InsulinDetail extends Activity {
 			ShowDialogAddInsulin();
 		}
 		read.close();
+
+
+		insulinCalculator = new InsulinCalculator(this);
+		insulinIntake = (EditText) findViewById(R.id.et_InsulinDetail_InsulinUnits);
 
 
 		getActionBar();
@@ -76,8 +102,12 @@ public class InsulinDetail extends Activity {
 			EditText data = (EditText) findViewById(R.id.et_InsulinDetail_Data);
 			data.setText(toFill.getDate());
 			hora.setText(toFill.getTime());
+			insulinCalculator.setTime(this, toFill.getTime());
+
 			EditText target = (EditText) findViewById(R.id.et_InsulinDetail_TargetGlycemia);
 			target.setText(String.valueOf(toFill.getTargetGlycemia()));
+			insulinCalculator.setGlycemiaTarget(toFill.getTargetGlycemia());
+
 			EditText insulinunits = (EditText) findViewById(R.id.et_InsulinDetail_InsulinUnits);
 			insulinunits.setText(String.valueOf(toFill.getInsulinUnits()));
 			EditText note = (EditText) findViewById(R.id.et_InsulinDetail_Notes);
@@ -89,6 +119,7 @@ public class InsulinDetail extends Activity {
 				id_BG = toFill.getIdBloodGlucose();
 				GlycemiaDataBinding g = rdb.Glycemia_GetById(id_BG);
 				glycemia.setText(String.valueOf(g.getValue()));
+				insulinCalculator.setGlycemia(g.getValue());
 			}
 
 			if (toFill.getIdNote() != -1) {
@@ -98,52 +129,36 @@ public class InsulinDetail extends Activity {
 				idNote = n.getId();
 			}
 
-			hora.addTextChangedListener(new TextWatcher() {
-				@Override
-				public void onTextChanged(CharSequence s, int start, int before, int count) {
-					SetTagByTime();
-				}
-
-				@Override
-				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-				}
-
-				@Override
-				public void afterTextChanged(Editable s) {
-				}
-			});
-
 			rdb.close();
 		} else {
 			FillDateHour();
-			SetTargetByHour();
-			SetTagByTime();
+			setTargetByHour();
+			setTagByTime();
 
 
-			//Get id of user 
+			//Get id of user
 			DB_Read rdb = new DB_Read(this);
 			Object[] obj = rdb.MyData_Read();
 			final double iRatio = Double.valueOf(obj[3].toString());
 			rdb.close();
 
-			final EditText insulinunits = (EditText) findViewById(R.id.et_InsulinDetail_InsulinUnits);
-			final EditText target = (EditText) findViewById(R.id.et_InsulinDetail_TargetGlycemia);
-			final EditText glycemia = (EditText) findViewById(R.id.et_InsulinDetail_Glycemia);
+			EditText target = (EditText) findViewById(R.id.et_InsulinDetail_TargetGlycemia);
+			EditText glycemia = (EditText) findViewById(R.id.et_InsulinDetail_Glycemia);
 
 			target.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
-					if (!target.getText().toString().equals("") && !glycemia.getText().toString().equals("")) {
-						Double gli = Double.parseDouble(glycemia.getText().toString());
-						Double tar = Double.parseDouble(target.getText().toString());
-						Double result = (gli - tar) / iRatio;
-						result = 0.5 * Math.round(result / 0.5);
-						if (result < 0) {
-							result = 0.0;
+					String text = s.toString();
+					int val = 0;
+					if (!text.isEmpty()) {
+						try {
+							val = Integer.parseInt(s.toString());
+						} catch (NumberFormatException e) {
+							e.printStackTrace();
 						}
-						Log.d("resultado", result.toString());
-						insulinunits.setText(String.valueOf(result));
 					}
+					insulinCalculator.setGlycemiaTarget(val);
+					setInsulinIntake();
 				}
 
 				@Override
@@ -159,17 +174,19 @@ public class InsulinDetail extends Activity {
 			glycemia.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
-					if (!target.getText().toString().equals("") && !glycemia.getText().toString().equals("")) {
-						Double gli = Double.parseDouble(glycemia.getText().toString());
-						Double tar = Double.parseDouble(target.getText().toString());
-						Double result = (gli - tar) / iRatio;
-						result = 0.5 * Math.round(result / 0.5);
-						if (result < 0) {
-							result = 0.0;
+					String text = s.toString();
+					int val = 0;
+					if (text.isEmpty()) {
+						val = 0;
+					} else {
+						try {
+							val = Integer.parseInt(s.toString());
+						} catch (NumberFormatException e) {
+							e.printStackTrace();
 						}
-						Log.d("resultado", result.toString());
-						insulinunits.setText(String.valueOf(result));
 					}
+					insulinCalculator.setGlycemia(val);
+					setInsulinIntake();
 				}
 
 				@Override
@@ -185,8 +202,8 @@ public class InsulinDetail extends Activity {
 			hora.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
-					SetTargetByHour();
-					SetTagByTime();
+					setTargetByHour();
+					setTagByTime();
 				}
 
 				@Override
@@ -199,9 +216,16 @@ public class InsulinDetail extends Activity {
 			});
 		}
 
-
 	}
 
+	void setInsulinIntake() {
+		if (fragmentInsulinCalcs != null) {
+			showCalcs();
+		}
+
+		float insulin = insulinCalculator.getInsulinTotal(true, true);
+		insulinIntake.setText(String.valueOf(insulin > 0 ? insulin : 0));
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -247,6 +271,17 @@ public class InsulinDetail extends Activity {
 	public void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_InsulinDetail_Hora,
 				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+		((TimePickerFragment) newFragment).setListener(new TimePickerFragment.TimePickerChangeListener() {
+			@Override
+			public void onTimeSet(String time) {
+				setTargetByHour();
+				setTagByTime();
+				Calendar calendar = TimePickerFragment.getCalendar(time);
+				if (calendar != null) {
+					insulinCalculator.setTime(getApplicationContext(), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+				}
+			}
+		});
 		newFragment.show(getFragmentManager(), "timePicker");
 	}
 
@@ -293,20 +328,26 @@ public class InsulinDetail extends Activity {
 
 		EditText hour = (EditText) findViewById(R.id.et_InsulinDetail_Hora);
 		hour.setText(TimePickerFragment.getFormatedDate(calendar));
+
+		insulinCalculator.setTime(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
 	}
 
-	public void SetTargetByHour() {
+	public void setTargetByHour() {
 		EditText target = (EditText) findViewById(R.id.et_InsulinDetail_TargetGlycemia);
 		EditText hora = (EditText) findViewById(R.id.et_InsulinDetail_Hora);
 		DB_Read rdb = new DB_Read(this);
 		double d = rdb.Target_GetTargetByTime(hora.getText().toString());
 		if (d != 0) {
-			target.setText(String.valueOf(d));
+			findViewById(R.id.addTargetObjective).setVisibility(View.GONE);
+			target.setText(String.valueOf((int) d));
+			insulinCalculator.setGlycemiaTarget((int) d);
+		} else {
+			findViewById(R.id.addTargetObjective).setVisibility(View.VISIBLE);
 		}
 		rdb.close();
 	}
 
-	public void SetTagByTime() {
+	public void setTagByTime() {
 		Spinner tagSpinner = (Spinner) findViewById(R.id.sp_InsulinDetail_Tag);
 		EditText hora = (EditText) findViewById(R.id.et_InsulinDetail_Hora);
 		DB_Read rdb = new DB_Read(this);
@@ -350,6 +391,89 @@ public class InsulinDetail extends Activity {
 	}
 
 
+	public void addGlycemiaObjective(View view) {
+		Intent intent = new Intent(this, TargetBG_detail.class);
+		String goal = ((EditText) findViewById(R.id.et_InsulinDetail_TargetGlycemia)).getText().toString();
+		if (!TextUtils.isEmpty(goal)) {
+			float target = Float.parseFloat(goal);
+			Bundle bundle = new Bundle();
+			bundle.putFloat(TargetBG_detail.BUNDLE_GOAL, target);
+			intent.putExtras(bundle);
+		}
+		startActivity(intent);
+	}
+
+	public void toggleInsulinCalcDetails(View view) {
+		if (((ToggleButton) view).isChecked()) {
+			showCalcs();
+		} else {
+			hideCalcs();
+		}
+	}
+
+	public void showCalcs() {
+		if (fragmentInsulinCalcs == null) {
+			FragmentManager fragmentManager = getFragmentManager();
+			Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_calcs);
+			if (fragment != null) {
+				fragmentInsulinCalcs = (InsulinCalc) fragment;
+			} else {
+				fragmentInsulinCalcs = InsulinCalc.newInstance((int) insulinCalculator.getGlycemiaRatio(), (int) insulinCalculator.getCarbsRatio());
+				fragmentManager.beginTransaction()
+						.add(R.id.fragment_calcs, fragmentInsulinCalcs)
+						.commit();
+				fragmentManager.executePendingTransactions();
+
+				ScaleAnimation animation = new ScaleAnimation(1, 1, 0, 1, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
+				animation.setDuration(700);
+				findViewById(R.id.fragment_calcs).startAnimation(animation);
+				((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setChecked(true);
+			}
+		}
+
+		fragmentInsulinCalcs.setCorrectionGlycemia(insulinCalculator.getInsulinGlycemia());
+		fragmentInsulinCalcs.setCorrectionCarbs(insulinCalculator.getInsulinCarbs());
+		fragmentInsulinCalcs.setResult(insulinCalculator.getInsulinTotal(true), insulinCalculator.getInsulinTotal(true, true));
+		fragmentInsulinCalcs.setInsulinOnBoard(insulinCalculator.getInsulinOnBoard());
+		insulinCalculator.setListener(new InsulinCalculator.InsulinCalculatorListener() {
+			@Override
+			public void insulinOnBoardChanged(InsulinCalculator calculator) {
+				if (fragmentInsulinCalcs != null) {
+					showCalcs();
+				}
+				setInsulinIntake();
+			}
+		});
+	}
+
+	public void hideCalcs() {
+		if (fragmentInsulinCalcs != null) {
+			ScaleAnimation animation = new ScaleAnimation(1, 1, 1, 0, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
+			animation.setDuration(700);
+			findViewById(R.id.fragment_calcs).startAnimation(animation);
+			animation.setAnimationListener(new Animation.AnimationListener() {
+				@Override
+				public void onAnimationStart(Animation animation) {
+
+				}
+
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					getFragmentManager().beginTransaction()
+							.remove(fragmentInsulinCalcs)
+							.commit();
+					fragmentInsulinCalcs = null;
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+
+				}
+			});
+			insulinCalculator.setListener(null);
+		}
+	}
+
 	public void AddInsulinRead() {
 		Spinner tagSpinner = (Spinner) findViewById(R.id.sp_InsulinDetail_Tag);
 		Spinner insulinSpinner = (Spinner) findViewById(R.id.sp_InsulinDetail_Insulin);
@@ -374,7 +498,7 @@ public class InsulinDetail extends Activity {
 			return;
 		}
 
-		//Get id of user 
+		//Get id of user
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
@@ -469,7 +593,7 @@ public class InsulinDetail extends Activity {
 			return;
 		}
 
-		//Get id of user 
+		//Get id of user
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
@@ -555,16 +679,6 @@ public class InsulinDetail extends Activity {
 
 	}
 
-	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
-		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
-		for (int position = 0; position < adapter.getCount(); position++) {
-			if (adapter.getItem(position).equals(value)) {
-				spnr.setSelection(position);
-				return;
-			}
-		}
-	}
-
 	public void DeleteInsulinRead() {
 		final Context c = this;
 		new AlertDialog.Builder(this)
@@ -597,5 +711,11 @@ public class InsulinDetail extends Activity {
 
 	public void end() {
 		finish();
+	}
+
+	@Override
+	public void setup() {
+		fragmentInsulinCalcs = (InsulinCalc) getFragmentManager().findFragmentById(R.id.fragment_calcs);
+		showCalcs();
 	}
 }

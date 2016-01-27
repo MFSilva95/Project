@@ -77,12 +77,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			}
 
 
-			DB_Read rdb = new DB_Read(this);
-			Object[] obj = rdb.MyData_Read();
-			rdb.close();
-			double iRatio = Double.valueOf(obj[3].toString());
-			double cRatio = Double.valueOf(obj[4].toString());
-			insulinCalculator = new InsulinCalculator((int) iRatio, (int) cRatio);
+			insulinCalculator = new InsulinCalculator(this);
 
 			insulinCalculator.setCarbs(carbsData != null ? carbsData.getCarbsValue() : 0);
 			insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);

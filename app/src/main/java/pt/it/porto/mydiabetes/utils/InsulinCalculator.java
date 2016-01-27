@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 
 public class InsulinCalculator implements Cloneable {
 
@@ -22,6 +23,15 @@ public class InsulinCalculator implements Cloneable {
 		this.carbsRatio = carbsRatio;
 		Calendar currentDateTime = Calendar.getInstance();
 		time = currentDateTime.get(Calendar.HOUR_OF_DAY) * 60 + currentDateTime.get(Calendar.MINUTE);
+	}
+
+	public InsulinCalculator(Context context) {
+		this(0, 0);
+		DB_Read rdb = new DB_Read(context);
+		Object[] obj = rdb.MyData_Read();
+		rdb.close();
+		this.glycemiaRatio = (int) (double) Double.valueOf(obj[3].toString());
+		this.carbsRatio = (int) (double) Double.valueOf(obj[4].toString());
 	}
 
 	public float getInsulinTotal(boolean withIOB, boolean round) {
@@ -116,7 +126,7 @@ public class InsulinCalculator implements Cloneable {
 		// load last insulin from database
 
 		DB_Read read = new DB_Read(context);
-		int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity(String.valueOf(hour) + ":" + String.valueOf(minute));
+		int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity((hour < 10 ? "0" : "") + String.valueOf(hour) + ":" + (minute < 10 ? "0" : "") + String.valueOf(minute));
 		read.close();
 
 		int minuteOriginal = lastInsulin[1] * 60 + lastInsulin[2];
@@ -138,6 +148,13 @@ public class InsulinCalculator implements Cloneable {
 		newCalculator.setGlycemiaTarget(insulinTarget);
 		newCalculator.insulinOnBoard = insulinOnBoard;
 		return newCalculator;
+	}
+
+	public void setTime(Context context, String time) {
+		Calendar calendar = TimePickerFragment.getCalendar(time);
+		if (calendar != null) {
+			setTime(context, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+		}
 	}
 
 	public interface InsulinCalculatorListener {
