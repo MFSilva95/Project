@@ -77,22 +77,8 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		// load correct insulin for Insulin On Board
 		Calendar time = TimePickerFragment.getCalendar(text);
 		if(time!=null) {
-			insulinCalculator.setTime(time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
+			insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
 		}
-		setupInsulinOnBoard(text, insulinCalculator);
-	}
-
-	private void setupInsulinOnBoard(String time, InsulinCalculator insulinCalculator) {
-
-		DB_Read read = new DB_Read(this);
-		int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity(time);
-		read.close();
-
-		int minuteOriginal = lastInsulin[1] * 60 + lastInsulin[2];
-		int insulinType = lastInsulin[0];
-		int insulinDose = lastInsulin[3];
-
-		insulinCalculator.setLastInsulin(insulinDose, minuteOriginal, insulinType);
 	}
 
 	@Override
@@ -109,7 +95,9 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		double cRatio = Double.valueOf(obj[4].toString());
 		InsulinCalculator insulinCalculator = new InsulinCalculator((int) iRatio, (int) cRatio);
 
-		setupInsulinOnBoard("now", insulinCalculator);
+		Calendar calendar=Calendar.getInstance();
+		insulinCalculator.setTime(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+
 
 		return insulinCalculator;
 	}

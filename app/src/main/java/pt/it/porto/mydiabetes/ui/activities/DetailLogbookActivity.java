@@ -96,18 +96,8 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			}
 			Calendar timeCalendar = TimePickerFragment.getCalendar(time);
 			if (timeCalendar != null) {
-				insulinCalculator.setTime(timeCalendar.get(Calendar.HOUR_OF_DAY), timeCalendar.get(Calendar.MINUTE));
+				insulinCalculator.setTime(this, timeCalendar.get(Calendar.HOUR_OF_DAY), timeCalendar.get(Calendar.MINUTE));
 			}
-			DB_Read read = new DB_Read(this);
-			int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity(time);
-			read.close();
-
-			int minuteOriginal = lastInsulin[1] * 60 + lastInsulin[2];
-			int insulinType = lastInsulin[0];
-			int insulinDose = lastInsulin[3];
-
-			insulinCalculator.setLastInsulin(insulinDose, minuteOriginal, insulinType);
-
 		}
 		super.onCreate(savedInstanceState);
 
@@ -254,6 +244,11 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		int d = (int) rdb.Target_GetTargetByTime(text);
 		rdb.close();
 		setGlycemiaTarget(d);
+		// set time and load correct insulin for Insulin On Board
+		Calendar time = TimePickerFragment.getCalendar(text);
+		if(time!=null) {
+			insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
+		}
 	}
 
 	private void updateIndicator(EditText view, boolean valueChanged) {

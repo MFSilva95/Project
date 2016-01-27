@@ -96,8 +96,12 @@ public class InsulinCalc extends Fragment {
 	}
 
 	public void setInsulinOnBoard(float insulinOnBoard) {
-		this.insulinOnBoard.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", insulinOnBoard));
-		this.blockIOB.setVisibility(View.VISIBLE);
+		if(Float.compare(insulinOnBoard, 0)==0){
+			this.blockIOB.setVisibility(View.GONE);
+		}else {
+			this.insulinOnBoard.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", insulinOnBoard));
+			this.blockIOB.setVisibility(View.VISIBLE);
+		}
 	}
 
 	public void setCorrectionCarbs(float correctionCarbs) {

@@ -1,19 +1,21 @@
 package pt.it.porto.mydiabetes.utils;
 
+import android.content.Context;
+
 import java.util.Calendar;
+
+import pt.it.porto.mydiabetes.database.DB_Read;
 
 public class InsulinCalculator implements Cloneable {
 
+	InsulinCalculatorListener listener;
 	private int glycemiaRatio;
 	private int carbsRatio;
 	private int insulinTarget;
 	private int carbs;
 	private int glycemia;
-
 	private int time; // time of intake in minutes
-
 	private float insulinOnBoard = 0.0f;
-
 
 	public InsulinCalculator(int glycemiaRatio, int carbsRatio) {
 		this.glycemiaRatio = glycemiaRatio;
@@ -30,7 +32,6 @@ public class InsulinCalculator implements Cloneable {
 		return insulinTotal;
 	}
 
-
 	public float getInsulinTotal(boolean withIOB) {
 		return getInsulinCarbs() + getInsulinGlycemia() - (withIOB ? insulinOnBoard : 0);
 	}
@@ -44,18 +45,21 @@ public class InsulinCalculator implements Cloneable {
 	}
 
 	public void setLastInsulin(int dose, int minute, int type) {
-		insulinOnBoard=0;
-		if (type != 0) {
-			return;
-		}
-		int minuteDiff = time - minute;
-		if (minuteDiff < 0) {
-			insulinOnBoard = 0;
-		} else {
-			insulinOnBoard = (float) (dose - dose * (minuteDiff / 30 * 0.1));
-			if(insulinOnBoard<0){
-				insulinOnBoard=0;
+		float prevIOB = insulinOnBoard;
+		insulinOnBoard = 0;
+		if (type == 0) {
+			int minuteDiff = time - minute;
+			if (minuteDiff < 0) {
+				insulinOnBoard = 0;
+			} else {
+				insulinOnBoard = (float) (dose - dose * (minuteDiff / 30 * 0.1));
+				if (insulinOnBoard < 0) {
+					insulinOnBoard = 0;
+				}
 			}
+		}
+		if (Float.compare(prevIOB, insulinOnBoard) != 0 && listener != null) {
+			listener.insulinOnBoardChanged(this);
 		}
 	}
 
@@ -107,10 +111,24 @@ public class InsulinCalculator implements Cloneable {
 		this.time = time;
 	}
 
-	public void setTime(int hour, int minute) {
-		this.time = hour*60+minute;
+	public void setTime(Context context, int hour, int minute) {
+		this.time = hour * 60 + minute;
+		// load last insulin from database
+
+		DB_Read read = new DB_Read(context);
+		int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity(String.valueOf(hour) + ":" + String.valueOf(minute));
+		read.close();
+
+		int minuteOriginal = lastInsulin[1] * 60 + lastInsulin[2];
+		int insulinType = lastInsulin[0];
+		int insulinDose = lastInsulin[3];
+
+		setLastInsulin(insulinDose, minuteOriginal, insulinType);
 	}
 
+	public void setListener(InsulinCalculatorListener listener) {
+		this.listener = listener;
+	}
 
 	@Override
 	public InsulinCalculator clone() {
@@ -120,5 +138,9 @@ public class InsulinCalculator implements Cloneable {
 		newCalculator.setGlycemiaTarget(insulinTarget);
 		newCalculator.insulinOnBoard = insulinOnBoard;
 		return newCalculator;
+	}
+
+	public interface InsulinCalculatorListener {
+		void insulinOnBoardChanged(InsulinCalculator calculator);
 	}
 }

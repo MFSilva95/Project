@@ -50,22 +50,19 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	public final static int IMAGE_CAPTURE = 2;
 	public final static int IMAGE_VIEW = 3;
 	private static final String GENERATED_IMAGE_URI = "generated_image_uri";
+	protected InsulinCalculator insulinCalculator = null;
 	private EditText insulinIntake;
 	private EditText glycemia;
 	private EditText carbs;
 	private EditText target;
 	private EditText time;
 	private EditText date;
-
 	private Uri imgUri;
 	private Bitmap b;
 	private Uri generatedImageUri;
-
-
 	private boolean showAddGlycemiaTarget;
 	private InsulinCalc fragmentInsulinCalcs;
 	private boolean expandInsulinCalcsAuto = false;
-	protected InsulinCalculator insulinCalculator = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -486,10 +483,15 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 		fragmentInsulinCalcs.setCorrectionGlycemia(insulinCalculator.getInsulinGlycemia());
 		fragmentInsulinCalcs.setCorrectionCarbs(insulinCalculator.getInsulinCarbs());
 		fragmentInsulinCalcs.setResult(insulinCalculator.getInsulinTotal(true), insulinCalculator.getInsulinTotal(true, true));
-		float insulinOnBoard = insulinCalculator.getInsulinOnBoard();
-		if (insulinOnBoard > 0) {
-			fragmentInsulinCalcs.setInsulinOnBoard(insulinOnBoard);
-		}
+		fragmentInsulinCalcs.setInsulinOnBoard(insulinCalculator.getInsulinOnBoard());
+		insulinCalculator.setListener(new InsulinCalculator.InsulinCalculatorListener() {
+			@Override
+			public void insulinOnBoardChanged(InsulinCalculator calculator) {
+				if (fragmentInsulinCalcs != null) {
+					showCalcs();
+				}
+			}
+		});
 	}
 
 	public void hideCalcs() {
@@ -516,6 +518,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 
 				}
 			});
+			insulinCalculator.setListener(null);
 		}
 	}
 
@@ -619,10 +622,10 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 		if (carbs.getText().toString().isEmpty()) {
 			carbs.requestFocus();
 			imm.showSoftInput(carbs, InputMethodManager.SHOW_IMPLICIT);
-		}else if(glycemia.getText().toString().isEmpty()){
+		} else if (glycemia.getText().toString().isEmpty()) {
 			glycemia.requestFocus();
 			imm.showSoftInput(glycemia, InputMethodManager.SHOW_IMPLICIT);
-		}else {
+		} else {
 			return true;
 		}
 		return false;
