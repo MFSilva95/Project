@@ -724,6 +724,27 @@ public class DB_Read {
 
 	}
 
+	public CarbsDataBinding getCarbsAtThisTime(int userId, String time) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_CarboHydrate WHERE Id_User=" + String.valueOf(userId) + " AND DateTime='" + time + "';", null);
+		CarbsDataBinding tmp = null;
+
+		if (cursor.getCount() == 1) {
+			cursor.moveToFirst();
+			tmp = new CarbsDataBinding();
+			tmp.setId(cursor.getInt(0));
+			tmp.setId_User(cursor.getInt(1));
+			tmp.setCarbsValue(cursor.getInt(2));
+			tmp.setPhotoPath(cursor.getString(3));
+			tmp.setDate(cursor.getString(4).split(" ")[0]);
+			tmp.setTime(cursor.getString(4).split(" ")[1]);
+			tmp.setId_Tag(cursor.getInt(5));
+			tmp.setId_Note((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
+			cursor.close();
+
+		}
+		return tmp;
+	}
+
 	//---------------------- BLOODPRESSURE ---------------
 	public ArrayList<BloodPressureDataBinding> BloodPressure_GetBtDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure WHERE  DateTime > '"

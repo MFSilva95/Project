@@ -38,6 +38,7 @@ import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc;
+import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
@@ -127,6 +128,18 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 				n = rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
 				idNote = n.getId();
+			}
+
+			// check if there is a record of carbs at that time
+			// todo fix dates!
+			CarbsDataBinding carbs = rdb.getCarbsAtThisTime(toFill.getIdUser(), toFill.getDate() + " " + toFill.getTime()); // this is wrong in so many levels...
+			// let's take a bit to talk about dates
+			// in sqlite dates don't exist!
+			// they are strings. let's say: 2016-01-09 11:09
+			// if we save the above date as: 2016-01-09 11:9 huge problems can happen when latter on we go to compare them!
+			// 2016-01-09 11:9 > 2016-01-09 11:10 is true! because sqlite will compare strings char by char
+			if(carbs!=null){
+				insulinCalculator.setCarbs(carbs.getCarbsValue());
 			}
 
 			rdb.close();
