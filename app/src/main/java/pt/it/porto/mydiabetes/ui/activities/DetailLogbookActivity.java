@@ -258,7 +258,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		if (autoUpdate || !changed) { // if already set to auto update calc, just udpate it
 			return;
 		}
-		boolean inconsistent = Float.compare(getInsulinCalculator().getInsulinTotal(true, true), insulinData.getInsulinUnits()) != 0;
+		boolean inconsistent = Float.compare(getInsulinCalculator().getInsulinTotal(useIOB, true), insulinData.getInsulinUnits()) != 0;
 		showingError = inconsistent;
 		if (inconsistent) {
 			hideCalcs();

@@ -35,6 +35,8 @@ import java.util.HashMap;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.FeaturesDB;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc;
@@ -63,6 +65,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	private boolean showAddGlycemiaTarget;
 	private InsulinCalc fragmentInsulinCalcs;
 	private boolean expandInsulinCalcsAuto = false;
+	boolean useIOB=true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,9 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 //			getFragmentManager().executePendingTransactions();
 //			this.fragmentInsulinCalcs= (InsulinCalc)  getFragmentManager().findFragmentById(R.id.fragment_calcs);
 //		}
+
+		FeaturesDB featuresDB=new FeaturesDB(MyDiabetesStorage.getInstance(this));
+		useIOB=featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
 	}
 
 	@Override
@@ -482,7 +488,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 
 		fragmentInsulinCalcs.setCorrectionGlycemia(insulinCalculator.getInsulinGlycemia());
 		fragmentInsulinCalcs.setCorrectionCarbs(insulinCalculator.getInsulinCarbs());
-		fragmentInsulinCalcs.setResult(insulinCalculator.getInsulinTotal(true), insulinCalculator.getInsulinTotal(true, true));
+		fragmentInsulinCalcs.setResult(insulinCalculator.getInsulinTotal(useIOB), insulinCalculator.getInsulinTotal(useIOB, true));
 		fragmentInsulinCalcs.setInsulinOnBoard(insulinCalculator.getInsulinOnBoard());
 		insulinCalculator.setListener(new InsulinCalculator.InsulinCalculatorListener() {
 			@Override
@@ -540,7 +546,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 			showCalcs();
 		}
 
-		float insulin = insulinCalculator.getInsulinTotal(true, true);
+		float insulin = insulinCalculator.getInsulinTotal(useIOB, true);
 		insulinIntake.setText(String.valueOf(insulin > 0 ? insulin : 0));
 	}
 
@@ -582,7 +588,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 			target.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getInsulinTarget()));
 		}
 		setGlycemiaTarget(insulinCalculator.getInsulinTarget());
-		float insulinTotal = insulinCalculator.getInsulinTotal(true, true);
+		float insulinTotal = insulinCalculator.getInsulinTotal(useIOB, true);
 		if (insulinTotal > 0) {
 			insulinIntake.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinTotal));
 		}

@@ -35,6 +35,8 @@ import java.util.HashMap;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.database.FeaturesDB;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc;
@@ -56,6 +58,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 	private InsulinCalculator insulinCalculator = null;
 	private InsulinCalc fragmentInsulinCalcs;
 	private EditText insulinIntake;
+	private boolean useIOB;
 
 	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
 		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
@@ -229,6 +232,9 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 			});
 		}
 
+		FeaturesDB featuresDB=new FeaturesDB(MyDiabetesStorage.getInstance(this));
+		useIOB=featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
+
 	}
 
 	void setInsulinIntake() {
@@ -236,7 +242,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 			showCalcs();
 		}
 
-		float insulin = insulinCalculator.getInsulinTotal(true, true);
+		float insulin = insulinCalculator.getInsulinTotal(useIOB, true);
 		insulinIntake.setText(String.valueOf(insulin > 0 ? insulin : 0));
 	}
 
@@ -446,7 +452,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 
 		fragmentInsulinCalcs.setCorrectionGlycemia(insulinCalculator.getInsulinGlycemia());
 		fragmentInsulinCalcs.setCorrectionCarbs(insulinCalculator.getInsulinCarbs());
-		fragmentInsulinCalcs.setResult(insulinCalculator.getInsulinTotal(true), insulinCalculator.getInsulinTotal(true, true));
+		fragmentInsulinCalcs.setResult(insulinCalculator.getInsulinTotal(useIOB), insulinCalculator.getInsulinTotal(useIOB, true));
 		fragmentInsulinCalcs.setInsulinOnBoard(insulinCalculator.getInsulinOnBoard());
 		insulinCalculator.setListener(new InsulinCalculator.InsulinCalculatorListener() {
 			@Override
