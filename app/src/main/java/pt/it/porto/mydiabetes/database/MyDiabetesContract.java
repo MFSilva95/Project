@@ -78,6 +78,14 @@ public class MyDiabetesContract {
 		public static final String COLUMN_NAME_NAME = "Name";
 	}
 
+	public static class Feature {
+		public static final String TABLE_NAME = "Feature";
+
+		public static final String COLUMN_NAME_ID = "Id";
+		public static final String COLUMN_NAME_NAME = "Name";
+		public static final String COLUMN_NAME_ACTIVATED = "Activated";
+	}
+
 	public static class Regist {
 
 		public static class Insulin {

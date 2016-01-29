@@ -16,7 +16,7 @@ import pt.it.porto.mydiabetes.R;
 public class DB_Handler extends SQLiteOpenHelper {
 
 	// Database Version
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 
 	// Database Name
 	private static final String DATABASE_NAME = "DB_Diabetes";
@@ -120,6 +120,9 @@ public class DB_Handler extends SQLiteOpenHelper {
 				data.moveToNext();
 			}
 			data.close();
+		}
+		if(oldVersion<5){
+			initDatabaseTables(db); // creates new feature table
 		}
 	}
 
