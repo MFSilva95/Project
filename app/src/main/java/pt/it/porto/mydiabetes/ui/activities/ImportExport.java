@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +14,7 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.Nullable;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -24,6 +26,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
@@ -47,7 +50,7 @@ import java.util.List;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.sync.crypt.KeyGenerator;
+import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestore;
 import pt.it.porto.mydiabetes.ui.fragments.PdfExport;
@@ -816,15 +819,29 @@ public class ImportExport extends BaseOldActivity {
 		startActivity(intent);
 	}
 
+	@Nullable
+	ProgressDialog dialog;
+
 	public void syncCloud(View view) {
-		Intent intent = new Intent(this, TransferActivity.class);
-		intent.putExtra("host", "192.168.1.44");
-		byte[] key = new KeyGenerator().generateKey();
-		byte[] iv = new KeyGenerator().generateKey();
-		intent.putExtra("key", key);
-		intent.putExtra("iv", iv);
-		intent.putExtra("onPC", false);
-		startActivity(intent);
+		dialog = new ProgressDialog(this);
+		dialog.show();
+		ServerSync.getInstance(this).send(new ServerSync.ServerSyncListener() {
+			@Override
+			public void onSyncSuccessful() {
+				if (dialog != null) {
+					dialog.hide();
+				}
+			}
+
+			@Override
+			public void onSyncUnSuccessful() {
+				if(dialog!=null) {
+					dialog.hide();
+				}
+				Toast.makeText(getApplicationContext(), "Infelizmente falhou o envio, tente mais tarde.", Toast.LENGTH_SHORT).show();
+			}
+		});
+
 	}
 
 	public void share(View view) {

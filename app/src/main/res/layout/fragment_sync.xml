@@ -16,7 +16,6 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="114dp"
-        android:background="@color/background_holo_dark"
         android:drawableTop="@drawable/sync"
         android:onClick="syncPC"
         android:text="@string/sync" />
@@ -28,10 +27,8 @@
         android:layout_below="@+id/syncPC"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="44dp"
-        android:clickable="false"
-        android:longClickable="false"
+        android:padding="24dp"
         android:onClick="syncCloud"
-        android:text="@string/send_to_cloud"
-        android:visibility="gone" />
+        android:text="@string/send_to_cloud" />
 
 </RelativeLayout>
