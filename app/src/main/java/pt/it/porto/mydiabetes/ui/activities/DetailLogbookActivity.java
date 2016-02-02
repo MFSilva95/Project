@@ -288,9 +288,8 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.default_edit_text_holo_dark);
 			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setChecked(false);
 			setToggleIconImage(android.R.drawable.ic_menu_info_details);
-		} else {
-			super.showCalcs();
 		}
+		super.showCalcs();
 	}
 
 	@Override
