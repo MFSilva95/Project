@@ -63,7 +63,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	private Bitmap b;
 	private Uri generatedImageUri;
 	private boolean showAddGlycemiaTarget;
-	private InsulinCalc fragmentInsulinCalcs;
+	protected InsulinCalc fragmentInsulinCalcs;
 	private boolean expandInsulinCalcsAuto = false;
 	boolean useIOB=true;
 
@@ -529,7 +529,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 		}
 	}
 
-	private void toggleInsulinCalcDetails(View view) {
+	public void toggleInsulinCalcDetails(View view) {
 		expandInsulinCalcsAuto = false;
 		if (((ToggleButton) view).isChecked()) {
 			showCalcs();

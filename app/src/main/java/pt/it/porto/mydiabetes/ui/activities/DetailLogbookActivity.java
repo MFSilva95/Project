@@ -11,6 +11,7 @@ import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -34,9 +35,13 @@ public class DetailLogbookActivity extends BaseMealActivity {
 
 	public static final String SAVE_SHOWING_ERROR = "SAVE_SHOWING_ERROR";
 	public static final String SAVE_AUTO_UPDATE = "SAVE_AUTO_UPDATE";
-
-	boolean showingError = true;
+	final int MODE_REFRESH = 1;
+	final int MODE_REVERT = 2;
+	final int MODE_INFO = 3;
+	boolean showingError = false;
 	boolean autoUpdate = false;
+	boolean undo = false;
+	int mode = MODE_INFO;
 	private GlycemiaDataBinding glycemiaData;
 	private CarbsDataBinding carbsData;
 	private InsulinRegDataBinding insulinData;
@@ -216,8 +221,13 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		} else {
 			changed = newVal != 0;
 		}
-		updateIndicator(view, changed);
-		setInconsistentInsulin(changed);
+//		updateIndicator(view, changed);
+//		setInconsistentInsulin(changed);
+		if(mode==MODE_INFO && changed){
+			setModeRevert();
+		} else if(mode==MODE_REVERT && !changed){
+			setModeInfo();
+		}
 	}
 
 	@Override
@@ -249,23 +259,43 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	}
 
 	private void setInconsistentInsulin(boolean changed) {
-		if (autoUpdate || !changed) { // if already set to auto update calc, just udpate it
-			return;
-		}
 		boolean inconsistent = Float.compare(getInsulinCalculator().getInsulinTotal(useIOB, true), insulinData != null ? insulinData.getInsulinUnits() : 0) != 0;
-		showingError = inconsistent;
-		if (inconsistent) {
-			hideCalcs();
-			setToggleIconImage(R.drawable.ic_report_grey_400_24dp);
-//			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setCompoundDrawables(null, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_report_problem_grey_500_18dp, null), null, null);
-			setInsulin(null, insulinData != null ? insulinData.getInsulinUnits() : 0);
-			findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.edit_text_holo_dark_error);
-		} else {
-			setToggleIconImage(android.R.drawable.ic_menu_info_details);
-//			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setCompoundDrawables(null, ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_menu_info_details, null), null, null);
-//			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setButtonDrawable(android.R.drawable.ic_menu_info_details);
-			findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.default_edit_text_holo_dark);
+
+		if (inconsistent && !showingError) {
+			showingError = inconsistent;
+			setModeRefresh();
+		} else if (!inconsistent && showingError) {
+			showingError=false;
+			setModeInfo();
+		} else if (autoUpdate) {
+			setModeRevert();
+			setInsulinIntake();
 		}
+	}
+
+	void setModeRefresh() {
+		findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.edit_text_holo_dark_error);
+		setToggleIconImage(R.drawable.ic_refresh_grey_400_24dp);
+		undo = true;
+		mode = MODE_REFRESH;
+	}
+
+	void setModeRevert() {
+		findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.edit_text_holo_dark_changed);
+		setToggleIconImage(R.drawable.ic_refresh_invert_grey_400_24dp);
+		mode = MODE_REVERT;
+		autoUpdate=true;
+	}
+
+	void setModeInfo() {
+		undo = false;
+		autoUpdate=false;
+		findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.default_edit_text_holo_dark);
+		setToggleIconImage(android.R.drawable.ic_menu_info_details);
+		if(fragmentInsulinCalcs!=null){
+			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setChecked(true);
+		}
+		mode = MODE_INFO;
 	}
 
 	void setToggleIconImage(int resource) {
@@ -277,24 +307,31 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		button.setText(content);
 		button.setTextOn(content);
 		button.setTextOff(content);
+		button.setChecked(false);
 	}
 
 	@Override
-	public void showCalcs() {
-		if (showingError) {
-			showingError = false;
-			autoUpdate = true;
-			setInsulinIntake();
-			findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.default_edit_text_holo_dark);
-			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setChecked(false);
-			setToggleIconImage(android.R.drawable.ic_menu_info_details);
+	public void toggleInsulinCalcDetails(View view) {
+		switch (mode) {
+			case MODE_INFO:
+				super.toggleInsulinCalcDetails(view);
+				break;
+			case MODE_REFRESH:
+				setModeRevert();
+				showCalcs();
+				setInsulinIntake();
+				break;
+			case MODE_REVERT:
+				setModeRefresh();
+				showCalcs();
+				setInsulin(null, insulinData != null ? insulinData.getInsulinUnits() : 0);
+				break;
 		}
-		super.showCalcs();
 	}
 
 	@Override
 	boolean shouldSetInsulin() {
-		return !showingError || autoUpdate;
+		return autoUpdate;
 	}
 
 	@Override
