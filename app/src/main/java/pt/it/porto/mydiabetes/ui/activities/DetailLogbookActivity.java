@@ -116,6 +116,8 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			setNote(note);
 		}
 
+		getActionBar().setLogo(R.drawable.ic_close_grey_100_48dp);
+		getActionBar().setHomeAsUpIndicator(android.R.color.transparent);
 	}
 
 	@Override
@@ -223,9 +225,9 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		}
 //		updateIndicator(view, changed);
 //		setInconsistentInsulin(changed);
-		if(mode==MODE_INFO && changed){
+		if (mode == MODE_INFO && changed) {
 			setModeRevert();
-		} else if(mode==MODE_REVERT && !changed){
+		} else if (mode == MODE_REVERT && !changed) {
 			setModeInfo();
 		}
 	}
@@ -265,7 +267,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			showingError = inconsistent;
 			setModeRefresh();
 		} else if (!inconsistent && showingError) {
-			showingError=false;
+			showingError = false;
 			setModeInfo();
 		} else if (autoUpdate) {
 			setModeRevert();
@@ -284,15 +286,15 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.edit_text_holo_dark_changed);
 		setToggleIconImage(R.drawable.ic_refresh_invert_grey_400_24dp);
 		mode = MODE_REVERT;
-		autoUpdate=true;
+		autoUpdate = true;
 	}
 
 	void setModeInfo() {
 		undo = false;
-		autoUpdate=false;
+		autoUpdate = false;
 		findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.default_edit_text_holo_dark);
 		setToggleIconImage(android.R.drawable.ic_menu_info_details);
-		if(fragmentInsulinCalcs!=null){
+		if (fragmentInsulinCalcs != null) {
 			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setChecked(true);
 		}
 		mode = MODE_INFO;
