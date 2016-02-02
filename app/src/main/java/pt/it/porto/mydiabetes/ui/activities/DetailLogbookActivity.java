@@ -83,12 +83,6 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);
 			insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
 			// get insulin before this one
-			String time = null;
-			if (carbsData != null) {
-				time = carbsData.getTime();
-			} else if (glycemiaData != null) {
-				time = glycemiaData.getTime();
-			}
 			Calendar timeCalendar = TimePickerFragment.getCalendar(time);
 			if (timeCalendar != null) {
 				insulinCalculator.setTime(this, timeCalendar.get(Calendar.HOUR_OF_DAY), timeCalendar.get(Calendar.MINUTE));
@@ -241,7 +235,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		setGlycemiaTarget(d);
 		// set time and load correct insulin for Insulin On Board
 		Calendar time = TimePickerFragment.getCalendar(text);
-		if(time!=null) {
+		if (time != null) {
 			insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
 		}
 	}
@@ -258,13 +252,13 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		if (autoUpdate || !changed) { // if already set to auto update calc, just udpate it
 			return;
 		}
-		boolean inconsistent = Float.compare(getInsulinCalculator().getInsulinTotal(useIOB, true), insulinData.getInsulinUnits()) != 0;
+		boolean inconsistent = Float.compare(getInsulinCalculator().getInsulinTotal(useIOB, true), insulinData != null ? insulinData.getInsulinUnits() : 0) != 0;
 		showingError = inconsistent;
 		if (inconsistent) {
 			hideCalcs();
 			setToggleIconImage(R.drawable.ic_report_grey_400_24dp);
 //			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setCompoundDrawables(null, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_report_problem_grey_500_18dp, null), null, null);
-			setInsulin(null, insulinData.getInsulinUnits());
+			setInsulin(null, insulinData != null ? insulinData.getInsulinUnits() : 0);
 			findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.edit_text_holo_dark_error);
 		} else {
 			setToggleIconImage(android.R.drawable.ic_menu_info_details);
@@ -321,13 +315,13 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		boolean deleteIns = false;
 		int itemsToDelete = 0;
 
-		int user_id=-1;
-		if(carbsData!=null){
-			user_id=carbsData.getId_User(); // why is this method different from the other two?
-		}else if(glycemiaData!=null){
-			user_id=glycemiaData.getIdUser();
-		} else if(insulinData!=null){
-			user_id=insulinData.getIdUser();
+		int user_id = -1;
+		if (carbsData != null) {
+			user_id = carbsData.getId_User(); // why is this method different from the other two?
+		} else if (glycemiaData != null) {
+			user_id = glycemiaData.getIdUser();
+		} else if (insulinData != null) {
+			user_id = insulinData.getIdUser();
 		} else {
 			// go to database and get it!
 			// it shouldn't be necessary, if we are where some of this values are defined
