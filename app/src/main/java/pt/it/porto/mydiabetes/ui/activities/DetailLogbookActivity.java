@@ -283,14 +283,14 @@ public class DetailLogbookActivity extends BaseMealActivity {
 
 	void setModeRefresh() {
 		findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.edit_text_holo_dark_error);
-		setToggleIconImage(R.drawable.ic_refresh_grey_400_24dp);
+		setToggleIconImage(R.drawable.ic_cached_grey_400_24dp);
 		undo = true;
 		mode = MODE_REFRESH;
 	}
 
 	void setModeRevert() {
 		findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.edit_text_holo_dark_changed);
-		setToggleIconImage(R.drawable.ic_refresh_invert_grey_400_24dp);
+		setToggleIconImage(R.drawable.ic_redo_grey_400_24dp);
 		mode = MODE_REVERT;
 		autoUpdate = true;
 	}
