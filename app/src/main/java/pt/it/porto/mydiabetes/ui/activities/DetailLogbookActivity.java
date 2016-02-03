@@ -177,6 +177,10 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		} else if (item.getItemId() == R.id.menuItem_LogbookDetail_EditSave) {
 			saveData();
 			return true;
+		} else if(item.getItemId() == android.R.id.home){
+			//todo check if needs to save
+			finish();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
