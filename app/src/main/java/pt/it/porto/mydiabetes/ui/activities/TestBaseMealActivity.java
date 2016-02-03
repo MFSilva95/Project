@@ -77,7 +77,7 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		// load correct insulin for Insulin On Board
 		Calendar time = TimePickerFragment.getCalendar(text);
 		if(time!=null) {
-			insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
+			insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), null);
 		}
 	}
 
@@ -96,7 +96,7 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		InsulinCalculator insulinCalculator = new InsulinCalculator((int) iRatio, (int) cRatio);
 
 		Calendar calendar=Calendar.getInstance();
-		insulinCalculator.setTime(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+		insulinCalculator.setTime(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null);
 
 
 		return insulinCalculator;

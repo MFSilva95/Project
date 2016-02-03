@@ -401,7 +401,7 @@ public class DB_Read {
 		return result;
 	}
 
-	public int[] InsulinReg_GetLastHourAndQuantity(String time) {
+	public int[] InsulinReg_GetLastHourAndQuantity(String time, String date) {
 		Cursor cursor;
 		if (time.equalsIgnoreCase("now")) {
 			cursor = myDB.rawQuery("SELECT ins.action, reg.DateTime, strftime('%H',reg.DateTime), strftime('%M',reg.DateTime), reg.Value " +
@@ -413,9 +413,9 @@ public class DB_Read {
 		} else {
 			cursor = myDB.rawQuery("SELECT ins.action, reg.DateTime, strftime('%H',reg.DateTime), strftime('%M',reg.DateTime), reg.Value" +
 					" FROM Reg_Insulin as reg, Insulin as ins WHERE reg.Id_Insulin=ins.Id AND " +
-					"reg.DateTime > Datetime(date('now'), 'localtime', '" + time + "','-5 HOURS') " +
-					"AND reg.DateTime < Datetime(date('now'), 'localtime', '" + time + "', '-1 MINUTE')" // fix selecting it self as a iob
-					+ "order by 2 DESC", null); // this query is technically correct, but some times doesn't work? problems in the emulator?
+					"reg.DateTime > Datetime(date('" + (date == null ? "now" : date) + "'), 'localtime', '" + time + "','-5 HOURS') " +
+					"AND reg.DateTime < Datetime(date('" + (date == null ? "now" : date) + "'), 'localtime', '" + time + "', '-1 MINUTE')" // fix selecting it self as a iob
+					+ "order by 2 DESC", null);
 		}
 		int[] result = {-1, -1, -1, -1};
 

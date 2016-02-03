@@ -92,7 +92,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			// get insulin before this one
 			Calendar timeCalendar = TimePickerFragment.getCalendar(time);
 			if (timeCalendar != null) {
-				insulinCalculator.setTime(this, timeCalendar.get(Calendar.HOUR_OF_DAY), timeCalendar.get(Calendar.MINUTE));
+				insulinCalculator.setTime(this, timeCalendar.get(Calendar.HOUR_OF_DAY), timeCalendar.get(Calendar.MINUTE), date);
 			}
 		}
 		super.onCreate(savedInstanceState);
@@ -278,7 +278,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		// set time and load correct insulin for Insulin On Board
 		Calendar time = TimePickerFragment.getCalendar(text);
 		if (time != null) {
-			insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
+			insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), null);
 		}
 	}
 

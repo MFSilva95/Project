@@ -297,7 +297,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 				setTagByTime();
 				Calendar calendar = TimePickerFragment.getCalendar(time);
 				if (calendar != null) {
-					insulinCalculator.setTime(getApplicationContext(), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+					insulinCalculator.setTime(getApplicationContext(), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null);
 				}
 			}
 		});
@@ -348,7 +348,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 		EditText hour = (EditText) findViewById(R.id.et_InsulinDetail_Hora);
 		hour.setText(TimePickerFragment.getFormatedDate(calendar));
 
-		insulinCalculator.setTime(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+		insulinCalculator.setTime(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null);
 	}
 
 	public void setTargetByHour() {
