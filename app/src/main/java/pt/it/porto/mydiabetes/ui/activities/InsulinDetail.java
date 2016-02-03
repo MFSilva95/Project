@@ -106,7 +106,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 			EditText data = (EditText) findViewById(R.id.et_InsulinDetail_Data);
 			data.setText(toFill.getDate());
 			hora.setText(toFill.getTime());
-			insulinCalculator.setTime(this, toFill.getTime());
+			insulinCalculator.setTime(this, toFill.getTime(), toFill.getDate());
 
 			EditText target = (EditText) findViewById(R.id.et_InsulinDetail_TargetGlycemia);
 			target.setText(String.valueOf(toFill.getTargetGlycemia()));
@@ -686,7 +686,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 		ins.setDate(data.getText().toString());
 		ins.setTime(hora.getText().toString());
 		ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
-		ins.setInsulinUnits(Integer.parseInt(insulinunits.getText().toString()));
+		ins.setInsulinUnits(Float.parseFloat(insulinunits.getText().toString()));
 		ins.setIdTag(idTag);
 
 

@@ -156,10 +156,10 @@ public class InsulinCalculator implements Cloneable {
 		return newCalculator;
 	}
 
-	public void setTime(Context context, String time) {
+	public void setTime(Context context, String time, String date) {
 		Calendar calendar = TimePickerFragment.getCalendar(time);
 		if (calendar != null) {
-			setTime(context, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null);
+			setTime(context, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), date);
 		}
 	}
 
