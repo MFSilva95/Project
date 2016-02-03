@@ -51,6 +51,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	private int noteId;
 	private String date = "";
 	private String time = "";
+	private String originalNoteContent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +84,6 @@ public class DetailLogbookActivity extends BaseMealActivity {
 				time = insulinData.getTime();
 			}
 
-
 			insulinCalculator = new InsulinCalculator(this);
 
 			insulinCalculator.setCarbs(carbsData != null ? carbsData.getCarbsValue() : 0);
@@ -103,20 +103,19 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		setupInsulinCalculator();
 
 		// set insulin
+		DB_Read db_read = new DB_Read(this);
 		if (insulinData != null) {
-			DB_Read rdb = new DB_Read(this);
-			String insulinName = rdb.Insulin_GetById(insulinData.getIdInsulin()).getName();
-			rdb.close();
+			String insulinName = db_read.Insulin_GetById(insulinData.getIdInsulin()).getName();
 			setInsulin(insulinName, insulinData.getInsulinUnits());
 		}
 
 		// set note
 		if (noteId != -1) {
-			DB_Read db_read = new DB_Read(this);
-			String note = db_read.Note_GetById(noteId).getNote();
-			db_read.close();
-			setNote(note);
+			originalNoteContent = db_read.Note_GetById(noteId).getNote();
+			setNote(originalNoteContent);
 		}
+		db_read.close();
+
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
 			ActionBar actionBar = getActionBar();
 			if (actionBar != null) {
@@ -177,12 +176,33 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		} else if (item.getItemId() == R.id.menuItem_LogbookDetail_EditSave) {
 			saveData();
 			return true;
-		} else if(item.getItemId() == android.R.id.home){
-			//todo check if needs to save
+		} else if (item.getItemId() == android.R.id.home) {
 			finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onBackPressed() {
+		if (needsToSave()) {
+			final Context c = this;
+			new AlertDialog.Builder(this)
+					.setTitle("Dados foram alterados, deseja sair sem gravar as alterações?")
+					.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							dialog.dismiss();
+							finish();
+						}
+					})
+					.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							saveData();
+						}
+					}).show();
+		} else {
+			super.onBackPressed();
+		}
 	}
 
 	@Override
@@ -354,6 +374,71 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	@Override
 	InsulinCalculator getInsulinCalculator() {
 		return insulinCalculator;
+	}
+
+	public boolean needsToSave() {
+		String date = getDate();
+		String time = getTime();
+		String note = getNote();
+
+		// note content was changed
+		if (originalNoteContent != null && !originalNoteContent.equals(note)) {
+			return true;
+		}
+
+		if (carbsData != null) {
+			if (!carbsData.getDate().equals(date) || !carbsData.getTime().equals(time)) {
+				return true;
+			}
+
+			if (carbsData.getPhotoPath() != null && !carbsData.getPhotoPath().equals(getImgUri() != null ? getImgUri().getPath() : "")) {
+				return true;
+			}
+			if (carbsData.getCarbsValue() != insulinCalculator.getCarbs()) {
+				return true;
+			}
+			if (carbsData.getId_Note() != -1 && note.isEmpty()) {
+				// note removed
+				return true;
+			} else if (carbsData.getId_Note() == -1 && !note.isEmpty()) {
+				return true;
+			}
+		}
+		if (insulinData != null) {
+			if (!insulinData.getDate().equals(date) || !insulinData.getTime().equals(time)) {
+				return true;
+			}
+			if (Float.compare(insulinData.getInsulinUnits(), getInsulinIntake()) != 0) {
+				return true;
+			}
+			// todo add insulinData.getIdBloodGlucose()
+			if (insulinData.getTargetGlycemia() != insulinCalculator.getInsulinTarget()) {
+				return true;
+			}
+			if (insulinData.getIdNote() != -1 && note.isEmpty()) {
+				// note removed
+				return true;
+			} else if (insulinData.getIdNote() == -1 && !note.isEmpty()) {
+				return true;
+			}
+
+		}
+		if (glycemiaData != null) {
+			if (!glycemiaData.getDate().equals(date) || !glycemiaData.getTime().equals(time)) {
+				return true;
+			}
+			if (glycemiaData.getValue() != insulinCalculator.getGlycemia()) {
+				return true;
+			}
+			if (glycemiaData.getIdNote() != -1 && note.isEmpty()) {
+				// note removed
+				return true;
+			} else if (glycemiaData.getIdNote() == -1 && !note.isEmpty()) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public void saveData() {

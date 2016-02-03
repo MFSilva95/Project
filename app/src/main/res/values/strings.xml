@@ -341,4 +341,6 @@
     <string name="active_insulin">Insulina Activa</string>
     <string name="new_feature_iob_text_1">Quando toma uma insulina esta não actua de imediato, mas sim ao longo de algumas horas. Como pode ver na imagem acima.</string>
     <string name="new_feature_iob_text_2">Agora pode ter informação da insulina que ainda está activa no seu organismo quando for tomar uma nova insulina</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
 </resources>
