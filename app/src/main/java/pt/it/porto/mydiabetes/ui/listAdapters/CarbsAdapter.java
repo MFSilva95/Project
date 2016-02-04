@@ -61,7 +61,7 @@ public class CarbsAdapter extends BaseAdapter {
 		   
          final CarbsDataBinding carb = _data.get(position);
          final String _id = ""+carb.getId();
-         carbvalue.setText(carb.getCarbsValue().toString());
+         carbvalue.setText(String.valueOf(carb.getCarbsValue()));
          carbvalue.setTag(_id);
          
          date.setText(carb.getDate());

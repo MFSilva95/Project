@@ -154,6 +154,11 @@ public class MyDiabetesStorage {
 		return db.insert(table, null, data);
 	}
 
+	public long updateData(String table, ContentValues data, String where, String[] args){
+		SQLiteDatabase db = mHandler.getWritableDatabase();
+		return db.update(table, data, where, args);
+	}
+
 	Cursor query(String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderby) {
 		SQLiteDatabase db = mHandler.getReadableDatabase();
 		return db.query(table, columns, selection, selectionArgs, groupBy, having, orderby);

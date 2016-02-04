@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -19,10 +20,15 @@ import android.widget.Toast;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.database.FeaturesDB;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
+import pt.it.porto.mydiabetes.ui.dialogs.NewFeatureDialog;
 
 
 public class MyData extends BaseOldActivity {
+
+	CheckBox useActiveInsulin;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,10 @@ public class MyData extends BaseOldActivity {
 		Object[] obj = db.MyData_Read();
 		setMyDataFromDB(obj);
 		db.close();
+
+		useActiveInsulin= (CheckBox) findViewById(R.id.use_IOB);
+		FeaturesDB features = new FeaturesDB(MyDiabetesStorage.getInstance(this));
+		useActiveInsulin.setChecked(features.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD));
 	}
 
 	@Override
@@ -77,6 +87,8 @@ public class MyData extends BaseOldActivity {
 					DB_Write rdb = new DB_Write(this);
 					rdb.MyData_Save(getMyDataFromActivity());
 					rdb.close();
+					FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(this));
+					db.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, useActiveInsulin.isChecked());
 					Toast.makeText(this, getString(R.string.mydata_saved), Toast.LENGTH_LONG).show();
 
 					//mandar para a actividade das insulinas
@@ -215,5 +227,22 @@ public class MyData extends BaseOldActivity {
 				}).show();
 	}
 
+
+	public void showIOBDialog(View v){
+		NewFeatureDialog dialog=new NewFeatureDialog();
+		dialog.setCancelable(true);
+		dialog.setListener(new NewFeatureDialog.ActivateFeatureDialogListener() {
+			@Override
+			public void useFeature() {
+				useActiveInsulin.setChecked(true);
+			}
+
+			@Override
+			public void notUseFeature() {
+				useActiveInsulin.setChecked(false);
+			}
+		});
+		dialog.show(getFragmentManager(), "iob");
+	}
 
 }

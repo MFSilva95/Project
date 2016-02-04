@@ -348,7 +348,13 @@ public class DB_Write {
 	}
 
 	//----------------- CARBS ------------------------------
-	public void Carbs_Save(CarbsDataBinding obj) {
+
+	/**
+	 * Saves a carb regist
+	 * @param obj
+	 * @return the entry ID
+	 */
+	public int Carbs_Save(CarbsDataBinding obj) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", obj.getId_User());
 		toInsert.put("Value", obj.getCarbsValue());
@@ -359,7 +365,7 @@ public class DB_Write {
 		if (obj.getId_Note() > 0) {
 			toInsert.put("Id_Note", obj.getId_Note());
 		}
-		myDB.insert("Reg_CarboHydrate", null, toInsert);
+		return (int) myDB.insert("Reg_CarboHydrate", null, toInsert);
 	}
 
 	public void Carbs_Update(CarbsDataBinding obj) {

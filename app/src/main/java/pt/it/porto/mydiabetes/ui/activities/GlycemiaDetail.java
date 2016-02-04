@@ -63,7 +63,7 @@ public class GlycemiaDetail extends Activity {
 			date.setText(toFill.getDate());
 			hora.setText(toFill.getTime());
 			EditText glycemia = (EditText) findViewById(R.id.et_GlycemiaDetail_Glycemia);
-			glycemia.setText(toFill.getValue().toString());
+			glycemia.setText(String.valueOf(toFill.getValue()));
 			Spinner spinner = (Spinner) findViewById(R.id.sp_GlycemiaDetail_Tag);
 			SelectSpinnerItemByValue(spinner, rdb.Tag_GetById(toFill.getIdTag()).getName());
 
@@ -203,7 +203,7 @@ public class GlycemiaDetail extends Activity {
 
 
 		gly.setIdUser(idUser);
-		gly.setValue(Double.parseDouble(glycemia.getText().toString()));
+		gly.setValue(Integer.parseInt(glycemia.getText().toString()));
 		gly.setDate(data.getText().toString());
 		gly.setTime(hora.getText().toString());
 		gly.setIdTag(idTag);
@@ -256,7 +256,7 @@ public class GlycemiaDetail extends Activity {
 
 		gly.setId(id);
 		gly.setIdUser(idUser);
-		gly.setValue(Double.parseDouble(glycemia.getText().toString()));
+		gly.setValue(Integer.parseInt(glycemia.getText().toString()));
 		gly.setDate(data.getText().toString());
 		gly.setTime(hora.getText().toString());
 		gly.setIdTag(idTag);

@@ -21,18 +21,20 @@ import pt.it.porto.mydiabetes.ui.listAdapters.LogbookDataBinding;
 public class Logbook extends Activity {
 
 	ListView logbookList;
+	private EditText dateFrom;
+	private EditText dateTo;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logbook);
+		dateFrom = (EditText) findViewById(R.id.et_Logbook_DataFrom);
+		dateTo = (EditText) findViewById(R.id.et_Logbook_DataTo);
+		logbookList = (ListView) findViewById(R.id.LogbookActivityList);
 
 		FillDates();
 
-		EditText datefrom = (EditText) findViewById(R.id.et_Logbook_DataFrom);
-		EditText dateto = (EditText) findViewById(R.id.et_Logbook_DataTo);
-		datefrom.addTextChangedListener(new TextWatcher() {
+		dateFrom.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				fillListView(logbookList);
@@ -46,7 +48,7 @@ public class Logbook extends Activity {
 			public void afterTextChanged(Editable s) {
 			}
 		});
-		dateto.addTextChangedListener(new TextWatcher() {
+		dateTo.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				fillListView(logbookList);
@@ -61,30 +63,27 @@ public class Logbook extends Activity {
 			}
 		});
 
-
-		logbookList = (ListView) findViewById(R.id.LogbookActivityList);
 		fillListView(logbookList);
 
 	}
 
 	public void FillDates() {
-		EditText dateago = (EditText) findViewById(R.id.et_Logbook_DataFrom);
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -3);
-		dateago.setText(DatePickerFragment.getFormatedDate(calendar));
+		if(dateFrom.getText().length()==0) {
+			dateFrom.setText(DatePickerFragment.getFormatedDate(calendar));
+		}
 
-		EditText datenow = (EditText) findViewById(R.id.et_Logbook_DataTo);
 		calendar = Calendar.getInstance();
-		datenow.setText(DatePickerFragment.getFormatedDate(calendar));
+		if(dateTo.getText().length()==0) {
+			dateTo.setText(DatePickerFragment.getFormatedDate(calendar));
+		}
 	}
 
 
 	public void fillListView(ListView lv) {
-
-		EditText datefrom = (EditText) findViewById(R.id.et_Logbook_DataFrom);
-		EditText dateto = (EditText) findViewById(R.id.et_Logbook_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<LogbookDataBinding> lb = rdb.getLogbook(datefrom.getText().toString(), dateto.getText().toString());
+		ArrayList<LogbookDataBinding> lb = rdb.getLogbook(dateFrom.getText().toString(), dateTo.getText().toString());
 		rdb.close();
 		lv.setAdapter(new LogbookAdapter(lb, this));
 	}

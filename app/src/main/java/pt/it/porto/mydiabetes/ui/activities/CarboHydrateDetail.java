@@ -76,7 +76,7 @@ public class CarboHydrateDetail extends Activity {
 			Spinner tagSpinner = (Spinner) findViewById(R.id.sp_CarboHydrateDetail_Tag);
 			SelectSpinnerItemByValue(tagSpinner, rdb.Tag_GetById(toFill.getId_Tag()).getName());
 			EditText carbs = (EditText) findViewById(R.id.et_CarboHydrateDetail_Value);
-			carbs.setText(toFill.getCarbsValue().toString());
+			carbs.setText(String.valueOf(toFill.getCarbsValue()));
 			EditText data = (EditText) findViewById(R.id.et_CarboHydrateDetail_Data);
 			data.setText(toFill.getDate());
 			Log.d("data reg carb", toFill.getDate());
@@ -91,7 +91,7 @@ public class CarboHydrateDetail extends Activity {
 			}
 
 			EditText photopath = (EditText) findViewById(R.id.et_CarboHydrateDetail_Photo);
-			if (!toFill.getPhotoPath().equals("")) {
+			if (toFill.hasPhotoPath()) {
 				photopath.setText(toFill.getPhotoPath());
 				Log.d("foto path", "foto: " + toFill.getPhotoPath());
 				ImageView img = (ImageView) findViewById(R.id.iv_CarboHydrateDetail_Photo);
@@ -104,8 +104,6 @@ public class CarboHydrateDetail extends Activity {
 				img.setImageBitmap(b);
 
 			}
-
-			Log.d("photopath", toFill.getPhotoPath());
 
 			rdb.close();
 		} else {
@@ -257,7 +255,7 @@ public class CarboHydrateDetail extends Activity {
 
 
 		carb.setId_User(idUser);
-		carb.setCarbsValue(Double.parseDouble(carbs.getText().toString()));
+		carb.setCarbsValue(Integer.parseInt(carbs.getText().toString()));
 		carb.setId_Tag(idTag);
 		carb.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
 		carb.setDate(data.getText().toString());
@@ -525,7 +523,7 @@ public class CarboHydrateDetail extends Activity {
 
 		carb.setId(id);
 		carb.setId_User(idUser);
-		carb.setCarbsValue(Double.parseDouble(carbs.getText().toString()));
+		carb.setCarbsValue(Integer.parseInt(carbs.getText().toString()));
 		carb.setId_Tag(idTag);
 		carb.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
 		carb.setDate(data.getText().toString());

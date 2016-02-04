@@ -249,7 +249,7 @@
     <string name="hint_name">Jorge Mendes</string>
     <string name="diabetes_type">Tipo de diabetes</string>
     <string name="sensivity_factor">Fator de sensibilidade</string>
-    <string name="hint_value3" >ex.: 45</string>
+    <string name="hint_value3">ex.: 45</string>
     <string name="carbs_racio">Rácio Hidratos de Carbono</string>
     <string name="hint_value4">ex.: 10</string>
     <string name="hypoglycemia_limit">Limite para hipoglicemia</string>
@@ -329,5 +329,18 @@
     <string name="information_about_developers">Aplicação desenvolvida por Eduardo Soares, João Maia, João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
     <string name="button_add_glicemia_objective">Adicionar objectivo de glicemia</string>
 
-
+    <string name="correction_glycemia">Correcção Glicemia</string>
+    <string name="correction_hc">Correcção Hidratos</string>
+    <string name="insulin_active">Insulina ainda activa</string>
+    <string name="insulin_total">Total de Insulina a tomar</string>
+    <string name="minus_signal" translatable="false">-</string>
+    <string name="plus_signal" translatable="false">+</string>
+    <string name="use_not">Não usar</string>
+    <string name="use">Usar</string>
+    <string name="new_feature">Nova funcionalidade</string>
+    <string name="active_insulin">Insulina Activa</string>
+    <string name="new_feature_iob_text_1">Quando toma uma insulina esta não actua de imediato, mas sim ao longo de algumas horas. Como pode ver na imagem acima.</string>
+    <string name="new_feature_iob_text_2">Agora pode ter informação da insulina que ainda está activa no seu organismo quando for tomar uma nova insulina</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
 </resources>

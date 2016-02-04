@@ -20,8 +20,11 @@ import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
+import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.database.Usage;
+import pt.it.porto.mydiabetes.ui.dialogs.NewFeatureDialog;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.SyncAlarm;
 
@@ -52,6 +55,7 @@ public class Home extends BaseOldActivity {
 			}
 		});
 		setupSyncAlarm();
+		showNewFeatures();
 	}
 
 	private void setupSyncAlarm() {
@@ -101,7 +105,6 @@ public class Home extends BaseOldActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-
 	public void ShowDialogAddData() {
 		Intent intent = new Intent(this, WelcomeActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -120,7 +123,7 @@ public class Home extends BaseOldActivity {
 	}
 
 	public void Call_Meal(View view) {
-		Intent intent = new Intent(this, Meal.class);
+		Intent intent = new Intent(this, TestBaseMealActivity.class);
 		startActivity(intent);
 	}
 
@@ -148,6 +151,26 @@ public class Home extends BaseOldActivity {
 	public void Call_Logbook(View view) {
 		Intent intent = new Intent(this, Logbook.class);
 		startActivity(intent);
+	}
+
+	private void showNewFeatures() {
+		if (Preferences.showFeatureForFirstTime(this, FeaturesDB.FEATURE_INSULIN_ON_BOARD)) {
+			NewFeatureDialog dialog = new NewFeatureDialog();
+			dialog.setListener(new NewFeatureDialog.ActivateFeatureDialogListener() {
+				@Override
+				public void useFeature() {
+					FeaturesDB featuresDB=new FeaturesDB(MyDiabetesStorage.getInstance(getApplicationContext()));
+					featuresDB.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, true);
+				}
+
+				@Override
+				public void notUseFeature() {
+					FeaturesDB featuresDB=new FeaturesDB(MyDiabetesStorage.getInstance(getApplicationContext()));
+					featuresDB.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, false);
+				}
+			});
+			dialog.show(getFragmentManager(), "newFeature");
+		}
 	}
 
 	private class MyGestureDetector extends SimpleOnGestureListener {

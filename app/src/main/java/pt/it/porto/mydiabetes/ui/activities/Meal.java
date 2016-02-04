@@ -3,13 +3,12 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -33,9 +34,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -48,26 +49,49 @@ import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.middleHealth.utils.Utils;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
+import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc;
 import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.utils.ImageUtils;
+import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 
 public class Meal extends BaseOldActivity {
 
-
-	ArrayList<String> allInsulins;
+	private static final String SHOW_INSULIN_CALCS_EXPANDED = "SHOW_INSULIN_CALCS_EXPANDED";
 	//photo variables - start
 	final private int IMAGE_CAPTURE = 2;
 	final private int IMAGE_VIEW = 3;
+	ArrayList<String> allInsulins;
 	Uri imgUri;
 	Bitmap b;
 	//photo variables - end
 
 	//variavel que contem o id da insulina seleccionada
 	int action_type = -1;
+
+	private EditText insulinunits;
+	private EditText glycemia;
+	private EditText carbs;
+	private EditText target;
+
+	private InsulinCalculator insulinCalculator;
+
+	private boolean expandInsulinCalcsAuto = false;
+	private InsulinCalc fragmentInsulinCalcs;
+
+	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
+		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
+		for (int position = 0; position < adapter.getCount(); position++) {
+			if (adapter.getItem(position).equals(value)) {
+				spnr.setSelection(position);
+				return;
+			}
+		}
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -110,34 +134,21 @@ public class Meal extends BaseOldActivity {
 
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
-		final double iRatio = Double.valueOf(obj[3].toString());
-		final double cRatio = Double.valueOf(obj[4].toString());
 		rdb.close();
+		double iRatio = Double.valueOf(obj[3].toString());
+		double cRatio = Double.valueOf(obj[4].toString());
+		insulinCalculator = new InsulinCalculator((int) iRatio, (int) cRatio);
+		setupLasInsulin();
 
-		final EditText insulinunits = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
-		final EditText target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);
-		final EditText glycemia = (EditText) findViewById(R.id.et_MealDetail_Glycemia);
-		final EditText carbs = (EditText) findViewById(R.id.et_MealDetail_Carbs);
+		insulinunits = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
+		target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);
+		glycemia = (EditText) findViewById(R.id.et_MealDetail_Glycemia);
+		carbs = (EditText) findViewById(R.id.et_MealDetail_Carbs);
 
 
 		target.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")) {
-//					Double gli = Double.parseDouble(glycemia.getText().toString());
-//					Double tar = Double.parseDouble(target.getText().toString());
-//					Double car = Double.parseDouble(carbs.getText().toString());
-//					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
-//					result = 0.5 * Math.round(result/0.5);
-//					if(result<0){
-//						result = 0.0;
-//					}
-//					Log.d("resultado", result.toString());
-					double[] result = computeIOB(iRatio, cRatio, glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
-
-
-					insulinunits.setText(String.valueOf(result[4]));
-				}
 			}
 
 			@Override
@@ -146,27 +157,23 @@ public class Meal extends BaseOldActivity {
 
 			@Override
 			public void afterTextChanged(Editable s) {
+				String text = s.toString();
+				if (text.isEmpty()) {
+					insulinCalculator.setGlycemiaTarget(0);
+				} else {
+					try {
+						insulinCalculator.setGlycemiaTarget(Integer.parseInt(s.toString()));
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+				}
+				setInsulinIntake();
 			}
 		});
 
 		glycemia.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")) {
-//					Double gli = Double.parseDouble(glycemia.getText().toString());
-//					Double tar = Double.parseDouble(target.getText().toString());
-//					Double car = Double.parseDouble(carbs.getText().toString());
-//					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
-//					result = 0.5 * Math.round(result/0.5);
-//					if(result<0){
-//						result = 0.0;
-//					}
-//					Log.d("resultado", result.toString());
-					double[] result = computeIOB(iRatio, cRatio, glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
-
-
-					insulinunits.setText(String.valueOf(result[4]));
-				}
 			}
 
 			@Override
@@ -175,27 +182,23 @@ public class Meal extends BaseOldActivity {
 
 			@Override
 			public void afterTextChanged(Editable s) {
+				String text = s.toString();
+				if (text.isEmpty()) {
+					insulinCalculator.setGlycemia(0);
+				} else {
+					try {
+						insulinCalculator.setGlycemia(Integer.parseInt(s.toString()));
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+				}
+				setInsulinIntake();
 			}
 		});
 
 		carbs.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				if (!target.getText().toString().equals("") && !glycemia.getText().toString().equals("") && !carbs.getText().toString().equals("")) {
-//					Double gli = Double.parseDouble(glycemia.getText().toString());
-//					Double tar = Double.parseDouble(target.getText().toString());
-//					Double car = Double.parseDouble(carbs.getText().toString());
-//					Double result = ((gli-tar)/ iRatio) + (car/cRatio);
-//					result = 0.5 * Math.round(result/0.5);
-//					if(result<0){
-//						result = 0.0;
-//					}
-//					Log.d("resultado", result.toString());
-					double[] result = computeIOB(iRatio, cRatio, glycemia.getText().toString(), target.getText().toString(), carbs.getText().toString());
-
-
-					insulinunits.setText(String.valueOf(result[4]));
-				}
 			}
 
 			@Override
@@ -204,6 +207,17 @@ public class Meal extends BaseOldActivity {
 
 			@Override
 			public void afterTextChanged(Editable s) {
+				String text = s.toString();
+				if (text.isEmpty()) {
+					insulinCalculator.setCarbs(0);
+				} else {
+					try {
+						insulinCalculator.setCarbs(Integer.parseInt(s.toString()));
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					}
+				}
+				setInsulinIntake();
 			}
 		});
 
@@ -222,6 +236,9 @@ public class Meal extends BaseOldActivity {
 			}
 		});
 
+		if (!expandInsulinCalcsAuto) {
+			expandInsulinCalcsAuto = pt.it.porto.mydiabetes.database.Preferences.showFeatureForFirstTime(this, SHOW_INSULIN_CALCS_EXPANDED);
+		}
 
 		handleExtras();
 	}
@@ -250,7 +267,6 @@ public class Meal extends BaseOldActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-
 
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_MealDetail_Data);
@@ -300,17 +316,6 @@ public class Meal extends BaseOldActivity {
 		rdb.close();
 		SelectSpinnerItemByValue(tagSpinner, name);
 	}
-
-	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
-		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
-		for (int position = 0; position < adapter.getCount(); position++) {
-			if (adapter.getItem(position).equals(value)) {
-				spnr.setSelection(position);
-				return;
-			}
-		}
-	}
-
 
 	public void ShowDialogAddInsulin() {
 		final Context c = this;
@@ -382,7 +387,6 @@ public class Meal extends BaseOldActivity {
 
 	}
 
-
 	//-------------------------------------------
 	public void AddGlycemiaRead() {
 		Spinner TagSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
@@ -413,7 +417,7 @@ public class Meal extends BaseOldActivity {
 
 
 		gly.setIdUser(idUser);
-		gly.setValue(Double.parseDouble(glycemia.getText().toString()));
+		gly.setValue(Integer.parseInt(glycemia.getText().toString()));
 		gly.setDate(data.getText().toString());
 		gly.setTime(hora.getText().toString());
 		gly.setIdTag(idTag);
@@ -423,7 +427,6 @@ public class Meal extends BaseOldActivity {
 		reg.close();
 
 	}
-
 
 	public void AddCarbsRead() {
 		Spinner tagSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
@@ -454,7 +457,7 @@ public class Meal extends BaseOldActivity {
 
 
 		carb.setId_User(idUser);
-		carb.setCarbsValue(Double.parseDouble(carbs.getText().toString()));
+		carb.setCarbsValue(Integer.parseInt(carbs.getText().toString()));
 		carb.setId_Tag(idTag);
 		carb.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
 		carb.setDate(data.getText().toString());
@@ -511,7 +514,7 @@ public class Meal extends BaseOldActivity {
 			GlycemiaDataBinding gly = new GlycemiaDataBinding();
 
 			gly.setIdUser(idUser);
-			gly.setValue(Double.parseDouble(glycemia.getText().toString()));
+			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
 			gly.setDate(data.getText().toString());
 			gly.setTime(hora.getText().toString());
 			gly.setIdTag(idTag);
@@ -529,8 +532,8 @@ public class Meal extends BaseOldActivity {
 		ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
 		ins.setDate(data.getText().toString());
 		ins.setTime(hora.getText().toString());
-		ins.setTargetGlycemia(Double.parseDouble(target.getText().toString()));
-		ins.setInsulinUnits(Double.parseDouble(insulinunits.getText().toString()));
+		ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
+		ins.setInsulinUnits(Float.parseFloat(insulinunits.getText().toString()));
 		ins.setIdTag(idTag);
 
 
@@ -539,6 +542,9 @@ public class Meal extends BaseOldActivity {
 		reg.close();
 		rdb.close();
 	}
+
+
+	//PHOTO - START
 
 	//-----------------------------------------
 	public void VerifySaveReads() {
@@ -593,9 +599,6 @@ public class Meal extends BaseOldActivity {
 		NavUtils.navigateUpFromSameTask(this);
 	}
 
-
-	//PHOTO - START
-
 	public Uri setImageUri() {
 		// Store image in /MyDiabetes
 		File file = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes", new Date().getTime() + ".jpg");
@@ -603,10 +606,8 @@ public class Meal extends BaseOldActivity {
 		if (!dir.exists()) {
 			dir.mkdir();
 		}
-		imgUri = Uri.fromFile(file);
-		return imgUri;
+		return Uri.fromFile(file);
 	}
-
 
 	public void TakePhoto(View v) {
 		EditText photopath = (EditText) findViewById(R.id.et_MealDetail_Photo);
@@ -622,39 +623,36 @@ public class Meal extends BaseOldActivity {
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, setImageUri());
 			startActivityForResult(intent, IMAGE_CAPTURE);
 		}
-
 	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		EditText photopath = (EditText) findViewById(R.id.et_MealDetail_Photo);
 		ImageView img = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
-		if (resultCode != Activity.RESULT_CANCELED) {
-			if (requestCode == IMAGE_CAPTURE) {
-				Toast.makeText(getApplicationContext(), getString(R.string.photoSaved) + " " + imgUri.getPath(), Toast.LENGTH_LONG).show();
-				DisplayMetrics displaymetrics = new DisplayMetrics();
-				getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-				int height = (int) (displaymetrics.heightPixels * 0.1);
-				int width = (int) (displaymetrics.widthPixels * 0.1);
-				b = decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
-				img.setImageBitmap(b);
-				photopath.setText(imgUri.getPath());
-			} else if (requestCode == IMAGE_VIEW) {
-				Log.d("Result:", resultCode + "");
-				//se tivermos apagado a foto dá result code -1
-				//se voltarmos por um return por exemplo o resultcode é 0
-				if (resultCode == -1) {
-					photopath.setText("");
-					img.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.newphoto, null));
-					imgUri = null;
-				}
-			} else {
-				super.onActivityResult(requestCode, resultCode, data);
+		if (resultCode != Activity.RESULT_CANCELED && requestCode == IMAGE_CAPTURE) {
+			imgUri = data.getData();
+			Toast.makeText(getApplicationContext(), getString(R.string.photoSaved) + " " + imgUri.getPath(), Toast.LENGTH_LONG).show();
+			DisplayMetrics displaymetrics = new DisplayMetrics();
+			getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+			int height = (int) (displaymetrics.heightPixels * 0.1);
+			int width = (int) (displaymetrics.widthPixels * 0.1);
+			b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+			img.setImageBitmap(b);
+			photopath.setText(imgUri.getPath());
+		} else if (requestCode == IMAGE_VIEW) {
+			Log.d("Result:", resultCode + "");
+			//se tivermos apagado a foto dá result code -1
+			//se voltarmos por um return por exemplo o resultcode é 0
+			if (resultCode == -1) {
+				photopath.setText("");
+				img.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.newphoto, null));
+				imgUri = null;
 			}
+		} else {
+			super.onActivityResult(requestCode, resultCode, data);
 		}
 
 	}
-
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
@@ -662,6 +660,7 @@ public class Meal extends BaseOldActivity {
 		if (imgUri != null) {
 			outState.putString("cameraImageUri", imgUri.toString());
 		}
+		outState.putBoolean(SHOW_INSULIN_CALCS_EXPANDED, expandInsulinCalcsAuto);
 	}
 
 	@Override
@@ -676,162 +675,26 @@ public class Meal extends BaseOldActivity {
 			getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 			int height = (int) (displaymetrics.heightPixels * 0.1);
 			int width = (int) (displaymetrics.widthPixels * 0.1);
-			b = decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+			b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
 			img.setImageBitmap(b);
 			photopath.setText(imgUri.getPath());
 		}
-	}
-
-
-	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-		// Raw height and width of image
-		final int height = options.outHeight;
-		final int width = options.outWidth;
-		int inSampleSize = 1;
-
-		if (height > reqHeight || width > reqWidth) {
-
-			final int halfHeight = height / 2;
-			final int halfWidth = width / 2;
-
-			// Calculate the largest inSampleSize value that is a power of 2 and keeps both
-			// height and width larger than the requested height and width.
-			while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
-				inSampleSize *= 2;
-			}
+		if (savedInstanceState.containsKey(SHOW_INSULIN_CALCS_EXPANDED)) {
+			expandInsulinCalcsAuto = savedInstanceState.getBoolean(SHOW_INSULIN_CALCS_EXPANDED);
 		}
-
-		return inSampleSize;
 	}
 
-
-	public static Bitmap decodeSampledBitmapFromPath(String path, int reqWidth, int reqHeight) {
-
-		// First decode with inJustDecodeBounds=true to check dimensions
-		final BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		//BitmapFactory.decodeResource(res, resId, options);
-		BitmapFactory.decodeFile(path, options);
-
-		// Calculate inSampleSize
-		options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-		// Decode bitmap with inSampleSize set
-		options.inJustDecodeBounds = false;
-		return adjustImageOrientation(BitmapFactory.decodeFile(path, options), path);
-	}
-
-
-	private static Bitmap adjustImageOrientation(Bitmap image, String picturePath) {
-		ExifInterface exif;
-		try {
-			exif = new ExifInterface(picturePath);
-			int exifOrientation = exif.getAttributeInt(
-					ExifInterface.TAG_ORIENTATION,
-					ExifInterface.ORIENTATION_NORMAL);
-
-			int rotate = 0;
-			switch (exifOrientation) {
-				case ExifInterface.ORIENTATION_ROTATE_90:
-					rotate = 90;
-					break;
-
-				case ExifInterface.ORIENTATION_ROTATE_180:
-					rotate = 180;
-					break;
-
-				case ExifInterface.ORIENTATION_ROTATE_270:
-					rotate = 270;
-					break;
-			}
-
-			if (rotate != 0) {
-				int w = image.getWidth();
-				int h = image.getHeight();
-
-				// Setting pre rotate
-				Matrix mtx = new Matrix();
-				mtx.preRotate(rotate);
-
-				// Rotating Bitmap & convert to ARGB_8888, required by tess
-				image = Bitmap.createBitmap(image, 0, 0, w, h, mtx, false);
-
-			}
-		} catch (IOException e) {
-			return null;
-		}
-		return image.copy(Bitmap.Config.ARGB_8888, true);
-	}
-	//PHOTO - END
-
-
-	private double[] computeIOB(Double iRatio, Double cRatio, String glycemia, String target, String carbs) {
+	private void setupLasInsulin() {
 		DB_Read read = new DB_Read(this);
 		int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity();
-		Date now = new Date();
-		SimpleDateFormat sdf = new SimpleDateFormat("k:mm");
-		String[] formattedTime = sdf.format(now).split(":");
 		read.close();
 
+		int minuteOriginal = lastInsulin[1] * 60 + lastInsulin[2];
 		int insulinType = lastInsulin[0];
 		int insulinDose = lastInsulin[3];
 
-		double[] result = new double[5];
-		int hourNow = Integer.parseInt(formattedTime[0]);
-		int minuteNow = hourNow * 60 + Integer.parseInt(formattedTime[1]);
-		int minuteOriginal = lastInsulin[1] * 60 + lastInsulin[2];
-
-
-		int minuteDiff = minuteNow - minuteOriginal;
-		Log.d("Minute diff: ", minuteDiff + "");
-
-		Double gli = Double.parseDouble(glycemia);
-		Double tar = Double.parseDouble(target);
-		Double car = Double.parseDouble(carbs);
-		Double glicemia = ((gli - tar) / iRatio); //calculo separado da glicemia
-		result[1] = glicemia;
-		Double glicidos = (car / cRatio); //calculo separado dos glicidos
-		result[3] = glicidos;
-		Double total = ((gli - tar) / iRatio) + (car / cRatio);
-
-		Log.d("tipo de insulina: : ", insulinType + "");
-		Log.d("glicemia: ", glicemia.toString());
-		Log.d("glicidos: : ", glicidos.toString());
-
-
-// 		if (insulinType == 0) { //só calcula para insulina rapida que é a 0
-// 			result[0] = 0;
-// 			if (minuteDiff <= 60) {
-// 				result[2] = insulinDose * 0.75;
-// 			} else if (minuteDiff <= 120) {
-// 				result[2] = insulinDose * 0.50;
-// 			} else if (minuteDiff <= 180) {
-// 				result[2] = insulinDose * 0.25;
-// 			} else if (minuteDiff > 180) {
-// 				result[2] = 0;
-// 			}
-// 
-// 			result[4] = total - result[2]; //cálculo normal menos o IOB
-// 
-// 		} else {
-			result[0] = insulinType;
-			result[2] = -1;
-			result[4] = total;
-//		}
-
-
-		result[4] = 0.5 * Math.round(result[4] / 0.5);
-		if (result[4] < 0) {
-			result[4] = 0.0;
-		}
-
-		Log.d("IOB: ", result[2] + "");
-		Log.d("total: ", result[4] + "");
-
-
-		return result;
+		insulinCalculator.setLastInsulin(insulinDose, minuteOriginal, insulinType);
 	}
-
 
 	private void handleExtras() {
 		// Check if there are any extras in the intent:
@@ -880,5 +743,89 @@ public class Meal extends BaseOldActivity {
 			intent.putExtras(bundle);
 		}
 		startActivity(intent);
+	}
+
+	private void showCalcs() {
+		if (fragmentInsulinCalcs == null) {
+			FragmentManager fragmentManager = getFragmentManager();
+			Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_calcs);
+			if (fragment != null) {
+				fragmentInsulinCalcs = (InsulinCalc) fragment;
+			} else {
+				fragmentInsulinCalcs = InsulinCalc.newInstance((int) insulinCalculator.getGlycemiaRatio(), (int) insulinCalculator.getCarbsRatio());
+				fragmentManager.beginTransaction()
+						.add(R.id.fragment_calcs, fragmentInsulinCalcs)
+						.commit();
+				fragmentManager.executePendingTransactions();
+
+				ScaleAnimation animation = new ScaleAnimation(1, 1, 0, 1, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
+				animation.setDuration(700);
+				findViewById(R.id.fragment_calcs).startAnimation(animation);
+				((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setChecked(true);
+			}
+		}
+		fragmentInsulinCalcs.setCorrectionGlycemia(insulinCalculator.getInsulinGlycemia());
+		fragmentInsulinCalcs.setCorrectionCarbs(insulinCalculator.getInsulinCarbs());
+		fragmentInsulinCalcs.setResult(insulinCalculator.getInsulinTotal(true), insulinCalculator.getInsulinTotal(true, true));
+		float insulinOnBoard = insulinCalculator.getInsulinOnBoard();
+		if (insulinOnBoard > 0) {
+			fragmentInsulinCalcs.setInsulinOnBoard(insulinOnBoard);
+		}
+	}
+
+
+	private void hideCalcs() {
+		if (fragmentInsulinCalcs != null) {
+			ScaleAnimation animation = new ScaleAnimation(1, 1, 1, 0, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
+			animation.setDuration(700);
+			findViewById(R.id.fragment_calcs).startAnimation(animation);
+			animation.setAnimationListener(new Animation.AnimationListener() {
+				@Override
+				public void onAnimationStart(Animation animation) {
+
+				}
+
+				@Override
+				public void onAnimationEnd(Animation animation) {
+					getFragmentManager().beginTransaction()
+							.remove(fragmentInsulinCalcs)
+							.commit();
+					fragmentInsulinCalcs = null;
+				}
+
+				@Override
+				public void onAnimationRepeat(Animation animation) {
+
+				}
+			});
+		}
+	}
+
+	public void toggleInsulinCalcDetails(View view) {
+		expandInsulinCalcsAuto = false;
+		if (((ToggleButton) view).isChecked()) {
+			showCalcs();
+		} else {
+			hideCalcs();
+		}
+	}
+
+	private void setInsulinIntake() {
+		if (expandInsulinCalcsAuto || isFragmentShowing()) {
+			showCalcs();
+		}
+
+		float insulin = insulinCalculator.getInsulinTotal(true, true);
+		insulinunits.setText(String.valueOf(insulin > 0 ? insulin : 0));
+	}
+
+	private boolean isFragmentShowing() {
+		FragmentManager fragmentManager = getFragmentManager();
+		Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_calcs);
+		if (fragment != null) {
+			fragmentInsulinCalcs = (InsulinCalc) fragment;
+			return true;
+		}
+		return false;
 	}
 }

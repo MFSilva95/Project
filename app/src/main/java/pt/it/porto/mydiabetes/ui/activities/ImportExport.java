@@ -433,7 +433,7 @@ public class ImportExport extends BaseOldActivity {
 			t.addCell(new Phrase(i.getPhotoPath(), cf));
 			t.addCell(new Phrase(i.getDate(), cf));
 			t.addCell(new Phrase(i.getTime(), cf));
-			t.addCell(new Phrase(i.getCarbsValue().toString(), cf));
+			t.addCell(new Phrase(String.valueOf(i.getCarbsValue()), cf));
 			t.addCell(new Phrase(rdb.Tag_GetById(i.getId_Tag()).getName(), cf));
 			t.addCell((i.getId_Note() > 0) ? new Phrase(rdb.Note_GetById(
 					i.getId_Note()).getNote(), cf) : new Phrase("", cf));

@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.activities.LogbookDetail;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
@@ -78,11 +79,11 @@ public class LogbookAdapter extends BaseAdapter {
         if (ch != null && ins != null && bg != null) {//refeicao completa
             data.setText(ins.getDate());
             hora.setText(ins.getTime());
-            ivalue.setText(ins.getInsulinUnits().toString());
+            ivalue.setText(String.valueOf(ins.getInsulinUnits()));
             InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
             insulin.setText(insulina.getName());
-            gvalue.setText(bg.getValue().toString());
-            cvalue.setText(ch.getCarbsValue().toString());
+            gvalue.setText(String.valueOf(bg.getValue()));
+            cvalue.setText(String.valueOf(ch.getCarbsValue()));
             TagDataBinding t = rdb.Tag_GetById(ins.getIdTag());
             tag.setText(t.getName());
             final String _id = ch.getId() + "_" + ins.getId() + "_" + bg.getId();
@@ -99,7 +100,7 @@ public class LogbookAdapter extends BaseAdapter {
             hora.setText(ch.getTime());
             ivalue.setText("");
             gvalue.setText("");
-            cvalue.setText(ch.getCarbsValue().toString());
+            cvalue.setText(String.valueOf(ch.getCarbsValue()));
             TagDataBinding t = rdb.Tag_GetById(ch.getId_Tag());
             tag.setText(t.getName());
             final String _id = ch.getId() + "_" + 0 + "_" + 0;
@@ -114,10 +115,10 @@ public class LogbookAdapter extends BaseAdapter {
         } else if (ch == null && ins != null && bg != null) {//insulina com parametro da glicemia
             data.setText(ins.getDate());
             hora.setText(ins.getTime());
-            ivalue.setText(ins.getInsulinUnits().toString());
+            ivalue.setText(String.valueOf(ins.getInsulinUnits()));
             InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
             insulin.setText(insulina.getName());
-            gvalue.setText(bg.getValue().toString());
+            gvalue.setText(String.valueOf(bg.getValue()));
             cvalue.setText("");
             TagDataBinding t = rdb.Tag_GetById(ins.getIdTag());
             tag.setText(t.getName());
@@ -134,7 +135,7 @@ public class LogbookAdapter extends BaseAdapter {
             data.setText(bg.getDate());
             hora.setText(bg.getTime());
             ivalue.setTag("");
-            gvalue.setText(bg.getValue().toString());
+            gvalue.setText(String.valueOf(bg.getValue()));
             cvalue.setText("");
             TagDataBinding t = rdb.Tag_GetById(bg.getIdTag());
             tag.setText(t.getName());
@@ -151,7 +152,7 @@ public class LogbookAdapter extends BaseAdapter {
         } else if (ch == null && ins != null && bg == null) {//so insulina
             data.setText(ins.getDate());
             hora.setText(ins.getTime());
-            ivalue.setText(ins.getInsulinUnits().toString());
+            ivalue.setText(String.valueOf(ins.getInsulinUnits()));
             InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
             insulin.setText(insulina.getName());
             gvalue.setText("");
@@ -170,11 +171,11 @@ public class LogbookAdapter extends BaseAdapter {
         } else if (ch != null && ins != null && bg == null) {//hidratos e insulina
             data.setText(ins.getDate());
             hora.setText(ins.getTime());
-            ivalue.setText(ins.getInsulinUnits().toString());
+            ivalue.setText(String.valueOf(ins.getInsulinUnits()));
             InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
             insulin.setText(insulina.getName());
             gvalue.setText("");
-            cvalue.setText(ch.getCarbsValue().toString());
+            cvalue.setText(String.valueOf(ch.getCarbsValue()));
             TagDataBinding t = rdb.Tag_GetById(ins.getIdTag());
             tag.setText(t.getName());
             final String _id = ch.getId() + "_" + ins.getId() + "_" + 0;
@@ -191,8 +192,8 @@ public class LogbookAdapter extends BaseAdapter {
             hora.setText(ch.getTime());
             ivalue.setText("");
             insulin.setText("");
-            gvalue.setText(bg.getValue().toString());
-            cvalue.setText(ch.getCarbsValue().toString());
+            gvalue.setText(String.valueOf(bg.getValue()));
+            cvalue.setText(String.valueOf(ch.getCarbsValue()));
             TagDataBinding t = rdb.Tag_GetById(ch.getId_Tag());
             tag.setText(t.getName());
             final String _id = ch.getId() + "_" + 0 + "_" + bg.getId();
@@ -238,11 +239,14 @@ public class LogbookAdapter extends BaseAdapter {
           {
               @Override
               public void onClick(final View v) {
-                  Intent intent = new Intent(v.getContext(), LogbookDetail.class);
+                  Intent intent = new Intent(v.getContext(), DetailLogbookActivity.class);
                   Bundle args = new Bundle();
                   args.putString("ch", id_ch); //ch id
                   args.putString("ins", id_ins); //ins id
                   args.putString("bg", id_bg); //bg id
+                  args.putParcelable(DetailLogbookActivity.ARG_INSULIN, ins);
+                  args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, bg);
+                  args.putParcelable(DetailLogbookActivity.ARG_CARBS, ch);
                   intent.putExtras(args);
                   v.getContext().startActivity(intent);
               }
