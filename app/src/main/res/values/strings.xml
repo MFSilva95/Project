@@ -3,7 +3,7 @@
 
     <string name="app_name">A Minha Diabetes</string>
     <string name="add_Exercise">Adicionar Exercício</string>
-    <string name="title_activity_my_data">Meus Dados</string>
+    <string name="title_activity_my_data">Os Meus Dados</string>
     <string name="title_activity_preferences">Configurações</string>
     <string name="title_activity_exercise">Registos de Exercício</string>
     <string name="save_MyData">Guardar</string>
@@ -345,4 +345,5 @@
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="report">Relatório</string>
+    <string name="insulin_calc">Cálculo Insulina</string>
 </resources>
