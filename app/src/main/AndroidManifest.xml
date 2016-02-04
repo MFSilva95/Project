@@ -27,18 +27,18 @@
         <activity
             android:name=".ui.activities.MyData"
             android:label="@string/title_activity_my_data"
-            android:parentActivityName=".ui.activities.Home">
+            android:parentActivityName=".ui.activities.DataTools">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Home"/>
+                android:value=".ui.activities.DataTools"/>
         </activity>
         <activity
             android:name=".ui.activities.Preferences"
             android:label="@string/title_activity_preferences"
-            android:parentActivityName=".ui.activities.Home">
+            android:parentActivityName=".ui.activities.DataTools">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Home"/>
+                android:value=".ui.activities.DataTools"/>
         </activity>
         <activity
             android:name=".ui.activities.Exercise"
@@ -268,8 +268,8 @@
         <activity
             android:name=".ui.activities.TransferActivity"
             android:label="@string/title_activity_transfer"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".ui.activities.ImportExport">
+            android:parentActivityName=".ui.activities.ImportExport"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.ImportExport"/>
