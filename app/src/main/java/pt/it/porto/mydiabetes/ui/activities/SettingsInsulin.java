@@ -49,7 +49,7 @@ public class SettingsInsulin extends BaseOldActivity {
 		setMyDataFromDB(myData);
 		db.close();
 
-		useActiveInsulin= (CheckBox) findViewById(R.id.use_IOB);
+		useActiveInsulin = (CheckBox) findViewById(R.id.use_IOB);
 		FeaturesDB features = new FeaturesDB(MyDiabetesStorage.getInstance(this));
 		useActiveInsulin.setChecked(features.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD));
 	}
@@ -106,7 +106,7 @@ public class SettingsInsulin extends BaseOldActivity {
 	}
 
 	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment =  DatePickerFragment.getDatePickerFragment(R.id.et_MyData_BirthDate,
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MyData_BirthDate,
 				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
@@ -189,8 +189,8 @@ public class SettingsInsulin extends BaseOldActivity {
 	}
 
 
-	public void showIOBDialog(View v){
-		NewFeatureDialog dialog=new NewFeatureDialog();
+	public void showIOBDialog(View v) {
+		NewFeatureDialog dialog = new NewFeatureDialog();
 		dialog.setCancelable(true);
 		dialog.setListener(new NewFeatureDialog.ActivateFeatureDialogListener() {
 			@Override
@@ -204,6 +204,11 @@ public class SettingsInsulin extends BaseOldActivity {
 			}
 		});
 		dialog.show(getFragmentManager(), "iob");
+	}
+
+	public void editInsulins(View v) {
+		Intent intent = new Intent(this, Insulins.class);
+		startActivity(intent);
 	}
 
 }

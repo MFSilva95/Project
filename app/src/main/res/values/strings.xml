@@ -346,4 +346,5 @@
     <string name="no">Não</string>
     <string name="report">Relatório</string>
     <string name="insulin_calc">Cálculo Insulina</string>
+    <string name="use_iob">Usar Insulina Activa</string>
 </resources>

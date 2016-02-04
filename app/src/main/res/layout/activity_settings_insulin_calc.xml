@@ -141,13 +141,12 @@
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:onClick="showIOBDialog"
             android:orientation="horizontal"
             android:paddingBottom="4dp"
-            android:onClick="showIOBDialog"
             android:paddingTop="4dp">
 
             <TextView
-                android:textStyle="bold"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:layout_weight="1"
@@ -155,8 +154,9 @@
                 android:gravity="center_vertical"
                 android:paddingBottom="4dp"
                 android:paddingTop="4dp"
-                android:text="Usar Insulina Activa"
-                android:textSize="16sp"/>
+                android:text="@string/use_iob"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
 
             <CheckBox
                 android:id="@+id/use_IOB"
@@ -164,6 +164,33 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center"
                 android:gravity="center"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:background="?android:attr/dividerVertical"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="?android:selectableItemBackground"
+            android:onClick="editInsulins"
+            android:orientation="horizontal"
+            android:paddingBottom="4dp"
+            android:paddingTop="4dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:checked="true"
+                android:gravity="center_vertical"
+                android:paddingBottom="4dp"
+                android:paddingTop="4dp"
+                android:text="Editar Insulinas"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
         </LinearLayout>
     </LinearLayout>
 

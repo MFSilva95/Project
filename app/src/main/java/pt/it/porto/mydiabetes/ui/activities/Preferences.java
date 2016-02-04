@@ -13,7 +13,6 @@ import android.view.View;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.fragments.Diseases;
 import pt.it.porto.mydiabetes.ui.fragments.Exercises;
-import pt.it.porto.mydiabetes.ui.fragments.Insulins;
 import pt.it.porto.mydiabetes.ui.fragments.Tags;
 import pt.it.porto.mydiabetes.ui.fragments.TargetBG;
 
@@ -39,12 +38,6 @@ public class Preferences extends BaseOldActivity {
 		Fragment targetsFragment = new TargetBG();
 		tab.setTabListener(new MyTabsListener(targetsFragment));
 		tab.setText(R.string.preferences_target);
-		getActionBar().addTab(tab);
-
-		tab = getActionBar().newTab();
-		Fragment insulinsFragment = new Insulins();
-		tab.setTabListener(new MyTabsListener(insulinsFragment));
-		tab.setText(R.string.preferences_insulins);
 		getActionBar().addTab(tab);
 
 		tab = getActionBar().newTab();

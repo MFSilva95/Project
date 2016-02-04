@@ -57,6 +57,14 @@
                 android:value=".ui.activities.DataTools"/>
         </activity>
         <activity
+            android:name=".ui.activities.Insulins"
+            android:label="@string/preferences_insulins"
+            android:parentActivityName=".ui.activities.SettingsInsulin">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.SettingsInsulin"/>
+        </activity>
+        <activity
             android:name=".ui.activities.Exercise"
             android:label="@string/title_activity_exercise"
             android:parentActivityName=".ui.activities.Home">
