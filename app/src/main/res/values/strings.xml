@@ -134,7 +134,8 @@
     <string name="uporto" translatable="false">Univ. Porto</string>
 
 
-    <string name="sync">Sincronizar com PC</string>
+    <string name="sync_with_pc">Sincronizar com PC</string>
+    <string name="sync">Sincronização</string>
 
 
     <string name="qr">Ler QR</string>
@@ -343,4 +344,5 @@
     <string name="new_feature_iob_text_2">Agora pode ter informação da insulina que ainda está activa no seu organismo quando for tomar uma nova insulina</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
+    <string name="report">Relatório</string>
 </resources>

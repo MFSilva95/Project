@@ -70,4 +70,9 @@ public class DataTools extends Activity {
 		Intent intent = new Intent(this, Info.class);
 		startActivity(intent);
 	}
+
+	public void callReport(View view){
+		Intent intent=new Intent(this, SettingsReport.class);
+		startActivity(intent);
+	}
 }

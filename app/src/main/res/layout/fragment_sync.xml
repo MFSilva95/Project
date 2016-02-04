@@ -19,7 +19,7 @@
         android:background="@color/background_holo_dark"
         android:drawableTop="@drawable/sync"
         android:onClick="syncPC"
-        android:text="@string/sync" />
+        android:text="@string/sync_with_pc" />
 
     <Button
         android:id="@+id/syncCloud"

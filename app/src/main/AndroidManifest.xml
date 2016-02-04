@@ -41,6 +41,14 @@
                 android:value=".ui.activities.DataTools"/>
         </activity>
         <activity
+            android:name=".ui.activities.SettingsReport"
+            android:label="@string/report"
+            android:parentActivityName=".ui.activities.DataTools">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.DataTools"/>
+        </activity>
+        <activity
             android:name=".ui.activities.Exercise"
             android:label="@string/title_activity_exercise"
             android:parentActivityName=".ui.activities.Home">
