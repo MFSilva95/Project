@@ -347,4 +347,5 @@
     <string name="report">Relatório</string>
     <string name="insulin_calc">Cálculo Insulina</string>
     <string name="use_iob">Usar Insulina Activa</string>
+    <string name="backup_restore_confirmation_dialog_text">Este processo vai subsituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
 </resources>

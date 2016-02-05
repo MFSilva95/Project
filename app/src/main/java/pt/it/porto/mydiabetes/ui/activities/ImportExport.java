@@ -3,7 +3,7 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.ComponentName;
@@ -21,18 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.TextView;
-
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Font;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.PdfPTable;
-import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.pdf.draw.LineSeparator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,7 +29,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -48,19 +36,8 @@ import java.util.List;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.sync.crypt.KeyGenerator;
-import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestore;
-import pt.it.porto.mydiabetes.ui.fragments.PdfExport;
 import pt.it.porto.mydiabetes.ui.fragments.Sync;
-import pt.it.porto.mydiabetes.ui.listAdapters.BloodPressureDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.CholesterolDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.WeightDataBinding;
 
 public class ImportExport extends BaseOldActivity {
 
@@ -148,10 +125,31 @@ public class ImportExport extends BaseOldActivity {
 					ShowDialogMsg(getString(R.string.dbcopy_error));
 				}
 			}
+		} else {
+			ShowDialogMsg(getString(R.string.dbcopy_error));
 		}
 	}
 
 	public void restore(View v) {
+		Dialog dialog = new AlertDialog.Builder(this)
+				.setTitle(R.string.restore_backup)
+				.setMessage(R.string.backup_restore_confirmation_dialog_text)
+				.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						restoreExec();
+					}
+				})
+				.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				}).create();
+		dialog.show();
+	}
+
+	private void restoreExec() {
 		if (isSDWriteable()) {
 			File inputFile = new File(Environment.getExternalStorageDirectory()
 					+ "/MyDiabetes/backup/DB_Diabetes");
