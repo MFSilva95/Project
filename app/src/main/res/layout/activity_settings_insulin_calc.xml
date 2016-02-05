@@ -62,7 +62,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/hint_value3"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 android:textSize="18sp">
             </EditText>
         </LinearLayout>
@@ -87,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/hint_value4"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 android:textSize="18sp">
             </EditText>
         </LinearLayout>
@@ -112,7 +112,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/hint_value5"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 android:textSize="18sp">
             </EditText>
         </LinearLayout>
@@ -137,7 +137,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/hint_value6"
-                android:inputType="numberDecimal"
+                android:inputType="number"
                 android:textSize="18sp">
             </EditText>
         </LinearLayout>
@@ -149,6 +149,7 @@
             android:onClick="showIOBDialog"
             android:orientation="horizontal"
             android:paddingBottom="4dp"
+            android:background="?android:selectableItemBackground"
             android:paddingTop="4dp">
 
             <TextView

@@ -1,5 +1,6 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
@@ -24,6 +25,7 @@ import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.NewFeatureDialog;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 public class SettingsInsulin extends BaseOldActivity {
@@ -36,7 +38,10 @@ public class SettingsInsulin extends BaseOldActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings_insulin_calc);
 		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		ActionBar actionbar = getActionBar();
+		if (actionbar != null) {
+			actionbar.setDisplayHomeAsUpEnabled(true);
+		}
 
 		Spinner sp_MyData_DiabetesType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
 		ArrayAdapter<CharSequence> adapter_sp_MyData_DiabetesType = ArrayAdapter.createFromResource(this, R.array.diabetes_Type, android.R.layout.simple_spinner_item);
@@ -114,14 +119,15 @@ public class SettingsInsulin extends BaseOldActivity {
 	//corrige erro ao gravar
 	// os spinners não são verificados porque incialmente têm sempre valor
 	public boolean inputIsValid() {
-		Object[] obj = new Object[4];
+		EditText[] obj = new EditText[4];
 		obj[0] = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
 		obj[1] = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
 		obj[2] = (EditText) findViewById(R.id.et_MyData_LowerRange);
 		obj[3] = (EditText) findViewById(R.id.et_MyData_HigherRange);
 
-		for (Object aux : obj) {
-			if (((EditText) aux).getText().toString().trim().length() == 0) {
+		for (EditText aux : obj) {
+			if (aux.getText().toString().trim().length() == 0) {
+				aux.setError(getString(R.string.error_field_required));
 				return false;
 			}
 		}
@@ -136,10 +142,10 @@ public class SettingsInsulin extends BaseOldActivity {
 		EditText hRange = (EditText) findViewById(R.id.et_MyData_HigherRange);
 
 		myData[2] = dType.getSelectedItem().toString();
-		myData[3] = Double.parseDouble(iRatio.getText().toString());
-		myData[4] = Double.parseDouble(cRatio.getText().toString());
-		myData[5] = Double.parseDouble(lRange.getText().toString());
-		myData[6] = Double.parseDouble(hRange.getText().toString());
+		myData[3] = Integer.parseInt(iRatio.getText().toString());
+		myData[4] = Integer.parseInt(cRatio.getText().toString());
+		myData[5] = Integer.parseInt(lRange.getText().toString());
+		myData[6] = Integer.parseInt(hRange.getText().toString());
 
 		return myData;
 	}
@@ -163,11 +169,10 @@ public class SettingsInsulin extends BaseOldActivity {
 						dType.setSelection(0);
 				}
 			}
-			iRatio.setText(obj[3].toString());
-			cRatio.setText(obj[4].toString());
-			lRange.setText(obj[5].toString());
-			hRange.setText(obj[6].toString());
-
+			iRatio.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) ((double) obj[3])));
+			cRatio.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) ((double) obj[4])));
+			lRange.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) ((double) obj[5])));
+			hRange.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) ((double) obj[6])));
 		}
 	}
 

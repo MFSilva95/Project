@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -20,10 +19,8 @@ import android.widget.Toast;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.database.FeaturesDB;
-import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.ui.dialogs.NewFeatureDialog;
+import pt.it.porto.mydiabetes.ui.fragments.register.PersonalDataFragment;
 
 
 public class MyData extends BaseOldActivity {
@@ -93,21 +90,27 @@ public class MyData extends BaseOldActivity {
 	}
 
 	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment =  DatePickerFragment.getDatePickerFragment(R.id.et_MyData_BirthDate,
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MyData_BirthDate,
 				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public Boolean inputIsValid() {
-		Object[] obj = new Object[3];
+		EditText[] obj = new EditText[3];
 		obj[0] = (EditText) findViewById(R.id.et_MyData_Name);
 		obj[1] = (EditText) findViewById(R.id.et_MyData_BirthDate);
 		obj[2] = (EditText) findViewById(R.id.et_MyData_Height);
 
-		for (Object aux : obj) {
-			if (((EditText) aux).getText().toString().trim().length() == 0) {
+		for (EditText aux : obj) {
+			if (aux.getText().toString().trim().length() == 0) {
+				aux.setError(getString(R.string.error_field_required));
 				return false;
 			}
+		}
+
+		if (!PersonalDataFragment.isHeightValid(obj[2].getText().toString())) {
+			obj[2].setError(getString(R.string.error_invalid_height));
+			return false;
 		}
 		return true;
 	}
