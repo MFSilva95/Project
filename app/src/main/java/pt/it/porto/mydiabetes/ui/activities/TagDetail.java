@@ -24,6 +24,7 @@ import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
 
 public class TagDetail extends Activity {
 
+	public static final String DATA = "data";
 	int idTag = 0;
 	String id;
 
@@ -37,21 +38,30 @@ public class TagDetail extends Activity {
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
-			DB_Read rdb = new DB_Read(this);
-			id = args.getString("Id");
-			idTag = Integer.parseInt(id);
-			TagDataBinding toFill = rdb.Tag_GetById(Integer.parseInt(id));
+			TagDataBinding toFill = null;
+			if (args.containsKey(DATA)) {
+				toFill = args.getParcelable(DATA);
+				if (toFill != null) {
+					idTag = toFill.getId();
+				}
 
+			}
+			if (toFill == null) {
+				DB_Read rdb = new DB_Read(this);
+				id = args.getString("Id");
+				idTag = Integer.parseInt(id);
+				toFill = rdb.Tag_GetById(Integer.parseInt(id));
+
+
+				rdb.close();
+			}
 			EditText name = (EditText) findViewById(R.id.et_FaseDia_Nome);
 			name.setText(toFill.getName());
 			EditText from = (EditText) findViewById(R.id.et_FaseDia_HourFrom);
 			from.setText(toFill.getStart());
 			EditText to = (EditText) findViewById(R.id.et_FaseDia_HourTo);
 			to.setText(toFill.getEnd());
-
-			rdb.close();
-			if (Integer.parseInt(id) <= 9) {
-
+			if (idTag <= 9) {
 				name.setEnabled(false);
 			}
 		}

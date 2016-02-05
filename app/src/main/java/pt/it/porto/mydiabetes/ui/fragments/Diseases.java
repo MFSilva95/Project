@@ -50,8 +50,7 @@ public class Diseases extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_diseases, null);
-
+        v = inflater.inflate(R.layout.fragment_diseases, container, false);
         diseaseList = (ListView) v.findViewById(R.id.diseasesFragmentList);
 
         fillListView(diseaseList);

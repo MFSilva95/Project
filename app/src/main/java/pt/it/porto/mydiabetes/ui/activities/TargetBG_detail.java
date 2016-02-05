@@ -26,6 +26,7 @@ public class TargetBG_detail extends Activity {
 
 	public static final String BUNDLE_GOAL = "GOAL";
 	public static final String BUNDLE_ID = "Id";
+	public static final String BUNDLE_DATA = "Data";
 
 	int idTarget = 0;
 
@@ -39,11 +40,20 @@ public class TargetBG_detail extends Activity {
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
+			TargetDataBinding toFill = null;
+			if (args.containsKey(BUNDLE_DATA)) {
+				toFill = args.getParcelable(BUNDLE_DATA);
+			}
+
 			if (args.containsKey(BUNDLE_ID)) {
 				String id = args.getString("Id");
-				idTarget = Integer.parseInt(id);
 				DB_Read rdb = new DB_Read(this);
-				TargetDataBinding toFill = rdb.Target_GetById(Integer.parseInt(id));
+				toFill = rdb.Target_GetById(Integer.parseInt(id));
+				rdb.close();
+			}
+
+			if (toFill != null) {
+				idTarget = toFill.getId();
 
 				EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
 				name.setText(toFill.getName());
@@ -53,9 +63,9 @@ public class TargetBG_detail extends Activity {
 				to.setText(toFill.getEnd());
 				EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
 				value.setText(String.valueOf(toFill.getTarget()));
+			}
 
-				rdb.close();
-			} else if (args.containsKey(BUNDLE_GOAL)) {
+			if (args.containsKey(BUNDLE_GOAL)) {
 				float goal = args.getFloat(BUNDLE_GOAL);
 				((EditText) findViewById(R.id.et_TargetBG_Glycemia)).setText(String.format("%.1f", goal));
 			}

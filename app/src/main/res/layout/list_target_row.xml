@@ -1,82 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:gravity="center_vertical" 
-    android:id="@+id/TargetBGRow">
+<LinearLayout android:id="@+id/TargetBGRow"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="?android:selectableItemBackground"
+              android:gravity="center_vertical"
+              android:orientation="horizontal"
+              tools:background="@color/cardview_dark_background">
 
     <TextView
         android:id="@+id/list_targetName"
+        android:layout_width="0dp"
         android:layout_height="48dp"
-        android:layout_width="wrap_content"
-        android:gravity="center_vertical"
         android:layout_alignParentLeft="true"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
         android:paddingLeft="8dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textIsSelectable="false"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        tools:text="@string/time_of_day"/>
 
-    
+
     <LinearLayout
-	    android:id="@+id/ll_list_exercisereg_middleright"
-	    android:layout_width="80dp"
-	    android:layout_height="48dp"
-	    android:layout_marginRight="8dp"
-	    android:orientation="vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_toLeftOf="@+id/list_targettimes" >
+        android:id="@+id/ll_list_exercisereg_middleright"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@+id/list_targettimes"
+        android:orientation="vertical">
+
         <TextView
-	        android:id="@+id/list_targetValue"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:textSize="16sp"
-	        android:textStyle="bold" />
+            android:id="@+id/list_targetValue"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="30.3"/>
+
         <TextView
-	        
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:text="@string/mg_dl"
-	        android:textSize="12sp" />
-	</LinearLayout>
-    
-    
-    
+
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/mg_dl"
+            android:textSize="12sp"/>
+    </LinearLayout>
+
+
     <LinearLayout
         android:id="@+id/list_targettimes"
-	    android:layout_width="70dp"
-	    android:layout_height="wrap_content"
-	    android:gravity="center_vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_alignParentRight="true"
-	    android:layout_marginRight="8dp"
-	    android:orientation="vertical" >
-	    
-	    <TextView
-	        android:id="@+id/list_targetStart"
-	        android:layout_height="wrap_content"
-	        android:layout_width="wrap_content"
-	        android:layout_gravity="center_vertical"
-	        android:gravity="center_vertical"
-	        android:layout_weight="1"
-	        android:paddingLeft="8dp"
-	        android:textIsSelectable="false"
-	        android:textAppearance="?android:attr/textAppearanceSmall" />
-	    
-	    <TextView
-	        android:id="@+id/list_targetEnd"
-	        android:layout_height="wrap_content"
-	        android:layout_width="wrap_content"
-	        android:gravity="center_vertical"
-	        android:layout_gravity="center_vertical"
-	        android:layout_weight="1"
-	        android:paddingLeft="8dp"
-	        android:textIsSelectable="false"
-	        android:textAppearance="?android:attr/textAppearanceSmall" />
-    </LinearLayout>
-    
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/list_targetStart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textIsSelectable="false"
+            tools:text="10:00"/>
+
+        <TextView
+            android:id="@+id/list_targetEnd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textIsSelectable="false"
+            tools:text="11:00"/>
+    </LinearLayout>
+
+
+</LinearLayout>
