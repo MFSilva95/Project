@@ -70,19 +70,24 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			}
 
 			noteId = -1;
+			DB_Read db_read = new DB_Read(this);
 			if (carbsData != null) {
+				carbsData = db_read.CarboHydrate_GetById(carbsData.getId());
 				noteId = carbsData.getId_Note();
 				date = carbsData.getDate();
 				time = carbsData.getTime();
 			} else if (glycemiaData != null) {
+				glycemiaData = db_read.Glycemia_GetById(glycemiaData.getId());
 				noteId = glycemiaData.getIdNote();
 				date = glycemiaData.getDate();
 				time = glycemiaData.getTime();
 			} else if (insulinData != null) {
+				insulinData = db_read.InsulinReg_GetById(insulinData.getId());
 				noteId = insulinData.getIdNote();
 				date = insulinData.getDate();
 				time = insulinData.getTime();
 			}
+			db_read.close();
 
 			insulinCalculator = new InsulinCalculator(this);
 
@@ -117,7 +122,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		db_read.close();
 
 		// set meal image
-		if(carbsData !=null && carbsData.hasPhotoPath()) {
+		if (carbsData != null && carbsData.hasPhotoPath()) {
 			setImageUri(Uri.parse(carbsData.getPhotoPath()));
 		}
 
@@ -400,7 +405,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 				return true;
 			}
 			// if photo was added
-			if(carbsData.getPhotoPath()==null && getImgUri()!=null){
+			if (carbsData.getPhotoPath() == null && getImgUri() != null) {
 				return true;
 			}
 			if (carbsData.getCarbsValue() != insulinCalculator.getCarbs()) {
@@ -700,7 +705,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	void imageRemoved() {
 		super.imageRemoved();
 		carbsData.setPhotoPath(null);
-		DB_Write db_write=new DB_Write(this);
+		DB_Write db_write = new DB_Write(this);
 		db_write.Carbs_Update(carbsData);
 	}
 }
