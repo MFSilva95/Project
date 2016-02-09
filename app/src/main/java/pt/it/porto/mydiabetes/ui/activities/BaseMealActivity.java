@@ -122,10 +122,14 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 			//se tivermos apagado a foto dá result code -1
 			//se voltarmos por um return por exemplo o resultcode é 0
 			if (resultCode == -1) {
-				setImageUri(null);
+				imageRemoved();
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	void imageRemoved() {
+		setImageUri(null);
 	}
 
 	public void setPhaseOfDayByValue(String value) {

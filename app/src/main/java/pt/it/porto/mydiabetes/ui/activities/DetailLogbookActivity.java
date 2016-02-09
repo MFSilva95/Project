@@ -116,6 +116,11 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		}
 		db_read.close();
 
+		// set meal image
+		if(carbsData !=null && carbsData.hasPhotoPath()) {
+			setImageUri(Uri.parse(carbsData.getPhotoPath()));
+		}
+
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
 			ActionBar actionBar = getActionBar();
 			if (actionBar != null) {
@@ -392,6 +397,10 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			}
 
 			if (carbsData.getPhotoPath() != null && !carbsData.getPhotoPath().equals(getImgUri() != null ? getImgUri().getPath() : "")) {
+				return true;
+			}
+			// if photo was added
+			if(carbsData.getPhotoPath()==null && getImgUri()!=null){
 				return true;
 			}
 			if (carbsData.getCarbsValue() != insulinCalculator.getCarbs()) {
@@ -683,4 +692,15 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		}
 	}
 
+
+	/**
+	 * We catch this event and immediately save the change
+	 */
+	@Override
+	void imageRemoved() {
+		super.imageRemoved();
+		carbsData.setPhotoPath(null);
+		DB_Write db_write=new DB_Write(this);
+		db_write.Carbs_Update(carbsData);
+	}
 }

@@ -73,7 +73,7 @@ public class CarbsDataBinding implements Parcelable {
 	}
 
 	public boolean hasPhotoPath() {
-		return photopath != null;
+		return photopath != null && !photopath.isEmpty();
 	}
 
 	public String getDate() {
