@@ -80,7 +80,7 @@ public class TargetDataBinding implements Parcelable {
 		this.end = end;
 	}
 
-	public Double getTarget() {
+	public double getTarget() {
 		return target;
 	}
 

@@ -20,6 +20,7 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.TargetDataBinding;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 public class TargetBG_detail extends Activity {
@@ -62,12 +63,12 @@ public class TargetBG_detail extends Activity {
 				EditText to = (EditText) findViewById(R.id.et_TargetBG_HourTo);
 				to.setText(toFill.getEnd());
 				EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
-				value.setText(String.valueOf(toFill.getTarget()));
+				value.setText(String.valueOf((int) toFill.getTarget()));
 			}
 
 			if (args.containsKey(BUNDLE_GOAL)) {
 				float goal = args.getFloat(BUNDLE_GOAL);
-				((EditText) findViewById(R.id.et_TargetBG_Glycemia)).setText(String.format("%.1f", goal));
+				((EditText) findViewById(R.id.et_TargetBG_Glycemia)).setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) goal));
 			}
 
 		}

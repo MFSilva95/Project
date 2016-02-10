@@ -24,9 +24,9 @@
 
     <LinearLayout
         android:id="@+id/ll_list_exercisereg_middleright"
-        android:layout_width="80dp"
+        android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="24dp"
         android:layout_toLeftOf="@+id/list_targettimes"
         android:orientation="vertical">
 
@@ -38,7 +38,7 @@
             android:gravity="center"
             android:textSize="16sp"
             android:textStyle="bold"
-            tools:text="30.3"/>
+            tools:text="30"/>
 
         <TextView
 
@@ -53,7 +53,7 @@
 
     <LinearLayout
         android:id="@+id/list_targettimes"
-        android:layout_width="70dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginRight="8dp"
@@ -67,7 +67,6 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:paddingLeft="8dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textIsSelectable="false"
             tools:text="10:00"/>
@@ -79,7 +78,6 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:paddingLeft="8dp"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textIsSelectable="false"
             tools:text="11:00"/>

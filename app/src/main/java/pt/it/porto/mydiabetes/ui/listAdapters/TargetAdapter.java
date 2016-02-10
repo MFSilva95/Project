@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -64,7 +63,8 @@ public class TargetAdapter extends BaseAdapter {
 		targetName.setText(target.getName());
 		targetStart.setText(target.getStart());
 		targetEnd.setText(target.getEnd());
-		targetvalue.setText(String.valueOf(target.getTarget()));
+
+		targetvalue.setText(String.valueOf((int) target.getTarget()));
 
 		rLayout.setOnClickListener(new View.OnClickListener() {
 
