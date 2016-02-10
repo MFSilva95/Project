@@ -1,57 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
-    
-	<LinearLayout
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_marginLeft="3dp"
-	    android:orientation="vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_alignParentLeft="true" >
-	    <TextView
-	        android:id="@+id/tv_list_hba1c_data"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:textSize="16sp"
-	        android:textStyle="bold" />
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:selectableItemBackground"
+                android:minHeight="@dimen/list_row_default_height"
+                android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="3dp"
+        android:layout_marginStart="3dp"
+        android:orientation="vertical">
+
         <TextView
-	        android:id="@+id/tv_list_hba1c_hora"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:textSize="16sp"
-	        android:textStyle="bold" />
-	</LinearLayout>
-	<TextView
-	        android:id="@+id/tv_list_hba1c_value"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_centerVertical="true"
-	        android:text="@string/hint_value1"
-	        android:textSize="36sp"
-	        android:layout_toLeftOf="@+id/tv_list_hba1c_unit" />
-	<TextView
-	        android:id="@+id/tv_list_hba1c_unit"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/percent"
-	        android:textSize="16sp"
-	        android:paddingLeft="8dp"
-	        android:layout_centerVertical="true"
-	        android:layout_toLeftOf="@+id/ib_list_hba1c_detail" />
-	<ImageButton
-        android:contentDescription="hba1c_detail_img"
-        android:id="@+id/ib_list_hba1c_detail"
+            android:id="@+id/tv_list_hba1c_data"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/list_text_small"
+            android:textStyle="bold"
+            tools:text="2016-01-27"/>
+
+        <TextView
+            android:id="@+id/tv_list_hba1c_hora"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="@dimen/list_text_small"
+            android:textStyle="bold"
+            tools:text="11:50"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_list_hba1c_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:paddingRight="8dp"
+        android:layout_toLeftOf="@+id/tv_list_hba1c_unit"
+        android:layout_toStartOf="@+id/tv_list_hba1c_unit"
+        android:textSize="@dimen/list_text_huge"
+        tools:text="@string/hint_value1"/>
+
+    <TextView
+        android:id="@+id/tv_list_hba1c_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/ib_list_hba1c_detail"
+        android:layout_toStartOf="@+id/ib_list_hba1c_detail"
         android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:text="@string/percent"
+        android:textSize="@dimen/list_text_big"/>
+
+    <ImageView
+        android:id="@+id/ib_list_hba1c_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:src="@drawable/viewdetail"
-        android:background="@color/transparent" />
+        android:layout_centerVertical="true"
+        android:background="@color/transparent"
+        android:src="@drawable/viewdetail"/>
 </RelativeLayout>

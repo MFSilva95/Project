@@ -95,7 +95,6 @@ public class Glycemia extends Activity {
 	}
 
 	public void fillListView(ListView lv) {
-
 		EditText datefrom = (EditText) findViewById(R.id.et_Glycemia_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_Glycemia_DataTo);
 		DB_Read rdb = new DB_Read(this);
@@ -105,26 +104,26 @@ public class Glycemia extends Activity {
 	}
 
 	public void showDatePickerDialogFrom(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Glycemia_DataFrom,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Glycemia_DataFrom, DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Glycemia_DataTo,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Glycemia_DataTo, DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void FillDates() {
-		EditText dateago = (EditText) findViewById(R.id.et_Glycemia_DataFrom);
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_YEAR, -3);
-
-		dateago.setText(DatePickerFragment.getFormatedDate(calendar));
-
 		EditText datenow = (EditText) findViewById(R.id.et_Glycemia_DataTo);
-		calendar = Calendar.getInstance();
-		datenow.setText(DatePickerFragment.getFormatedDate(calendar));
+		Calendar calendar = Calendar.getInstance();
+		if (datenow.getText().length() == 0) {
+			datenow.setText(DatePickerFragment.getFormatedDate(calendar));
+		}
+
+		EditText dateago = (EditText) findViewById(R.id.et_Glycemia_DataFrom);
+		calendar.add(Calendar.DAY_OF_YEAR, -3);
+		if (dateago.getText().length() == 0) {
+			dateago.setText(DatePickerFragment.getFormatedDate(calendar));
+		}
 	}
 }

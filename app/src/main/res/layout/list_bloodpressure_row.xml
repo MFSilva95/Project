@@ -1,100 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
-    
-	<LinearLayout
-	    android:id="@+id/ll_list_bloodpressure_left"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_marginLeft="3dp"
-	    android:orientation="vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_alignParentLeft="true" >
-	    <TextView
-	        android:id="@+id/tv_list_bloodpressure_data"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:textSize="12sp" />
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:selectableItemBackground"
+                android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/ll_list_bloodpressure_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="3dp"
+        android:layout_marginStart="3dp"
+        android:orientation="vertical">
+
         <TextView
-	        android:id="@+id/tv_list_bloodpressure_hora"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:textSize="12sp" />
+            android:id="@+id/tv_list_bloodpressure_data"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/list_text_small"
+            android:textStyle="bold"
+            tools:text="2016-02-10"/>
+
         <TextView
-	        android:id="@+id/tv_list_bloodpressure_tag"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:textSize="12sp" />
-	</LinearLayout>
-	
-	<LinearLayout
-	    android:id="@+id/ll_list_bloodpressure_middleleft"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_marginRight="8dp"
-	    android:orientation="vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_toRightOf="@+id/ll_list_bloodpressure_left"
-	    android:layout_toLeftOf="@+id/ll_list_bloodpressure_middleright" >
-	    <TextView
-	        android:id="@+id/tv_list_bloodpressure_systolic_text"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:text="@string/systolic"
-	        android:gravity="center_horizontal"
-	        android:textSize="12sp" />
+            android:id="@+id/tv_list_bloodpressure_hora"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/list_text_small"
+            android:textStyle="bold"
+            tools:text="11:00"/>
+
         <TextView
-	        android:id="@+id/tv_list_bloodpressure_systolic_value"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:textSize="20sp"
-	        android:textStyle="bold" />
-	</LinearLayout>
-	<LinearLayout
-	    android:id="@+id/ll_list_bloodpressure_middleright"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_marginRight="8dp"
-	    android:orientation="vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_toLeftOf="@+id/ib_list_bloodpressure_detail" >
-	    <TextView
-	        android:id="@+id/tv_list_bloodpressure_diastolic_text"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:text="@string/diastolic"
-	        android:textSize="12sp" />
-        <TextView
-	        android:id="@+id/tv_list_bloodpressure_diastolic_value"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:textSize="20sp"
-	        android:textStyle="bold" />
-	</LinearLayout>
-	<ImageButton
-        android:contentDescription="bloodpressure_detail_img"
-        android:id="@+id/ib_list_bloodpressure_detail"
+            android:id="@+id/tv_list_bloodpressure_tag"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/list_text_small"
+            tools:text="Antes almoço"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_list_bloodpressure_middleleft"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:paddingRight="8dp"
-        android:paddingLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@+id/ll_list_bloodpressure_middleright"
+        android:layout_toRightOf="@+id/ll_list_bloodpressure_left"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_list_bloodpressure_systolic_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/systolic"
+            android:textSize="@dimen/list_text_small"/>
+
+        <TextView
+            android:id="@+id/tv_list_bloodpressure_systolic_value"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/list_text_huge"
+            android:textStyle="bold"
+            tools:text="85"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_list_bloodpressure_middleright"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@+id/ib_list_bloodpressure_detail"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_list_bloodpressure_diastolic_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/diastolic"
+            android:textSize="@dimen/list_text_small"/>
+
+        <TextView
+            android:id="@+id/tv_list_bloodpressure_diastolic_value"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/list_text_huge"
+            android:textStyle="bold"
+            tools:text="110"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ib_list_bloodpressure_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:src="@drawable/viewdetail"
-        android:background="@color/transparent" />
+        android:layout_centerVertical="true"
+        android:background="@color/transparent"
+        android:src="@drawable/viewdetail"/>
 </RelativeLayout>

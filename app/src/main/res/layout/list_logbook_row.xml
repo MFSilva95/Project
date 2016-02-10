@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:textSize="13sp"
+            android:textSize="@dimen/list_text_small"
             tools:text="2016-01-27"/>
 
         <TextView
@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="left"
-            android:textSize="13sp"
+            android:textSize="@dimen/list_text_small"
             tools:text="11:50"/>
 
         <TextView
@@ -42,7 +42,7 @@
             android:ellipsize="end"
             android:gravity="left"
             android:lines="1"
-            android:textSize="13sp"
+            android:textSize="@dimen/list_text_small"
             tools:text="Antes almoço"/>
     </LinearLayout>
 
@@ -61,7 +61,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="@string/Carbs"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/list_text_big"/>
 
         <TextView
             android:id="@+id/tv_list_logbookreg_carbs_value"
@@ -69,7 +69,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:textSize="20sp"
+            android:textSize="@dimen/list_text_huge"
             android:textStyle="bold"
             tools:text="50"/>
         <!--
@@ -100,7 +100,7 @@
             android:ellipsize="end"
             android:gravity="center_horizontal"
             android:lines="1"
-            android:textSize="16sp"
+            android:textSize="@dimen/list_text_big"
             tools:text="Novolog"/>
 
         <TextView
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:textSize="20sp"
+            android:textSize="@dimen/list_text_huge"
             android:textStyle="bold"
             tools:text="2.0"/>
         <!--
@@ -141,7 +141,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="@string/bloodglucose"
-            android:textSize="16sp"/>
+            android:textSize="@dimen/list_text_big"/>
 
         <TextView
             android:id="@+id/tv_list_logbookreg_glycemia_value"
@@ -149,7 +149,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:textSize="20sp"
+            android:textSize="@dimen/list_text_huge"
             android:textStyle="bold"
             tools:text="100"/>
         <!-- 
