@@ -73,10 +73,11 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		double d = rdb.Target_GetTargetByTime(text);
 		rdb.close();
 		setGlycemiaTarget((int) d);
+		insulinCalculator.setGlycemiaTarget((int) d);
 
 		// load correct insulin for Insulin On Board
 		Calendar time = TimePickerFragment.getCalendar(text);
-		if(time!=null) {
+		if (time != null) {
 			insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), null);
 		}
 	}
@@ -90,15 +91,18 @@ public class TestBaseMealActivity extends BaseMealActivity {
 	InsulinCalculator getInsulinCalculator() {
 		DB_Read rdb = new DB_Read(this);
 		Object[] obj = rdb.MyData_Read();
-		rdb.close();
 		double iRatio = Double.valueOf(obj[3].toString());
 		double cRatio = Double.valueOf(obj[4].toString());
 		InsulinCalculator insulinCalculator = new InsulinCalculator((int) iRatio, (int) cRatio);
 
-		Calendar calendar=Calendar.getInstance();
+		Calendar calendar = Calendar.getInstance();
 		insulinCalculator.setTime(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null);
 
-
+		double d = rdb.Target_GetTargetByTime(TimePickerFragment.getFormatedDate(calendar));
+		if (d != 0) {
+			insulinCalculator.setGlycemiaTarget((int) d);
+		}
+		rdb.close();
 		return insulinCalculator;
 	}
 

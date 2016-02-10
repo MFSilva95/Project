@@ -217,7 +217,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 
 	@Override
 	protected void glycemiaTargetChanged(EditText view, String text) {
-		int newVal = !text.isEmpty() ? Integer.parseInt(text) : 0;
+		int newVal = !text.isEmpty() ? (int) Float.parseFloat(text) : 0;
 		boolean changed;
 		if (insulinData != null) {
 			changed = insulinData.getTargetGlycemia() != newVal;
