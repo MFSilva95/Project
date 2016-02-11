@@ -42,6 +42,8 @@ public class Home extends BaseOldActivity {
 		DB_Read read = new DB_Read(this);
 		if (!read.MyData_HasData()) {
 			ShowDialogAddData();
+			read.close();
+			return; // making sure no more code of the on create method is executed
 		}
 		read.close();
 
@@ -159,13 +161,13 @@ public class Home extends BaseOldActivity {
 			dialog.setListener(new NewFeatureDialog.ActivateFeatureDialogListener() {
 				@Override
 				public void useFeature() {
-					FeaturesDB featuresDB=new FeaturesDB(MyDiabetesStorage.getInstance(getApplicationContext()));
+					FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(getApplicationContext()));
 					featuresDB.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, true);
 				}
 
 				@Override
 				public void notUseFeature() {
-					FeaturesDB featuresDB=new FeaturesDB(MyDiabetesStorage.getInstance(getApplicationContext()));
+					FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(getApplicationContext()));
 					featuresDB.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, false);
 				}
 			});
@@ -180,20 +182,16 @@ public class Home extends BaseOldActivity {
 		private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
 
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-							   float velocityY) {
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 			if (e1 != null && e2 != null) {
 				System.out.println(" in onFling() :: ");
-				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-					return false;
-				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
-						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) return false;
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 
 					//Right
 					Call_OutrasLeituras(getCurrentFocus());
 
-				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
-						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 					//Left
 				}
 			}
