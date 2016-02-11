@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestore;
 import pt.it.porto.mydiabetes.ui.fragments.register.AddGlycemiaObjectivesFragment;
 import pt.it.porto.mydiabetes.ui.fragments.register.AddInsulinsFragment;
 import pt.it.porto.mydiabetes.ui.fragments.register.FactorsFragment;
@@ -83,6 +85,26 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 		}else{
 			deactivateNextButton();
 		}
+		if(DB_BackupRestore.hasBackup()){
+			Button button = (Button) findViewById(R.id.restoreDb);
+			button.setVisibility(View.VISIBLE);
+			button.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if(DB_BackupRestore.restoreBackup(getApplicationContext())){
+						// jump to home
+						Intent intent = new Intent(getBaseContext(), Home.class);
+						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+						startActivity(intent);
+						finish();
+					} else {
+						Toast.makeText(getApplicationContext(), R.string.restore_backup_error, Toast.LENGTH_LONG).show();
+					}
+				}
+			});
+		}
+
+
 	}
 
 

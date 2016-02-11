@@ -226,6 +226,8 @@
     <string name="do_back">Efectuar Cópia de Segurança</string>
     <string name="restore_backup">Restaurar Cópia</string>
     <string name="restore_backup_button">Restaurar Cópia de Segurança</string>
+    <string name="restore_backup_success">Restauro efectuado com sucesso!</string>
+    <string name="restore_backup_error">Ocurreu um erro durante o restauro, verifique se a memória externa está disponivel!</string>
     <string name="last_backup">Última Cópia de Segurança</string>
     <string name="new_disease">Nova doença</string>
     <string name="new_exercise">Novo exercicio</string>
@@ -348,4 +350,5 @@
     <string name="insulin_calc">Cálculo Insulina</string>
     <string name="use_iob">Usar Insulina Activa</string>
     <string name="backup_restore_confirmation_dialog_text">Este processo vai subsituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
+    <string name="next_button">Seguinte</string>
 </resources>

@@ -24,10 +24,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -106,119 +102,53 @@ public class ImportExport extends BaseOldActivity {
 	}
 
 	public void backup(View v) {
-		if (isSDWriteable()) {
-			File inputFile = new File(Environment.getDataDirectory() + "/data/"
-					+ this.getPackageName() + "/databases/DB_Diabetes");
-
-			File outputDir = new File(Environment.getExternalStorageDirectory()
-					+ "/MyDiabetes/backup");
-			outputDir.mkdirs();
-			if (inputFile.exists()) {
-				File fileBackup = new File(outputDir, "DB_Diabetes");
-				try {
-					fileBackup.createNewFile();
-					copyFile(inputFile, fileBackup);
-					ShowDialogMsg(getString(R.string.dbcopy_success));
-				} catch (IOException ioException) {
-					ShowDialogMsg(getString(R.string.dbcopy_error));
-				} catch (Exception exception) {
-					ShowDialogMsg(getString(R.string.dbcopy_error));
-				}
-			}
+		if (DB_BackupRestore.backup(getApplicationContext())) {
+			ShowDialogMsg(getString(R.string.dbcopy_success));
 		} else {
 			ShowDialogMsg(getString(R.string.dbcopy_error));
 		}
 	}
 
 	public void restore(View v) {
-		Dialog dialog = new AlertDialog.Builder(this)
-				.setTitle(R.string.restore_backup)
-				.setMessage(R.string.backup_restore_confirmation_dialog_text)
-				.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						restoreExec();
-					}
-				})
-				.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				}).create();
+		Dialog dialog = new AlertDialog.Builder(this).setTitle(R.string.restore_backup).setMessage(R.string.backup_restore_confirmation_dialog_text).setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				if (DB_BackupRestore.restoreBackup(getApplicationContext())) {
+					ShowDialogMsg(getString(R.string.restore_backup_success));
+				} else {
+					ShowDialogMsg(getString(R.string.restore_backup_error));
+				}
+			}
+		}).setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		}).create();
 		dialog.show();
 	}
 
-	private void restoreExec() {
-		if (isSDWriteable()) {
-			File inputFile = new File(Environment.getExternalStorageDirectory()
-					+ "/MyDiabetes/backup/DB_Diabetes");
-
-			File outputDir = new File(Environment.getDataDirectory() + "/data/"
-					+ this.getPackageName() + "/databases");
-			outputDir.mkdirs();
-			if (inputFile.exists()) {
-				File fileBackup = new File(outputDir, "DB_Diabetes");
-				try {
-					fileBackup.createNewFile();
-					copyFile(inputFile, fileBackup);
-					ShowDialogMsg("Restauro efectuado com sucesso!");
-				} catch (IOException ioException) {
-					ShowDialogMsg("Ocurreu um erro durante o restauro, verifique se a memória externa está disponivel!");
-				} catch (Exception exception) {
-					ShowDialogMsg("Ocurreu um erro durante o restauro, verifique se a memória externa está disponivel!");
-				}
-			}
-		}
-	}
-
-	private boolean isSDWriteable() {
-		boolean rc = false;
-
-		String state = Environment.getExternalStorageState();
-		if (Environment.MEDIA_MOUNTED.equals(state)) {
-			rc = true;
-		}
-
-		return rc;
-	}
-
-	@SuppressWarnings("resource")
-	private static void copyFile(File src, File dst) throws IOException {
-		FileChannel inChannel = new FileInputStream(src).getChannel();
-		FileChannel outChannel = new FileOutputStream(dst).getChannel();
-		try {
-			inChannel.transferTo(0, inChannel.size(), outChannel);
-		} finally {
-			if (inChannel != null)
-				inChannel.close();
-			if (outChannel != null)
-				outChannel.close();
-		}
-	}
 
 	public void ShowDialogMsg(String msg) {
 		// final Context c = this;
-		new AlertDialog.Builder(this).setTitle("Informação").setMessage(msg)
-				.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						//Falta verificar se não está associada a nenhuma entrada da DB
-						// Rever porque não elimina o registo de glicemia
-						fillBackup();
-					}
-				}).show();
+		new AlertDialog.Builder(this).setTitle("Informação").setMessage(msg).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				//Falta verificar se não está associada a nenhuma entrada da DB
+				// Rever porque não elimina o registo de glicemia
+				fillBackup();
+			}
+		}).show();
 	}
 
 	@SuppressLint("SimpleDateFormat")
 	public boolean fillBackup() {
-		if (isSDWriteable()) {
+		if (DB_BackupRestore.isSDWriteable()) {
 			File inputFile = new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION);
 			if (inputFile.exists()) {
 				Calendar cal = Calendar.getInstance();
 				cal.setTimeInMillis(inputFile.lastModified());
 				Date newDate = cal.getTime();
-				SimpleDateFormat formatter = new SimpleDateFormat(
-						"yyyy-MM-dd HH:mm:ss");
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String dateString = formatter.format(newDate);
 
 				TextView lastbackup = (TextView) findViewById(R.id.tv_lastBackup);

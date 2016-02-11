@@ -1,11 +1,16 @@
 package pt.it.porto.mydiabetes.ui.fragments;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.Button;
 import android.widget.TextView;
@@ -68,7 +73,7 @@ public class DB_BackupRestore extends Fragment {
 		}
 	}
 
-	private boolean isSDWriteable(){
+	public static boolean isSDWriteable(){
 	    boolean rc = false;
 	
 	    String state = Environment.getExternalStorageState();
@@ -77,5 +82,75 @@ public class DB_BackupRestore extends Fragment {
 	    }
 	
 	    return rc;
+	}
+
+	public static boolean hasBackup(){
+		if(isSDWriteable()){
+			File inputFile = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes/backup/DB_Diabetes");
+			if (inputFile.exists()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean restoreBackup(Context context) {
+		if (isSDWriteable()) {
+			File inputFile = new File(Environment.getExternalStorageDirectory()
+					+ "/MyDiabetes/backup/DB_Diabetes");
+
+			File outputDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases");
+			outputDir.mkdirs();
+			if (inputFile.exists()) {
+				File fileBackup = new File(outputDir, "DB_Diabetes");
+				try {
+					fileBackup.createNewFile();
+					copyFile(inputFile, fileBackup);
+					return true;
+				} catch (IOException ioException) {
+					return false;
+				} catch (Exception exception) {
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+
+	private static void copyFile(File src, File dst) throws IOException {
+		FileChannel inChannel = new FileInputStream(src).getChannel();
+		FileChannel outChannel = new FileOutputStream(dst).getChannel();
+		try {
+			inChannel.transferTo(0, inChannel.size(), outChannel);
+		} finally {
+			if (inChannel != null)
+				inChannel.close();
+			if (outChannel != null)
+				outChannel.close();
+		}
+	}
+
+	public static boolean backup(Context context) {
+		if (DB_BackupRestore.isSDWriteable()) {
+			File inputFile = new File(Environment.getDataDirectory() + "/data/"
+					+ context.getPackageName() + "/databases/DB_Diabetes");
+
+			File outputDir = new File(Environment.getExternalStorageDirectory()
+					+ "/MyDiabetes/backup");
+			outputDir.mkdirs();
+			if (inputFile.exists()) {
+				File fileBackup = new File(outputDir, "DB_Diabetes");
+				try {
+					fileBackup.createNewFile();
+					copyFile(inputFile, fileBackup);
+					return true;
+				} catch (Exception exception) {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+		return false;
 	}
 }
