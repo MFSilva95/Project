@@ -3,6 +3,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:minHeight="@dimen/list_row_default_height"
                 android:background="?android:selectableItemBackground"
                 android:orientation="horizontal">
 
@@ -19,7 +20,7 @@
 
         <TextView
             android:id="@+id/tv_list_bloodpressure_data"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
@@ -29,7 +30,7 @@
 
         <TextView
             android:id="@+id/tv_list_bloodpressure_hora"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_vertical"
@@ -39,12 +40,12 @@
 
         <TextView
             android:id="@+id/tv_list_bloodpressure_tag"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_horizontal"
+            android:gravity="center_vertical"
             android:textSize="@dimen/list_text_small"
-            tools:text="Antes almoço"/>
+            tools:text="Outra"/>
     </LinearLayout>
 
     <LinearLayout

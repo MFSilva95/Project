@@ -23,6 +23,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.WeightDataBinding;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 public class WeightDetail extends BaseOldActivity {
@@ -45,15 +46,14 @@ public class WeightDetail extends BaseOldActivity {
 			WeightDataBinding toFill = rdb.Weight_GetById(Integer.parseInt(id));
 
 			EditText value = (EditText) findViewById(R.id.et_WeightDetail_Value);
-			value.setText(String.valueOf(toFill.getValue()));
+			value.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", toFill.getValue()));
 			EditText data = (EditText) findViewById(R.id.et_WeightDetail_Data);
 			data.setText(toFill.getDate());
 			EditText hora = (EditText) findViewById(R.id.et_WeightDetail_Hora);
 			hora.setText(toFill.getTime());
 			EditText note = (EditText) findViewById(R.id.et_WeightDetail_Notes);
 			if (toFill.getIdNote() != -1) {
-				NoteDataBinding n = new NoteDataBinding();
-				n = rdb.Note_GetById(toFill.getIdNote());
+				NoteDataBinding n = rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
 				idNote = n.getId();
 			}

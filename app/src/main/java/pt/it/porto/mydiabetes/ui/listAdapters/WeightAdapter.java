@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.WeightDetail;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 public class WeightAdapter extends BaseAdapter {
@@ -59,7 +60,7 @@ public class WeightAdapter extends BaseAdapter {
 
 		data.setText(bp.getDate());
 		hora.setText(bp.getTime());
-		value.setText(String.valueOf(bp.getValue()));
+		value.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", bp.getValue()));
 
 		v.setTag(_id);
 

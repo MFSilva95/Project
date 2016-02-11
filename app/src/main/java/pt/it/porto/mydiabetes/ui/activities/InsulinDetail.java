@@ -46,6 +46,7 @@ import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 public class InsulinDetail extends Activity implements InsulinCalc.CalcListener {
@@ -112,8 +113,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 			target.setText(String.valueOf(toFill.getTargetGlycemia()));
 			insulinCalculator.setGlycemiaTarget(toFill.getTargetGlycemia());
 
-			EditText insulinunits = (EditText) findViewById(R.id.et_InsulinDetail_InsulinUnits);
-			insulinunits.setText(String.valueOf(toFill.getInsulinUnits()));
+			insulinIntake.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", toFill.getInsulinUnits()));
 			EditText note = (EditText) findViewById(R.id.et_InsulinDetail_Notes);
 
 			//If exists glycemia read fill fields
@@ -141,7 +141,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 			// they are strings. let's say: 2016-01-09 11:09
 			// if we save the above date as: 2016-01-09 11:9 huge problems can happen when latter on we go to compare them!
 			// 2016-01-09 11:9 > 2016-01-09 11:10 is true! because sqlite will compare strings char by char
-			if(carbs!=null){
+			if (carbs != null) {
 				insulinCalculator.setCarbs(carbs.getCarbsValue());
 			}
 
@@ -232,8 +232,8 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 			});
 		}
 
-		FeaturesDB featuresDB=new FeaturesDB(MyDiabetesStorage.getInstance(this));
-		useIOB=featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
+		FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(this));
+		useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
 
 	}
 

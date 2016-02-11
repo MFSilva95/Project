@@ -4,6 +4,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="?android:selectableItemBackground"
+                android:minHeight="@dimen/list_row_default_height"
                 android:orientation="horizontal">
 
     <LinearLayout
@@ -23,6 +24,7 @@
             android:layout_weight="1"
             android:gravity="left"
             android:textSize="@dimen/list_text_small"
+            android:textStyle="bold"
             tools:text="2016-01-27"/>
 
         <TextView
@@ -32,6 +34,7 @@
             android:layout_weight="1"
             android:gravity="left"
             android:textSize="@dimen/list_text_small"
+            android:textStyle="bold"
             tools:text="11:50"/>
 
         <TextView
@@ -61,7 +64,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="@string/Carbs"
-            android:textSize="@dimen/list_text_big"/>
+            android:textSize="@dimen/list_text_small"/>
 
         <TextView
             android:id="@+id/tv_list_logbookreg_carbs_value"
@@ -100,7 +103,7 @@
             android:ellipsize="end"
             android:gravity="center_horizontal"
             android:lines="1"
-            android:textSize="@dimen/list_text_big"
+            android:textSize="@dimen/list_text_small"
             tools:text="Novolog"/>
 
         <TextView
@@ -141,7 +144,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="@string/bloodglucose"
-            android:textSize="@dimen/list_text_big"/>
+            android:textSize="@dimen/list_text_small"/>
 
         <TextView
             android:id="@+id/tv_list_logbookreg_glycemia_value"

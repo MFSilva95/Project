@@ -24,6 +24,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 public class HbA1cDetail extends Activity {
@@ -46,15 +47,14 @@ public class HbA1cDetail extends Activity {
 			HbA1cDataBinding toFill = rdb.HbA1c_GetById(Integer.parseInt(id));
 
 			EditText value = (EditText) findViewById(R.id.et_HbA1cDetail_Value);
-			value.setText(String.valueOf(toFill.getValue()));
+			value.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", toFill.getValue()));
 			EditText data = (EditText) findViewById(R.id.et_HbA1cDetail_Data);
 			data.setText(toFill.getDate());
 			EditText hora = (EditText) findViewById(R.id.et_HbA1cDetail_Hora);
 			hora.setText(toFill.getTime());
 			EditText note = (EditText) findViewById(R.id.et_HbA1cDetail_Notes);
 			if (toFill.getIdNote() != -1) {
-				NoteDataBinding n = new NoteDataBinding();
-				n = rdb.Note_GetById(toFill.getIdNote());
+				NoteDataBinding n = rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
 				idNote = n.getId();
 			}

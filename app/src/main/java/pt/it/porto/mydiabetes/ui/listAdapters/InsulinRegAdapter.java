@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.InsulinDetail;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 public class InsulinRegAdapter extends BaseAdapter {
@@ -65,7 +66,7 @@ public class InsulinRegAdapter extends BaseAdapter {
 		Log.d("id da insulina", _id);
 		data.setText(insulin_datab.getDate());
 		hora.setText(insulin_datab.getTime());
-		ivalue.setText(String.valueOf(insulin_datab.getInsulinUnits()));
+		ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE,"%.1f",insulin_datab.getInsulinUnits()));
 		DB_Read rdb = new DB_Read(_c);
 		if (insulin_datab.getIdBloodGlucose() != -1) {
 			Log.d("if glycemia", "entrou");

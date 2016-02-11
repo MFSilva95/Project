@@ -3,7 +3,7 @@
                 xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="@dimen/list_row_default_height"
                 android:background="?android:attr/selectableItemBackground"
                 android:orientation="horizontal">
 
@@ -48,9 +48,9 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical|center_horizontal"
             android:paddingLeft="8dp"
-            tools:text="injecção"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textIsSelectable="false"/>
+            android:textIsSelectable="false"
+            tools:text="injecção"/>
     </LinearLayout>
 
 
@@ -72,9 +72,9 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical|center_horizontal"
             android:paddingLeft="8dp"
-            tools:text="@string/insulin_action_rapid"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textIsSelectable="false"/>
+            android:textIsSelectable="false"
+            tools:text="@string/insulin_action_rapid"/>
 
 
     </LinearLayout>

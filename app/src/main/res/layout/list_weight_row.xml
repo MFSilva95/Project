@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
-                android:background="?android:selectableItemBackground"
                 android:layout_height="match_parent"
+                android:background="?android:selectableItemBackground"
                 android:minHeight="@dimen/list_row_default_height"
                 android:orientation="horizontal">
 
@@ -44,6 +44,7 @@
         android:layout_toLeftOf="@+id/tv_list_weight_unit"
         android:layout_toStartOf="@+id/tv_list_weight_unit"
         android:textSize="@dimen/list_text_huge"
+        android:textStyle="bold"
         tools:text="@string/hint_value1"/>
 
     <TextView
@@ -56,7 +57,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:text="@string/kg"
-        android:textSize="@dimen/list_text_big"/>
+        android:textSize="@dimen/list_text_small"/>
 
     <ImageView
         android:id="@+id/ib_list_weight_detail"

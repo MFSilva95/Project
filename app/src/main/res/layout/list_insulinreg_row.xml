@@ -3,6 +3,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:minHeight="@dimen/list_row_default_height"
                 android:orientation="horizontal">
 
     <LinearLayout
@@ -23,6 +24,7 @@
             android:layout_weight="1"
             android:gravity="left"
             android:textSize="@dimen/list_text_small"
+            android:textStyle="bold"
             tools:text="2016-02-10"/>
 
         <TextView
@@ -32,6 +34,7 @@
             android:layout_weight="1"
             android:gravity="left"
             android:textSize="@dimen/list_text_small"
+            android:textStyle="bold"
             tools:text="11:00"/>
 
         <TextView
@@ -63,7 +66,7 @@
             android:ellipsize="end"
             android:gravity="center_horizontal"
             android:lines="1"
-            android:textSize="12sp"
+            android:textSize="@dimen/list_text_small"
             tools:text="Humolog"/>
 
         <TextView
@@ -83,7 +86,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="@string/uni"
-            android:textSize="12sp"/>
+            android:textSize="@dimen/list_text_small"/>
     </LinearLayout>
 
     <LinearLayout
@@ -104,7 +107,7 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="@string/bloodglucose"
-            android:textSize="12sp"/>
+            android:textSize="@dimen/list_text_small"/>
 
         <TextView
             android:id="@+id/tv_list_insulinreg_glycemia_value"
@@ -123,15 +126,15 @@
             android:layout_weight="1"
             android:gravity="center_horizontal"
             android:text="@string/mg_dl"
-            android:textSize="12sp"/>
+            android:textSize="@dimen/list_text_small"/>
     </LinearLayout>
 
     <ImageView
         android:id="@+id/ib_list_insulinreg_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:background="@color/transparent"
         android:src="@drawable/viewdetail"/>

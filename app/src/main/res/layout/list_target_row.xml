@@ -6,6 +6,7 @@
               android:layout_height="match_parent"
               android:background="?android:selectableItemBackground"
               android:gravity="center_vertical"
+              android:minHeight="@dimen/list_row_default_height"
               android:orientation="horizontal"
               tools:background="@color/cardview_dark_background">
 

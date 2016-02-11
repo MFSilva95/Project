@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.HbA1cDetail;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 public class HbA1cAdapter extends BaseAdapter {
@@ -58,7 +59,7 @@ public class HbA1cAdapter extends BaseAdapter {
 
 		data.setText(bp.getDate());
 		hora.setText(bp.getTime());
-		value.setText(String.valueOf(bp.getValue()));
+		value.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", bp.getValue()));
 
 		v.setTag(_id);
 

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 public class LogbookAdapter extends BaseAdapter {
 
@@ -71,7 +72,7 @@ public class LogbookAdapter extends BaseAdapter {
 		if (ch != null && ins != null && bg != null) {//refeicao completa
 			data.setText(ins.getDate());
 			hora.setText(ins.getTime());
-			ivalue.setText(String.valueOf(ins.getInsulinUnits()));
+			ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", ins.getInsulinUnits()));
 			InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
 			itag.setText(insulina.getName());
 			gvalue.setText(String.valueOf(bg.getValue()));
@@ -103,7 +104,7 @@ public class LogbookAdapter extends BaseAdapter {
 		} else if (ch == null && ins != null && bg != null) {//insulina com parametro da glicemia
 			data.setText(ins.getDate());
 			hora.setText(ins.getTime());
-			ivalue.setText(String.valueOf(ins.getInsulinUnits()));
+			ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", ins.getInsulinUnits()));
 			InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
 			itag.setText(insulina.getName());
 			gvalue.setText(String.valueOf(bg.getValue()));
@@ -136,7 +137,7 @@ public class LogbookAdapter extends BaseAdapter {
 		} else if (ch == null && ins != null && bg == null) {//so insulina
 			data.setText(ins.getDate());
 			hora.setText(ins.getTime());
-			ivalue.setText(String.valueOf(ins.getInsulinUnits()));
+			ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", ins.getInsulinUnits()));
 			InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
 			itag.setText(insulina.getName());
 			gvalue.setText("");
@@ -153,7 +154,7 @@ public class LogbookAdapter extends BaseAdapter {
 		} else if (ch != null && ins != null && bg == null) {//hidratos e insulina
 			data.setText(ins.getDate());
 			hora.setText(ins.getTime());
-			ivalue.setText(String.valueOf(ins.getInsulinUnits()));
+			ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", ins.getInsulinUnits()));
 			InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
 			itag.setText(insulina.getName());
 			gvalue.setText("");
