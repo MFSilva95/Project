@@ -48,11 +48,11 @@ public class InsulinCalculator implements Cloneable {
 	}
 
 	public float getInsulinCarbs() {
-		return (carbs / carbsRatio);
+		return ((float)carbs / carbsRatio);
 	}
 
 	public float getInsulinGlycemia() {
-		return ((glycemia - insulinTarget) / glycemiaRatio);
+		return ((float)(glycemia - insulinTarget) / glycemiaRatio);
 	}
 
 	public void setLastInsulin(int dose, int minute, int type) {
