@@ -440,7 +440,7 @@
                         android:layout_height="50dp"
                         android:layout_gravity="center"
                         android:background="@drawable/ic_bt_toggle_pointing"
-                        android:drawableTop="@android:drawable/ic_menu_info_details"
+                        android:drawableBottom="@android:drawable/ic_menu_info_details"
                         android:gravity="center"
                         android:textOff=""
                         android:textOn=""/>

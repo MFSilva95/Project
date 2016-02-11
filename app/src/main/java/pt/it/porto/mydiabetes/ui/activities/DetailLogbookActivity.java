@@ -324,7 +324,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 
 	void setModeRevert() {
 		findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.edit_text_holo_dark_changed);
-		setToggleIconImage(R.drawable.ic_redo_grey_400_24dp);
+		setToggleIconImage(R.drawable.ic_redo_flip_grey_400_24dp);
 		mode = MODE_REVERT;
 		autoUpdate = true;
 	}
@@ -342,13 +342,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 
 	void setToggleIconImage(int resource) {
 		ToggleButton button = (ToggleButton) findViewById(R.id.bt_insulin_calc_info);
-		button.setCompoundDrawables(null, null, null, null);
-		ImageSpan imageSpan = new ImageSpan(this, resource);
-		SpannableString content = new SpannableString("X");
-		content.setSpan(imageSpan, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-		button.setText(content);
-		button.setTextOn(content);
-		button.setTextOff(content);
+		button.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, resource);
 		button.setChecked(false);
 	}
 
