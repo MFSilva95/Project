@@ -7,9 +7,6 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,11 +20,11 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 public class DetailLogbookActivity extends BaseMealActivity {
@@ -95,7 +92,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);
 			insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
 			// get insulin before this one
-			Calendar timeCalendar = TimePickerFragment.getCalendar(time);
+			Calendar timeCalendar = DateUtils.getTimeCalendar(time);
 			if (timeCalendar != null) {
 				insulinCalculator.setTime(this, timeCalendar.get(Calendar.HOUR_OF_DAY), timeCalendar.get(Calendar.MINUTE), date);
 			}
@@ -286,7 +283,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		rdb.close();
 		setGlycemiaTarget(d);
 		// set time and load correct insulin for Insulin On Board
-		Calendar time = TimePickerFragment.getCalendar(text);
+		Calendar time = DateUtils.getTimeCalendar(text);
 		if (time != null) {
 			insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), null);
 		}

@@ -5,7 +5,6 @@ import android.content.Context;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 
 public class InsulinCalculator implements Cloneable {
 
@@ -157,7 +156,7 @@ public class InsulinCalculator implements Cloneable {
 	}
 
 	public void setTime(Context context, String time, String date) {
-		Calendar calendar = TimePickerFragment.getCalendar(time);
+		Calendar calendar = DateUtils.getTimeCalendar(time);
 		if (calendar != null) {
 			setTime(context, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), date);
 		}

@@ -16,12 +16,12 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.MealFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 public class Test_meal_fragment extends Activity implements MealFragment.MealFragmentListener {
@@ -37,7 +37,7 @@ public class Test_meal_fragment extends Activity implements MealFragment.MealFra
 		fragment = getFragment();
 
 		Calendar c = Calendar.getInstance();
-		String hour = TimePickerFragment.getFormatedDate(c);
+		String hour = DateUtils.getFormattedTime(c);
 		insulinCalculator.setGlycemiaTarget(getTargetByHour(hour));
 		fragment.setInsulinCalculator(insulinCalculator);
 		fragment.setShowUpdateIndicator(true);

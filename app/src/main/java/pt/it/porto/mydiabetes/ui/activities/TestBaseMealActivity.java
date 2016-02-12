@@ -12,11 +12,11 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 public class TestBaseMealActivity extends BaseMealActivity {
@@ -76,7 +76,7 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		insulinCalculator.setGlycemiaTarget((int) d);
 
 		// load correct insulin for Insulin On Board
-		Calendar time = TimePickerFragment.getCalendar(text);
+		Calendar time = DateUtils.getTimeCalendar(text);
 		if (time != null) {
 			insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), null);
 		}
@@ -98,7 +98,7 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		Calendar calendar = Calendar.getInstance();
 		insulinCalculator.setTime(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null);
 
-		double d = rdb.Target_GetTargetByTime(TimePickerFragment.getFormatedDate(calendar));
+		double d = rdb.Target_GetTargetByTime(DateUtils.getFormattedTime(calendar));
 		if (d != 0) {
 			insulinCalculator.setGlycemiaTarget((int) d);
 		}

@@ -55,6 +55,7 @@ import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
 import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
@@ -271,10 +272,10 @@ public class Meal extends BaseOldActivity {
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_MealDetail_Data);
 		final Calendar c = Calendar.getInstance();
-		date.setText(DatePickerFragment.getFormatedDate(c));
+		date.setText(DateUtils.getFormattedDate(c));
 
 		EditText hour = (EditText) findViewById(R.id.et_MealDetail_Hora);
-		hour.setText(TimePickerFragment.getFormatedDate(c));
+		hour.setText(DateUtils.getFormattedTime(c));
 	}
 
 	public void FillTagSpinner() {
@@ -298,13 +299,13 @@ public class Meal extends BaseOldActivity {
 
 	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MealDetail_Data,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_MealDetail_Hora,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
