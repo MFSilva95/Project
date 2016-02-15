@@ -74,12 +74,14 @@ public class DetailLogbookActivity extends BaseMealActivity {
 				noteId = carbsData.getId_Note();
 				date = carbsData.getFormattedDate();
 				time = carbsData.getFormattedTime();
-			} else if (glycemiaData != null) {
+			}
+			if (glycemiaData != null) {
 				glycemiaData = db_read.Glycemia_GetById(glycemiaData.getId());
 				noteId = glycemiaData.getIdNote();
 				date = glycemiaData.getFormattedDate();
 				time = glycemiaData.getFormattedTime();
-			} else if (insulinData != null) {
+			}
+			if (insulinData != null) {
 				insulinData = db_read.InsulinReg_GetById(insulinData.getId());
 				noteId = insulinData.getIdNote();
 				date = insulinData.getFormattedDate();

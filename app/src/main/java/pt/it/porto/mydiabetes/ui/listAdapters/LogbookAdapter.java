@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.listAdapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,37 +10,37 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
 import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinDataBinding;
 import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.LogbookDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 public class LogbookAdapter extends BaseAdapter {
 
 	Context _c;
-	private ArrayList<LogbookDataBinding> _data;
+	private Cursor cursor;
 
-	public LogbookAdapter(ArrayList<LogbookDataBinding> data, Context c) {
-		_data = data;
-		_c = c;
+	public LogbookAdapter(Cursor cursor, Context c) {
+		this.cursor = cursor;
+		this._c = c;
 	}
 
 	@Override
 	public int getCount() {
-		return _data.size();
+		return cursor.getCount();
 	}
 
 	@Override
-	public Object getItem(int position) {
-		return _data.get(position);
+	public LogbookItem getItem(int position) {
+		cursor.moveToPosition(position);
+		int pox = 0;
+		return new LogbookItem(cursor.getString(pox++), cursor.getString(pox++), cursor.getInt(pox++), cursor.getFloat(pox++), cursor.getString(pox++), cursor.getInt(pox++), cursor.getInt(pox++), cursor.getInt(pox++), cursor.getInt(pox));
 	}
 
 	@Override
@@ -59,158 +60,71 @@ public class LogbookAdapter extends BaseAdapter {
 
 		TextView data = (TextView) v.findViewById(R.id.tv_list_logbookreg_data);
 		TextView hora = (TextView) v.findViewById(R.id.tv_list_logbookreg_hora);
-		TextView ivalue = (TextView) v.findViewById(R.id.tv_list_logbookreg_insulin_value);
-		TextView itag = (TextView) v.findViewById(R.id.tv_list_logbookreg_insulin);
+		TextView insulinValue = (TextView) v.findViewById(R.id.tv_list_logbookreg_insulin_value);
+		TextView insulinName = (TextView) v.findViewById(R.id.tv_list_logbookreg_insulin);
 		TextView gvalue = (TextView) v.findViewById(R.id.tv_list_logbookreg_glycemia_value);
 		TextView gtag = (TextView) v.findViewById(R.id.tv_list_logbookreg_glycemia);
 		TextView cvalue = (TextView) v.findViewById(R.id.tv_list_logbookreg_carbs_value);
 		TextView ctag = (TextView) v.findViewById(R.id.tv_list_logbookreg_carbs_title);
 		TextView tag = (TextView) v.findViewById(R.id.tv_list_logbookreg_tag);
 
-		LogbookDataBinding logbook_datab = _data.get(position);
-		CarbsDataBinding ch = logbook_datab.get_ch();
-		InsulinRegDataBinding ins = logbook_datab.get_ins();
-		GlycemiaDataBinding bg = logbook_datab.get_bg();
-		DB_Read rdb = new DB_Read(_c);
+		LogbookItem logbook_datab = getItem(position);
 
 		v.setTag(logbook_datab);
 
-		if (ch != null && ins != null && bg != null) {//refeicao completa
-			data.setText(ins.getFormattedDate());
-			hora.setText(ins.getFormattedTime());
-			ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", ins.getInsulinUnits()));
-			InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
-			itag.setText(insulina.getName());
-			gvalue.setText(String.valueOf(bg.getValue()));
-			cvalue.setText(String.valueOf(ch.getCarbsValue()));
-			TagDataBinding t = rdb.Tag_GetById(ins.getIdTag());
-			tag.setText(t.getName());
+		data.setText(logbook_datab.getFormattedDate());
+		hora.setText(logbook_datab.getFormattedTime());
+		tag.setText(logbook_datab.tag);
 
-			ivalue.setVisibility(View.VISIBLE);
-			itag.setVisibility(View.VISIBLE);
-			gvalue.setVisibility(View.VISIBLE);
-			gtag.setVisibility(View.VISIBLE);
-			cvalue.setVisibility(View.VISIBLE);
-			ctag.setVisibility(View.VISIBLE);
-		} else if (ch != null && ins == null && bg == null) {//so hidratos carbono
-			data.setText(ch.getFormattedDate());
-			hora.setText(ch.getFormattedTime());
-			ivalue.setText("");
-			gvalue.setText("");
-			cvalue.setText(String.valueOf(ch.getCarbsValue()));
-			TagDataBinding t = rdb.Tag_GetById(ch.getId_Tag());
-			tag.setText(t.getName());
+		insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", logbook_datab.insulinVal));
+		insulinName.setText(logbook_datab.insulinName);
 
-			ivalue.setVisibility(View.GONE);
-			itag.setVisibility(View.GONE);
-			gvalue.setVisibility(View.GONE);
-			gtag.setVisibility(View.GONE);
-			cvalue.setVisibility(View.VISIBLE);
-			ctag.setVisibility(View.VISIBLE);
-		} else if (ch == null && ins != null && bg != null) {//insulina com parametro da glicemia
-			data.setText(ins.getFormattedDate());
-			hora.setText(ins.getFormattedTime());
-			ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", ins.getInsulinUnits()));
-			InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
-			itag.setText(insulina.getName());
-			gvalue.setText(String.valueOf(bg.getValue()));
-			cvalue.setText("");
-			TagDataBinding t = rdb.Tag_GetById(ins.getIdTag());
-			tag.setText(t.getName());
+		gvalue.setText(String.valueOf(logbook_datab.glycemia));
+		cvalue.setText(String.valueOf(logbook_datab.carbs));
 
-			ivalue.setVisibility(View.VISIBLE);
-			itag.setVisibility(View.VISIBLE);
-			gvalue.setVisibility(View.VISIBLE);
-			gtag.setVisibility(View.VISIBLE);
-			cvalue.setVisibility(View.GONE);
-			ctag.setVisibility(View.GONE);
-		} else if (ch == null && ins == null && bg != null) {//so glicemia
-			data.setText(bg.getFormattedDate());
-			hora.setText(bg.getFormattedTime());
-			ivalue.setTag("");
-			gvalue.setText(String.valueOf(bg.getValue()));
-			cvalue.setText("");
-			TagDataBinding t = rdb.Tag_GetById(bg.getIdTag());
-			tag.setText(t.getName());
-
-			ivalue.setVisibility(View.GONE);
-			itag.setVisibility(View.GONE);
-			gvalue.setVisibility(View.VISIBLE);
-			gtag.setVisibility(View.VISIBLE);
-			cvalue.setVisibility(View.GONE);
-			ctag.setVisibility(View.GONE);
-
-		} else if (ch == null && ins != null && bg == null) {//so insulina
-			data.setText(ins.getFormattedDate());
-			hora.setText(ins.getFormattedTime());
-			ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", ins.getInsulinUnits()));
-			InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
-			itag.setText(insulina.getName());
-			gvalue.setText("");
-			cvalue.setText("");
-			TagDataBinding t = rdb.Tag_GetById(ins.getIdTag());
-			tag.setText(t.getName());
-
-			ivalue.setVisibility(View.VISIBLE);
-			itag.setVisibility(View.VISIBLE);
-			gvalue.setVisibility(View.GONE);
-			gtag.setVisibility(View.GONE);
-			cvalue.setVisibility(View.GONE);
-			ctag.setVisibility(View.GONE);
-		} else if (ch != null && ins != null && bg == null) {//hidratos e insulina
-			data.setText(ins.getFormattedDate());
-			hora.setText(ins.getFormattedTime());
-			ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", ins.getInsulinUnits()));
-			InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
-			itag.setText(insulina.getName());
-			gvalue.setText("");
-			cvalue.setText(String.valueOf(ch.getCarbsValue()));
-			TagDataBinding t = rdb.Tag_GetById(ins.getIdTag());
-			tag.setText(t.getName());
-
-			ivalue.setVisibility(View.VISIBLE);
-			itag.setVisibility(View.VISIBLE);
-			gvalue.setVisibility(View.GONE);
-			gtag.setVisibility(View.GONE);
-			cvalue.setVisibility(View.VISIBLE);
-			ctag.setVisibility(View.VISIBLE);
-		} else if (ch != null && ins == null && bg != null) {//hidratos e glicemia
-			data.setText(ch.getFormattedDate());
-			hora.setText(ch.getFormattedTime());
-			ivalue.setText("");
-			itag.setText("");
-			gvalue.setText(String.valueOf(bg.getValue()));
-			cvalue.setText(String.valueOf(ch.getCarbsValue()));
-			TagDataBinding t = rdb.Tag_GetById(ch.getId_Tag());
-			tag.setText(t.getName());
-
-			ivalue.setVisibility(View.GONE);
-			itag.setVisibility(View.GONE);
-			gvalue.setVisibility(View.VISIBLE);
-			gtag.setVisibility(View.VISIBLE);
-			cvalue.setVisibility(View.VISIBLE);
-			ctag.setVisibility(View.VISIBLE);
+		if (logbook_datab.insulinId != -1) {
+			insulinValue.setVisibility(View.VISIBLE);
+			insulinName.setVisibility(View.VISIBLE);
+		} else {
+			insulinValue.setVisibility(View.INVISIBLE);
+			insulinName.setVisibility(View.INVISIBLE);
 		}
-
+		if (logbook_datab.glycemiaId != -1) {
+			gvalue.setVisibility(View.VISIBLE);
+			gtag.setVisibility(View.VISIBLE);
+		} else {
+			gvalue.setVisibility(View.INVISIBLE);
+			gtag.setVisibility(View.INVISIBLE);
+		}
+		if (logbook_datab.carbsId != -1) {
+			cvalue.setVisibility(View.VISIBLE);
+			ctag.setVisibility(View.VISIBLE);
+		} else {
+			cvalue.setVisibility(View.INVISIBLE);
+			ctag.setVisibility(View.INVISIBLE);
+		}
 
 		v.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(v.getContext(), DetailLogbookActivity.class);
 				Bundle args = new Bundle();
-				LogbookDataBinding logbookDataBinding = (LogbookDataBinding) v.getTag();
-				GlycemiaDataBinding glycemiaDataBinding = logbookDataBinding.get_bg();
-				if (glycemiaDataBinding != null) {
+				LogbookItem logbookDataBinding = (LogbookItem) v.getTag();
+				if (logbookDataBinding.glycemiaId != -1) {
+					GlycemiaDataBinding glycemiaDataBinding = new GlycemiaDataBinding();
+					glycemiaDataBinding.setId(logbookDataBinding.glycemiaId);
 					args.putString("bg", String.valueOf(glycemiaDataBinding.getId())); //bg id
 					args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, glycemiaDataBinding);
 				}
-				CarbsDataBinding carbs = logbookDataBinding.get_ch();
-				if (carbs != null) {
+				if (logbookDataBinding.carbsId != -1) {
+					CarbsDataBinding carbs = new CarbsDataBinding();
+					carbs.setId(logbookDataBinding.carbsId);
 					args.putString("ch", String.valueOf(carbs.getId())); //ch id
 					args.putParcelable(DetailLogbookActivity.ARG_CARBS, carbs);
 				}
-				InsulinRegDataBinding insulin = logbookDataBinding.get_ins();
-				if (insulin != null) {
+				if (logbookDataBinding.insulinId != -1) {
+					InsulinRegDataBinding insulin = new InsulinRegDataBinding();
+					insulin.setId(logbookDataBinding.insulinId);
 					args.putString("ins", String.valueOf(insulin.getId())); //ins id
 					args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);
 				}
@@ -219,8 +133,43 @@ public class LogbookAdapter extends BaseAdapter {
 			}
 		});
 
-		rdb.close();
 		return v;
+	}
+
+	class LogbookItem {
+		Calendar dateTime;
+		String tag;
+		int carbs;
+		float insulinVal;
+		String insulinName;
+		int glycemia;
+		int carbsId;
+		int insulinId;
+		int glycemiaId;
+
+		public LogbookItem(String dateTime, String tag, int carbs, float insulinVal, String insulinName, int glycemia, int carbsId, int insulinId, int glycemiaId) {
+			try {
+				this.dateTime = DateUtils.parseDateTime(dateTime);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			this.tag = tag;
+			this.carbs = carbs;
+			this.insulinVal = insulinVal;
+			this.insulinName = insulinName;
+			this.glycemia = glycemia;
+			this.carbsId = carbsId;
+			this.insulinId = insulinId;
+			this.glycemiaId = glycemiaId;
+		}
+
+		public String getFormattedDate() {
+			return DateUtils.getFormattedDate(dateTime);
+		}
+
+		public String getFormattedTime() {
+			return DateUtils.getFormattedTime(dateTime);
+		}
 	}
 
 }
