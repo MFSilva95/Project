@@ -395,8 +395,8 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	}
 
 	private void showDatePickerDialog(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MealDetail_Data,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MealDetail_Date,
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
