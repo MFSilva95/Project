@@ -21,7 +21,6 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.DateTimeDataBinding;
 import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
 import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
 import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
@@ -112,6 +111,8 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		if (insulinData != null) {
 			String insulinName = db_read.Insulin_GetById(insulinData.getIdInsulin()).getName();
 			setInsulin(insulinName, insulinData.getInsulinUnits());
+		} else {
+			setInsulin(null, 0);
 		}
 
 		// set note
