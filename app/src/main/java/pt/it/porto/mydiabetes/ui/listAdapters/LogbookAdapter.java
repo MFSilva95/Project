@@ -56,52 +56,44 @@ public class LogbookAdapter extends BaseAdapter {
 		if (v == null) {
 			LayoutInflater vi = (LayoutInflater) _c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.list_logbook_row, parent, false);
+			v.setTag(new ViewHolder(v));
 		}
 
-		TextView data = (TextView) v.findViewById(R.id.tv_list_logbookreg_data);
-		TextView hora = (TextView) v.findViewById(R.id.tv_list_logbookreg_hora);
-		TextView insulinValue = (TextView) v.findViewById(R.id.tv_list_logbookreg_insulin_value);
-		TextView insulinName = (TextView) v.findViewById(R.id.tv_list_logbookreg_insulin);
-		TextView gvalue = (TextView) v.findViewById(R.id.tv_list_logbookreg_glycemia_value);
-		TextView gtag = (TextView) v.findViewById(R.id.tv_list_logbookreg_glycemia);
-		TextView cvalue = (TextView) v.findViewById(R.id.tv_list_logbookreg_carbs_value);
-		TextView ctag = (TextView) v.findViewById(R.id.tv_list_logbookreg_carbs_title);
-		TextView tag = (TextView) v.findViewById(R.id.tv_list_logbookreg_tag);
+		ViewHolder viewHolder = (ViewHolder) v.getTag();
+
 
 		LogbookItem logbook_datab = getItem(position);
 
-		v.setTag(logbook_datab);
+		viewHolder.item = logbook_datab;
 
-		data.setText(logbook_datab.getFormattedDate());
-		hora.setText(logbook_datab.getFormattedTime());
-		tag.setText(logbook_datab.tag);
-
-		insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", logbook_datab.insulinVal));
-		insulinName.setText(logbook_datab.insulinName);
-
-		gvalue.setText(String.valueOf(logbook_datab.glycemia));
-		cvalue.setText(String.valueOf(logbook_datab.carbs));
+		viewHolder.data.setText(logbook_datab.getFormattedDate());
+		viewHolder.hora.setText(logbook_datab.getFormattedTime());
+		viewHolder.tag.setText(logbook_datab.tag);
 
 		if (logbook_datab.insulinId != -1) {
-			insulinValue.setVisibility(View.VISIBLE);
-			insulinName.setVisibility(View.VISIBLE);
+			viewHolder.insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", logbook_datab.insulinVal));
+			viewHolder.insulinName.setText(logbook_datab.insulinName);
+			viewHolder.insulinValue.setVisibility(View.VISIBLE);
+			viewHolder.insulinName.setVisibility(View.VISIBLE);
 		} else {
-			insulinValue.setVisibility(View.INVISIBLE);
-			insulinName.setVisibility(View.INVISIBLE);
+			viewHolder.insulinValue.setVisibility(View.INVISIBLE);
+			viewHolder.insulinName.setVisibility(View.INVISIBLE);
 		}
 		if (logbook_datab.glycemiaId != -1) {
-			gvalue.setVisibility(View.VISIBLE);
-			gtag.setVisibility(View.VISIBLE);
+			viewHolder.gvalue.setText(String.valueOf(logbook_datab.glycemia));
+			viewHolder.gvalue.setVisibility(View.VISIBLE);
+			viewHolder.gtag.setVisibility(View.VISIBLE);
 		} else {
-			gvalue.setVisibility(View.INVISIBLE);
-			gtag.setVisibility(View.INVISIBLE);
+			viewHolder.gvalue.setVisibility(View.INVISIBLE);
+			viewHolder.gtag.setVisibility(View.INVISIBLE);
 		}
 		if (logbook_datab.carbsId != -1) {
-			cvalue.setVisibility(View.VISIBLE);
-			ctag.setVisibility(View.VISIBLE);
+			viewHolder.cvalue.setText(String.valueOf(logbook_datab.carbs));
+			viewHolder.cvalue.setVisibility(View.VISIBLE);
+			viewHolder.ctag.setVisibility(View.VISIBLE);
 		} else {
-			cvalue.setVisibility(View.INVISIBLE);
-			ctag.setVisibility(View.INVISIBLE);
+			viewHolder.cvalue.setVisibility(View.INVISIBLE);
+			viewHolder.ctag.setVisibility(View.INVISIBLE);
 		}
 
 		v.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +101,7 @@ public class LogbookAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				Intent intent = new Intent(v.getContext(), DetailLogbookActivity.class);
 				Bundle args = new Bundle();
-				LogbookItem logbookDataBinding = (LogbookItem) v.getTag();
+				LogbookItem logbookDataBinding = ((ViewHolder) v.getTag()).item;
 				if (logbookDataBinding.glycemiaId != -1) {
 					GlycemiaDataBinding glycemiaDataBinding = new GlycemiaDataBinding();
 					glycemiaDataBinding.setId(logbookDataBinding.glycemiaId);
@@ -172,4 +164,29 @@ public class LogbookAdapter extends BaseAdapter {
 		}
 	}
 
+	class ViewHolder {
+		TextView data;
+		TextView hora;
+		TextView insulinValue;
+		TextView insulinName;
+		TextView gvalue;
+		TextView cvalue;
+		TextView ctag;
+		TextView tag;
+		TextView gtag;
+
+		public ViewHolder(View view) {
+			data = (TextView) view.findViewById(R.id.tv_list_logbookreg_data);
+			hora = (TextView) view.findViewById(R.id.tv_list_logbookreg_hora);
+			insulinValue = (TextView) view.findViewById(R.id.tv_list_logbookreg_insulin_value);
+			insulinName = (TextView) view.findViewById(R.id.tv_list_logbookreg_insulin);
+			gvalue = (TextView) view.findViewById(R.id.tv_list_logbookreg_glycemia_value);
+			gtag = (TextView) view.findViewById(R.id.tv_list_logbookreg_glycemia);
+			cvalue = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_value);
+			ctag = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_title);
+			tag = (TextView) view.findViewById(R.id.tv_list_logbookreg_tag);
+		}
+
+		LogbookItem item;
+	}
 }

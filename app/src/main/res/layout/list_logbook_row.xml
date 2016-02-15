@@ -1,20 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?android:selectableItemBackground"
-                android:minHeight="@dimen/list_row_default_height"
-                android:orientation="horizontal">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="?android:selectableItemBackground"
+              android:minHeight="@dimen/list_row_default_height"
+              android:orientation="horizontal"
+              tools:layout_height="48dp">
 
     <LinearLayout
         android:id="@+id/ll_list_logbookreg_left"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
         android:layout_marginLeft="3dp"
-        android:layout_toLeftOf="@+id/ll_list_logbookreg_middleleft"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
@@ -52,9 +51,7 @@
     <LinearLayout
         android:id="@+id/ll_list_logbookreg_middleleft"
         android:layout_width="75dp"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/ll_list_logbookreg_middle"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
@@ -90,9 +87,7 @@
     <LinearLayout
         android:id="@+id/ll_list_logbookreg_middle"
         android:layout_width="75dp"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/ll_list_logbookreg_middleright"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
@@ -130,11 +125,7 @@
     <LinearLayout
         android:id="@+id/ll_list_logbookreg_middleright"
         android:layout_width="75dp"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@+id/ib_list_logbookreg_detail"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
@@ -170,10 +161,7 @@
     <ImageView
         android:id="@+id/ib_list_logbookreg_detail"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_height="match_parent"
         android:background="@color/transparent"
         android:src="@drawable/viewdetail"/>
-</RelativeLayout>
+</LinearLayout>
