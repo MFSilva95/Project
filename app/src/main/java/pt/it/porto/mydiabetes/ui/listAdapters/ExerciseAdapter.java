@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.ExercisesDetail;
+import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseDataBinding;
 
 
 public class ExerciseAdapter extends BaseAdapter {

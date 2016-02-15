@@ -20,7 +20,8 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.HbA1cDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class HbA1c extends Activity {
@@ -94,13 +95,13 @@ public class HbA1c extends Activity {
 
 	public void showDatePickerDialogFrom(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_HbA1c_DataFrom,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_HbA1c_DataTo,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
@@ -108,11 +109,11 @@ public class HbA1c extends Activity {
 		EditText dateago = (EditText) findViewById(R.id.et_HbA1c_DataFrom);
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -180);
-		dateago.setText(DatePickerFragment.getFormatedDate(calendar));
+		dateago.setText(DateUtils.getFormattedDate(calendar));
 
 		EditText datenow = (EditText) findViewById(R.id.et_HbA1c_DataTo);
 		calendar = Calendar.getInstance();
-		datenow.setText(DatePickerFragment.getFormatedDate(calendar));
+		datenow.setText(DateUtils.getFormattedDate(calendar));
 	}
 
 	public void fillListView(ListView lv) {

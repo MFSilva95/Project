@@ -21,6 +21,7 @@ import pt.it.porto.mydiabetes.database.ListsDataDb;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.WeightAdapter;
+import pt.it.porto.mydiabetes.ui.listAdapters.WeightDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -95,13 +96,13 @@ public class Weight extends BaseOldActivity {
 
 	public void showDatePickerDialogFrom(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Weight_DataFrom,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Weight_DataTo,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
@@ -110,11 +111,11 @@ public class Weight extends BaseOldActivity {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -8);
 
-		dateago.setText(DatePickerFragment.getFormatedDate(calendar));
+		dateago.setText(DateUtils.getFormattedDate(calendar));
 
 		EditText datenow = (EditText) findViewById(R.id.et_Weight_DataTo);
 		calendar = Calendar.getInstance();
-		datenow.setText(DatePickerFragment.getFormatedDate(calendar));
+		datenow.setText(DateUtils.getFormattedDate(calendar));
 	}
 
 	public void fillListView(ListView lv) {

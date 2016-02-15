@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.DiseaseDetail;
+import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseRegDataBinding;
 
 
 public class DiseaseRegAdapter extends BaseAdapter {

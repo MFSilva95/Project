@@ -15,7 +15,7 @@ import android.widget.EditText;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseDataBinding;
 
 public class DiseasesDetail extends Activity {
 	public static final String BUNDLE_DATA = "Data";

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.TargetBG_detail;
+import pt.it.porto.mydiabetes.ui.dataBinding.TargetDataBinding;
 
 
 public class TargetAdapter extends BaseAdapter {

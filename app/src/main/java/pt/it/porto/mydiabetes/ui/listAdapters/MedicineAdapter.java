@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.ui.dataBinding.MedicineDataBinding;
 
 
 public class MedicineAdapter extends BaseAdapter {

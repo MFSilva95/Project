@@ -12,11 +12,11 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 public class TestBaseMealActivity extends BaseMealActivity {
@@ -76,7 +76,7 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		insulinCalculator.setGlycemiaTarget((int) d);
 
 		// load correct insulin for Insulin On Board
-		Calendar time = TimePickerFragment.getCalendar(text);
+		Calendar time = DateUtils.getTimeCalendar(text);
 		if (time != null) {
 			insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), null);
 		}
@@ -98,7 +98,7 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		Calendar calendar = Calendar.getInstance();
 		insulinCalculator.setTime(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null);
 
-		double d = rdb.Target_GetTargetByTime(TimePickerFragment.getFormatedDate(calendar));
+		double d = rdb.Target_GetTargetByTime(DateUtils.getFormattedTime(calendar));
 		if (d != 0) {
 			insulinCalculator.setGlycemiaTarget((int) d);
 		}
@@ -136,8 +136,7 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		carb.setCarbsValue(insulinCalculator.getCarbs());
 		carb.setId_Tag(idTag);
 		carb.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-		carb.setDate(getDate());
-		carb.setTime(getTime());
+		carb.setDateTime(getDate(), getTime());
 
 
 		reg.Carbs_Save(carb);
@@ -183,8 +182,7 @@ public class TestBaseMealActivity extends BaseMealActivity {
 
 			gly.setIdUser(idUser);
 			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
-			gly.setDate(getDate());
-			gly.setTime(getTime());
+			gly.setDateTime(getDate(), getTime());
 			gly.setIdTag(idTag);
 			if (idnote > 0) {
 				gly.setIdNote(idnote);
@@ -198,9 +196,8 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		ins.setIdUser(idUser);
 		ins.setIdInsulin(idInsulin);
 		ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
-		ins.setDate(getDate());
-		ins.setTime(getTime());
 		ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
+		ins.setDateTime(getDate(), getTime());
 		ins.setInsulinUnits(getInsulinIntake());
 		ins.setIdTag(idTag);
 

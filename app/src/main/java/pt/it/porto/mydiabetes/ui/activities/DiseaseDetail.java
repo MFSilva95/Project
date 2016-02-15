@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -19,18 +18,17 @@ import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseRegDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class DiseaseDetail extends Activity {
@@ -111,13 +109,13 @@ public class DiseaseDetail extends Activity {
 
 	public void showDatePickerDialogFrom(View v) {
 		DialogFragment newFragment =  DatePickerFragment.getDatePickerFragment(R.id.et_DiseaseRegDetail_DataFrom,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_DiseaseRegDetail_DataTo,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
@@ -141,7 +139,7 @@ public class DiseaseDetail extends Activity {
 	public void FillDateFrom() {
 		EditText date = (EditText) findViewById(R.id.et_DiseaseRegDetail_DataFrom);
 		final Calendar calendar = Calendar.getInstance();
-		date.setText(DatePickerFragment.getFormatedDate(calendar));
+		date.setText(DateUtils.getFormattedDate(calendar));
 	}
 
 	public void AddDiseaseRead() {

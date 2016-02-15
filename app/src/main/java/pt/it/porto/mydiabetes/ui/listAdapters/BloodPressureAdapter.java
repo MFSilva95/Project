@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.BloodPressureDetail;
+import pt.it.porto.mydiabetes.ui.dataBinding.BloodPressureDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
 
 
 public class BloodPressureAdapter extends BaseAdapter {
@@ -61,8 +63,8 @@ public class BloodPressureAdapter extends BaseAdapter {
 
 		DB_Read rdb = new DB_Read(_c);
 
-		data.setText(bp.getDate());
-		hora.setText(bp.getTime());
+		data.setText(bp.getFormattedDate());
+		hora.setText(bp.getFormattedTime());
 		systolic.setText(String.valueOf(bp.getSystolic()));
 		diastolic.setText(String.valueOf(bp.getDiastolic()));
 

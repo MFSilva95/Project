@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.InsulinDetail;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.InsulinDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
@@ -64,8 +68,8 @@ public class InsulinRegAdapter extends BaseAdapter {
 		InsulinRegDataBinding insulin_datab = _data.get(position);
 		String _id = "" + insulin_datab.getId();
 		Log.d("id da insulina", _id);
-		data.setText(insulin_datab.getDate());
-		hora.setText(insulin_datab.getTime());
+		data.setText(insulin_datab.getFormattedDate());
+		hora.setText(insulin_datab.getFormattedTime());
 		ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE,"%.1f",insulin_datab.getInsulinUnits()));
 		DB_Read rdb = new DB_Read(_c);
 		if (insulin_datab.getIdBloodGlucose() != -1) {

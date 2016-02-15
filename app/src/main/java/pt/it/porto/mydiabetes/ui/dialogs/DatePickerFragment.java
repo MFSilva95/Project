@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.dialogs;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -10,18 +9,14 @@ import android.support.annotation.Nullable;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 	public static final String ARG_DATE = "date";
 	public static final String ARG_TEXT_BOX = "textbox";
-
-	@SuppressLint("SimpleDateFormat")
-	private static SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 	EditText item;
 
@@ -64,8 +59,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		//et_BDate
 		Calendar cal = Calendar.getInstance();
 		cal.set(year, month, day);
-		Date newDate = cal.getTime();
-		String dateString = dateFormat.format(newDate);
+		String dateString = DateUtils.getFormattedDate(cal);
 		if (item != null) {
 			item.setText(dateString);
 		}
@@ -83,20 +77,6 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		return newFragment;
 	}
 
-	public static Calendar getCalendar(String date) {
-		try {
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(dateFormat.parse(date));
-			return calendar;
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static String getFormatedDate(Calendar calendar) {
-		return dateFormat.format(calendar.getTime());
-	}
 }
 
 

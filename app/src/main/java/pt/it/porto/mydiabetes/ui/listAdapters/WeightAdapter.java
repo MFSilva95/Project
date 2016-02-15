@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.WeightDetail;
+import pt.it.porto.mydiabetes.ui.dataBinding.WeightDataBinding;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
@@ -71,11 +72,11 @@ public class WeightAdapter extends BaseAdapter {
 		TextView value = (TextView) v.findViewById(R.id.tv_list_weight_value);
 
 
-		WeightDataBinding bp = _data.get(position);
+		WeightDataBinding bp = (WeightDataBinding) getItem(position);
 		String _id = "" + bp.getId();
 
-		data.setText(bp.getDate());
-		hora.setText(bp.getTime());
+		data.setText(bp.getFormattedDate());
+		hora.setText(bp.getFormattedTime());
 		value.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", bp.getValue()));
 
 		v.setTag(_id);

@@ -14,6 +14,12 @@ import java.util.ArrayList;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
+import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.InsulinDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.LogbookDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 public class LogbookAdapter extends BaseAdapter {
@@ -70,8 +76,8 @@ public class LogbookAdapter extends BaseAdapter {
 		v.setTag(logbook_datab);
 
 		if (ch != null && ins != null && bg != null) {//refeicao completa
-			data.setText(ins.getDate());
-			hora.setText(ins.getTime());
+			data.setText(ins.getFormattedDate());
+			hora.setText(ins.getFormattedTime());
 			ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", ins.getInsulinUnits()));
 			InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
 			itag.setText(insulina.getName());
@@ -87,8 +93,8 @@ public class LogbookAdapter extends BaseAdapter {
 			cvalue.setVisibility(View.VISIBLE);
 			ctag.setVisibility(View.VISIBLE);
 		} else if (ch != null && ins == null && bg == null) {//so hidratos carbono
-			data.setText(ch.getDate());
-			hora.setText(ch.getTime());
+			data.setText(ch.getFormattedDate());
+			hora.setText(ch.getFormattedTime());
 			ivalue.setText("");
 			gvalue.setText("");
 			cvalue.setText(String.valueOf(ch.getCarbsValue()));
@@ -102,8 +108,8 @@ public class LogbookAdapter extends BaseAdapter {
 			cvalue.setVisibility(View.VISIBLE);
 			ctag.setVisibility(View.VISIBLE);
 		} else if (ch == null && ins != null && bg != null) {//insulina com parametro da glicemia
-			data.setText(ins.getDate());
-			hora.setText(ins.getTime());
+			data.setText(ins.getFormattedDate());
+			hora.setText(ins.getFormattedTime());
 			ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", ins.getInsulinUnits()));
 			InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
 			itag.setText(insulina.getName());
@@ -119,8 +125,8 @@ public class LogbookAdapter extends BaseAdapter {
 			cvalue.setVisibility(View.GONE);
 			ctag.setVisibility(View.GONE);
 		} else if (ch == null && ins == null && bg != null) {//so glicemia
-			data.setText(bg.getDate());
-			hora.setText(bg.getTime());
+			data.setText(bg.getFormattedDate());
+			hora.setText(bg.getFormattedTime());
 			ivalue.setTag("");
 			gvalue.setText(String.valueOf(bg.getValue()));
 			cvalue.setText("");
@@ -135,8 +141,8 @@ public class LogbookAdapter extends BaseAdapter {
 			ctag.setVisibility(View.GONE);
 
 		} else if (ch == null && ins != null && bg == null) {//so insulina
-			data.setText(ins.getDate());
-			hora.setText(ins.getTime());
+			data.setText(ins.getFormattedDate());
+			hora.setText(ins.getFormattedTime());
 			ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", ins.getInsulinUnits()));
 			InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
 			itag.setText(insulina.getName());
@@ -152,8 +158,8 @@ public class LogbookAdapter extends BaseAdapter {
 			cvalue.setVisibility(View.GONE);
 			ctag.setVisibility(View.GONE);
 		} else if (ch != null && ins != null && bg == null) {//hidratos e insulina
-			data.setText(ins.getDate());
-			hora.setText(ins.getTime());
+			data.setText(ins.getFormattedDate());
+			hora.setText(ins.getFormattedTime());
 			ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", ins.getInsulinUnits()));
 			InsulinDataBinding insulina = rdb.Insulin_GetById(ins.getIdInsulin());
 			itag.setText(insulina.getName());
@@ -169,8 +175,8 @@ public class LogbookAdapter extends BaseAdapter {
 			cvalue.setVisibility(View.VISIBLE);
 			ctag.setVisibility(View.VISIBLE);
 		} else if (ch != null && ins == null && bg != null) {//hidratos e glicemia
-			data.setText(ch.getDate());
-			hora.setText(ch.getTime());
+			data.setText(ch.getFormattedDate());
+			hora.setText(ch.getFormattedTime());
 			ivalue.setText("");
 			itag.setText("");
 			gvalue.setText(String.valueOf(bg.getValue()));

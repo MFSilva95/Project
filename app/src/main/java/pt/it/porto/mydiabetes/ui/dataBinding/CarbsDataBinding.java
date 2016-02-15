@@ -1,10 +1,10 @@
-package pt.it.porto.mydiabetes.ui.listAdapters;
+package pt.it.porto.mydiabetes.ui.dataBinding;
 
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class CarbsDataBinding implements Parcelable {
+public class CarbsDataBinding extends DateTimeDataBinding implements Parcelable {
 
 	public static final Creator<CarbsDataBinding> CREATOR = new Creator<CarbsDataBinding>() {
 		@Override
@@ -21,8 +21,6 @@ public class CarbsDataBinding implements Parcelable {
 	private int id_User;
 	private int value;
 	private String photopath;
-	private String date;
-	private String time;
 	private int id_Tag;
 	private int id_Note;
 
@@ -30,12 +28,11 @@ public class CarbsDataBinding implements Parcelable {
 	}
 
 	protected CarbsDataBinding(Parcel in) {
+		super(in);
 		id = in.readInt();
 		id_User = in.readInt();
 		value = in.readInt();
 		photopath = in.readString();
-		date = in.readString();
-		time = in.readString();
 		id_Tag = in.readInt();
 		id_Note = in.readInt();
 	}
@@ -76,21 +73,6 @@ public class CarbsDataBinding implements Parcelable {
 		return photopath != null && !photopath.isEmpty();
 	}
 
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public String getTime() {
-		return time;
-	}
-
-	public void setTime(String time) {
-		this.time = time;
-	}
 
 	public int getId_Tag() {
 		return id_Tag;
@@ -116,12 +98,11 @@ public class CarbsDataBinding implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		super.writeToParcel(dest, flags);
 		dest.writeInt(id);
 		dest.writeInt(id_User);
 		dest.writeInt(value);
 		dest.writeString(photopath);
-		dest.writeString(date);
-		dest.writeString(time);
 		dest.writeInt(id_Tag);
 		dest.writeInt(id_Note);
 	}

@@ -1,10 +1,10 @@
-package pt.it.porto.mydiabetes.ui.listAdapters;
+package pt.it.porto.mydiabetes.ui.dataBinding;
 
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class InsulinRegDataBinding implements Parcelable {
+public class InsulinRegDataBinding extends DateTimeDataBinding implements Parcelable {
 
 	public static final Creator<InsulinRegDataBinding> CREATOR = new Creator<InsulinRegDataBinding>() {
 		@Override
@@ -21,8 +21,6 @@ public class InsulinRegDataBinding implements Parcelable {
 	private int idUser;
 	private int idBloodGlucose = -1;
 	private int idInsulin;
-	private String date;
-	private String time;
 	private int targetGlycemia;
 	private float insulinUnits;
 	private int idTag;
@@ -33,12 +31,11 @@ public class InsulinRegDataBinding implements Parcelable {
 	}
 
 	protected InsulinRegDataBinding(Parcel in) {
+		super(in);
 		id = in.readInt();
 		idUser = in.readInt();
 		idBloodGlucose = in.readInt();
 		idInsulin = in.readInt();
-		date = in.readString();
-		time = in.readString();
 		targetGlycemia = in.readInt();
 		insulinUnits = in.readFloat();
 		idTag = in.readInt();
@@ -67,22 +64,6 @@ public class InsulinRegDataBinding implements Parcelable {
 
 	public void setInsulinUnits(float insulinUnits) {
 		this.insulinUnits = insulinUnits;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public String getTime() {
-		return time;
-	}
-
-	public void setTime(String time) {
-		this.time = time;
 	}
 
 	public int getIdUser() {
@@ -133,12 +114,11 @@ public class InsulinRegDataBinding implements Parcelable {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
+		super.writeToParcel(dest, flags);
 		dest.writeInt(id);
 		dest.writeInt(idUser);
 		dest.writeInt(idBloodGlucose);
 		dest.writeInt(idInsulin);
-		dest.writeString(date);
-		dest.writeString(time);
 		dest.writeInt(targetGlycemia);
 		dest.writeFloat(insulinUnits);
 		dest.writeInt(idTag);

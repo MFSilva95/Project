@@ -17,10 +17,8 @@ import java.util.HashMap;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.activities.BaseOldActivity;
-import pt.it.porto.mydiabetes.ui.activities.InsulinsDetail;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.InsulinDataBinding;
 
 
 public class Insulins extends BaseOldActivity {

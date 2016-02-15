@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import pt.it.porto.mydiabetes.ui.activities.InsulinsDetail;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.ui.dataBinding.InsulinDataBinding;
 
 
 public class InsulinAdapter extends BaseAdapter {

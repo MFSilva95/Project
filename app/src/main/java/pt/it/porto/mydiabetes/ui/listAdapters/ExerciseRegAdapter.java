@@ -10,11 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import pt.it.porto.mydiabetes.ui.activities.ExerciseDetail;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseRegDataBinding;
 
 
 public class ExerciseRegAdapter extends BaseAdapter {
@@ -62,8 +62,8 @@ public class ExerciseRegAdapter extends BaseAdapter {
            ExerciseRegDataBinding exercise_datab = _data.get(position);
            String _id = ""+exercise_datab.getId();
            Log.d("id do exercicio", _id);
-           data.setText(exercise_datab.getDate());
-           hora.setText(exercise_datab.getTime());
+           data.setText(exercise_datab.getFormattedDate());
+           hora.setText(exercise_datab.getFormattedTime());
            exercise.setText(exercise_datab.getExercise());
            duration.setText(String.valueOf(exercise_datab.getDuration()));
            effort.setText(exercise_datab.getEffort());

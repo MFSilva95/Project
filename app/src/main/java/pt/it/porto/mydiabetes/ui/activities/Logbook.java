@@ -16,7 +16,8 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.LogbookAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.LogbookDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.LogbookDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class Logbook extends Activity {
 
@@ -71,12 +72,12 @@ public class Logbook extends Activity {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -3);
 		if(dateFrom.getText().length()==0) {
-			dateFrom.setText(DatePickerFragment.getFormatedDate(calendar));
+			dateFrom.setText(DateUtils.getFormattedDate(calendar));
 		}
 
 		calendar = Calendar.getInstance();
 		if(dateTo.getText().length()==0) {
-			dateTo.setText(DatePickerFragment.getFormatedDate(calendar));
+			dateTo.setText(DateUtils.getFormattedDate(calendar));
 		}
 	}
 
@@ -90,13 +91,13 @@ public class Logbook extends Activity {
 
 	public void showDatePickerDialogFrom(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Logbook_DataFrom,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Logbook_DataTo,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 

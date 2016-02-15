@@ -20,7 +20,8 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class Glycemia extends Activity {
@@ -104,12 +105,12 @@ public class Glycemia extends Activity {
 	}
 
 	public void showDatePickerDialogFrom(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Glycemia_DataFrom, DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Glycemia_DataFrom, DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Glycemia_DataTo, DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Glycemia_DataTo, DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
@@ -117,13 +118,13 @@ public class Glycemia extends Activity {
 		EditText datenow = (EditText) findViewById(R.id.et_Glycemia_DataTo);
 		Calendar calendar = Calendar.getInstance();
 		if (datenow.getText().length() == 0) {
-			datenow.setText(DatePickerFragment.getFormatedDate(calendar));
+			datenow.setText(DateUtils.getFormattedDate(calendar));
 		}
 
 		EditText dateago = (EditText) findViewById(R.id.et_Glycemia_DataFrom);
 		calendar.add(Calendar.DAY_OF_YEAR, -3);
 		if (dateago.getText().length() == 0) {
-			dateago.setText(DatePickerFragment.getFormatedDate(calendar));
+			dateago.setText(DateUtils.getFormattedDate(calendar));
 		}
 	}
 }

@@ -37,14 +37,15 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
+import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
@@ -105,9 +106,9 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 			SelectSpinnerItemByValue(insulinSpinner, rdb.Insulin_GetById(toFill.getIdInsulin()).getName());
 
 			EditText data = (EditText) findViewById(R.id.et_InsulinDetail_Data);
-			data.setText(toFill.getDate());
-			hora.setText(toFill.getTime());
-			insulinCalculator.setTime(this, toFill.getTime(), toFill.getDate());
+			data.setText(toFill.getFormattedDate());
+			hora.setText(toFill.getFormattedTime());
+			insulinCalculator.setTime(this, toFill.getFormattedTime(), toFill.getFormattedDate());
 
 			EditText target = (EditText) findViewById(R.id.et_InsulinDetail_TargetGlycemia);
 			target.setText(String.valueOf(toFill.getTargetGlycemia()));
@@ -134,8 +135,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 			}
 
 			// check if there is a record of carbs at that time
-			// todo fix dates!
-			CarbsDataBinding carbs = rdb.getCarbsAtThisTime(toFill.getIdUser(), toFill.getDate() + " " + toFill.getTime()); // this is wrong in so many levels...
+			CarbsDataBinding carbs = rdb.getCarbsAtThisTime(toFill.getIdUser(), DateUtils.formatToDb(toFill.getDateTime())); // this is wrong in so many levels...
 			// let's take a bit to talk about dates
 			// in sqlite dates don't exist!
 			// they are strings. let's say: 2016-01-09 11:09
@@ -283,19 +283,19 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 
 	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_InsulinDetail_Data,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_InsulinDetail_Hora,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		((TimePickerFragment) newFragment).setListener(new TimePickerFragment.TimePickerChangeListener() {
 			@Override
 			public void onTimeSet(String time) {
 				setTargetByHour();
 				setTagByTime();
-				Calendar calendar = TimePickerFragment.getCalendar(time);
+				Calendar calendar = DateUtils.getTimeCalendar(time);
 				if (calendar != null) {
 					insulinCalculator.setTime(getApplicationContext(), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null);
 				}
@@ -343,10 +343,10 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_InsulinDetail_Data);
 		final Calendar calendar = Calendar.getInstance();
-		date.setText(DatePickerFragment.getFormatedDate(calendar));
+		date.setText(DateUtils.getFormattedDate(calendar));
 
 		EditText hour = (EditText) findViewById(R.id.et_InsulinDetail_Hora);
-		hour.setText(TimePickerFragment.getFormatedDate(calendar));
+		hour.setText(DateUtils.getFormattedTime(calendar));
 
 		insulinCalculator.setTime(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null);
 	}
@@ -553,8 +553,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 
 			gly.setIdUser(idUser);
 			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
-			gly.setDate(data.getText().toString());
-			gly.setTime(hora.getText().toString());
+			gly.setDateTime(data.getText().toString(), hora.getText().toString());
 			gly.setIdTag(idTag);
 			if (idnote > 0) {
 				gly.setIdNote(idnote);
@@ -568,8 +567,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 		ins.setIdUser(idUser);
 		ins.setIdInsulin(idInsulin);
 		ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
-		ins.setDate(data.getText().toString());
-		ins.setTime(hora.getText().toString());
+		ins.setDateTime(data.getText().toString(), hora.getText().toString());
 		ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
 		ins.setInsulinUnits(Float.parseFloat(insulinunits.getText().toString()));
 		ins.setIdTag(idTag);
@@ -654,8 +652,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 
 			gly.setIdUser(idUser);
 			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
-			gly.setDate(data.getText().toString());
-			gly.setTime(hora.getText().toString());
+			gly.setDateTime(data.getText().toString(), hora.getText().toString());
 			gly.setIdTag(idTag);
 			if (idnote > 0) {
 				gly.setIdNote(idnote);
@@ -668,8 +665,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 			gly.setId(id_BG);
 			gly.setIdUser(idUser);
 			gly.setValue((!glycemia.getText().toString().equals("")) ? Integer.parseInt(glycemia.getText().toString()) : 0);
-			gly.setDate(data.getText().toString());
-			gly.setTime(hora.getText().toString());
+			gly.setDateTime(data.getText().toString(), hora.getText().toString());
 			gly.setIdTag(idTag);
 			if (idnote > 0) {
 				gly.setIdNote(idnote);
@@ -683,8 +679,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 		ins.setIdUser(idUser);
 		ins.setIdInsulin(idInsulin);
 		ins.setIdBloodGlucose((id_BG > 0) ? id_BG : (idglycemia > 0) ? idglycemia : -1);
-		ins.setDate(data.getText().toString());
-		ins.setTime(hora.getText().toString());
+		ins.setDateTime(data.getText().toString(), hora.getText().toString());
 		ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
 		ins.setInsulinUnits(Float.parseFloat(insulinunits.getText().toString()));
 		ins.setIdTag(idTag);

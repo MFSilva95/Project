@@ -22,7 +22,7 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.activities.TagDetail;
 import pt.it.porto.mydiabetes.ui.listAdapters.TagAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
 
 
 public class Tags extends Fragment {

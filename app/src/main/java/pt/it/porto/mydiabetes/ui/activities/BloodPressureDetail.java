@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -22,19 +21,18 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.BloodPressureDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.BloodPressureDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class BloodPressureDetail extends Activity {
@@ -66,9 +64,9 @@ public class BloodPressureDetail extends Activity {
 			EditText diastolic = (EditText) findViewById(R.id.et_BloodPressureDetail_Diastolic);
 			diastolic.setText(String.valueOf(toFill.getDiastolic()));
 			EditText data = (EditText) findViewById(R.id.et_BloodPressureDetail_Data);
-			data.setText(toFill.getDate());
+			data.setText(toFill.getFormattedDate());
 			EditText hora = (EditText) findViewById(R.id.et_BloodPressureDetail_Hora);
-			hora.setText(toFill.getTime());
+			hora.setText(toFill.getFormattedTime());
 			EditText note = (EditText) findViewById(R.id.et_BloodPressureDetail_Notes);
 			if (toFill.getIdNote() != -1) {
 				NoteDataBinding n = new NoteDataBinding();
@@ -138,21 +136,21 @@ public class BloodPressureDetail extends Activity {
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_BloodPressureDetail_Data);
 		final Calendar calendar = Calendar.getInstance();
-		date.setText(DatePickerFragment.getFormatedDate(calendar));
+		date.setText(DateUtils.getFormattedDate(calendar));
 
 		EditText hour = (EditText) findViewById(R.id.et_BloodPressureDetail_Hora);
-		hour.setText(TimePickerFragment.getFormatedDate(calendar));
+		hour.setText(DateUtils.getFormattedTime(calendar));
 	}
 
 	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_BloodPressureDetail_Data,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_BloodPressureDetail_Hora,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
 	}
 
@@ -240,8 +238,7 @@ public class BloodPressureDetail extends Activity {
 		bp.setIdUser(idUser);
 		bp.setSystolic(Integer.parseInt(systolic.getText().toString()));
 		bp.setDiastolic(Integer.parseInt(diastolic.getText().toString()));
-		bp.setDate(data.getText().toString());
-		bp.setTime(hora.getText().toString());
+		bp.setDateTime(data.getText().toString(), hora.getText().toString());
 		bp.setIdTag(idTag);
 
 		wdb.BloodPressure_Save(bp);
@@ -302,8 +299,7 @@ public class BloodPressureDetail extends Activity {
 		bp.setIdUser(idUser);
 		bp.setSystolic(Integer.parseInt(systolic.getText().toString()));
 		bp.setDiastolic(Integer.parseInt(diastolic.getText().toString()));
-		bp.setDate(data.getText().toString());
-		bp.setTime(hora.getText().toString());
+		bp.setDateTime(data.getText().toString(), hora.getText().toString());
 		bp.setIdTag(idTag);
 
 		wdb.BloodPressure_Update(bp);

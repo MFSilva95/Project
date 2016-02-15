@@ -1,6 +1,6 @@
 package pt.it.porto.mydiabetes.middleHealth.utils;
 
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -28,7 +28,7 @@ public class Utils
 		{
 			for (GlycemiaDataBinding value : values)
 			{
-				String dateString = value.getDate() + " " + value.getTime();
+				String dateString = value.getFormattedDate() + " " + value.getFormattedTime();
 
 				long timestamp = convertFromStringToDate.parse(dateString).getTime();
 				timestamps.add(timestamp);

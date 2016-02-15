@@ -94,33 +94,6 @@ public class DB_Handler extends SQLiteOpenHelper {
 	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if (oldVersion < 3) {
-			initDatabaseTables(db);
-		}
-		if (oldVersion < 4) {
-			// convert timestamps to don't have seconds
-			Cursor data = db.query(MyDiabetesContract.Tag.TABLE_NAME, new String[]{MyDiabetesContract.Tag.COLUMN_NAME_ID,
-					MyDiabetesContract.Tag.COLUMN_NAME_TIME_START, MyDiabetesContract.Tag.COLUMN_NAME_TIME_END},
-					MyDiabetesContract.Tag.COLUMN_NAME_TIME_START+" LIKE '__:__:00' OR "+
-							MyDiabetesContract.Tag.COLUMN_NAME_TIME_END+" LIKE '__:__:00'", null, null, null, null);
-			data.moveToFirst();
-			ContentValues contentValues=new ContentValues();
-			String[] tmp;
-			while(!data.isAfterLast()){
-				int id = data.getInt(0);
-				String timeStart=data.getString(1);
-				String timeEnd=data.getString(2);
-
-				tmp = timeEnd.split(":");
-				contentValues.put(MyDiabetesContract.Tag.COLUMN_NAME_TIME_END, tmp[0]+":"+tmp[1]);
-				tmp = timeStart.split(":");
-				contentValues.put(MyDiabetesContract.Tag.COLUMN_NAME_TIME_START, tmp[0]+":"+tmp[1]);
-				db.update(MyDiabetesContract.Tag.TABLE_NAME, contentValues, MyDiabetesContract.Tag.COLUMN_NAME_ID+" = ?", new String[] {String.valueOf(id)});
-
-				data.moveToNext();
-			}
-			data.close();
-		}
 		if(oldVersion<5){
 			initDatabaseTables(db); // creates new feature table
 		}

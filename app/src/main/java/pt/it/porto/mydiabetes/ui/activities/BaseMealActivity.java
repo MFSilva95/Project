@@ -41,7 +41,8 @@ import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc.CalcListener;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
@@ -357,7 +358,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 
 	void fillDateHour(String date, String time) {
 		Calendar c = Calendar.getInstance();
-		this.date.setText(date == null ? DatePickerFragment.getFormatedDate(c) : date);
+		this.date.setText(date == null ? DateUtils.getFormattedDate(c) : date);
 		this.date.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -365,14 +366,14 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 			}
 		});
 
-		this.time.setText(time == null ? TimePickerFragment.getFormatedDate(c) : time);
+		this.time.setText(time == null ? DateUtils.getFormattedTime(c) : time);
 		this.time.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showTimePickerDialog(v);
 			}
 		});
-		setPhaseOfDayByValue(time == null ? TimePickerFragment.getFormatedDate(c) : time);
+		setPhaseOfDayByValue(time == null ? DateUtils.getFormattedTime(c) : time);
 	}
 
 	private void fillTagSpinner() {
@@ -402,7 +403,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 
 	private void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_MealDetail_Hora,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
