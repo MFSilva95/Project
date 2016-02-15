@@ -169,7 +169,7 @@ public class MyDiabetesStorage {
 		return db.query(table, columns, selection, selectionArgs, groupBy, having, orderby, String.valueOf(limit));
 	}
 
-	Cursor rawQuert(String query) {
+	Cursor rawQuery(String query) {
 		SQLiteDatabase db = mHandler.getReadableDatabase();
 		return db.rawQuery(query, null);
 	}

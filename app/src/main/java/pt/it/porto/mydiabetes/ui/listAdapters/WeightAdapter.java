@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.listAdapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 public class WeightAdapter extends BaseAdapter {
 
+	private Cursor cursor;
 	Context _c;
 	private ArrayList<WeightDataBinding> _data;
 
@@ -26,14 +28,28 @@ public class WeightAdapter extends BaseAdapter {
 		_c = c;
 	}
 
+	public WeightAdapter(Cursor weightList, Context c) {
+		this.cursor = weightList;
+		_c = c;
+	}
+
 	@Override
 	public int getCount() {
-		return _data.size();
+		return _data != null ? _data.size() : cursor.getCount();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return _data.get(position);
+		if (_data != null) {
+			return _data.get(position);
+		} else {
+			cursor.moveToPosition(position);
+			WeightDataBinding tmp = new WeightDataBinding();
+			tmp.setId(cursor.getInt(0));
+			tmp.setValue(cursor.getDouble(1));
+			tmp.setDateTime(cursor.getString(2));
+			return tmp;
+		}
 	}
 
 	@Override

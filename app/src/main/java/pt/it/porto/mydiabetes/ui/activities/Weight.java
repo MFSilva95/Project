@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
@@ -12,14 +13,15 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import java.text.ParseException;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.ListsDataDb;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.WeightAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.WeightDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class Weight extends BaseOldActivity {
@@ -118,9 +120,17 @@ public class Weight extends BaseOldActivity {
 	public void fillListView(ListView lv) {
 		EditText datefrom = (EditText) findViewById(R.id.et_Weight_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_Weight_DataTo);
-		DB_Read rdb = new DB_Read(this);
-		ArrayList<WeightDataBinding> allweight = rdb.Weight_GetBtDate(datefrom.getText().toString(), dateto.getText().toString());
-		rdb.close();
-		lv.setAdapter(new WeightAdapter(allweight, this));
+		ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
+		Cursor cursor = db.getWeightList(datefrom.getText().toString(), dateto.getText().toString());
+		if (cursor.getCount() == 0) {
+			cursor = db.getWeightList(dateto.getText().toString(), 20);
+			cursor.moveToLast();
+			try {
+				datefrom.setText(DateUtils.getFormattedDate(DateUtils.parseDateTime(cursor.getString(2))));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		lv.setAdapter(new WeightAdapter(cursor, this));
 	}
 }
