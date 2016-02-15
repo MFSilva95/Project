@@ -21,7 +21,6 @@ import pt.it.porto.mydiabetes.database.ListsDataDb;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.WeightAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.WeightDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
