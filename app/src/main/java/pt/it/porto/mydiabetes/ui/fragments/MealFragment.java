@@ -41,7 +41,7 @@ import pt.it.porto.mydiabetes.ui.activities.TargetBG_detail;
 import pt.it.porto.mydiabetes.ui.activities.ViewPhoto;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;

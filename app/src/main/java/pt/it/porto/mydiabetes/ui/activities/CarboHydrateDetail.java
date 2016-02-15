@@ -42,9 +42,9 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -79,9 +79,9 @@ public class CarboHydrateDetail extends Activity {
 			EditText carbs = (EditText) findViewById(R.id.et_CarboHydrateDetail_Value);
 			carbs.setText(String.valueOf(toFill.getCarbsValue()));
 			EditText data = (EditText) findViewById(R.id.et_CarboHydrateDetail_Data);
-			data.setText(toFill.getDate());
-			Log.d("data reg carb", toFill.getDate());
-			hora.setText(toFill.getTime());
+			data.setText(toFill.getFormattedDate());
+			Log.d("data reg carb", toFill.getFormattedDate());
+			hora.setText(toFill.getFormattedTime());
 
 			EditText note = (EditText) findViewById(R.id.et_CarboHydrateDetail_Notes);
 			if (toFill.getId_Note() != -1) {
@@ -259,8 +259,7 @@ public class CarboHydrateDetail extends Activity {
 		carb.setCarbsValue(Integer.parseInt(carbs.getText().toString()));
 		carb.setId_Tag(idTag);
 		carb.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-		carb.setDate(data.getText().toString());
-		carb.setTime(hora.getText().toString());
+		carb.setDateTime(data.getText().toString(), hora.getText().toString());
 
 
 		reg.Carbs_Save(carb);
@@ -527,8 +526,7 @@ public class CarboHydrateDetail extends Activity {
 		carb.setCarbsValue(Integer.parseInt(carbs.getText().toString()));
 		carb.setId_Tag(idTag);
 		carb.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-		carb.setDate(data.getText().toString());
-		carb.setTime(hora.getText().toString());
+		carb.setDateTime(data.getText().toString(), hora.getText().toString());
 
 
 		reg.Carbs_Update(carb);

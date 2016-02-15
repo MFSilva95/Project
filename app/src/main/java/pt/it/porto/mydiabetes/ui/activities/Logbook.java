@@ -16,7 +16,7 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.LogbookAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.LogbookDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.LogbookDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class Logbook extends Activity {

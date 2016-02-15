@@ -25,9 +25,9 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseRegDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 

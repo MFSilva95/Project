@@ -23,7 +23,7 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.activities.ExercisesDetail;
 import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseDataBinding;
 
 public class Exercises extends Fragment {
 

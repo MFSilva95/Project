@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.CholesterolDetail;
+import pt.it.porto.mydiabetes.ui.dataBinding.CholesterolDataBinding;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
@@ -57,8 +58,8 @@ public class CholesterolAdapter extends BaseAdapter {
 		CholesterolDataBinding bp = _data.get(position);
 		String _id = "" + bp.getId();
 
-		data.setText(bp.getDate());
-		hora.setText(bp.getTime());
+		data.setText(bp.getFormattedDate());
+		hora.setText(bp.getFormattedTime());
 		value.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", bp.getValue()));
 
 		v.setTag(_id);

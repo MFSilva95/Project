@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.GlycemiaDetail;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
 
 
 public class GlycemiaAdapter extends BaseAdapter {
@@ -57,8 +58,8 @@ public class GlycemiaAdapter extends BaseAdapter {
 
 		GlycemiaDataBinding glycemia = _data.get(position);
 		String _id = "" + glycemia.getId();
-		data.setText(glycemia.getDate());
-		hora.setText(glycemia.getTime());
+		data.setText(glycemia.getFormattedDate());
+		hora.setText(glycemia.getFormattedTime());
 		value.setTag(_id);
 		value.setText(String.valueOf(glycemia.getValue()));
 

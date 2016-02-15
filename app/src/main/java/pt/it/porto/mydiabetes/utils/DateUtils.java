@@ -81,6 +81,22 @@ public class DateUtils {
 	}
 
 	public static Calendar getDateTime(String date, String time) throws ParseException {
-		return parseDateTime(date+" "+time);
+		return parseDateTime(date + " " + time);
+	}
+
+	/**
+	 * Compares two calendars and returns if they are the same ignoring the seconds
+	 *
+	 * @return
+	 */
+	public static boolean isSameTime(Calendar current, Calendar next) {
+		if (current==null && next !=null || current!=null && next==null){
+			return false;
+		}
+		return current.get(Calendar.YEAR) == next.get(Calendar.YEAR) &&
+				current.get(Calendar.MONTH) == next.get(Calendar.MONTH) &&
+				current.get(Calendar.DAY_OF_MONTH) == next.get(Calendar.DAY_OF_MONTH) &&
+				current.get(Calendar.HOUR_OF_DAY) == next.get(Calendar.HOUR_OF_DAY) &&
+				current.get(Calendar.MINUTE) == next.get(Calendar.MINUTE);
 	}
 }

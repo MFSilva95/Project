@@ -20,7 +20,7 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.CholesterolAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.CholesterolDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.CholesterolDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 

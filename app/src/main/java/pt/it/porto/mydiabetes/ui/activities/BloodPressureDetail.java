@@ -29,9 +29,9 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.BloodPressureDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.BloodPressureDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -64,9 +64,9 @@ public class BloodPressureDetail extends Activity {
 			EditText diastolic = (EditText) findViewById(R.id.et_BloodPressureDetail_Diastolic);
 			diastolic.setText(String.valueOf(toFill.getDiastolic()));
 			EditText data = (EditText) findViewById(R.id.et_BloodPressureDetail_Data);
-			data.setText(toFill.getDate());
+			data.setText(toFill.getFormattedDate());
 			EditText hora = (EditText) findViewById(R.id.et_BloodPressureDetail_Hora);
-			hora.setText(toFill.getTime());
+			hora.setText(toFill.getFormattedTime());
 			EditText note = (EditText) findViewById(R.id.et_BloodPressureDetail_Notes);
 			if (toFill.getIdNote() != -1) {
 				NoteDataBinding n = new NoteDataBinding();
@@ -238,8 +238,7 @@ public class BloodPressureDetail extends Activity {
 		bp.setIdUser(idUser);
 		bp.setSystolic(Integer.parseInt(systolic.getText().toString()));
 		bp.setDiastolic(Integer.parseInt(diastolic.getText().toString()));
-		bp.setDate(data.getText().toString());
-		bp.setTime(hora.getText().toString());
+		bp.setDateTime(data.getText().toString(), hora.getText().toString());
 		bp.setIdTag(idTag);
 
 		wdb.BloodPressure_Save(bp);
@@ -300,8 +299,7 @@ public class BloodPressureDetail extends Activity {
 		bp.setIdUser(idUser);
 		bp.setSystolic(Integer.parseInt(systolic.getText().toString()));
 		bp.setDiastolic(Integer.parseInt(diastolic.getText().toString()));
-		bp.setDate(data.getText().toString());
-		bp.setTime(hora.getText().toString());
+		bp.setDateTime(data.getText().toString(), hora.getText().toString());
 		bp.setIdTag(idTag);
 
 		wdb.BloodPressure_Update(bp);

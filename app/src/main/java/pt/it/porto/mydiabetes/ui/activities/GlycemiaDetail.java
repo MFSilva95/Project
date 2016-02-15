@@ -21,18 +21,18 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 
 
 public class GlycemiaDetail extends Activity {
@@ -58,8 +58,8 @@ public class GlycemiaDetail extends Activity {
 			GlycemiaDataBinding toFill = rdb.Glycemia_GetById(Integer.parseInt(id));
 
 			EditText date = (EditText) findViewById(R.id.et_GlycemiaDetail_Data);
-			date.setText(toFill.getDate());
-			hora.setText(toFill.getTime());
+			date.setText(toFill.getFormattedDate());
+			hora.setText(toFill.getFormattedTime());
 			EditText glycemia = (EditText) findViewById(R.id.et_GlycemiaDetail_Glycemia);
 			glycemia.setText(String.valueOf(toFill.getValue()));
 			Spinner spinner = (Spinner) findViewById(R.id.sp_GlycemiaDetail_Tag);
@@ -202,8 +202,7 @@ public class GlycemiaDetail extends Activity {
 
 		gly.setIdUser(idUser);
 		gly.setValue(Integer.parseInt(glycemia.getText().toString()));
-		gly.setDate(data.getText().toString());
-		gly.setTime(hora.getText().toString());
+		gly.setDateTime(data.getText().toString(), hora.getText().toString());
 		gly.setIdTag(idTag);
 
 
@@ -255,8 +254,7 @@ public class GlycemiaDetail extends Activity {
 		gly.setId(id);
 		gly.setIdUser(idUser);
 		gly.setValue(Integer.parseInt(glycemia.getText().toString()));
-		gly.setDate(data.getText().toString());
-		gly.setTime(hora.getText().toString());
+		gly.setDateTime(data.getText().toString(), hora.getText().toString());
 		gly.setIdTag(idTag);
 
 		reg.Glycemia_Update(gly);

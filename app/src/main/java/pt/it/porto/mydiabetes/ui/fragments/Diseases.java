@@ -15,7 +15,7 @@ import pt.it.porto.mydiabetes.ui.activities.DiseasesDetail;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseDataBinding;
 
 import java.util.ArrayList;
 

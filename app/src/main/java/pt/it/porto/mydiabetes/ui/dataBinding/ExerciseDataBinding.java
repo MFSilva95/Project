@@ -1,29 +1,29 @@
-package pt.it.porto.mydiabetes.ui.listAdapters;
+package pt.it.porto.mydiabetes.ui.dataBinding;
 
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class DiseaseDataBinding implements Parcelable {
+public class ExerciseDataBinding implements Parcelable {
 
-	public static final Creator<DiseaseDataBinding> CREATOR = new Creator<DiseaseDataBinding>() {
+	public static final Creator<ExerciseDataBinding> CREATOR = new Creator<ExerciseDataBinding>() {
 		@Override
-		public DiseaseDataBinding createFromParcel(Parcel in) {
-			return new DiseaseDataBinding(in);
+		public ExerciseDataBinding createFromParcel(Parcel in) {
+			return new ExerciseDataBinding(in);
 		}
 
 		@Override
-		public DiseaseDataBinding[] newArray(int size) {
-			return new DiseaseDataBinding[size];
+		public ExerciseDataBinding[] newArray(int size) {
+			return new ExerciseDataBinding[size];
 		}
 	};
 	private String name;
 	private int id;
 
-	public DiseaseDataBinding() {
+	public ExerciseDataBinding() {
 	}
 
-	protected DiseaseDataBinding(Parcel in) {
+	protected ExerciseDataBinding(Parcel in) {
 		name = in.readString();
 		id = in.readInt();
 	}
@@ -54,4 +54,6 @@ public class DiseaseDataBinding implements Parcelable {
 	public void setId(int id) {
 		this.id = id;
 	}
+
+
 }

@@ -20,10 +20,11 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.DateTimeDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
@@ -71,18 +72,18 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			if (carbsData != null) {
 				carbsData = db_read.CarboHydrate_GetById(carbsData.getId());
 				noteId = carbsData.getId_Note();
-				date = carbsData.getDate();
-				time = carbsData.getTime();
+				date = carbsData.getFormattedDate();
+				time = carbsData.getFormattedTime();
 			} else if (glycemiaData != null) {
 				glycemiaData = db_read.Glycemia_GetById(glycemiaData.getId());
 				noteId = glycemiaData.getIdNote();
-				date = glycemiaData.getDate();
-				time = glycemiaData.getTime();
+				date = glycemiaData.getFormattedDate();
+				time = glycemiaData.getFormattedTime();
 			} else if (insulinData != null) {
 				insulinData = db_read.InsulinReg_GetById(insulinData.getId());
 				noteId = insulinData.getIdNote();
-				date = insulinData.getDate();
-				time = insulinData.getTime();
+				date = insulinData.getFormattedDate();
+				time = insulinData.getFormattedTime();
 			}
 			db_read.close();
 
@@ -388,7 +389,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		}
 
 		if (carbsData != null) {
-			if (!carbsData.getDate().equals(date) || !carbsData.getTime().equals(time)) {
+			if (!carbsData.getFormattedDate().equals(date) || !carbsData.getFormattedTime().equals(time)) {
 				return true;
 			}
 
@@ -410,7 +411,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			}
 		}
 		if (insulinData != null) {
-			if (!insulinData.getDate().equals(date) || !insulinData.getTime().equals(time)) {
+			if (!insulinData.getFormattedDate().equals(date) || !insulinData.getFormattedTime().equals(time)) {
 				return true;
 			}
 			if (Float.compare(insulinData.getInsulinUnits(), getInsulinIntake()) != 0) {
@@ -429,7 +430,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 
 		}
 		if (glycemiaData != null) {
-			if (!glycemiaData.getDate().equals(date) || !glycemiaData.getTime().equals(time)) {
+			if (!glycemiaData.getFormattedDate().equals(date) || !glycemiaData.getFormattedTime().equals(time)) {
 				return true;
 			}
 			if (glycemiaData.getValue() != insulinCalculator.getGlycemia()) {
@@ -511,8 +512,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			carbsData.setCarbsValue(insulinCalculator.getCarbs());
 			carbsData.setId_Tag(tagId);
 			carbsData.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-			carbsData.setDate(date);
-			carbsData.setTime(time);
+			carbsData.setDateTime(date, time);
 
 			reg.Carbs_Save(carbsData);
 		} else if (carbsData != null && insulinCalculator.getCarbs() != 0) {//carbs id existe e valor está igual ou foi alterado
@@ -524,8 +524,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			carbsData.setCarbsValue(insulinCalculator.getCarbs());
 			carbsData.setId_Tag(tagId);
 			carbsData.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-			carbsData.setDate(date);
-			carbsData.setTime(time);
+			carbsData.setDateTime(date, time);
 
 			reg.Carbs_Update(carbsData);
 		}
@@ -543,8 +542,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			}
 			glycemiaData.setIdUser(carbsData.getId_User());
 			glycemiaData.setValue(insulinCalculator.getGlycemia());
-			glycemiaData.setDate(date);
-			glycemiaData.setTime(time);
+			glycemiaData.setDateTime(date, time);
 
 			glycemiaData.setIdTag(tagId);
 
@@ -556,8 +554,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			}
 			glycemiaData.setIdUser(carbsData.getId_User());
 			glycemiaData.setValue(insulinCalculator.getGlycemia());
-			glycemiaData.setDate(date);
-			glycemiaData.setTime(time);
+			glycemiaData.setDateTime(date, time);
 			glycemiaData.setIdTag(tagId);
 
 			reg.Glycemia_Update(glycemiaData);
@@ -584,8 +581,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			insulinData.setIdUser(carbsData.getId_User());
 			insulinData.setIdInsulin(insulinId);
 			insulinData.setIdBloodGlucose(glycemiaRegId != -1 ? glycemiaRegId : -1);
-			insulinData.setDate(date);
-			insulinData.setTime(time);
+			insulinData.setDateTime(date, time);
 			insulinData.setTargetGlycemia(insulinCalculator.getInsulinTarget());
 			insulinData.setInsulinUnits(insulinIntake);
 
@@ -600,8 +596,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 
 			insulinData.setIdInsulin(insulinId);
 			insulinData.setIdBloodGlucose(glycemiaRegId != -1 ? glycemiaRegId : -1);
-			insulinData.setDate(date);
-			insulinData.setTime(time);
+			insulinData.setDateTime(date, time);
 			insulinData.setTargetGlycemia(insulinCalculator.getInsulinTarget());
 			insulinData.setInsulinUnits(insulinIntake);
 

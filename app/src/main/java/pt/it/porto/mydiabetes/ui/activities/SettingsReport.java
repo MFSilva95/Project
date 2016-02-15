@@ -33,15 +33,15 @@ import java.util.Date;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.BloodPressureDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.CholesterolDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.WeightDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.BloodPressureDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.CholesterolDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseRegDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseRegDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.HbA1cDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.WeightDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class SettingsReport extends BaseOldActivity {
@@ -212,8 +212,8 @@ public class SettingsReport extends BaseOldActivity {
 		t.addCell(new Phrase("Notas", tf));
 
 		for (GlycemiaDataBinding g : reads) {
-			t.addCell(new Phrase(g.getDate(), cf));
-			t.addCell(new Phrase(g.getTime(), cf));
+			t.addCell(new Phrase(g.getFormattedDate(), cf));
+			t.addCell(new Phrase(g.getFormattedTime(), cf));
 			t.addCell(new Phrase(String.valueOf(g.getValue()), cf));
 			t.addCell(new Phrase(rdb.Tag_GetById(g.getIdTag()).getName(), cf));
 			t.addCell(new Phrase((g.getIdNote() > 0) ? rdb.Note_GetById(
@@ -260,8 +260,8 @@ public class SettingsReport extends BaseOldActivity {
 		t.addCell(new Phrase("Notas", tf));
 
 		for (InsulinRegDataBinding i : reads) {
-			t.addCell(new Phrase(i.getDate(), cf));
-			t.addCell(new Phrase(i.getTime(), cf));
+			t.addCell(new Phrase(i.getFormattedDate(), cf));
+			t.addCell(new Phrase(i.getFormattedTime(), cf));
 			t.addCell(new Phrase(
 					String.valueOf((i.getIdBloodGlucose() > 0) ? rdb
 							.Glycemia_GetById(i.getIdBloodGlucose()).getValue()
@@ -314,8 +314,8 @@ public class SettingsReport extends BaseOldActivity {
 
 		for (ExerciseRegDataBinding i : reads) {
 
-			t.addCell(new Phrase(i.getDate(), cf));
-			t.addCell(new Phrase(i.getTime(), cf));
+			t.addCell(new Phrase(i.getFormattedDate(), cf));
+			t.addCell(new Phrase(i.getFormattedTime(), cf));
 			t.addCell(new Phrase(i.getExercise(), cf));
 			t.addCell(new Phrase(String.valueOf(i.getDuration()), cf));
 			t.addCell(new Phrase(i.getEffort(), cf));
@@ -362,8 +362,8 @@ public class SettingsReport extends BaseOldActivity {
 
 		for (CarbsDataBinding i : reads) {
 			t.addCell(new Phrase(i.getPhotoPath(), cf));
-			t.addCell(new Phrase(i.getDate(), cf));
-			t.addCell(new Phrase(i.getTime(), cf));
+			t.addCell(new Phrase(i.getFormattedDate(), cf));
+			t.addCell(new Phrase(i.getFormattedTime(), cf));
 			t.addCell(new Phrase(String.valueOf(i.getCarbsValue()), cf));
 			t.addCell(new Phrase(rdb.Tag_GetById(i.getId_Tag()).getName(), cf));
 			t.addCell((i.getId_Note() > 0) ? new Phrase(rdb.Note_GetById(
@@ -409,8 +409,8 @@ public class SettingsReport extends BaseOldActivity {
 		t.addCell(new Phrase("Notas", tf));
 
 		for (BloodPressureDataBinding i : reads) {
-			t.addCell(new Phrase(i.getDate(), cf));
-			t.addCell(new Phrase(i.getTime(), cf));
+			t.addCell(new Phrase(i.getFormattedDate(), cf));
+			t.addCell(new Phrase(i.getFormattedTime(), cf));
 			t.addCell(new Phrase(String.valueOf(i.getSystolic()), cf));
 			t.addCell(new Phrase(String.valueOf(i.getDiastolic()), cf));
 			t.addCell(new Phrase(rdb.Tag_GetById(i.getIdTag()).getName(), cf));
@@ -499,8 +499,8 @@ public class SettingsReport extends BaseOldActivity {
 
 		for (CholesterolDataBinding i : reads) {
 
-			t.addCell(new Phrase(i.getDate(), cf));
-			t.addCell(new Phrase(i.getTime(), cf));
+			t.addCell(new Phrase(i.getFormattedDate(), cf));
+			t.addCell(new Phrase(i.getFormattedTime(), cf));
 			t.addCell(new Phrase(String.valueOf(i.getValue()), cf));
 			t.addCell((i.getIdNote() > 0) ? new Phrase(rdb.Note_GetById(
 					i.getIdNote()).getNote(), cf) : new Phrase("", cf));
@@ -543,8 +543,8 @@ public class SettingsReport extends BaseOldActivity {
 
 		for (WeightDataBinding i : reads) {
 
-			t.addCell(new Phrase(i.getDate(), cf));
-			t.addCell(new Phrase(i.getTime(), cf));
+			t.addCell(new Phrase(DateUtils.getFormattedDate(i.getDateTime()), cf));
+			t.addCell(new Phrase(DateUtils.getFormattedTime(i.getDateTime()), cf));
 			t.addCell(new Phrase(String.valueOf(i.getValue()), cf));
 			t.addCell((i.getIdNote() > 0) ? new Phrase(rdb.Note_GetById(
 					i.getIdNote()).getNote(), cf) : new Phrase("", cf));
@@ -587,8 +587,8 @@ public class SettingsReport extends BaseOldActivity {
 
 		for (HbA1cDataBinding i : reads) {
 
-			t.addCell(new Phrase(i.getDate(), cf));
-			t.addCell(new Phrase(i.getTime(), cf));
+			t.addCell(new Phrase(i.getFormattedDate(), cf));
+			t.addCell(new Phrase(i.getFormattedTime(), cf));
 			t.addCell(new Phrase(String.valueOf(i.getValue()), cf));
 			t.addCell((i.getIdNote() > 0) ? new Phrase(rdb.Note_GetById(
 					i.getIdNote()).getNote(), cf) : new Phrase("", cf));

@@ -2,9 +2,6 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -23,7 +20,7 @@ import android.view.MenuInflater;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.InsulinDataBinding;
 
 
 public class InsulinsDetail extends Activity {

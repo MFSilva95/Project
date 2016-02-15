@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.CarboHydrateDetail;
+import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
 
 
 public class CarbsAdapter extends BaseAdapter {
@@ -60,8 +61,8 @@ public class CarbsAdapter extends BaseAdapter {
 		carbvalue.setText(String.valueOf(carb.getCarbsValue()));
 		carbvalue.setTag(_id);
 
-		date.setText(carb.getDate());
-		hour.setText(carb.getTime());
+		date.setText(carb.getFormattedDate());
+		hour.setText(carb.getFormattedTime());
 
 		DB_Read rdb = new DB_Read(_c);
 		tag.setText(rdb.Tag_GetById(carb.getId_Tag()).getName());

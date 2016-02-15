@@ -47,14 +47,14 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.middleHealth.utils.Utils;
+import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
@@ -419,8 +419,7 @@ public class Meal extends BaseOldActivity {
 
 		gly.setIdUser(idUser);
 		gly.setValue(Integer.parseInt(glycemia.getText().toString()));
-		gly.setDate(data.getText().toString());
-		gly.setTime(hora.getText().toString());
+		gly.setDateTime(data.getText().toString(), hora.getText().toString());
 		gly.setIdTag(idTag);
 
 
@@ -461,8 +460,7 @@ public class Meal extends BaseOldActivity {
 		carb.setCarbsValue(Integer.parseInt(carbs.getText().toString()));
 		carb.setId_Tag(idTag);
 		carb.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-		carb.setDate(data.getText().toString());
-		carb.setTime(hora.getText().toString());
+		carb.setDateTime(data.getText().toString(), hora.getText().toString());
 
 
 		reg.Carbs_Save(carb);
@@ -516,8 +514,7 @@ public class Meal extends BaseOldActivity {
 
 			gly.setIdUser(idUser);
 			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
-			gly.setDate(data.getText().toString());
-			gly.setTime(hora.getText().toString());
+			gly.setDateTime(data.getText().toString(), hora.getText().toString());
 			gly.setIdTag(idTag);
 			if (idnote > 0) {
 				gly.setIdNote(idnote);
@@ -531,10 +528,9 @@ public class Meal extends BaseOldActivity {
 		ins.setIdUser(idUser);
 		ins.setIdInsulin(idInsulin);
 		ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
-		ins.setDate(data.getText().toString());
-		ins.setTime(hora.getText().toString());
 		ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
 		ins.setInsulinUnits(Float.parseFloat(insulinunits.getText().toString()));
+		ins.setDateTime(data.getText().toString(), hora.getText().toString());
 		ins.setIdTag(idTag);
 
 

@@ -20,10 +20,10 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.ui.dataBinding.HbA1cDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
@@ -50,9 +50,9 @@ public class HbA1cDetail extends Activity {
 			EditText value = (EditText) findViewById(R.id.et_HbA1cDetail_Value);
 			value.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", toFill.getValue()));
 			EditText data = (EditText) findViewById(R.id.et_HbA1cDetail_Data);
-			data.setText(toFill.getDate());
+			data.setText(toFill.getFormattedDate());
 			EditText hora = (EditText) findViewById(R.id.et_HbA1cDetail_Hora);
-			hora.setText(toFill.getTime());
+			hora.setText(toFill.getFormattedTime());
 			EditText note = (EditText) findViewById(R.id.et_HbA1cDetail_Notes);
 			if (toFill.getIdNote() != -1) {
 				NoteDataBinding n = rdb.Note_GetById(toFill.getIdNote());
@@ -151,8 +151,7 @@ public class HbA1cDetail extends Activity {
 
 		hba1c.setIdUser(idUser);
 		hba1c.setValue(Double.parseDouble(value.getText().toString()));
-		hba1c.setDate(data.getText().toString());
-		hba1c.setTime(hora.getText().toString());
+		hba1c.setDateTime(data.getText().toString(), hora.getText().toString());
 
 		wdb.HbA1c_Save(hba1c);
 
@@ -199,8 +198,7 @@ public class HbA1cDetail extends Activity {
 		hba1c.setId(idHbA1c);
 		hba1c.setIdUser(idUser);
 		hba1c.setValue(Double.parseDouble(value.getText().toString()));
-		hba1c.setDate(data.getText().toString());
-		hba1c.setTime(hora.getText().toString());
+		hba1c.setDateTime(data.getText().toString(), hora.getText().toString());
 
 		wdb.HbA1c_Update(hba1c);
 
