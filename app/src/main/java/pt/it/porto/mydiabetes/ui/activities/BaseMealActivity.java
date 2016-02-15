@@ -447,7 +447,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	public void setImageUri(Uri data) {
 		imgUri = data;
 		ImageView img = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
-		if (imgUri == null) {
+		if (imgUri == null || !new File(imgUri.getPath()).exists()) {
 			img.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.newphoto, null));
 		} else {
 			DisplayMetrics displaymetrics = new DisplayMetrics();
