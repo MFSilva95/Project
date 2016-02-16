@@ -351,4 +351,7 @@
     <string name="use_iob">Usar Insulina Activa</string>
     <string name="backup_restore_confirmation_dialog_text">Este processo vai subsituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
     <string name="next_button">Seguinte</string>
+    <string name="notification_sync_recurrent">Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?</string>
+    <string name="notification_sync_first_time">Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?</string>
+    <string name="notification_sync_text">Envie os dados ao gestor do projecto</string>
 </resources>
