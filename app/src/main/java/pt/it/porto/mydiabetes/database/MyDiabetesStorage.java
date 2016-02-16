@@ -174,6 +174,11 @@ public class MyDiabetesStorage {
 		return db.rawQuery(query, null);
 	}
 
+	int delete(String table, String where, String[] whereArgs) {
+		SQLiteDatabase db = mHandler.getReadableDatabase();
+		return db.delete(table, where, whereArgs);
+	}
+
 	public static class QueryOptions {
 		public static final String ORDER_ASC = "ASC";
 		public static final String ORDER_DESC = "DESC";

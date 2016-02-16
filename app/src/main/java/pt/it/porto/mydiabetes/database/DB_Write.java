@@ -361,6 +361,10 @@ public class DB_Write {
 		toInsert.put("Id_User", obj.getId_User());
 		toInsert.put("Value", obj.getCarbsValue());
 		toInsert.put("PhotoPath", obj.getPhotoPath());
+		if (obj.getPhotoPath() != null) {
+			PhotoSyncDb photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(myContext));
+			photoSyncDb.addPhoto(obj.getPhotoPath());
+		}
 		String datetime = DateUtils.formatToDb(obj.getDateTime());
 		toInsert.put("DateTime", datetime);
 		toInsert.put("Id_Tag", obj.getId_Tag());
@@ -375,6 +379,20 @@ public class DB_Write {
 		toInsert.put("Id_User", obj.getId_User());
 		toInsert.put("Value", obj.getCarbsValue());
 		toInsert.put("PhotoPath", obj.getPhotoPath());
+
+		DB_Read read = new DB_Read(myContext);
+		CarbsDataBinding old = read.CarboHydrate_GetById(obj.getId());
+
+		PhotoSyncDb photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(myContext));
+		if (obj.getPhotoPath() != null && old.getPhotoPath() == null) { // if was added
+			photoSyncDb.addPhoto(obj.getPhotoPath());
+		} else if (old.getPhotoPath() != null && obj.getPhotoPath() == null) { // if was deleted
+			photoSyncDb.removePhoto(obj.getId());
+		} else if (old.getPhotoPath() != null && !obj.getPhotoPath().equals(old.getPhotoPath())) { // if photo changed
+			photoSyncDb.removePhoto(obj.getId());
+			photoSyncDb.addPhoto(obj.getPhotoPath());
+		}
+
 		String datetime = DateUtils.formatToDb(obj.getDateTime());
 		toInsert.put("DateTime", datetime);
 		toInsert.put("Id_Tag", obj.getId_Tag());
@@ -387,12 +405,18 @@ public class DB_Write {
 	}
 
 	public void Carbs_Delete(int id) {
+		PhotoSyncDb photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(myContext));
+		photoSyncDb.removePhoto(id);
+
 		myDB.delete("Reg_CarboHydrate", "Id=" + id, null);
 		Log.d("Delete", "Reg_CarboHydrate");
 	}
 
 
 	public void Carbs_DeletePhoto(int id) {
+		PhotoSyncDb photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(myContext));
+		photoSyncDb.removePhoto(id);
+
 		ContentValues toUpdate = new ContentValues();
 		toUpdate.put("PhotoPath", "");
 

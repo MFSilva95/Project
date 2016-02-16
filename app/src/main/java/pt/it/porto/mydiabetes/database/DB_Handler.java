@@ -16,7 +16,7 @@ import pt.it.porto.mydiabetes.R;
 public class DB_Handler extends SQLiteOpenHelper {
 
 	// Database Version
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 6;
 
 	// Database Name
 	private static final String DATABASE_NAME = "DB_Diabetes";
@@ -89,12 +89,20 @@ public class DB_Handler extends SQLiteOpenHelper {
 		db.insert("Tag", null, toInsert);
 	}
 
+	@Override
+	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		if (newVersion>DATABASE_VERSION){
+			return;
+		}
+		super.onDowngrade(db, oldVersion, newVersion);
+	}
+
 	/**
 	 * @see android.database.sqlite.SQLiteOpenHelper#onUpgrade(android.database.sqlite.SQLiteDatabase, int, int)
 	 */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if(oldVersion<5){
+		if(oldVersion<6){
 			initDatabaseTables(db); // creates new feature table
 		}
 	}
