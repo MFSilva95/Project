@@ -125,10 +125,12 @@ public class Weight extends BaseOldActivity {
 		if (cursor.getCount() == 0) {
 			cursor = db.getWeightList(dateto.getText().toString(), 20);
 			cursor.moveToLast();
-			try {
-				datefrom.setText(DateUtils.getFormattedDate(DateUtils.parseDateTime(cursor.getString(2))));
-			} catch (ParseException e) {
-				e.printStackTrace();
+			if (cursor.getCount() > 0) {
+				try {
+					datefrom.setText(DateUtils.getFormattedDate(DateUtils.parseDateTime(cursor.getString(2))));
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		lv.setAdapter(new WeightAdapter(cursor, this));
