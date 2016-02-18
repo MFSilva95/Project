@@ -91,10 +91,7 @@ public class DB_Handler extends SQLiteOpenHelper {
 
 	@Override
 	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		if (newVersion>DATABASE_VERSION){
-			return;
-		}
-		super.onDowngrade(db, oldVersion, newVersion);
+		return;
 	}
 
 	/**

@@ -2,44 +2,43 @@ package pt.it.porto.mydiabetes.ui.listAdapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.InsulinDetail;
-import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 public class InsulinRegAdapter extends BaseAdapter {
 
-	Context _c;
-	private ArrayList<InsulinRegDataBinding> _data;
+	Context context;
+	private Cursor cursor;
 
-	public InsulinRegAdapter(ArrayList<InsulinRegDataBinding> data, Context c) {
-		_data = data;
-		_c = c;
+	public InsulinRegAdapter(Cursor cursor, Context c) {
+		this.cursor = cursor;
+		this.context = c;
 	}
 
 	@Override
 	public int getCount() {
-		return _data.size();
+		return cursor.getCount();
 	}
 
 	@Override
-	public Object getItem(int position) {
-		return _data.get(position);
+	public InsulinRegItem getItem(int position) {
+		cursor.moveToPosition(position);
+		int pox = 0;
+		return new InsulinRegItem(cursor.getInt(pox++), cursor.getString(pox++), cursor.getString(pox++), cursor.getFloat(pox++), cursor.getString(pox++), cursor.getInt(pox++));
 	}
 
 	@Override
@@ -48,49 +47,39 @@ public class InsulinRegAdapter extends BaseAdapter {
 	}
 
 	@Override
-	public View getView(final int position, View convertView, ViewGroup parent) {
+	public View getView(int position, View convertView, ViewGroup parent) {
 
 		View v = convertView;
 		if (v == null) {
-			LayoutInflater vi = (LayoutInflater) _c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.list_insulinreg_row, parent, false);
+			v.setTag(new ViewHolder(v));
 		}
 
-		TextView data = (TextView) v.findViewById(R.id.tv_list_insulinreg_data);
-		TextView hora = (TextView) v.findViewById(R.id.tv_list_insulinreg_hora);
-		TextView ivalue = (TextView) v.findViewById(R.id.tv_list_insulinreg_insulin_value);
-		TextView gtag = (TextView) v.findViewById(R.id.tv_list_insulinreg_glycemia);
-		TextView gvalue = (TextView) v.findViewById(R.id.tv_list_insulinreg_glycemia_value);
-		TextView gunit = (TextView) v.findViewById(R.id.tv_list_insulinreg_glycemia_unit);
-		TextView tag = (TextView) v.findViewById(R.id.tv_list_insulinreg_tag);
-		TextView insulin = (TextView) v.findViewById(R.id.tv_list_insulinreg_insulin);
+		ViewHolder viewHolder = (ViewHolder) v.getTag();
 
-		InsulinRegDataBinding insulin_datab = _data.get(position);
-		String _id = "" + insulin_datab.getId();
-		Log.d("id da insulina", _id);
-		data.setText(insulin_datab.getFormattedDate());
-		hora.setText(insulin_datab.getFormattedTime());
-		ivalue.setText(String.format(LocaleUtils.ENGLISH_LOCALE,"%.1f",insulin_datab.getInsulinUnits()));
-		DB_Read rdb = new DB_Read(_c);
-		if (insulin_datab.getIdBloodGlucose() != -1) {
-			Log.d("if glycemia", "entrou");
-			GlycemiaDataBinding glycemia = rdb.Glycemia_GetById(insulin_datab.getIdBloodGlucose());
-			gvalue.setText(String.valueOf(glycemia.getValue()));
-			gtag.setVisibility(View.VISIBLE);
-			gvalue.setVisibility(View.VISIBLE);
-			gunit.setVisibility(View.VISIBLE);
+		InsulinRegItem data = getItem(position);
+		viewHolder.item=data;
+
+
+		viewHolder.date.setText(data.getFormattedDate());
+		viewHolder.time.setText(data.getFormattedTime());
+		viewHolder.insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", data.insulinVal));
+
+		if (data.glycemia != -1) {
+			viewHolder.gvalue.setText(String.valueOf(data.glycemia));
+			viewHolder.gtag.setVisibility(View.VISIBLE);
+			viewHolder.gvalue.setVisibility(View.VISIBLE);
+			viewHolder.gunit.setVisibility(View.VISIBLE);
 		} else {
-			gvalue.setText("");
-			gtag.setVisibility(View.GONE);
-			gvalue.setVisibility(View.GONE);
-			gunit.setVisibility(View.GONE);
+			viewHolder.gvalue.setText("");
+			viewHolder.gtag.setVisibility(View.GONE);
+			viewHolder.gvalue.setVisibility(View.GONE);
+			viewHolder.gunit.setVisibility(View.GONE);
 		}
-		InsulinDataBinding ins = rdb.Insulin_GetById(insulin_datab.getIdInsulin());
-		insulin.setText(ins.getName());
-		TagDataBinding t = rdb.Tag_GetById(insulin_datab.getIdTag());
+		viewHolder.insulin.setText(data.insulinName);
 
-		tag.setText(t.getName());
-		v.setTag(_id);
+		viewHolder.tag.setText(data.tag);
 
 
 		v.setOnClickListener(new View.OnClickListener() {
@@ -99,14 +88,67 @@ public class InsulinRegAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				Intent intent = new Intent(v.getContext(), InsulinDetail.class);
 				Bundle args = new Bundle();
-				args.putString("Id", (String) v.getTag()); //Your id
+				args.putString("Id", String.valueOf(((ViewHolder) v.getTag()).item.insulinRegId)); //Your id
 				intent.putExtras(args);
 				v.getContext().startActivity(intent);
 			}
 		});
 
-		rdb.close();
 		return v;
 	}
 
+
+	class InsulinRegItem {
+		int insulinRegId;
+		Calendar dateTime;
+		String tag;
+		float insulinVal;
+		String insulinName;
+		int glycemia;
+
+		public InsulinRegItem(int insulinRegId, String dateTime, String tag, float insulinVal, String insulinName, int glycemia) {
+			this.insulinRegId = insulinRegId;
+			try {
+				this.dateTime = DateUtils.parseDateTime(dateTime);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			this.tag = tag;
+			this.insulinVal = insulinVal;
+			this.insulinName = insulinName;
+			this.glycemia = glycemia;
+		}
+
+		public String getFormattedDate() {
+			return DateUtils.getFormattedDate(dateTime);
+		}
+
+		public String getFormattedTime() {
+			return DateUtils.getFormattedTime(dateTime);
+		}
+	}
+
+	class ViewHolder {
+		TextView date;
+		TextView time;
+		TextView insulinValue;
+		TextView gtag;
+		TextView gvalue;
+		TextView gunit;
+		TextView tag;
+		TextView insulin;
+		InsulinRegItem item;
+
+		public ViewHolder(View view) {
+			date = (TextView) view.findViewById(R.id.tv_list_insulinreg_data);
+			time = (TextView) view.findViewById(R.id.tv_list_insulinreg_hora);
+			insulinValue = (TextView) view.findViewById(R.id.tv_list_insulinreg_insulin_value);
+			gtag = (TextView) view.findViewById(R.id.tv_list_insulinreg_glycemia);
+			gvalue = (TextView) view.findViewById(R.id.tv_list_insulinreg_glycemia_value);
+			gunit = (TextView) view.findViewById(R.id.tv_list_insulinreg_glycemia_unit);
+			tag = (TextView) view.findViewById(R.id.tv_list_insulinreg_tag);
+			insulin = (TextView) view.findViewById(R.id.tv_list_insulinreg_insulin);
+		}
+
+	}
 }

@@ -64,7 +64,6 @@ public class ListsDataDb {
 				"ORDER BY datetime DESC");
 
 
-
 		return cursor;
 	}
 
@@ -78,6 +77,49 @@ public class ListsDataDb {
 	public Cursor getWeightList(String endDate, int numberOfItems) {
 		String[] rows = new String[]{MyDiabetesContract.Regist.Weight.COLUMN_NAME_ID, MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME};
 		return storage.query(MyDiabetesContract.Regist.Weight.TABLE_NAME, rows, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME + "<= ?", new String[]{endDate}, null, null, "DateTime DESC", 20);
+	}
+
+	public Cursor getInsulinRegList(String startDate, String endDate) {
+		Cursor cursor = storage.rawQuery("SELECT * " +
+				"FROM" +
+				"(SELECT Reg_Insulin.Id, Reg_Insulin.DateTime, Tag.Name, Reg_Insulin.Value, Insulin.Name, -1" +
+				" FROM Reg_Insulin, Tag, Insulin" +
+				" WHERE Reg_Insulin.Id_Tag = Tag.Id" +
+				" AND Insulin.Id = Reg_Insulin.Id_Insulin" +
+				" UNION " +
+				"SELECT Reg_Insulin.Id, Reg_Insulin.DateTime, Tag.Name, Reg_Insulin.Value, Insulin.Name, Reg_BloodGlucose.Value" +
+				" FROM Reg_Insulin, Tag, Insulin, Reg_BloodGlucose" +
+				" WHERE Reg_Insulin.Id_Tag = Tag.Id" +
+				" AND Reg_Insulin.Id_BloodGlucose= Reg_BloodGlucose.Id" +
+				" AND Insulin.Id = Reg_Insulin.Id_Insulin" +
+				")" +
+				" WHERE DateTime > '" + startDate + " 00:00:00' AND DateTime < '" + endDate + " 23:59:59'" +
+				" GROUP By Id"+
+				" ORDER BY DateTime DESC");
+
+		return cursor;
+	}
+
+	public Cursor getInsulinRegList(String endDate, int numberOfItems) {
+		Cursor cursor = storage.rawQuery("SELECT * " +
+				"FROM" +
+				"(SELECT Reg_Insulin.Id, Reg_Insulin.DateTime, Tag.Name, Reg_Insulin.Value, Insulin.Name, -1" +
+				" FROM Reg_Insulin, Tag, Insulin" +
+				" WHERE Reg_Insulin.Id_Tag = Tag.Id" +
+				" AND Insulin.Id = Reg_Insulin.Id_Insulin" +
+				" UNION " +
+				"SELECT Reg_Insulin.Id, Reg_Insulin.DateTime, Tag.Name, Reg_Insulin.Value, Insulin.Name, Reg_BloodGlucose.Value" +
+				" FROM Reg_Insulin, Tag, Insulin, Reg_BloodGlucose" +
+				" WHERE Reg_Insulin.Id_Tag = Tag.Id" +
+				" AND Reg_Insulin.Id_BloodGlucose= Reg_BloodGlucose.Id" +
+				" AND Insulin.Id = Reg_Insulin.Id_Insulin" +
+				")" +
+				" WHERE DateTime < '" + endDate + " 23:59:59'" +
+				" GROUP By Id"+
+				" ORDER BY DateTime DESC" +
+				" LIMIT " + String.valueOf(numberOfItems));
+
+		return cursor;
 	}
 
 	private Cursor getItemsList(String table, String[] rows, String startDate, String endDate) {
