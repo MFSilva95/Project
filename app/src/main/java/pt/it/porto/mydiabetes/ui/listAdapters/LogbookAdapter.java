@@ -128,7 +128,7 @@ public class LogbookAdapter extends BaseAdapter {
 		return v;
 	}
 
-	class LogbookItem {
+	private class LogbookItem {
 		Calendar dateTime;
 		String tag;
 		int carbs;
@@ -164,7 +164,7 @@ public class LogbookAdapter extends BaseAdapter {
 		}
 	}
 
-	class ViewHolder {
+	private class ViewHolder {
 		TextView data;
 		TextView hora;
 		TextView insulinValue;

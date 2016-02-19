@@ -2,6 +2,8 @@ package pt.it.porto.mydiabetes.database;
 
 import android.database.Cursor;
 
+import pt.it.porto.mydiabetes.utils.DbUtils;
+
 public class ListsDataDb {
 
 
@@ -76,7 +78,7 @@ public class ListsDataDb {
 
 	public Cursor getWeightList(String endDate, int numberOfItems) {
 		String[] rows = new String[]{MyDiabetesContract.Regist.Weight.COLUMN_NAME_ID, MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME};
-		return storage.query(MyDiabetesContract.Regist.Weight.TABLE_NAME, rows, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME + "<= ?", new String[]{endDate}, null, null, "DateTime DESC", 20);
+		return storage.query(MyDiabetesContract.Regist.Weight.TABLE_NAME, rows, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME + "<= ?", new String[]{endDate}, null, null, "DateTime DESC", numberOfItems);
 	}
 
 	public Cursor getInsulinRegList(String startDate, String endDate) {
@@ -94,7 +96,7 @@ public class ListsDataDb {
 				" AND Insulin.Id = Reg_Insulin.Id_Insulin" +
 				")" +
 				" WHERE DateTime > '" + startDate + " 00:00:00' AND DateTime < '" + endDate + " 23:59:59'" +
-				" GROUP By Id"+
+				" GROUP By Id" +
 				" ORDER BY DateTime DESC");
 
 		return cursor;
@@ -115,10 +117,32 @@ public class ListsDataDb {
 				" AND Insulin.Id = Reg_Insulin.Id_Insulin" +
 				")" +
 				" WHERE DateTime < '" + endDate + " 23:59:59'" +
-				" GROUP By Id"+
+				" GROUP By Id" +
 				" ORDER BY DateTime DESC" +
 				" LIMIT " + String.valueOf(numberOfItems));
 
+		return cursor;
+	}
+
+	public Cursor getCarbsRegList(String startDate, String endDate) {
+		String[] rows = new String[]{MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_ID, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_VALUE, MyDiabetesContract.Tag.COLUMN_NAME_NAME};
+		Cursor cursor = storage.rawQuery("SELECT " + DbUtils.toString(rows) +
+				" FROM " + DbUtils.toString(new String[]{MyDiabetesContract.Regist.CarboHydrate.TABLE_NAME, MyDiabetesContract.Tag.TABLE_NAME}) +
+				" WHERE " + MyDiabetesContract.Tag.COLUMN_NAME_ID + "=" + MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_TAG_ID +
+				" AND " + MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_DATETIME + " > '" + startDate + " 00:00:00'" +
+				" AND " + MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_DATETIME + " < '" + endDate + " 23:59:59'" +
+				" ORDER BY " + MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_DATETIME + " DESC");
+		return cursor;
+	}
+
+	public Cursor getCarbsRegList(String endDate, int numberOfItems) {
+		String[] rows = new String[]{MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_ID, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_VALUE, MyDiabetesContract.Tag.COLUMN_NAME_NAME};
+		Cursor cursor = storage.rawQuery("SELECT " + DbUtils.toString(rows) +
+				" FROM " + DbUtils.toString(new String[]{MyDiabetesContract.Regist.CarboHydrate.TABLE_NAME, MyDiabetesContract.Tag.TABLE_NAME}) +
+				" WHERE " + MyDiabetesContract.Tag.COLUMN_NAME_ID + "=" + MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_TAG_ID +
+				" AND " + MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_DATETIME + " < '" + endDate + " 23:59:59'" +
+				" ORDER BY " + MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_DATETIME + " DESC" +
+				" LIMIT " + String.valueOf(numberOfItems));
 		return cursor;
 	}
 
@@ -129,4 +153,5 @@ public class ListsDataDb {
 	private Cursor getItemsList(String table, String[] rows, String endDate, int numberOfItems) {
 		return storage.query(table, rows, "DateTime <= ?", new String[]{endDate}, null, null, "DateTime DESC", numberOfItems);
 	}
+
 }

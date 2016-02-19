@@ -38,7 +38,7 @@ public class InsulinRegAdapter extends BaseAdapter {
 	public InsulinRegItem getItem(int position) {
 		cursor.moveToPosition(position);
 		int pox = 0;
-		return new InsulinRegItem(cursor.getInt(pox++), cursor.getString(pox++), cursor.getString(pox++), cursor.getFloat(pox++), cursor.getString(pox++), cursor.getInt(pox++));
+		return new InsulinRegItem(cursor.getInt(pox++), cursor.getString(pox++), cursor.getString(pox++), cursor.getFloat(pox++), cursor.getString(pox++), cursor.getInt(pox));
 	}
 
 	@Override
@@ -98,7 +98,7 @@ public class InsulinRegAdapter extends BaseAdapter {
 	}
 
 
-	class InsulinRegItem {
+	private class InsulinRegItem {
 		int insulinRegId;
 		Calendar dateTime;
 		String tag;
@@ -128,7 +128,7 @@ public class InsulinRegAdapter extends BaseAdapter {
 		}
 	}
 
-	class ViewHolder {
+	private class ViewHolder {
 		TextView date;
 		TextView time;
 		TextView insulinValue;

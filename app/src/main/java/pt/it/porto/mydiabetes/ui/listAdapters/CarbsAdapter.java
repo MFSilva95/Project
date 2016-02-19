@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.listAdapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,33 +10,36 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.CarboHydrateDetail;
-import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class CarbsAdapter extends BaseAdapter {
 
-	Context _c;
-	private ArrayList<CarbsDataBinding> _data;
+	private Cursor cursor;
+	private Context context;
 
-	public CarbsAdapter(ArrayList<CarbsDataBinding> data, Context c) {
-		_data = data;
-		_c = c;
+	public CarbsAdapter(Cursor cursor, Context c) {
+		this.cursor = cursor;
+		context = c;
 	}
 
 
 	@Override
 	public int getCount() {
-		return _data.size();
+		return cursor.getCount();
 	}
 
 	@Override
-	public Object getItem(int position) {
-		return _data.get(position);
+	public CarbsItem getItem(int position) {
+		cursor.moveToPosition(position);
+		int pox = 0;
+		return new CarbsItem(cursor.getInt(pox++), cursor.getString(pox++), cursor.getInt(pox++), cursor.getString(pox));
+
 	}
 
 	@Override
@@ -47,27 +51,23 @@ public class CarbsAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View v = convertView;
 		if (v == null) {
-			LayoutInflater vi = (LayoutInflater) _c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.list_carbs_row, parent, false);
+			v.setTag(new ViewHolder(v));
 		}
 
-		TextView carbvalue = (TextView) v.findViewById(R.id.tv_list_carbs_value);
-		TextView date = (TextView) v.findViewById(R.id.tv_list_carbs_data);
-		TextView hour = (TextView) v.findViewById(R.id.tv_list_carbs_hora);
-		TextView tag = (TextView) v.findViewById(R.id.tv_list_carbs_tag);
+		ViewHolder viewHolder = (ViewHolder) v.getTag();
 
-		CarbsDataBinding carb = _data.get(position);
-		String _id = "" + carb.getId();
-		carbvalue.setText(String.valueOf(carb.getCarbsValue()));
-		carbvalue.setTag(_id);
 
-		date.setText(carb.getFormattedDate());
-		hour.setText(carb.getFormattedTime());
+		CarbsItem carb = getItem(position);
 
-		DB_Read rdb = new DB_Read(_c);
-		tag.setText(rdb.Tag_GetById(carb.getId_Tag()).getName());
-		rdb.close();
-		v.setTag(_id);
+		viewHolder.id = carb.id;
+		viewHolder.carbvalue.setText(String.valueOf(carb.value));
+
+		viewHolder.date.setText(carb.getFormattedDate());
+		viewHolder.hour.setText(carb.getFormattedTime());
+
+		viewHolder.tag.setText(carb.tag);
 
 
 		v.setOnClickListener(new View.OnClickListener() {
@@ -76,7 +76,7 @@ public class CarbsAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				Intent intent = new Intent(v.getContext(), CarboHydrateDetail.class);
 				Bundle args = new Bundle();
-				args.putString("Id", (String) v.getTag()); //Your id
+				args.putInt("Id", ((ViewHolder) v.getTag()).id); //Your id
 				intent.putExtras(args);
 				v.getContext().startActivity(intent);
 			}
@@ -87,4 +87,47 @@ public class CarbsAdapter extends BaseAdapter {
 		return v;
 	}
 
+
+	private class CarbsItem {
+		int id;
+		int value;
+		Calendar dateTime;
+		String tag;
+
+		public CarbsItem(int id, String dateTime, int value, String tag) {
+			this.id = id;
+			try {
+				this.dateTime = DateUtils.parseDateTime(dateTime);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			this.value = value;
+			this.tag = tag;
+		}
+
+		public String getFormattedDate() {
+			return DateUtils.getFormattedDate(dateTime);
+		}
+
+		public String getFormattedTime() {
+			return DateUtils.getFormattedTime(dateTime);
+		}
+	}
+
+	private class ViewHolder {
+		TextView carbvalue;
+		TextView date;
+		TextView hour;
+		TextView tag;
+
+		int id;
+
+		ViewHolder(View view) {
+			carbvalue = (TextView) view.findViewById(R.id.tv_list_carbs_value);
+			date = (TextView) view.findViewById(R.id.tv_list_carbs_data);
+			hour = (TextView) view.findViewById(R.id.tv_list_carbs_hora);
+			tag = (TextView) view.findViewById(R.id.tv_list_carbs_tag);
+		}
+
+	}
 }

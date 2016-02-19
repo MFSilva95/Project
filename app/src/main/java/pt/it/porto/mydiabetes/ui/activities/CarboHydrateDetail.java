@@ -70,9 +70,8 @@ public class CarboHydrateDetail extends Activity {
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
 			DB_Read rdb = new DB_Read(this);
-			String id = args.getString("Id");
-			id_ch = Integer.parseInt(args.getString("Id"));
-			CarbsDataBinding toFill = rdb.CarboHydrate_GetById(Integer.parseInt(id));
+			id_ch = args.getInt("Id");
+			CarbsDataBinding toFill = rdb.CarboHydrate_GetById(id_ch);
 
 			Spinner tagSpinner = (Spinner) findViewById(R.id.sp_CarboHydrateDetail_Tag);
 			SelectSpinnerItemByValue(tagSpinner, rdb.Tag_GetById(toFill.getId_Tag()).getName());

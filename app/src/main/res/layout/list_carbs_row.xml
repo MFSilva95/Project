@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="?android:selectableItemBackground"
-                android:orientation="horizontal">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="?android:selectableItemBackground"
+              android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/ll_list_carbs_left"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
         android:layout_marginLeft="3dp"
         android:layout_marginStart="3dp"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_list_carbs_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="left"
             android:textSize="@dimen/list_text_small"
             android:textStyle="bold"
@@ -31,7 +29,6 @@
             android:id="@+id/tv_list_carbs_hora"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="left"
             android:textSize="@dimen/list_text_small"
             android:textStyle="bold"
@@ -41,7 +38,6 @@
             android:id="@+id/tv_list_carbs_tag"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:ellipsize="end"
             android:gravity="left"
             android:lines="1"
@@ -53,11 +49,9 @@
         android:id="@+id/tv_list_carbs_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@+id/tv_list_carbs_unit"
-        android:layout_toStartOf="@+id/tv_list_carbs_unit"
         android:gravity="center_horizontal"
         android:textSize="@dimen/list_text_huge"
         android:textStyle="bold"
@@ -67,11 +61,9 @@
         android:id="@+id/tv_list_carbs_unit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@+id/ib_list_carbs_detail"
-        android:layout_toStartOf="@+id/ib_list_carbs_detail"
         android:gravity="center_horizontal"
         android:text="@string/grams"
         android:textSize="@dimen/list_text_small"/>
@@ -80,9 +72,7 @@
         android:id="@+id/ib_list_carbs_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
         android:background="@color/transparent"
         android:src="@drawable/viewdetail"/>
-</RelativeLayout>
+</LinearLayout>
