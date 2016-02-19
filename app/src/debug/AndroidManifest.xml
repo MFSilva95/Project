@@ -5,15 +5,15 @@
 
     <application>
 
-        <activity
-            android:name="pt.it.porto.mydiabetes.ui.activities.Charts"
-            android:label="Charts"
-            android:theme="@style/AppNewTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+        <!--<activity-->
+            <!--android:name="pt.it.porto.mydiabetes.ui.activities.Charts"-->
+            <!--android:label="Charts"-->
+            <!--android:theme="@style/AppNewTheme">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
         <activity
             android:name="pt.it.porto.mydiabetes.ui.activities.MultiDataChartActivity"
             android:theme="@style/AppNewTheme"/>

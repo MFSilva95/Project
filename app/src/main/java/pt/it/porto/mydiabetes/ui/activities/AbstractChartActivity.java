@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,7 +14,7 @@ import java.util.List;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.ValueShape;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.ui.charts.data.*;
+import pt.it.porto.mydiabetes.ui.charts.data.ChartData;
 import pt.it.porto.mydiabetes.ui.charts.data.Weight;
 import pt.it.porto.mydiabetes.ui.dialogs.DateRangeDialog;
 import pt.it.porto.mydiabetes.ui.fragments.ChartFragment;
@@ -37,7 +38,11 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_graphs);
-		getSupportActionBar();
+		ActionBar actionbar = getSupportActionBar();
+		if (actionbar != null) {
+			actionbar.setDisplayHomeAsUpEnabled(true);
+		}
+
 		timeStart = Calendar.getInstance();
 		timeStart.roll(Calendar.WEEK_OF_YEAR, false);
 		timeEnd = Calendar.getInstance();
@@ -45,6 +50,14 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
 			chartData = extras.getParcelable(EXTRAS_CHART_DATA);
+			if (extras.containsKey(EXTRAS_TIME_START)) {
+				timeStart = (Calendar) extras.getSerializable(EXTRAS_TIME_START);
+			}
+			if (extras.containsKey(EXTRAS_TIME_END)) {
+				timeEnd = (Calendar) extras.getSerializable(EXTRAS_TIME_END);
+			}
+			chartData.setStartDate(dateFormat.format(getTimeStart().getTime()));
+			chartData.setEndDate(dateFormat.format(getTimeEnd().getTime()));
 		} else {
 			chartData = new Weight(this);
 			chartData.setStartDate(dateFormat.format(getTimeStart().getTime()));
@@ -88,6 +101,10 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 		if (item.getItemId() == R.id.select_dates) {
 			DateRangeDialog dialog = DateRangeDialog.newInstance(timeStart, timeEnd, chartData);
 			dialog.show(getSupportFragmentManager(), null);
+			return true;
+		}
+		if (item.getItemId() == android.R.id.home) {
+			finish();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

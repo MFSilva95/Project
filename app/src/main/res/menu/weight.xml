@@ -1,12 +1,21 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/menuItem_Weight"
+        android:enabled="true"
+        android:icon="@drawable/plus_btn"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:icon="@drawable/plus_btn"
-        android:title="@string/add_Weight" 
-        android:visible="true" 
-        android:enabled="true" />
+        android:title="@string/add_Weight"
+        android:visible="true"
+        app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/chart"
+        android:icon="@drawable/ic_multiline_chart_grey_300_24dp"
+        android:showAsAction="ifRoom"
+        android:title="@string/see_in_chart"
+        app:showAsAction="ifRoom"
+        />
 </menu>

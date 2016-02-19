@@ -81,12 +81,22 @@ public class Weight extends BaseOldActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Intent intent;
 		switch (item.getItemId()) {
 			case android.R.id.home:
 				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_Weight:
-				Intent intent = new Intent(this, WeightDetail.class);
+				intent = new Intent(this, WeightDetail.class);
+				startActivity(intent);
+				return true;
+			case R.id.chart:
+				intent = new Intent(this, MultiDataChartActivity.class);
+				Bundle bundle = new Bundle();
+				bundle.putParcelable(MultiDataChartActivity.EXTRAS_CHART_DATA, new pt.it.porto.mydiabetes.ui.charts.data.Weight(this));
+				bundle.putSerializable(MultiDataChartActivity.EXTRAS_TIME_START, DateUtils.getDateCalendar(((EditText) findViewById(R.id.et_Weight_DataFrom)).getText().toString()));
+				bundle.putSerializable(MultiDataChartActivity.EXTRAS_TIME_END, DateUtils.getDateCalendar(((EditText) findViewById(R.id.et_Weight_DataTo)).getText().toString()));
+				intent.putExtras(bundle);
 				startActivity(intent);
 				return true;
 		}
