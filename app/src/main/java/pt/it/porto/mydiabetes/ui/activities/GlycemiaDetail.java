@@ -53,9 +53,8 @@ public class GlycemiaDetail extends Activity {
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
 			DB_Read rdb = new DB_Read(this);
-			String id = args.getString("Id");
-			idGlycemia = Integer.parseInt(id);
-			GlycemiaDataBinding toFill = rdb.Glycemia_GetById(Integer.parseInt(id));
+			idGlycemia = args.getInt("Id");
+			GlycemiaDataBinding toFill = rdb.Glycemia_GetById(idGlycemia);
 
 			EditText date = (EditText) findViewById(R.id.et_GlycemiaDetail_Data);
 			date.setText(toFill.getFormattedDate());

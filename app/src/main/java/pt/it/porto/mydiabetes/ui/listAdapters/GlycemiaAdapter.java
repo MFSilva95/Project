@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.listAdapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,33 +10,35 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.GlycemiaDetail;
-import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class GlycemiaAdapter extends BaseAdapter {
 
-	Context _c;
-	private ArrayList<GlycemiaDataBinding> _data;
+	private Cursor cursor;
+	private Context context;
 
-	public GlycemiaAdapter(ArrayList<GlycemiaDataBinding> data, Context c) {
-		_data = data;
-		_c = c;
+	public GlycemiaAdapter(Cursor cursor, Context c) {
+		this.cursor = cursor;
+		context = c;
 	}
 
 
 	@Override
 	public int getCount() {
-		return _data.size();
+		return cursor.getCount();
 	}
 
 	@Override
-	public Object getItem(int position) {
-		return _data.get(position);
+	public GlycemiaItem getItem(int position) {
+		cursor.moveToPosition(position);
+		int pox = 0;
+		return new GlycemiaItem(cursor.getInt(pox++), cursor.getString(pox++), cursor.getInt(pox++), cursor.getString(pox));
 	}
 
 	@Override
@@ -47,27 +50,22 @@ public class GlycemiaAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View v = convertView;
 		if (v == null) {
-			LayoutInflater vi = (LayoutInflater) _c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.list_glycemia_row, parent, false);
+			v.setTag(new ViewHolder(v));
 		}
 
-		TextView data = (TextView) v.findViewById(R.id.tv_list_glicemia_data);
-		TextView hora = (TextView) v.findViewById(R.id.tv_list_glicemia_hora);
-		TextView value = (TextView) v.findViewById(R.id.tv_list_glicemia_value);
-		TextView tag = (TextView) v.findViewById(R.id.tv_list_glicemia_tag);
+		ViewHolder viewHolder = (ViewHolder) v.getTag();
+		GlycemiaItem glycemia = getItem(position);
 
-		GlycemiaDataBinding glycemia = _data.get(position);
-		String _id = "" + glycemia.getId();
-		data.setText(glycemia.getFormattedDate());
-		hora.setText(glycemia.getFormattedTime());
-		value.setTag(_id);
-		value.setText(String.valueOf(glycemia.getValue()));
+		viewHolder.id = glycemia.id;
 
-		DB_Read rdb = new DB_Read(_c);
-		tag.setText(rdb.Tag_GetById(glycemia.getIdTag()).getName());
-		rdb.close();
+		viewHolder.date.setText(glycemia.getFormattedDate());
+		viewHolder.time.setText(glycemia.getFormattedTime());
+		viewHolder.value.setTag(String.valueOf(glycemia.id));
+		viewHolder.value.setText(String.valueOf(glycemia.value));
+		viewHolder.tag.setText(glycemia.tag);
 
-		v.setTag(_id);
 
 		v.setOnClickListener(new View.OnClickListener() {
 
@@ -75,7 +73,7 @@ public class GlycemiaAdapter extends BaseAdapter {
 			public void onClick(final View v) {
 				Intent intent = new Intent(v.getContext(), GlycemiaDetail.class);
 				Bundle args = new Bundle();
-				args.putString("Id", (String) v.getTag()); //Your id
+				args.putInt("Id", ((ViewHolder) v.getTag()).id); //Your id
 				intent.putExtras(args);
 				v.getContext().startActivity(intent);
 			}
@@ -84,6 +82,49 @@ public class GlycemiaAdapter extends BaseAdapter {
 
 
 		return v;
+	}
+
+	private class GlycemiaItem {
+		int id;
+		int value;
+		Calendar dateTime;
+		String tag;
+
+		public GlycemiaItem(int id, String dateTime, int value, String tag) {
+			this.id = id;
+			try {
+				this.dateTime = DateUtils.parseDateTime(dateTime);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			this.value = value;
+			this.tag = tag;
+		}
+
+		public String getFormattedDate() {
+			return DateUtils.getFormattedDate(dateTime);
+		}
+
+		public String getFormattedTime() {
+			return DateUtils.getFormattedTime(dateTime);
+		}
+	}
+
+	private class ViewHolder {
+		TextView date;
+		TextView time;
+		TextView value;
+		TextView tag;
+		int id;
+
+		public ViewHolder(View view) {
+			date = (TextView) view.findViewById(R.id.tv_list_glicemia_data);
+			time = (TextView) view.findViewById(R.id.tv_list_glicemia_hora);
+			value = (TextView) view.findViewById(R.id.tv_list_glicemia_value);
+			tag = (TextView) view.findViewById(R.id.tv_list_glicemia_tag);
+		}
+
+
 	}
 
 }

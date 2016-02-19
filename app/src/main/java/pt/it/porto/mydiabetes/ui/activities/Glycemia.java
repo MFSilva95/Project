@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
@@ -13,14 +14,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.ListsDataDb;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaAdapter;
-import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -96,12 +96,13 @@ public class Glycemia extends Activity {
 	}
 
 	public void fillListView(ListView lv) {
-		EditText datefrom = (EditText) findViewById(R.id.et_Glycemia_DataFrom);
-		EditText dateto = (EditText) findViewById(R.id.et_Glycemia_DataTo);
-		DB_Read rdb = new DB_Read(this);
-		ArrayList<GlycemiaDataBinding> allGlycemias = rdb.Glycemia_GetByDate(datefrom.getText().toString(), dateto.getText().toString());
-		rdb.close();
-		lv.setAdapter(new GlycemiaAdapter(allGlycemias, this));
+		EditText dateFrom = (EditText) findViewById(R.id.et_Glycemia_DataFrom);
+		EditText dateTo = (EditText) findViewById(R.id.et_Glycemia_DataTo);
+
+		ListsDataDb listData = new ListsDataDb(MyDiabetesStorage.getInstance(this));
+		Cursor cursor = listData.getGlycemiaList(dateFrom.getText().toString(), dateTo.getText().toString());
+
+		lv.setAdapter(new GlycemiaAdapter(cursor, this));
 	}
 
 	public void showDatePickerDialogFrom(View v) {

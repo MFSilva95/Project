@@ -136,7 +136,7 @@ public class ListsDataDb {
 	}
 
 	public Cursor getCarbsRegList(String endDate, int numberOfItems) {
-		String[] rows = new String[]{MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_ID, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_VALUE, MyDiabetesContract.Tag.COLUMN_NAME_NAME};
+		String[] rows = new String[]{MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_ID, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_VALUE, MyDiabetesContract.Tag.COLUMN_NAME_NAME};
 		Cursor cursor = storage.rawQuery("SELECT " + DbUtils.toString(rows) +
 				" FROM " + DbUtils.toString(new String[]{MyDiabetesContract.Regist.CarboHydrate.TABLE_NAME, MyDiabetesContract.Tag.TABLE_NAME}) +
 				" WHERE " + MyDiabetesContract.Tag.COLUMN_NAME_ID + "=" + MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_TAG_ID +
@@ -146,7 +146,30 @@ public class ListsDataDb {
 		return cursor;
 	}
 
-	private Cursor getItemsList(String table, String[] rows, String startDate, String endDate) {
+	public Cursor getGlycemiaList(String startDate, String endDate) {
+		String[] rows = new String[]{MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_ID, MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_VALUE, MyDiabetesContract.Tag.COLUMN_NAME_NAME};
+		Cursor cursor = storage.rawQuery("SELECT " + DbUtils.toString(rows) +
+				" FROM " + DbUtils.toString(new String[]{MyDiabetesContract.Regist.BloodGlucose.TABLE_NAME, MyDiabetesContract.Tag.TABLE_NAME}) +
+				" WHERE " + MyDiabetesContract.Tag.COLUMN_NAME_ID + "=" + MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_TAG_ID +
+				" AND " + MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_DATETIME + " > '" + startDate + " 00:00:00'" +
+				" AND " + MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_DATETIME + " < '" + endDate + " 23:59:59'" +
+				" ORDER BY " + MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_DATETIME + " DESC");
+		return cursor;
+	}
+
+	public Cursor getGlycemiaList(String endDate, int numberOfItems) {
+		String[] rows = new String[]{MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_ID, MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_VALUE, MyDiabetesContract.Tag.COLUMN_NAME_NAME};
+		Cursor cursor = storage.rawQuery("SELECT " + DbUtils.toString(rows) +
+				" FROM " + DbUtils.toString(new String[]{MyDiabetesContract.Regist.BloodGlucose.TABLE_NAME, MyDiabetesContract.Tag.TABLE_NAME}) +
+				" WHERE " + MyDiabetesContract.Tag.COLUMN_NAME_ID + "=" + MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_TAG_ID +
+				" AND " + MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_DATETIME + " < '" + endDate + " 23:59:59'" +
+				" ORDER BY " + MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_DATETIME + " DESC" +
+				" LIMIT " + String.valueOf(numberOfItems));
+		return cursor;
+	}
+
+
+		private Cursor getItemsList(String table, String[] rows, String startDate, String endDate) {
 		return storage.query(table, rows, "DateTime >= ? AND DateTime <= ?", new String[]{startDate, endDate}, null, null, "DateTime DESC");
 	}
 
