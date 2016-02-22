@@ -97,8 +97,9 @@
                 android:value=".ui.activities.Home"/>
         </activity>
         <activity
-            android:name=".ui.activities.CarboHydrate"
+            android:name=".ui.activities.CarbsChartList"
             android:label="@string/title_activity_carbo_hydrate"
+            android:theme="@style/AppNewThemeCompat"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -189,10 +190,10 @@
             android:name=".ui.activities.CarboHydrateDetail"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_carbo_hydrate_detail"
-            android:parentActivityName=".ui.activities.CarboHydrate">
+            android:parentActivityName=".ui.activities.CarbsChartList">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.CarboHydrate"/>
+                android:value=".ui.activities.CarbsChartList"/>
         </activity>
         <activity
             android:name=".ui.activities.BloodPressureDetail"
@@ -314,8 +315,9 @@
                 android:value=".ui.activities.ImportExport"/>
         </activity>
         <activity
-            android:name=".ui.activities.Logbook"
+            android:name=".ui.activities.LogbookChartList"
             android:label="@string/title_activity_logbook"
+            android:theme="@style/AppNewThemeCompat"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -324,10 +326,10 @@
         <activity
             android:name=".ui.activities.DetailLogbookActivity"
             android:label="@string/title_activity_logbook_detail"
-            android:parentActivityName=".ui.activities.Logbook">
+            android:parentActivityName=".ui.activities.LogbookChartList">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Logbook"/>
+                android:value=".ui.activities.LogbookChartList"/>
         </activity>
         <activity
             android:name=".ui.activities.DiseasesDetail"

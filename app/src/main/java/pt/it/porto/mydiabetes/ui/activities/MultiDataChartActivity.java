@@ -17,7 +17,7 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class MultiDataChartActivity extends AbstractChartActivity {
 	private static final String TAG = MultiDataChartActivity.class.getCanonicalName();
-	private ChartFragment.SelectItemToListCalculation selectItemToListCalculator;
+	protected ChartFragment.SelectItemToListCalculation selectItemToListCalculator;
 
 	private Cursor cursor;
 	protected ArrayList<String> tables;

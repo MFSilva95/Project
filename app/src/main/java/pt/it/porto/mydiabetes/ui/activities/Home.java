@@ -148,13 +148,13 @@ public class Home extends BaseOldActivity {
 	}
 
 	public void Call_Carbs(View view) {
-		Intent intent = new Intent(this, CarboHydrate.class);
+		Intent intent = new Intent(this, CarbsChartList.class);
 		startActivity(intent);
 	}
 
 	//ADDED BY ZE ORNELAS
 	public void Call_Logbook(View view) {
-		Intent intent = new Intent(this, Logbook.class);
+		Intent intent = new Intent(this, LogbookChartList.class);
 		startActivity(intent);
 	}
 
