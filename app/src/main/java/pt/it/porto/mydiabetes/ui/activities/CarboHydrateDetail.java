@@ -46,6 +46,7 @@ import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
 import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
 import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.ImageUtils;
 
 
 public class CarboHydrateDetail extends Activity {
@@ -91,7 +92,7 @@ public class CarboHydrateDetail extends Activity {
 			}
 
 			EditText photopath = (EditText) findViewById(R.id.et_CarboHydrateDetail_Photo);
-			if (toFill.hasPhotoPath()) {
+			if (toFill.hasPhotoPath() && !new File(toFill.getPhotoPath()).exists()) {
 				photopath.setText(toFill.getPhotoPath());
 				Log.d("foto path", "foto: " + toFill.getPhotoPath());
 				ImageView img = (ImageView) findViewById(R.id.iv_CarboHydrateDetail_Photo);
@@ -99,7 +100,7 @@ public class CarboHydrateDetail extends Activity {
 				getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 				int height = (int) (displaymetrics.heightPixels * 0.1);
 				int width = (int) (displaymetrics.widthPixels * 0.1);
-				b = decodeSampledBitmapFromPath(toFill.getPhotoPath(), width, height);
+				b = ImageUtils.decodeSampledBitmapFromPath(toFill.getPhotoPath(), width, height);
 
 				img.setImageBitmap(b);
 
@@ -309,7 +310,7 @@ public class CarboHydrateDetail extends Activity {
 				getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 				int height = (int) (displaymetrics.heightPixels * 0.1);
 				int width = (int) (displaymetrics.widthPixels * 0.1);
-				b = decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+				b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
 
 				img.setImageBitmap(b);
 				photopath.setText(imgUri.getPath());
@@ -350,92 +351,13 @@ public class CarboHydrateDetail extends Activity {
 			getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 			int height = (int) (displaymetrics.heightPixels * 0.1);
 			int width = (int) (displaymetrics.widthPixels * 0.1);
-			b = decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+			b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
 
 			img.setImageBitmap(b);
 			photopath.setText(imgUri.getPath());
 		}
 	}
 
-	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-		// Raw height and width of image
-		final int height = options.outHeight;
-		final int width = options.outWidth;
-		int inSampleSize = 1;
-
-		if (height > reqHeight || width > reqWidth) {
-
-			final int halfHeight = height / 2;
-			final int halfWidth = width / 2;
-
-			// Calculate the largest inSampleSize value that is a power of 2 and keeps both
-			// height and width larger than the requested height and width.
-			while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
-				inSampleSize *= 2;
-			}
-		}
-
-		return inSampleSize;
-	}
-
-
-	public static Bitmap decodeSampledBitmapFromPath(String path, int reqWidth, int reqHeight) {
-
-		// First decode with inJustDecodeBounds=true to check dimensions
-		final BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		//BitmapFactory.decodeResource(res, resId, options);
-		BitmapFactory.decodeFile(path, options);
-
-		// Calculate inSampleSize
-		options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-		// Decode bitmap with inSampleSize set
-		options.inJustDecodeBounds = false;
-		return adjustImageOrientation(BitmapFactory.decodeFile(path, options), path);
-	}
-
-
-	private static Bitmap adjustImageOrientation(Bitmap image, String picturePath) {
-		ExifInterface exif;
-		try {
-			exif = new ExifInterface(picturePath);
-			int exifOrientation = exif.getAttributeInt(
-					ExifInterface.TAG_ORIENTATION,
-					ExifInterface.ORIENTATION_NORMAL);
-
-			int rotate = 0;
-			switch (exifOrientation) {
-				case ExifInterface.ORIENTATION_ROTATE_90:
-					rotate = 90;
-					break;
-
-				case ExifInterface.ORIENTATION_ROTATE_180:
-					rotate = 180;
-					break;
-
-				case ExifInterface.ORIENTATION_ROTATE_270:
-					rotate = 270;
-					break;
-			}
-
-			if (rotate != 0) {
-				int w = image.getWidth();
-				int h = image.getHeight();
-
-				// Setting pre rotate
-				Matrix mtx = new Matrix();
-				mtx.preRotate(rotate);
-
-				// Rotating Bitmap & convert to ARGB_8888, required by tess
-				image = Bitmap.createBitmap(image, 0, 0, w, h, mtx, false);
-
-			}
-		} catch (IOException e) {
-			return null;
-		}
-		return image.copy(Bitmap.Config.ARGB_8888, true);
-	}
 
 
 	//PHOTO - END
