@@ -15,6 +15,7 @@ import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.AbstractChartActivity;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public abstract class ChartData implements Parcelable {
 
@@ -27,9 +28,9 @@ public abstract class ChartData implements Parcelable {
 	ChartData(Context context) {
 		super();
 		Calendar calendar = Calendar.getInstance();
-		startDate = AbstractChartActivity.dateFormat.format(calendar.getTime());
+		startDate = DateUtils.getFormattedDate(calendar);
 		calendar.roll(Calendar.WEEK_OF_YEAR, false);
-		endDate = AbstractChartActivity.dateFormat.format(calendar.getTime());
+		endDate = DateUtils.getFormattedDate(calendar);
 	}
 
 	ChartData(Parcel source) {

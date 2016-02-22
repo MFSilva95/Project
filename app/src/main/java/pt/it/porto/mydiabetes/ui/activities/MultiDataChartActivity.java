@@ -13,15 +13,16 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.ListDataSource;
 import pt.it.porto.mydiabetes.ui.fragments.ChartFragment;
 import pt.it.porto.mydiabetes.ui.recyclerviewAdapters.GenericMultiTypeAdapter;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class MultiDataChartActivity extends AbstractChartActivity {
 	private static final String TAG = MultiDataChartActivity.class.getCanonicalName();
 	private ChartFragment.SelectItemToListCalculation selectItemToListCalculator;
 
 	private Cursor cursor;
-	private ArrayList<String> tables;
+	protected ArrayList<String> tables;
 
-	private Cursor getCursor() {
+	protected Cursor getCursor() {
 		if (cursor == null) {
 			initCursor();
 		}
@@ -74,7 +75,7 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 			date = cursor.getString(cursor.getColumnIndex(ListDataSource.ROW_DATETIME));
 			float dateTimeStamp = 0;
 			try {
-				dateTimeStamp = iso8601Format.parse(date).getTime();
+				dateTimeStamp = DateUtils.parseDateTime(date).getTime().getTime();
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}

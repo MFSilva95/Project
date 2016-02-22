@@ -17,6 +17,7 @@ import pt.it.porto.mydiabetes.database.ListDataSource;
 import pt.it.porto.mydiabetes.database.MyDiabetesContract;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.recyclerviewAdapters.GenericMultiTypeAdapter;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class ListTestActivity extends Activity {
 
@@ -51,8 +52,8 @@ public class ListTestActivity extends Activity {
 						new String[]{MyDiabetesContract.Regist.Insulin.COLUMN_NAME_VALUE, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_VALUE},
 						new String[]{MyDiabetesContract.Regist.Insulin.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.CarboHydrate.COLUMN_NAME_DATETIME},
 						new String[]{MyDiabetesContract.Insulin.COLUMN_NAME_NAME, null},
-						AbstractChartActivity.dateFormat.format(timeStart.getTime()),
-						AbstractChartActivity.dateFormat.format(timeEnd.getTime()), 100);
+						DateUtils.getFormattedDate(timeStart),
+						DateUtils.getFormattedDate(timeEnd), 100);
 		this.tables = new ArrayList<>(Arrays.asList(tables));
 		return new GenericMultiTypeAdapter(cursor, this.tables, new int[]{R.drawable.insulin, R.drawable.carbs});
 	}

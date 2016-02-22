@@ -129,7 +129,8 @@
                 android:value=".ui.activities.Home"/>
         </activity>
         <activity
-            android:name=".ui.activities.Weight"
+            android:name=".ui.activities.WeightChartList"
+            android:theme="@style/AppNewThemeCompat"
             android:label="@string/title_activity_weight"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
@@ -212,10 +213,10 @@
         <activity
             android:name=".ui.activities.WeightDetail"
             android:label="@string/title_activity_weight_detail"
-            android:parentActivityName=".ui.activities.Weight">
+            android:parentActivityName=".ui.activities.WeightChartList">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Weight"/>
+                android:value=".ui.activities.WeightChartList"/>
         </activity>
         <activity
             android:name=".ui.activities.HbA1cDetail"

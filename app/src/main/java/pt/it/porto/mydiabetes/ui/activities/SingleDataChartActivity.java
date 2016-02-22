@@ -14,6 +14,7 @@ import pt.it.porto.mydiabetes.database.ListDataSource;
 import pt.it.porto.mydiabetes.database.MyDiabetesContract;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.recyclerviewAdapters.GenericSingleTypeAdapter;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class SingleDataChartActivity extends AbstractChartActivity {
 
@@ -30,7 +31,7 @@ public class SingleDataChartActivity extends AbstractChartActivity {
 		cursor = new ListDataSource(MyDiabetesStorage.getInstance(this))
 				.getSimpleData(MyDiabetesContract.Regist.Weight.TABLE_NAME, MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE,
 						MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME,
-						dateFormat.format(getTimeStart().getTime()), dateFormat.format(getTimeEnd().getTime()), MAX_VALUES_IN_GRAPH);
+						DateUtils.getFormattedDate(getTimeStart()), DateUtils.getFormattedDate(getTimeEnd()), MAX_VALUES_IN_GRAPH);
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class SingleDataChartActivity extends AbstractChartActivity {
 			date = cursor.getString(cursor.getColumnIndex(ListDataSource.ROW_DATETIME));
 			float dateTimeStamp = 0;
 			try {
-				dateTimeStamp = iso8601Format.parse(date).getTime();
+				dateTimeStamp = DateUtils.parseDateTime(date).getTime().getTime();
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}

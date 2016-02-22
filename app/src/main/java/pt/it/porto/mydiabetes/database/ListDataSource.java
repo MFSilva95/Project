@@ -10,6 +10,7 @@ public class ListDataSource {
 	public static final String ROW_DATETIME = "DateTime";
 	public static final String ROW_EXTRAS = "Extras";
 	public static final String ROW_TABLE_NAME = "Table_name";
+	public static final String ROW_ID = "Id";
 
 	private MyDiabetesStorage storage;
 
@@ -45,6 +46,8 @@ public class ListDataSource {
 		}
 		query.append(", ");
 		query.append(ROW_DATETIME);
+		query.append(", ");
+		query.append(ROW_ID);
 		query.append(" FROM (");
 		for (int i = 0; i < tables.length; i++) {
 			query.append("SELECT ");
@@ -59,6 +62,10 @@ public class ListDataSource {
 			query.append(tables[i]);
 			query.append("\" AS ");
 			query.append(ROW_TABLE_NAME);
+			query.append(", ");
+			query.append("Id");
+			query.append(" AS ");
+			query.append(ROW_ID);
 			if (extras != null) {
 				query.append(", ");
 				if (!TextUtils.isEmpty(extras[i])) {

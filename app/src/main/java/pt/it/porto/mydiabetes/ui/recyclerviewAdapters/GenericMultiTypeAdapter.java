@@ -14,7 +14,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.R;
 
 public class GenericMultiTypeAdapter extends RecyclerView.Adapter<GenericMultiTypeAdapter.Holder> {
-	private Cursor cursor;
+	protected Cursor cursor;
 	private HashMap<String, Integer> positions;
 	private int[] resourceIcons;
 
@@ -59,15 +59,17 @@ public class GenericMultiTypeAdapter extends RecyclerView.Adapter<GenericMultiTy
 	}
 
 
-	static class Holder extends RecyclerView.ViewHolder {
+	protected static class Holder extends RecyclerView.ViewHolder {
 		CircleImageView icon;
 		TextView date;
 		TextView time;
 		TextView value;
 		TextView extra;
+		View itemView;
 
 		public Holder(View itemView) {
 			super(itemView);
+			this.itemView=itemView;
 			date = (TextView) itemView.findViewById(R.id.txt_date);
 			value = (TextView) itemView.findViewById(R.id.txt_value);
 			icon = (CircleImageView) itemView.findViewById(R.id.img_icon);
@@ -76,5 +78,18 @@ public class GenericMultiTypeAdapter extends RecyclerView.Adapter<GenericMultiTy
 			icon.setVisibility(View.VISIBLE);
 			time.setVisibility(View.VISIBLE);
 		}
+
+		public void onClickListener(View.OnClickListener listener){
+			itemView.setOnClickListener(listener);
+			itemView.setTag(this);
+		}
+
+		public void setId(int table, int id){
+			this.table=table;
+			this.id=id;
+		}
+
+		public int table;
+		public int id;
 	}
 }

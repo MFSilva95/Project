@@ -42,9 +42,8 @@ public class WeightDetail extends BaseOldActivity {
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
 			DB_Read rdb = new DB_Read(this);
-			String id = args.getString("Id");
-			idWeight = Integer.parseInt(id);
-			WeightDataBinding toFill = rdb.Weight_GetById(Integer.parseInt(id));
+			idWeight  = args.getInt("Id");
+			WeightDataBinding toFill = rdb.Weight_GetById(idWeight);
 
 			EditText value = (EditText) findViewById(R.id.et_WeightDetail_Value);
 			value.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", toFill.getValue()));
@@ -82,7 +81,7 @@ public class WeightDetail extends BaseOldActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
+				finish();
 				return true;
 			case R.id.menuItem_WeightDetail_Save:
 				AddWeightRead();

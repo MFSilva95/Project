@@ -19,6 +19,7 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.AbstractChartActivity;
 import pt.it.porto.mydiabetes.ui.charts.data.ChartData;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class DateRangeDialog extends DialogFragment {
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,7 +59,7 @@ public class DateRangeDialog extends DialogFragment {
 		builder.setTitle("Filtro");
 		View layout = getActivity().getLayoutInflater().inflate(R.layout.dialog_date_range_pick, null, false);
 		timeStartEditText = (EditText) layout.findViewById(R.id.time_start);
-		timeStartEditText.setText(AbstractChartActivity.dateFormat.format(timeStart.getTime()));
+		timeStartEditText.setText(DateUtils.getFormattedDate(timeStart));
 		timeStartEditText.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -66,7 +67,7 @@ public class DateRangeDialog extends DialogFragment {
 			}
 		});
 		timeEndEditText = (EditText) layout.findViewById(R.id.time_end);
-		timeEndEditText.setText(AbstractChartActivity.dateFormat.format(timeEnd.getTime()));
+		timeEndEditText.setText(DateUtils.getFormattedDate(timeEnd));
 		timeEndEditText.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -109,7 +110,7 @@ public class DateRangeDialog extends DialogFragment {
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 				if (timeEnd.get(Calendar.YEAR) != year || timeEnd.get(Calendar.MONTH) != monthOfYear || timeEnd.get(Calendar.DAY_OF_MONTH) != dayOfMonth) {
 					timeEnd.set(year, monthOfYear, dayOfMonth);
-					timeEndEditText.setText(AbstractChartActivity.dateFormat.format(timeEnd.getTime()));
+					timeEndEditText.setText(DateUtils.getFormattedDate(timeEnd));
 				}
 			}
 		}, timeEnd.get(Calendar.YEAR), timeEnd.get(Calendar.MONTH), timeEnd.get(Calendar.DAY_OF_MONTH));
@@ -122,7 +123,7 @@ public class DateRangeDialog extends DialogFragment {
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 				if (timeStart.get(Calendar.YEAR) != year || timeStart.get(Calendar.MONTH) != monthOfYear || timeStart.get(Calendar.DAY_OF_MONTH) != dayOfMonth) {
 					timeStart.set(year, monthOfYear, dayOfMonth);
-					timeStartEditText.setText(AbstractChartActivity.dateFormat.format(timeStart.getTime()));
+					timeStartEditText.setText(DateUtils.getFormattedDate(timeStart));
 				}
 			}
 		}, timeStart.get(Calendar.YEAR), timeStart.get(Calendar.MONTH), timeStart.get(Calendar.DAY_OF_MONTH));

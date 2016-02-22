@@ -79,7 +79,7 @@ public class ExBPChoDisWei extends BaseOldActivity {
 
 
 	public void Call_Weight(View view) {
-		Intent intent = new Intent(this, Weight.class);
+		Intent intent = new Intent(this, WeightChartList.class);
 		startActivity(intent);
 	}
 

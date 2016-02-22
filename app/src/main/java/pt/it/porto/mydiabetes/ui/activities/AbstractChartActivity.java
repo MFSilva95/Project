@@ -18,11 +18,10 @@ import pt.it.porto.mydiabetes.ui.charts.data.ChartData;
 import pt.it.porto.mydiabetes.ui.charts.data.Weight;
 import pt.it.porto.mydiabetes.ui.dialogs.DateRangeDialog;
 import pt.it.porto.mydiabetes.ui.fragments.ChartFragment;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public abstract class AbstractChartActivity extends BaseActivity implements ChartFragment.OnFragmentInteractionListener, DateRangeDialog.TimeUpdate {
 
-	public static final SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-	public static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	public static final int MAX_VALUES_IN_GRAPH = 100;
 	public static final int[] CHART_LINE_COLORS = {Color.RED, R.color.holo_blue_dark, Color.DKGRAY};
 
@@ -56,12 +55,12 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 			if (extras.containsKey(EXTRAS_TIME_END)) {
 				timeEnd = (Calendar) extras.getSerializable(EXTRAS_TIME_END);
 			}
-			chartData.setStartDate(dateFormat.format(getTimeStart().getTime()));
-			chartData.setEndDate(dateFormat.format(getTimeEnd().getTime()));
+			chartData.setStartDate(DateUtils.getFormattedDate(getTimeStart()));
+			chartData.setEndDate(DateUtils.getFormattedDate(getTimeEnd()));
 		} else {
 			chartData = new Weight(this);
-			chartData.setStartDate(dateFormat.format(getTimeStart().getTime()));
-			chartData.setEndDate(dateFormat.format(getTimeEnd().getTime()));
+			chartData.setStartDate(DateUtils.getFormattedDate(getTimeStart()));
+			chartData.setEndDate(DateUtils.getFormattedDate(getTimeEnd()));
 		}
 
 		if (savedInstanceState != null) {
@@ -84,8 +83,8 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 	public void setTimes(Calendar start, Calendar end) {
 		this.timeStart = start;
 		this.timeEnd = end;
-		chartData.setStartDate(dateFormat.format(getTimeStart().getTime()));
-		chartData.setEndDate(dateFormat.format(getTimeEnd().getTime()));
+		chartData.setStartDate(DateUtils.getFormattedDate(getTimeStart()));
+		chartData.setEndDate(DateUtils.getFormattedDate(getTimeEnd()));
 		updateTimeRange();
 		setupContent();
 	}

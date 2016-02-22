@@ -4,18 +4,10 @@
     <item
         android:id="@+id/menuItem_Weight"
         android:enabled="true"
-        android:icon="@drawable/plus_btn"
+        android:icon="@drawable/ic_plus"
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="@string/add_Weight"
         android:visible="true"
         app:showAsAction="always"/>
-
-    <item
-        android:id="@+id/chart"
-        android:icon="@drawable/ic_multiline_chart_grey_300_24dp"
-        android:showAsAction="ifRoom"
-        android:title="@string/see_in_chart"
-        app:showAsAction="ifRoom"
-        />
 </menu>
