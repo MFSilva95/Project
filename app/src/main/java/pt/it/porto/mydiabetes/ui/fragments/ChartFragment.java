@@ -170,6 +170,15 @@ public class ChartFragment extends Fragment {
 	public void setListAdapter(RecyclerView.Adapter adapter) {
 		listView = (RecyclerView) getView().findViewById(R.id.list_vals);
 		listView.setAdapter(adapter);
+		View listEmpty = getView().findViewById(R.id.list_empty);
+		if (adapter.getItemCount() == 0) {
+			listEmpty.setVisibility(View.VISIBLE);
+			listEmpty.bringToFront();
+			listView.setVisibility(View.GONE);
+		} else {
+			listEmpty.findViewById(R.id.list_empty).setVisibility(View.GONE);
+			listView.setVisibility(View.VISIBLE);
+		}
 	}
 
 	public void setChartData(List<Line> lines) {

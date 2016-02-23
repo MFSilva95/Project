@@ -355,4 +355,5 @@
     <string name="notification_sync_first_time">Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?</string>
     <string name="notification_sync_text">Envie os dados ao gestor do projecto</string>
     <string name="see_in_chart">Ver em gráfico</string>
+    <string name="list_empty_message">Nenhum resultado encontrado\nAumente o intervalo de tempo</string>
 </resources>
