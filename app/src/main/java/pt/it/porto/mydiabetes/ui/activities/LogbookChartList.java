@@ -90,18 +90,18 @@ public class LogbookChartList extends MultiDataChartActivity {
 			}
 
 			if (chartData.isFilterActive(1)) {
-				insulinVal = cursor.getDouble(2);
-				if (insulinVal >= 0) {
-					xss[1].add(new PointValue(dateTimeStamp, (float) insulinVal));
-					positionInList[1].add(i);
-				}
-			}
-
-			if (chartData.isFilterActive(2)) {
 				glycemiaVal = cursor.getInt(4);
 				if (glycemiaVal >= 0) {
 					xss[2].add(new PointValue(dateTimeStamp, (float) glycemiaVal));
 					positionInList[2].add(i);
+				}
+			}
+
+			if (chartData.isFilterActive(2)) {
+				insulinVal = cursor.getDouble(2);
+				if (insulinVal >= 0) {
+					xss[1].add(new PointValue(dateTimeStamp, (float) insulinVal));
+					positionInList[1].add(i);
 				}
 			}
 
@@ -184,7 +184,7 @@ public class LogbookChartList extends MultiDataChartActivity {
 
 			int glycemiaVal = cursor.getInt(4);
 			if (glycemiaVal >= 0 && glycemiaActive) {
-				holder.glycemiaVal.setText(String.valueOf(cursor.getInt(4)));
+				holder.glycemiaVal.setText(String.valueOf(glycemiaVal));
 				holder.glycemia.setVisibility(View.VISIBLE);
 			} else {
 				holder.glycemia.setVisibility(View.INVISIBLE);
