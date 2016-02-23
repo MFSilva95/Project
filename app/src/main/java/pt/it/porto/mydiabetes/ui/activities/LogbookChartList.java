@@ -34,12 +34,18 @@ public class LogbookChartList extends MultiDataChartActivity {
 			if (extras == null) {
 				extras = new Bundle();
 			}
-			extras.putParcelable(MultiDataChartActivity.EXTRAS_CHART_DATA, new pt.it.porto.mydiabetes.ui.charts.data.Logbook(this));
-			Calendar calendar = Calendar.getInstance();
-			extras.putSerializable(MultiDataChartActivity.EXTRAS_TIME_END, calendar);
-			Calendar calendar2 = Calendar.getInstance();
-			calendar2.add(Calendar.DAY_OF_YEAR, -8);
-			extras.putSerializable(MultiDataChartActivity.EXTRAS_TIME_START, calendar2);
+			if (!extras.containsKey(MultiDataChartActivity.EXTRAS_CHART_DATA)) {
+				extras.putParcelable(MultiDataChartActivity.EXTRAS_CHART_DATA, new pt.it.porto.mydiabetes.ui.charts.data.Logbook(this));
+			}
+			if (!extras.containsKey(MultiDataChartActivity.EXTRAS_TIME_END)) {
+				Calendar calendar = Calendar.getInstance();
+				extras.putSerializable(MultiDataChartActivity.EXTRAS_TIME_END, calendar);
+			}
+			if (!extras.containsKey(MultiDataChartActivity.EXTRAS_TIME_START)) {
+				Calendar calendar2 = Calendar.getInstance();
+				calendar2.add(Calendar.DAY_OF_YEAR, -8);
+				extras.putSerializable(MultiDataChartActivity.EXTRAS_TIME_START, calendar2);
+			}
 			getIntent().putExtras(extras);
 
 		}

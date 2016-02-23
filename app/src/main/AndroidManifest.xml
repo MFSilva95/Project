@@ -73,7 +73,8 @@
                 android:value=".ui.activities.Home"/>
         </activity>
         <activity
-            android:name=".ui.activities.Glycemia"
+            android:name=".ui.activities.GlycemiaChartList"
+            android:theme="@style/AppNewThemeCompat"
             android:label="@string/title_activity_glycemia"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
@@ -81,8 +82,9 @@
                 android:value=".ui.activities.Home"/>
         </activity>
         <activity
-            android:name=".ui.activities.Insulin"
+            android:name=".ui.activities.InsulinChartList"
             android:label="@string/title_activity_insulin"
+            android:theme="@style/AppNewThemeCompat"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -165,18 +167,18 @@
         <activity
             android:name=".ui.activities.GlycemiaDetail"
             android:label="@string/title_activity_glycemia_detail"
-            android:parentActivityName=".ui.activities.Glycemia">
+            android:parentActivityName=".ui.activities.GlycemiaChartList">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Glycemia"/>
+                android:value=".ui.activities.GlycemiaChartList"/>
         </activity>
         <activity
             android:name=".ui.activities.InsulinDetail"
             android:label="@string/title_activity_insulin_detail"
-            android:parentActivityName=".ui.activities.Insulin">
+            android:parentActivityName=".ui.activities.InsulinChartList">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Insulin"/>
+                android:value=".ui.activities.InsulinChartList"/>
         </activity>
         <activity
             android:name=".ui.activities.ExerciseDetail"

@@ -21,6 +21,7 @@ public abstract class ChartData implements Parcelable {
 
 	public static final int DATA_TYPE_WEIGHT = 1;
 	public static final int DATA_TYPE_CARBS = 2;
+	public static final int DATA_TYPE_LOGBOOK = 3;
 
 	private String startDate;
 	private String endDate;
@@ -126,6 +127,8 @@ public abstract class ChartData implements Parcelable {
 				return new Weight(source);
 			case DATA_TYPE_CARBS:
 				return new Carbs(source);
+			case DATA_TYPE_LOGBOOK:
+				return new Logbook(source);
 			default:
 				return null;
 		}

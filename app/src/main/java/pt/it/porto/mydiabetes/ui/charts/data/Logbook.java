@@ -77,7 +77,7 @@ public class Logbook extends ChartData {
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
-		dest.writeInt(DATA_TYPE_CARBS);
+		dest.writeInt(DATA_TYPE_LOGBOOK);
 		super.writeToParcel(dest, flags);
 		dest.writeStringArray(filters);
 		dest.writeBooleanArray(filterActive);

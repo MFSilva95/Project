@@ -133,7 +133,7 @@ public class Home extends BaseOldActivity {
 	}
 
 	public void Call_Glycemia(View view) {
-		Intent intent = new Intent(this, Glycemia.class);
+		Intent intent = new Intent(this, GlycemiaChartList.class);
 		startActivity(intent);
 	}
 
@@ -143,7 +143,7 @@ public class Home extends BaseOldActivity {
 	}
 
 	public void Call_Insulin(View view) {
-		Intent intent = new Intent(this, Insulin.class);
+		Intent intent = new Intent(this, InsulinChartList.class);
 		startActivity(intent);
 	}
 

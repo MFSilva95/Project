@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.charts.data.Logbook;
 
-public class CarbsChartList extends LogbookChartList {
+public class InsulinChartList extends LogbookChartList {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -18,8 +18,8 @@ public class CarbsChartList extends LogbookChartList {
 				extras = new Bundle();
 			}
 			Logbook data = new Logbook(this);
+			data.toggleFilter(0);
 			data.toggleFilter(1);
-			data.toggleFilter(2);
 			extras.putParcelable(MultiDataChartActivity.EXTRAS_CHART_DATA, data);
 			getIntent().putExtras(extras);
 		}
@@ -28,19 +28,19 @@ public class CarbsChartList extends LogbookChartList {
 
 	@Override
 	public String getName() {
-		return getString(R.string.title_activity_carbo_hydrate);
+		return getString(R.string.title_activity_insulin);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.carbo_hydrate, menu);
+		getMenuInflater().inflate(R.menu.insulin, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.menuItem_CarboHydrate_Add) {
-			Intent intent = new Intent(this, CarboHydrateDetail.class);
+		if (item.getItemId() == R.id.menuItem_Insulin) {
+			Intent intent = new Intent(this, InsulinDetail.class);
 			startActivity(intent);
 			return true;
 		}
