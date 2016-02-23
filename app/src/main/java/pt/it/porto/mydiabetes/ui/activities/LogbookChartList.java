@@ -49,6 +49,9 @@ public class LogbookChartList extends MultiDataChartActivity {
 	@Override
 	public List<Line> getChartLines() {
 		Cursor cursor = getCursor();
+		if (cursor == null || cursor.getCount() == 0) {
+			return null;
+		}
 		cursor.moveToLast();
 
 		int numberOfElementsInGraph = cursor.getCount();
@@ -124,15 +127,21 @@ public class LogbookChartList extends MultiDataChartActivity {
 
 	@Override
 	public RecyclerView.Adapter getRecyclerViewAdapter() {
-		return new ListAdapter(getCursor());
+		return new ListAdapter(getCursor(), getChartData());
 	}
 
 	class ListAdapter extends RecyclerView.Adapter<LogbookChartList.ListAdapter.Holder> {
 
+		private boolean carbsActive;
+		private boolean glycemiaActive;
+		private boolean insulinActive;
 		private Cursor cursor;
 
-		public ListAdapter(Cursor cursor) {
+		public ListAdapter(Cursor cursor, ChartData chartData) {
 			this.cursor = cursor;
+			this.carbsActive = chartData.isFilterActive(0);
+			this.glycemiaActive = chartData.isFilterActive(1);
+			this.insulinActive = chartData.isFilterActive(2);
 		}
 
 
@@ -157,7 +166,7 @@ public class LogbookChartList extends MultiDataChartActivity {
 			holder.time.setText(DateUtils.getFormattedTime(dateTimeStamp));
 
 			int carbsVal = cursor.getInt(1);
-			if (carbsVal >= 0) {
+			if (carbsVal >= 0 && carbsActive) {
 				holder.carbsVal.setText(String.valueOf(carbsVal));
 				holder.carbs.setVisibility(View.VISIBLE);
 			} else {
@@ -165,7 +174,7 @@ public class LogbookChartList extends MultiDataChartActivity {
 			}
 
 			double insulinVal = cursor.getDouble(2);
-			if (insulinVal >= 0) {
+			if (insulinVal >= 0 && insulinActive) {
 				holder.insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", insulinVal));
 				holder.insulinName.setText(cursor.getString(3));
 				holder.insulin.setVisibility(View.VISIBLE);
@@ -174,7 +183,7 @@ public class LogbookChartList extends MultiDataChartActivity {
 			}
 
 			int glycemiaVal = cursor.getInt(4);
-			if (glycemiaVal >= 0) {
+			if (glycemiaVal >= 0 && glycemiaActive) {
 				holder.glycemiaVal.setText(String.valueOf(cursor.getInt(4)));
 				holder.glycemia.setVisibility(View.VISIBLE);
 			} else {
@@ -218,7 +227,7 @@ public class LogbookChartList extends MultiDataChartActivity {
 
 		@Override
 		public int getItemCount() {
-			return cursor.getCount();
+			return cursor == null ? 0 : cursor.getCount();
 		}
 
 		public class Holder extends RecyclerView.ViewHolder {
