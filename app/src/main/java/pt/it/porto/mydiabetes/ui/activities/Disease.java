@@ -18,9 +18,9 @@ import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseRegDataBinding;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseRegAdapter;
-import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseRegDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -123,5 +123,6 @@ public class Disease extends Activity {
 		ArrayList<DiseaseRegDataBinding> alldisease = rdb.DiseaseReg_GetByDate(datefrom.getText().toString(), dateto.getText().toString());
 		rdb.close();
 		lv.setAdapter(new DiseaseRegAdapter(alldisease, this));
+		lv.setEmptyView(findViewById(R.id.list_empty));
 	}
 }

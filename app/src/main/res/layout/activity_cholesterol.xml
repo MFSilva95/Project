@@ -53,12 +53,23 @@
             android:background="@color/holo_blue_dark"/>
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/CholesterolActivityList"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        tools:listitem="@layout/list_cholesterol_row">
-    </ListView>
+        android:layout_weight="1">
+
+        <ListView
+            android:id="@+id/CholesterolActivityList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/list_cholesterol_row">
+        </ListView>
+
+        <include
+            android:id="@+id/list_empty"
+            layout="@layout/list_empty"
+            android:visibility="gone"
+            />
+    </FrameLayout>
 
 </LinearLayout>

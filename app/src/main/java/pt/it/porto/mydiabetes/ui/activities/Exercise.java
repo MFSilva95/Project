@@ -18,9 +18,9 @@ import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseRegDataBinding;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegAdapter;
-import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseRegDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -128,5 +128,6 @@ public class Exercise extends Activity {
 
 		rdb.close();
 		lv.setAdapter(new ExerciseRegAdapter(allExercises, this));
+		lv.setEmptyView(findViewById(R.id.list_empty));
 	}
 }
