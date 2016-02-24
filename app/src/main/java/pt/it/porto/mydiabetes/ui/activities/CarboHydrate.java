@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
@@ -13,14 +14,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.ListsDataDb;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.CarbsAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class CarboHydrate extends Activity {
@@ -97,34 +98,37 @@ public class CarboHydrate extends Activity {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -3);
 
-		dateago.setText(DatePickerFragment.getFormatedDate(calendar));
+		dateago.setText(DateUtils.getFormattedDate(calendar));
 
 		EditText datenow = (EditText) findViewById(R.id.et_Carbs_DataTo);
 		calendar = Calendar.getInstance();
-		datenow.setText(DatePickerFragment.getFormatedDate(calendar));
+		datenow.setText(DateUtils.getFormattedDate(calendar));
 	}
 
 	public void showDatePickerDialogFrom(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Carbs_DataFrom,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Carbs_DataTo,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void fillListView(ListView lv) {
-		EditText datefrom = (EditText) findViewById(R.id.et_Carbs_DataFrom);
-		EditText dateto = (EditText) findViewById(R.id.et_Carbs_DataTo);
-		DB_Read rdb = new DB_Read(this);
-		ArrayList<CarbsDataBinding> allcarbs = rdb.CarboHydrate_GetBtDate(datefrom.getText().toString(), dateto.getText().toString());
-		rdb.close();
+		EditText dateFrom = (EditText) findViewById(R.id.et_Carbs_DataFrom);
+		EditText dateTo = (EditText) findViewById(R.id.et_Carbs_DataTo);
 
-		lv.setAdapter(new CarbsAdapter(allcarbs, this));
+		ListsDataDb listData = new ListsDataDb(MyDiabetesStorage.getInstance(this));
+		Cursor cursor = listData.getCarbsRegList(dateFrom.getText().toString(), dateTo.getText().toString());
 
+		if (cursor.getCount() == 0) {
+			cursor = listData.getCarbsRegList(dateTo.getText().toString(), 20);
+		}
+
+		lv.setAdapter(new CarbsAdapter(cursor, this));
 
 	}
 }

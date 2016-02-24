@@ -15,7 +15,7 @@ import pt.it.porto.mydiabetes.ui.activities.DiseasesDetail;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseDataBinding;
 
 import java.util.ArrayList;
 
@@ -50,8 +50,7 @@ public class Diseases extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_diseases, null);
-
+        v = inflater.inflate(R.layout.fragment_diseases, container, false);
         diseaseList = (ListView) v.findViewById(R.id.diseasesFragmentList);
 
         fillListView(diseaseList);

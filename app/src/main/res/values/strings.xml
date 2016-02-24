@@ -3,7 +3,7 @@
 
     <string name="app_name">A Minha Diabetes</string>
     <string name="add_Exercise">Adicionar Exercício</string>
-    <string name="title_activity_my_data">Meus Dados</string>
+    <string name="title_activity_my_data">Os Meus Dados</string>
     <string name="title_activity_preferences">Configurações</string>
     <string name="title_activity_exercise">Registos de Exercício</string>
     <string name="save_MyData">Guardar</string>
@@ -134,7 +134,8 @@
     <string name="uporto" translatable="false">Univ. Porto</string>
 
 
-    <string name="sync">Sincronizar com PC</string>
+    <string name="sync_with_pc">Sincronizar com PC</string>
+    <string name="sync">Sincronização</string>
 
 
     <string name="qr">Ler QR</string>
@@ -225,6 +226,8 @@
     <string name="do_back">Efectuar Cópia de Segurança</string>
     <string name="restore_backup">Restaurar Cópia</string>
     <string name="restore_backup_button">Restaurar Cópia de Segurança</string>
+    <string name="restore_backup_success">Restauro efectuado com sucesso!</string>
+    <string name="restore_backup_error">Ocurreu um erro durante o restauro, verifique se a memória externa está disponivel!</string>
     <string name="last_backup">Última Cópia de Segurança</string>
     <string name="new_disease">Nova doença</string>
     <string name="new_exercise">Novo exercicio</string>
@@ -341,4 +344,16 @@
     <string name="active_insulin">Insulina Activa</string>
     <string name="new_feature_iob_text_1">Quando toma uma insulina esta não actua de imediato, mas sim ao longo de algumas horas. Como pode ver na imagem acima.</string>
     <string name="new_feature_iob_text_2">Agora pode ter informação da insulina que ainda está activa no seu organismo quando for tomar uma nova insulina</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="report">Relatório</string>
+    <string name="insulin_calc">Cálculo Insulina</string>
+    <string name="use_iob">Usar Insulina Activa</string>
+    <string name="backup_restore_confirmation_dialog_text">Este processo vai subsituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
+    <string name="next_button">Seguinte</string>
+    <string name="notification_sync_recurrent">Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?</string>
+    <string name="notification_sync_first_time">Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?</string>
+    <string name="notification_sync_text">Envie os dados ao gestor do projecto</string>
+    <string name="see_in_chart">Ver em gráfico</string>
+    <string name="list_empty_message">Nenhum resultado encontrado\nAumente o intervalo de tempo</string>
 </resources>

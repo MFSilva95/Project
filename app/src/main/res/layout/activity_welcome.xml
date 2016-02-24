@@ -26,6 +26,28 @@
             android:layout_alignParentTop="true"
             android:background="@color/material_grey_300"/>
 
+        <Button
+            android:id="@+id/restoreDb"
+            style="@style/Regist.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="0dp"
+            android:paddingBottom="0dp"
+            android:paddingTop="0dp"
+            android:gravity="center_vertical"
+            android:layout_margin="0dp"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Restaurar\nCópia Segurança"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+
         <LinearLayout
             android:id="@+id/page_indicator"
             android:layout_width="wrap_content"
@@ -69,11 +91,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
             android:paddingBottom="0dp"
             android:paddingTop="0dp"
-            android:text="Seguinte"
+            android:text="@string/next_button"
             />
     </RelativeLayout>
 

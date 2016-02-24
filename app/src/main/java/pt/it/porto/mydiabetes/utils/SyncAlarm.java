@@ -30,11 +30,11 @@ public class SyncAlarm extends BroadcastReceiver {
 		builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher));
 		builder.setContentTitle(context.getString(R.string.app_name));
 		NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
-		builder.setContentText("Envie os dados ao gestor do projecto");
+		builder.setContentText(context.getString(R.string.notification_sync_text));
 		if (Preferences.getPreferences(context).contains(SYNC_ALARM_LAST_SYNC)) {
-			bigTextStyle.bigText("Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?");
+			bigTextStyle.bigText(context.getString(R.string.notification_sync_recurrent));
 		} else {
-			bigTextStyle.bigText("Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?");
+			bigTextStyle.bigText(context.getString(R.string.notification_sync_first_time));
 		}
 
 		builder.setPriority(NotificationCompat.PRIORITY_LOW);
@@ -51,8 +51,7 @@ public class SyncAlarm extends BroadcastReceiver {
 		taskStackBuilder.addNextIntent(resultIntent);
 		builder.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
 
-		NotificationManager mNotificationManager =
-				(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.notify(0, builder.build());
 
 		// alarm fired, remove setting and sets time of the sync

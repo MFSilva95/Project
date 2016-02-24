@@ -15,137 +15,145 @@ import android.widget.EditText;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseDataBinding;
 
-/**
- * Created by Zé on 29/07/2015.
- */
 public class ExercisesDetail extends Activity {
-    int idExercises = 0;
-    String exerciseName = "";
+	public static final String BUNDLE_DATA = "Data";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exercises_detail);
-        // Show the Up button in the action bar.
-        getActionBar();
+	int idExercises = 0;
+	String exerciseName = "";
 
-        Bundle args = getIntent().getExtras();
-        if (args != null) {
-            String id = args.getString("Id");
-            idExercises = Integer.parseInt(id);
-            exerciseName = args.getString("Name");
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_exercises_detail);
+		// Show the Up button in the action bar.
+		getActionBar();
 
-            EditText name = (EditText) findViewById(R.id.et_Exercises_Nome);
-            name.setText(exerciseName);
+		Bundle args = getIntent().getExtras();
+		if (args != null) {
+			if (args.containsKey(BUNDLE_DATA)) {
+				ExerciseDataBinding exercise = args.getParcelable(BUNDLE_DATA);
+				if (exercise != null) {
+					idExercises = exercise.getId();
+					exerciseName = exercise.getName();
+				}
+			}
+			if ((exerciseName == null || exerciseName.isEmpty()) && args.containsKey("Name")) {
+				String id = args.getString("Id");
+				idExercises = Integer.parseInt(id);
+				exerciseName = args.getString("Name");
+			}
 
-        }
-    }
+			EditText name = (EditText) findViewById(R.id.et_Exercises_Nome);
+			name.setText(exerciseName);
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
+		}
+	}
 
-        Bundle args = getIntent().getExtras();
-        if (args != null) {
-            inflater.inflate(R.menu.insulins_detail_edit, menu);
-        } else {
-            inflater.inflate(R.menu.insulins_detail, menu);
-        }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
 
-        //getSupportMenuInflater().inflate(R.menu.tag_detail, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
+		Bundle args = getIntent().getExtras();
+		if (args != null) {
+			inflater.inflate(R.menu.insulins_detail_edit, menu);
+		} else {
+			inflater.inflate(R.menu.insulins_detail, menu);
+		}
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-            case R.id.menuItem_InsulinsDetail_Save:
-                AddNewExercise();
-                return true;
-            case R.id.menuItem_InsulinsDetail_EditSave:
-                UpdateExercise();
-                return true;
-            case R.id.menuItem_InsulinsDetail_Delete:
-                DeleteExercise();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+		//getSupportMenuInflater().inflate(R.menu.tag_detail, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
 
-    public void AddNewExercise() {
-        EditText exercisename = (EditText) findViewById(R.id.et_Exercises_Nome);
-        //adicionado por zeornelas
-        //obriga a colocar os valores
-        if (exercisename.getText().toString().equals("")) {
-            exercisename.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(exercisename, InputMethodManager.SHOW_IMPLICIT);
-            return;
-        }
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				NavUtils.navigateUpFromSameTask(this);
+				return true;
+			case R.id.menuItem_InsulinsDetail_Save:
+				AddNewExercise();
+				return true;
+			case R.id.menuItem_InsulinsDetail_EditSave:
+				UpdateExercise();
+				return true;
+			case R.id.menuItem_InsulinsDetail_Delete:
+				DeleteExercise();
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 
-        // deal with the editable
-        DB_Write wdb = new DB_Write(this);
+	public void AddNewExercise() {
+		EditText exercisename = (EditText) findViewById(R.id.et_Exercises_Nome);
+		//adicionado por zeornelas
+		//obriga a colocar os valores
+		if (exercisename.getText().toString().equals("")) {
+			exercisename.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(exercisename, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
 
-        wdb.Exercise_Add(exercisename.getText().toString());
-        wdb.close();
-        finish();
-    }
+		// deal with the editable
+		DB_Write wdb = new DB_Write(this);
 
-    public void UpdateExercise(){
-        EditText exercisename = (EditText) findViewById(R.id.et_Exercises_Nome);
-        //adicionado por zeornelas
-        //obriga a colocar os valores
-        if (exercisename.getText().toString().equals("")) {
-            exercisename.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(exercisename, InputMethodManager.SHOW_IMPLICIT);
-            return;
-        }
+		wdb.Exercise_Add(exercisename.getText().toString());
+		wdb.close();
+		finish();
+	}
 
-        DB_Write wdb = new DB_Write(this);
+	public void UpdateExercise() {
+		EditText exercisename = (EditText) findViewById(R.id.et_Exercises_Nome);
+		//adicionado por zeornelas
+		//obriga a colocar os valores
+		if (exercisename.getText().toString().equals("")) {
+			exercisename.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(exercisename, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
 
-        ExerciseDataBinding exercise = new ExerciseDataBinding();
+		DB_Write wdb = new DB_Write(this);
 
-        exercise.setId(idExercises);
-        exercise.setName(exercisename.getText().toString());
+		ExerciseDataBinding exercise = new ExerciseDataBinding();
+
+		exercise.setId(idExercises);
+		exercise.setName(exercisename.getText().toString());
 
 
-        wdb.Exercise_Update(exercise);
-        wdb.close();
-        finish();
+		wdb.Exercise_Update(exercise);
+		wdb.close();
+		finish();
 
-    }
+	}
 
-    public void DeleteExercise(){
-        final Context c = this;
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.delete_Exercise))
-                .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        //Falta verificar se não está associada a nenhuma entrada da DB
+	public void DeleteExercise() {
+		final Context c = this;
+		new AlertDialog.Builder(this)
+				.setTitle(getString(R.string.delete_Exercise))
+				.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						//Falta verificar se não está associada a nenhuma entrada da DB
 
-                        DB_Write wdb = new DB_Write(c);
-                        wdb.Exercise_Remove(idExercises);
-                        wdb.close();
-                        Log.d("to delete exercise id: ", String.valueOf(idExercises));
-                        finish();
+						DB_Write wdb = new DB_Write(c);
+						wdb.Exercise_Remove(idExercises);
+						wdb.close();
+						Log.d("to delete exercise id: ", String.valueOf(idExercises));
+						finish();
 
-                    }
-                })
-                .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Do nothing.
-                    }
-                }).show();
-    }
+					}
+				})
+				.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						// Do nothing.
+					}
+				}).show();
+	}
 
-    public void goUp(){
-        //NavUtils.navigateUpFromSameTask(this);
-        finish();
-    }
+	public void goUp() {
+		//NavUtils.navigateUpFromSameTask(this);
+		finish();
+	}
 }

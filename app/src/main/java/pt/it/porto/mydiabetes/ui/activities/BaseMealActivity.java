@@ -41,7 +41,8 @@ import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc.CalcListener;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
@@ -63,7 +64,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	private Bitmap b;
 	private Uri generatedImageUri;
 	private boolean showAddGlycemiaTarget;
-	private InsulinCalc fragmentInsulinCalcs;
+	protected InsulinCalc fragmentInsulinCalcs;
 	private boolean expandInsulinCalcsAuto = false;
 	boolean useIOB=true;
 
@@ -122,10 +123,14 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 			//se tivermos apagado a foto dá result code -1
 			//se voltarmos por um return por exemplo o resultcode é 0
 			if (resultCode == -1) {
-				setImageUri(null);
+				imageRemoved();
 			}
 		}
 		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	void imageRemoved() {
+		setImageUri(null);
 	}
 
 	public void setPhaseOfDayByValue(String value) {
@@ -353,7 +358,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 
 	void fillDateHour(String date, String time) {
 		Calendar c = Calendar.getInstance();
-		this.date.setText(date == null ? DatePickerFragment.getFormatedDate(c) : date);
+		this.date.setText(date == null ? DateUtils.getFormattedDate(c) : date);
 		this.date.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -361,14 +366,14 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 			}
 		});
 
-		this.time.setText(time == null ? TimePickerFragment.getFormatedDate(c) : time);
+		this.time.setText(time == null ? DateUtils.getFormattedTime(c) : time);
 		this.time.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				showTimePickerDialog(v);
 			}
 		});
-		setPhaseOfDayByValue(time == null ? TimePickerFragment.getFormatedDate(c) : time);
+		setPhaseOfDayByValue(time == null ? DateUtils.getFormattedTime(c) : time);
 	}
 
 	private void fillTagSpinner() {
@@ -391,14 +396,14 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	}
 
 	private void showDatePickerDialog(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MealDetail_Data,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MealDetail_Date,
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	private void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_MealDetail_Hora,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
@@ -442,7 +447,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	public void setImageUri(Uri data) {
 		imgUri = data;
 		ImageView img = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
-		if (imgUri == null) {
+		if (imgUri == null || !new File(imgUri.getPath()).exists()) {
 			img.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.newphoto, null));
 		} else {
 			DisplayMetrics displaymetrics = new DisplayMetrics();
@@ -529,7 +534,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 		}
 	}
 
-	private void toggleInsulinCalcDetails(View view) {
+	public void toggleInsulinCalcDetails(View view) {
 		expandInsulinCalcsAuto = false;
 		if (((ToggleButton) view).isChecked()) {
 			showCalcs();

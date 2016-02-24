@@ -27,10 +27,11 @@ import java.util.HashMap;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseRegDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class ExerciseDetail extends Activity {
@@ -61,9 +62,9 @@ public class ExerciseDetail extends Activity {
 			EditText duration = (EditText) findViewById(R.id.et_ExerciseDetail_Duration);
 			duration.setText(String.valueOf(toFill.getDuration()));
 			EditText data = (EditText) findViewById(R.id.et_ExerciseDetail_Data);
-			data.setText(toFill.getDate());
+			data.setText(toFill.getFormattedDate());
 			EditText hora = (EditText) findViewById(R.id.et_ExerciseDetail_Hora);
-			hora.setText(toFill.getTime());
+			hora.setText(toFill.getFormattedTime());
 
 			EditText note = (EditText) findViewById(R.id.et_ExerciseDetail_Notes);
 			if (toFill.getIdNote() != -1) {
@@ -117,21 +118,21 @@ public class ExerciseDetail extends Activity {
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_ExerciseDetail_Data);
 		final Calendar calendar = Calendar.getInstance();
-		date.setText(TimePickerFragment.getFormatedDate(calendar));
+		date.setText(DateUtils.getFormattedDate(calendar));
 
 		EditText hour = (EditText) findViewById(R.id.et_ExerciseDetail_Hora);
-		hour.setText(TimePickerFragment.getFormatedDate(calendar));
+		hour.setText(DateUtils.getFormattedTime(calendar));
 	}
 
 	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_ExerciseDetail_Data,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_ExerciseDetail_Hora,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
 
 	}
@@ -213,8 +214,7 @@ public class ExerciseDetail extends Activity {
 		ex.setExercise(exerciseSpinner.getText().toString());
 		ex.setDuration(Integer.parseInt(duration.getText().toString()));
 		ex.setEffort(effort);
-		ex.setDate(data.getText().toString());
-		ex.setTime(hora.getText().toString());
+		ex.setDateTime(data.getText().toString(), hora.getText().toString());
 
 
 		reg.Exercise_Save(ex);
@@ -313,9 +313,8 @@ public class ExerciseDetail extends Activity {
 
 		toUpdate.setId(id);
 		toUpdate.setId_User(idUser);
-		toUpdate.setDate(data.getText().toString());
-		toUpdate.setTime(hora.getText().toString());
 		toUpdate.setDuration(Integer.parseInt(duration.getText().toString()));
+		toUpdate.setDateTime(data.getText().toString(), hora.getText().toString());
 		toUpdate.setEffort(effortSpinner.getSelectedItem().toString());
 		toUpdate.setExercise(exerciseSpinner.getText().toString());
 

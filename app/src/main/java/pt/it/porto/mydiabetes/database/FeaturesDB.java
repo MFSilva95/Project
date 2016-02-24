@@ -15,6 +15,9 @@ public class FeaturesDB {
 	public boolean isFeatureActive(String feature) {
 		Cursor result = storage.query(MyDiabetesContract.Feature.TABLE_NAME, new String[]{MyDiabetesContract.Feature.COLUMN_NAME_ACTIVATED},
 				MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{feature}, null, null, null, 1);
+		if(result.getCount()==0){
+			return false;
+		}
 		result.moveToFirst();
 		return result.getInt(0) != 0;
 	}

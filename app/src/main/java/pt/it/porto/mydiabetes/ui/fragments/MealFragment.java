@@ -41,7 +41,8 @@ import pt.it.porto.mydiabetes.ui.activities.TargetBG_detail;
 import pt.it.porto.mydiabetes.ui.activities.ViewPhoto;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
@@ -417,7 +418,7 @@ public class MealFragment extends Fragment {
 
 	private void fillDateHour() {
 		Calendar c = Calendar.getInstance();
-		date.setText(DatePickerFragment.getFormatedDate(c));
+		date.setText(DateUtils.getFormattedDate(c));
 		date.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -425,7 +426,7 @@ public class MealFragment extends Fragment {
 			}
 		});
 
-		time.setText(TimePickerFragment.getFormatedDate(c));
+		time.setText(DateUtils.getFormattedTime(c));
 		time.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -455,13 +456,13 @@ public class MealFragment extends Fragment {
 
 	private void showDatePickerDialog(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MealDetail_Data,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	private void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_MealDetail_Hora,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 

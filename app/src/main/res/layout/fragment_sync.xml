@@ -18,7 +18,7 @@
         android:layout_marginTop="114dp"
         android:drawableTop="@drawable/sync"
         android:onClick="syncPC"
-        android:text="@string/sync" />
+        android:text="@string/sync_with_pc" />
 
     <Button
         android:id="@+id/syncCloud"

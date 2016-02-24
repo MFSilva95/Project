@@ -20,7 +20,7 @@ import pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IEven
 import pt.it.porto.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
 import pt.it.porto.mydiabetes.middleHealth.utils.Utils;
 import pt.it.porto.mydiabetes.ui.activities.Meal;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
 
 public class EventCallback extends IEventCallback.Stub {
 	private static final String TAG = "EventCallback";
@@ -198,8 +198,7 @@ public class EventCallback extends IEventCallback.Stub {
 		GlycemiaDataBinding glycemia = new GlycemiaDataBinding();
 		glycemia.setIdUser(userId);
 		glycemia.setValue((int) Double.parseDouble(measure.getValues().get(0).toString())); // TODO check if the cast is ok
-		glycemia.setDate(dateString);
-		glycemia.setTime(hourString);
+		glycemia.setDateTime(dateString, hourString);
 		glycemia.setIdTag(idTag);
 		writeDatabase.Glycemia_Save(glycemia);
 

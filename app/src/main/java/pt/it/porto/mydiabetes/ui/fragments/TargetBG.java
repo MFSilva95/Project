@@ -19,7 +19,7 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.TargetBG_detail;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.listAdapters.TargetAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.TargetDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TargetDataBinding;
 
 
 public class TargetBG extends Fragment {
@@ -64,7 +64,7 @@ public class TargetBG extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View v = inflater.inflate(R.layout.fragment_target_bg, null);
+		View v = inflater.inflate(R.layout.fragment_target_bg, container, false);
 		
 		targetList = (ListView)v.findViewById(R.id.targetsFragmentList);
 		

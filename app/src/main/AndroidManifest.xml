@@ -2,8 +2,8 @@
 <manifest
     package="pt.it.porto.mydiabetes"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:versionCode="7"
-    android:versionName="1.2.0">
+    android:versionCode="8"
+    android:versionName="1.2.1">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -27,18 +27,42 @@
         <activity
             android:name=".ui.activities.MyData"
             android:label="@string/title_activity_my_data"
-            android:parentActivityName=".ui.activities.Home">
+            android:parentActivityName=".ui.activities.DataTools">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Home"/>
+                android:value=".ui.activities.DataTools"/>
         </activity>
         <activity
             android:name=".ui.activities.Preferences"
             android:label="@string/title_activity_preferences"
-            android:parentActivityName=".ui.activities.Home">
+            android:parentActivityName=".ui.activities.DataTools">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Home"/>
+                android:value=".ui.activities.DataTools"/>
+        </activity>
+        <activity
+            android:name=".ui.activities.SettingsReport"
+            android:label="@string/report"
+            android:parentActivityName=".ui.activities.DataTools">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.DataTools"/>
+        </activity>
+        <activity
+            android:name=".ui.activities.SettingsInsulin"
+            android:label="@string/insulin_calc"
+            android:parentActivityName=".ui.activities.DataTools">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.DataTools"/>
+        </activity>
+        <activity
+            android:name=".ui.activities.Insulins"
+            android:label="@string/preferences_insulins"
+            android:parentActivityName=".ui.activities.SettingsInsulin">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.SettingsInsulin"/>
         </activity>
         <activity
             android:name=".ui.activities.Exercise"
@@ -49,7 +73,8 @@
                 android:value=".ui.activities.Home"/>
         </activity>
         <activity
-            android:name=".ui.activities.Glycemia"
+            android:name=".ui.activities.GlycemiaChartList"
+            android:theme="@style/AppNewThemeCompat"
             android:label="@string/title_activity_glycemia"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
@@ -57,8 +82,9 @@
                 android:value=".ui.activities.Home"/>
         </activity>
         <activity
-            android:name=".ui.activities.Insulin"
+            android:name=".ui.activities.InsulinChartList"
             android:label="@string/title_activity_insulin"
+            android:theme="@style/AppNewThemeCompat"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -73,8 +99,9 @@
                 android:value=".ui.activities.Home"/>
         </activity>
         <activity
-            android:name=".ui.activities.CarboHydrate"
+            android:name=".ui.activities.CarbsChartList"
             android:label="@string/title_activity_carbo_hydrate"
+            android:theme="@style/AppNewThemeCompat"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -105,7 +132,8 @@
                 android:value=".ui.activities.Home"/>
         </activity>
         <activity
-            android:name=".ui.activities.Weight"
+            android:name=".ui.activities.WeightChartList"
+            android:theme="@style/AppNewThemeCompat"
             android:label="@string/title_activity_weight"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
@@ -139,18 +167,18 @@
         <activity
             android:name=".ui.activities.GlycemiaDetail"
             android:label="@string/title_activity_glycemia_detail"
-            android:parentActivityName=".ui.activities.Glycemia">
+            android:parentActivityName=".ui.activities.GlycemiaChartList">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Glycemia"/>
+                android:value=".ui.activities.GlycemiaChartList"/>
         </activity>
         <activity
             android:name=".ui.activities.InsulinDetail"
             android:label="@string/title_activity_insulin_detail"
-            android:parentActivityName=".ui.activities.Insulin">
+            android:parentActivityName=".ui.activities.InsulinChartList">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Insulin"/>
+                android:value=".ui.activities.InsulinChartList"/>
         </activity>
         <activity
             android:name=".ui.activities.ExerciseDetail"
@@ -164,10 +192,10 @@
             android:name=".ui.activities.CarboHydrateDetail"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/title_activity_carbo_hydrate_detail"
-            android:parentActivityName=".ui.activities.CarboHydrate">
+            android:parentActivityName=".ui.activities.CarbsChartList">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.CarboHydrate"/>
+                android:value=".ui.activities.CarbsChartList"/>
         </activity>
         <activity
             android:name=".ui.activities.BloodPressureDetail"
@@ -188,10 +216,10 @@
         <activity
             android:name=".ui.activities.WeightDetail"
             android:label="@string/title_activity_weight_detail"
-            android:parentActivityName=".ui.activities.Weight">
+            android:parentActivityName=".ui.activities.WeightChartList">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Weight"/>
+                android:value=".ui.activities.WeightChartList"/>
         </activity>
         <activity
             android:name=".ui.activities.HbA1cDetail"
@@ -268,8 +296,8 @@
         <activity
             android:name=".ui.activities.TransferActivity"
             android:label="@string/title_activity_transfer"
-            android:screenOrientation="portrait"
-            android:parentActivityName=".ui.activities.ImportExport">
+            android:parentActivityName=".ui.activities.ImportExport"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.ImportExport"/>
@@ -289,8 +317,9 @@
                 android:value=".ui.activities.ImportExport"/>
         </activity>
         <activity
-            android:name=".ui.activities.Logbook"
+            android:name=".ui.activities.LogbookChartList"
             android:label="@string/title_activity_logbook"
+            android:theme="@style/AppNewThemeCompat"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -299,10 +328,10 @@
         <activity
             android:name=".ui.activities.DetailLogbookActivity"
             android:label="@string/title_activity_logbook_detail"
-            android:parentActivityName=".ui.activities.Logbook">
+            android:parentActivityName=".ui.activities.LogbookChartList">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Logbook"/>
+                android:value=".ui.activities.LogbookChartList"/>
         </activity>
         <activity
             android:name=".ui.activities.DiseasesDetail"

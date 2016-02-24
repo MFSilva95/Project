@@ -19,10 +19,12 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.WeightDataBinding;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.WeightDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 public class WeightDetail extends BaseOldActivity {
@@ -40,20 +42,18 @@ public class WeightDetail extends BaseOldActivity {
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
 			DB_Read rdb = new DB_Read(this);
-			String id = args.getString("Id");
-			idWeight = Integer.parseInt(id);
-			WeightDataBinding toFill = rdb.Weight_GetById(Integer.parseInt(id));
+			idWeight  = args.getInt("Id");
+			WeightDataBinding toFill = rdb.Weight_GetById(idWeight);
 
 			EditText value = (EditText) findViewById(R.id.et_WeightDetail_Value);
-			value.setText(String.valueOf(toFill.getValue()));
+			value.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", toFill.getValue()));
 			EditText data = (EditText) findViewById(R.id.et_WeightDetail_Data);
-			data.setText(toFill.getDate());
+			data.setText(toFill.getFormattedDate());
 			EditText hora = (EditText) findViewById(R.id.et_WeightDetail_Hora);
-			hora.setText(toFill.getTime());
+			hora.setText(toFill.getFormattedTime());
 			EditText note = (EditText) findViewById(R.id.et_WeightDetail_Notes);
 			if (toFill.getIdNote() != -1) {
-				NoteDataBinding n = new NoteDataBinding();
-				n = rdb.Note_GetById(toFill.getIdNote());
+				NoteDataBinding n = rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
 				idNote = n.getId();
 			}
@@ -81,7 +81,7 @@ public class WeightDetail extends BaseOldActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
+				finish();
 				return true;
 			case R.id.menuItem_WeightDetail_Save:
 				AddWeightRead();
@@ -99,21 +99,21 @@ public class WeightDetail extends BaseOldActivity {
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_WeightDetail_Data);
 		final Calendar calendar = Calendar.getInstance();
-		date.setText(DatePickerFragment.getFormatedDate(calendar));
+		date.setText(DateUtils.getFormattedDate(calendar));
 
 		EditText hour = (EditText) findViewById(R.id.et_WeightDetail_Hora);
-		hour.setText(TimePickerFragment.getFormatedDate(calendar));
+		hour.setText(DateUtils.getFormattedTime(calendar));
 	}
 
 	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_WeightDetail_Data,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_WeightDetail_Hora,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
 
 	}
@@ -149,8 +149,7 @@ public class WeightDetail extends BaseOldActivity {
 
 		weight.setIdUser(idUser);
 		weight.setValue(Double.parseDouble(value.getText().toString()));
-		weight.setDate(data.getText().toString());
-		weight.setTime(hora.getText().toString());
+		weight.setDateTime(data.getText().toString(), hora.getText().toString());
 
 		wdb.Weight_Save(weight);
 
@@ -197,8 +196,7 @@ public class WeightDetail extends BaseOldActivity {
 		cho.setId(idWeight);
 		cho.setIdUser(idUser);
 		cho.setValue(Double.parseDouble(value.getText().toString()));
-		cho.setDate(data.getText().toString());
-		cho.setTime(hora.getText().toString());
+		cho.setDateTime(data.getText().toString(), hora.getText().toString());
 
 		wdb.Weight_Update(cho);
 

@@ -1,67 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    
-    android:orientation="horizontal" >
-    
-	<LinearLayout
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_marginLeft="3dp"
-	    android:orientation="vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_alignParentLeft="true" >
-	    <TextView
-	        android:id="@+id/tv_list_glicemia_data"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:textSize="16sp"
-	        android:textStyle="bold" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="?android:selectableItemBackground"
+              android:minHeight="@dimen/list_row_default_height"
+              android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="3dp"
+        android:layout_marginStart="3dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
         <TextView
-	        android:id="@+id/tv_list_glicemia_hora"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:textSize="16sp"
-	        android:textStyle="bold" />
-		<TextView
-			android:id="@+id/tv_list_glicemia_tag"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:gravity="left"
-			android:textSize="12sp"
-			android:lines="1"
-			android:ellipsize="end" />
-	</LinearLayout>
-	<TextView
-	        android:id="@+id/tv_list_glicemia_value"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_centerVertical="true"
-	        android:text="@string/hint_value1"
-	        android:textSize="36sp"
-	        android:layout_toLeftOf="@+id/tv_list_glicemia_unit" />
-	<TextView
-	        android:id="@+id/tv_list_glicemia_unit"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/mg_dl"
-	        android:textSize="16sp"
-	        android:paddingLeft="8dp"
-	        android:layout_centerVertical="true"
-	        android:layout_toLeftOf="@+id/ib_list_glicemia_detail" />
-	<ImageButton
-        android:contentDescription="glicemia_detail_img"
+            android:id="@+id/tv_list_glicemia_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            tools:text="2016-01-27"/>
+
+        <TextView
+            android:id="@+id/tv_list_glicemia_hora"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            tools:text="11:50"/>
+
+        <TextView
+            android:id="@+id/tv_list_glicemia_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="left"
+            android:lines="1"
+            android:textSize="@dimen/list_text_small"
+            tools:text="Antes almoço"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_list_glicemia_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textSize="@dimen/list_text_huge"
+        android:textStyle="bold"
+        tools:text="@string/hint_value1"/>
+
+    <TextView
+        android:id="@+id/tv_list_glicemia_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="@string/mg_dl"
+        android:textSize="@dimen/list_text_big"/>
+
+    <ImageView
         android:id="@+id/ib_list_glicemia_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:paddingRight="8dp"
-        android:paddingLeft="8dp"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/viewdetail"
-        android:background="@color/transparent" />
-</RelativeLayout>
+        android:layout_gravity="center_vertical"
+        android:background="@color/transparent"
+        android:src="@drawable/viewdetail"/>
+</LinearLayout>

@@ -5,12 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.text.format.Time;
+
+import java.util.Calendar;
+
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class MyDiabetesStorage {
 
-	private DB_Handler mHandler;
 	private static MyDiabetesStorage instance;
+	private DB_Handler mHandler;
 
 	private MyDiabetesStorage(Context context) {
 		mHandler = new DB_Handler(context);
@@ -28,12 +31,9 @@ public class MyDiabetesStorage {
 	public Cursor getWeightRegist(int id) {
 		SQLiteDatabase db = mHandler.getReadableDatabase();
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-		queryBuilder.setTables(MyDiabetesContract.Regist.Weight.TABLE_NAME + " INNER JOIN " + MyDiabetesContract.Note.TABLE_NAME
-				+ "ON " + MyDiabetesContract.Regist.Weight.COLUMN_NAME_NOTE_ID + "=" + MyDiabetesContract.Note.COLUMN_NAME_ID);
+		queryBuilder.setTables(MyDiabetesContract.Regist.Weight.TABLE_NAME + " INNER JOIN " + MyDiabetesContract.Note.TABLE_NAME + "ON " + MyDiabetesContract.Regist.Weight.COLUMN_NAME_NOTE_ID + "=" + MyDiabetesContract.Note.COLUMN_NAME_ID);
 
-		Cursor cursor = queryBuilder.query(db, new String[]{MyDiabetesContract.Regist.Weight.COLUMN_NAME_ID, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME,
-						MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE, MyDiabetesContract.Note.COLUMN_NAME_Note},
-				null, null, null, null, null, "1");
+		Cursor cursor = queryBuilder.query(db, new String[]{MyDiabetesContract.Regist.Weight.COLUMN_NAME_ID, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE, MyDiabetesContract.Note.COLUMN_NAME_Note}, null, null, null, null, null, "1");
 		return cursor;
 
 	}
@@ -43,10 +43,7 @@ public class MyDiabetesStorage {
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 		queryBuilder.setTables(MyDiabetesContract.Regist.Weight.TABLE_NAME);
 
-		Cursor cursor = queryBuilder.query(db, new String[]{MyDiabetesContract.Regist.Weight.COLUMN_NAME_ID,
-						MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE},
-				null, null, null, null,
-				MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME + " " + (options != null ? options.getSortOrder() : QueryOptions.ORDER_DESC));
+		Cursor cursor = queryBuilder.query(db, new String[]{MyDiabetesContract.Regist.Weight.COLUMN_NAME_ID, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE}, null, null, null, null, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME + " " + (options != null ? options.getSortOrder() : QueryOptions.ORDER_DESC));
 		return cursor;
 
 	}
@@ -74,8 +71,7 @@ public class MyDiabetesStorage {
 
 	public boolean insulinExists(String name) {
 		SQLiteDatabase db = mHandler.getReadableDatabase();
-		Cursor cursor = db.query(MyDiabetesContract.Insulin.TABLE_NAME, new String[]{MyDiabetesContract.Insulin.COLUMN_NAME_NAME},
-				MyDiabetesContract.Insulin.COLUMN_NAME_NAME + "==?", new String[]{name}, null, null, null, null);
+		Cursor cursor = db.query(MyDiabetesContract.Insulin.TABLE_NAME, new String[]{MyDiabetesContract.Insulin.COLUMN_NAME_NAME}, MyDiabetesContract.Insulin.COLUMN_NAME_NAME + "==?", new String[]{name}, null, null, null, null);
 		return cursor.getCount() != 0;
 	}
 
@@ -95,8 +91,7 @@ public class MyDiabetesStorage {
 
 	public boolean glycemiaObjectiveExists(String description) {
 		SQLiteDatabase db = mHandler.getReadableDatabase();
-		Cursor cursor = db.query(MyDiabetesContract.BG_Target.TABLE_NAME, new String[]{MyDiabetesContract.BG_Target.COLUMN_NAME_NAME},
-				MyDiabetesContract.BG_Target.COLUMN_NAME_NAME + "==?", new String[]{description}, null, null, null, null);
+		Cursor cursor = db.query(MyDiabetesContract.BG_Target.TABLE_NAME, new String[]{MyDiabetesContract.BG_Target.COLUMN_NAME_NAME}, MyDiabetesContract.BG_Target.COLUMN_NAME_NAME + "==?", new String[]{description}, null, null, null, null);
 		return cursor.getCount() != 0;
 	}
 
@@ -111,9 +106,7 @@ public class MyDiabetesStorage {
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_BIRTHDATE, birthday);
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_GENDER, gender);
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_HEIGHT, height);
-		Time now = new Time(Time.getCurrentTimezone());
-		now.setToNow();
-		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_LAST_UPDATE, now.format("%Y-%m-%d %H:%M:%S"));
+		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_LAST_UPDATE, DateUtils.formatToDb(Calendar.getInstance()));
 		return insertNewData(MyDiabetesContract.UserInfo.TABLE_NAME, toInsert) != -1;
 	}
 
@@ -133,19 +126,9 @@ public class MyDiabetesStorage {
 		SQLiteDatabase db = mHandler.getReadableDatabase();
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 		// TODO untested!
-		queryBuilder.setTables(MyDiabetesContract.Regist.Insulin.TABLE_NAME + " INNER JOIN " + MyDiabetesContract.Regist.BloodGlucose.TABLE_NAME
-				+ " ON " + MyDiabetesContract.Regist.Insulin.COLUMN_NAME_BLOODGLUCOSE_ID + "=" + MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_ID
-				+ " INNER JOIN " + MyDiabetesContract.Insulin.TABLE_NAME + " ON "
-				+ MyDiabetesContract.Regist.Insulin.COLUMN_NAME_INSULIN_ID + "=" + MyDiabetesContract.Insulin.COLUMN_NAME_ID
-				+ "INNER JOIN" + MyDiabetesContract.Tag.TABLE_NAME + " ON "
-				+ MyDiabetesContract.Regist.Insulin.COLUMN_NAME_TAG_ID + "=" + MyDiabetesContract.Tag.COLUMN_NAME_ID);
+		queryBuilder.setTables(MyDiabetesContract.Regist.Insulin.TABLE_NAME + " INNER JOIN " + MyDiabetesContract.Regist.BloodGlucose.TABLE_NAME + " ON " + MyDiabetesContract.Regist.Insulin.COLUMN_NAME_BLOODGLUCOSE_ID + "=" + MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_ID + " INNER JOIN " + MyDiabetesContract.Insulin.TABLE_NAME + " ON " + MyDiabetesContract.Regist.Insulin.COLUMN_NAME_INSULIN_ID + "=" + MyDiabetesContract.Insulin.COLUMN_NAME_ID + "INNER JOIN" + MyDiabetesContract.Tag.TABLE_NAME + " ON " + MyDiabetesContract.Regist.Insulin.COLUMN_NAME_TAG_ID + "=" + MyDiabetesContract.Tag.COLUMN_NAME_ID);
 
-		Cursor cursor = queryBuilder.query(db, new String[]{MyDiabetesContract.Regist.Insulin.COLUMN_NAME_ID,
-						MyDiabetesContract.Regist.Insulin.COLUMN_NAME_VALUE, MyDiabetesContract.Insulin.COLUMN_NAME_NAME,
-						MyDiabetesContract.Regist.Insulin.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.Insulin.COLUMN_NAME_DURATION,
-						MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_VALUE, MyDiabetesContract.Tag.COLUMN_NAME_NAME},
-				null, null, null, null,
-				MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME + " " + (options != null ? options.getSortOrder() : QueryOptions.ORDER_DESC));
+		Cursor cursor = queryBuilder.query(db, new String[]{MyDiabetesContract.Regist.Insulin.COLUMN_NAME_ID, MyDiabetesContract.Regist.Insulin.COLUMN_NAME_VALUE, MyDiabetesContract.Insulin.COLUMN_NAME_NAME, MyDiabetesContract.Regist.Insulin.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.Insulin.COLUMN_NAME_DURATION, MyDiabetesContract.Regist.BloodGlucose.COLUMN_NAME_VALUE, MyDiabetesContract.Tag.COLUMN_NAME_NAME}, null, null, null, null, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME + " " + (options != null ? options.getSortOrder() : QueryOptions.ORDER_DESC));
 		return cursor;
 	}
 
@@ -154,7 +137,7 @@ public class MyDiabetesStorage {
 		return db.insert(table, null, data);
 	}
 
-	public long updateData(String table, ContentValues data, String where, String[] args){
+	public long updateData(String table, ContentValues data, String where, String[] args) {
 		SQLiteDatabase db = mHandler.getWritableDatabase();
 		return db.update(table, data, where, args);
 	}
@@ -169,9 +152,14 @@ public class MyDiabetesStorage {
 		return db.query(table, columns, selection, selectionArgs, groupBy, having, orderby, String.valueOf(limit));
 	}
 
-	Cursor rawQuert(String query) {
+	Cursor rawQuery(String query) {
 		SQLiteDatabase db = mHandler.getReadableDatabase();
 		return db.rawQuery(query, null);
+	}
+
+	int delete(String table, String where, String[] whereArgs) {
+		SQLiteDatabase db = mHandler.getReadableDatabase();
+		return db.delete(table, where, whereArgs);
 	}
 
 	public static class QueryOptions {
@@ -180,13 +168,13 @@ public class MyDiabetesStorage {
 
 		private String sortOrder;
 
+		public String getSortOrder() {
+			return sortOrder;
+		}
+
 		public QueryOptions setSortOrder(String sortOrder) {
 			this.sortOrder = sortOrder;
 			return this;
-		}
-
-		public String getSortOrder() {
-			return sortOrder;
 		}
 	}
 }

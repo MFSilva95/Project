@@ -1,118 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
-    
-	<LinearLayout
-	    android:id="@+id/ll_list_insulinreg_left"
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_marginLeft="3dp"
-	    android:orientation="vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_alignParentLeft="true" >
-	    <TextView
-	        android:id="@+id/tv_list_insulinreg_data"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="left"
-	        android:textSize="12sp" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="?android:selectableItemBackground"
+              android:minHeight="@dimen/list_row_default_height"
+              android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/ll_list_insulinreg_left"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="3dp"
+        android:layout_marginStart="3dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
         <TextView
-	        android:id="@+id/tv_list_insulinreg_hora"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="left"
-	        android:textSize="12sp" />
+            android:id="@+id/tv_list_insulinreg_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:textSize="@dimen/list_text_small"
+            android:textStyle="bold"
+            tools:text="2016-02-10"/>
+
         <TextView
-	        android:id="@+id/tv_list_insulinreg_tag"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="left"
-	        android:textSize="12sp"
-	        android:lines="1"
-	        android:ellipsize="end" />
-	</LinearLayout>
-	
-	<LinearLayout
-	    android:id="@+id/ll_list_insulinreg_middleleft"
-	    android:layout_width="75dp"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_toLeftOf="@+id/ll_list_insulinreg_middleright" >
-	    <TextView
-	        android:id="@+id/tv_list_insulinreg_insulin"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:textSize="12sp"
-	        android:lines="1"
-	        android:ellipsize="end" />
+            android:id="@+id/tv_list_insulinreg_hora"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:textSize="@dimen/list_text_small"
+            android:textStyle="bold"
+            tools:text="11:00"/>
+
         <TextView
-	        android:id="@+id/tv_list_insulinreg_insulin_value"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:textSize="16sp"
-	        android:textStyle="bold" />
+            android:id="@+id/tv_list_insulinreg_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="left"
+            android:lines="1"
+            android:textSize="@dimen/list_text_small"
+            tools:text="Antes almoço"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_list_insulinreg_middleleft"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="vertical">
+
         <TextView
-	        android:id="@+id/tv_list_insulinreg_insulinunit"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:text="@string/uni"
-	        android:textSize="12sp" />
-	</LinearLayout>
-	<LinearLayout
-	    android:id="@+id/ll_list_insulinreg_middleright"
-	    android:layout_width="75dp"
-	    android:layout_height="wrap_content"
-	    android:layout_marginLeft="8dp"
-	    android:layout_marginRight="8dp"
-	    android:orientation="vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_toLeftOf="@+id/ib_list_insulinreg_detail" >
-	    <TextView
-	        android:id="@+id/tv_list_insulinreg_glycemia"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:text="@string/bloodglucose"
-	        android:textSize="12sp" />
+            android:id="@+id/tv_list_insulinreg_insulin"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center_horizontal"
+            android:lines="1"
+            android:textSize="@dimen/list_text_small"
+            tools:text="Humolog"/>
+
         <TextView
-	        android:id="@+id/tv_list_insulinreg_glycemia_value"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:textSize="16sp"
-	        android:textStyle="bold" />
+            android:id="@+id/tv_list_insulinreg_insulin_value"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/list_text_big"
+            android:textStyle="bold"
+            tools:text="5.0"/>
+
         <TextView
-	        android:id="@+id/tv_list_insulinreg_glycemia_unit"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:text="@string/mg_dl"
-	        android:textSize="12sp" />
-	</LinearLayout>
-	<ImageButton
-        android:contentDescription="insulin_detail_img"
+            android:id="@+id/tv_list_insulinreg_insulinunit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/uni"
+            android:textSize="@dimen/list_text_small"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_list_insulinreg_middleright"
+        android:layout_width="75dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_list_insulinreg_glycemia"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/bloodglucose"
+            android:textSize="@dimen/list_text_small"/>
+
+        <TextView
+            android:id="@+id/tv_list_insulinreg_glycemia_value"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/list_text_big"
+            android:textStyle="bold"
+            tools:text="200"/>
+
+        <TextView
+            android:id="@+id/tv_list_insulinreg_glycemia_unit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/mg_dl"
+            android:textSize="@dimen/list_text_small"/>
+    </LinearLayout>
+
+    <ImageView
         android:id="@+id/ib_list_insulinreg_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:paddingRight="8dp"
-        android:paddingLeft="8dp"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/viewdetail"
-        android:background="@color/transparent" />
-</RelativeLayout>
+        android:layout_gravity="center_vertical"
+        android:background="@color/transparent"
+        android:src="@drawable/viewdetail"/>
+</LinearLayout>

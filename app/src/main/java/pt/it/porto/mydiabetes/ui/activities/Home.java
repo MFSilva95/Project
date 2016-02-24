@@ -42,6 +42,8 @@ public class Home extends BaseOldActivity {
 		DB_Read read = new DB_Read(this);
 		if (!read.MyData_HasData()) {
 			ShowDialogAddData();
+			read.close();
+			return; // making sure no more code of the on create method is executed
 		}
 		read.close();
 
@@ -60,31 +62,34 @@ public class Home extends BaseOldActivity {
 
 	private void setupSyncAlarm() {
 		SharedPreferences preferences = pt.it.porto.mydiabetes.database.Preferences.getPreferences(this);
-		if (!preferences.contains(SyncAlarm.SYNC_ALARM_PREFERENCE)) { // only sets it if needed
-			AlarmManager alm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-			Intent intent = new Intent(this, SyncAlarm.class);
-			PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+		Calendar calendar = Calendar.getInstance();
+		AlarmManager alm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		Intent intent = new Intent(this, SyncAlarm.class);
+		PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+		if (!preferences.contains(SyncAlarm.SYNC_ALARM_LAST_SYNC)) { // only sets it if needed
+			Usage usage = new Usage(MyDiabetesStorage.getInstance(this));
+			String date = usage.getOldestRegist();
 
-			Calendar calendar = Calendar.getInstance();
-			if (preferences.contains(SyncAlarm.SYNC_ALARM_LAST_SYNC)) {
-				calendar.setTimeInMillis(preferences.getLong(SyncAlarm.SYNC_ALARM_LAST_SYNC, System.currentTimeMillis()));
-			} else {
-				Usage usage = new Usage(MyDiabetesStorage.getInstance(this));
-				String date = usage.getOldestRegist();
-
-				try {
-					calendar.setTime(DateUtils.iso8601Format.parse(date));
-				} catch (ParseException e) {
-					e.printStackTrace();
-					return;
-				}
+			try {
+				calendar.setTime(DateUtils.iso8601Format.parse(date));
+			} catch (ParseException e) {
+				e.printStackTrace();
+				return;
 			}
 			calendar.roll(Calendar.DAY_OF_YEAR, 7);
 			calendar.set(Calendar.HOUR_OF_DAY, 21); // Maybe change later?
 
 			alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
-
-			preferences.edit().putInt(SyncAlarm.SYNC_ALARM_PREFERENCE, 1).apply();
+		} else {
+			calendar.setTimeInMillis(preferences.getLong(SyncAlarm.SYNC_ALARM_LAST_SYNC, System.currentTimeMillis()));
+			calendar.roll(Calendar.DAY_OF_YEAR, 7);
+			calendar.set(Calendar.HOUR_OF_DAY, 21); // Maybe change later?
+			if (calendar.before(Calendar.getInstance())) {
+				alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
+			} else if (!preferences.contains(SyncAlarm.SYNC_ALARM_PREFERENCE)) {
+				preferences.edit().putInt(SyncAlarm.SYNC_ALARM_PREFERENCE, 1).apply();
+				alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
+			}
 		}
 	}
 
@@ -128,7 +133,7 @@ public class Home extends BaseOldActivity {
 	}
 
 	public void Call_Glycemia(View view) {
-		Intent intent = new Intent(this, Glycemia.class);
+		Intent intent = new Intent(this, GlycemiaChartList.class);
 		startActivity(intent);
 	}
 
@@ -138,18 +143,18 @@ public class Home extends BaseOldActivity {
 	}
 
 	public void Call_Insulin(View view) {
-		Intent intent = new Intent(this, Insulin.class);
+		Intent intent = new Intent(this, InsulinChartList.class);
 		startActivity(intent);
 	}
 
 	public void Call_Carbs(View view) {
-		Intent intent = new Intent(this, CarboHydrate.class);
+		Intent intent = new Intent(this, CarbsChartList.class);
 		startActivity(intent);
 	}
 
 	//ADDED BY ZE ORNELAS
 	public void Call_Logbook(View view) {
-		Intent intent = new Intent(this, Logbook.class);
+		Intent intent = new Intent(this, LogbookChartList.class);
 		startActivity(intent);
 	}
 
@@ -159,13 +164,13 @@ public class Home extends BaseOldActivity {
 			dialog.setListener(new NewFeatureDialog.ActivateFeatureDialogListener() {
 				@Override
 				public void useFeature() {
-					FeaturesDB featuresDB=new FeaturesDB(MyDiabetesStorage.getInstance(getApplicationContext()));
+					FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(getApplicationContext()));
 					featuresDB.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, true);
 				}
 
 				@Override
 				public void notUseFeature() {
-					FeaturesDB featuresDB=new FeaturesDB(MyDiabetesStorage.getInstance(getApplicationContext()));
+					FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(getApplicationContext()));
 					featuresDB.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, false);
 				}
 			});
@@ -180,20 +185,16 @@ public class Home extends BaseOldActivity {
 		private static final int SWIPE_THRESHOLD_VELOCITY = 200;
 
 
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-							   float velocityY) {
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 			if (e1 != null && e2 != null) {
 				System.out.println(" in onFling() :: ");
-				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-					return false;
-				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
-						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) return false;
+				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 
 					//Right
 					Call_OutrasLeituras(getCurrentFocus());
 
-				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
-						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
 					//Left
 				}
 			}

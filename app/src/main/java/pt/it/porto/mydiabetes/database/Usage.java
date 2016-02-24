@@ -23,7 +23,7 @@ public class Usage {
 		if (cursor.getCount() == 0) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.getTime();
-			datetime = DateUtils.iso8601Format.format(calendar.getTime());
+			datetime = DateUtils.formatToDb(calendar);
 		} else {
 			datetime = cursor.getString(cursor.getColumnIndex(MyDiabetesContract.Regist.Insulin.COLUMN_NAME_DATETIME));
 		}

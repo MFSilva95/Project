@@ -1,11 +1,11 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/activity_horizontal_margin"
-    android:orientation="vertical"
-    android:scrollbars="vertical"
-    tools:context=".ui.activities.Info" >
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical"
+            tools:context=".ui.activities.Info">
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -13,7 +13,7 @@
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
-        android:paddingTop="8dp" >
+        android:padding="@dimen/activity_horizontal_margin">
 
         <TextView
             android:layout_width="wrap_content"
@@ -23,7 +23,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/information_about_using"
             android:textColor="@color/primary_text_holo_dark"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/information_about"
             android:textColor="@color/primary_text_holo_dark"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -43,7 +43,7 @@
             android:layout_marginTop="8dp"
             android:text="@string/information_about_developers"
             android:textColor="@color/primary_text_holo_dark"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -53,8 +53,8 @@
             android:layout_marginTop="8dp"
             android:text="@string/information_about_libraries"
             android:textColor="@color/primary_text_holo_dark"
-            android:textSize="16sp" />
-        
+            android:textSize="16sp"/>
+
         <TextView
             android:id="@+id/infoVersionView"
             android:layout_width="wrap_content"
@@ -64,10 +64,10 @@
             android:layout_marginRight="4dp"
             android:layout_marginTop="8dp"
             android:gravity="center"
-            android:textColor="@color/primary_text_holo_dark"
             android:text="@string/information_about_version"
+            android:textColor="@color/primary_text_holo_dark"
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -79,7 +79,7 @@
             android:autoLink="all"
             android:gravity="center"
             android:text="@string/information_about_contact"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
     </LinearLayout>
 

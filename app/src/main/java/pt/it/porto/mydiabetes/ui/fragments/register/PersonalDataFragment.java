@@ -183,7 +183,7 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 		return R.string.subtitle_personal_data;
 	}
 
-	private boolean isHeightValid(String height) {
+	public static boolean isHeightValid(String height) {
 		float val = 0;
 		try {
 			val = Float.parseFloat(height);

@@ -42,9 +42,11 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.ImageUtils;
 
 
 public class CarboHydrateDetail extends Activity {
@@ -69,18 +71,17 @@ public class CarboHydrateDetail extends Activity {
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
 			DB_Read rdb = new DB_Read(this);
-			String id = args.getString("Id");
-			id_ch = Integer.parseInt(args.getString("Id"));
-			CarbsDataBinding toFill = rdb.CarboHydrate_GetById(Integer.parseInt(id));
+			id_ch = args.getInt("Id");
+			CarbsDataBinding toFill = rdb.CarboHydrate_GetById(id_ch);
 
 			Spinner tagSpinner = (Spinner) findViewById(R.id.sp_CarboHydrateDetail_Tag);
 			SelectSpinnerItemByValue(tagSpinner, rdb.Tag_GetById(toFill.getId_Tag()).getName());
 			EditText carbs = (EditText) findViewById(R.id.et_CarboHydrateDetail_Value);
 			carbs.setText(String.valueOf(toFill.getCarbsValue()));
 			EditText data = (EditText) findViewById(R.id.et_CarboHydrateDetail_Data);
-			data.setText(toFill.getDate());
-			Log.d("data reg carb", toFill.getDate());
-			hora.setText(toFill.getTime());
+			data.setText(toFill.getFormattedDate());
+			Log.d("data reg carb", toFill.getFormattedDate());
+			hora.setText(toFill.getFormattedTime());
 
 			EditText note = (EditText) findViewById(R.id.et_CarboHydrateDetail_Notes);
 			if (toFill.getId_Note() != -1) {
@@ -91,7 +92,7 @@ public class CarboHydrateDetail extends Activity {
 			}
 
 			EditText photopath = (EditText) findViewById(R.id.et_CarboHydrateDetail_Photo);
-			if (toFill.hasPhotoPath()) {
+			if (toFill.hasPhotoPath() && !new File(toFill.getPhotoPath()).exists()) {
 				photopath.setText(toFill.getPhotoPath());
 				Log.d("foto path", "foto: " + toFill.getPhotoPath());
 				ImageView img = (ImageView) findViewById(R.id.iv_CarboHydrateDetail_Photo);
@@ -99,7 +100,7 @@ public class CarboHydrateDetail extends Activity {
 				getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 				int height = (int) (displaymetrics.heightPixels * 0.1);
 				int width = (int) (displaymetrics.widthPixels * 0.1);
-				b = decodeSampledBitmapFromPath(toFill.getPhotoPath(), width, height);
+				b = ImageUtils.decodeSampledBitmapFromPath(toFill.getPhotoPath(), width, height);
 
 				img.setImageBitmap(b);
 
@@ -179,21 +180,21 @@ public class CarboHydrateDetail extends Activity {
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_CarboHydrateDetail_Data);
 		final Calendar calendar = Calendar.getInstance();
-		date.setText(DatePickerFragment.getFormatedDate(calendar));
+		date.setText(DateUtils.getFormattedDate(calendar));
 
 		EditText hour = (EditText) findViewById(R.id.et_CarboHydrateDetail_Hora);
-		hour.setText(TimePickerFragment.getFormatedDate(calendar));
+		hour.setText(DateUtils.getFormattedTime(calendar));
 	}
 
 	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_CarboHydrateDetail_Data,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_CarboHydrateDetail_Hora,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
@@ -258,8 +259,7 @@ public class CarboHydrateDetail extends Activity {
 		carb.setCarbsValue(Integer.parseInt(carbs.getText().toString()));
 		carb.setId_Tag(idTag);
 		carb.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-		carb.setDate(data.getText().toString());
-		carb.setTime(hora.getText().toString());
+		carb.setDateTime(data.getText().toString(), hora.getText().toString());
 
 
 		reg.Carbs_Save(carb);
@@ -310,7 +310,7 @@ public class CarboHydrateDetail extends Activity {
 				getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 				int height = (int) (displaymetrics.heightPixels * 0.1);
 				int width = (int) (displaymetrics.widthPixels * 0.1);
-				b = decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+				b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
 
 				img.setImageBitmap(b);
 				photopath.setText(imgUri.getPath());
@@ -351,92 +351,13 @@ public class CarboHydrateDetail extends Activity {
 			getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 			int height = (int) (displaymetrics.heightPixels * 0.1);
 			int width = (int) (displaymetrics.widthPixels * 0.1);
-			b = decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+			b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
 
 			img.setImageBitmap(b);
 			photopath.setText(imgUri.getPath());
 		}
 	}
 
-	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-		// Raw height and width of image
-		final int height = options.outHeight;
-		final int width = options.outWidth;
-		int inSampleSize = 1;
-
-		if (height > reqHeight || width > reqWidth) {
-
-			final int halfHeight = height / 2;
-			final int halfWidth = width / 2;
-
-			// Calculate the largest inSampleSize value that is a power of 2 and keeps both
-			// height and width larger than the requested height and width.
-			while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
-				inSampleSize *= 2;
-			}
-		}
-
-		return inSampleSize;
-	}
-
-
-	public static Bitmap decodeSampledBitmapFromPath(String path, int reqWidth, int reqHeight) {
-
-		// First decode with inJustDecodeBounds=true to check dimensions
-		final BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		//BitmapFactory.decodeResource(res, resId, options);
-		BitmapFactory.decodeFile(path, options);
-
-		// Calculate inSampleSize
-		options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-		// Decode bitmap with inSampleSize set
-		options.inJustDecodeBounds = false;
-		return adjustImageOrientation(BitmapFactory.decodeFile(path, options), path);
-	}
-
-
-	private static Bitmap adjustImageOrientation(Bitmap image, String picturePath) {
-		ExifInterface exif;
-		try {
-			exif = new ExifInterface(picturePath);
-			int exifOrientation = exif.getAttributeInt(
-					ExifInterface.TAG_ORIENTATION,
-					ExifInterface.ORIENTATION_NORMAL);
-
-			int rotate = 0;
-			switch (exifOrientation) {
-				case ExifInterface.ORIENTATION_ROTATE_90:
-					rotate = 90;
-					break;
-
-				case ExifInterface.ORIENTATION_ROTATE_180:
-					rotate = 180;
-					break;
-
-				case ExifInterface.ORIENTATION_ROTATE_270:
-					rotate = 270;
-					break;
-			}
-
-			if (rotate != 0) {
-				int w = image.getWidth();
-				int h = image.getHeight();
-
-				// Setting pre rotate
-				Matrix mtx = new Matrix();
-				mtx.preRotate(rotate);
-
-				// Rotating Bitmap & convert to ARGB_8888, required by tess
-				image = Bitmap.createBitmap(image, 0, 0, w, h, mtx, false);
-
-			}
-		} catch (IOException e) {
-			return null;
-		}
-		return image.copy(Bitmap.Config.ARGB_8888, true);
-	}
 
 
 	//PHOTO - END
@@ -526,8 +447,7 @@ public class CarboHydrateDetail extends Activity {
 		carb.setCarbsValue(Integer.parseInt(carbs.getText().toString()));
 		carb.setId_Tag(idTag);
 		carb.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-		carb.setDate(data.getText().toString());
-		carb.setTime(hora.getText().toString());
+		carb.setDateTime(data.getText().toString(), hora.getText().toString());
 
 
 		reg.Carbs_Update(carb);

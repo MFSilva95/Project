@@ -18,9 +18,10 @@ import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseRegDataBinding;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class Exercise extends Activity {
@@ -99,22 +100,22 @@ public class Exercise extends Activity {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -8);
 
-		dateago.setText(DatePickerFragment.getFormatedDate(calendar));
+		dateago.setText(DateUtils.getFormattedDate(calendar));
 
 		EditText datenow = (EditText) findViewById(R.id.et_Exercise_DataTo);
 		calendar = Calendar.getInstance();
-		datenow.setText(DatePickerFragment.getFormatedDate(calendar));
+		datenow.setText(DateUtils.getFormattedDate(calendar));
 	}
 
 	public void showDatePickerDialogFrom(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Exercise_DataFrom,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Exercise_DataTo,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
@@ -127,5 +128,6 @@ public class Exercise extends Activity {
 
 		rdb.close();
 		lv.setAdapter(new ExerciseRegAdapter(allExercises, this));
+		lv.setEmptyView(findViewById(R.id.list_empty));
 	}
 }

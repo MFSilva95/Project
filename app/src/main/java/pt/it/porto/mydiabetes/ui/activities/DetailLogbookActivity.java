@@ -1,16 +1,16 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -20,11 +20,11 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 public class DetailLogbookActivity extends BaseMealActivity {
@@ -34,9 +34,13 @@ public class DetailLogbookActivity extends BaseMealActivity {
 
 	public static final String SAVE_SHOWING_ERROR = "SAVE_SHOWING_ERROR";
 	public static final String SAVE_AUTO_UPDATE = "SAVE_AUTO_UPDATE";
-
-	boolean showingError = true;
+	final int MODE_REFRESH = 1;
+	final int MODE_REVERT = 2;
+	final int MODE_INFO = 3;
+	boolean showingError = false;
 	boolean autoUpdate = false;
+	boolean undo = false;
+	int mode = MODE_INFO;
 	private GlycemiaDataBinding glycemiaData;
 	private CarbsDataBinding carbsData;
 	private InsulinRegDataBinding insulinData;
@@ -44,6 +48,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	private int noteId;
 	private String date = "";
 	private String time = "";
+	private String originalNoteContent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -62,20 +67,26 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			}
 
 			noteId = -1;
+			DB_Read db_read = new DB_Read(this);
 			if (carbsData != null) {
+				carbsData = db_read.CarboHydrate_GetById(carbsData.getId());
 				noteId = carbsData.getId_Note();
-				date = carbsData.getDate();
-				time = carbsData.getTime();
-			} else if (glycemiaData != null) {
-				noteId = glycemiaData.getIdNote();
-				date = glycemiaData.getDate();
-				time = glycemiaData.getTime();
-			} else if (insulinData != null) {
-				noteId = insulinData.getIdNote();
-				date = insulinData.getDate();
-				time = insulinData.getTime();
+				date = carbsData.getFormattedDate();
+				time = carbsData.getFormattedTime();
 			}
-
+			if (glycemiaData != null) {
+				glycemiaData = db_read.Glycemia_GetById(glycemiaData.getId());
+				noteId = glycemiaData.getIdNote();
+				date = glycemiaData.getFormattedDate();
+				time = glycemiaData.getFormattedTime();
+			}
+			if (insulinData != null) {
+				insulinData = db_read.InsulinReg_GetById(insulinData.getId());
+				noteId = insulinData.getIdNote();
+				date = insulinData.getFormattedDate();
+				time = insulinData.getFormattedTime();
+			}
+			db_read.close();
 
 			insulinCalculator = new InsulinCalculator(this);
 
@@ -83,15 +94,9 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);
 			insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
 			// get insulin before this one
-			String time = null;
-			if (carbsData != null) {
-				time = carbsData.getTime();
-			} else if (glycemiaData != null) {
-				time = glycemiaData.getTime();
-			}
-			Calendar timeCalendar = TimePickerFragment.getCalendar(time);
+			Calendar timeCalendar = DateUtils.getTimeCalendar(time);
 			if (timeCalendar != null) {
-				insulinCalculator.setTime(this, timeCalendar.get(Calendar.HOUR_OF_DAY), timeCalendar.get(Calendar.MINUTE));
+				insulinCalculator.setTime(this, timeCalendar.get(Calendar.HOUR_OF_DAY), timeCalendar.get(Calendar.MINUTE), date);
 			}
 		}
 		super.onCreate(savedInstanceState);
@@ -102,21 +107,33 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		setupInsulinCalculator();
 
 		// set insulin
+		DB_Read db_read = new DB_Read(this);
 		if (insulinData != null) {
-			DB_Read rdb = new DB_Read(this);
-			String insulinName = rdb.Insulin_GetById(insulinData.getIdInsulin()).getName();
-			rdb.close();
+			String insulinName = db_read.Insulin_GetById(insulinData.getIdInsulin()).getName();
 			setInsulin(insulinName, insulinData.getInsulinUnits());
+		} else {
+			setInsulin(null, 0);
 		}
 
 		// set note
 		if (noteId != -1) {
-			DB_Read db_read = new DB_Read(this);
-			String note = db_read.Note_GetById(noteId).getNote();
-			db_read.close();
-			setNote(note);
+			originalNoteContent = db_read.Note_GetById(noteId).getNote();
+			setNote(originalNoteContent);
+		}
+		db_read.close();
+
+		// set meal image
+		if (carbsData != null && carbsData.hasPhotoPath()) {
+			setImageUri(Uri.parse(carbsData.getPhotoPath()));
 		}
 
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+			ActionBar actionBar = getActionBar();
+			if (actionBar != null) {
+				actionBar.setLogo(R.drawable.ic_close_grey_100_48dp);
+				actionBar.setHomeAsUpIndicator(R.drawable.actionbar_empty_space);
+			}
+		}
 	}
 
 	@Override
@@ -170,13 +187,38 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		} else if (item.getItemId() == R.id.menuItem_LogbookDetail_EditSave) {
 			saveData();
 			return true;
+		} else if (item.getItemId() == android.R.id.home) {
+			finish();
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
+	public void onBackPressed() {
+		if (needsToSave()) {
+			final Context c = this;
+			new AlertDialog.Builder(this)
+					.setTitle("Dados foram alterados, deseja sair sem gravar as alterações?")
+					.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							dialog.dismiss();
+							finish();
+						}
+					})
+					.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							saveData();
+						}
+					}).show();
+		} else {
+			super.onBackPressed();
+		}
+	}
+
+	@Override
 	protected void glycemiaTargetChanged(EditText view, String text) {
-		int newVal = !text.isEmpty() ? Integer.parseInt(text) : 0;
+		int newVal = !text.isEmpty() ? (int) Float.parseFloat(text) : 0;
 		boolean changed;
 		if (insulinData != null) {
 			changed = insulinData.getTargetGlycemia() != newVal;
@@ -222,8 +264,13 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		} else {
 			changed = newVal != 0;
 		}
-		updateIndicator(view, changed);
-		setInconsistentInsulin(changed);
+//		updateIndicator(view, changed);
+//		setInconsistentInsulin(changed);
+		if (mode == MODE_INFO && changed) {
+			setModeRevert();
+		} else if (mode == MODE_REVERT && !changed) {
+			setModeInfo();
+		}
 	}
 
 	@Override
@@ -240,9 +287,9 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		rdb.close();
 		setGlycemiaTarget(d);
 		// set time and load correct insulin for Insulin On Board
-		Calendar time = TimePickerFragment.getCalendar(text);
-		if(time!=null) {
-			insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE));
+		Calendar time = DateUtils.getTimeCalendar(text);
+		if (time != null) {
+			insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), null);
 		}
 	}
 
@@ -255,53 +302,73 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	}
 
 	private void setInconsistentInsulin(boolean changed) {
-		if (autoUpdate || !changed) { // if already set to auto update calc, just udpate it
-			return;
+		boolean inconsistent = Float.compare(getInsulinCalculator().getInsulinTotal(useIOB, true), insulinData != null ? insulinData.getInsulinUnits() : 0) != 0;
+
+		if (inconsistent && !showingError) {
+			showingError = inconsistent;
+			setModeRefresh();
+		} else if (!inconsistent && showingError) {
+			showingError = false;
+			setModeInfo();
+		} else if (autoUpdate) {
+			setModeRevert();
+			setInsulinIntake();
 		}
-		boolean inconsistent = Float.compare(getInsulinCalculator().getInsulinTotal(useIOB, true), insulinData.getInsulinUnits()) != 0;
-		showingError = inconsistent;
-		if (inconsistent) {
-			hideCalcs();
-			setToggleIconImage(R.drawable.ic_report_grey_400_24dp);
-//			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setCompoundDrawables(null, ResourcesCompat.getDrawable(getResources(), R.drawable.ic_report_problem_grey_500_18dp, null), null, null);
-			setInsulin(null, insulinData.getInsulinUnits());
-			findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.edit_text_holo_dark_error);
-		} else {
-			setToggleIconImage(android.R.drawable.ic_menu_info_details);
-//			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setCompoundDrawables(null, ResourcesCompat.getDrawable(getResources(), android.R.drawable.ic_menu_info_details, null), null, null);
-//			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setButtonDrawable(android.R.drawable.ic_menu_info_details);
-			findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.default_edit_text_holo_dark);
+	}
+
+	void setModeRefresh() {
+		findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.edit_text_holo_dark_error);
+		setToggleIconImage(R.drawable.ic_cached_grey_400_24dp);
+		undo = true;
+		mode = MODE_REFRESH;
+	}
+
+	void setModeRevert() {
+		findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.edit_text_holo_dark_changed);
+		setToggleIconImage(R.drawable.ic_redo_flip_grey_400_24dp);
+		mode = MODE_REVERT;
+		autoUpdate = true;
+	}
+
+	void setModeInfo() {
+		undo = false;
+		autoUpdate = false;
+		findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.default_edit_text_holo_dark);
+		setToggleIconImage(android.R.drawable.ic_menu_info_details);
+		if (fragmentInsulinCalcs != null) {
+			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setChecked(true);
 		}
+		mode = MODE_INFO;
 	}
 
 	void setToggleIconImage(int resource) {
 		ToggleButton button = (ToggleButton) findViewById(R.id.bt_insulin_calc_info);
-		button.setCompoundDrawables(null, null, null, null);
-		ImageSpan imageSpan = new ImageSpan(this, resource);
-		SpannableString content = new SpannableString("X");
-		content.setSpan(imageSpan, 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-		button.setText(content);
-		button.setTextOn(content);
-		button.setTextOff(content);
+		button.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, resource);
+		button.setChecked(false);
 	}
 
 	@Override
-	public void showCalcs() {
-		if (showingError) {
-			showingError = false;
-			autoUpdate = true;
-			setInsulinIntake();
-			findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.default_edit_text_holo_dark);
-			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setChecked(false);
-			setToggleIconImage(android.R.drawable.ic_menu_info_details);
-		} else {
-			super.showCalcs();
+	public void toggleInsulinCalcDetails(View view) {
+		switch (mode) {
+			case MODE_INFO:
+				super.toggleInsulinCalcDetails(view);
+				break;
+			case MODE_REFRESH:
+				setModeRevert();
+				showCalcs();
+				setInsulinIntake();
+				break;
+			case MODE_REVERT:
+				setModeRefresh();
+				showCalcs();
+				setInsulin(null, insulinData != null ? insulinData.getInsulinUnits() : 0);
+				break;
 		}
 	}
 
 	@Override
 	boolean shouldSetInsulin() {
-		return !showingError || autoUpdate;
+		return autoUpdate;
 	}
 
 	@Override
@@ -314,6 +381,75 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		return insulinCalculator;
 	}
 
+	public boolean needsToSave() {
+		String date = getDate();
+		String time = getTime();
+		String note = getNote();
+
+		// note content was changed
+		if (originalNoteContent != null && !originalNoteContent.equals(note)) {
+			return true;
+		}
+
+		if (carbsData != null) {
+			if (!carbsData.getFormattedDate().equals(date) || !carbsData.getFormattedTime().equals(time)) {
+				return true;
+			}
+
+			if (carbsData.getPhotoPath() != null && !carbsData.getPhotoPath().equals(getImgUri() != null ? getImgUri().getPath() : "")) {
+				return true;
+			}
+			// if photo was added
+			if (carbsData.getPhotoPath() == null && getImgUri() != null) {
+				return true;
+			}
+			if (carbsData.getCarbsValue() != insulinCalculator.getCarbs()) {
+				return true;
+			}
+			if (carbsData.getId_Note() != -1 && note.isEmpty()) {
+				// note removed
+				return true;
+			} else if (carbsData.getId_Note() == -1 && !note.isEmpty()) {
+				return true;
+			}
+		}
+		if (insulinData != null) {
+			if (!insulinData.getFormattedDate().equals(date) || !insulinData.getFormattedTime().equals(time)) {
+				return true;
+			}
+			if (Float.compare(insulinData.getInsulinUnits(), getInsulinIntake()) != 0) {
+				return true;
+			}
+			// todo add insulinData.getIdBloodGlucose()
+			if (insulinData.getTargetGlycemia() != insulinCalculator.getInsulinTarget()) {
+				return true;
+			}
+			if (insulinData.getIdNote() != -1 && note.isEmpty()) {
+				// note removed
+				return true;
+			} else if (insulinData.getIdNote() == -1 && !note.isEmpty()) {
+				return true;
+			}
+
+		}
+		if (glycemiaData != null) {
+			if (!glycemiaData.getFormattedDate().equals(date) || !glycemiaData.getFormattedTime().equals(time)) {
+				return true;
+			}
+			if (glycemiaData.getValue() != insulinCalculator.getGlycemia()) {
+				return true;
+			}
+			if (glycemiaData.getIdNote() != -1 && note.isEmpty()) {
+				// note removed
+				return true;
+			} else if (glycemiaData.getIdNote() == -1 && !note.isEmpty()) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public void saveData() {
 		DB_Write reg = new DB_Write(this);
 		boolean deleteCarbs = false;
@@ -321,13 +457,13 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		boolean deleteIns = false;
 		int itemsToDelete = 0;
 
-		int user_id=-1;
-		if(carbsData!=null){
-			user_id=carbsData.getId_User(); // why is this method different from the other two?
-		}else if(glycemiaData!=null){
-			user_id=glycemiaData.getIdUser();
-		} else if(insulinData!=null){
-			user_id=insulinData.getIdUser();
+		int user_id = -1;
+		if (carbsData != null) {
+			user_id = carbsData.getId_User(); // why is this method different from the other two?
+		} else if (glycemiaData != null) {
+			user_id = glycemiaData.getIdUser();
+		} else if (insulinData != null) {
+			user_id = insulinData.getIdUser();
 		} else {
 			// go to database and get it!
 			// it shouldn't be necessary, if we are where some of this values are defined
@@ -379,8 +515,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			carbsData.setCarbsValue(insulinCalculator.getCarbs());
 			carbsData.setId_Tag(tagId);
 			carbsData.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-			carbsData.setDate(date);
-			carbsData.setTime(time);
+			carbsData.setDateTime(date, time);
 
 			reg.Carbs_Save(carbsData);
 		} else if (carbsData != null && insulinCalculator.getCarbs() != 0) {//carbs id existe e valor está igual ou foi alterado
@@ -392,8 +527,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			carbsData.setCarbsValue(insulinCalculator.getCarbs());
 			carbsData.setId_Tag(tagId);
 			carbsData.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-			carbsData.setDate(date);
-			carbsData.setTime(time);
+			carbsData.setDateTime(date, time);
 
 			reg.Carbs_Update(carbsData);
 		}
@@ -411,8 +545,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			}
 			glycemiaData.setIdUser(carbsData.getId_User());
 			glycemiaData.setValue(insulinCalculator.getGlycemia());
-			glycemiaData.setDate(date);
-			glycemiaData.setTime(time);
+			glycemiaData.setDateTime(date, time);
 
 			glycemiaData.setIdTag(tagId);
 
@@ -424,8 +557,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			}
 			glycemiaData.setIdUser(carbsData.getId_User());
 			glycemiaData.setValue(insulinCalculator.getGlycemia());
-			glycemiaData.setDate(date);
-			glycemiaData.setTime(time);
+			glycemiaData.setDateTime(date, time);
 			glycemiaData.setIdTag(tagId);
 
 			reg.Glycemia_Update(glycemiaData);
@@ -452,8 +584,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			insulinData.setIdUser(carbsData.getId_User());
 			insulinData.setIdInsulin(insulinId);
 			insulinData.setIdBloodGlucose(glycemiaRegId != -1 ? glycemiaRegId : -1);
-			insulinData.setDate(date);
-			insulinData.setTime(time);
+			insulinData.setDateTime(date, time);
 			insulinData.setTargetGlycemia(insulinCalculator.getInsulinTarget());
 			insulinData.setInsulinUnits(insulinIntake);
 
@@ -468,8 +599,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 
 			insulinData.setIdInsulin(insulinId);
 			insulinData.setIdBloodGlucose(glycemiaRegId != -1 ? glycemiaRegId : -1);
-			insulinData.setDate(date);
-			insulinData.setTime(time);
+			insulinData.setDateTime(date, time);
 			insulinData.setTargetGlycemia(insulinCalculator.getInsulinTarget());
 			insulinData.setInsulinUnits(insulinIntake);
 
@@ -556,4 +686,15 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		}
 	}
 
+
+	/**
+	 * We catch this event and immediately save the change
+	 */
+	@Override
+	void imageRemoved() {
+		super.imageRemoved();
+		carbsData.setPhotoPath(null);
+		DB_Write db_write = new DB_Write(this);
+		db_write.Carbs_Update(carbsData);
+	}
 }

@@ -18,9 +18,10 @@ import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.ui.dataBinding.BloodPressureDataBinding;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.BloodPressureAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.BloodPressureDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class BloodPressure extends Activity {
@@ -95,13 +96,13 @@ public class BloodPressure extends Activity {
 
 	public void showDatePickerDialogFrom(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_BloodPressure_DataFrom,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_BloodPressure_DataTo,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
@@ -109,11 +110,11 @@ public class BloodPressure extends Activity {
 		EditText dateago = (EditText) findViewById(R.id.et_BloodPressure_DataFrom);
 		Calendar c = Calendar.getInstance();
 		c.add(Calendar.DAY_OF_YEAR, -8);
-		dateago.setText(DatePickerFragment.getFormatedDate(c));
+		dateago.setText(DateUtils.getFormattedDate(c));
 
 		EditText datenow = (EditText) findViewById(R.id.et_BloodPressure_DataTo);
 		c = Calendar.getInstance();
-		datenow.setText(DatePickerFragment.getFormatedDate(c));
+		datenow.setText(DateUtils.getFormattedDate(c));
 	}
 
 	public void fillListView(ListView lv) {
@@ -123,5 +124,6 @@ public class BloodPressure extends Activity {
 		ArrayList<BloodPressureDataBinding> allbp = rdb.BloodPressure_GetBtDate(datefrom.getText().toString(), dateto.getText().toString());
 		rdb.close();
 		lv.setAdapter(new BloodPressureAdapter(allbp, this));
+		lv.setEmptyView(findViewById(R.id.list_empty));
 	}
 }

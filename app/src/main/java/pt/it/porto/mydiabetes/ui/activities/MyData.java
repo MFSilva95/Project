@@ -12,7 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -20,15 +19,14 @@ import android.widget.Toast;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.database.FeaturesDB;
-import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.ui.dialogs.NewFeatureDialog;
+import pt.it.porto.mydiabetes.ui.fragments.register.PersonalDataFragment;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class MyData extends BaseOldActivity {
 
-	CheckBox useActiveInsulin;
+	private Object[] myData;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -37,27 +35,17 @@ public class MyData extends BaseOldActivity {
 		// Show the Up button in the action bar.
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 
-
 		Spinner sp_MyData_Sex = (Spinner) findViewById(R.id.sp_MyData_Sex);
 		ArrayAdapter<CharSequence> adapter_sp_MyData_Sex = ArrayAdapter.createFromResource(this, R.array.Sex, android.R.layout.simple_spinner_item);
 		adapter_sp_MyData_Sex.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sp_MyData_Sex.setAdapter(adapter_sp_MyData_Sex);
 
-		Spinner sp_MyData_DiabetesType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
-		ArrayAdapter<CharSequence> adapter_sp_MyData_DiabetesType = ArrayAdapter.createFromResource(this, R.array.diabetes_Type, android.R.layout.simple_spinner_item);
-		adapter_sp_MyData_DiabetesType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		sp_MyData_DiabetesType.setAdapter(adapter_sp_MyData_DiabetesType);
-
-
 		//Read MyData From DB
-		DB_Read db = new DB_Read(this);
-		Object[] obj = db.MyData_Read();
-		setMyDataFromDB(obj);
-		db.close();
+		DB_Read db_read = new DB_Read(this);
+		myData = db_read.MyData_Read();
+		setMyDataFromDB(myData);
+		db_read.close();
 
-		useActiveInsulin= (CheckBox) findViewById(R.id.use_IOB);
-		FeaturesDB features = new FeaturesDB(MyDiabetesStorage.getInstance(this));
-		useActiveInsulin.setChecked(features.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD));
 	}
 
 	@Override
@@ -71,13 +59,6 @@ public class MyData extends BaseOldActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				// This ID represents the Home or Up button. In the case of this
-				// activity, the Up button is shown. Use NavUtils to allow users
-				// to navigate up one level in the application structure. For
-				// more details, see the Navigation pattern on Android Design:
-				//
-				// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-				//
 				NavUtils.navigateUpFromSameTask(this);
 				return true;
 			case R.id.menuItem_MyData_Save:
@@ -87,8 +68,6 @@ public class MyData extends BaseOldActivity {
 					DB_Write rdb = new DB_Write(this);
 					rdb.MyData_Save(getMyDataFromActivity());
 					rdb.close();
-					FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(this));
-					db.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, useActiveInsulin.isChecked());
 					Toast.makeText(this, getString(R.string.mydata_saved), Toast.LENGTH_LONG).show();
 
 					//mandar para a actividade das insulinas
@@ -111,93 +90,59 @@ public class MyData extends BaseOldActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	//@SuppressWarnings("deprecation")
 	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment =  DatePickerFragment.getDatePickerFragment(R.id.et_MyData_BirthDate,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MyData_BirthDate,
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
-	//added ze ornelas
-	//corrige erro ao gravar
-	// os spinners não são verificados porque incialmente têm sempre valor
 	public Boolean inputIsValid() {
-		Object[] obj = new Object[7];
+		EditText[] obj = new EditText[3];
 		obj[0] = (EditText) findViewById(R.id.et_MyData_Name);
-		obj[1] = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
-		obj[2] = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
-		obj[3] = (EditText) findViewById(R.id.et_MyData_LowerRange);
-		obj[4] = (EditText) findViewById(R.id.et_MyData_HigherRange);
-		obj[5] = (EditText) findViewById(R.id.et_MyData_BirthDate);
-		obj[6] = (EditText) findViewById(R.id.et_MyData_Height);
+		obj[1] = (EditText) findViewById(R.id.et_MyData_BirthDate);
+		obj[2] = (EditText) findViewById(R.id.et_MyData_Height);
 
-		for (Object aux : obj) {
-			if (((EditText) aux).getText().toString().trim().length() == 0) {
+		for (EditText aux : obj) {
+			if (aux.getText().toString().trim().length() == 0) {
+				aux.setError(getString(R.string.error_field_required));
 				return false;
 			}
+		}
+
+		if (!PersonalDataFragment.isHeightValid(obj[2].getText().toString())) {
+			obj[2].setError(getString(R.string.error_invalid_height));
+			return false;
 		}
 		return true;
 	}
 
 	public Object[] getMyDataFromActivity() {
-
-		Object[] obj = new Object[10];
 		EditText name = (EditText) findViewById(R.id.et_MyData_Name);
-		Spinner dType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
-		EditText iRatio = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
-		EditText cRatio = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
-		EditText lRange = (EditText) findViewById(R.id.et_MyData_LowerRange);
-		EditText hRange = (EditText) findViewById(R.id.et_MyData_HigherRange);
 		EditText bDate = (EditText) findViewById(R.id.et_MyData_BirthDate);
 		Spinner gender = (Spinner) findViewById(R.id.sp_MyData_Sex);
 		EditText height = (EditText) findViewById(R.id.et_MyData_Height);
 
 		if (name.getTag() != null)
-			obj[0] = Integer.parseInt(name.getTag().toString());
+			myData[0] = Integer.parseInt(name.getTag().toString());
 		else
-			obj[0] = 0;
-		obj[1] = name.getText().toString();
-		obj[2] = dType.getSelectedItem().toString();
-		obj[3] = Double.parseDouble(iRatio.getText().toString());
-		obj[4] = Double.parseDouble(cRatio.getText().toString());
-		obj[5] = Double.parseDouble(lRange.getText().toString());
-		obj[6] = Double.parseDouble(hRange.getText().toString());
-		obj[7] = bDate.getText().toString();
-		obj[8] = gender.getSelectedItem().toString();
-		obj[9] = Float.parseFloat(height.getText().toString());
+			myData[0] = 0;
+		myData[1] = name.getText().toString();
+		myData[7] = bDate.getText().toString();
+		myData[8] = gender.getSelectedItem().toString();
+		myData[9] = Float.parseFloat(height.getText().toString());
 
-		return obj;
+		return myData;
 	}
 
 	public void setMyDataFromDB(Object[] obj) {
 		if (obj != null) {
 			EditText name = (EditText) findViewById(R.id.et_MyData_Name);
-			Spinner dType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
-			EditText iRatio = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
-			EditText cRatio = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
-			EditText lRange = (EditText) findViewById(R.id.et_MyData_LowerRange);
-			EditText hRange = (EditText) findViewById(R.id.et_MyData_HigherRange);
 			EditText bDate = (EditText) findViewById(R.id.et_MyData_BirthDate);
 			Spinner gender = (Spinner) findViewById(R.id.sp_MyData_Sex);
 			EditText height = (EditText) findViewById(R.id.et_MyData_Height);
 
 			name.setTag(obj[0].toString());
 			name.setText(obj[1].toString());
-			try {
-				dType.setSelection(Integer.parseInt(obj[2].toString()));
-			} catch (NumberFormatException e) {
-				// old format, we should deprecate soon
-				if (!dType.getSelectedItem().toString().equals(obj[2].toString())) {
-					if (dType.getSelectedItemId() == 0)
-						dType.setSelection(1);
-					else
-						dType.setSelection(0);
-				}
-			}
-			iRatio.setText(obj[3].toString());
-			cRatio.setText(obj[4].toString());
-			lRange.setText(obj[5].toString());
-			hRange.setText(obj[6].toString());
 			bDate.setText(obj[7].toString());
 
 			if (!gender.getSelectedItem().toString().equalsIgnoreCase(obj[8].toString())) {
@@ -225,24 +170,6 @@ public class MyData extends BaseOldActivity {
 						finish();
 					}
 				}).show();
-	}
-
-
-	public void showIOBDialog(View v){
-		NewFeatureDialog dialog=new NewFeatureDialog();
-		dialog.setCancelable(true);
-		dialog.setListener(new NewFeatureDialog.ActivateFeatureDialogListener() {
-			@Override
-			public void useFeature() {
-				useActiveInsulin.setChecked(true);
-			}
-
-			@Override
-			public void notUseFeature() {
-				useActiveInsulin.setChecked(false);
-			}
-		});
-		dialog.show(getFragmentManager(), "iob");
 	}
 
 }

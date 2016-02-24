@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -22,19 +21,18 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class GlycemiaDetail extends Activity {
@@ -55,13 +53,12 @@ public class GlycemiaDetail extends Activity {
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
 			DB_Read rdb = new DB_Read(this);
-			String id = args.getString("Id");
-			idGlycemia = Integer.parseInt(id);
-			GlycemiaDataBinding toFill = rdb.Glycemia_GetById(Integer.parseInt(id));
+			idGlycemia = args.getInt("Id");
+			GlycemiaDataBinding toFill = rdb.Glycemia_GetById(idGlycemia);
 
 			EditText date = (EditText) findViewById(R.id.et_GlycemiaDetail_Data);
-			date.setText(toFill.getDate());
-			hora.setText(toFill.getTime());
+			date.setText(toFill.getFormattedDate());
+			hora.setText(toFill.getFormattedTime());
 			EditText glycemia = (EditText) findViewById(R.id.et_GlycemiaDetail_Glycemia);
 			glycemia.setText(String.valueOf(toFill.getValue()));
 			Spinner spinner = (Spinner) findViewById(R.id.sp_GlycemiaDetail_Tag);
@@ -142,10 +139,10 @@ public class GlycemiaDetail extends Activity {
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_GlycemiaDetail_Data);
 		final Calendar calendar = Calendar.getInstance();
-		date.setText(DatePickerFragment.getFormatedDate(calendar));
+		date.setText(DateUtils.getFormattedDate(calendar));
 
 		EditText hour = (EditText) findViewById(R.id.et_GlycemiaDetail_Hora);
-		hour.setText(TimePickerFragment.getFormatedDate(calendar));
+		hour.setText(DateUtils.getFormattedTime(calendar));
 	}
 
 	public void FillTagSpinner() {
@@ -204,8 +201,7 @@ public class GlycemiaDetail extends Activity {
 
 		gly.setIdUser(idUser);
 		gly.setValue(Integer.parseInt(glycemia.getText().toString()));
-		gly.setDate(data.getText().toString());
-		gly.setTime(hora.getText().toString());
+		gly.setDateTime(data.getText().toString(), hora.getText().toString());
 		gly.setIdTag(idTag);
 
 
@@ -257,8 +253,7 @@ public class GlycemiaDetail extends Activity {
 		gly.setId(id);
 		gly.setIdUser(idUser);
 		gly.setValue(Integer.parseInt(glycemia.getText().toString()));
-		gly.setDate(data.getText().toString());
-		gly.setTime(hora.getText().toString());
+		gly.setDateTime(data.getText().toString(), hora.getText().toString());
 		gly.setIdTag(idTag);
 
 		reg.Glycemia_Update(gly);
@@ -307,13 +302,13 @@ public class GlycemiaDetail extends Activity {
 
 	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_GlycemiaDetail_Data,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_GlycemiaDetail_Hora,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
 	}
 

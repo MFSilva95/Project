@@ -37,13 +37,14 @@ import java.util.HashMap;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 
 
@@ -203,8 +204,8 @@ public class LogbookDetail extends Activity {
 
         if (ch != null && ins != null && bg != null) {
             userId = ins.getIdUser();
-            data.setText(ins.getDate());
-            hora.setText(ins.getTime());
+			data.setText(ins.getFormattedDate());
+			hora.setText(ins.getFormattedTime());
             tagId = ins.getIdTag();
             String aux = rdb.Tag_GetById(tagId).getName();
             SelectSpinnerItemByValue(TagSpinner, aux);
@@ -221,8 +222,8 @@ public class LogbookDetail extends Activity {
             }
         } else if (ch != null && ins == null && bg == null) {//so hidratos carbono
             userId = ch.getId_User();
-            data.setText(ch.getDate());
-            hora.setText(ch.getTime());
+            data.setText(ch.getFormattedDate());
+            hora.setText(ch.getFormattedTime());
             tagId = ch.getId_Tag();
             String aux = rdb.Tag_GetById(tagId).getName();
             SelectSpinnerItemByValue(TagSpinner, aux);
@@ -237,8 +238,8 @@ public class LogbookDetail extends Activity {
 
         } else if (ch == null && ins != null && bg != null) {//insulina com parametro da glicemia
             userId = ins.getIdUser();
-            data.setText(ins.getDate());
-            hora.setText(ins.getTime());
+            data.setText(ins.getFormattedDate());
+            hora.setText(ins.getFormattedTime());
             tagId = ins.getIdTag();
             String aux = rdb.Tag_GetById(tagId).getName();
             SelectSpinnerItemByValue(TagSpinner, aux);
@@ -255,8 +256,8 @@ public class LogbookDetail extends Activity {
             }
         } else if (ch == null && ins == null && bg != null) {//so glicemia
             userId = bg.getIdUser();
-            data.setText(bg.getDate());
-            hora.setText(bg.getTime());
+            data.setText(bg.getFormattedDate());
+            hora.setText(bg.getFormattedTime());
             tagId = bg.getIdTag();
             String aux = rdb.Tag_GetById(tagId).getName();
             SelectSpinnerItemByValue(TagSpinner, aux);
@@ -271,8 +272,8 @@ public class LogbookDetail extends Activity {
 
         } else if (ch == null && ins != null && bg == null) {//so insulina
             userId = ins.getIdUser();
-            data.setText(ins.getDate());
-            hora.setText(ins.getTime());
+            data.setText(ins.getFormattedDate());
+            hora.setText(ins.getFormattedTime());
             tagId = ins.getIdTag();
             String aux = rdb.Tag_GetById(tagId).getName();
             SelectSpinnerItemByValue(TagSpinner, aux);
@@ -289,8 +290,8 @@ public class LogbookDetail extends Activity {
             }
         } else if (ch != null && ins != null && bg == null) {
             userId = ins.getIdUser();
-            data.setText(ins.getDate());
-            hora.setText(ins.getTime());
+            data.setText(ins.getFormattedDate());
+            hora.setText(ins.getFormattedTime());
             tagId = ins.getIdTag();
             String aux = rdb.Tag_GetById(tagId).getName();
             SelectSpinnerItemByValue(TagSpinner, aux);
@@ -307,8 +308,8 @@ public class LogbookDetail extends Activity {
             }
         } else if (ch != null && ins == null && bg != null) {
             userId = ch.getId_User();
-            data.setText(ch.getDate());
-            hora.setText(ch.getTime());
+            data.setText(ch.getFormattedDate());
+            hora.setText(ch.getFormattedTime());
             tagId = ch.getId_Tag();
             String aux = rdb.Tag_GetById(tagId).getName();
             SelectSpinnerItemByValue(TagSpinner, aux);
@@ -329,10 +330,10 @@ public class LogbookDetail extends Activity {
     public void FillDateHour() {
         EditText date = (EditText) findViewById(R.id.et_MealDetail_Data);
         final Calendar calendar = Calendar.getInstance();
-        date.setText(DatePickerFragment.getFormatedDate(calendar));
+        date.setText(DateUtils.getFormattedDate(calendar));
 
         EditText hour = (EditText) findViewById(R.id.et_MealDetail_Hora);
-        hour.setText(TimePickerFragment.getFormatedDate(calendar));
+        hour.setText(DateUtils.getFormattedTime(calendar));
     }
 
     public void FillTagSpinner() {
@@ -356,13 +357,13 @@ public class LogbookDetail extends Activity {
 
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MealDetail_Data,
-                DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+                DateUtils.getDateCalendar(((EditText) v).getText().toString()));
         newFragment.show(getFragmentManager(), "DatePicker");
     }
 
     public void showTimePickerDialog(View v) {
         DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_MealDetail_Hora,
-                TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+                DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
         newFragment.show(getFragmentManager(), "timePicker");
 
     }
@@ -606,8 +607,7 @@ public class LogbookDetail extends Activity {
             tagId = rdb.Tag_GetIdByName(tagSelected);
             ch.setId_Tag(tagId);
             ch.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-            ch.setDate(d);
-            ch.setTime(h);
+			ch.setDateTime(d, h);
 
             rdb.close();
             reg.Carbs_Save(ch);
@@ -628,8 +628,7 @@ public class LogbookDetail extends Activity {
             tagId = rdb.Tag_GetIdByName(tagSelected);
             ch.setId_Tag(tagId);
             ch.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-            ch.setDate(d);
-            ch.setTime(h);
+			ch.setDateTime(d, h);
 
             rdb.close();
             reg.Carbs_Update(ch);
@@ -650,8 +649,7 @@ public class LogbookDetail extends Activity {
             }
             bg.setIdUser(userId);
             bg.setValue(Integer.parseInt(glycemia.getText().toString()));
-            bg.setDate(d);
-            bg.setTime(h);
+			bg.setDateTime(d, h);
 
             DB_Read rdb = new DB_Read(this);
             String tagSelected = TagSpinner.getSelectedItem().toString();
@@ -669,8 +667,7 @@ public class LogbookDetail extends Activity {
             }
             bg.setIdUser(userId);
             bg.setValue(Integer.parseInt(glycemia.getText().toString()));
-            bg.setDate(d);
-            bg.setTime(h);
+			bg.setDateTime(d, h);
 
             DB_Read rdb = new DB_Read(this);
             String tagSelected = TagSpinner.getSelectedItem().toString();
@@ -719,10 +716,9 @@ public class LogbookDetail extends Activity {
             ins.setIdUser(userId);
             ins.setIdInsulin(insulinId);
             ins.setIdBloodGlucose(id_bg != -1 ? id_bg : -1);
-            ins.setDate(d);
-            ins.setTime(h);
             ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
             ins.setInsulinUnits(Float.parseFloat(insulin.getText().toString()));
+			ins.setDateTime(d, h);
 
             String tagSelected = TagSpinner.getSelectedItem().toString();
             Log.d("selected Spinner", tagSelected);
@@ -760,19 +756,18 @@ public class LogbookDetail extends Activity {
             ins.setIdUser(userId);
             ins.setIdInsulin(insulinId);
             ins.setIdBloodGlucose(id_bg != -1 ? id_bg : -1);
-            ins.setDate(d);
-            ins.setTime(h);
-            ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
-            ins.setInsulinUnits(Float.parseFloat(insulin.getText().toString()));
+			ins.setDateTime(d, h);
+			ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
+			ins.setInsulinUnits(Float.parseFloat(insulin.getText().toString()));
 
             String tagSelected = TagSpinner.getSelectedItem().toString();
-            Log.d("selected Spinner", tagSelected);
+			Log.d("selected Spinner", tagSelected);
             tagId = rdb.Tag_GetIdByName(tagSelected);
             ins.setIdTag(tagId);
 
             rdb.close();
             reg.Insulin_Update(ins);
-            Log.d("AQUI", "AQUIIII");
+			Log.d("AQUI", "AQUIIII");
         }
         reg.close();
 

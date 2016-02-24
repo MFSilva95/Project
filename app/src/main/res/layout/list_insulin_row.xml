@@ -1,78 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="48dp"
-    android:orientation="horizontal" 
-    android:id="@+id/InsulinsRow" >
+<RelativeLayout android:id="@+id/InsulinsRow"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_row_default_height"
+                android:background="?android:attr/selectableItemBackground"
+                android:orientation="horizontal">
 
     <LinearLayout
         android:id="@+id/list_insulin_Name"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:orientation="vertical"
-        android:gravity="center_vertical"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="2dp" >
-	    <TextView
-	        android:id="@+id/list_insulinName"
-	        android:layout_height="wrap_content"
-	        android:layout_width="wrap_content"
-	        android:gravity="center_vertical|center_horizontal"
-	        android:paddingLeft="8dp"
-	        android:textIsSelectable="false"
-	        android:textAppearance="?android:attr/textAppearanceMedium" />
-	    
-	</LinearLayout>
-	
-    
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="2dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/list_insulinName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:paddingLeft="8dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textIsSelectable="false"
+            tools:text="humalog"/>
+
+    </LinearLayout>
+
+
     <LinearLayout
         android:id="@+id/list_insulin_Type"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:orientation="vertical"
-        android:gravity="center_vertical"
-        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="2dp"
         android:layout_toLeftOf="@+id/list_insulin_Action"
-        android:layout_marginBottom="2dp" >
-	    <TextView
-	        android:id="@+id/list_insulinType"
-	        android:layout_height="wrap_content"
-	        android:layout_width="80dp"
-	        android:gravity="center_vertical|center_horizontal"
-	        android:paddingLeft="8dp"
-	        android:textIsSelectable="false"
-	        android:textAppearance="?android:attr/textAppearanceMedium" />
-	</LinearLayout>
-    
-    
-    
-	
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/list_insulinType"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:paddingLeft="8dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textIsSelectable="false"
+            tools:text="injecção"/>
+    </LinearLayout>
+
+
     <LinearLayout
         android:id="@+id/list_insulin_Action"
         android:layout_width="wrap_content"
         android:layout_height="48dp"
-        android:orientation="vertical"
-        android:gravity="center_vertical"
-        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
         android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="8dp"
-        android:layout_alignParentRight="true" >
-	    <TextView
-	        android:id="@+id/list_insulinAction"
-	        android:layout_height="wrap_content"
-	        android:layout_width="80dp"
-	        android:gravity="center_vertical|center_horizontal"
-	        android:paddingLeft="8dp"
-	        android:textIsSelectable="false"
-	        android:textAppearance="?android:attr/textAppearanceMedium" />
-	    
-	    
-	</LinearLayout>
-    
-    
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/list_insulinAction"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|center_horizontal"
+            android:paddingLeft="8dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textIsSelectable="false"
+            tools:text="@string/insulin_action_rapid"/>
+
+
+    </LinearLayout>
+
 
 </RelativeLayout>

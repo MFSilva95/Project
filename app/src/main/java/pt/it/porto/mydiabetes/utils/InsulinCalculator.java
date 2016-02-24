@@ -5,7 +5,6 @@ import android.content.Context;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 
 public class InsulinCalculator implements Cloneable {
 
@@ -17,6 +16,7 @@ public class InsulinCalculator implements Cloneable {
 	private int glycemia;
 	private int time; // time of intake in minutes
 	private float insulinOnBoard = 0.0f;
+	private String date;
 
 	public InsulinCalculator(int glycemiaRatio, int carbsRatio) {
 		this.glycemiaRatio = glycemiaRatio;
@@ -47,11 +47,11 @@ public class InsulinCalculator implements Cloneable {
 	}
 
 	public float getInsulinCarbs() {
-		return (carbs / carbsRatio);
+		return ((float)carbs / carbsRatio);
 	}
 
 	public float getInsulinGlycemia() {
-		return ((glycemia - insulinTarget) / glycemiaRatio);
+		return ((float)(glycemia - insulinTarget) / glycemiaRatio);
 	}
 
 	public void setLastInsulin(int dose, int minute, int type) {
@@ -121,14 +121,19 @@ public class InsulinCalculator implements Cloneable {
 		this.time = time;
 	}
 
-	public void setTime(Context context, int hour, int minute) {
+	public void setTime(Context context, int hour, int minute, String date) {
+		if(date!=null){
+			this.date = date;
+		}
 		this.time = hour * 60 + minute;
 		// load last insulin from database
 
 		DB_Read read = new DB_Read(context);
-		int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity((hour < 10 ? "0" : "") + String.valueOf(hour) + ":" + (minute < 10 ? "0" : "") + String.valueOf(minute));
+		int[] lastInsulin = read.InsulinReg_GetLastHourAndQuantity((hour < 10 ? "0" : "") + String.valueOf(hour) + ":" + (minute < 10 ? "0" : "") + String.valueOf(minute), this.date);
 		read.close();
 
+		// this will be fun if it was in the day before at 23:XX and doing a Meal at 01:XX :)
+		// todo // FIXME: 03/02/16 take in consideration date
 		int minuteOriginal = lastInsulin[1] * 60 + lastInsulin[2];
 		int insulinType = lastInsulin[0];
 		int insulinDose = lastInsulin[3];
@@ -150,10 +155,10 @@ public class InsulinCalculator implements Cloneable {
 		return newCalculator;
 	}
 
-	public void setTime(Context context, String time) {
-		Calendar calendar = TimePickerFragment.getCalendar(time);
+	public void setTime(Context context, String time, String date) {
+		Calendar calendar = DateUtils.getTimeCalendar(time);
 		if (calendar != null) {
-			setTime(context, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE));
+			setTime(context, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), date);
 		}
 	}
 
