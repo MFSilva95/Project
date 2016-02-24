@@ -518,6 +518,9 @@ public class DB_Read {
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		cursor.moveToFirst();
 		//String[] row = new String[7];
+		if(cursor.getCount()==0){
+			return null;
+		}
 
 		InsulinRegDataBinding insulin = new InsulinRegDataBinding();
 		insulin.setId(cursor.getInt(0));

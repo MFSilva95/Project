@@ -32,4 +32,7 @@ public class PhotoSyncDb {
 		storage.insertNewData(MyDiabetesContract.SyncImagesDiff.TABLE_NAME, photo);
 	}
 
+	public Cursor getListPhotos() {
+		return storage.query(MyDiabetesContract.SyncImagesDiff.TABLE_NAME, new String[]{MyDiabetesContract.SyncImagesDiff.COLUMN_NAME_FILE_NAME}, null, null, null, null, null);
+	}
 }

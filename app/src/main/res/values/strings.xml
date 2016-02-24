@@ -356,4 +356,10 @@
     <string name="notification_sync_text">Envie os dados ao gestor do projecto</string>
     <string name="see_in_chart">Ver em gráfico</string>
     <string name="list_empty_message">Nenhum resultado encontrado\nAumente o intervalo de tempo</string>
+    <string name="feature_cloud_sync">Sincronizar com cloud</string>
+    <string name="feature_cloud_sync_description1">Pode enviar para a cloud os seus dados de forma segura.</string>
+    <string name="feature_cloud_sync_description2">A qualquer momento pode aceder aos dados em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="login_username">Nome do utilizador</string>
+    <string name="login_password">Palavra-passe</string>
+    <string name="login_extra_text">Se não tiver uma conta, pode criar uma em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
 </resources>

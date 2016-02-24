@@ -209,7 +209,7 @@ public class MyDiabetesContract {
 	public static class SyncImagesDiff {
 		public static final String TABLE_NAME = "Sync_Images_Diff";
 
-		public static final String COLUMN_NAME_FILE_NAME = TABLE_NAME + "." + "FileName";
+		public static final String COLUMN_NAME_FILE_NAME = "FileName";
 	}
 
 }

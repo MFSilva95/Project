@@ -24,7 +24,7 @@ import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.ui.dialogs.NewFeatureDialog;
+import pt.it.porto.mydiabetes.ui.dialogs.FeatureIOBDialog;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
@@ -196,9 +196,9 @@ public class SettingsInsulin extends BaseOldActivity {
 
 
 	public void showIOBDialog(View v) {
-		NewFeatureDialog dialog = new NewFeatureDialog();
+		FeatureIOBDialog dialog = new FeatureIOBDialog();
 		dialog.setCancelable(true);
-		dialog.setListener(new NewFeatureDialog.ActivateFeatureDialogListener() {
+		dialog.setListener(new FeatureIOBDialog.ActivateFeatureDialogListener() {
 			@Override
 			public void useFeature() {
 				useActiveInsulin.setChecked(true);

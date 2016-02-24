@@ -16,7 +16,7 @@ android {
             buildConfigField "boolean", "USE_FABRIC", "false"
         }
         devel {
-            buildConfigField "boolean", "USE_FABRIC", "true"
+            buildConfigField "boolean", "USE_FABRIC", "false"
         }
     }
 

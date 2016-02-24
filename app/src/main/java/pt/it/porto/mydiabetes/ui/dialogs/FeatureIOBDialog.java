@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 
 import pt.it.porto.mydiabetes.R;
 
-public class NewFeatureDialog extends DialogFragment {
+public class FeatureIOBDialog extends DialogFragment {
 
 	ActivateFeatureDialogListener listener;
 
