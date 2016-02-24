@@ -181,6 +181,32 @@ public class ChartFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * Returns the single value if there is only one in the lines or null if more than one exists
+	 * @param lines
+	 * @return
+	 */
+	private PointValue getSingleValue(List<Line> lines) {
+		if (lines == null) {
+			return null;
+		}
+		PointValue result = null;
+		for (int i = 0; i < lines.size(); i++) {
+			if (lines.get(i).getValues().size() > 1) {
+				return null;
+			}
+			if (lines.get(i).getValues().size() == 0) {
+				continue;
+			}
+			if (result != null) { // if one value exists and a previews one was already found return null to indicate there is more than one value
+				return null;
+			} else {
+				result = lines.get(i).getValues().get(0);
+			}
+		}
+		return result;
+	}
+
 	public void setChartData(List<Line> lines) {
 //		numberOfElementsInGraph = lines.get(0)..size();
 		chart = (LineChartView) getView().findViewById(R.id.chart);
@@ -192,6 +218,14 @@ public class ChartFragment extends Fragment {
 		float dx = tempViewPort.width() / 3;
 		tempViewPort.inset(dx, 0);
 		tempViewPort.offset(dx, 0);
+		PointValue value = getSingleValue(lines);
+		if (value != null) {
+			tempViewPort.left -= tempViewPort.left / 500000;
+			tempViewPort.right += tempViewPort.right / 500000;
+			tempViewPort.top += 1;
+			tempViewPort.bottom -= 1;
+			chart.setMaximumViewport(tempViewPort);
+		}
 		chart.setCurrentViewport(tempViewPort);
 
 		chart.getLineChartData().setAxisXBottom(new Axis().setMaxLabelChars(10).setHasLines(true).setInside(false).setHasSeparationLine(false)
