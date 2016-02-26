@@ -81,9 +81,9 @@ public class MyDiabetesContract {
 	public static class Feature {
 		public static final String TABLE_NAME = "Feature";
 
-		public static final String COLUMN_NAME_ID = TABLE_NAME + "." + "Id";
-		public static final String COLUMN_NAME_NAME = TABLE_NAME + "." + "Name";
-		public static final String COLUMN_NAME_ACTIVATED = TABLE_NAME + "." + "Activated";
+		public static final String COLUMN_NAME_ID = "Id";
+		public static final String COLUMN_NAME_NAME =  "Name";
+		public static final String COLUMN_NAME_ACTIVATED = "Activated";
 	}
 
 	public static class Regist {
