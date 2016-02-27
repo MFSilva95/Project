@@ -91,11 +91,12 @@ public class ServerSync {
 
 	//
 	private void sendPhoto(final String photo) {
+		File file = new File(photo);
 		RequestBody formBody = new MultipartBody.Builder()
 				.setType(MultipartBody.FORM)
 				.addFormDataPart("user", username)
 				.addFormDataPart("password", password)
-				.addFormDataPart("img", "img", RequestBody.create(MEDIA_TYPE_BINARY, new File(photo)))
+				.addFormDataPart("img", file.getName(), RequestBody.create(MEDIA_TYPE_BINARY, file))
 				.build();
 
 
