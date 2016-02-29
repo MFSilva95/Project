@@ -5,7 +5,7 @@ import android.database.Cursor;
 
 public class FeaturesDB {
 	public static final String FEATURE_INSULIN_ON_BOARD = "feature_insulin_on_board";
-	public static final String FEATURE_CLOUD_SYNC = "feature_cloud_sync";
+	public static final String FEATURE_CLOUD_SYNC = "feature_cloud_sync/2";
 
 	private MyDiabetesStorage storage;
 
