@@ -10,7 +10,6 @@ import android.util.Base64;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.GeneralSecurityException;
-import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.interfaces.RSAPrivateKey;
@@ -78,9 +77,9 @@ public class Preferences {
 	private static boolean saveCloudSyncCredentialsJB(Context context, String username, String password) throws GeneralSecurityException, IOException {
 		KeyStore keyStore = initKeyStore(context);
 
-		RSAPublicKey publicKey = getPubblicKey(context, keyStore);
+		RSAPublicKey publicKey = getPublicKey(context, keyStore);
 
-		Cipher input = Cipher.getInstance("RSA/ECB/PKCS1Padding", keyStore.getProvider());
+		Cipher input = Cipher.getInstance("RSA/ECB/PKCS1Padding", "AndroidOpenSSL");
 		input.init(Cipher.ENCRYPT_MODE, publicKey);
 
 		byte[] pass = input.doFinal(password.getBytes("UTF-8"));
@@ -92,7 +91,7 @@ public class Preferences {
 		KeyStore keyStore = initKeyStore(context);
 
 		RSAPrivateKey privateKey = getPrivateKey(context, keyStore);
-		Cipher output = Cipher.getInstance("RSA/ECB/PKCS1Padding", keyStore.getProvider());
+		Cipher output = Cipher.getInstance("RSA/ECB/PKCS1Padding", "AndroidOpenSSL");
 		output.init(Cipher.DECRYPT_MODE, privateKey);
 
 		byte[] password = output.doFinal(Base64.decode(getPreferences(context).getString(PASSWORD, ""), Base64.DEFAULT));
@@ -101,7 +100,7 @@ public class Preferences {
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	private static RSAPrivateKey getPrivateKey(Context context, KeyStore keyStore) throws GeneralSecurityException {
+	private static RSAPrivateKey getPrivateKey(Context context, KeyStore keyStore) throws GeneralSecurityException, IOException {
 		if (keyStore == null) {
 			keyStore = initKeyStore(context);
 		}
@@ -111,7 +110,7 @@ public class Preferences {
 
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	private static RSAPublicKey getPubblicKey(Context context, KeyStore keyStore) throws GeneralSecurityException {
+	private static RSAPublicKey getPublicKey(Context context, KeyStore keyStore) throws GeneralSecurityException, IOException {
 		if (keyStore == null) {
 			keyStore = initKeyStore(context);
 		}
@@ -121,8 +120,9 @@ public class Preferences {
 
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	private static KeyStore initKeyStore(Context context) throws GeneralSecurityException {
-		KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+	private static KeyStore initKeyStore(Context context) throws GeneralSecurityException, IOException {
+		KeyStore keyStore = KeyStore.getInstance("AndroidKeyStore");
+		keyStore.load(null);
 		if (!keyStore.containsAlias(KEYSTORE_PK_ALIAS)) {
 			KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", keyStore.getProvider());
 			Calendar start = Calendar.getInstance();
