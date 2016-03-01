@@ -27,6 +27,9 @@ import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 public class LogbookChartList extends MultiDataChartActivity {
 
+	protected float firstDate;
+	protected float lastDate;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		if (savedInstanceState == null) {
@@ -79,6 +82,8 @@ public class LogbookChartList extends MultiDataChartActivity {
 		double insulinVal;
 		int glycemiaVal;
 		int i = numberOfElementsInGraph - 1;
+		firstDate = Float.MAX_VALUE;
+		lastDate = Float.MIN_VALUE;
 		while (i >= 0) {
 			date = cursor.getString(0);
 			float dateTimeStamp = 0;
@@ -86,6 +91,12 @@ public class LogbookChartList extends MultiDataChartActivity {
 				dateTimeStamp = DateUtils.parseDateTime(date).getTime().getTime();
 			} catch (ParseException e) {
 				e.printStackTrace();
+			}
+			if (firstDate > dateTimeStamp) {
+				firstDate = dateTimeStamp;
+			}
+			if (lastDate < dateTimeStamp) {
+				lastDate = dateTimeStamp;
 			}
 			if (chartData.isFilterActive(0)) {
 				carbsVal = cursor.getInt(1);
