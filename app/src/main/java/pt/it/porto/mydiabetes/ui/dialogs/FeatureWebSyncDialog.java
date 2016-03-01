@@ -7,6 +7,7 @@ import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -56,7 +57,7 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		return builder.create();
 	}
 
-	public Dialog getUserDataPopUp(Context context) {
+	public Dialog getUserDataPopUp(final Context context) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		password = Preferences.getPassword(context);
 		username = Preferences.getUsername(context);
@@ -68,8 +69,20 @@ public class FeatureWebSyncDialog extends DialogFragment {
 				   public void onClick(DialogInterface dialog, int which) {
 					   username = ((EditText) ((Dialog) dialog).findViewById(R.id.username)).getText().toString();
 					   password = ((EditText) ((Dialog) dialog).findViewById(R.id.password)).getText().toString();
-					   pt.it.porto.mydiabetes.database.Preferences.saveCloudSyncCredentials(((Dialog) dialog).getContext(), username, password);
-					   testCredentials(FeatureWebSyncDialog.this.context).show();
+					   AsyncTask<Void, Void, Void> saveTask = new AsyncTask<Void, Void, Void>() {
+						   @Override
+						   protected Void doInBackground(Void... params) {
+							   pt.it.porto.mydiabetes.database.Preferences.saveCloudSyncCredentials(context, username, password);
+							   return null;
+						   }
+
+						   @Override
+						   protected void onPostExecute(Void aVoid) {
+							   super.onPostExecute(aVoid);
+							   testCredentials(FeatureWebSyncDialog.this.context).show();
+						   }
+					   };
+					   saveTask.execute();
 				   }
 			   })
 			   .setNegativeButton(android.R.string.cancel, null);
