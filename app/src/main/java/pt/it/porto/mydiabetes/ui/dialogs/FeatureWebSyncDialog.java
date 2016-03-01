@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 
 public class FeatureWebSyncDialog extends DialogFragment {
@@ -22,6 +23,8 @@ public class FeatureWebSyncDialog extends DialogFragment {
 	ActivateFeatureDialogListener listener;
 	Context context;
 	Dialog currentShowingDialog;
+	String username;
+	String password;
 
 	@NonNull
 	@Override
@@ -53,25 +56,33 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		return builder.create();
 	}
 
-	public Dialog getUserDataPopUp(final Context context) {
+	public Dialog getUserDataPopUp(Context context) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		password = Preferences.getPassword(context);
+		username = Preferences.getUsername(context);
 
 		LayoutInflater inflater = LayoutInflater.from(context);
 		builder.setView(inflater.inflate(R.layout.dialog_account_input, null))
 			   .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				   @Override
 				   public void onClick(DialogInterface dialog, int which) {
-					   String username = ((EditText) ((Dialog) dialog).findViewById(R.id.username)).getText().toString();
-					   String password = ((EditText) ((Dialog) dialog).findViewById(R.id.password)).getText().toString();
+					   username = ((EditText) ((Dialog) dialog).findViewById(R.id.username)).getText().toString();
+					   password = ((EditText) ((Dialog) dialog).findViewById(R.id.password)).getText().toString();
 					   pt.it.porto.mydiabetes.database.Preferences.saveCloudSyncCredentials(((Dialog) dialog).getContext(), username, password);
-					   testCredentials(context).show();
+					   testCredentials(FeatureWebSyncDialog.this.context).show();
 				   }
 			   })
 			   .setNegativeButton(android.R.string.cancel, null);
-		return builder.create();
+
+		Dialog dialog = builder.create();
+		currentShowingDialog = dialog;
+		dialog.show();
+		((EditText) dialog.findViewById(R.id.username)).setText(username);
+		((EditText) dialog.findViewById(R.id.password)).setText(password);
+		return dialog;
 	}
 
-	public Dialog testCredentials(final Context context) {
+	public Dialog testCredentials(Context context) {
 		ProgressDialog progressDialog = new ProgressDialog(context);
 		ServerSync.getInstance(context).testCredentials(new ServerSync.ServerSyncListener() {
 			@Override
@@ -81,7 +92,7 @@ public class FeatureWebSyncDialog extends DialogFragment {
 
 			@Override
 			public void onSyncUnSuccessful() {
-				((Activity) context).runOnUiThread(new Runnable() {
+				((Activity) FeatureWebSyncDialog.this.context).runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
 						currentShowingDialog.dismiss();

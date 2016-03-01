@@ -35,8 +35,7 @@ import java.util.List;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.sync.ServerSync;
-import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.sync.crypt.KeyGenerator;
+import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
 import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestore;
 import pt.it.porto.mydiabetes.ui.fragments.Sync;
 
@@ -47,6 +46,8 @@ public class ImportExport extends BaseOldActivity {
 	public static final String EXTRAS_TAB = "tab";
 	public static final int EXTRAS_TAB_SYNC = 0;
 	public static final int EXTRAS_TAB_IMPORT_EXPORT = 1;
+	@Nullable
+	ProgressDialog dialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -91,10 +92,10 @@ public class ImportExport extends BaseOldActivity {
 					// This activity is NOT part of this app's task, so create a new task
 					// when navigating up, with a synthesized back stack.
 					TaskStackBuilder.create(this)
-							// Add all of this activity's parents to the back stack
-							.addNextIntentWithParentStack(upIntent)
-							// Navigate up to the closest parent
-							.startActivities();
+									// Add all of this activity's parents to the back stack
+									.addNextIntentWithParentStack(upIntent)
+									// Navigate up to the closest parent
+									.startActivities();
 				} else {
 					// This activity is part of this app's task, so simply
 					// navigate up to the logical parent activity.
@@ -115,24 +116,27 @@ public class ImportExport extends BaseOldActivity {
 	}
 
 	public void restore(View v) {
-		Dialog dialog = new AlertDialog.Builder(this).setTitle(R.string.restore_backup).setMessage(R.string.backup_restore_confirmation_dialog_text).setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				if (DB_BackupRestore.restoreBackup(getApplicationContext())) {
-					ShowDialogMsg(getString(R.string.restore_backup_success));
-				} else {
-					ShowDialogMsg(getString(R.string.restore_backup_error));
-				}
-			}
-		}).setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-			}
-		}).create();
+		Dialog dialog = new AlertDialog.Builder(this).setTitle(R.string.restore_backup)
+													 .setMessage(R.string.backup_restore_confirmation_dialog_text)
+													 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+														 @Override
+														 public void onClick(DialogInterface dialog, int which) {
+															 if (DB_BackupRestore.restoreBackup(getApplicationContext())) {
+																 ShowDialogMsg(getString(R.string.restore_backup_success));
+															 } else {
+																 ShowDialogMsg(getString(R.string.restore_backup_error));
+															 }
+														 }
+													 })
+													 .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+														 @Override
+														 public void onClick(DialogInterface dialog, int which) {
+															 dialog.dismiss();
+														 }
+													 })
+													 .create();
 		dialog.show();
 	}
-
 
 	public void ShowDialogMsg(String msg) {
 		// final Context c = this;
@@ -175,9 +179,6 @@ public class ImportExport extends BaseOldActivity {
 		startActivity(intent);
 	}
 
-	@Nullable
-	ProgressDialog dialog;
-
 	public void syncCloud(View view) {
 		dialog = new ProgressDialog(this);
 		dialog.show();
@@ -191,7 +192,7 @@ public class ImportExport extends BaseOldActivity {
 
 			@Override
 			public void onSyncUnSuccessful() {
-				if(dialog!=null) {
+				if (dialog != null) {
 					dialog.hide();
 				}
 				Toast.makeText(getApplicationContext(), "Infelizmente falhou o envio, tente mais tarde.", Toast.LENGTH_SHORT).show();
@@ -210,12 +211,12 @@ public class ImportExport extends BaseOldActivity {
 		DB_Read read = new DB_Read(this);
 		String patientName = (String) read.MyData_Read()[1];
 		Intent intent = ShareCompat.IntentBuilder.from(this)
-				.setType("message/rfc822")
-				.addEmailTo(PROJECT_MANAGER_EMAIL)
-				.setSubject(String.format(getResources().getString(R.string.share_subject), patientName))
-				.setText(getResources().getString(R.string.share_text))
-				.setStream(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION)))
-				.getIntent();
+												 .setType("message/rfc822")
+												 .addEmailTo(PROJECT_MANAGER_EMAIL)
+												 .setSubject(String.format(getResources().getString(R.string.share_subject), patientName))
+												 .setText(getResources().getString(R.string.share_text))
+												 .setStream(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION)))
+												 .getIntent();
 
 		// get apps that resolve email
 		Intent justEmailAppsIntent = new Intent(Intent.ACTION_SENDTO);
@@ -243,6 +244,13 @@ public class ImportExport extends BaseOldActivity {
 			Log.e("Share", "No email client found!");
 			//TODO do something to show the error
 		}
+	}
+
+	public void editAccount(View view) {
+		FeatureWebSyncDialog webSyncDialog = new FeatureWebSyncDialog();
+		webSyncDialog.show(getFragmentManager(), "editAccount");
+		webSyncDialog.dismiss();
+		webSyncDialog.getUserDataPopUp(this);
 	}
 
 	@SuppressWarnings("deprecation")
