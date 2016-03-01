@@ -22,10 +22,9 @@ import pt.it.porto.mydiabetes.database.Preferences;
 
 public class ServerSync {
 
+	public static final MediaType MEDIA_TYPE_BINARY = MediaType.parse("application/octet-stream");
 	private static final String BASE_URL = "https://mydiabetes.dcc.fc.up.pt/newsite/";
 	private static ServerSync instance;
-
-	public static final MediaType MEDIA_TYPE_BINARY = MediaType.parse("application/octet-stream");
 	private String username;
 	private String password;
 	private PhotoSyncDb photoSyncDb;
@@ -53,26 +52,12 @@ public class ServerSync {
 	public void send(final ServerSyncListener listener) {
 		this.listener = listener;
 		client = new OkHttpClient();
-		File file = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases/DB_Diabetes");
+		mainHandler = new Handler(context.getMainLooper());
 
 		username = Preferences.getUsername(context);
 		password = Preferences.getPassword(context);
 
-		RequestBody formBody = new MultipartBody.Builder()
-				.setType(MultipartBody.FORM)
-				.addFormDataPart("user", username)
-				.addFormDataPart("password", password)
-				.addFormDataPart("db", "db", RequestBody.create(MEDIA_TYPE_BINARY, file))
-				.build();
-
-
-		Request request = new Request.Builder().url(BASE_URL + "transfer_db.php")
-				.post(formBody)
-				.build();
-
-
-		mainHandler = new Handler(context.getMainLooper());
-		client.newCall(request).enqueue(new Callback() {
+		sendDb(new Callback() {
 
 			@Override
 			public void onFailure(Call call, IOException e) {
@@ -89,20 +74,31 @@ public class ServerSync {
 
 	}
 
+	private void sendDb(Callback callback) {
+		File file = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases/DB_Diabetes");
+		RequestBody formBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+														  .addFormDataPart("user", username)
+														  .addFormDataPart("password", password)
+														  .addFormDataPart("db", "db", RequestBody.create(MEDIA_TYPE_BINARY, file))
+														  .build();
+
+
+		Request request = new Request.Builder().url(BASE_URL + "transfer_db.php").post(formBody).build();
+
+		client.newCall(request).enqueue(callback);
+	}
+
 	//
 	private void sendPhoto(final String photo) {
 		File file = new File(photo);
-		RequestBody formBody = new MultipartBody.Builder()
-				.setType(MultipartBody.FORM)
-				.addFormDataPart("user", username)
-				.addFormDataPart("password", password)
-				.addFormDataPart("img", file.getName(), RequestBody.create(MEDIA_TYPE_BINARY, file))
-				.build();
+		RequestBody formBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+														  .addFormDataPart("user", username)
+														  .addFormDataPart("password", password)
+														  .addFormDataPart("img", file.getName(), RequestBody.create(MEDIA_TYPE_BINARY, file))
+														  .build();
 
 
-		Request request = new Request.Builder().url(BASE_URL + "transfer_img.php")
-				.post(formBody)
-				.build();
+		Request request = new Request.Builder().url(BASE_URL + "transfer_img.php").post(formBody).build();
 
 		client.newCall(request).enqueue(new Callback() {
 			@Override
@@ -133,8 +129,8 @@ public class ServerSync {
 		Cursor listPhotos = photoSyncDb.getListPhotos();
 		if (listPhotos.getCount() > 0) {
 			listPhotos.moveToFirst();
-			String photo=listPhotos.getString(0);
-			if(!new File(photo).exists()){
+			String photo = listPhotos.getString(0);
+			if (!new File(photo).exists()) {
 				photoSyncDb.removePhoto(photo);
 				processNextPhoto();
 			} else {
@@ -150,6 +146,34 @@ public class ServerSync {
 				});
 			}
 		}
+	}
+
+	public void testCredentials(ServerSyncListener listener) {
+		this.listener = listener;
+		client = new OkHttpClient();
+		mainHandler = new Handler(context.getMainLooper());
+
+		username = Preferences.getUsername(context);
+		password = Preferences.getPassword(context);
+
+		sendDb(new Callback() {
+
+			@Override
+			public void onFailure(Call call, IOException e) {
+				ServerSync.this.onFailure();
+			}
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException {
+				if (ServerSync.this.listener != null) {
+					if (response.body().string().contains("invalid user or password")) {
+						ServerSync.this.listener.onSyncUnSuccessful();
+					} else {
+						ServerSync.this.listener.onSyncSuccessful();
+					}
+				}
+			}
+		});
 	}
 
 	private void setContext(Context context) {
