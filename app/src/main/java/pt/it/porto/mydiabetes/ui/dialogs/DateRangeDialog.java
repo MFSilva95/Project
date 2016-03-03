@@ -17,9 +17,9 @@ import android.widget.ListView;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.ui.activities.AbstractChartActivity;
 import pt.it.porto.mydiabetes.ui.charts.data.ChartData;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.ListViewUtils;
 
 public class DateRangeDialog extends DialogFragment {
 	// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,6 +31,7 @@ public class DateRangeDialog extends DialogFragment {
 	private Calendar timeEnd;
 	private ChartData data;
 	private boolean toggleFilter[];
+	private boolean toggleExtras[];
 
 	private EditText timeStartEditText;
 	private EditText timeEndEditText;
@@ -56,7 +57,7 @@ public class DateRangeDialog extends DialogFragment {
 		}
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle("Filtro");
+		builder.setTitle(getContext().getString(R.string.filterdialog_title));
 		View layout = getActivity().getLayoutInflater().inflate(R.layout.dialog_date_range_pick, null, false);
 		timeStartEditText = (EditText) layout.findViewById(R.id.time_start);
 		timeStartEditText.setText(DateUtils.getFormattedDate(timeStart));
@@ -85,6 +86,21 @@ public class DateRangeDialog extends DialogFragment {
 					toggleFilter[position] = !toggleFilter[position];
 				}
 			});
+			ListViewUtils.setListViewHeightBasedOnChildren(list);
+		}
+		if (data != null && data.hasExtras()) {
+			layout.findViewById(R.id.extras).setVisibility(View.VISIBLE);
+			ListView list = (ListView) layout.findViewById(R.id.list_extras);
+			data.setupExtras(getContext(), list);
+			toggleExtras = new boolean[list.getAdapter().getCount()];
+			list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+					((CheckedTextView) view).setChecked(!((CheckedTextView) view).isChecked());
+					toggleExtras[position] = !toggleExtras[position];
+				}
+			});
+			ListViewUtils.setListViewHeightBasedOnChildren(list);
 		}
 		builder.setView(layout);
 		builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -94,6 +110,13 @@ public class DateRangeDialog extends DialogFragment {
 					for (int i = 0; i < toggleFilter.length; i++) {
 						if (toggleFilter[i]) {
 							data.toggleFilter(i);
+						}
+					}
+				}
+				if (toggleExtras != null) {
+					for (int i = 0; i < toggleExtras.length; i++) {
+						if (toggleExtras[i]) {
+							data.toggleExtra(i);
 						}
 					}
 				}
@@ -133,4 +156,5 @@ public class DateRangeDialog extends DialogFragment {
 	public interface TimeUpdate {
 		void setTimes(Calendar start, Calendar end);
 	}
+
 }

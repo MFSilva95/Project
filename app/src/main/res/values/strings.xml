@@ -356,4 +356,10 @@
     <string name="notification_sync_text">Envie os dados ao gestor do projecto</string>
     <string name="see_in_chart">Ver em gráfico</string>
     <string name="list_empty_message">Nenhum resultado encontrado\nAumente o intervalo de tempo</string>
+    <string name="show_labels">Mostrar valores</string>
+    <string name="show_hiperglicemia_limit">Mostrar limite de hiperglicemia</string>
+    <string name="show_hipoglicemia_limit">Mostrar limite de hipoglicemia</string>
+    <string name="filterdialog_title">Filtro</string>
+    <string name="filterdialog_subtitle_extras">Extras</string>
+    <string name="filterdialog_subtitle_data">Dados</string>
 </resources>

@@ -16,20 +16,31 @@ import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 public class Logbook extends ChartData {
 	private String[] filters = new String[3];
 	private boolean[] filterActive = new boolean[filters.length];
+	private String[] extras = new String[3];
+	private boolean[] extrasActive = new boolean[extras.length];
 	private ArrayList<String> tables;
 
 	public Logbook(Context context) {
 		super(context);
+		// filters
 		filters[0] = context.getResources().getString(R.string.Carbs);
 		filters[1] = context.getResources().getString(R.string.Glycemia);
 		filters[2] = context.getResources().getString(R.string.Insulin);
 		Arrays.fill(filterActive, true);
+
+		// extras
+		extras[0] = context.getString(R.string.show_labels);
+		extras[1] = context.getString(R.string.show_hiperglicemia_limit);
+		extras[2] = context.getString(R.string.show_hipoglicemia_limit);
+		Arrays.fill(extrasActive, true);
 	}
 
 	public Logbook(Parcel source) {
 		super(source);
 		source.readStringArray(filters);
 		source.readBooleanArray(filterActive);
+		source.readStringArray(extras);
+		source.readBooleanArray(extrasActive);
 	}
 
 	@Override
@@ -50,6 +61,26 @@ public class Logbook extends ChartData {
 	@Override
 	public boolean hasFilters() {
 		return true;
+	}
+
+	@Override
+	public boolean hasExtras() {
+		return true;
+	}
+
+	@Override
+	String[] getExtrasList() {
+		return extras;
+	}
+
+	@Override
+	public void toggleExtra(int pox) {
+		extrasActive[pox]=!extrasActive[pox];
+	}
+
+	@Override
+	public boolean isExtraActive(int pox) {
+		return extrasActive[pox];
 	}
 
 	@Override
@@ -81,5 +112,7 @@ public class Logbook extends ChartData {
 		super.writeToParcel(dest, flags);
 		dest.writeStringArray(filters);
 		dest.writeBooleanArray(filterActive);
+		dest.writeStringArray(extras);
+		dest.writeBooleanArray(extrasActive);
 	}
 }

@@ -20,6 +20,8 @@ public class InsulinChartList extends LogbookChartList {
 			Logbook data = new Logbook(this);
 			data.toggleFilter(0);
 			data.toggleFilter(1);
+			data.toggleExtra(1);
+			data.toggleExtra(2);
 			extras.putParcelable(MultiDataChartActivity.EXTRAS_CHART_DATA, data);
 			getIntent().putExtras(extras);
 		}

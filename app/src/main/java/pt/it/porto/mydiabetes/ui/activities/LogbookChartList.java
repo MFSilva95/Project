@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +18,9 @@ import java.util.List;
 
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.util.ChartUtils;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.charts.data.ChartData;
 import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
 import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
@@ -29,6 +32,8 @@ public class LogbookChartList extends MultiDataChartActivity {
 
 	protected float firstDate;
 	protected float lastDate;
+	int hipoGlicemia;
+	int hiperGlicemia;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,14 @@ public class LogbookChartList extends MultiDataChartActivity {
 			getIntent().putExtras(extras);
 
 		}
+
+		DB_Read dbRead = new DB_Read(this);
+		Object[] myData = dbRead.MyData_Read();
+		dbRead.close();
+
+		hipoGlicemia = ((int) (double) myData[5]);
+		hiperGlicemia = (int) ((double) myData[6]);
+
 		super.onCreate(savedInstanceState);
 	}
 
@@ -130,7 +143,36 @@ public class LogbookChartList extends MultiDataChartActivity {
 			Line line = getLine();
 			line.setValues(xss[i]);
 			line.setColor(CHART_LINE_COLORS[i]);
+			line.setHasLabels(chartData.isExtraActive(0));
 			lines.add(line);
+		}
+
+		if (chartData.isExtraActive(2)) {
+			// add line with hipoGlicemia
+			List<PointValue> lowLineValues = new ArrayList<>();
+			lowLineValues.add(new PointValue(firstDate, (float) hipoGlicemia));
+			lowLineValues.add(new PointValue(lastDate, (float) hipoGlicemia));
+			Line lowLine = new Line(lowLineValues);
+			lowLine.setHasPoints(false);
+			lowLine.setAreaTransparency(50);
+			lowLine.setColor(Color.parseColor("#C30909"));
+			lowLine.setStrokeWidth(1);
+			lowLine.setFilled(true);
+
+			lines.add(lowLine);
+		}
+
+		if (chartData.isExtraActive(1)) {
+			// add line with hiperGlicemia
+			List<PointValue> highLineValues = new ArrayList<>();
+			highLineValues.add(new PointValue(firstDate, (float) hiperGlicemia));
+			highLineValues.add(new PointValue(lastDate, (float) hiperGlicemia));
+			Line highLine = new Line(highLineValues);
+			highLine.setHasPoints(false);
+			highLine.setStrokeWidth(1);
+			highLine.setColor(ChartUtils.COLOR_ORANGE);
+
+			lines.add(highLine);
 		}
 
 		selectItemToListCalculator = new MyChartToListCalculator(positionInList);

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.ui.activities.AbstractChartActivity;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public abstract class ChartData implements Parcelable {
@@ -22,7 +21,17 @@ public abstract class ChartData implements Parcelable {
 	public static final int DATA_TYPE_WEIGHT = 1;
 	public static final int DATA_TYPE_CARBS = 2;
 	public static final int DATA_TYPE_LOGBOOK = 3;
+	public static final Creator<ChartData> CREATOR = new Creator<ChartData>() {
+		@Override
+		public ChartData createFromParcel(Parcel source) {
+			return ChartData.getConcreteClass(source);
+		}
 
+		@Override
+		public ChartData[] newArray(int size) {
+			return new ChartData[size];
+		}
+	};
 	private String startDate;
 	private String endDate;
 
@@ -39,64 +48,72 @@ public abstract class ChartData implements Parcelable {
 		endDate = source.readString();
 	}
 
+	private static ChartData getConcreteClass(Parcel source) {
+		switch (source.readInt()) {
+			case DATA_TYPE_WEIGHT:
+				return new Weight(source);
+			case DATA_TYPE_CARBS:
+				return new Carbs(source);
+			case DATA_TYPE_LOGBOOK:
+				return new Logbook(source);
+			default:
+				return null;
+		}
+	}
+
 	public abstract boolean hasFilters();
 
-	abstract String[] getFilterList();
-
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
-
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
-	}
 
 	public String getEndDate() {
 		return endDate;
+	}
+
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
 	public String getStartDate() {
 		return startDate;
 	}
 
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
+	}
 
 	public abstract Cursor getCursor(Context context);
 
 	public abstract ArrayList<String> getTables();
 
 	public void setupFilter(Context context, ListView list) {
-		list.setAdapter(new Adapter(context));
+		list.setAdapter(new Adapter(context, getFilterList(), true));
 	}
 
 	public abstract void toggleFilter(int pox);
 
 	public abstract boolean isFilterActive(int pox);
 
-	public abstract int[] getIcons();
-
-	class Adapter extends ArrayAdapter<String> {
-
-		public Adapter(Context context) {
-			super(context, R.layout.list_item_filter, R.id.text);
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			View view = super.getView(position, convertView, parent);
-			((CheckedTextView) view).setChecked(isFilterActive(position));
-			return view;
-		}
-
-		@Override
-		public String getItem(int position) {
-			return getFilterList()[position];
-		}
-
-		@Override
-		public int getCount() {
-			return getFilterList().length;
-		}
+	public boolean hasExtras() {
+		return false;
 	}
+
+	abstract String[] getFilterList();
+
+	String[] getExtrasList() {
+		return null;
+	}
+
+	public void setupExtras(Context context, ListView list) {
+		list.setAdapter(new Adapter(context, getExtrasList(), false));
+	}
+
+	public void toggleExtra(int pox) {
+	}
+
+	public boolean isExtraActive(int pox) {
+		return false;
+	}
+
+	public abstract int[] getIcons();
 
 	@Override
 	public void writeToParcel(Parcel dest, int flags) {
@@ -109,28 +126,37 @@ public abstract class ChartData implements Parcelable {
 		return 0;
 	}
 
-	public static final Creator<ChartData> CREATOR = new Creator<ChartData>() {
-		@Override
-		public ChartData createFromParcel(Parcel source) {
-			return ChartData.getConcreteClass(source);
+	class Adapter extends ArrayAdapter<String> {
+
+		private String[] data;
+
+		private boolean isFilter;
+
+		public Adapter(Context context, String[] data, boolean isFilter) {
+			super(context, R.layout.list_item_filter, R.id.text);
+			this.data = data;
+			this.isFilter = isFilter;
 		}
 
 		@Override
-		public ChartData[] newArray(int size) {
-			return new ChartData[size];
+		public View getView(int position, View convertView, ViewGroup parent) {
+			View view = super.getView(position, convertView, parent);
+			if(isFilter) {
+				((CheckedTextView) view).setChecked(isFilterActive(position));
+			} else {
+				((CheckedTextView) view).setChecked(isExtraActive(position));
+			}
+			return view;
 		}
-	};
 
-	private static ChartData getConcreteClass(Parcel source) {
-		switch (source.readInt()) {
-			case DATA_TYPE_WEIGHT:
-				return new Weight(source);
-			case DATA_TYPE_CARBS:
-				return new Carbs(source);
-			case DATA_TYPE_LOGBOOK:
-				return new Logbook(source);
-			default:
-				return null;
+		@Override
+		public String getItem(int position) {
+			return data[position];
+		}
+
+		@Override
+		public int getCount() {
+			return data.length;
 		}
 	}
 }

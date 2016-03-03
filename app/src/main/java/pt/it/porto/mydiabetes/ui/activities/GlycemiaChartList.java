@@ -18,8 +18,6 @@ import pt.it.porto.mydiabetes.ui.charts.data.Logbook;
 
 public class GlycemiaChartList extends LogbookChartList {
 
-	int hipoGlicemia;
-	int hiperGlicemia;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +33,6 @@ public class GlycemiaChartList extends LogbookChartList {
 			getIntent().putExtras(extras);
 		}
 		super.onCreate(savedInstanceState);
-		DB_Read dbRead = new DB_Read(this);
-		Object[] myData = dbRead.MyData_Read();
-		dbRead.close();
-		hipoGlicemia = ((int) (double) myData[5]);
-		hiperGlicemia = (int) ((double) myData[6]);
 	}
 
 	@Override
@@ -48,29 +41,7 @@ public class GlycemiaChartList extends LogbookChartList {
 		if (lines == null) {
 			return null;
 		}
-		// add line with hipoGlicemia
-		List<PointValue> lowLineValues = new ArrayList<>();
-		lowLineValues.add(new PointValue(firstDate, (float) hipoGlicemia));
-		lowLineValues.add(new PointValue(lastDate, (float) hipoGlicemia));
-		Line lowLine = new Line(lowLineValues);
-		lowLine.setHasPoints(false);
-		lowLine.setAreaTransparency(50);
-		lowLine.setColor(Color.parseColor("#C30909"));
-		lowLine.setStrokeWidth(1);
-		lowLine.setFilled(true);
 
-		lines.add(lowLine);
-
-		// add line with hiperGlicemia
-		List<PointValue> highLineValues = new ArrayList<>();
-		highLineValues.add(new PointValue(firstDate, (float) hiperGlicemia));
-		highLineValues.add(new PointValue(lastDate, (float) hiperGlicemia));
-		Line highLine = new Line(highLineValues);
-		highLine.setHasPoints(false);
-		highLine.setStrokeWidth(1);
-		highLine.setColor(ChartUtils.COLOR_ORANGE);
-
-		lines.add(highLine);
 
 		return lines;
 	}
