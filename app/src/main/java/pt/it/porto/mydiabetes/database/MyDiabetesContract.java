@@ -5,11 +5,11 @@ public class MyDiabetesContract {
 	public static class Insulin {
 		public static final String TABLE_NAME = "Insulin";
 
-		public static final String COLUMN_NAME_ID = TABLE_NAME + "." + "Id";
-		public static final String COLUMN_NAME_NAME = TABLE_NAME + "." + "Name";
-		public static final String COLUMN_NAME_TYPE = TABLE_NAME + "." + "Type";
-		public static final String COLUMN_NAME_ACTION = TABLE_NAME + "." + "Action";
-		public static final String COLUMN_NAME_DURATION = TABLE_NAME + "." + "Duration";
+		public static final String COLUMN_NAME_ID = "Id";
+		public static final String COLUMN_NAME_NAME = "Name";
+		public static final String COLUMN_NAME_TYPE = "Type";
+		public static final String COLUMN_NAME_ACTION = "Action";
+		public static final String COLUMN_NAME_DURATION = "Duration";
 
 	}
 
@@ -23,27 +23,27 @@ public class MyDiabetesContract {
 	public static class BG_Target {
 		public static final String TABLE_NAME = "BG_Target";
 
-		public static final String COLUMN_NAME_ID = TABLE_NAME + "." + "Id";
-		public static final String COLUMN_NAME_NAME = TABLE_NAME + "." + "Name";
-		public static final String COLUMN_NAME_TIME_START = TABLE_NAME + "." + "TimeStart";
-		public static final String COLUMN_NAME_TIME_END = TABLE_NAME + "." + "TimeEnd";
-		public static final String COLUMN_NAME_VALUE = TABLE_NAME + "." + "Value";
+		public static final String COLUMN_NAME_ID = "Id";
+		public static final String COLUMN_NAME_NAME = "Name";
+		public static final String COLUMN_NAME_TIME_START = "TimeStart";
+		public static final String COLUMN_NAME_TIME_END = "TimeEnd";
+		public static final String COLUMN_NAME_VALUE = "Value";
 	}
 
 	public static class UserInfo {
 		public static final String TABLE_NAME = "UserInfo";
 
-		public static final String COLUMN_NAME_ID = TABLE_NAME + "." + "Id";
-		public static final String COLUMN_NAME_NAME = TABLE_NAME + "." + "Name";
-		public static final String COLUMN_NAME_DIABETES_TYPE = TABLE_NAME + "." + "DType";
-		public static final String COLUMN_NAME_RATIO_INSULIN = TABLE_NAME + "." + "InsulinRatio";
-		public static final String COLUMN_NAME_RATIO_CARBS = TABLE_NAME + "." + "CarbsRatio";
-		public static final String COLUMN_NAME_RANGE_LOWER = TABLE_NAME + "." + "LowerRange";
-		public static final String COLUMN_NAME_RANGE_HIGHER = TABLE_NAME + "." + "HigherRange";
-		public static final String COLUMN_NAME_BIRTHDATE = TABLE_NAME + "." + "BDate";
-		public static final String COLUMN_NAME_GENDER = TABLE_NAME + "." + "Gender";
-		public static final String COLUMN_NAME_HEIGHT = TABLE_NAME + "." + "Height";
-		public static final String COLUMN_NAME_LAST_UPDATE = TABLE_NAME + "." + "DateTimeUpdate";
+		public static final String COLUMN_NAME_ID = "Id";
+		public static final String COLUMN_NAME_NAME = "Name";
+		public static final String COLUMN_NAME_DIABETES_TYPE = "DType";
+		public static final String COLUMN_NAME_RATIO_INSULIN = "InsulinRatio";
+		public static final String COLUMN_NAME_RATIO_CARBS = "CarbsRatio";
+		public static final String COLUMN_NAME_RANGE_LOWER = "LowerRange";
+		public static final String COLUMN_NAME_RANGE_HIGHER = "HigherRange";
+		public static final String COLUMN_NAME_BIRTHDATE = "BDate";
+		public static final String COLUMN_NAME_GENDER = "Gender";
+		public static final String COLUMN_NAME_HEIGHT = "Height";
+		public static final String COLUMN_NAME_LAST_UPDATE = "DateTimeUpdate";
 	}
 
 	public static class Tag {
@@ -81,9 +81,9 @@ public class MyDiabetesContract {
 	public static class Feature {
 		public static final String TABLE_NAME = "Feature";
 
-		public static final String COLUMN_NAME_ID = TABLE_NAME + "." + "Id";
-		public static final String COLUMN_NAME_NAME = TABLE_NAME + "." + "Name";
-		public static final String COLUMN_NAME_ACTIVATED = TABLE_NAME + "." + "Activated";
+		public static final String COLUMN_NAME_ID = "Id";
+		public static final String COLUMN_NAME_NAME = "Name";
+		public static final String COLUMN_NAME_ACTIVATED = "Activated";
 	}
 
 	public static class Regist {
@@ -209,7 +209,7 @@ public class MyDiabetesContract {
 	public static class SyncImagesDiff {
 		public static final String TABLE_NAME = "Sync_Images_Diff";
 
-		public static final String COLUMN_NAME_FILE_NAME = TABLE_NAME + "." + "FileName";
+		public static final String COLUMN_NAME_FILE_NAME = "FileName";
 	}
 
 }
