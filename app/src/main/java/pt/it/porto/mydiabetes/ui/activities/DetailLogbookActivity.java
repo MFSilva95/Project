@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +35,8 @@ public class DetailLogbookActivity extends BaseMealActivity {
 
 	public static final String SAVE_SHOWING_ERROR = "SAVE_SHOWING_ERROR";
 	public static final String SAVE_AUTO_UPDATE = "SAVE_AUTO_UPDATE";
+	public static final int RESULT_SAVED_CHANGES = 3;
+
 	final int MODE_REFRESH = 1;
 	final int MODE_REVERT = 2;
 	final int MODE_INFO = 3;
@@ -41,8 +44,11 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	boolean autoUpdate = false;
 	boolean undo = false;
 	int mode = MODE_INFO;
+	@Nullable
 	private GlycemiaDataBinding glycemiaData;
+	@Nullable
 	private CarbsDataBinding carbsData;
+	@Nullable
 	private InsulinRegDataBinding insulinData;
 	private InsulinCalculator insulinCalculator;
 	private int noteId;
@@ -70,21 +76,27 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			DB_Read db_read = new DB_Read(this);
 			if (carbsData != null) {
 				carbsData = db_read.CarboHydrate_GetById(carbsData.getId());
-				noteId = carbsData.getId_Note();
-				date = carbsData.getFormattedDate();
-				time = carbsData.getFormattedTime();
+				if (carbsData != null) {
+					noteId = carbsData.getId_Note();
+					date = carbsData.getFormattedDate();
+					time = carbsData.getFormattedTime();
+				}
 			}
 			if (glycemiaData != null) {
 				glycemiaData = db_read.Glycemia_GetById(glycemiaData.getId());
-				noteId = glycemiaData.getIdNote();
-				date = glycemiaData.getFormattedDate();
-				time = glycemiaData.getFormattedTime();
+				if (glycemiaData != null) {
+					noteId = glycemiaData.getIdNote();
+					date = glycemiaData.getFormattedDate();
+					time = glycemiaData.getFormattedTime();
+				}
 			}
 			if (insulinData != null) {
 				insulinData = db_read.InsulinReg_GetById(insulinData.getId());
-				noteId = insulinData.getIdNote();
-				date = insulinData.getFormattedDate();
-				time = insulinData.getFormattedTime();
+				if (insulinData != null) {
+					noteId = insulinData.getIdNote();
+					date = insulinData.getFormattedDate();
+					time = insulinData.getFormattedTime();
+				}
 			}
 			db_read.close();
 
@@ -164,25 +176,25 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.menuItem_LogbookDetail_Delete) {
 			final Context c = this;
-			new AlertDialog.Builder(this)
-					.setTitle(getString(R.string.deleteReading))
-					.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							DB_Write wdb = new DB_Write(c);
-							try {
-								wdb.Logbook_Delete(carbsData.getId(), insulinData.getId(), glycemiaData.getId(), noteId);
-								finish();
-							} catch (Exception e) {
-								Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
-							}
-							wdb.close();
-						}
-					})
-					.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							// Do nothing.
-						}
-					}).show();
+			new AlertDialog.Builder(this).setTitle(getString(R.string.deleteReading))
+										 .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+											 public void onClick(DialogInterface dialog, int whichButton) {
+												 DB_Write wdb = new DB_Write(c);
+												 try {
+													 wdb.Logbook_Delete(carbsData.getId(), insulinData.getId(), glycemiaData.getId(), noteId);
+													 finish();
+												 } catch (Exception e) {
+													 Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
+												 }
+												 wdb.close();
+											 }
+										 })
+										 .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
+											 public void onClick(DialogInterface dialog, int whichButton) {
+												 // Do nothing.
+											 }
+										 })
+										 .show();
 			return true;
 		} else if (item.getItemId() == R.id.menuItem_LogbookDetail_EditSave) {
 			saveData();
@@ -198,19 +210,19 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	public void onBackPressed() {
 		if (needsToSave()) {
 			final Context c = this;
-			new AlertDialog.Builder(this)
-					.setTitle("Dados foram alterados, deseja sair sem gravar as alterações?")
-					.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							dialog.dismiss();
-							finish();
-						}
-					})
-					.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							saveData();
-						}
-					}).show();
+			new AlertDialog.Builder(this).setTitle("Dados foram alterados, deseja sair sem gravar as alterações?")
+										 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+											 public void onClick(DialogInterface dialog, int whichButton) {
+												 dialog.dismiss();
+												 finish();
+											 }
+										 })
+										 .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+											 public void onClick(DialogInterface dialog, int whichButton) {
+												 saveData();
+											 }
+										 })
+										 .show();
 		} else {
 			super.onBackPressed();
 		}
@@ -264,8 +276,8 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		} else {
 			changed = newVal != 0;
 		}
-//		updateIndicator(view, changed);
-//		setInconsistentInsulin(changed);
+		//		updateIndicator(view, changed);
+		//		setInconsistentInsulin(changed);
 		if (mode == MODE_INFO && changed) {
 			setModeRevert();
 		} else if (mode == MODE_REVERT && !changed) {
@@ -413,6 +425,9 @@ public class DetailLogbookActivity extends BaseMealActivity {
 				return true;
 			}
 		}
+		DB_Read rdb = new DB_Read(this);
+		int insulinId = rdb.Insulin_GetByName(getInsulin()).getId();
+		rdb.close();
 		if (insulinData != null) {
 			if (!insulinData.getFormattedDate().equals(date) || !insulinData.getFormattedTime().equals(time)) {
 				return true;
@@ -420,7 +435,9 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			if (Float.compare(insulinData.getInsulinUnits(), getInsulinIntake()) != 0) {
 				return true;
 			}
-			// todo add insulinData.getIdBloodGlucose()
+			if (insulinData.getIdInsulin() != insulinId) {
+				return true;
+			}
 			if (insulinData.getTargetGlycemia() != insulinCalculator.getInsulinTarget()) {
 				return true;
 			}
@@ -452,10 +469,6 @@ public class DetailLogbookActivity extends BaseMealActivity {
 
 	public void saveData() {
 		DB_Write reg = new DB_Write(this);
-		boolean deleteCarbs = false;
-		boolean deleteBg = false;
-		boolean deleteIns = false;
-		int itemsToDelete = 0;
 
 		int user_id = -1;
 		if (carbsData != null) {
@@ -477,7 +490,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 
 		// IDs
 		int carbsRegId = 0;
-		int glycemiaRegId = 0;
+		int glycemiaRegId = glycemiaData!=null?glycemiaData.getId(): -1;
 		int insulinRegId = 0;
 
 
@@ -493,197 +506,72 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			reg.Note_Update(n);
 		}
 
-
-		//carbs
-		//carbs id existe e foi apagado
 		String tagSelected = getPhaseOfDay();
 		DB_Read rdb = new DB_Read(this);
 		int tagId = rdb.Tag_GetIdByName(tagSelected);
 		rdb.close();
 
-		if (carbsData != null && insulinCalculator.getCarbs() == 0) {
-			deleteCarbs = true;
-			itemsToDelete++;
-			carbsRegId = carbsData.getId();
-		} else if (carbsData == null && insulinCalculator.getCarbs() != 0) {//carbs id nao existe e tem de ser criad
-			carbsData = new CarbsDataBinding();
-			if (noteId != -1) {
-				carbsData.setId_Note(noteId);
-			}
-
-			carbsData.setId_User(user_id);
-			carbsData.setCarbsValue(insulinCalculator.getCarbs());
-			carbsData.setId_Tag(tagId);
-			carbsData.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-			carbsData.setDateTime(date, time);
-
-			reg.Carbs_Save(carbsData);
-		} else if (carbsData != null && insulinCalculator.getCarbs() != 0) {//carbs id existe e valor está igual ou foi alterado
-			carbsRegId = carbsData.getId();
-			if (noteId != -1) {
-				carbsData.setId_Note(noteId);
-			}
-
-			carbsData.setCarbsValue(insulinCalculator.getCarbs());
-			carbsData.setId_Tag(tagId);
-			carbsData.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-			carbsData.setDateTime(date, time);
-
-			reg.Carbs_Update(carbsData);
+		// save carbs
+		CarbsDataBinding newCarbs = new CarbsDataBinding(carbsData);
+		newCarbs.setId_User(user_id);
+		newCarbs.setCarbsValue(insulinCalculator.getCarbs());
+		newCarbs.setId_Tag(tagId);
+		newCarbs.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
+		newCarbs.setDateTime(date, time);
+		if (noteId != -1) {
+			newCarbs.setId_Note(noteId);
 		}
 
-		//glycemia
-		//glycemia  exists and was deleted
-		if (glycemiaData != null && insulinCalculator.getGlycemia() == 0) {
-			glycemiaRegId = glycemiaData.getId();
-			deleteBg = true;
-			itemsToDelete++;
-		} else if (glycemiaData == null && insulinCalculator.getGlycemia() != 0) {//bg id nao existe e tem de ser criado
-			glycemiaData = new GlycemiaDataBinding();
-			if (noteId != -1) {
-				glycemiaData.setIdNote(noteId);
-			}
-			glycemiaData.setIdUser(carbsData.getId_User());
-			glycemiaData.setValue(insulinCalculator.getGlycemia());
-			glycemiaData.setDateTime(date, time);
+		if (carbsData == null && !newCarbs.equals(carbsData)) {
+			// needs to save it
+			reg.Carbs_Save(newCarbs);
+		} else if (carbsData != null && !newCarbs.equals(carbsData)) {
+			reg.Carbs_Update(newCarbs);
+		}
+		carbsData = newCarbs;
 
-			glycemiaData.setIdTag(tagId);
-
-			glycemiaRegId = reg.Glycemia_Save(glycemiaData);
-		} else if (glycemiaData != null && insulinCalculator.getGlycemia() != 0) {        //bg id existe e valor está igual ou foi alterado
-			glycemiaRegId = glycemiaData.getId();
-			if (noteId != -1) {
-				glycemiaData.setIdNote(noteId);
-			}
-			glycemiaData.setIdUser(carbsData.getId_User());
-			glycemiaData.setValue(insulinCalculator.getGlycemia());
-			glycemiaData.setDateTime(date, time);
-			glycemiaData.setIdTag(tagId);
-
-			reg.Glycemia_Update(glycemiaData);
+		// save glicemia
+		GlycemiaDataBinding newGlicemia = new GlycemiaDataBinding(glycemiaData);
+		newGlicemia.setIdUser(user_id);
+		newGlicemia.setValue(insulinCalculator.getGlycemia());
+		newGlicemia.setDateTime(date, time);
+		newGlicemia.setIdTag(tagId);
+		if (noteId != -1) {
+			newGlicemia.setIdNote(noteId);
 		}
 
+		if (glycemiaData == null && !newGlicemia.equals(glycemiaData)) {
+			glycemiaRegId = reg.Glycemia_Save(newGlicemia);
+		} else if (glycemiaData != null && !newGlicemia.equals(glycemiaData)) {
+			reg.Glycemia_Update(newGlicemia);
+		}
+		glycemiaData = newGlicemia;
 
-		//insulin
+		// save insulin
 		rdb = new DB_Read(this);
 		int insulinId = rdb.Insulin_GetByName(getInsulin()).getId();
 		rdb.close();
 		float insulinIntake = getInsulinIntake();
 
-		//ins id existe e foi apagado
-		if (insulinData != null && Float.compare(insulinIntake, 0) == 0) {
-			insulinRegId = insulinData.getId();
-			deleteIns = true;
-			itemsToDelete++;
-		} else if (insulinData == null && Float.compare(insulinIntake, 0) != 0) {        //ins id nao existe e tem de ser criado
-			insulinData = new InsulinRegDataBinding();
-			if (noteId != -1) {
-				insulinData.setIdNote(noteId);
-			}
+		InsulinRegDataBinding newInsulin = new InsulinRegDataBinding(insulinData);
+		newInsulin.setIdUser(user_id);
+		newInsulin.setIdInsulin(insulinId);
+		newInsulin.setIdBloodGlucose(glycemiaRegId != -1 ? glycemiaRegId : -1);
+		newInsulin.setDateTime(date, time);
+		newInsulin.setTargetGlycemia(insulinCalculator.getInsulinTarget());
+		newInsulin.setInsulinUnits(insulinIntake);
+		newInsulin.setIdTag(tagId);
 
-			insulinData.setIdUser(carbsData.getId_User());
-			insulinData.setIdInsulin(insulinId);
-			insulinData.setIdBloodGlucose(glycemiaRegId != -1 ? glycemiaRegId : -1);
-			insulinData.setDateTime(date, time);
-			insulinData.setTargetGlycemia(insulinCalculator.getInsulinTarget());
-			insulinData.setInsulinUnits(insulinIntake);
-
-			insulinData.setIdTag(tagId);
-
-			insulinRegId = reg.Insulin_Save(insulinData);
-		} else if (insulinData != null && Float.compare(insulinIntake, 0) != 0) {//ins id existe e valor está igual ou foi alterado
-			insulinRegId = insulinData.getId();
-			if (noteId != -1) {
-				insulinData.setIdNote(noteId);
-			}
-
-			insulinData.setIdInsulin(insulinId);
-			insulinData.setIdBloodGlucose(glycemiaRegId != -1 ? glycemiaRegId : -1);
-			insulinData.setDateTime(date, time);
-			insulinData.setTargetGlycemia(insulinCalculator.getInsulinTarget());
-			insulinData.setInsulinUnits(insulinIntake);
-
-			insulinData.setIdTag(tagId);
-
-			reg.Insulin_Update(insulinData);
+		if (insulinData == null && !newInsulin.equals(insulinData)) {
+			insulinRegId = reg.Insulin_Save(newInsulin);
+			newInsulin.setId(insulinRegId);
+		} else if (insulinData != null && !newInsulin.equals(insulinData)) {
+			reg.Insulin_Update(newInsulin);
 		}
-		reg.close();
+		insulinData = newInsulin;
 
-		if (deleteCarbs || deleteBg || deleteIns) {
-			final Context c = this;
-			String message;
-			if (itemsToDelete == 1) {
-				message = getString(R.string.deleteConfirmationSingular);
-			} else {
-				message = getString(R.string.deleteConfirmationPlural);
-			}
-
-			if (deleteBg) {
-				message += "\n" + "- " + getString(R.string.deleteGlycemiaReg);
-			}
-			if (deleteCarbs) {
-				message += "\n" + "- " + getString(R.string.deleteCarbsReg);
-			}
-			if (deleteIns) {
-				message += "\n" + "- " + getString(R.string.deleteInsulinReg);
-			}
-
-			final boolean delCh = deleteCarbs;
-			final boolean delBg = deleteBg;
-			final boolean delIns = deleteIns;
-
-			final int finalCarbsRegId = carbsRegId;
-			final int finalInsulinRegId = insulinRegId;
-			final int finalGlycemiaRegId = glycemiaRegId;
-			new AlertDialog.Builder(this)
-					.setTitle(getString(R.string.deleteAlert))
-					.setMessage(message)
-					.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-
-							try {
-								DB_Write wdb = new DB_Write(c);
-								if (delCh && delBg && delIns) {
-									wdb.Logbook_Delete(finalCarbsRegId, finalInsulinRegId, finalGlycemiaRegId, noteId);
-								} else {
-									if (delCh) {
-										wdb.Logbook_DeleteOnSave(finalCarbsRegId, -1, -1, -1);
-									}
-									if (delBg) {
-										if (insulinData != null) {
-											wdb.Logbook_DeleteOnSave(-1, -1, finalGlycemiaRegId, finalInsulinRegId);
-
-										} else {
-											wdb.Logbook_DeleteOnSave(-1, -1, finalGlycemiaRegId, -1);
-										}
-									}
-									if (delIns) {
-										wdb.Logbook_DeleteOnSave(-1, finalInsulinRegId, -1, -1);
-									}
-								}
-								wdb.close();
-								finish();
-							} catch (Exception e) {
-
-								Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
-								Log.d("Excepção", e.getMessage());
-								//Log.d("LocalizedMessage",e.getLocalizedMessage());
-								//Log.d("trace",e.getStackTrace().toString());
-								//e.printStackTrace();
-
-							}
-
-
-						}
-					})
-					.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							// Do nothing.
-						}
-					}).show();
-		} else {
-			finish();
-		}
+		setResult(DetailLogbookActivity.RESULT_SAVED_CHANGES);
+		finish();
 	}
 
 
@@ -693,8 +581,10 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	@Override
 	void imageRemoved() {
 		super.imageRemoved();
-		carbsData.setPhotoPath(null);
-		DB_Write db_write = new DB_Write(this);
-		db_write.Carbs_Update(carbsData);
+		if (carbsData != null) {
+			carbsData.setPhotoPath(null);
+			DB_Write db_write = new DB_Write(this);
+			db_write.Carbs_Update(carbsData);
+		}
 	}
 }

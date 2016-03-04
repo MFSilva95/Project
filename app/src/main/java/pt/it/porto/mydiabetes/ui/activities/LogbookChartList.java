@@ -30,6 +30,7 @@ import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 public class LogbookChartList extends MultiDataChartActivity {
 
+	public static final int DETAILS = 1;
 	protected float firstDate;
 	protected float lastDate;
 	int hipoGlicemia;
@@ -66,6 +67,15 @@ public class LogbookChartList extends MultiDataChartActivity {
 		hiperGlicemia = (int) ((double) myData[6]);
 
 		super.onCreate(savedInstanceState);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode==LogbookChartList.DETAILS && resultCode == DetailLogbookActivity.RESULT_SAVED_CHANGES) {
+			updateTimeRange();
+			setupContent();
+		}
 	}
 
 	@Override
@@ -279,7 +289,7 @@ public class LogbookChartList extends MultiDataChartActivity {
 					}
 					//					args.putInt("Id", ((Holder) v.getTag()).id);
 					intent.putExtras(args);
-					v.getContext().startActivity(intent);
+					startActivityForResult(intent, LogbookChartList.DETAILS);
 				}
 			});
 		}

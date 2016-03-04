@@ -7,7 +7,21 @@ public class InsulinDataBinding {
 	private String name;
 	private String type;
 	private String action;
-	private Double duration;
+	private double duration;
+
+	public InsulinDataBinding() {
+	}
+
+	public InsulinDataBinding(InsulinDataBinding oldInsulin) {
+		if (oldInsulin == null) {
+			return;
+		}
+		id = oldInsulin.getId();
+		name = oldInsulin.getName();
+		type = oldInsulin.getType();
+		action = oldInsulin.getAction();
+		duration = oldInsulin.getDuration();
+	}
 
 	public int getId() {
 		return id;
@@ -41,11 +55,11 @@ public class InsulinDataBinding {
 		this.action = action;
 	}
 
-	public Double getDuration() {
+	public double getDuration() {
 		return duration;
 	}
 
-	public void setDuration(Double duration) {
+	public void setDuration(double duration) {
 		this.duration = duration;
 	}
 }

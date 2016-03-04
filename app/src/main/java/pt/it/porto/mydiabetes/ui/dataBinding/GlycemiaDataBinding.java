@@ -26,6 +26,18 @@ public class GlycemiaDataBinding extends DateTimeDataBinding implements Parcelab
 	public GlycemiaDataBinding() {
 	}
 
+	public GlycemiaDataBinding(GlycemiaDataBinding oldGlicemia) {
+		super(oldGlicemia);
+		if (oldGlicemia == null) {
+			return;
+		}
+		id = oldGlicemia.getId();
+		idUser = oldGlicemia.getIdUser();
+		value = oldGlicemia.getValue();
+		idTag = oldGlicemia.getIdTag();
+		idNote = oldGlicemia.getIdNote();
+	}
+
 	protected GlycemiaDataBinding(Parcel in) {
 		super(in);
 		id = in.readInt();
@@ -88,6 +100,27 @@ public class GlycemiaDataBinding extends DateTimeDataBinding implements Parcelab
 		dest.writeInt(value);
 		dest.writeInt(idTag);
 		dest.writeInt(idNote);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null && value == 0) {
+			return true;
+		} else if (o == null) {
+			return false;
+		} else {
+			if(!(o instanceof  GlycemiaDataBinding)){
+				return false;
+			}
+			GlycemiaDataBinding otherGlicemia = (GlycemiaDataBinding) o;
+			if (value == otherGlicemia.getValue() && id == otherGlicemia.getId() &&
+					idTag == otherGlicemia.getIdTag() &&
+					idNote == otherGlicemia.getIdNote()) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 }
 

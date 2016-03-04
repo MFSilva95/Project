@@ -109,7 +109,7 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void setupContent() {
+	protected void setupContent() {
 		ChartFragment fragment = (ChartFragment) getSupportFragmentManager().findFragmentById(R.id.chart_fragment);
 		fragment.setListAdapter(getRecyclerViewAdapter());
 		List<Line> chartLines = getChartLines();

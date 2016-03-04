@@ -27,6 +27,19 @@ public class CarbsDataBinding extends DateTimeDataBinding implements Parcelable 
 	public CarbsDataBinding() {
 	}
 
+	public CarbsDataBinding(CarbsDataBinding oldCarbs) {
+		super(oldCarbs);
+		if (oldCarbs == null) {
+			return;
+		}
+		id = oldCarbs.getId();
+		id_User = oldCarbs.getId_User();
+		value = oldCarbs.getCarbsValue();
+		photopath = oldCarbs.getPhotoPath();
+		id_Tag = oldCarbs.getId_Tag();
+		id_Note = oldCarbs.getId_Note();
+	}
+
 	protected CarbsDataBinding(Parcel in) {
 		super(in);
 		id = in.readInt();
@@ -105,5 +118,33 @@ public class CarbsDataBinding extends DateTimeDataBinding implements Parcelable 
 		dest.writeString(photopath);
 		dest.writeInt(id_Tag);
 		dest.writeInt(id_Note);
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o == null && value == 0 && (photopath == null || "".equals(photopath))) {
+			return true;
+		} else if (o == null) {
+			return false;
+		} else {
+			if (!(o instanceof CarbsDataBinding)) {
+				return false;
+			}
+			CarbsDataBinding otherCarbs = (CarbsDataBinding) o;
+			if (value == otherCarbs.getCarbsValue() &&
+					(otherCarbs.getPhotoPath() == null || otherCarbs.getPhotoPath().equals(photopath)) &&
+					id_Tag == otherCarbs.getId_Tag() &&
+					((photopath != null && photopath.equals(otherCarbs.getPhotoPath())) || photopath == null && otherCarbs.getPhotoPath() == null) &&
+					id_Note == otherCarbs.getId_Note() &&
+					id == otherCarbs.getId() &&
+					super.equals(o)) {
+				return true;
+			} else {
+				return false;
+			}
+
+		}
+
+
 	}
 }
