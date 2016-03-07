@@ -150,7 +150,8 @@ public class DB_Read {
 				t.setEnd(cursor.getString(3));
 				tags.add(t);
 				cursor.moveToNext();
-			} while (!cursor.isAfterLast());
+			}
+			while (!cursor.isAfterLast());
 			cursor.close();
 			return tags;
 		} else {

@@ -362,4 +362,12 @@
     <string name="filterdialog_title">Filtro</string>
     <string name="filterdialog_subtitle_extras">Extras</string>
     <string name="filterdialog_subtitle_data">Dados</string>
+    <string name="feature_cloud_sync">Sincronizar com cloud</string>
+    <string name="feature_cloud_sync_description1">Pode enviar para a cloud os seus dados de forma segura.</string>
+    <string name="feature_cloud_sync_description2">A qualquer momento pode aceder aos dados em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="login_username">Nome do utilizador</string>
+    <string name="login_password">Palavra-passe</string>
+    <string name="login_extra_text">Se não tiver uma conta, pode criar uma em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="login_auth_error">Erro na autenticação, verifique o nome de utilizador e password e tente novamente.</string>
+    <string name="cloudSync_edit_account">Editar conta</string>
 </resources>

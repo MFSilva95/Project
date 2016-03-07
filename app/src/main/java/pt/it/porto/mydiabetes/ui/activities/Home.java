@@ -24,7 +24,8 @@ import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.database.Usage;
-import pt.it.porto.mydiabetes.ui.dialogs.NewFeatureDialog;
+import pt.it.porto.mydiabetes.ui.dialogs.FeatureIOBDialog;
+import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.SyncAlarm;
 
@@ -160,8 +161,8 @@ public class Home extends BaseOldActivity {
 
 	private void showNewFeatures() {
 		if (Preferences.showFeatureForFirstTime(this, FeaturesDB.FEATURE_INSULIN_ON_BOARD)) {
-			NewFeatureDialog dialog = new NewFeatureDialog();
-			dialog.setListener(new NewFeatureDialog.ActivateFeatureDialogListener() {
+			FeatureIOBDialog dialog = new FeatureIOBDialog();
+			dialog.setListener(new FeatureIOBDialog.ActivateFeatureDialogListener() {
 				@Override
 				public void useFeature() {
 					FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(getApplicationContext()));
@@ -175,6 +176,10 @@ public class Home extends BaseOldActivity {
 				}
 			});
 			dialog.show(getFragmentManager(), "newFeature");
+		}
+		if (Preferences.showFeatureForFirstTime(this, FeaturesDB.FEATURE_CLOUD_SYNC)) {
+			FeatureWebSyncDialog dialog = new FeatureWebSyncDialog();
+			dialog.show(getFragmentManager(), "newFeature_sync");
 		}
 	}
 
