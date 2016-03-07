@@ -144,7 +144,17 @@ public class CarbsDataBinding extends DateTimeDataBinding implements Parcelable 
 			}
 
 		}
+	}
 
-
+	@Override
+	public String toString() {
+		return "CarbsDataBinding{" +
+				"id=" + id +
+				", id_User=" + id_User +
+				", value=" + value +
+				", photopath='" + photopath + '\'' +
+				", id_Tag=" + id_Tag +
+				", id_Note=" + id_Note +
+				'}';
 	}
 }

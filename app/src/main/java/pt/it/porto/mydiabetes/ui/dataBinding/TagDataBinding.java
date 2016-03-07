@@ -77,4 +77,14 @@ public class TagDataBinding implements Parcelable {
 		dest.writeString(start);
 		dest.writeString(end);
 	}
+
+	@Override
+	public String toString() {
+		return "TagDataBinding{" +
+				"name='" + name + '\'' +
+				", id=" + id +
+				", start='" + start + '\'' +
+				", end='" + end + '\'' +
+				'}';
+	}
 }

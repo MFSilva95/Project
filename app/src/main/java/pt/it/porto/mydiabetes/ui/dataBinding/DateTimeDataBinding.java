@@ -106,12 +106,17 @@ public class DateTimeDataBinding implements Parcelable, Comparable<DateTimeDataB
 
 	@Override
 	public boolean equals(Object o) {
-		if(o==null){
+		if (o == null) {
 			return false;
 		}
 		if (!(o instanceof DateTimeDataBinding)) {
 			return false;
 		}
-		return dateTime.equals(((DateTimeDataBinding) o).getDateTime());
+		Calendar otherDateTime = ((DateTimeDataBinding) o).getDateTime();
+		return dateTime.get(Calendar.YEAR) == otherDateTime.get(Calendar.YEAR) &&
+				dateTime.get(Calendar.DAY_OF_YEAR) == otherDateTime.get(Calendar.DAY_OF_YEAR) &&
+				dateTime.get(Calendar.HOUR_OF_DAY) == otherDateTime.get(Calendar.HOUR_OF_DAY) &&
+				dateTime.get(Calendar.MINUTE) == otherDateTime.get(Calendar.MINUTE) &&
+				dateTime.get(Calendar.SECOND) == otherDateTime.get(Calendar.SECOND);
 	}
 }
