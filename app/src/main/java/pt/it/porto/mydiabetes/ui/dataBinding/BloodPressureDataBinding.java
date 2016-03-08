@@ -11,7 +11,7 @@ public class BloodPressureDataBinding extends DateTimeDataBinding {
 	private int systolic;
 	private int diastolic;
 	private int idTag;
-	private int idNote;
+	private int idNote=-1;
 
 	public int getId() {
 		return id;
@@ -62,4 +62,32 @@ public class BloodPressureDataBinding extends DateTimeDataBinding {
 	}
 
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof BloodPressureDataBinding)) return false;
+		if (!super.equals(o)) return false;
+
+		BloodPressureDataBinding that = (BloodPressureDataBinding) o;
+
+		if (id != that.id) return false;
+		if (idUser != that.idUser) return false;
+		if (systolic != that.systolic) return false;
+		if (diastolic != that.diastolic) return false;
+		if (idTag != that.idTag) return false;
+		return idNote == that.idNote;
+
+	}
+
+	@Override
+	public String toString() {
+		return "BloodPressureDataBinding{" +
+				"id=" + id +
+				", idUser=" + idUser +
+				", systolic=" + systolic +
+				", diastolic=" + diastolic +
+				", idTag=" + idTag +
+				", idNote=" + idNote +
+				'}';
+	}
 }

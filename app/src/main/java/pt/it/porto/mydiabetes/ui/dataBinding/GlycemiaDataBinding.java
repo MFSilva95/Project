@@ -21,7 +21,7 @@ public class GlycemiaDataBinding extends DateTimeDataBinding implements Parcelab
 	private int idUser;
 	private int value;
 	private int idTag;
-	private int idNote;
+	private int idNote = -1;
 
 	public GlycemiaDataBinding() {
 	}
@@ -109,13 +109,14 @@ public class GlycemiaDataBinding extends DateTimeDataBinding implements Parcelab
 		} else if (o == null) {
 			return false;
 		} else {
-			if(!(o instanceof  GlycemiaDataBinding)){
+			if (!(o instanceof GlycemiaDataBinding)) {
 				return false;
 			}
 			GlycemiaDataBinding otherGlicemia = (GlycemiaDataBinding) o;
 			if (value == otherGlicemia.getValue() && id == otherGlicemia.getId() &&
 					idTag == otherGlicemia.getIdTag() &&
-					idNote == otherGlicemia.getIdNote()) {
+					idNote == otherGlicemia.getIdNote() &&
+					super.equals(o)) {
 				return true;
 			} else {
 				return false;

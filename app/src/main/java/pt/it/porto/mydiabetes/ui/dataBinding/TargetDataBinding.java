@@ -88,5 +88,29 @@ public class TargetDataBinding implements Parcelable {
 		this.target = target;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof TargetDataBinding)) return false;
 
+		TargetDataBinding that = (TargetDataBinding) o;
+
+		if (id != that.id) return false;
+		if (Double.compare(that.target, target) != 0) return false;
+		if (name != null ? !name.equals(that.name) : that.name != null) return false;
+		if (start != null ? !start.equals(that.start) : that.start != null) return false;
+		return end != null ? end.equals(that.end) : that.end == null;
+
+	}
+
+	@Override
+	public String toString() {
+		return "TargetDataBinding{" +
+				"id=" + id +
+				", name='" + name + '\'' +
+				", start='" + start + '\'' +
+				", end='" + end + '\'' +
+				", target=" + target +
+				'}';
+	}
 }

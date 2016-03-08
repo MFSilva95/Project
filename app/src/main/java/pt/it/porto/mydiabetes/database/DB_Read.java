@@ -150,8 +150,7 @@ public class DB_Read {
 				t.setEnd(cursor.getString(3));
 				tags.add(t);
 				cursor.moveToNext();
-			}
-			while (!cursor.isAfterLast());
+			} while (!cursor.isAfterLast());
 			cursor.close();
 			return tags;
 		} else {
@@ -358,10 +357,14 @@ public class DB_Read {
 		}
 	}
 
+	@Nullable
 	public InsulinDataBinding Insulin_GetByName(String name) {
 		InsulinDataBinding insulin = new InsulinDataBinding();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Insulin where Name='" + name + "'", null);
 		cursor.moveToFirst();
+		if (cursor.getCount() == 0) {
+			return null;
+		}
 		insulin.setId(cursor.getInt(0));
 		insulin.setName(cursor.getString(1));
 		insulin.setType(cursor.getString(2));
@@ -602,10 +605,14 @@ public class DB_Read {
 		}
 	}
 
+	@Nullable
 	public ExerciseRegDataBinding ExerciseReg_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Exercise, Duration, Effort, StartDateTime, Id_Note FROM Reg_Exercise WHERE Id='" + id + "';", null);
 		ExerciseRegDataBinding ex = new ExerciseRegDataBinding();
 		cursor.moveToFirst();
+		if (cursor.getCount() == 0) {
+			return null;
+		}
 
 		ex.setId(cursor.getInt(0));
 		ex.setId_User(cursor.getInt(1));
@@ -745,10 +752,14 @@ public class DB_Read {
 		}
 	}
 
+	@Nullable
 	public BloodPressureDataBinding BloodPressure_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure WHERE Id='" + id + "';", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		cursor.moveToFirst();
+		if (cursor.getCount() == 0) {
+			return null;
+		}
 
 		BloodPressureDataBinding tmp = new BloodPressureDataBinding();
 		tmp.setId(cursor.getInt(0));
@@ -790,10 +801,14 @@ public class DB_Read {
 		}
 	}
 
+	@Nullable
 	public CholesterolDataBinding Cholesterol_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE Id='" + id + "';", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		cursor.moveToFirst();
+		if (cursor.getCount() == 0) {
+			return null;
+		}
 
 		CholesterolDataBinding tmp = new CholesterolDataBinding();
 		tmp.setId(cursor.getInt(0));
@@ -834,10 +849,14 @@ public class DB_Read {
 		}
 	}
 
+	@Nullable
 	public WeightDataBinding Weight_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Weight WHERE Id='" + id + "';", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		cursor.moveToFirst();
+		if (cursor.getCount()==0) {
+			return null;
+		}
 
 		WeightDataBinding tmp = new WeightDataBinding();
 		tmp.setId(cursor.getInt(0));
@@ -878,10 +897,14 @@ public class DB_Read {
 		}
 	}
 
+	@Nullable
 	public HbA1cDataBinding HbA1c_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_A1c WHERE Id='" + id + "';", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		cursor.moveToFirst();
+		if (cursor.getCount() == 0) {
+			return null;
+		}
 
 		HbA1cDataBinding tmp = new HbA1cDataBinding();
 		tmp.setId(cursor.getInt(0));
@@ -923,10 +946,14 @@ public class DB_Read {
 		}
 	}
 
+	@Nullable
 	public DiseaseRegDataBinding DiseaseReg_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Disease WHERE Id='" + id + "';", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		cursor.moveToFirst();
+		if (cursor.getCount() == 0) {
+			return null;
+		}
 
 		DiseaseRegDataBinding tmp = new DiseaseRegDataBinding();
 		tmp.setId(cursor.getInt(0));
@@ -989,11 +1016,14 @@ public class DB_Read {
 		}
 	}
 
-
+	@Nullable
 	public TargetDataBinding Target_GetById(int id) {
 		TargetDataBinding target = new TargetDataBinding();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM BG_Target where Id='" + id + "'", null);
 		cursor.moveToFirst();
+		if (cursor.getCount() == 0) {
+			return null;
+		}
 		target.setId(cursor.getInt(0));
 		target.setName(cursor.getString(1));
 		target.setStart(cursor.getString(2));
@@ -1005,10 +1035,14 @@ public class DB_Read {
 
 
 	//--------------- NOTES -------------------
+	@Nullable
 	public NoteDataBinding Note_GetById(int id) {
 		NoteDataBinding n = new NoteDataBinding();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Note WHERE Id='" + id + "';", null);
 		cursor.moveToFirst();
+		if (cursor.getCount() == 0) {
+			return null;
+		}
 		n.setId(cursor.getInt(0));
 		n.setNote(cursor.getString(1));
 		cursor.close();

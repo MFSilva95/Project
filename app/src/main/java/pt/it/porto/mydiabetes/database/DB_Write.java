@@ -176,6 +176,10 @@ public class DB_Write {
 	}
 
 	//------------------ INSULIN ----------------------
+	@Deprecated
+	/**
+	 * Instead use @{code Insulin_Add(InsulinDataBinding i)}
+	 */
 	public void Insulin_Add(Object[] obj) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Name", obj[0].toString());
@@ -311,10 +315,13 @@ public class DB_Write {
 
 	public void Exercise_Delete(int id) {
 		DB_Read rdb = new DB_Read(myContext);
-		int idNote = rdb.ExerciseReg_GetById(id).getIdNote();
+		ExerciseRegDataBinding tmp = rdb.ExerciseReg_GetById(id);
+		if (tmp != null) {
+			int idNote = tmp.getIdNote();
+			Note_Delete(idNote);
+		}
 		rdb.close();
-		myDB.delete("Reg_Exercise", "Id=" + id, null);
-		Note_Delete(idNote);
+		myDB.delete("Reg_Exercise", "Id=?", new String[]{String.valueOf(id)});
 	}
 
 	public void Exercise_Update(ExerciseRegDataBinding obj) {
@@ -334,6 +341,7 @@ public class DB_Write {
 	}
 
 	//------------------- MEDICINE -------------------------------
+	@Deprecated
 	public void Medicine_Add(Object[] obj) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Name", obj[0].toString());
@@ -344,6 +352,7 @@ public class DB_Write {
 		Log.d("Guardou", "Medicine");
 	}
 
+	@Deprecated
 	public void Medicine_Remove(int id) {
 		myDB.delete("Medicine", "id=" + id, null);
 	}

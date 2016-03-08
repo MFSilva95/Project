@@ -119,4 +119,11 @@ public class DateTimeDataBinding implements Parcelable, Comparable<DateTimeDataB
 				dateTime.get(Calendar.MINUTE) == otherDateTime.get(Calendar.MINUTE) &&
 				dateTime.get(Calendar.SECOND) == otherDateTime.get(Calendar.SECOND);
 	}
+
+	@Override
+	public String toString() {
+		return "DateTimeDataBinding{" +
+				"dateTime=" + dateTime +
+				'}';
+	}
 }

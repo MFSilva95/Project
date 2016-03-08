@@ -25,7 +25,7 @@ public class InsulinRegDataBinding extends DateTimeDataBinding implements Parcel
 	private int targetGlycemia;
 	private float insulinUnits;
 	private int idTag;
-	private int idNote;
+	private int idNote=-1;
 
 
 	public InsulinRegDataBinding() {
@@ -165,5 +165,19 @@ public class InsulinRegDataBinding extends DateTimeDataBinding implements Parcel
 				return false;
 			}
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "InsulinRegDataBinding{" +
+				"id=" + id +
+				", idUser=" + idUser +
+				", idBloodGlucose=" + idBloodGlucose +
+				", idInsulin=" + idInsulin +
+				", targetGlycemia=" + targetGlycemia +
+				", insulinUnits=" + insulinUnits +
+				", idTag=" + idTag +
+				", idNote=" + idNote +
+				'}';
 	}
 }
