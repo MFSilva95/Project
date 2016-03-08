@@ -12,7 +12,7 @@ import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.security.KeyPairGenerator;
 import java.security.KeyStore;
-import java.security.interfaces.RSAPrivateKey;
+import java.security.PrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.Calendar;
 
@@ -83,16 +83,27 @@ public class Preferences {
 		input.init(Cipher.ENCRYPT_MODE, publicKey);
 
 		byte[] pass = input.doFinal(password.getBytes("UTF-8"));
-		getPreferences(context).edit().putString(USERNAME, username).putString(PASSWORD, Base64.encodeToString(pass, Base64.DEFAULT)).apply();
+		getPreferences(context).edit()
+							   .putString(USERNAME, username)
+							   .putString(PASSWORD, Base64.encodeToString(pass, Base64.DEFAULT))
+							   .apply();
 		return true;
 	}
 
 	private static String getPasswordJB(Context context) throws GeneralSecurityException, IOException {
 		KeyStore keyStore = initKeyStore(context);
 
-		RSAPrivateKey privateKey = getPrivateKey(context, keyStore);
-		Cipher output = Cipher.getInstance("RSA/ECB/PKCS1Padding", "AndroidOpenSSL");
-		output.init(Cipher.DECRYPT_MODE, privateKey);
+		PrivateKey privateKey = getPrivateKey(context, keyStore);
+		Cipher output;
+		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+			output = Cipher.getInstance("RSA/ECB/PKCS1Padding", "AndroidOpenSSL");
+
+			output.init(Cipher.DECRYPT_MODE, privateKey);
+		} else {
+			// Marshmallow version :)
+			output = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+			output.init(Cipher.DECRYPT_MODE, privateKey);
+		}
 
 		byte[] password = output.doFinal(Base64.decode(getPreferences(context).getString(PASSWORD, ""), Base64.DEFAULT));
 
@@ -100,12 +111,12 @@ public class Preferences {
 	}
 
 	@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
-	private static RSAPrivateKey getPrivateKey(Context context, KeyStore keyStore) throws GeneralSecurityException, IOException {
+	private static PrivateKey getPrivateKey(Context context, KeyStore keyStore) throws GeneralSecurityException, IOException {
 		if (keyStore == null) {
 			keyStore = initKeyStore(context);
 		}
 		KeyStore.PrivateKeyEntry keys = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEYSTORE_PK_ALIAS, null);
-		return (RSAPrivateKey) keys.getPrivateKey();
+		return keys.getPrivateKey();
 	}
 
 
@@ -129,13 +140,12 @@ public class Preferences {
 			Calendar end = Calendar.getInstance();
 			end.add(Calendar.YEAR, 2);
 
-			KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(context)
-					.setAlias(KEYSTORE_PK_ALIAS)
-					.setSubject(new X500Principal("CN=MyDiabetes, O=MyDiabetes"))
-					.setSerialNumber(BigInteger.ONE)
-					.setStartDate(start.getTime())
-					.setEndDate(end.getTime())
-					.build();
+			KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(context).setAlias(KEYSTORE_PK_ALIAS)
+																				 .setSubject(new X500Principal("CN=MyDiabetes, O=MyDiabetes"))
+																				 .setSerialNumber(BigInteger.ONE)
+																				 .setStartDate(start.getTime())
+																				 .setEndDate(end.getTime())
+																				 .build();
 			generator.initialize(spec);
 
 			generator.generateKeyPair();
