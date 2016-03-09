@@ -19,6 +19,7 @@ import okhttp3.Response;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.database.PhotoSyncDb;
 import pt.it.porto.mydiabetes.database.Preferences;
+import pt.it.porto.mydiabetes.utils.DbUtils;
 
 public class ServerSync {
 
@@ -75,7 +76,7 @@ public class ServerSync {
 	}
 
 	private void sendDb(Callback callback) {
-		File file = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases/DB_Diabetes");
+		File file = DbUtils.exportDb(context);
 		RequestBody formBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
 														  .addFormDataPart("user", username)
 														  .addFormDataPart("password", password)

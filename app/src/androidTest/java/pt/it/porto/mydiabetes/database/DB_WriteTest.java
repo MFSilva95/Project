@@ -1216,7 +1216,7 @@ public class DB_WriteTest {
 	}
 
 
-	private Object[] getMockUserData() {
+	static Object[] getMockUserData() {
 		Calendar calendar = Calendar.getInstance();
 		//// FIXME: 07/03/16 insulin type and gender shouldn't be a string, this can complete breakage if language changes
 		return new Object[]{1, "Nome", "Tipo 1", 45.0, 50.0, 50.0, 150.0, "11-01-2011", "Homem", 1.85, DateUtils.formatToDb(calendar)};

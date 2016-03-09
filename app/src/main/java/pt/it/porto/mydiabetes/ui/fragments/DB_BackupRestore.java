@@ -22,6 +22,7 @@ import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.utils.DbUtils;
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass.
@@ -132,8 +133,7 @@ public class DB_BackupRestore extends Fragment {
 
 	public static boolean backup(Context context) {
 		if (DB_BackupRestore.isSDWriteable()) {
-			File inputFile = new File(Environment.getDataDirectory() + "/data/"
-					+ context.getPackageName() + "/databases/DB_Diabetes");
+			File inputFile = DbUtils.exportDb(context);
 
 			File outputDir = new File(Environment.getExternalStorageDirectory()
 					+ "/MyDiabetes/backup");

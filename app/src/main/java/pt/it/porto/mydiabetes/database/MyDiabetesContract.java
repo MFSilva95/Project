@@ -82,7 +82,7 @@ public class MyDiabetesContract {
 		public static final String TABLE_NAME = "Feature";
 
 		public static final String COLUMN_NAME_ID = "Id";
-		public static final String COLUMN_NAME_NAME =  "Name";
+		public static final String COLUMN_NAME_NAME = "Name";
 		public static final String COLUMN_NAME_ACTIVATED = "Activated";
 	}
 
@@ -210,6 +210,13 @@ public class MyDiabetesContract {
 		public static final String TABLE_NAME = "Sync_Images_Diff";
 
 		public static final String COLUMN_NAME_FILE_NAME = "FileName";
+	}
+
+	public static class DbInfo {
+		public static final String TABLE_NAME = "Db_Info";
+
+		public static final String COLUMN_NAME_VERSION = "Version";
+		public static final String COLUMN_NAME_DATETIME = "DateTime";
 	}
 
 }
