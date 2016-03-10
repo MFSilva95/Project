@@ -35,12 +35,6 @@ public class Preferences extends BaseOldActivity {
 		getActionBar().addTab(tab);
 
 		tab = getActionBar().newTab();
-		Fragment targetsFragment = new TargetBG();
-		tab.setTabListener(new MyTabsListener(targetsFragment));
-		tab.setText(R.string.preferences_target);
-		getActionBar().addTab(tab);
-
-		tab = getActionBar().newTab();
 		Fragment diseasesFragment = new Diseases();
 		tab.setTabListener(new MyTabsListener(diseasesFragment));
 		tab.setText(R.string.preferences_diseases);

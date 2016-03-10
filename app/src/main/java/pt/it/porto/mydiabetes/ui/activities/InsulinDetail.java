@@ -384,8 +384,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 					public void onClick(DialogInterface dialog, int whichButton) {
 						//Falta verificar se não está associada a nenhuma entrada da DB
 						//Rever porque não elimina o registo de glicemia
-						Intent intent = new Intent(c, Preferences.class);
-						intent.putExtra("tabPosition", 4);
+						Intent intent = new Intent(c, Insulins.class);
 						startActivity(intent);
 						end();
 					}
@@ -401,7 +400,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 					public void onClick(DialogInterface dialog, int whichButton) {
 						//Falta verificar se não está associada a nenhuma entrada da DB
 						//Rever porque não elimina o registo de glicemia
-						Intent intent = new Intent(c, Preferences.class);
+						Intent intent = new Intent(c, SettingsInsulinTargets.class);
 						intent.putExtra("tabPosition", 1);
 						startActivity(intent);
 						finish();

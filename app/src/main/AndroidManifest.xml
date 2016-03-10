@@ -65,6 +65,14 @@
                 android:value=".ui.activities.SettingsInsulin"/>
         </activity>
         <activity
+            android:name=".ui.activities.SettingsInsulinTargets"
+            android:label="@string/preferences_target"
+            android:parentActivityName=".ui.activities.SettingsInsulin">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.SettingsInsulin"/>
+        </activity>
+        <activity
             android:name=".ui.activities.Exercise"
             android:label="@string/title_activity_exercise"
             android:parentActivityName=".ui.activities.Home">
@@ -256,10 +264,10 @@
         <activity
             android:name=".ui.activities.TargetBG_detail"
             android:label="@string/title_activity_target_bg_detail"
-            android:parentActivityName=".ui.activities.Preferences">
+            android:parentActivityName=".ui.activities.SettingsInsulinTargets">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Preferences"/>
+                android:value=".ui.activities.SettingsInsulinTargets"/>
         </activity>
         <activity
             android:name=".ui.activities.InsulinsDetail"

@@ -217,4 +217,8 @@ public class SettingsInsulin extends BaseOldActivity {
 		startActivity(intent);
 	}
 
+	public void insulinTargets(View view) {
+		Intent intent = new Intent(this, SettingsInsulinTargets.class);
+		startActivity(intent);
+	}
 }
