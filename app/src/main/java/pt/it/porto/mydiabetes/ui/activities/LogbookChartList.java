@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -196,21 +197,15 @@ public class LogbookChartList extends MultiDataChartActivity {
 
 	@Override
 	public RecyclerView.Adapter getRecyclerViewAdapter() {
-		return new ListAdapter(getCursor(), getChartData());
+		return new ListAdapter(getCursor());
 	}
 
 	class ListAdapter extends RecyclerView.Adapter<LogbookChartList.ListAdapter.Holder> {
 
-		private boolean carbsActive;
-		private boolean glycemiaActive;
-		private boolean insulinActive;
 		private Cursor cursor;
 
-		public ListAdapter(Cursor cursor, ChartData chartData) {
+		public ListAdapter(Cursor cursor) {
 			this.cursor = cursor;
-			this.carbsActive = chartData.isFilterActive(0);
-			this.glycemiaActive = chartData.isFilterActive(1);
-			this.insulinActive = chartData.isFilterActive(2);
 		}
 
 
@@ -235,7 +230,7 @@ public class LogbookChartList extends MultiDataChartActivity {
 			holder.time.setText(DateUtils.getFormattedTime(dateTimeStamp));
 
 			int carbsVal = cursor.getInt(1);
-			if (carbsVal >= 0 && carbsActive) {
+			if (carbsVal >= 0) {
 				holder.carbsVal.setText(String.valueOf(carbsVal));
 				holder.carbs.setVisibility(View.VISIBLE);
 			} else {
@@ -243,7 +238,7 @@ public class LogbookChartList extends MultiDataChartActivity {
 			}
 
 			double insulinVal = cursor.getDouble(2);
-			if (insulinVal >= 0 && insulinActive) {
+			if (insulinVal >= 0) {
 				holder.insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", insulinVal));
 				holder.insulinName.setText(cursor.getString(3));
 				holder.insulin.setVisibility(View.VISIBLE);
@@ -252,7 +247,7 @@ public class LogbookChartList extends MultiDataChartActivity {
 			}
 
 			int glycemiaVal = cursor.getInt(4);
-			if (glycemiaVal >= 0 && glycemiaActive) {
+			if (glycemiaVal >= 0) {
 				holder.glycemiaVal.setText(String.valueOf(glycemiaVal));
 				holder.glycemia.setVisibility(View.VISIBLE);
 			} else {

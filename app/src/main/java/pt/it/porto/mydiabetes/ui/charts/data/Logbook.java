@@ -92,7 +92,7 @@ public class Logbook extends ChartData {
 		if (!filterActive[0] && !filterActive[1] && !filterActive[2]) {
 			return null;
 		}
-		return new ListDataSource(MyDiabetesStorage.getInstance(context)).getLogbookData(filterActive[0], filterActive[1], filterActive[2], getStartDate(), getEndDate(), -1);
+		return new ListDataSource(MyDiabetesStorage.getInstance(context)).getLogbookData(true, true, true, getStartDate(), getEndDate(), -1);
 	}
 
 	@Override
