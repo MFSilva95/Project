@@ -15,7 +15,7 @@ import pt.it.porto.mydiabetes.utils.LocaleUtils;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class InsulinCalc extends Fragment {
+public class InsulinCalcFragment extends Fragment {
 
 
 	private static final String ARG_FACTOR_GLYCEMIA = "Args_factor_glycemia";
@@ -30,17 +30,17 @@ public class InsulinCalc extends Fragment {
 
 	private CalcListener mListener;
 
-	public InsulinCalc() {
+	public InsulinCalcFragment() {
 		// Required empty public constructor
 	}
 
 
-	public static InsulinCalc newInstance(int factorInsulin, int factorCarbs) {
+	public static InsulinCalcFragment newInstance(int factorInsulin, int factorCarbs) {
 		Bundle args = new Bundle();
 		args.putInt(ARG_FACTOR_GLYCEMIA, factorInsulin);
 		args.putInt(ARG_FACTOR_CARBS, factorCarbs);
 
-		InsulinCalc fragment = new InsulinCalc();
+		InsulinCalcFragment fragment = new InsulinCalcFragment();
 		fragment.setArguments(args);
 		return fragment;
 	}

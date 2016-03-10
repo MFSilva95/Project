@@ -15,9 +15,9 @@ import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
-import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
+import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
@@ -103,19 +103,19 @@ public class LogbookAdapter extends BaseAdapter {
 				Bundle args = new Bundle();
 				LogbookItem logbookDataBinding = ((ViewHolder) v.getTag()).item;
 				if (logbookDataBinding.glycemiaId != -1) {
-					GlycemiaDataBinding glycemiaDataBinding = new GlycemiaDataBinding();
-					glycemiaDataBinding.setId(logbookDataBinding.glycemiaId);
-					args.putString("bg", String.valueOf(glycemiaDataBinding.getId())); //bg id
-					args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, glycemiaDataBinding);
+					GlycemiaRec glycemiaRec = new GlycemiaRec();
+					glycemiaRec.setId(logbookDataBinding.glycemiaId);
+					args.putString("bg", String.valueOf(glycemiaRec.getId())); //bg id
+					args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, glycemiaRec);
 				}
 				if (logbookDataBinding.carbsId != -1) {
-					CarbsDataBinding carbs = new CarbsDataBinding();
+					CarbsRec carbs = new CarbsRec();
 					carbs.setId(logbookDataBinding.carbsId);
 					args.putString("ch", String.valueOf(carbs.getId())); //ch id
 					args.putParcelable(DetailLogbookActivity.ARG_CARBS, carbs);
 				}
 				if (logbookDataBinding.insulinId != -1) {
-					InsulinRegDataBinding insulin = new InsulinRegDataBinding();
+					InsulinRec insulin = new InsulinRec();
 					insulin.setId(logbookDataBinding.insulinId);
 					args.putString("ins", String.valueOf(insulin.getId())); //ins id
 					args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);

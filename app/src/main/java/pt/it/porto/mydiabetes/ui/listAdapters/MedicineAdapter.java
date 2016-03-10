@@ -17,15 +17,15 @@ import android.widget.TextView;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.dataBinding.MedicineDataBinding;
+import pt.it.porto.mydiabetes.data.Medicine;
 
 
 public class MedicineAdapter extends BaseAdapter {
 
-	private ArrayList<MedicineDataBinding> _data;
+	private ArrayList<Medicine> _data;
     Context _c;
     
-    public MedicineAdapter (ArrayList<MedicineDataBinding> data, Context c){
+    public MedicineAdapter (ArrayList<Medicine> data, Context c){
         _data = data;
         _c = c;
     }
@@ -64,7 +64,7 @@ public class MedicineAdapter extends BaseAdapter {
          
          final ImageButton removemedicine = (ImageButton)v.findViewById(R.id.list_medicineRemove);
 		   
-         final MedicineDataBinding medicine = _data.get(position);
+         final Medicine medicine = _data.get(position);
          final String _id = ""+medicine.getId();
          mname.setText(medicine.getName());
          mname.setTag(_id);

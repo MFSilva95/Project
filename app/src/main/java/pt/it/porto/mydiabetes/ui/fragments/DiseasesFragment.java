@@ -15,7 +15,7 @@ import pt.it.porto.mydiabetes.ui.activities.DiseasesDetail;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseAdapter;
-import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseDataBinding;
+import pt.it.porto.mydiabetes.data.Disease;
 
 import java.util.ArrayList;
 
@@ -23,13 +23,13 @@ import java.util.ArrayList;
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
  * contain this fragment must implement the
- * @link Diseases.OnFragmentInteractionListener interface to handle
- * interaction events. Use the @link Diseases#newInstance factory method to
+ * @link DiseasesFragment.OnFragmentInteractionListener interface to handle
+ * interaction events. Use the @link DiseasesFragment#newInstance factory method to
  * create an instance of this fragment.
  */
 
 
-public class Diseases extends Fragment {
+public class DiseasesFragment extends Fragment {
 
     ListView diseaseList;
     View v;
@@ -81,7 +81,7 @@ public class Diseases extends Fragment {
     public void fillListView(ListView lv) {
 
         DB_Read rdb = new DB_Read(getActivity());
-        ArrayList<DiseaseDataBinding> allDiseases = rdb.Disease_GetAll();
+        ArrayList<Disease> allDiseases = rdb.Disease_GetAll();
         rdb.close();
 
 

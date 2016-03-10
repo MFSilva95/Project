@@ -18,7 +18,7 @@ import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseRegDataBinding;
+import pt.it.porto.mydiabetes.data.ExerciseRec;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -124,7 +124,7 @@ public class Exercise extends Activity {
 		EditText datefrom = (EditText) findViewById(R.id.et_Exercise_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_Exercise_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<ExerciseRegDataBinding> allExercises = rdb.ExerciseReg_GetByDate(datefrom.getText().toString(), dateto.getText().toString());
+		ArrayList<ExerciseRec> allExercises = rdb.ExerciseReg_GetByDate(datefrom.getText().toString(), dateto.getText().toString());
 
 		rdb.close();
 		lv.setAdapter(new ExerciseRegAdapter(allExercises, this));

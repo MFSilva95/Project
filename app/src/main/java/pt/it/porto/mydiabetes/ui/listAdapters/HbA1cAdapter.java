@@ -13,16 +13,16 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.HbA1cDetail;
-import pt.it.porto.mydiabetes.ui.dataBinding.HbA1cDataBinding;
+import pt.it.porto.mydiabetes.data.HbA1cRec;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 public class HbA1cAdapter extends BaseAdapter {
 
 	Context _c;
-	private ArrayList<HbA1cDataBinding> _data;
+	private ArrayList<HbA1cRec> _data;
 
-	public HbA1cAdapter(ArrayList<HbA1cDataBinding> data, Context c) {
+	public HbA1cAdapter(ArrayList<HbA1cRec> data, Context c) {
 		_data = data;
 		_c = c;
 	}
@@ -55,7 +55,7 @@ public class HbA1cAdapter extends BaseAdapter {
 		TextView hora = (TextView) v.findViewById(R.id.tv_list_hba1c_hora);
 		TextView value = (TextView) v.findViewById(R.id.tv_list_hba1c_value);
 
-		HbA1cDataBinding bp = _data.get(position);
+		HbA1cRec bp = _data.get(position);
 		String _id = "" + bp.getId();
 
 		data.setText(bp.getFormattedDate());

@@ -58,7 +58,7 @@ public class InsulinElement extends CardView {
 		setupRemoveButton((Button) layoutEdit.findViewById(R.id.buttons_create).findViewById(R.id.cancelButton));
 		setupRemoveButton((Button) layoutEdit.findViewById(R.id.buttons_edit).findViewById(R.id.removeButton));
 
-		((TextView) layoutEdit.findViewById(R.id.name)).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+		layoutEdit.findViewById(R.id.name).setOnFocusChangeListener(new View.OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View view, boolean b) {
 				if (!b) {
@@ -67,7 +67,7 @@ public class InsulinElement extends CardView {
 			}
 		});
 
-		((TextView) layoutEdit.findViewById(R.id.admininistration_method)).setOnFocusChangeListener(new View.OnFocusChangeListener() {
+		layoutEdit.findViewById(R.id.admininistration_method).setOnFocusChangeListener(new View.OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View view, boolean b) {
 				if (!b) {

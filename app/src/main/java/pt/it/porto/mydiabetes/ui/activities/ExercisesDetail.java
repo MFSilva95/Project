@@ -15,7 +15,7 @@ import android.widget.EditText;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseDataBinding;
+import pt.it.porto.mydiabetes.data.Exercise;
 
 public class ExercisesDetail extends Activity {
 	public static final String BUNDLE_DATA = "Data";
@@ -33,7 +33,7 @@ public class ExercisesDetail extends Activity {
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
 			if (args.containsKey(BUNDLE_DATA)) {
-				ExerciseDataBinding exercise = args.getParcelable(BUNDLE_DATA);
+				Exercise exercise = args.getParcelable(BUNDLE_DATA);
 				if (exercise != null) {
 					idExercises = exercise.getId();
 					exerciseName = exercise.getName();
@@ -117,7 +117,7 @@ public class ExercisesDetail extends Activity {
 
 		DB_Write wdb = new DB_Write(this);
 
-		ExerciseDataBinding exercise = new ExerciseDataBinding();
+		Exercise exercise = new Exercise();
 
 		exercise.setId(idExercises);
 		exercise.setName(exercisename.getText().toString());

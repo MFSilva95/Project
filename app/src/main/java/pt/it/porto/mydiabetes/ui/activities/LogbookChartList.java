@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +22,9 @@ import lecho.lib.hellocharts.util.ChartUtils;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.charts.data.ChartData;
-import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
+import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
@@ -265,19 +264,19 @@ public class LogbookChartList extends MultiDataChartActivity {
 					Bundle args = new Bundle();
 					Holder holder = (Holder) v.getTag();
 					if (holder.glycemiaId != -1) {
-						GlycemiaDataBinding glycemiaDataBinding = new GlycemiaDataBinding();
-						glycemiaDataBinding.setId(holder.glycemiaId);
-						args.putString("bg", String.valueOf(glycemiaDataBinding.getId())); //bg id
-						args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, glycemiaDataBinding);
+						GlycemiaRec glycemiaRec = new GlycemiaRec();
+						glycemiaRec.setId(holder.glycemiaId);
+						args.putString("bg", String.valueOf(glycemiaRec.getId())); //bg id
+						args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, glycemiaRec);
 					}
 					if (holder.carbsId != -1) {
-						CarbsDataBinding carbs = new CarbsDataBinding();
+						CarbsRec carbs = new CarbsRec();
 						carbs.setId(holder.carbsId);
 						args.putString("ch", String.valueOf(carbs.getId())); //ch id
 						args.putParcelable(DetailLogbookActivity.ARG_CARBS, carbs);
 					}
 					if (holder.insulinId != -1) {
-						InsulinRegDataBinding insulin = new InsulinRegDataBinding();
+						InsulinRec insulin = new InsulinRec();
 						insulin.setId(holder.insulinId);
 						args.putString("ins", String.valueOf(insulin.getId())); //ins id
 						args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);

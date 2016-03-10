@@ -1,7 +1,7 @@
-package pt.it.porto.mydiabetes.ui.dataBinding;
+package pt.it.porto.mydiabetes.data;
 
 
-public class InsulinDataBinding {
+public class Insulin {
 
 	private int id;
 	private String name;
@@ -9,10 +9,10 @@ public class InsulinDataBinding {
 	private String action;
 	private double duration;
 
-	public InsulinDataBinding() {
+	public Insulin() {
 	}
 
-	public InsulinDataBinding(InsulinDataBinding oldInsulin) {
+	public Insulin(Insulin oldInsulin) {
 		if (oldInsulin == null) {
 			return;
 		}
@@ -66,9 +66,9 @@ public class InsulinDataBinding {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof InsulinDataBinding)) return false;
+		if (!(o instanceof Insulin)) return false;
 
-		InsulinDataBinding that = (InsulinDataBinding) o;
+		Insulin that = (Insulin) o;
 
 		if (id != that.id) return false;
 		if (Double.compare(that.duration, duration) != 0) return false;
@@ -80,7 +80,7 @@ public class InsulinDataBinding {
 
 	@Override
 	public String toString() {
-		return "InsulinDataBinding{" +
+		return "Insulin{" +
 				"id=" + id +
 				", name='" + name + '\'' +
 				", type='" + type + '\'' +

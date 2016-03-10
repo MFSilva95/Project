@@ -15,21 +15,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
-import pt.it.porto.mydiabetes.ui.dataBinding.BloodPressureDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.CholesterolDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.HbA1cDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.TargetDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.WeightDataBinding;
+import pt.it.porto.mydiabetes.data.BloodPressureRec;
+import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.CholesterolRec;
+import pt.it.porto.mydiabetes.data.Disease;
+import pt.it.porto.mydiabetes.data.DiseaseRec;
+import pt.it.porto.mydiabetes.data.Exercise;
+import pt.it.porto.mydiabetes.data.ExerciseRec;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.HbA1cRec;
+import pt.it.porto.mydiabetes.data.Insulin;
+import pt.it.porto.mydiabetes.data.InsulinRec;
+import pt.it.porto.mydiabetes.data.InsulinTarget;
+import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.data.Tag;
+import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -78,7 +78,7 @@ public class DB_WriteTest {
 	public void testTag_Add() throws Exception {
 		DB_Write dbWrite = new DB_Write(mMockContext);
 		DB_Read dbRead = new DB_Read(mMockContext);
-		ArrayList<TagDataBinding> tags = dbRead.Tag_GetAll();
+		ArrayList<Tag> tags = dbRead.Tag_GetAll();
 		int originalSize = tags.size();
 		int lastId = tags.get(originalSize - 1).getId();
 
@@ -97,16 +97,16 @@ public class DB_WriteTest {
 	public void testTag_Add1() throws Exception {
 		DB_Write dbWrite = new DB_Write(mMockContext);
 		DB_Read dbRead = new DB_Read(mMockContext);
-		ArrayList<TagDataBinding> tags = dbRead.Tag_GetAll();
+		ArrayList<Tag> tags = dbRead.Tag_GetAll();
 		int originalSize = tags.size();
 		int lastId = tags.get(originalSize - 1).getId();
 
-		TagDataBinding tagDataBinding = new TagDataBinding();
-		tagDataBinding.setId(originalSize);
-		tagDataBinding.setName("test");
-		tagDataBinding.setStart("00:01");
-		tagDataBinding.setEnd("00:02");
-		dbWrite.Tag_Add(tagDataBinding);
+		Tag tag = new Tag();
+		tag.setId(originalSize);
+		tag.setName("test");
+		tag.setStart("00:01");
+		tag.setEnd("00:02");
+		dbWrite.Tag_Add(tag);
 
 		tags = dbRead.Tag_GetAll();
 
@@ -121,11 +121,11 @@ public class DB_WriteTest {
 	public void testTag_Update() throws Exception {
 		DB_Write dbWrite = new DB_Write(mMockContext);
 		DB_Read dbRead = new DB_Read(mMockContext);
-		ArrayList<TagDataBinding> tags = dbRead.Tag_GetAll();
+		ArrayList<Tag> tags = dbRead.Tag_GetAll();
 		int originalSize = tags.size();
 
 		dbWrite.Tag_Add("test");
-		TagDataBinding tag = dbRead.Tag_GetAll().get(originalSize);
+		Tag tag = dbRead.Tag_GetAll().get(originalSize);
 		String newName = "test1";
 		tag.setName(newName);
 		dbWrite.Tag_Update(tag);
@@ -142,10 +142,10 @@ public class DB_WriteTest {
 	public void testTag_Remove() throws Exception {
 		DB_Write dbWrite = new DB_Write(mMockContext);
 		DB_Read dbRead = new DB_Read(mMockContext);
-		ArrayList<TagDataBinding> tags = dbRead.Tag_GetAll();
+		ArrayList<Tag> tags = dbRead.Tag_GetAll();
 		int originalSize = tags.size();
 
-		TagDataBinding tag = dbRead.Tag_GetAll().get(originalSize - 2);
+		Tag tag = dbRead.Tag_GetAll().get(originalSize - 2);
 		dbWrite.Tag_Remove(tag.getId());
 
 		tags = dbRead.Tag_GetAll();
@@ -189,7 +189,7 @@ public class DB_WriteTest {
 		DB_Read dbRead = new DB_Read(mMockContext);
 
 		dbWrite.Disease_Add("gripe");
-		DiseaseDataBinding disease = dbRead.Disease_GetAll().get(0);
+		Disease disease = dbRead.Disease_GetAll().get(0);
 		String newName = "gripe1";
 		disease.setName(newName);
 		dbWrite.Disease_Update(disease);
@@ -211,7 +211,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		GlycemiaDataBinding glycemia = new GlycemiaDataBinding();
+		GlycemiaRec glycemia = new GlycemiaRec();
 		glycemia.setIdUser(1);
 		glycemia.setId(1);
 		glycemia.setValue(100);
@@ -220,7 +220,7 @@ public class DB_WriteTest {
 		glycemia.setDateTime(calendar);
 		dbWrite.Glycemia_Save(glycemia);
 
-		GlycemiaDataBinding returnedGlycemia = dbRead.Glycemia_GetById(1);
+		GlycemiaRec returnedGlycemia = dbRead.Glycemia_GetById(1);
 
 		Assert.assertEquals("glycemia not equals to returned", glycemia, returnedGlycemia);
 
@@ -236,7 +236,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		GlycemiaDataBinding glycemia = new GlycemiaDataBinding();
+		GlycemiaRec glycemia = new GlycemiaRec();
 		glycemia.setIdUser(1);
 		glycemia.setId(1);
 		glycemia.setValue(100);
@@ -248,7 +248,7 @@ public class DB_WriteTest {
 		glycemia.setValue(110);
 		dbWrite.Glycemia_Update(glycemia);
 
-		GlycemiaDataBinding returnedGlycemia = dbRead.Glycemia_GetById(1);
+		GlycemiaRec returnedGlycemia = dbRead.Glycemia_GetById(1);
 
 		Assert.assertNotNull(returnedGlycemia);
 		Assert.assertEquals("Glicemia not updated", glycemia.getValue(), returnedGlycemia.getValue());
@@ -267,7 +267,7 @@ public class DB_WriteTest {
 		dbWrite.MyData_Save(getMockUserData());
 
 
-		GlycemiaDataBinding glycemia = new GlycemiaDataBinding();
+		GlycemiaRec glycemia = new GlycemiaRec();
 		glycemia.setIdUser(1);
 		glycemia.setId(1);
 		glycemia.setValue(100);
@@ -292,7 +292,7 @@ public class DB_WriteTest {
 		dbWrite.MyData_Save(getMockUserData());
 
 
-		InsulinDataBinding insulin = new InsulinDataBinding();
+		Insulin insulin = new Insulin();
 		insulin.setId(1);
 		insulin.setName("humalog");
 		insulin.setDuration(1);
@@ -301,7 +301,7 @@ public class DB_WriteTest {
 
 		dbWrite.Insulin_Add(insulin);
 
-		InsulinDataBinding returnedInsulin = dbRead.Insulin_GetByName("humalog");
+		Insulin returnedInsulin = dbRead.Insulin_GetByName("humalog");
 
 		Assert.assertNotNull(returnedInsulin);
 		Assert.assertEquals("Insulin not added", insulin, returnedInsulin);
@@ -319,7 +319,7 @@ public class DB_WriteTest {
 		dbWrite.MyData_Save(getMockUserData());
 
 
-		InsulinDataBinding insulin = new InsulinDataBinding();
+		Insulin insulin = new Insulin();
 		insulin.setId(1);
 		insulin.setName("humalog");
 		insulin.setDuration(1);
@@ -330,7 +330,7 @@ public class DB_WriteTest {
 		insulin.setName("novalog");
 		dbWrite.Insulin_Update(insulin);
 
-		InsulinDataBinding returnedInsulin = dbRead.Insulin_GetByName("humalog");
+		Insulin returnedInsulin = dbRead.Insulin_GetByName("humalog");
 		Assert.assertNull(returnedInsulin);
 
 		returnedInsulin = dbRead.Insulin_GetByName("novalog");
@@ -349,7 +349,7 @@ public class DB_WriteTest {
 		dbWrite.MyData_Save(getMockUserData());
 
 
-		InsulinDataBinding insulin = new InsulinDataBinding();
+		Insulin insulin = new Insulin();
 		insulin.setId(1);
 		insulin.setName("humalog");
 		insulin.setDuration(1);
@@ -359,7 +359,7 @@ public class DB_WriteTest {
 		dbWrite.Insulin_Add(insulin);
 		dbWrite.Insulin_Remove(1);
 
-		InsulinDataBinding returnedInsulin = dbRead.Insulin_GetByName(insulin.getName());
+		Insulin returnedInsulin = dbRead.Insulin_GetByName(insulin.getName());
 		Assert.assertNull("Insulin not removed", returnedInsulin);
 
 		dbRead.close();
@@ -373,7 +373,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		InsulinDataBinding insulin = new InsulinDataBinding();
+		Insulin insulin = new Insulin();
 		insulin.setId(1);
 		insulin.setName("humalog");
 		insulin.setDuration(1);
@@ -382,21 +382,21 @@ public class DB_WriteTest {
 
 		dbWrite.Insulin_Add(insulin);
 
-		InsulinRegDataBinding insulinReg = new InsulinRegDataBinding();
-		insulinReg.setIdUser(1);
-		insulinReg.setId(1);
-		insulinReg.setIdInsulin(1);
-		insulinReg.setIdTag(1);
-		insulinReg.setDateTime(Calendar.getInstance());
-		insulinReg.setInsulinUnits(3);
-		insulinReg.setTargetGlycemia(100);
+		InsulinRec insulinRec = new InsulinRec();
+		insulinRec.setIdUser(1);
+		insulinRec.setId(1);
+		insulinRec.setIdInsulin(1);
+		insulinRec.setIdTag(1);
+		insulinRec.setDateTime(Calendar.getInstance());
+		insulinRec.setInsulinUnits(3);
+		insulinRec.setTargetGlycemia(100);
 
-		dbWrite.Insulin_Save(insulinReg);
+		dbWrite.Insulin_Save(insulinRec);
 
-		InsulinRegDataBinding returnedInsulinReg = dbRead.InsulinReg_GetById(1);
+		InsulinRec returnedInsulinRec = dbRead.InsulinReg_GetById(1);
 
-		Assert.assertNotNull("InsulinReg not added", returnedInsulinReg);
-		Assert.assertEquals("InsulinReg not equal", insulinReg, returnedInsulinReg);
+		Assert.assertNotNull("InsulinRec not added", returnedInsulinRec);
+		Assert.assertEquals("InsulinRec not equal", insulinRec, returnedInsulinRec);
 
 		dbRead.close();
 		dbWrite.close();
@@ -409,7 +409,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		InsulinDataBinding insulin = new InsulinDataBinding();
+		Insulin insulin = new Insulin();
 		insulin.setId(1);
 		insulin.setName("humalog");
 		insulin.setDuration(1);
@@ -418,24 +418,24 @@ public class DB_WriteTest {
 
 		dbWrite.Insulin_Add(insulin);
 
-		InsulinRegDataBinding insulinReg = new InsulinRegDataBinding();
-		insulinReg.setIdUser(1);
-		insulinReg.setId(1);
-		insulinReg.setIdInsulin(1);
-		insulinReg.setIdTag(1);
-		insulinReg.setDateTime(Calendar.getInstance());
-		insulinReg.setInsulinUnits(3);
-		insulinReg.setTargetGlycemia(100);
+		InsulinRec insulinRec = new InsulinRec();
+		insulinRec.setIdUser(1);
+		insulinRec.setId(1);
+		insulinRec.setIdInsulin(1);
+		insulinRec.setIdTag(1);
+		insulinRec.setDateTime(Calendar.getInstance());
+		insulinRec.setInsulinUnits(3);
+		insulinRec.setTargetGlycemia(100);
 
-		dbWrite.Insulin_Save(insulinReg);
-		insulinReg.setInsulinUnits(4);
-		dbWrite.Insulin_Update(insulinReg);
+		dbWrite.Insulin_Save(insulinRec);
+		insulinRec.setInsulinUnits(4);
+		dbWrite.Insulin_Update(insulinRec);
 
 
-		InsulinRegDataBinding returnedInsulinReg = dbRead.InsulinReg_GetById(1);
+		InsulinRec returnedInsulinRec = dbRead.InsulinReg_GetById(1);
 
-		Assert.assertNotNull("InsulinReg not added", returnedInsulinReg);
-		Assert.assertEquals("InsulinReg not updated", insulinReg, returnedInsulinReg);
+		Assert.assertNotNull("InsulinRec not added", returnedInsulinRec);
+		Assert.assertEquals("InsulinRec not updated", insulinRec, returnedInsulinRec);
 
 		dbRead.close();
 		dbWrite.close();
@@ -448,7 +448,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		InsulinDataBinding insulin = new InsulinDataBinding();
+		Insulin insulin = new Insulin();
 		insulin.setId(1);
 		insulin.setName("humalog");
 		insulin.setDuration(1);
@@ -457,22 +457,22 @@ public class DB_WriteTest {
 
 		dbWrite.Insulin_Add(insulin);
 
-		InsulinRegDataBinding insulinReg = new InsulinRegDataBinding();
-		insulinReg.setIdUser(1);
-		insulinReg.setId(1);
-		insulinReg.setIdInsulin(1);
-		insulinReg.setIdTag(1);
-		insulinReg.setDateTime(Calendar.getInstance());
-		insulinReg.setInsulinUnits(3);
-		insulinReg.setTargetGlycemia(100);
+		InsulinRec insulinRec = new InsulinRec();
+		insulinRec.setIdUser(1);
+		insulinRec.setId(1);
+		insulinRec.setIdInsulin(1);
+		insulinRec.setIdTag(1);
+		insulinRec.setDateTime(Calendar.getInstance());
+		insulinRec.setInsulinUnits(3);
+		insulinRec.setTargetGlycemia(100);
 
-		dbWrite.Insulin_Save(insulinReg);
+		dbWrite.Insulin_Save(insulinRec);
 		dbWrite.Insulin_Delete(1);
 
 
-		InsulinRegDataBinding returnedInsulinReg = dbRead.InsulinReg_GetById(1);
+		InsulinRec returnedInsulinRec = dbRead.InsulinReg_GetById(1);
 
-		Assert.assertNull("InsulinReg not deleted", returnedInsulinReg);
+		Assert.assertNull("InsulinRec not deleted", returnedInsulinRec);
 
 		dbRead.close();
 		dbWrite.close();
@@ -513,7 +513,7 @@ public class DB_WriteTest {
 		dbWrite.Exercise_Add("running");
 
 
-		ExerciseDataBinding exercise = new ExerciseDataBinding();
+		Exercise exercise = new Exercise();
 		exercise.setId(1);
 		exercise.setName("running1");
 		dbWrite.Exercise_Update(exercise);
@@ -534,16 +534,16 @@ public class DB_WriteTest {
 
 		dbWrite.Exercise_Add("running");
 
-		ExerciseRegDataBinding exerciseRegDataBinding=new ExerciseRegDataBinding();
-		exerciseRegDataBinding.setId_User(1);
-		exerciseRegDataBinding.setId(1);
-		exerciseRegDataBinding.setDateTime(Calendar.getInstance());
-		exerciseRegDataBinding.setDuration(10);
-		exerciseRegDataBinding.setExercise("running");
-		exerciseRegDataBinding.setEffort("forte");
-		dbWrite.Exercise_Save(exerciseRegDataBinding);
+		ExerciseRec exerciseRec =new ExerciseRec();
+		exerciseRec.setIdUser(1);
+		exerciseRec.setId(1);
+		exerciseRec.setDateTime(Calendar.getInstance());
+		exerciseRec.setDuration(10);
+		exerciseRec.setExercise("running");
+		exerciseRec.setEffort("forte");
+		dbWrite.Exercise_Save(exerciseRec);
 
-		Assert.assertEquals("Exercise reg not added",exerciseRegDataBinding, dbRead.ExerciseReg_GetById(1));
+		Assert.assertEquals("Exercise reg not added", exerciseRec, dbRead.ExerciseReg_GetById(1));
 
 		dbRead.close();
 		dbWrite.close();
@@ -558,14 +558,14 @@ public class DB_WriteTest {
 
 		dbWrite.Exercise_Add("running");
 
-		ExerciseRegDataBinding exerciseRegDataBinding=new ExerciseRegDataBinding();
-		exerciseRegDataBinding.setId(1);
-		exerciseRegDataBinding.setDateTime(Calendar.getInstance());
-		exerciseRegDataBinding.setDuration(10);
-		exerciseRegDataBinding.setExercise("running");
-		exerciseRegDataBinding.setId_User(1);
-		exerciseRegDataBinding.setEffort("forte");
-		dbWrite.Exercise_Save(exerciseRegDataBinding);
+		ExerciseRec exerciseRec =new ExerciseRec();
+		exerciseRec.setId(1);
+		exerciseRec.setDateTime(Calendar.getInstance());
+		exerciseRec.setDuration(10);
+		exerciseRec.setExercise("running");
+		exerciseRec.setIdUser(1);
+		exerciseRec.setEffort("forte");
+		dbWrite.Exercise_Save(exerciseRec);
 
 		dbWrite.Exercise_Delete(1);
 
@@ -584,21 +584,21 @@ public class DB_WriteTest {
 
 		dbWrite.Exercise_Add("running");
 
-		ExerciseRegDataBinding exerciseRegDataBinding=new ExerciseRegDataBinding();
-		exerciseRegDataBinding.setId(1);
-		exerciseRegDataBinding.setDateTime(Calendar.getInstance());
-		exerciseRegDataBinding.setDuration(10);
-		exerciseRegDataBinding.setExercise("running");
-		exerciseRegDataBinding.setId_User(1);
-		exerciseRegDataBinding.setEffort("forte");
-		dbWrite.Exercise_Save(exerciseRegDataBinding);
-		exerciseRegDataBinding.setDuration(20);
-		dbWrite.Exercise_Update(exerciseRegDataBinding);
+		ExerciseRec exerciseRec =new ExerciseRec();
+		exerciseRec.setId(1);
+		exerciseRec.setDateTime(Calendar.getInstance());
+		exerciseRec.setDuration(10);
+		exerciseRec.setExercise("running");
+		exerciseRec.setIdUser(1);
+		exerciseRec.setEffort("forte");
+		dbWrite.Exercise_Save(exerciseRec);
+		exerciseRec.setDuration(20);
+		dbWrite.Exercise_Update(exerciseRec);
 
-		ExerciseRegDataBinding returnedExerciseReg = dbRead.ExerciseReg_GetById(1);
-		Assert.assertNotNull(returnedExerciseReg);
-		Assert.assertEquals("Exercise reg not updated",exerciseRegDataBinding, returnedExerciseReg);
-		Assert.assertEquals("Exercise reg not updated",20, returnedExerciseReg.getDuration());
+		ExerciseRec returnedExerciseRec = dbRead.ExerciseReg_GetById(1);
+		Assert.assertNotNull(returnedExerciseRec);
+		Assert.assertEquals("Exercise reg not updated", exerciseRec, returnedExerciseRec);
+		Assert.assertEquals("Exercise reg not updated",20, returnedExerciseRec.getDuration());
 
 		dbRead.close();
 		dbWrite.close();
@@ -611,21 +611,21 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		CarbsDataBinding carbsDataBinding = new CarbsDataBinding();
-		carbsDataBinding.setId_User(1);
-		carbsDataBinding.setId(1);
-		carbsDataBinding.setCarbsValue(10);
-		carbsDataBinding.setPhotoPath("/");
-		carbsDataBinding.setId_Tag(1);
-		carbsDataBinding.setId_Note(-1);
-		carbsDataBinding.setDateTime(Calendar.getInstance());
-		dbWrite.Carbs_Save(carbsDataBinding);
+		CarbsRec carbsRec = new CarbsRec();
+		carbsRec.setIdUser(1);
+		carbsRec.setId(1);
+		carbsRec.setCarbsValue(10);
+		carbsRec.setPhotoPath("/");
+		carbsRec.setIdTag(1);
+		carbsRec.setIdNote(-1);
+		carbsRec.setDateTime(Calendar.getInstance());
+		dbWrite.Carbs_Save(carbsRec);
 
-		CarbsDataBinding result = dbRead.CarboHydrate_GetById(1);
+		CarbsRec result = dbRead.CarboHydrate_GetById(1);
 		Assert.assertNotNull(result);
-		Log.d("test", "saved: " + carbsDataBinding.toString());
+		Log.d("test", "saved: " + carbsRec.toString());
 		Log.d("test", "returned: " + result.toString());
-		Assert.assertTrue("Carb data not the same as saved", carbsDataBinding.equals(result));
+		Assert.assertTrue("Carb data not the same as saved", carbsRec.equals(result));
 
 		dbRead.close();
 		dbWrite.close();
@@ -638,25 +638,25 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		CarbsDataBinding carbsDataBinding = new CarbsDataBinding();
-		carbsDataBinding.setId_User(1);
-		carbsDataBinding.setId(1);
-		carbsDataBinding.setCarbsValue(10);
-		carbsDataBinding.setPhotoPath("/");
-		carbsDataBinding.setId_Tag(1);
-		carbsDataBinding.setId_Note(-1);
-		carbsDataBinding.setDateTime(Calendar.getInstance());
-		dbWrite.Carbs_Save(carbsDataBinding);
+		CarbsRec carbsRec = new CarbsRec();
+		carbsRec.setIdUser(1);
+		carbsRec.setId(1);
+		carbsRec.setCarbsValue(10);
+		carbsRec.setPhotoPath("/");
+		carbsRec.setIdTag(1);
+		carbsRec.setIdNote(-1);
+		carbsRec.setDateTime(Calendar.getInstance());
+		dbWrite.Carbs_Save(carbsRec);
 
-		carbsDataBinding.setCarbsValue(11);
-		dbWrite.Carbs_Update(carbsDataBinding);
+		carbsRec.setCarbsValue(11);
+		dbWrite.Carbs_Update(carbsRec);
 
-		CarbsDataBinding result = dbRead.CarboHydrate_GetById(1);
+		CarbsRec result = dbRead.CarboHydrate_GetById(1);
 		Assert.assertNotNull(result);
-		Log.d("test", "saved: " + carbsDataBinding.toString());
+		Log.d("test", "saved: " + carbsRec.toString());
 		Log.d("test", "returned: " + result.toString());
-		Assert.assertTrue("Carb data not the same as saved", carbsDataBinding.equals(result));
-		Assert.assertEquals("Carbs value different from the expected", carbsDataBinding.getCarbsValue(), result.getCarbsValue());
+		Assert.assertTrue("Carb data not the same as saved", carbsRec.equals(result));
+		Assert.assertEquals("Carbs value different from the expected", carbsRec.getCarbsValue(), result.getCarbsValue());
 
 		dbRead.close();
 		dbWrite.close();
@@ -669,17 +669,17 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		CarbsDataBinding carbsDataBinding = new CarbsDataBinding();
-		carbsDataBinding.setId_User(1);
-		carbsDataBinding.setId(1);
-		carbsDataBinding.setCarbsValue(10);
-		carbsDataBinding.setPhotoPath("/");
-		carbsDataBinding.setId_Tag(1);
-		carbsDataBinding.setId_Note(-1);
-		carbsDataBinding.setDateTime(Calendar.getInstance());
-		dbWrite.Carbs_Save(carbsDataBinding);
+		CarbsRec carbsRec = new CarbsRec();
+		carbsRec.setIdUser(1);
+		carbsRec.setId(1);
+		carbsRec.setCarbsValue(10);
+		carbsRec.setPhotoPath("/");
+		carbsRec.setIdTag(1);
+		carbsRec.setIdNote(-1);
+		carbsRec.setDateTime(Calendar.getInstance());
+		dbWrite.Carbs_Save(carbsRec);
 
-		CarbsDataBinding result = dbRead.CarboHydrate_GetById(1);
+		CarbsRec result = dbRead.CarboHydrate_GetById(1);
 		Assert.assertNotNull(result);
 		dbWrite.Carbs_Delete(1);
 		result = dbRead.CarboHydrate_GetById(1);
@@ -696,18 +696,18 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		CarbsDataBinding carbsDataBinding = new CarbsDataBinding();
-		carbsDataBinding.setId_User(1);
-		carbsDataBinding.setId(1);
-		carbsDataBinding.setCarbsValue(10);
-		carbsDataBinding.setPhotoPath("/");
-		carbsDataBinding.setId_Tag(1);
-		carbsDataBinding.setId_Note(-1);
-		carbsDataBinding.setDateTime(Calendar.getInstance());
-		dbWrite.Carbs_Save(carbsDataBinding);
+		CarbsRec carbsRec = new CarbsRec();
+		carbsRec.setIdUser(1);
+		carbsRec.setId(1);
+		carbsRec.setCarbsValue(10);
+		carbsRec.setPhotoPath("/");
+		carbsRec.setIdTag(1);
+		carbsRec.setIdNote(-1);
+		carbsRec.setDateTime(Calendar.getInstance());
+		dbWrite.Carbs_Save(carbsRec);
 
 		dbWrite.Carbs_DeletePhoto(1);
-		CarbsDataBinding result = dbRead.CarboHydrate_GetById(1);
+		CarbsRec result = dbRead.CarboHydrate_GetById(1);
 		Assert.assertNotNull("Carbs in DB null", result);
 		Assert.assertEquals("Photopath not deleted", "", result.getPhotoPath());
 
@@ -723,7 +723,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		BloodPressureDataBinding bp=new BloodPressureDataBinding();
+		BloodPressureRec bp=new BloodPressureRec();
 		bp.setId(1);
 		bp.setDateTime(Calendar.getInstance());
 		bp.setDiastolic(85);
@@ -732,7 +732,7 @@ public class DB_WriteTest {
 		bp.setIdUser(1);
 		dbWrite.BloodPressure_Save(bp);
 
-		BloodPressureDataBinding returnBp = dbRead.BloodPressure_GetById(1);
+		BloodPressureRec returnBp = dbRead.BloodPressure_GetById(1);
 
 		Assert.assertNotNull(returnBp);
 		Assert.assertEquals(bp, returnBp);
@@ -748,7 +748,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		BloodPressureDataBinding bp=new BloodPressureDataBinding();
+		BloodPressureRec bp=new BloodPressureRec();
 		bp.setId(1);
 		bp.setDateTime(Calendar.getInstance());
 		bp.setDiastolic(85);
@@ -759,7 +759,7 @@ public class DB_WriteTest {
 		bp.setDiastolic(86);
 		dbWrite.BloodPressure_Update(bp);
 
-		BloodPressureDataBinding returnBp = dbRead.BloodPressure_GetById(1);
+		BloodPressureRec returnBp = dbRead.BloodPressure_GetById(1);
 
 		Assert.assertNotNull(returnBp);
 		Assert.assertEquals(bp, returnBp);
@@ -775,7 +775,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		BloodPressureDataBinding bp=new BloodPressureDataBinding();
+		BloodPressureRec bp=new BloodPressureRec();
 		bp.setId(1);
 		bp.setDateTime(Calendar.getInstance());
 		bp.setDiastolic(85);
@@ -785,7 +785,7 @@ public class DB_WriteTest {
 		dbWrite.BloodPressure_Save(bp);
 		dbWrite.BloodPressure_Delete(1);
 
-		BloodPressureDataBinding returnBp = dbRead.BloodPressure_GetById(1);
+		BloodPressureRec returnBp = dbRead.BloodPressure_GetById(1);
 
 		Assert.assertNull(returnBp);
 
@@ -798,13 +798,13 @@ public class DB_WriteTest {
 		DB_Write dbWrite = new DB_Write(mMockContext);
 		DB_Read dbRead = new DB_Read(mMockContext);
 
-		NoteDataBinding note=new NoteDataBinding();
+		Note note=new Note();
 		note.setId(1);
 		note.setNote("note");
 
 		dbWrite.Note_Add(note);
 
-		NoteDataBinding returnedNote = dbRead.Note_GetById(1);
+		Note returnedNote = dbRead.Note_GetById(1);
 
 		Assert.assertNotNull(returnedNote);
 		Assert.assertEquals(note, returnedNote);
@@ -818,7 +818,7 @@ public class DB_WriteTest {
 		DB_Write dbWrite = new DB_Write(mMockContext);
 		DB_Read dbRead = new DB_Read(mMockContext);
 
-		NoteDataBinding note=new NoteDataBinding();
+		Note note=new Note();
 		note.setId(1);
 		note.setNote("note");
 
@@ -826,7 +826,7 @@ public class DB_WriteTest {
 		note.setNote("note1");
 		dbWrite.Note_Update(note);
 
-		NoteDataBinding returnedNote = dbRead.Note_GetById(1);
+		Note returnedNote = dbRead.Note_GetById(1);
 
 		Assert.assertNotNull(returnedNote);
 		Assert.assertEquals(note, returnedNote);
@@ -840,14 +840,14 @@ public class DB_WriteTest {
 		DB_Write dbWrite = new DB_Write(mMockContext);
 		DB_Read dbRead = new DB_Read(mMockContext);
 
-		NoteDataBinding note=new NoteDataBinding();
+		Note note=new Note();
 		note.setId(1);
 		note.setNote("note");
 
 		dbWrite.Note_Add(note);
 		dbWrite.Note_Delete(1);
 
-		NoteDataBinding returnedNote = dbRead.Note_GetById(1);
+		Note returnedNote = dbRead.Note_GetById(1);
 
 		Assert.assertNull(returnedNote);
 
@@ -862,14 +862,14 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		CholesterolDataBinding cholesterol=new CholesterolDataBinding();
+		CholesterolRec cholesterol=new CholesterolRec();
 		cholesterol.setId(1);
 		cholesterol.setIdUser(1);
 		cholesterol.setDateTime(Calendar.getInstance());
 		cholesterol.setValue(50.0);
 		dbWrite.Cholesterol_Save(cholesterol);
 
-		CholesterolDataBinding returnedCholesterol = dbRead.Cholesterol_GetById(1);
+		CholesterolRec returnedCholesterol = dbRead.Cholesterol_GetById(1);
 
 		Assert.assertNotNull(returnedCholesterol);
 		Assert.assertEquals(cholesterol, returnedCholesterol);
@@ -885,7 +885,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		CholesterolDataBinding cholesterol=new CholesterolDataBinding();
+		CholesterolRec cholesterol=new CholesterolRec();
 		cholesterol.setId(1);
 		cholesterol.setIdUser(1);
 		cholesterol.setDateTime(Calendar.getInstance());
@@ -894,7 +894,7 @@ public class DB_WriteTest {
 		cholesterol.setValue(51.0);
 		dbWrite.Cholesterol_Update(cholesterol);
 
-		CholesterolDataBinding returnedCholesterol = dbRead.Cholesterol_GetById(1);
+		CholesterolRec returnedCholesterol = dbRead.Cholesterol_GetById(1);
 
 		Assert.assertNotNull(returnedCholesterol);
 		Assert.assertEquals(cholesterol, returnedCholesterol);
@@ -910,7 +910,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		CholesterolDataBinding cholesterol=new CholesterolDataBinding();
+		CholesterolRec cholesterol=new CholesterolRec();
 		cholesterol.setId(1);
 		cholesterol.setIdUser(1);
 		cholesterol.setDateTime(Calendar.getInstance());
@@ -918,7 +918,7 @@ public class DB_WriteTest {
 		dbWrite.Cholesterol_Save(cholesterol);
 		dbWrite.Cholesterol_Delete(1);
 
-		CholesterolDataBinding returnedCholesterol = dbRead.Cholesterol_GetById(1);
+		CholesterolRec returnedCholesterol = dbRead.Cholesterol_GetById(1);
 
 		Assert.assertNull(returnedCholesterol);
 
@@ -933,14 +933,14 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		WeightDataBinding weight=new WeightDataBinding();
+		WeightRec weight=new WeightRec();
 		weight.setIdUser(1);
 		weight.setId(1);
 		weight.setValue(50.0);
 		weight.setDateTime(Calendar.getInstance());
 		dbWrite.Weight_Save(weight);
 
-		WeightDataBinding returnedWeight = dbRead.Weight_GetById(1);
+		WeightRec returnedWeight = dbRead.Weight_GetById(1);
 
 		Assert.assertNotNull(returnedWeight);
 		Assert.assertEquals(weight, returnedWeight);
@@ -956,7 +956,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		WeightDataBinding weight=new WeightDataBinding();
+		WeightRec weight=new WeightRec();
 		weight.setIdUser(1);
 		weight.setId(1);
 		weight.setValue(50.0);
@@ -965,7 +965,7 @@ public class DB_WriteTest {
 		weight.setValue(51.0);
 		dbWrite.Weight_Update(weight);
 
-		WeightDataBinding returnedWeight = dbRead.Weight_GetById(1);
+		WeightRec returnedWeight = dbRead.Weight_GetById(1);
 
 		Assert.assertNotNull(returnedWeight);
 		Assert.assertEquals(weight, returnedWeight);
@@ -981,7 +981,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		WeightDataBinding weight=new WeightDataBinding();
+		WeightRec weight=new WeightRec();
 		weight.setIdUser(1);
 		weight.setId(1);
 		weight.setValue(50.0);
@@ -989,7 +989,7 @@ public class DB_WriteTest {
 		dbWrite.Weight_Save(weight);
 		dbWrite.Weight_Delete(1);
 
-		WeightDataBinding returnedWeight = dbRead.Weight_GetById(1);
+		WeightRec returnedWeight = dbRead.Weight_GetById(1);
 
 		Assert.assertNull(returnedWeight);
 
@@ -1004,14 +1004,14 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		DiseaseRegDataBinding disease=new DiseaseRegDataBinding();
+		DiseaseRec disease=new DiseaseRec();
 		disease.setIdUser(1);
 		disease.setId(1);
 		disease.setDisease("gripe");
 		disease.setStartDate(DateUtils.formatToDb(Calendar.getInstance()));
 		dbWrite.DiseaseReg_Save(disease);
 
-		DiseaseRegDataBinding returnedDisease = dbRead.DiseaseReg_GetById(1);
+		DiseaseRec returnedDisease = dbRead.DiseaseReg_GetById(1);
 
 		Assert.assertNotNull(returnedDisease);
 		Assert.assertEquals(disease, returnedDisease);
@@ -1027,7 +1027,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		DiseaseRegDataBinding disease=new DiseaseRegDataBinding();
+		DiseaseRec disease=new DiseaseRec();
 		disease.setIdUser(1);
 		disease.setId(1);
 		disease.setDisease("gripe");
@@ -1036,7 +1036,7 @@ public class DB_WriteTest {
 		disease.setDisease("gripe1");
 		dbWrite.DiseaseReg_Update(disease);
 
-		DiseaseRegDataBinding returnedDisease = dbRead.DiseaseReg_GetById(1);
+		DiseaseRec returnedDisease = dbRead.DiseaseReg_GetById(1);
 
 		Assert.assertNotNull(returnedDisease);
 		Assert.assertEquals(disease, returnedDisease);
@@ -1052,7 +1052,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		DiseaseRegDataBinding disease=new DiseaseRegDataBinding();
+		DiseaseRec disease=new DiseaseRec();
 		disease.setIdUser(1);
 		disease.setId(1);
 		disease.setDisease("gripe");
@@ -1060,7 +1060,7 @@ public class DB_WriteTest {
 		dbWrite.DiseaseReg_Save(disease);
 		dbWrite.DiseaseReg_Delete(1);
 
-		DiseaseRegDataBinding returnedDisease = dbRead.DiseaseReg_GetById(1);
+		DiseaseRec returnedDisease = dbRead.DiseaseReg_GetById(1);
 
 		Assert.assertNull(returnedDisease);
 
@@ -1075,14 +1075,14 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		HbA1cDataBinding hba1=new HbA1cDataBinding();
+		HbA1cRec hba1=new HbA1cRec();
 		hba1.setId(1);
 		hba1.setIdUser(1);
 		hba1.setDateTime(Calendar.getInstance());
 		hba1.setValue(10.0);
 		dbWrite.HbA1c_Save(hba1);
 
-		HbA1cDataBinding returnedHba1 = dbRead.HbA1c_GetById(1);
+		HbA1cRec returnedHba1 = dbRead.HbA1c_GetById(1);
 
 		Assert.assertNotNull(returnedHba1);
 		Assert.assertEquals(hba1, returnedHba1);
@@ -1098,7 +1098,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		HbA1cDataBinding hba1=new HbA1cDataBinding();
+		HbA1cRec hba1=new HbA1cRec();
 		hba1.setId(1);
 		hba1.setIdUser(1);
 		hba1.setDateTime(Calendar.getInstance());
@@ -1107,7 +1107,7 @@ public class DB_WriteTest {
 		hba1.setValue(11.0);
 		dbWrite.HbA1c_Update(hba1);
 
-		HbA1cDataBinding returnedHba1 = dbRead.HbA1c_GetById(1);
+		HbA1cRec returnedHba1 = dbRead.HbA1c_GetById(1);
 
 		Assert.assertNotNull(returnedHba1);
 		Assert.assertEquals(hba1, returnedHba1);
@@ -1123,7 +1123,7 @@ public class DB_WriteTest {
 
 		dbWrite.MyData_Save(getMockUserData());
 
-		HbA1cDataBinding hba1=new HbA1cDataBinding();
+		HbA1cRec hba1=new HbA1cRec();
 		hba1.setId(1);
 		hba1.setIdUser(1);
 		hba1.setDateTime(Calendar.getInstance());
@@ -1131,7 +1131,7 @@ public class DB_WriteTest {
 		dbWrite.HbA1c_Save(hba1);
 		dbWrite.HbA1c_Delete(1);
 
-		HbA1cDataBinding returnedHba1 = dbRead.HbA1c_GetById(1);
+		HbA1cRec returnedHba1 = dbRead.HbA1c_GetById(1);
 
 		Assert.assertNull(returnedHba1);
 
@@ -1144,7 +1144,7 @@ public class DB_WriteTest {
 		DB_Write dbWrite = new DB_Write(mMockContext);
 		DB_Read dbRead = new DB_Read(mMockContext);
 
-		TargetDataBinding target=new TargetDataBinding();
+		InsulinTarget target=new InsulinTarget();
 		target.setId(1);
 		target.setName("all day");
 		target.setStart(DateUtils.formatToDb(Calendar.getInstance()));
@@ -1152,7 +1152,7 @@ public class DB_WriteTest {
 		dbWrite.Target_Add(target);
 		dbWrite.Target_Remove(1);
 
-		TargetDataBinding returnedTarget = dbRead.Target_GetById(1);
+		InsulinTarget returnedTarget = dbRead.Target_GetById(1);
 
 		Assert.assertNull(returnedTarget);
 
@@ -1165,14 +1165,14 @@ public class DB_WriteTest {
 		DB_Write dbWrite = new DB_Write(mMockContext);
 		DB_Read dbRead = new DB_Read(mMockContext);
 
-		TargetDataBinding target=new TargetDataBinding();
+		InsulinTarget target=new InsulinTarget();
 		target.setId(1);
 		target.setName("all day");
 		target.setStart(DateUtils.formatToDb(Calendar.getInstance()));
 		target.setEnd(DateUtils.formatToDb(Calendar.getInstance()));
 		dbWrite.Target_Add(target);
 
-		TargetDataBinding returnedTarget = dbRead.Target_GetById(1);
+		InsulinTarget returnedTarget = dbRead.Target_GetById(1);
 
 		Assert.assertNotNull(returnedTarget);
 		Assert.assertEquals(target, returnedTarget);
@@ -1186,7 +1186,7 @@ public class DB_WriteTest {
 		DB_Write dbWrite = new DB_Write(mMockContext);
 		DB_Read dbRead = new DB_Read(mMockContext);
 
-		TargetDataBinding target=new TargetDataBinding();
+		InsulinTarget target=new InsulinTarget();
 		target.setId(1);
 		target.setName("all day");
 		target.setStart(DateUtils.formatToDb(Calendar.getInstance()));
@@ -1195,7 +1195,7 @@ public class DB_WriteTest {
 		target.setName("all day 2");
 		dbWrite.Target_Update(target);
 
-		TargetDataBinding returnedTarget = dbRead.Target_GetById(1);
+		InsulinTarget returnedTarget = dbRead.Target_GetById(1);
 
 		Assert.assertNotNull(returnedTarget);
 		Assert.assertEquals(target, returnedTarget);

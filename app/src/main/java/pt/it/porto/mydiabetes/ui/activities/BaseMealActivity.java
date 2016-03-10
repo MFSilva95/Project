@@ -39,9 +39,9 @@ import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc;
-import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc.CalcListener;
-import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
+import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment;
+import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment.CalcListener;
+import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
@@ -64,7 +64,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	private Bitmap b;
 	private Uri generatedImageUri;
 	private boolean showAddGlycemiaTarget;
-	protected InsulinCalc fragmentInsulinCalcs;
+	protected InsulinCalcFragment fragmentInsulinCalcsFragment;
 	private boolean expandInsulinCalcsAuto = false;
 	boolean useIOB=true;
 
@@ -91,10 +91,10 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 		setupInsulinCalculator();
 
 //		if (((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).isChecked()) {
-//			fragmentInsulinCalcs=new InsulinCalc();
-//			getFragmentManager().beginTransaction().replace(R.id.fragment_calcs, fragmentInsulinCalcs).commit();
+//			fragmentInsulinCalcsFragment=new InsulinCalcFragment();
+//			getFragmentManager().beginTransaction().replace(R.id.fragment_calcs, fragmentInsulinCalcsFragment).commit();
 //			getFragmentManager().executePendingTransactions();
-//			this.fragmentInsulinCalcs= (InsulinCalc)  getFragmentManager().findFragmentById(R.id.fragment_calcs);
+//			this.fragmentInsulinCalcsFragment= (InsulinCalcFragment)  getFragmentManager().findFragmentById(R.id.fragment_calcs);
 //		}
 
 		FeaturesDB featuresDB=new FeaturesDB(MyDiabetesStorage.getInstance(this));
@@ -380,12 +380,12 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 		Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
 		ArrayList<String> allTags = new ArrayList<>();
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<TagDataBinding> t = rdb.Tag_GetAll();
+		ArrayList<Tag> t = rdb.Tag_GetAll();
 		rdb.close();
 
 
 		if (t != null) {
-			for (TagDataBinding i : t) {
+			for (Tag i : t) {
 				allTags.add(i.getName());
 			}
 		}
@@ -472,15 +472,15 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	}
 
 	public void showCalcs() {
-		if (fragmentInsulinCalcs == null) {
+		if (fragmentInsulinCalcsFragment == null) {
 			FragmentManager fragmentManager = getFragmentManager();
 			Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_calcs);
 			if (fragment != null) {
-				fragmentInsulinCalcs = (InsulinCalc) fragment;
+				fragmentInsulinCalcsFragment = (InsulinCalcFragment) fragment;
 			} else {
-				fragmentInsulinCalcs = InsulinCalc.newInstance((int) insulinCalculator.getGlycemiaRatio(), (int) insulinCalculator.getCarbsRatio());
+				fragmentInsulinCalcsFragment = InsulinCalcFragment.newInstance((int) insulinCalculator.getGlycemiaRatio(), (int) insulinCalculator.getCarbsRatio());
 				fragmentManager.beginTransaction()
-						.add(R.id.fragment_calcs, fragmentInsulinCalcs)
+						.add(R.id.fragment_calcs, fragmentInsulinCalcsFragment)
 						.commit();
 				fragmentManager.executePendingTransactions();
 
@@ -491,14 +491,14 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 			}
 		}
 
-		fragmentInsulinCalcs.setCorrectionGlycemia(insulinCalculator.getInsulinGlycemia());
-		fragmentInsulinCalcs.setCorrectionCarbs(insulinCalculator.getInsulinCarbs());
-		fragmentInsulinCalcs.setResult(insulinCalculator.getInsulinTotal(useIOB), insulinCalculator.getInsulinTotal(useIOB, true));
-		fragmentInsulinCalcs.setInsulinOnBoard(insulinCalculator.getInsulinOnBoard());
+		fragmentInsulinCalcsFragment.setCorrectionGlycemia(insulinCalculator.getInsulinGlycemia());
+		fragmentInsulinCalcsFragment.setCorrectionCarbs(insulinCalculator.getInsulinCarbs());
+		fragmentInsulinCalcsFragment.setResult(insulinCalculator.getInsulinTotal(useIOB), insulinCalculator.getInsulinTotal(useIOB, true));
+		fragmentInsulinCalcsFragment.setInsulinOnBoard(insulinCalculator.getInsulinOnBoard());
 		insulinCalculator.setListener(new InsulinCalculator.InsulinCalculatorListener() {
 			@Override
 			public void insulinOnBoardChanged(InsulinCalculator calculator) {
-				if (fragmentInsulinCalcs != null) {
+				if (fragmentInsulinCalcsFragment != null) {
 					showCalcs();
 				}
 				setInsulinIntake();
@@ -507,7 +507,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	}
 
 	public void hideCalcs() {
-		if (fragmentInsulinCalcs != null) {
+		if (fragmentInsulinCalcsFragment != null) {
 			ScaleAnimation animation = new ScaleAnimation(1, 1, 1, 0, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
 			animation.setDuration(700);
 			findViewById(R.id.fragment_calcs).startAnimation(animation);
@@ -520,9 +520,9 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 				@Override
 				public void onAnimationEnd(Animation animation) {
 					getFragmentManager().beginTransaction()
-							.remove(fragmentInsulinCalcs)
+							.remove(fragmentInsulinCalcsFragment)
 							.commit();
-					fragmentInsulinCalcs = null;
+					fragmentInsulinCalcsFragment = null;
 				}
 
 				@Override
@@ -563,11 +563,11 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 //		FragmentManager fragmentManager = getFragmentManager();
 //		Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_calcs);
 //		if (fragment != null) {
-//			fragmentInsulinCalcs = (InsulinCalc) fragment;
+//			fragmentInsulinCalcsFragment = (InsulinCalcFragment) fragment;
 //			return true;
 //		}
 //		return false;
-		return fragmentInsulinCalcs != null;
+		return fragmentInsulinCalcsFragment != null;
 	}
 
 	public void setGlycemiaTarget(int val) {
@@ -650,7 +650,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 
 	@Override
 	public void setup() {
-		fragmentInsulinCalcs = (InsulinCalc) getFragmentManager().findFragmentById(R.id.fragment_calcs);
+		fragmentInsulinCalcsFragment = (InsulinCalcFragment) getFragmentManager().findFragmentById(R.id.fragment_calcs);
 		showCalcs();
 	}
 

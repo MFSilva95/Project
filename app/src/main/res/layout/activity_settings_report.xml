@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/fragment_pdf_export"
-        android:name="pt.it.porto.mydiabetes.ui.fragments.PdfExport"
+        android:name="pt.it.porto.mydiabetes.ui.fragments.PdfExportFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout="@layout/fragment_pdf_export"/>

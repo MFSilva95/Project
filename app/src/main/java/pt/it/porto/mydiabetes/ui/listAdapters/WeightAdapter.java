@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.WeightDetail;
-import pt.it.porto.mydiabetes.ui.dataBinding.WeightDataBinding;
+import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
@@ -22,9 +22,9 @@ public class WeightAdapter extends BaseAdapter {
 
 	private Cursor cursor;
 	Context _c;
-	private ArrayList<WeightDataBinding> _data;
+	private ArrayList<WeightRec> _data;
 
-	public WeightAdapter(ArrayList<WeightDataBinding> data, Context c) {
+	public WeightAdapter(ArrayList<WeightRec> data, Context c) {
 		_data = data;
 		_c = c;
 	}
@@ -45,7 +45,7 @@ public class WeightAdapter extends BaseAdapter {
 			return _data.get(position);
 		} else {
 			cursor.moveToPosition(position);
-			WeightDataBinding tmp = new WeightDataBinding();
+			WeightRec tmp = new WeightRec();
 			tmp.setId(cursor.getInt(0));
 			tmp.setValue(cursor.getDouble(1));
 			tmp.setDateTime(cursor.getString(2));
@@ -72,7 +72,7 @@ public class WeightAdapter extends BaseAdapter {
 		TextView value = (TextView) v.findViewById(R.id.tv_list_weight_value);
 
 
-		WeightDataBinding bp = (WeightDataBinding) getItem(position);
+		WeightRec bp = (WeightRec) getItem(position);
 		String _id = "" + bp.getId();
 
 		data.setText(bp.getFormattedDate());

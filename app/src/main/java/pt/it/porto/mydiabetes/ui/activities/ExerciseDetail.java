@@ -27,8 +27,8 @@ import java.util.HashMap;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.data.ExerciseRec;
+import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -53,7 +53,7 @@ public class ExerciseDetail extends Activity {
 			DB_Read rdb = new DB_Read(this);
 			String id = args.getString("Id");
 			idExercise = Integer.parseInt(id);
-			ExerciseRegDataBinding toFill = rdb.ExerciseReg_GetById(Integer.parseInt(id));
+			ExerciseRec toFill = rdb.ExerciseReg_GetById(Integer.parseInt(id));
 
 			AutoCompleteTextView exerciseSpinner = (AutoCompleteTextView) findViewById(R.id.ac_ExerciseDetail_Exercise);
 			exerciseSpinner.setText(toFill.getExercise());
@@ -68,7 +68,7 @@ public class ExerciseDetail extends Activity {
 
 			EditText note = (EditText) findViewById(R.id.et_ExerciseDetail_Notes);
 			if (toFill.getIdNote() != -1) {
-				NoteDataBinding n = new NoteDataBinding();
+				Note n = new Note();
 				n = rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
 				idNote = n.getId();
@@ -190,7 +190,7 @@ public class ExerciseDetail extends Activity {
 		int idUser = Integer.valueOf(obj[0].toString());
 
 		DB_Write reg = new DB_Write(this);
-		ExerciseRegDataBinding ex = new ExerciseRegDataBinding();
+		ExerciseRec ex = new ExerciseRec();
 
 
 		//Get id of selected exercise
@@ -203,14 +203,14 @@ public class ExerciseDetail extends Activity {
 
 
 		if (!note.getText().toString().equals("")) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			ex.setIdNote(reg.Note_Add(n));
 		}
 
 		String effort = effortSpinner.getSelectedItem().toString();
 
-		ex.setId_User(idUser);
+		ex.setIdUser(idUser);
 		ex.setExercise(exerciseSpinner.getText().toString());
 		ex.setDuration(Integer.parseInt(duration.getText().toString()));
 		ex.setEffort(effort);
@@ -297,22 +297,22 @@ public class ExerciseDetail extends Activity {
 			wdb.Exercise_Add(exerciseSpinner.getText().toString());
 		}
 
-		ExerciseRegDataBinding toUpdate = new ExerciseRegDataBinding();
+		ExerciseRec toUpdate = new ExerciseRec();
 
 		if (!note.getText().toString().equals("") && idNote == 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			toUpdate.setIdNote(wdb.Note_Add(n));
 		}
 		if (idNote != 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			n.setId(idNote);
 			wdb.Note_Update(n);
 		}
 
 		toUpdate.setId(id);
-		toUpdate.setId_User(idUser);
+		toUpdate.setIdUser(idUser);
 		toUpdate.setDuration(Integer.parseInt(duration.getText().toString()));
 		toUpdate.setDateTime(data.getText().toString(), hora.getText().toString());
 		toUpdate.setEffort(effortSpinner.getSelectedItem().toString());

@@ -36,8 +36,8 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
-import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestore;
-import pt.it.porto.mydiabetes.ui.fragments.Sync;
+import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestoreFragment;
+import pt.it.porto.mydiabetes.ui.fragments.SyncFragment;
 
 public class ImportExport extends BaseOldActivity {
 
@@ -57,13 +57,13 @@ public class ImportExport extends BaseOldActivity {
 		ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		ActionBar.Tab tab = actionBar.newTab();
-		Fragment syncFragment = new Sync();
+		Fragment syncFragment = new SyncFragment();
 		tab.setTabListener(new MyTabsListener(syncFragment));
 		tab.setText(R.string.sync);
 		actionBar.addTab(tab);
 
 		tab = actionBar.newTab();
-		Fragment bacuprestoreFragment = new DB_BackupRestore();
+		Fragment bacuprestoreFragment = new DB_BackupRestoreFragment();
 		tab.setTabListener(new MyTabsListener(bacuprestoreFragment));
 		tab.setText(R.string.backup);
 		actionBar.addTab(tab);
@@ -108,7 +108,7 @@ public class ImportExport extends BaseOldActivity {
 	}
 
 	public void backup(View v) {
-		if (DB_BackupRestore.backup(getApplicationContext())) {
+		if (DB_BackupRestoreFragment.backup(getApplicationContext())) {
 			ShowDialogMsg(getString(R.string.dbcopy_success));
 		} else {
 			ShowDialogMsg(getString(R.string.dbcopy_error));
@@ -121,7 +121,7 @@ public class ImportExport extends BaseOldActivity {
 													 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
 														 @Override
 														 public void onClick(DialogInterface dialog, int which) {
-															 if (DB_BackupRestore.restoreBackup(getApplicationContext())) {
+															 if (DB_BackupRestoreFragment.restoreBackup(getApplicationContext())) {
 																 ShowDialogMsg(getString(R.string.restore_backup_success));
 															 } else {
 																 ShowDialogMsg(getString(R.string.restore_backup_error));
@@ -151,7 +151,7 @@ public class ImportExport extends BaseOldActivity {
 
 	@SuppressLint("SimpleDateFormat")
 	public boolean fillBackup() {
-		if (DB_BackupRestore.isSDWriteable()) {
+		if (DB_BackupRestoreFragment.isSDWriteable()) {
 			File inputFile = new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION);
 			if (inputFile.exists()) {
 				Calendar cal = Calendar.getInstance();

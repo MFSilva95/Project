@@ -17,8 +17,8 @@ import java.util.HashMap;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.data.Insulin;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinAdapter;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinDataBinding;
 
 
 public class Insulins extends BaseOldActivity {
@@ -95,17 +95,17 @@ public class Insulins extends BaseOldActivity {
 
 	public void fillListView(ListView lv) {
 
-		ArrayList<InsulinDataBinding> allinsulins = new ArrayList<InsulinDataBinding>();
+		ArrayList<Insulin> allinsulins = new ArrayList<pt.it.porto.mydiabetes.data.Insulin>();
 
 		DB_Read rdb = new DB_Read(this);
 		HashMap<Integer, String[]> val = rdb.Insulin_GetAll();
 		rdb.close();
-		InsulinDataBinding insulin;
+		Insulin insulin;
 		String[] row;
 		if (val != null) {
 			for (int i : val.keySet()) {
 				row = val.get(i);
-				insulin = new InsulinDataBinding();
+				insulin = new Insulin();
 				insulin.setId(i);
 				insulin.setName(row[0]);
 				insulin.setType(row[1]);

@@ -1,7 +1,7 @@
-package pt.it.porto.mydiabetes.ui.dataBinding;
+package pt.it.porto.mydiabetes.data;
 
 
-public class NoteDataBinding {
+public class Note {
 
 	private int id;
 	private String note;
@@ -25,9 +25,9 @@ public class NoteDataBinding {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof NoteDataBinding)) return false;
+		if (!(o instanceof Note)) return false;
 
-		NoteDataBinding that = (NoteDataBinding) o;
+		Note that = (Note) o;
 
 		if (id != that.id) return false;
 		return note != null ? note.equals(that.note) : that.note == null;
@@ -36,7 +36,7 @@ public class NoteDataBinding {
 
 	@Override
 	public String toString() {
-		return "NoteDataBinding{" +
+		return "Note{" +
 				"id=" + id +
 				", note='" + note + '\'' +
 				'}';

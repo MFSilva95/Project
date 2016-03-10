@@ -16,14 +16,14 @@ import android.widget.TextView;
 
 import pt.it.porto.mydiabetes.ui.activities.InsulinsDetail;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinDataBinding;
+import pt.it.porto.mydiabetes.data.Insulin;
 
 
 public class InsulinAdapter extends BaseAdapter {
-    private ArrayList<InsulinDataBinding> _data;
+    private ArrayList<Insulin> _data;
     Context _c;
 
-    public InsulinAdapter(ArrayList<InsulinDataBinding> data, Context c) {
+    public InsulinAdapter(ArrayList<Insulin> data, Context c) {
         _data = data;
         _c = c;
     }
@@ -62,7 +62,7 @@ public class InsulinAdapter extends BaseAdapter {
         //TextView iduration = (TextView)v.findViewById(R.id.list_insulinDuration);
 
 
-        final InsulinDataBinding insulin = _data.get(position);
+        final Insulin insulin = _data.get(position);
         final String _id = "" + insulin.getId();
         iname.setText(insulin.getName());
         iname.setTag(_id);

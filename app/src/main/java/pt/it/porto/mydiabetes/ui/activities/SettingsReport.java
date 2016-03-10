@@ -32,16 +32,16 @@ import java.util.Date;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.data.BloodPressureRec;
+import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.CholesterolRec;
+import pt.it.porto.mydiabetes.data.DiseaseRec;
+import pt.it.porto.mydiabetes.data.InsulinRec;
+import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.ui.dataBinding.BloodPressureDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.CholesterolDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.HbA1cDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.WeightDataBinding;
+import pt.it.porto.mydiabetes.data.ExerciseRec;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.HbA1cRec;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class SettingsReport extends BaseOldActivity {
@@ -200,7 +200,7 @@ public class SettingsReport extends BaseOldActivity {
 		EditText datefrom = (EditText) findViewById(R.id.et_pdfexport_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_pdfexport_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<GlycemiaDataBinding> reads = rdb.Glycemia_GetByDate(datefrom
+		ArrayList<GlycemiaRec> reads = rdb.Glycemia_GetByDate(datefrom
 				.getText().toString(), dateto.getText().toString());
 		PdfPTable t = new PdfPTable(5);
 
@@ -211,7 +211,7 @@ public class SettingsReport extends BaseOldActivity {
 		t.addCell(new Phrase("Fase do dia", tf));
 		t.addCell(new Phrase("Notas", tf));
 
-		for (GlycemiaDataBinding g : reads) {
+		for (GlycemiaRec g : reads) {
 			t.addCell(new Phrase(g.getFormattedDate(), cf));
 			t.addCell(new Phrase(g.getFormattedTime(), cf));
 			t.addCell(new Phrase(String.valueOf(g.getValue()), cf));
@@ -245,7 +245,7 @@ public class SettingsReport extends BaseOldActivity {
 		EditText datefrom = (EditText) findViewById(R.id.et_pdfexport_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_pdfexport_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<InsulinRegDataBinding> reads = rdb.InsulinReg_GetByDate(
+		ArrayList<InsulinRec> reads = rdb.InsulinReg_GetByDate(
 				datefrom.getText().toString(), dateto.getText().toString());
 		PdfPTable t = new PdfPTable(8);
 
@@ -259,7 +259,7 @@ public class SettingsReport extends BaseOldActivity {
 		t.addCell(new Phrase("Fase do dia", tf));
 		t.addCell(new Phrase("Notas", tf));
 
-		for (InsulinRegDataBinding i : reads) {
+		for (InsulinRec i : reads) {
 			t.addCell(new Phrase(i.getFormattedDate(), cf));
 			t.addCell(new Phrase(i.getFormattedTime(), cf));
 			t.addCell(new Phrase(
@@ -300,7 +300,7 @@ public class SettingsReport extends BaseOldActivity {
 		EditText datefrom = (EditText) findViewById(R.id.et_pdfexport_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_pdfexport_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<ExerciseRegDataBinding> reads = rdb.ExerciseReg_GetByDate(
+		ArrayList<ExerciseRec> reads = rdb.ExerciseReg_GetByDate(
 				datefrom.getText().toString(), dateto.getText().toString());
 		PdfPTable t = new PdfPTable(6);
 
@@ -312,7 +312,7 @@ public class SettingsReport extends BaseOldActivity {
 		t.addCell(new Phrase("Esforço", tf));
 		t.addCell(new Phrase("Notas", tf));
 
-		for (ExerciseRegDataBinding i : reads) {
+		for (ExerciseRec i : reads) {
 
 			t.addCell(new Phrase(i.getFormattedDate(), cf));
 			t.addCell(new Phrase(i.getFormattedTime(), cf));
@@ -348,7 +348,7 @@ public class SettingsReport extends BaseOldActivity {
 		EditText datefrom = (EditText) findViewById(R.id.et_pdfexport_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_pdfexport_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<CarbsDataBinding> reads = rdb.CarboHydrate_GetBtDate(datefrom
+		ArrayList<CarbsRec> reads = rdb.CarboHydrate_GetBtDate(datefrom
 				.getText().toString(), dateto.getText().toString());
 		PdfPTable t = new PdfPTable(6);
 
@@ -360,14 +360,14 @@ public class SettingsReport extends BaseOldActivity {
 		t.addCell(new Phrase("Fase do dia", tf));
 		t.addCell(new Phrase("Notas", tf));
 
-		for (CarbsDataBinding i : reads) {
+		for (CarbsRec i : reads) {
 			t.addCell(new Phrase(i.getPhotoPath(), cf));
 			t.addCell(new Phrase(i.getFormattedDate(), cf));
 			t.addCell(new Phrase(i.getFormattedTime(), cf));
 			t.addCell(new Phrase(String.valueOf(i.getCarbsValue()), cf));
-			t.addCell(new Phrase(rdb.Tag_GetById(i.getId_Tag()).getName(), cf));
-			t.addCell((i.getId_Note() > 0) ? new Phrase(rdb.Note_GetById(
-					i.getId_Note()).getNote(), cf) : new Phrase("", cf));
+			t.addCell(new Phrase(rdb.Tag_GetById(i.getIdTag()).getName(), cf));
+			t.addCell((i.getIdNote() > 0) ? new Phrase(rdb.Note_GetById(
+					i.getIdNote()).getNote(), cf) : new Phrase("", cf));
 		}
 
 		rdb.close();
@@ -395,7 +395,7 @@ public class SettingsReport extends BaseOldActivity {
 		EditText datefrom = (EditText) findViewById(R.id.et_pdfexport_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_pdfexport_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<BloodPressureDataBinding> reads = rdb
+		ArrayList<BloodPressureRec> reads = rdb
 				.BloodPressure_GetBtDate(datefrom.getText().toString(), dateto
 						.getText().toString());
 		PdfPTable t = new PdfPTable(6);
@@ -408,7 +408,7 @@ public class SettingsReport extends BaseOldActivity {
 		t.addCell(new Phrase("Fase do dia", tf));
 		t.addCell(new Phrase("Notas", tf));
 
-		for (BloodPressureDataBinding i : reads) {
+		for (BloodPressureRec i : reads) {
 			t.addCell(new Phrase(i.getFormattedDate(), cf));
 			t.addCell(new Phrase(i.getFormattedTime(), cf));
 			t.addCell(new Phrase(String.valueOf(i.getSystolic()), cf));
@@ -443,7 +443,7 @@ public class SettingsReport extends BaseOldActivity {
 		EditText datefrom = (EditText) findViewById(R.id.et_pdfexport_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_pdfexport_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<DiseaseRegDataBinding> reads = rdb.DiseaseReg_GetByDate(
+		ArrayList<DiseaseRec> reads = rdb.DiseaseReg_GetByDate(
 				datefrom.getText().toString(), dateto.getText().toString());
 		PdfPTable t = new PdfPTable(4);
 
@@ -453,7 +453,7 @@ public class SettingsReport extends BaseOldActivity {
 		t.addCell(new Phrase("Doença", tf));
 		t.addCell(new Phrase("Notas", tf));
 
-		for (DiseaseRegDataBinding i : reads) {
+		for (DiseaseRec i : reads) {
 
 			t.addCell(new Phrase(i.getStartDate(), cf));
 			t.addCell(new Phrase(i.getEndDate(), cf));
@@ -487,7 +487,7 @@ public class SettingsReport extends BaseOldActivity {
 		EditText datefrom = (EditText) findViewById(R.id.et_pdfexport_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_pdfexport_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<CholesterolDataBinding> reads = rdb.Cholesterol_GetBtDate(
+		ArrayList<CholesterolRec> reads = rdb.Cholesterol_GetBtDate(
 				datefrom.getText().toString(), dateto.getText().toString());
 		PdfPTable t = new PdfPTable(4);
 
@@ -497,7 +497,7 @@ public class SettingsReport extends BaseOldActivity {
 		t.addCell(new Phrase("Valor (mg/dl)", tf));
 		t.addCell(new Phrase("Notas", tf));
 
-		for (CholesterolDataBinding i : reads) {
+		for (CholesterolRec i : reads) {
 
 			t.addCell(new Phrase(i.getFormattedDate(), cf));
 			t.addCell(new Phrase(i.getFormattedTime(), cf));
@@ -531,7 +531,7 @@ public class SettingsReport extends BaseOldActivity {
 		EditText datefrom = (EditText) findViewById(R.id.et_pdfexport_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_pdfexport_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<WeightDataBinding> reads = rdb.Weight_GetBtDate(datefrom
+		ArrayList<WeightRec> reads = rdb.Weight_GetBtDate(datefrom
 				.getText().toString(), dateto.getText().toString());
 		PdfPTable t = new PdfPTable(4);
 
@@ -541,7 +541,7 @@ public class SettingsReport extends BaseOldActivity {
 		t.addCell(new Phrase("Valor (Kg)", tf));
 		t.addCell(new Phrase("Notas", tf));
 
-		for (WeightDataBinding i : reads) {
+		for (WeightRec i : reads) {
 
 			t.addCell(new Phrase(DateUtils.getFormattedDate(i.getDateTime()), cf));
 			t.addCell(new Phrase(DateUtils.getFormattedTime(i.getDateTime()), cf));
@@ -575,7 +575,7 @@ public class SettingsReport extends BaseOldActivity {
 		EditText datefrom = (EditText) findViewById(R.id.et_pdfexport_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_pdfexport_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<HbA1cDataBinding> reads = rdb.HbA1c_GetBtDate(datefrom
+		ArrayList<HbA1cRec> reads = rdb.HbA1c_GetBtDate(datefrom
 				.getText().toString(), dateto.getText().toString());
 		PdfPTable t = new PdfPTable(4);
 
@@ -585,7 +585,7 @@ public class SettingsReport extends BaseOldActivity {
 		t.addCell(new Phrase("Valor (%)", tf));
 		t.addCell(new Phrase("Notas", tf));
 
-		for (HbA1cDataBinding i : reads) {
+		for (HbA1cRec i : reads) {
 
 			t.addCell(new Phrase(i.getFormattedDate(), cf));
 			t.addCell(new Phrase(i.getFormattedTime(), cf));

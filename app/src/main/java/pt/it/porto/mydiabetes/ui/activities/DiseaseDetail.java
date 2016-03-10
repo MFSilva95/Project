@@ -24,10 +24,10 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.data.DiseaseRec;
+import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.data.Disease;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -50,7 +50,7 @@ public class DiseaseDetail extends Activity {
 			DB_Read rdb = new DB_Read(this);
 			String id = args.getString("Id");
 			idDisease = Integer.parseInt(id);
-			DiseaseRegDataBinding toFill = rdb.DiseaseReg_GetById(Integer.parseInt(id));
+			DiseaseRec toFill = rdb.DiseaseReg_GetById(Integer.parseInt(id));
 
 			AutoCompleteTextView diseaseSpinner = (AutoCompleteTextView) findViewById(R.id.ac_DiseaseRegDetail_Disease);
 			EditText dataFrom = (EditText) findViewById(R.id.et_DiseaseRegDetail_DataFrom);
@@ -60,7 +60,7 @@ public class DiseaseDetail extends Activity {
 			dataFrom.setText(toFill.getStartDate());
 			dataTo.setText((toFill.getEndDate() != null) ? toFill.getEndDate() : "");
 			if (toFill.getIdNote() != -1) {
-				NoteDataBinding n = new NoteDataBinding();
+				Note n = new Note();
 				n = rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
 				idNote = n.getId();
@@ -123,11 +123,11 @@ public class DiseaseDetail extends Activity {
 		AutoCompleteTextView spinner = (AutoCompleteTextView) findViewById(R.id.ac_DiseaseRegDetail_Disease);
 		ArrayList<String> allDiseases = new ArrayList<String>();
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<DiseaseDataBinding> val = rdb.Disease_GetAll();
+		ArrayList<Disease> val = rdb.Disease_GetAll();
 		rdb.close();
 
 		if (val != null) {
-			for (DiseaseDataBinding d : val) {
+			for (Disease d : val) {
 				allDiseases.add(d.getName());
 			}
 		}
@@ -168,10 +168,10 @@ public class DiseaseDetail extends Activity {
 			reg.Disease_Add(diseaseSpinner.getText().toString());
 		}
 
-		DiseaseRegDataBinding dis = new DiseaseRegDataBinding();
+		DiseaseRec dis = new DiseaseRec();
 
 		if (!note.getText().toString().equals("")) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			dis.setIdNote(reg.Note_Add(n));
 		}
@@ -240,15 +240,15 @@ public class DiseaseDetail extends Activity {
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
 
-		DiseaseRegDataBinding dis = new DiseaseRegDataBinding();
+		DiseaseRec dis = new DiseaseRec();
 
 		if (!note.getText().toString().equals("") && idNote == 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			dis.setIdNote(wdb.Note_Add(n));
 		}
 		if (idNote != 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			n.setId(idNote);
 			wdb.Note_Update(n);

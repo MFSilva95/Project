@@ -1,20 +1,20 @@
-package pt.it.porto.mydiabetes.ui.dataBinding;
+package pt.it.porto.mydiabetes.data;
 
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class TagDataBinding implements Parcelable {
+public class Tag implements Parcelable {
 
-	public static final Creator<TagDataBinding> CREATOR = new Creator<TagDataBinding>() {
+	public static final Creator<Tag> CREATOR = new Creator<Tag>() {
 		@Override
-		public TagDataBinding createFromParcel(Parcel in) {
-			return new TagDataBinding(in);
+		public Tag createFromParcel(Parcel in) {
+			return new Tag(in);
 		}
 
 		@Override
-		public TagDataBinding[] newArray(int size) {
-			return new TagDataBinding[size];
+		public Tag[] newArray(int size) {
+			return new Tag[size];
 		}
 	};
 	private String name;
@@ -22,10 +22,10 @@ public class TagDataBinding implements Parcelable {
 	private String start;
 	private String end;
 
-	public TagDataBinding() {
+	public Tag() {
 	}
 
-	protected TagDataBinding(Parcel in) {
+	protected Tag(Parcel in) {
 		name = in.readString();
 		id = in.readInt();
 		start = in.readString();
@@ -80,7 +80,7 @@ public class TagDataBinding implements Parcelable {
 
 	@Override
 	public String toString() {
-		return "TagDataBinding{" +
+		return "Tag{" +
 				"name='" + name + '\'' +
 				", id=" + id +
 				", start='" + start + '\'' +

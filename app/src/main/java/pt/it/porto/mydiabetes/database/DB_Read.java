@@ -10,21 +10,21 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import pt.it.porto.mydiabetes.ui.dataBinding.BloodPressureDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.CholesterolDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.HbA1cDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.LogbookDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.TargetDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.WeightDataBinding;
+import pt.it.porto.mydiabetes.data.BloodPressureRec;
+import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.CholesterolRec;
+import pt.it.porto.mydiabetes.data.Disease;
+import pt.it.porto.mydiabetes.data.DiseaseRec;
+import pt.it.porto.mydiabetes.data.ExerciseRec;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.HbA1cRec;
+import pt.it.porto.mydiabetes.data.Insulin;
+import pt.it.porto.mydiabetes.data.InsulinRec;
+import pt.it.porto.mydiabetes.data.InsulinTarget;
+import pt.it.porto.mydiabetes.data.LogbookData;
+import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.data.Tag;
+import pt.it.porto.mydiabetes.data.WeightRec;
 
 @SuppressLint("UseSparseArrays")
 public class DB_Read {
@@ -99,8 +99,8 @@ public class DB_Read {
 		return n;
 	}
 
-	public TagDataBinding Tag_GetById(int id) {
-		TagDataBinding tag = new TagDataBinding();
+	public Tag Tag_GetById(int id) {
+		Tag tag = new Tag();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag where Id='" + id + "'", null);
 		cursor.moveToFirst();
 		tag.setId(cursor.getInt(0));
@@ -111,8 +111,8 @@ public class DB_Read {
 		return tag;
 	}
 
-	public TagDataBinding Tag_GetByTime(String time) {
-		TagDataBinding tag = new TagDataBinding();
+	public Tag Tag_GetByTime(String time) {
+		Tag tag = new Tag();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag WHERE  " + "(TimeStart < TimeEnd AND '" + time + "' >= TimeStart AND '" + time + "' <= TimeEnd)" +
 				"OR " + "(TimeStart > TimeEnd AND('" + time + "' >= TimeStart OR '" + time + "' <= TimeEnd ))" + ";", null);
 		//Cursor cursor = myDB.rawQuery("SELECT * FROM Tag where Id='" + id + "'", null);
@@ -135,15 +135,15 @@ public class DB_Read {
 		return tag;
 	}
 
-	public ArrayList<TagDataBinding> Tag_GetAll() {
+	public ArrayList<Tag> Tag_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
-		ArrayList<TagDataBinding> tags = new ArrayList<TagDataBinding>();
+		ArrayList<Tag> tags = new ArrayList<Tag>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			TagDataBinding t;
+			Tag t;
 			do {
-				t = new TagDataBinding();
+				t = new Tag();
 				t.setId(cursor.getInt(0));
 				t.setName(cursor.getString(1));
 				t.setStart(cursor.getString(2));
@@ -161,14 +161,14 @@ public class DB_Read {
 
 
 	//------------------- DISEASE ---------------------
-	public ArrayList<DiseaseDataBinding> Disease_GetAll() {
-		ArrayList<DiseaseDataBinding> AllReads = new ArrayList<DiseaseDataBinding>();
+	public ArrayList<Disease> Disease_GetAll() {
+		ArrayList<Disease> AllReads = new ArrayList<Disease>();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Disease", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			DiseaseDataBinding tmp;
+			Disease tmp;
 			do {
-				tmp = new DiseaseDataBinding();
+				tmp = new Disease();
 				tmp.setId(cursor.getInt(0));
 				tmp.setName(cursor.getString(1));
 				AllReads.add(tmp);
@@ -223,14 +223,14 @@ public class DB_Read {
 		}
 	}
 
-	public ArrayList<GlycemiaDataBinding> Glycemia_GetByDate(String from, String to) {
+	public ArrayList<GlycemiaRec> Glycemia_GetByDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
-		ArrayList<GlycemiaDataBinding> allreads = new ArrayList<GlycemiaDataBinding>();
+		ArrayList<GlycemiaRec> allreads = new ArrayList<GlycemiaRec>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			GlycemiaDataBinding tmp;
+			GlycemiaRec tmp;
 			do {
-				tmp = new GlycemiaDataBinding();
+				tmp = new GlycemiaRec();
 				tmp.setId(cursor.getInt(0));
 				tmp.setIdUser(cursor.getInt(1));
 				tmp.setValue(cursor.getInt(2));
@@ -252,14 +252,14 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public GlycemiaDataBinding Glycemia_GetById(int id) {
+	public GlycemiaRec Glycemia_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose where Id='" + id + "'", null);
 		cursor.moveToFirst();
 		if (cursor.getCount() == 0) {
 			return null;
 		}
 
-		GlycemiaDataBinding g = new GlycemiaDataBinding();
+		GlycemiaRec g = new GlycemiaRec();
 		g.setId(cursor.getInt(0));
 		g.setIdUser(cursor.getInt(1));
 		g.setValue(cursor.getInt(2));
@@ -358,8 +358,8 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public InsulinDataBinding Insulin_GetByName(String name) {
-		InsulinDataBinding insulin = new InsulinDataBinding();
+	public Insulin Insulin_GetByName(String name) {
+		Insulin insulin = new Insulin();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Insulin where Name='" + name + "'", null);
 		cursor.moveToFirst();
 		if (cursor.getCount() == 0) {
@@ -430,16 +430,16 @@ public class DB_Read {
 		return result;
 	}
 
-	public ArrayList<InsulinRegDataBinding> InsulinReg_GetByDate(String from, String to) {
+	public ArrayList<InsulinRec> InsulinReg_GetByDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Id_BloodGlucose, Id_Insulin, DateTime, Target_BG, Value, Id_Tag, Id_Note FROM Reg_Insulin WHERE DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
-		ArrayList<InsulinRegDataBinding> allreads = new ArrayList<InsulinRegDataBinding>();
-		InsulinRegDataBinding insulin;
+		ArrayList<InsulinRec> allreads = new ArrayList<InsulinRec>();
+		InsulinRec insulin;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 
 			do {
 				Log.d("le insulin", String.valueOf(cursor.getPosition()));
-				insulin = new InsulinRegDataBinding();
+				insulin = new InsulinRec();
 				insulin.setId(cursor.getInt(0));
 				insulin.setIdUser(cursor.getInt(1));
 				insulin.setIdBloodGlucose((!cursor.isNull(2)) ? cursor.getInt(2) : -1);
@@ -492,8 +492,8 @@ public class DB_Read {
 		}*/
 	}
 
-	public InsulinDataBinding Insulin_GetById(int id) {
-		InsulinDataBinding insulin = new InsulinDataBinding();
+	public Insulin Insulin_GetById(int id) {
+		Insulin insulin = new Insulin();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Insulin where Id='" + id + "'", null);
 		cursor.moveToFirst();
 		insulin.setId(cursor.getInt(0));
@@ -507,7 +507,7 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public InsulinRegDataBinding InsulinReg_GetById(int id) {
+	public InsulinRec InsulinReg_GetById(int id) {
 		//Cursor cursor = myDB.rawQuery("SELECT i.Id, Id_Insulin, i.DateTime, Target_BG, i.Value, g.value, i.Id_Tag, g.Id FROM Reg_Insulin as i LEFT JOIN Reg_BloodGlucose as g ON Id_BloodGlucose=g.Id WHERE i.Id='" + id + "';", null);
 		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Id_BloodGlucose, Id_Insulin, DateTime, Target_BG, Value, Id_Tag, Id_Note FROM Reg_Insulin WHERE Id='" + id + "';", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
@@ -516,7 +516,7 @@ public class DB_Read {
 			return null;
 		}
 
-		InsulinRegDataBinding insulin = new InsulinRegDataBinding();
+		InsulinRec insulin = new InsulinRec();
 		insulin.setId(cursor.getInt(0));
 		insulin.setIdUser(cursor.getInt(1));
 		insulin.setIdBloodGlucose((!cursor.isNull(2)) ? cursor.getInt(2) : -1);
@@ -577,17 +577,17 @@ public class DB_Read {
 		}
 	}
 
-	public ArrayList<ExerciseRegDataBinding> ExerciseReg_GetByDate(String from, String to) {
+	public ArrayList<ExerciseRec> ExerciseReg_GetByDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Exercise WHERE StartDateTime > '" + from + " 00:00:00' AND StartDateTime < '" + to + " 23:59:59' ORDER BY StartDateTime DESC;", null);
-		ArrayList<ExerciseRegDataBinding> exs = new ArrayList<ExerciseRegDataBinding>();
+		ArrayList<ExerciseRec> exs = new ArrayList<ExerciseRec>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			ExerciseRegDataBinding tmp;
+			ExerciseRec tmp;
 			do {
 
-				tmp = new ExerciseRegDataBinding();
+				tmp = new ExerciseRec();
 				tmp.setId(cursor.getInt(0));
-				tmp.setId_User(cursor.getInt(1));
+				tmp.setIdUser(cursor.getInt(1));
 				tmp.setExercise(cursor.getString(2));
 				tmp.setDuration(cursor.getInt(3));
 				tmp.setEffort(cursor.getString(4));
@@ -606,16 +606,16 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public ExerciseRegDataBinding ExerciseReg_GetById(int id) {
+	public ExerciseRec ExerciseReg_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Exercise, Duration, Effort, StartDateTime, Id_Note FROM Reg_Exercise WHERE Id='" + id + "';", null);
-		ExerciseRegDataBinding ex = new ExerciseRegDataBinding();
+		ExerciseRec ex = new ExerciseRec();
 		cursor.moveToFirst();
 		if (cursor.getCount() == 0) {
 			return null;
 		}
 
 		ex.setId(cursor.getInt(0));
-		ex.setId_User(cursor.getInt(1));
+		ex.setIdUser(cursor.getInt(1));
 		ex.setExercise(cursor.getString(2));
 		ex.setDuration(cursor.getInt(3));
 		ex.setEffort(cursor.getString(4));
@@ -655,21 +655,21 @@ public class DB_Read {
 
 
 	//-------------- CARBS ------------------
-	public ArrayList<CarbsDataBinding> CarboHydrate_GetBtDate(String from, String to) {
+	public ArrayList<CarbsRec> CarboHydrate_GetBtDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_CarboHydrate WHERE  DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
-		ArrayList<CarbsDataBinding> allreads = new ArrayList<CarbsDataBinding>();
-		CarbsDataBinding tmp;
+		ArrayList<CarbsRec> allreads = new ArrayList<CarbsRec>();
+		CarbsRec tmp;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 
 			do {
-				tmp = new CarbsDataBinding();
+				tmp = new CarbsRec();
 				tmp.setId(cursor.getInt(0));
-				tmp.setId_User(cursor.getInt(1));
+				tmp.setIdUser(cursor.getInt(1));
 				tmp.setCarbsValue(cursor.getInt(2));
 				tmp.setPhotoPath(cursor.getString(3));
 				tmp.setDateTime(cursor.getString(4));
-				tmp.setId_Tag(cursor.getInt(5));
+				tmp.setIdTag(cursor.getInt(5));
 
 				allreads.add(tmp);
 				cursor.moveToNext();
@@ -683,7 +683,7 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public CarbsDataBinding CarboHydrate_GetById(int id) {
+	public CarbsRec CarboHydrate_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_CarboHydrate WHERE Id='" + id + "';", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		cursor.moveToFirst();
@@ -691,33 +691,33 @@ public class DB_Read {
 			return null;
 		}
 
-		CarbsDataBinding tmp = new CarbsDataBinding();
+		CarbsRec tmp = new CarbsRec();
 		tmp.setId(cursor.getInt(0));
-		tmp.setId_User(cursor.getInt(1));
+		tmp.setIdUser(cursor.getInt(1));
 		tmp.setCarbsValue(cursor.getInt(2));
 		tmp.setPhotoPath(cursor.getString(3));
 		tmp.setDateTime(cursor.getString(4));
-		tmp.setId_Tag(cursor.getInt(5));
-		tmp.setId_Note((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
+		tmp.setIdTag(cursor.getInt(5));
+		tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
 		cursor.close();
 		return tmp;
 
 	}
 
-	public CarbsDataBinding getCarbsAtThisTime(int userId, String time) {
+	public CarbsRec getCarbsAtThisTime(int userId, String time) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_CarboHydrate WHERE Id_User=" + String.valueOf(userId) + " AND DateTime='" + time + "';", null);
-		CarbsDataBinding tmp = null;
+		CarbsRec tmp = null;
 
 		if (cursor.getCount() == 1) {
 			cursor.moveToFirst();
-			tmp = new CarbsDataBinding();
+			tmp = new CarbsRec();
 			tmp.setId(cursor.getInt(0));
-			tmp.setId_User(cursor.getInt(1));
+			tmp.setIdUser(cursor.getInt(1));
 			tmp.setCarbsValue(cursor.getInt(2));
 			tmp.setPhotoPath(cursor.getString(3));
 			tmp.setDateTime(cursor.getString(4));
-			tmp.setId_Tag(cursor.getInt(5));
-			tmp.setId_Note((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
+			tmp.setIdTag(cursor.getInt(5));
+			tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
 			cursor.close();
 
 		}
@@ -725,15 +725,15 @@ public class DB_Read {
 	}
 
 	//---------------------- BLOODPRESSURE ---------------
-	public ArrayList<BloodPressureDataBinding> BloodPressure_GetBtDate(String from, String to) {
+	public ArrayList<BloodPressureRec> BloodPressure_GetBtDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure WHERE  DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
-		ArrayList<BloodPressureDataBinding> allreads = new ArrayList<BloodPressureDataBinding>();
-		BloodPressureDataBinding tmp;
+		ArrayList<BloodPressureRec> allreads = new ArrayList<BloodPressureRec>();
+		BloodPressureRec tmp;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 
 			do {
-				tmp = new BloodPressureDataBinding();
+				tmp = new BloodPressureRec();
 				tmp.setId(cursor.getInt(0));
 				tmp.setIdUser(cursor.getInt(1));
 				tmp.setSystolic(cursor.getInt(2));
@@ -753,7 +753,7 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public BloodPressureDataBinding BloodPressure_GetById(int id) {
+	public BloodPressureRec BloodPressure_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure WHERE Id='" + id + "';", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		cursor.moveToFirst();
@@ -761,7 +761,7 @@ public class DB_Read {
 			return null;
 		}
 
-		BloodPressureDataBinding tmp = new BloodPressureDataBinding();
+		BloodPressureRec tmp = new BloodPressureRec();
 		tmp.setId(cursor.getInt(0));
 		tmp.setIdUser(cursor.getInt(1));
 		tmp.setSystolic(cursor.getInt(2));
@@ -776,15 +776,15 @@ public class DB_Read {
 	}
 
 	//----------- CHOLESTEROL ---------------
-	public ArrayList<CholesterolDataBinding> Cholesterol_GetBtDate(String from, String to) {
+	public ArrayList<CholesterolRec> Cholesterol_GetBtDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE  DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
-		ArrayList<CholesterolDataBinding> allreads = new ArrayList<CholesterolDataBinding>();
-		CholesterolDataBinding tmp;
+		ArrayList<CholesterolRec> allreads = new ArrayList<CholesterolRec>();
+		CholesterolRec tmp;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 
 			do {
-				tmp = new CholesterolDataBinding();
+				tmp = new CholesterolRec();
 				tmp.setId(cursor.getInt(0));
 				tmp.setIdUser(cursor.getInt(1));
 				tmp.setValue(cursor.getDouble(2));
@@ -802,7 +802,7 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public CholesterolDataBinding Cholesterol_GetById(int id) {
+	public CholesterolRec Cholesterol_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE Id='" + id + "';", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		cursor.moveToFirst();
@@ -810,7 +810,7 @@ public class DB_Read {
 			return null;
 		}
 
-		CholesterolDataBinding tmp = new CholesterolDataBinding();
+		CholesterolRec tmp = new CholesterolRec();
 		tmp.setId(cursor.getInt(0));
 		tmp.setIdUser(cursor.getInt(1));
 		tmp.setValue(cursor.getDouble(2));
@@ -824,15 +824,15 @@ public class DB_Read {
 
 
 	//--------------- WEIGHT -----------------
-	public ArrayList<WeightDataBinding> Weight_GetBtDate(String from, String to) {
+	public ArrayList<WeightRec> Weight_GetBtDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Weight WHERE  DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
-		ArrayList<WeightDataBinding> allreads = new ArrayList<WeightDataBinding>();
-		WeightDataBinding tmp;
+		ArrayList<WeightRec> allreads = new ArrayList<WeightRec>();
+		WeightRec tmp;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 
 			do {
-				tmp = new WeightDataBinding();
+				tmp = new WeightRec();
 				tmp.setId(cursor.getInt(0));
 				tmp.setIdUser(cursor.getInt(1));
 				tmp.setValue(cursor.getDouble(2));
@@ -850,7 +850,7 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public WeightDataBinding Weight_GetById(int id) {
+	public WeightRec Weight_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Weight WHERE Id='" + id + "';", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		cursor.moveToFirst();
@@ -858,7 +858,7 @@ public class DB_Read {
 			return null;
 		}
 
-		WeightDataBinding tmp = new WeightDataBinding();
+		WeightRec tmp = new WeightRec();
 		tmp.setId(cursor.getInt(0));
 		tmp.setIdUser(cursor.getInt(1));
 		tmp.setValue(cursor.getDouble(2));
@@ -872,15 +872,15 @@ public class DB_Read {
 
 
 	//------------------- HbA1c
-	public ArrayList<HbA1cDataBinding> HbA1c_GetBtDate(String from, String to) {
+	public ArrayList<HbA1cRec> HbA1c_GetBtDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_A1c WHERE  DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
-		ArrayList<HbA1cDataBinding> allreads = new ArrayList<HbA1cDataBinding>();
-		HbA1cDataBinding tmp;
+		ArrayList<HbA1cRec> allreads = new ArrayList<HbA1cRec>();
+		HbA1cRec tmp;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 
 			do {
-				tmp = new HbA1cDataBinding();
+				tmp = new HbA1cRec();
 				tmp.setId(cursor.getInt(0));
 				tmp.setIdUser(cursor.getInt(1));
 				tmp.setValue(cursor.getDouble(2));
@@ -898,7 +898,7 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public HbA1cDataBinding HbA1c_GetById(int id) {
+	public HbA1cRec HbA1c_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_A1c WHERE Id='" + id + "';", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		cursor.moveToFirst();
@@ -906,7 +906,7 @@ public class DB_Read {
 			return null;
 		}
 
-		HbA1cDataBinding tmp = new HbA1cDataBinding();
+		HbA1cRec tmp = new HbA1cRec();
 		tmp.setId(cursor.getInt(0));
 		tmp.setIdUser(cursor.getInt(1));
 		tmp.setValue(cursor.getDouble(2));
@@ -920,15 +920,15 @@ public class DB_Read {
 
 
 	//----------------------- DISEASE REG
-	public ArrayList<DiseaseRegDataBinding> DiseaseReg_GetByDate(String from, String to) {
+	public ArrayList<DiseaseRec> DiseaseReg_GetByDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Disease WHERE  StartDate > '" + from + " 00:00:00' AND StartDate < '" + to + " 23:59:59' ORDER BY StartDate DESC;", null);
-		ArrayList<DiseaseRegDataBinding> allreads = new ArrayList<DiseaseRegDataBinding>();
-		DiseaseRegDataBinding tmp;
+		ArrayList<DiseaseRec> allreads = new ArrayList<DiseaseRec>();
+		DiseaseRec tmp;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 
 			do {
-				tmp = new DiseaseRegDataBinding();
+				tmp = new DiseaseRec();
 				tmp.setId(cursor.getInt(0));
 				tmp.setIdUser(cursor.getInt(1));
 				tmp.setDisease(cursor.getString(2));
@@ -947,7 +947,7 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public DiseaseRegDataBinding DiseaseReg_GetById(int id) {
+	public DiseaseRec DiseaseReg_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Disease WHERE Id='" + id + "';", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		cursor.moveToFirst();
@@ -955,7 +955,7 @@ public class DB_Read {
 			return null;
 		}
 
-		DiseaseRegDataBinding tmp = new DiseaseRegDataBinding();
+		DiseaseRec tmp = new DiseaseRec();
 		tmp.setId(cursor.getInt(0));
 		tmp.setIdUser(cursor.getInt(1));
 		tmp.setDisease(cursor.getString(2));
@@ -991,15 +991,15 @@ public class DB_Read {
 		return d;
 	}
 
-	public ArrayList<TargetDataBinding> Target_GetAll() {
+	public ArrayList<InsulinTarget> Target_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM BG_Target", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
-		ArrayList<TargetDataBinding> targets = new ArrayList<TargetDataBinding>();
+		ArrayList<InsulinTarget> targets = new ArrayList<InsulinTarget>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			TargetDataBinding t;
+			InsulinTarget t;
 			do {
-				t = new TargetDataBinding();
+				t = new InsulinTarget();
 				t.setId(cursor.getInt(0));
 				t.setName(cursor.getString(1));
 				t.setStart(cursor.getString(2));
@@ -1017,8 +1017,8 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public TargetDataBinding Target_GetById(int id) {
-		TargetDataBinding target = new TargetDataBinding();
+	public InsulinTarget Target_GetById(int id) {
+		InsulinTarget target = new InsulinTarget();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM BG_Target where Id='" + id + "'", null);
 		cursor.moveToFirst();
 		if (cursor.getCount() == 0) {
@@ -1036,8 +1036,8 @@ public class DB_Read {
 
 	//--------------- NOTES -------------------
 	@Nullable
-	public NoteDataBinding Note_GetById(int id) {
-		NoteDataBinding n = new NoteDataBinding();
+	public Note Note_GetById(int id) {
+		Note n = new Note();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Note WHERE Id='" + id + "';", null);
 		cursor.moveToFirst();
 		if (cursor.getCount() == 0) {
@@ -1056,12 +1056,12 @@ public class DB_Read {
 	 * LOGBOOK by zeornelas
 	 */
 
-	public ArrayList<LogbookDataBinding> getLogbook(String from, String to) {
-		ArrayList<LogbookDataBinding> lb = new ArrayList<LogbookDataBinding>();
-		LogbookDataBinding row;
-		CarbsDataBinding ch;
-		InsulinRegDataBinding ins;
-		GlycemiaDataBinding bg;
+	public ArrayList<LogbookData> getLogbook(String from, String to) {
+		ArrayList<LogbookData> lb = new ArrayList<LogbookData>();
+		LogbookData row;
+		CarbsRec ch;
+		InsulinRec ins;
+		GlycemiaRec bg;
 		
 		/*Cursor cursor = myDB.rawQuery("SELECT ins.datetime, ins.Id_user, ins.Id_Tag, ins.Id_Note, ch.Id, ch.value, ch.PhotoPath, ins.Id, ins.Id_Insulin, ins.Id_BloodGlucose,ins.Target_BG,ins.Value, bg.Value" +
 			" from Reg_CarboHydrate as ch, Reg_Insulin as ins, Reg_BloodGlucose as bg"+ 
@@ -1186,10 +1186,10 @@ public class DB_Read {
 			cursor.moveToFirst();
 
 			do {
-				row = new LogbookDataBinding();
-				ch = new CarbsDataBinding();
-				ins = new InsulinRegDataBinding();
-				bg = new GlycemiaDataBinding();
+				row = new LogbookData();
+				ch = new CarbsRec();
+				ins = new InsulinRec();
+				bg = new GlycemiaRec();
 
 				String t = cursor.getString(0);
 
@@ -1198,15 +1198,15 @@ public class DB_Read {
 					ins.setDateTime(t);
 					bg.setDateTime(t);
 
-					ch.setId_User(cursor.getInt(1));
+					ch.setIdUser(cursor.getInt(1));
 					ins.setIdUser(cursor.getInt(1));
 					bg.setIdUser(cursor.getInt(1));
 
-					ch.setId_Tag(cursor.getInt(2));
+					ch.setIdTag(cursor.getInt(2));
 					ins.setIdTag(cursor.getInt(2));
 					bg.setIdTag(cursor.getInt(2));
 
-					ch.setId_Note((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+					ch.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
 					ins.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
 					bg.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
 
@@ -1223,21 +1223,21 @@ public class DB_Read {
 					bg.setId(cursor.getInt(9));
 					bg.setValue(cursor.getInt(12));
 
-					row.set_bg(bg);
-					row.set_ch(ch);
-					row.set_ins(ins);
+					row.setGlycemiaReg(bg);
+					row.setCarbsReg(ch);
+					row.setInsulinReg(ins);
 				} else if (!cursor.isNull(4) && cursor.isNull(7) && cursor.isNull(9)) { //so hidratos carbono
 					ch.setDateTime(t);
-					ch.setId_User(cursor.getInt(1));
-					ch.setId_Tag(cursor.getInt(2));
-					ch.setId_Note((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+					ch.setIdUser(cursor.getInt(1));
+					ch.setIdTag(cursor.getInt(2));
+					ch.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
 					ch.setId(cursor.getInt(4));
 					ch.setCarbsValue(cursor.getInt(5));
 					ch.setPhotoPath(cursor.getString(6));
 
-					row.set_bg(null);
-					row.set_ch(ch);
-					row.set_ins(null);
+					row.setGlycemiaReg(null);
+					row.setCarbsReg(ch);
+					row.setInsulinReg(null);
 				} else if (cursor.isNull(4) && !cursor.isNull(7) && !cursor.isNull(9)) { //insulina com parametro da glicemia
 					ins.setDateTime(t);
 					bg.setDateTime(t);
@@ -1260,9 +1260,9 @@ public class DB_Read {
 					bg.setId(cursor.getInt(9));
 					bg.setValue(cursor.getInt(12));
 
-					row.set_bg(bg);
-					row.set_ch(null);
-					row.set_ins(ins);
+					row.setGlycemiaReg(bg);
+					row.setCarbsReg(null);
+					row.setInsulinReg(ins);
 				} else if (cursor.isNull(4) && cursor.isNull(7) && !cursor.isNull(9)) { //so glicemia
 					bg.setDateTime(t);
 					bg.setIdUser(cursor.getInt(1));
@@ -1271,9 +1271,9 @@ public class DB_Read {
 					bg.setId(cursor.getInt(9));
 					bg.setValue(cursor.getInt(12));
 
-					row.set_bg(bg);
-					row.set_ch(null);
-					row.set_ins(null);
+					row.setGlycemiaReg(bg);
+					row.setCarbsReg(null);
+					row.setInsulinReg(null);
 				} else if (cursor.isNull(4) && !cursor.isNull(7) && cursor.isNull(9)) { //so insulina
 					ins.setDateTime(t);
 					ins.setIdUser(cursor.getInt(1));
@@ -1285,9 +1285,9 @@ public class DB_Read {
 					ins.setTargetGlycemia(cursor.getInt(10));
 					ins.setInsulinUnits(cursor.getFloat(11));
 
-					row.set_bg(null);
-					row.set_ch(null);
-					row.set_ins(ins);
+					row.setGlycemiaReg(null);
+					row.setCarbsReg(null);
+					row.setInsulinReg(ins);
 				} else if (!cursor.isNull(4) && !cursor.isNull(7) && cursor.isNull(9)) { //so hidratos e insulina
 					ins.setDateTime(t);
 					ins.setIdUser(cursor.getInt(1));
@@ -1300,21 +1300,21 @@ public class DB_Read {
 					ins.setInsulinUnits(cursor.getFloat(11));
 
 					ch.setDateTime(t);
-					ch.setId_User(cursor.getInt(1));
-					ch.setId_Tag(cursor.getInt(2));
-					ch.setId_Note((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+					ch.setIdUser(cursor.getInt(1));
+					ch.setIdTag(cursor.getInt(2));
+					ch.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
 					ch.setId(cursor.getInt(4));
 					ch.setCarbsValue(cursor.getInt(5));
 					ch.setPhotoPath(cursor.getString(6));
 
-					row.set_bg(null);
-					row.set_ch(ch);
-					row.set_ins(ins);
+					row.setGlycemiaReg(null);
+					row.setCarbsReg(ch);
+					row.setInsulinReg(ins);
 				} else if (!cursor.isNull(4) && cursor.isNull(7) && !cursor.isNull(9)) { //so hidratos e glicemia
 					ch.setDateTime(t);
-					ch.setId_User(cursor.getInt(1));
-					ch.setId_Tag(cursor.getInt(2));
-					ch.setId_Note((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
+					ch.setIdUser(cursor.getInt(1));
+					ch.setIdTag(cursor.getInt(2));
+					ch.setIdNote((!cursor.isNull(3)) ? cursor.getInt(3) : -1);
 					ch.setId(cursor.getInt(4));
 					ch.setCarbsValue(cursor.getInt(5));
 					ch.setPhotoPath(cursor.getString(6));
@@ -1326,9 +1326,9 @@ public class DB_Read {
 					bg.setId(cursor.getInt(9));
 					bg.setValue(cursor.getInt(12));
 
-					row.set_bg(bg);
-					row.set_ch(ch);
-					row.set_ins(null);
+					row.setGlycemiaReg(bg);
+					row.setCarbsReg(ch);
+					row.setInsulinReg(null);
 				}
 
 

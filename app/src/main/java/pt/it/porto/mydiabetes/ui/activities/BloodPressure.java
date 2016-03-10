@@ -18,7 +18,7 @@ import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.dataBinding.BloodPressureDataBinding;
+import pt.it.porto.mydiabetes.data.BloodPressureRec;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.BloodPressureAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -121,7 +121,7 @@ public class BloodPressure extends Activity {
 		EditText datefrom = (EditText) findViewById(R.id.et_BloodPressure_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_BloodPressure_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<BloodPressureDataBinding> allbp = rdb.BloodPressure_GetBtDate(datefrom.getText().toString(), dateto.getText().toString());
+		ArrayList<BloodPressureRec> allbp = rdb.BloodPressure_GetBtDate(datefrom.getText().toString(), dateto.getText().toString());
 		rdb.close();
 		lv.setAdapter(new BloodPressureAdapter(allbp, this));
 		lv.setEmptyView(findViewById(R.id.list_empty));

@@ -22,14 +22,14 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.listAdapters.MedicineAdapter;
-import pt.it.porto.mydiabetes.ui.dataBinding.MedicineDataBinding;
+import pt.it.porto.mydiabetes.data.Medicine;
 
 
 /**
  * A simple {@link android.support.v4.app.Fragment} subclass. Activities that
  * contain this fragment must implement the
- * {@link Medicines.OnFragmentInteractionListener} interface to handle
- * interaction events. Use the {@link Medicines#newInstance} factory method to
+ * {@link MedicinesFragment.OnFragmentInteractionListener} interface to handle
+ * interaction events. Use the {@link MedicinesFragment#newInstance} factory method to
  * create an instance of this fragment.
  * 
  */
@@ -39,7 +39,7 @@ import pt.it.porto.mydiabetes.ui.dataBinding.MedicineDataBinding;
 
 
 
-public class Medicines extends Fragment {
+public class MedicinesFragment extends Fragment {
 
 	ListView medicineList;
 
@@ -108,17 +108,17 @@ public class Medicines extends Fragment {
 	
 	public void fillListView(ListView lv){
 
-		ArrayList<MedicineDataBinding> allmedicines = new ArrayList<MedicineDataBinding>();
+		ArrayList<Medicine> allmedicines = new ArrayList<Medicine>();
 		
 		DB_Read rdb = new DB_Read(getActivity());
 		HashMap<Integer, String[]> val = rdb.Medicine_GetAll();
 		rdb.close();
-		MedicineDataBinding medicine;
+		Medicine medicine;
 		String[] row;
 		if(val!=null){
 			for (int i : val.keySet()){
 				row = val.get(i);
-				medicine = new MedicineDataBinding();
+				medicine = new Medicine();
 				medicine.setId(i);
 				medicine.setName(row[0]);
 				medicine.setUnits(row[1]);

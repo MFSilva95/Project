@@ -11,11 +11,9 @@ import org.junit.Test;
 
 import java.util.Calendar;
 
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
+import pt.it.porto.mydiabetes.data.Insulin;
+import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.utils.DateUtils;
-
-import static org.junit.Assert.*;
 
 public class UsageTest {
 
@@ -42,7 +40,7 @@ public class UsageTest {
 
 		// test if there is a old regist in the db
 		dbWrite.MyData_Save(DB_WriteTest.getMockUserData());
-		InsulinDataBinding insulin = new InsulinDataBinding();
+		Insulin insulin = new Insulin();
 		insulin.setId(1);
 		insulin.setName("humalog");
 		insulin.setDuration(1);
@@ -52,16 +50,16 @@ public class UsageTest {
 		dbWrite.Insulin_Add(insulin);
 
 		calendar.roll(Calendar.WEEK_OF_YEAR, false);
-		InsulinRegDataBinding insulinReg = new InsulinRegDataBinding();
-		insulinReg.setIdUser(1);
-		insulinReg.setId(1);
-		insulinReg.setIdInsulin(1);
-		insulinReg.setIdTag(1);
-		insulinReg.setDateTime(calendar);
-		insulinReg.setInsulinUnits(3);
-		insulinReg.setTargetGlycemia(100);
+		InsulinRec insulinRec = new InsulinRec();
+		insulinRec.setIdUser(1);
+		insulinRec.setId(1);
+		insulinRec.setIdInsulin(1);
+		insulinRec.setIdTag(1);
+		insulinRec.setDateTime(calendar);
+		insulinRec.setInsulinUnits(3);
+		insulinRec.setTargetGlycemia(100);
 
-		dbWrite.Insulin_Save(insulinReg);
+		dbWrite.Insulin_Save(insulinRec);
 
 		date = new Usage(storage).getOldestRegist();
 		lastRegist = DateUtils.parseDateTime(date);

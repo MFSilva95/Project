@@ -1,10 +1,10 @@
-package pt.it.porto.mydiabetes.ui.dataBinding;
+package pt.it.porto.mydiabetes.data;
 
 
 import android.annotation.SuppressLint;
 
 @SuppressLint("ParcelCreator")
-public class ExerciseRegDataBinding extends DateTimeDataBinding {
+public class ExerciseRec extends DateTime {
 
 	private int id;
 	private String exercise;
@@ -45,11 +45,11 @@ public class ExerciseRegDataBinding extends DateTimeDataBinding {
 		this.effort = effort;
 	}
 
-	public int getId_User() {
+	public int getIdUser() {
 		return id_User;
 	}
 
-	public void setId_User(int id_User) {
+	public void setIdUser(int id_User) {
 		this.id_User = id_User;
 	}
 

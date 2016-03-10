@@ -14,15 +14,15 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.TagDetail;
-import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
+import pt.it.porto.mydiabetes.data.Tag;
 
 
 public class TagAdapter extends BaseAdapter {
 
 	Context _c;
-	private ArrayList<TagDataBinding> _data;
+	private ArrayList<Tag> _data;
 
-	public TagAdapter(ArrayList<TagDataBinding> data, Context c) {
+	public TagAdapter(ArrayList<Tag> data, Context c) {
 		_data = data;
 		_c = c;
 	}
@@ -60,7 +60,7 @@ public class TagAdapter extends BaseAdapter {
 		TextView tagEnd = (TextView) v.findViewById(R.id.list_tagEnd);
 
 
-		TagDataBinding tag = _data.get(position);
+		Tag tag = _data.get(position);
 		rLayout.setTag(tag);
 		tagName.setText(tag.getName());
 		tagStart.setText(tag.getStart());
@@ -73,8 +73,8 @@ public class TagAdapter extends BaseAdapter {
 			public void onClick(final View v) {
 				Intent intent = new Intent(v.getContext(), TagDetail.class);
 				Bundle args = new Bundle();
-				args.putString("Id", String.valueOf(((TagDataBinding) v.getTag()).getId()));
-				args.putParcelable(TagDetail.DATA, ((TagDataBinding) v.getTag()));
+				args.putString("Id", String.valueOf(((Tag) v.getTag()).getId()));
+				args.putParcelable(TagDetail.DATA, ((Tag) v.getTag()));
 
 				intent.putExtras(args);
 				v.getContext().startActivity(intent);

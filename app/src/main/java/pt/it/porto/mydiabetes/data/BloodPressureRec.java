@@ -1,10 +1,10 @@
-package pt.it.porto.mydiabetes.ui.dataBinding;
+package pt.it.porto.mydiabetes.data;
 
 
 import android.annotation.SuppressLint;
 
 @SuppressLint("ParcelCreator")
-public class BloodPressureDataBinding extends DateTimeDataBinding {
+public class BloodPressureRec extends DateTime {
 
 	private int id;
 	private int idUser;
@@ -65,10 +65,10 @@ public class BloodPressureDataBinding extends DateTimeDataBinding {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof BloodPressureDataBinding)) return false;
+		if (!(o instanceof BloodPressureRec)) return false;
 		if (!super.equals(o)) return false;
 
-		BloodPressureDataBinding that = (BloodPressureDataBinding) o;
+		BloodPressureRec that = (BloodPressureRec) o;
 
 		if (id != that.id) return false;
 		if (idUser != that.idUser) return false;
@@ -81,7 +81,7 @@ public class BloodPressureDataBinding extends DateTimeDataBinding {
 
 	@Override
 	public String toString() {
-		return "BloodPressureDataBinding{" +
+		return "BloodPressureRec{" +
 				"id=" + id +
 				", idUser=" + idUser +
 				", systolic=" + systolic +

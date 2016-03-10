@@ -14,15 +14,15 @@ import android.widget.TextView;
 
 import pt.it.porto.mydiabetes.ui.activities.ExerciseDetail;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseRegDataBinding;
+import pt.it.porto.mydiabetes.data.ExerciseRec;
 
 
 public class ExerciseRegAdapter extends BaseAdapter {
 
-	private ArrayList<ExerciseRegDataBinding> _data;
+	private ArrayList<ExerciseRec> _data;
     Context _c;
     
-    public ExerciseRegAdapter (ArrayList<ExerciseRegDataBinding> data, Context c){
+    public ExerciseRegAdapter (ArrayList<ExerciseRec> data, Context c){
         _data = data;
         _c = c;
     }
@@ -59,7 +59,7 @@ public class ExerciseRegAdapter extends BaseAdapter {
            TextView effort = (TextView)v.findViewById(R.id.tv_list_exercisereg_effort);
            
 
-           ExerciseRegDataBinding exercise_datab = _data.get(position);
+           ExerciseRec exercise_datab = _data.get(position);
            String _id = ""+exercise_datab.getId();
            Log.d("id do exercicio", _id);
            data.setText(exercise_datab.getFormattedDate());

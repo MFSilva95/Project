@@ -1,10 +1,10 @@
-package pt.it.porto.mydiabetes.ui.dataBinding;
+package pt.it.porto.mydiabetes.data;
 
 
 import android.annotation.SuppressLint;
 
 @SuppressLint("ParcelCreator")
-public class HbA1cDataBinding extends DateTimeDataBinding {
+public class HbA1cRec extends DateTime {
 
 	private int id;
 	private int idUser;

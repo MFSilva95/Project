@@ -1,21 +1,21 @@
-package pt.it.porto.mydiabetes.ui.dataBinding;
+package pt.it.porto.mydiabetes.data;
 
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
-public class InsulinRegDataBinding extends DateTimeDataBinding implements Parcelable {
+public class InsulinRec extends DateTime implements Parcelable {
 
-	public static final Creator<InsulinRegDataBinding> CREATOR = new Creator<InsulinRegDataBinding>() {
+	public static final Creator<InsulinRec> CREATOR = new Creator<InsulinRec>() {
 		@Override
-		public InsulinRegDataBinding createFromParcel(Parcel in) {
-			return new InsulinRegDataBinding(in);
+		public InsulinRec createFromParcel(Parcel in) {
+			return new InsulinRec(in);
 		}
 
 		@Override
-		public InsulinRegDataBinding[] newArray(int size) {
-			return new InsulinRegDataBinding[size];
+		public InsulinRec[] newArray(int size) {
+			return new InsulinRec[size];
 		}
 	};
 	private int id;
@@ -28,25 +28,25 @@ public class InsulinRegDataBinding extends DateTimeDataBinding implements Parcel
 	private int idNote=-1;
 
 
-	public InsulinRegDataBinding() {
+	public InsulinRec() {
 	}
 
-	public InsulinRegDataBinding(@Nullable InsulinRegDataBinding oldInsulinReg) {
-		super(oldInsulinReg);
-		if (oldInsulinReg == null) {
+	public InsulinRec(@Nullable InsulinRec oldInsulinRec) {
+		super(oldInsulinRec);
+		if (oldInsulinRec == null) {
 			return;
 		}
-		id = oldInsulinReg.getId();
-		idUser = oldInsulinReg.getIdUser();
-		idBloodGlucose = oldInsulinReg.getIdBloodGlucose();
-		idInsulin = oldInsulinReg.getIdInsulin();
-		targetGlycemia = oldInsulinReg.getTargetGlycemia();
-		insulinUnits = oldInsulinReg.getInsulinUnits();
-		idTag = oldInsulinReg.getIdTag();
-		idNote = oldInsulinReg.getIdNote();
+		id = oldInsulinRec.getId();
+		idUser = oldInsulinRec.getIdUser();
+		idBloodGlucose = oldInsulinRec.getIdBloodGlucose();
+		idInsulin = oldInsulinRec.getIdInsulin();
+		targetGlycemia = oldInsulinRec.getTargetGlycemia();
+		insulinUnits = oldInsulinRec.getInsulinUnits();
+		idTag = oldInsulinRec.getIdTag();
+		idNote = oldInsulinRec.getIdNote();
 	}
 
-	protected InsulinRegDataBinding(Parcel in) {
+	protected InsulinRec(Parcel in) {
 		super(in);
 		id = in.readInt();
 		idUser = in.readInt();
@@ -148,28 +148,24 @@ public class InsulinRegDataBinding extends DateTimeDataBinding implements Parcel
 		} else if (o == null) {
 			return false;
 		} else {
-			if (!(o instanceof InsulinRegDataBinding)) {
+			if (!(o instanceof InsulinRec)) {
 				return false;
 			}
-			InsulinRegDataBinding otherInsulinReg = (InsulinRegDataBinding) o;
-			if (id == otherInsulinReg.getId() &&
-					idUser == otherInsulinReg.getIdUser() &&
-					idBloodGlucose == otherInsulinReg.getIdBloodGlucose() &&
-					idInsulin == otherInsulinReg.getIdInsulin() &&
-					targetGlycemia == otherInsulinReg.getTargetGlycemia() &&
-					Float.compare(insulinUnits, otherInsulinReg.getInsulinUnits()) == 0 &&
-					idTag == otherInsulinReg.getIdTag() &&
-					idNote == otherInsulinReg.getIdNote()) {
-				return true;
-			} else {
-				return false;
-			}
+			InsulinRec otherInsulinRec = (InsulinRec) o;
+			return id == otherInsulinRec.getId() &&
+					idUser == otherInsulinRec.getIdUser() &&
+					idBloodGlucose == otherInsulinRec.getIdBloodGlucose() &&
+					idInsulin == otherInsulinRec.getIdInsulin() &&
+					targetGlycemia == otherInsulinRec.getTargetGlycemia() &&
+					Float.compare(insulinUnits, otherInsulinRec.getInsulinUnits()) == 0 &&
+					idTag == otherInsulinRec.getIdTag() &&
+					idNote == otherInsulinRec.getIdNote();
 		}
 	}
 
 	@Override
 	public String toString() {
-		return "InsulinRegDataBinding{" +
+		return "InsulinRec{" +
 				"id=" + id +
 				", idUser=" + idUser +
 				", idBloodGlucose=" + idBloodGlucose +

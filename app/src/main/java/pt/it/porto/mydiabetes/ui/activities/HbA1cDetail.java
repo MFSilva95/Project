@@ -20,8 +20,8 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.dataBinding.HbA1cDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.data.HbA1cRec;
+import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -45,7 +45,7 @@ public class HbA1cDetail extends Activity {
 			DB_Read rdb = new DB_Read(this);
 			String id = args.getString("Id");
 			idHbA1c = Integer.parseInt(id);
-			HbA1cDataBinding toFill = rdb.HbA1c_GetById(Integer.parseInt(id));
+			HbA1cRec toFill = rdb.HbA1c_GetById(Integer.parseInt(id));
 
 			EditText value = (EditText) findViewById(R.id.et_HbA1cDetail_Value);
 			value.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", toFill.getValue()));
@@ -55,7 +55,7 @@ public class HbA1cDetail extends Activity {
 			hora.setText(toFill.getFormattedTime());
 			EditText note = (EditText) findViewById(R.id.et_HbA1cDetail_Notes);
 			if (toFill.getIdNote() != -1) {
-				NoteDataBinding n = rdb.Note_GetById(toFill.getIdNote());
+				Note n = rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
 				idNote = n.getId();
 			}
@@ -140,10 +140,10 @@ public class HbA1cDetail extends Activity {
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
 
-		HbA1cDataBinding hba1c = new HbA1cDataBinding();
+		HbA1cRec hba1c = new HbA1cRec();
 
 		if (!note.getText().toString().equals("")) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			hba1c.setIdNote(wdb.Note_Add(n));
 		}
@@ -181,15 +181,15 @@ public class HbA1cDetail extends Activity {
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
 
-		HbA1cDataBinding hba1c = new HbA1cDataBinding();
+		HbA1cRec hba1c = new HbA1cRec();
 
 		if (!note.getText().toString().equals("") && idNote == 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			hba1c.setIdNote(wdb.Note_Add(n));
 		}
 		if (idNote != 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			n.setId(idNote);
 			wdb.Note_Update(n);

@@ -14,15 +14,15 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.TargetBG_detail;
-import pt.it.porto.mydiabetes.ui.dataBinding.TargetDataBinding;
+import pt.it.porto.mydiabetes.data.InsulinTarget;
 
 
 public class TargetAdapter extends BaseAdapter {
 
 	Context _c;
-	private ArrayList<TargetDataBinding> _data;
+	private ArrayList<InsulinTarget> _data;
 
-	public TargetAdapter(ArrayList<TargetDataBinding> data, Context c) {
+	public TargetAdapter(ArrayList<InsulinTarget> data, Context c) {
 		_data = data;
 		_c = c;
 	}
@@ -59,7 +59,7 @@ public class TargetAdapter extends BaseAdapter {
 		TextView targetvalue = (TextView) v.findViewById(R.id.list_targetValue);
 
 
-		TargetDataBinding target = _data.get(position);
+		InsulinTarget target = _data.get(position);
 		rLayout.setTag(target);
 		targetName.setText(target.getName());
 		targetStart.setText(target.getStart());
@@ -73,8 +73,8 @@ public class TargetAdapter extends BaseAdapter {
 			public void onClick(final View v) {
 				Intent intent = new Intent(v.getContext(), TargetBG_detail.class);
 				Bundle args = new Bundle();
-				args.putString("Id", String.valueOf(((TargetDataBinding) v.getTag()).getId()));
-				args.putParcelable(TargetBG_detail.BUNDLE_DATA, ((TargetDataBinding) v.getTag()));
+				args.putString("Id", String.valueOf(((InsulinTarget) v.getTag()).getId()));
+				args.putParcelable(TargetBG_detail.BUNDLE_DATA, ((InsulinTarget) v.getTag()));
 
 				intent.putExtras(args);
 				v.getContext().startActivity(intent);

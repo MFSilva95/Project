@@ -1,14 +1,14 @@
-package pt.it.porto.mydiabetes.ui.dataBinding;
+package pt.it.porto.mydiabetes.data;
 
 
 import android.annotation.SuppressLint;
 
 @SuppressLint("ParcelCreator")
-public class WeightDataBinding extends DateTimeDataBinding {
+public class CholesterolRec extends DateTime {
 
 	private int id;
 	private int idUser;
-	private Double value;
+	private double value;
 	private int idNote = -1;
 
 	public int getId() {
@@ -46,21 +46,21 @@ public class WeightDataBinding extends DateTimeDataBinding {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof WeightDataBinding)) return false;
+		if (!(o instanceof CholesterolRec)) return false;
 		if (!super.equals(o)) return false;
 
-		WeightDataBinding that = (WeightDataBinding) o;
+		CholesterolRec that = (CholesterolRec) o;
 
 		if (id != that.id) return false;
 		if (idUser != that.idUser) return false;
-		if (idNote != that.idNote) return false;
-		return value != null ? value.equals(that.value) : that.value == null;
+		if (Double.compare(that.value, value) != 0) return false;
+		return idNote == that.idNote;
 
 	}
 
 	@Override
 	public String toString() {
-		return "WeightDataBinding{" +
+		return "CholesterolRec{" +
 				"id=" + id +
 				", idUser=" + idUser +
 				", value=" + value +

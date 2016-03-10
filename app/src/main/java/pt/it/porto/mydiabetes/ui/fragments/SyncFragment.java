@@ -18,7 +18,7 @@ import pt.it.porto.mydiabetes.R;
  */
 
 
-public class Sync extends Fragment {
+public class SyncFragment extends Fragment {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

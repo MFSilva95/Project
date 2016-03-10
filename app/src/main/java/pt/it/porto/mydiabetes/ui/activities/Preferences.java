@@ -11,10 +11,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.ui.fragments.Diseases;
-import pt.it.porto.mydiabetes.ui.fragments.Exercises;
-import pt.it.porto.mydiabetes.ui.fragments.Tags;
-import pt.it.porto.mydiabetes.ui.fragments.TargetBG;
+import pt.it.porto.mydiabetes.ui.fragments.DiseasesFragment;
+import pt.it.porto.mydiabetes.ui.fragments.ExercisesFragment;
+import pt.it.porto.mydiabetes.ui.fragments.TagsFragment;
 
 
 public class Preferences extends BaseOldActivity {
@@ -29,26 +28,26 @@ public class Preferences extends BaseOldActivity {
 
 
 		ActionBar.Tab tab = getActionBar().newTab();
-		Fragment tagsFragment = new Tags();
+		Fragment tagsFragment = new TagsFragment();
 		tab.setTabListener(new MyTabsListener(tagsFragment));
 		tab.setText(getString(R.string.preferences_day));
 		getActionBar().addTab(tab);
 
 		tab = getActionBar().newTab();
-		Fragment diseasesFragment = new Diseases();
+		Fragment diseasesFragment = new DiseasesFragment();
 		tab.setTabListener(new MyTabsListener(diseasesFragment));
 		tab.setText(R.string.preferences_diseases);
 		getActionBar().addTab(tab);
 
 		tab = getActionBar().newTab();
-		Fragment exercisesFragment = new Exercises();
+		Fragment exercisesFragment = new ExercisesFragment();
 		tab.setTabListener(new MyTabsListener(exercisesFragment));
 		tab.setText(R.string.preferences_exercises);
 		getActionBar().addTab(tab);
 
 
 		//tab = getSupportActionBar().newTab();
-		//Fragment medicinesFragment = new Medicines();
+		//Fragment medicinesFragment = new MedicinesFragment();
 		//tab.setTabListener(new MyTabsListener(medicinesFragment));
 		//tab.setText("Medicamentos");
 		//getSupportActionBar().addTab(tab);

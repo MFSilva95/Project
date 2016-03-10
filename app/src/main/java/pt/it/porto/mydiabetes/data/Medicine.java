@@ -1,7 +1,7 @@
-package pt.it.porto.mydiabetes.ui.dataBinding;
+package pt.it.porto.mydiabetes.data;
 
 
-public class MedicineDataBinding {
+public class Medicine {
 
 	private int id;
 	private String name;

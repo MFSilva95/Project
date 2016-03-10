@@ -20,8 +20,8 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.dataBinding.CholesterolDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.data.CholesterolRec;
+import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -45,7 +45,7 @@ public class CholesterolDetail extends Activity {
 			DB_Read rdb = new DB_Read(this);
 			String id = args.getString("Id");
 			idCho = Integer.parseInt(id);
-			CholesterolDataBinding toFill = rdb.Cholesterol_GetById(Integer.parseInt(id));
+			CholesterolRec toFill = rdb.Cholesterol_GetById(Integer.parseInt(id));
 
 			EditText value = (EditText) findViewById(R.id.et_CholesterolDetail_Value);
 			value.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", toFill.getValue()));
@@ -55,7 +55,7 @@ public class CholesterolDetail extends Activity {
 			hora.setText(toFill.getFormattedTime());
 			EditText note = (EditText) findViewById(R.id.et_CholesterolDetail_Notes);
 			if (toFill.getIdNote() != -1) {
-				NoteDataBinding n = rdb.Note_GetById(toFill.getIdNote());
+				Note n = rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
 				idNote = n.getId();
 			}
@@ -141,10 +141,10 @@ public class CholesterolDetail extends Activity {
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
 
-		CholesterolDataBinding cho = new CholesterolDataBinding();
+		CholesterolRec cho = new CholesterolRec();
 
 		if (!note.getText().toString().equals("")) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			cho.setIdNote(wdb.Note_Add(n));
 		}
@@ -183,15 +183,15 @@ public class CholesterolDetail extends Activity {
 		Object[] obj = rdb.MyData_Read();
 		int idUser = Integer.valueOf(obj[0].toString());
 
-		CholesterolDataBinding cho = new CholesterolDataBinding();
+		CholesterolRec cho = new CholesterolRec();
 
 		if (!note.getText().toString().equals("") && idNote == 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			cho.setIdNote(wdb.Note_Add(n));
 		}
 		if (idNote != 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			n.setId(idNote);
 			wdb.Note_Update(n);

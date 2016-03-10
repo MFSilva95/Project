@@ -37,20 +37,20 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
-import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
+import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.InsulinRec;
+import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.fragments.InsulinCalc;
+import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
-public class InsulinDetail extends Activity implements InsulinCalc.CalcListener {
+public class InsulinDetail extends Activity implements InsulinCalcFragment.CalcListener {
 
 	int id_BG = 0;
 	int idNote = 0;
@@ -58,12 +58,12 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 	ArrayList<String> allInsulins;
 
 	private InsulinCalculator insulinCalculator = null;
-	private InsulinCalc fragmentInsulinCalcs;
+	private InsulinCalcFragment fragmentInsulinCalcsFragment;
 	private EditText insulinIntake;
 	private boolean useIOB;
 
 	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
-		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
+		SpinnerAdapter adapter = spnr.getAdapter();
 		for (int position = 0; position < adapter.getCount(); position++) {
 			if (adapter.getItem(position).equals(value)) {
 				spnr.setSelection(position);
@@ -98,7 +98,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 			DB_Read rdb = new DB_Read(this);
 			String id = args.getString("Id");
 			idIns = Integer.parseInt(id);
-			InsulinRegDataBinding toFill = rdb.InsulinReg_GetById(Integer.parseInt(id));
+			InsulinRec toFill = rdb.InsulinReg_GetById(Integer.parseInt(id));
 
 			Spinner tagSpinner = (Spinner) findViewById(R.id.sp_InsulinDetail_Tag);
 			SelectSpinnerItemByValue(tagSpinner, rdb.Tag_GetById(toFill.getIdTag()).getName());
@@ -122,20 +122,20 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 			id_BG = toFill.getIdBloodGlucose();
 			if (id_BG != -1) {
 				id_BG = toFill.getIdBloodGlucose();
-				GlycemiaDataBinding g = rdb.Glycemia_GetById(id_BG);
+				GlycemiaRec g = rdb.Glycemia_GetById(id_BG);
 				glycemia.setText(String.valueOf(g.getValue()));
 				insulinCalculator.setGlycemia(g.getValue());
 			}
 
 			if (toFill.getIdNote() != -1) {
-				NoteDataBinding n = new NoteDataBinding();
+				Note n = new Note();
 				n = rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
 				idNote = n.getId();
 			}
 
 			// check if there is a record of carbs at that time
-			CarbsDataBinding carbs = rdb.getCarbsAtThisTime(toFill.getIdUser(), DateUtils.formatToDb(toFill.getDateTime())); // this is wrong in so many levels...
+			CarbsRec carbs = rdb.getCarbsAtThisTime(toFill.getIdUser(), DateUtils.formatToDb(toFill.getDateTime())); // this is wrong in so many levels...
 			// let's take a bit to talk about dates
 			// in sqlite dates don't exist!
 			// they are strings. let's say: 2016-01-09 11:09
@@ -238,7 +238,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 	}
 
 	void setInsulinIntake() {
-		if (fragmentInsulinCalcs != null) {
+		if (fragmentInsulinCalcsFragment != null) {
 			showCalcs();
 		}
 
@@ -308,12 +308,12 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 		Spinner spinner = (Spinner) findViewById(R.id.sp_InsulinDetail_Tag);
 		ArrayList<String> allTags = new ArrayList<String>();
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<TagDataBinding> t = rdb.Tag_GetAll();
+		ArrayList<Tag> t = rdb.Tag_GetAll();
 		rdb.close();
 
 
 		if (t != null) {
-			for (TagDataBinding i : t) {
+			for (Tag i : t) {
 				allTags.add(i.getName());
 			}
 		}
@@ -430,15 +430,15 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 	}
 
 	public void showCalcs() {
-		if (fragmentInsulinCalcs == null) {
+		if (fragmentInsulinCalcsFragment == null) {
 			FragmentManager fragmentManager = getFragmentManager();
 			Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_calcs);
 			if (fragment != null) {
-				fragmentInsulinCalcs = (InsulinCalc) fragment;
+				fragmentInsulinCalcsFragment = (InsulinCalcFragment) fragment;
 			} else {
-				fragmentInsulinCalcs = InsulinCalc.newInstance((int) insulinCalculator.getGlycemiaRatio(), (int) insulinCalculator.getCarbsRatio());
+				fragmentInsulinCalcsFragment = InsulinCalcFragment.newInstance((int) insulinCalculator.getGlycemiaRatio(), (int) insulinCalculator.getCarbsRatio());
 				fragmentManager.beginTransaction()
-						.add(R.id.fragment_calcs, fragmentInsulinCalcs)
+						.add(R.id.fragment_calcs, fragmentInsulinCalcsFragment)
 						.commit();
 				fragmentManager.executePendingTransactions();
 
@@ -449,14 +449,14 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 			}
 		}
 
-		fragmentInsulinCalcs.setCorrectionGlycemia(insulinCalculator.getInsulinGlycemia());
-		fragmentInsulinCalcs.setCorrectionCarbs(insulinCalculator.getInsulinCarbs());
-		fragmentInsulinCalcs.setResult(insulinCalculator.getInsulinTotal(useIOB), insulinCalculator.getInsulinTotal(useIOB, true));
-		fragmentInsulinCalcs.setInsulinOnBoard(insulinCalculator.getInsulinOnBoard());
+		fragmentInsulinCalcsFragment.setCorrectionGlycemia(insulinCalculator.getInsulinGlycemia());
+		fragmentInsulinCalcsFragment.setCorrectionCarbs(insulinCalculator.getInsulinCarbs());
+		fragmentInsulinCalcsFragment.setResult(insulinCalculator.getInsulinTotal(useIOB), insulinCalculator.getInsulinTotal(useIOB, true));
+		fragmentInsulinCalcsFragment.setInsulinOnBoard(insulinCalculator.getInsulinOnBoard());
 		insulinCalculator.setListener(new InsulinCalculator.InsulinCalculatorListener() {
 			@Override
 			public void insulinOnBoardChanged(InsulinCalculator calculator) {
-				if (fragmentInsulinCalcs != null) {
+				if (fragmentInsulinCalcsFragment != null) {
 					showCalcs();
 				}
 				setInsulinIntake();
@@ -465,7 +465,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 	}
 
 	public void hideCalcs() {
-		if (fragmentInsulinCalcs != null) {
+		if (fragmentInsulinCalcsFragment != null) {
 			ScaleAnimation animation = new ScaleAnimation(1, 1, 1, 0, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
 			animation.setDuration(700);
 			findViewById(R.id.fragment_calcs).startAnimation(animation);
@@ -478,9 +478,9 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 				@Override
 				public void onAnimationEnd(Animation animation) {
 					getFragmentManager().beginTransaction()
-							.remove(fragmentInsulinCalcs)
+							.remove(fragmentInsulinCalcsFragment)
 							.commit();
-					fragmentInsulinCalcs = null;
+					fragmentInsulinCalcsFragment = null;
 				}
 
 				@Override
@@ -536,19 +536,19 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 		boolean hasGlycemia = false;
 		DB_Write reg = new DB_Write(this);
 
-		InsulinRegDataBinding ins = new InsulinRegDataBinding();
+		InsulinRec ins = new InsulinRec();
 
 		int idnote = 0;
 
 		if (!note.getText().toString().equals("")) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			idnote = reg.Note_Add(n);
 			ins.setIdNote(idnote);
 		}
 
 		if (!glycemia.getText().toString().equals("")) {
-			GlycemiaDataBinding gly = new GlycemiaDataBinding();
+			GlycemiaRec gly = new GlycemiaRec();
 
 			gly.setIdUser(idUser);
 			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
@@ -627,18 +627,18 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 
 		DB_Write reg = new DB_Write(this);
 
-		InsulinRegDataBinding ins = new InsulinRegDataBinding();
+		InsulinRec ins = new InsulinRec();
 
 
 		int idnote = 0;
 		if (!note.getText().toString().equals("") && idNote == 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			idnote = reg.Note_Add(n);
 			ins.setIdNote(idnote);
 		}
 		if (idNote != 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			n.setId(idNote);
 			reg.Note_Update(n);
@@ -647,7 +647,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 		int idglycemia = 0;
 
 		if (id_BG <= 0 && !glycemia.getText().toString().equals("")) {
-			GlycemiaDataBinding gly = new GlycemiaDataBinding();
+			GlycemiaRec gly = new GlycemiaRec();
 
 			gly.setIdUser(idUser);
 			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
@@ -660,7 +660,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 			idglycemia = reg.Glycemia_Save(gly);
 		}
 		if (id_BG > 0) {
-			GlycemiaDataBinding gly = new GlycemiaDataBinding();
+			GlycemiaRec gly = new GlycemiaRec();
 			gly.setId(id_BG);
 			gly.setIdUser(idUser);
 			gly.setValue((!glycemia.getText().toString().equals("")) ? Integer.parseInt(glycemia.getText().toString()) : 0);
@@ -728,7 +728,7 @@ public class InsulinDetail extends Activity implements InsulinCalc.CalcListener 
 
 	@Override
 	public void setup() {
-		fragmentInsulinCalcs = (InsulinCalc) getFragmentManager().findFragmentById(R.id.fragment_calcs);
+		fragmentInsulinCalcsFragment = (InsulinCalcFragment) getFragmentManager().findFragmentById(R.id.fragment_calcs);
 		showCalcs();
 	}
 }

@@ -19,8 +19,8 @@ import pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.Andro
 import pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IEventCallback;
 import pt.it.porto.mydiabetes.middleHealth.ieee_11073.part_10101.Nomenclature;
 import pt.it.porto.mydiabetes.middleHealth.utils.Utils;
-import pt.it.porto.mydiabetes.ui.activities.Meal;
-import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
+import pt.it.porto.mydiabetes.ui.activities.MealActivity;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
 
 public class EventCallback extends IEventCallback.Stub {
 	private static final String TAG = "EventCallback";
@@ -101,7 +101,7 @@ public class EventCallback extends IEventCallback.Stub {
 
 		// Read glycemia values:
 		DB_Read readDatabase = new DB_Read(mActivity);
-		ArrayList<GlycemiaDataBinding> glycemiaValues = readDatabase.Glycemia_GetByDate(initialDate, finalDate);
+		ArrayList<GlycemiaRec> glycemiaValues = readDatabase.Glycemia_GetByDate(initialDate, finalDate);
 		readDatabase.close();
 
 		// Remove measures with equal timestamps:
@@ -153,7 +153,7 @@ public class EventCallback extends IEventCallback.Stub {
 		// If it was not taken longer than five minutes ago:
 		if (difference <= TIME_INTERVAL_TO_START_MEAL) {
 			if (mostRecentMeasure.getMeasureId() == Nomenclature.MDC_CONC_GLU_GEN) {
-				Intent intent = new Intent(mActivity, Meal.class);
+				Intent intent = new Intent(mActivity, MealActivity.class);
 				intent.putExtra("value", mostRecentMeasure.getValues().get(0));
 				intent.putExtra("timestamp", mostRecentMeasure.getTimestamp());
 				mActivity.startActivity(intent);
@@ -195,7 +195,7 @@ public class EventCallback extends IEventCallback.Stub {
 		DB_Write writeDatabase = new DB_Write(mActivity);
 
 		// Save glycemia value:
-		GlycemiaDataBinding glycemia = new GlycemiaDataBinding();
+		GlycemiaRec glycemia = new GlycemiaRec();
 		glycemia.setIdUser(userId);
 		glycemia.setValue((int) Double.parseDouble(measure.getValues().get(0).toString())); // TODO check if the cast is ok
 		glycemia.setDateTime(dateString, hourString);

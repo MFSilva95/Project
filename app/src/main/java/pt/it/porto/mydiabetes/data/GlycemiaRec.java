@@ -1,20 +1,20 @@
-package pt.it.porto.mydiabetes.ui.dataBinding;
+package pt.it.porto.mydiabetes.data;
 
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class GlycemiaDataBinding extends DateTimeDataBinding implements Parcelable {
+public class GlycemiaRec extends DateTime implements Parcelable {
 
-	public static final Creator<GlycemiaDataBinding> CREATOR = new Creator<GlycemiaDataBinding>() {
+	public static final Creator<GlycemiaRec> CREATOR = new Creator<GlycemiaRec>() {
 		@Override
-		public GlycemiaDataBinding createFromParcel(Parcel in) {
-			return new GlycemiaDataBinding(in);
+		public GlycemiaRec createFromParcel(Parcel in) {
+			return new GlycemiaRec(in);
 		}
 
 		@Override
-		public GlycemiaDataBinding[] newArray(int size) {
-			return new GlycemiaDataBinding[size];
+		public GlycemiaRec[] newArray(int size) {
+			return new GlycemiaRec[size];
 		}
 	};
 	private int id;
@@ -23,10 +23,10 @@ public class GlycemiaDataBinding extends DateTimeDataBinding implements Parcelab
 	private int idTag;
 	private int idNote = -1;
 
-	public GlycemiaDataBinding() {
+	public GlycemiaRec() {
 	}
 
-	public GlycemiaDataBinding(GlycemiaDataBinding oldGlicemia) {
+	public GlycemiaRec(GlycemiaRec oldGlicemia) {
 		super(oldGlicemia);
 		if (oldGlicemia == null) {
 			return;
@@ -38,7 +38,7 @@ public class GlycemiaDataBinding extends DateTimeDataBinding implements Parcelab
 		idNote = oldGlicemia.getIdNote();
 	}
 
-	protected GlycemiaDataBinding(Parcel in) {
+	protected GlycemiaRec(Parcel in) {
 		super(in);
 		id = in.readInt();
 		idUser = in.readInt();
@@ -109,18 +109,14 @@ public class GlycemiaDataBinding extends DateTimeDataBinding implements Parcelab
 		} else if (o == null) {
 			return false;
 		} else {
-			if (!(o instanceof GlycemiaDataBinding)) {
+			if (!(o instanceof GlycemiaRec)) {
 				return false;
 			}
-			GlycemiaDataBinding otherGlicemia = (GlycemiaDataBinding) o;
-			if (value == otherGlicemia.getValue() && id == otherGlicemia.getId() &&
+			GlycemiaRec otherGlicemia = (GlycemiaRec) o;
+			return value == otherGlicemia.getValue() && id == otherGlicemia.getId() &&
 					idTag == otherGlicemia.getIdTag() &&
 					idNote == otherGlicemia.getIdNote() &&
-					super.equals(o)) {
-				return true;
-			} else {
-				return false;
-			}
+					super.equals(o);
 		}
 	}
 }

@@ -29,7 +29,7 @@ import pt.it.porto.mydiabetes.utils.DbUtils;
  */
 
 
-public class DB_BackupRestore extends Fragment {
+public class DB_BackupRestoreFragment extends Fragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -132,7 +132,7 @@ public class DB_BackupRestore extends Fragment {
 	}
 
 	public static boolean backup(Context context) {
-		if (DB_BackupRestore.isSDWriteable()) {
+		if (DB_BackupRestoreFragment.isSDWriteable()) {
 			File inputFile = DbUtils.exportDb(context);
 
 			File outputDir = new File(Environment.getExternalStorageDirectory()

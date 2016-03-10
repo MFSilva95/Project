@@ -12,14 +12,14 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.dataBinding.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
+import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.InsulinRec;
+import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
-public class TestBaseMealActivity extends BaseMealActivity {
+public class MealActivity extends BaseMealActivity {
 
 
 	@Override
@@ -122,19 +122,19 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		int idTag = rdb.Tag_GetIdByName(tag);
 		rdb.close();
 		DB_Write reg = new DB_Write(this);
-		CarbsDataBinding carb = new CarbsDataBinding();
+		CarbsRec carb = new CarbsRec();
 
 		String note = getNote();
 		if (!note.isEmpty()) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note);
-			carb.setId_Note(reg.Note_Add(n));
+			carb.setIdNote(reg.Note_Add(n));
 		}
 
 
-		carb.setId_User(idUser);
+		carb.setIdUser(idUser);
 		carb.setCarbsValue(insulinCalculator.getCarbs());
-		carb.setId_Tag(idTag);
+		carb.setIdTag(idTag);
 		carb.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
 		carb.setDateTime(getDate(), getTime());
 
@@ -166,19 +166,19 @@ public class TestBaseMealActivity extends BaseMealActivity {
 		boolean hasGlycemia = false;
 		DB_Write reg = new DB_Write(this);
 
-		InsulinRegDataBinding ins = new InsulinRegDataBinding();
+		InsulinRec ins = new InsulinRec();
 
 		int idnote = 0;
 		String note = getNote();
 		if (!note.isEmpty()) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note);
 			idnote = reg.Note_Add(n);
 			ins.setIdNote(idnote);
 		}
 
 		if (!glycemia.getText().toString().equals("")) {
-			GlycemiaDataBinding gly = new GlycemiaDataBinding();
+			GlycemiaRec gly = new GlycemiaRec();
 
 			gly.setIdUser(idUser);
 			gly.setValue(Integer.parseInt(glycemia.getText().toString()));

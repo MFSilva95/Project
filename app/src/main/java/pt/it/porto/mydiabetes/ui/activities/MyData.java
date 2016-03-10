@@ -69,16 +69,7 @@ public class MyData extends BaseOldActivity {
 					rdb.MyData_Save(getMyDataFromActivity());
 					rdb.close();
 					Toast.makeText(this, getString(R.string.mydata_saved), Toast.LENGTH_LONG).show();
-
-					//mandar para a actividade das insulinas
-					DB_Read read = new DB_Read(this);
-					if (!read.Insulin_HasInsulins()) {
-						read.close();
-						ShowDialogAddInsulin();
-					} else {
-						NavUtils.navigateUpFromSameTask(this);
-					}
-
+					NavUtils.navigateUpFromSameTask(this);
 
 					return true;
 				} else {
@@ -153,23 +144,6 @@ public class MyData extends BaseOldActivity {
 			}
 			height.setText(obj[9].toString());
 		}
-	}
-
-	public void ShowDialogAddInsulin() {
-		final Context c = this;
-		new AlertDialog.Builder(this)
-				.setTitle(getString(R.string.title_activity_info))
-				.setMessage(getString(R.string.mydata_next_add_insulin))
-				.setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						//Falta verificar se não está associada a nenhuma entrada da DB
-						//Rever porque não elimina o registo de glicemia
-						Intent intent = new Intent(c, Preferences.class);
-						intent.putExtra("tabPosition", 2);
-						startActivity(intent);
-						finish();
-					}
-				}).show();
 	}
 
 }

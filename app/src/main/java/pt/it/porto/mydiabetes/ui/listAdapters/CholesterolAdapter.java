@@ -13,16 +13,16 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.CholesterolDetail;
-import pt.it.porto.mydiabetes.ui.dataBinding.CholesterolDataBinding;
+import pt.it.porto.mydiabetes.data.CholesterolRec;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 public class CholesterolAdapter extends BaseAdapter {
 
 	Context _c;
-	private ArrayList<CholesterolDataBinding> _data;
+	private ArrayList<CholesterolRec> _data;
 
-	public CholesterolAdapter(ArrayList<CholesterolDataBinding> data, Context c) {
+	public CholesterolAdapter(ArrayList<CholesterolRec> data, Context c) {
 		_data = data;
 		_c = c;
 	}
@@ -55,7 +55,7 @@ public class CholesterolAdapter extends BaseAdapter {
 		TextView hora = (TextView) v.findViewById(R.id.tv_list_cholesterol_hora);
 		TextView value = (TextView) v.findViewById(R.id.tv_list_cholesterol_value);
 
-		CholesterolDataBinding bp = _data.get(position);
+		CholesterolRec bp = _data.get(position);
 		String _id = "" + bp.getId();
 
 		data.setText(bp.getFormattedDate());

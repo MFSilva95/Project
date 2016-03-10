@@ -1,4 +1,4 @@
-package pt.it.porto.mydiabetes.ui.dataBinding;
+package pt.it.porto.mydiabetes.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -9,32 +9,32 @@ import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
-public class DateTimeDataBinding implements Parcelable, Comparable<DateTimeDataBinding> {
-	public static final Creator<DateTimeDataBinding> CREATOR = new Creator<DateTimeDataBinding>() {
+public class DateTime implements Parcelable, Comparable<DateTime> {
+	public static final Creator<DateTime> CREATOR = new Creator<DateTime>() {
 		@Override
-		public DateTimeDataBinding createFromParcel(Parcel in) {
-			return new DateTimeDataBinding(in);
+		public DateTime createFromParcel(Parcel in) {
+			return new DateTime(in);
 		}
 
 		@Override
-		public DateTimeDataBinding[] newArray(int size) {
-			return new DateTimeDataBinding[size];
+		public DateTime[] newArray(int size) {
+			return new DateTime[size];
 		}
 	};
 	private Calendar dateTime;
 
-	public DateTimeDataBinding() {
+	public DateTime() {
 	}
 
-	protected DateTimeDataBinding(Parcel in) {
+	protected DateTime(Parcel in) {
 		dateTime = (Calendar) in.readSerializable();
 	}
 
-	public DateTimeDataBinding(DateTimeDataBinding oldDateTimeData) {
-		if (oldDateTimeData == null) {
+	public DateTime(DateTime oldDateTime) {
+		if (oldDateTime == null) {
 			return;
 		}
-		this.dateTime = oldDateTimeData.getDateTime();
+		this.dateTime = oldDateTime.getDateTime();
 	}
 
 	@Override
@@ -78,7 +78,7 @@ public class DateTimeDataBinding implements Parcelable, Comparable<DateTimeDataB
 	}
 
 	@Override
-	public int compareTo(@NonNull DateTimeDataBinding another) {
+	public int compareTo(@NonNull DateTime another) {
 		if (DateUtils.isSameTime(dateTime, another.getDateTime())) {
 			return 0;
 		} else {
@@ -109,10 +109,10 @@ public class DateTimeDataBinding implements Parcelable, Comparable<DateTimeDataB
 		if (o == null) {
 			return false;
 		}
-		if (!(o instanceof DateTimeDataBinding)) {
+		if (!(o instanceof DateTime)) {
 			return false;
 		}
-		Calendar otherDateTime = ((DateTimeDataBinding) o).getDateTime();
+		Calendar otherDateTime = ((DateTime) o).getDateTime();
 		return dateTime.get(Calendar.YEAR) == otherDateTime.get(Calendar.YEAR) &&
 				dateTime.get(Calendar.DAY_OF_YEAR) == otherDateTime.get(Calendar.DAY_OF_YEAR) &&
 				dateTime.get(Calendar.HOUR_OF_DAY) == otherDateTime.get(Calendar.HOUR_OF_DAY) &&
@@ -122,7 +122,7 @@ public class DateTimeDataBinding implements Parcelable, Comparable<DateTimeDataB
 
 	@Override
 	public String toString() {
-		return "DateTimeDataBinding{" +
+		return "DateTime{" +
 				"dateTime=" + dateTime +
 				'}';
 	}

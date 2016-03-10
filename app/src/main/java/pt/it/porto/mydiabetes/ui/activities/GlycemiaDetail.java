@@ -27,9 +27,9 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.dataBinding.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -54,7 +54,7 @@ public class GlycemiaDetail extends Activity {
 		if (args != null) {
 			DB_Read rdb = new DB_Read(this);
 			idGlycemia = args.getInt("Id");
-			GlycemiaDataBinding toFill = rdb.Glycemia_GetById(idGlycemia);
+			GlycemiaRec toFill = rdb.Glycemia_GetById(idGlycemia);
 
 			EditText date = (EditText) findViewById(R.id.et_GlycemiaDetail_Data);
 			date.setText(toFill.getFormattedDate());
@@ -66,7 +66,7 @@ public class GlycemiaDetail extends Activity {
 
 			EditText note = (EditText) findViewById(R.id.et_GlycemiaDetail_Notes);
 			if (toFill.getIdNote() != -1) {
-				NoteDataBinding n = new NoteDataBinding();
+				Note n = new Note();
 				n = rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
 				idNote = n.getId();
@@ -149,12 +149,12 @@ public class GlycemiaDetail extends Activity {
 		Spinner spinner = (Spinner) findViewById(R.id.sp_GlycemiaDetail_Tag);
 		ArrayList<String> allTags = new ArrayList<String>();
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<TagDataBinding> t = rdb.Tag_GetAll();
+		ArrayList<Tag> t = rdb.Tag_GetAll();
 		rdb.close();
 
 
 		if (t != null) {
-			for (TagDataBinding i : t) {
+			for (Tag i : t) {
 				allTags.add(i.getName());
 			}
 		}
@@ -190,10 +190,10 @@ public class GlycemiaDetail extends Activity {
 		rdb.close();
 
 		DB_Write reg = new DB_Write(this);
-		GlycemiaDataBinding gly = new GlycemiaDataBinding();
+		GlycemiaRec gly = new GlycemiaRec();
 
 		if (!note.getText().toString().equals("")) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			gly.setIdNote(reg.Note_Add(n));
 		}
@@ -236,15 +236,15 @@ public class GlycemiaDetail extends Activity {
 		rdb.close();
 
 		DB_Write reg = new DB_Write(this);
-		GlycemiaDataBinding gly = new GlycemiaDataBinding();
+		GlycemiaRec gly = new GlycemiaRec();
 
 		if (!note.getText().toString().equals("") && idNote == 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			gly.setIdNote(reg.Note_Add(n));
 		}
 		if (idNote != 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			n.setId(idNote);
 			reg.Note_Update(n);
@@ -287,7 +287,7 @@ public class GlycemiaDetail extends Activity {
 	}
 
 	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
-		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
+		SpinnerAdapter adapter = spnr.getAdapter();
 		for (int position = 0; position < adapter.getCount(); position++) {
 			if (adapter.getItem(position).equals(value)) {
 				spnr.setSelection(position);

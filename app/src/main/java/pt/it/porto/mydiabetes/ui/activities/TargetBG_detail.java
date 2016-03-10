@@ -18,8 +18,8 @@ import android.widget.Toast;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.dataBinding.TargetDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
@@ -42,7 +42,7 @@ public class TargetBG_detail extends Activity {
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
-			TargetDataBinding toFill = null;
+			InsulinTarget toFill = null;
 			if (args.containsKey(BUNDLE_DATA)) {
 				toFill = args.getParcelable(BUNDLE_DATA);
 			}
@@ -163,7 +163,7 @@ public class TargetBG_detail extends Activity {
 
 		DB_Write wdb = new DB_Write(this);
 
-		TargetDataBinding target = new TargetDataBinding();
+		InsulinTarget target = new InsulinTarget();
 
 
 		target.setName(name.getText().toString());
@@ -213,7 +213,7 @@ public class TargetBG_detail extends Activity {
 
 		DB_Write wdb = new DB_Write(this);
 
-		TargetDataBinding target = new TargetDataBinding();
+		InsulinTarget target = new InsulinTarget();
 
 		target.setId(idTarget);
 		target.setName(name.getText().toString());

@@ -1,5 +1,6 @@
 package pt.it.porto.mydiabetes.ui.fragments;
 
+
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
@@ -13,21 +14,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.activities.ExercisesDetail;
-import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseAdapter;
-import pt.it.porto.mydiabetes.ui.dataBinding.ExerciseDataBinding;
+import pt.it.porto.mydiabetes.ui.activities.TagDetail;
+import pt.it.porto.mydiabetes.ui.listAdapters.TagAdapter;
+import pt.it.porto.mydiabetes.data.Tag;
 
-public class Exercises extends Fragment {
 
-	ListView exerciseList;
+public class TagsFragment extends Fragment {
+
+	ListView tagList;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -35,65 +35,50 @@ public class Exercises extends Fragment {
 		setHasOptionsMenu(true);
 	}
 
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		super.onCreateOptionsMenu(menu, inflater);
-		MenuInflater exercisessmenu = getActivity().getMenuInflater();
-		exercisessmenu.inflate(R.menu.exercises_menu, menu);
-
+		inflater.inflate(R.menu.tags_menu, menu);
 	}
+
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View v = inflater.inflate(R.layout.fragment_exercises, container, false);
-
-		exerciseList = (ListView) v.findViewById(R.id.exercisesFragmentList);
-
-		fillListView(exerciseList);
-
+		View v = inflater.inflate(R.layout.fragment_tags, container, false);
+		tagList = (ListView) v.findViewById(R.id.tagsFragmentList);
+		fillListView(tagList);
 		return v;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case R.id.menuItem_ExercisesFragment_Add:
-				Intent intent = new Intent(this.getActivity(), ExercisesDetail.class);
+			case R.id.menuItem_TagsFragment_Add:
+				Intent intent = new Intent(this.getActivity(), TagDetail.class);
 				startActivity(intent);
+				//showTagDialog();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
-	@Override
-	public void onResume() {
-		super.onResume();
-		exerciseList = (ListView) super.getActivity().findViewById(R.id.exercisesFragmentList);
-		fillListView(exerciseList);
-	}
 
-	public void showExerciseDialog() {
+	public void showTagDialog() {
 		LayoutInflater inflater = getActivity().getLayoutInflater();
-		final View v = inflater.inflate(R.layout.dialog_new_exercise, null);
+		final View v = inflater.inflate(R.layout.dialog_new_tag, null);
 
 		new AlertDialog.Builder(getActivity())
 				.setView(v)
 				.setPositiveButton(getString(R.string.saveButton), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
-						EditText exercisename = (EditText) v.findViewById(R.id.et_dialog_new_exercise_Name);
-						//adicionado por zeornelas
-						//obriga a colocar os valores
-						if (exercisename.getText().toString().equals("")) {
-							Toast.makeText(v.getContext(), getString(R.string.exerciseInputAlert), Toast.LENGTH_LONG).show();
-							return;
-						}
 						// deal with the editable
 						DB_Write wdb = new DB_Write(getActivity());
-
-						wdb.Exercise_Add(exercisename.getText().toString());
+						EditText tagname = (EditText) v.findViewById(R.id.et_dialog_new_tag_Name);
+						wdb.Tag_Add(tagname.getText().toString());
 						wdb.close();
-						fillListView(exerciseList);
+						fillListView(tagList);
 					}
 				})
 				.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
@@ -104,23 +89,10 @@ public class Exercises extends Fragment {
 	}
 
 	public void fillListView(ListView lv) {
-
-		ArrayList<ExerciseDataBinding> allExercises = new ArrayList<ExerciseDataBinding>();
-
 		DB_Read rdb = new DB_Read(getActivity());
-		HashMap<Integer, String> val = rdb.Exercise_GetAll();
+		ArrayList<Tag> allTags = rdb.Tag_GetAll();
 		rdb.close();
-		ExerciseDataBinding exercise;
-
-		if (val != null) {
-			for (int i : val.keySet()) {
-				exercise = new ExerciseDataBinding();
-				exercise.setId(i);
-				exercise.setName(val.get(i));
-				allExercises.add(exercise);
-			}
-		}
-
-		lv.setAdapter(new ExerciseAdapter(allExercises, getActivity()));
+		lv.setAdapter(new TagAdapter(allTags, getActivity()));
 	}
+
 }

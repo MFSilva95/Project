@@ -278,7 +278,7 @@
                 android:value=".ui.activities.Preferences"/>
         </activity>
         <activity
-            android:name=".ui.activities.TestBaseMealActivity"
+            android:name=".ui.activities.MealActivity"
             android:label="@string/title_activity_meal"
             android:parentActivityName=".ui.activities.Home">
             <meta-data

@@ -13,15 +13,15 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.DiseaseDetail;
-import pt.it.porto.mydiabetes.ui.dataBinding.DiseaseRegDataBinding;
+import pt.it.porto.mydiabetes.data.DiseaseRec;
 
 
 public class DiseaseRegAdapter extends BaseAdapter {
 
 	Context _c;
-	private ArrayList<DiseaseRegDataBinding> _data;
+	private ArrayList<DiseaseRec> _data;
 
-	public DiseaseRegAdapter(ArrayList<DiseaseRegDataBinding> data, Context c) {
+	public DiseaseRegAdapter(ArrayList<DiseaseRec> data, Context c) {
 		_data = data;
 		_c = c;
 	}
@@ -55,7 +55,7 @@ public class DiseaseRegAdapter extends BaseAdapter {
 		TextView end = (TextView) v.findViewById(R.id.tv_list_diseasereg_enddate);
 
 
-		final DiseaseRegDataBinding dis = _data.get(position);
+		final DiseaseRec dis = _data.get(position);
 		final String _id = "" + dis.getId();
 
 		disease.setText(dis.getDisease());

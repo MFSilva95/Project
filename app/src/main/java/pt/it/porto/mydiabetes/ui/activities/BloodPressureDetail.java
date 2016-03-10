@@ -27,11 +27,11 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.data.BloodPressureRec;
+import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.dataBinding.BloodPressureDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
+import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -55,7 +55,7 @@ public class BloodPressureDetail extends Activity {
 			String id = args.getString("Id");
 			idBP = Integer.parseInt(id);
 
-			BloodPressureDataBinding toFill = rdb.BloodPressure_GetById(Integer.parseInt(id));
+			BloodPressureRec toFill = rdb.BloodPressure_GetById(Integer.parseInt(id));
 
 			Spinner tagSpinner = (Spinner) findViewById(R.id.sp_BloodPressureDetail_Tag);
 			SelectSpinnerItemByValue(tagSpinner, rdb.Tag_GetById(toFill.getIdTag()).getName());
@@ -69,7 +69,7 @@ public class BloodPressureDetail extends Activity {
 			hora.setText(toFill.getFormattedTime());
 			EditText note = (EditText) findViewById(R.id.et_BloodPressureDetail_Notes);
 			if (toFill.getIdNote() != -1) {
-				NoteDataBinding n = new NoteDataBinding();
+				Note n = new Note();
 				n = rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
 				idNote = n.getId();
@@ -158,12 +158,12 @@ public class BloodPressureDetail extends Activity {
 		Spinner spinner = (Spinner) findViewById(R.id.sp_BloodPressureDetail_Tag);
 		ArrayList<String> allTags = new ArrayList<String>();
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<TagDataBinding> t = rdb.Tag_GetAll();
+		ArrayList<Tag> t = rdb.Tag_GetAll();
 		rdb.close();
 
 
 		if (t != null) {
-			for (TagDataBinding i : t) {
+			for (Tag i : t) {
 				allTags.add(i.getName());
 			}
 		}
@@ -174,7 +174,7 @@ public class BloodPressureDetail extends Activity {
 	}
 
 	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
-		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
+		SpinnerAdapter adapter = spnr.getAdapter();
 		for (int position = 0; position < adapter.getCount(); position++) {
 			if (adapter.getItem(position).equals(value)) {
 				spnr.setSelection(position);
@@ -226,10 +226,10 @@ public class BloodPressureDetail extends Activity {
 		Log.d("selected Spinner", tag);
 		int idTag = rdb.Tag_GetIdByName(tag);
 
-		BloodPressureDataBinding bp = new BloodPressureDataBinding();
+		BloodPressureRec bp = new BloodPressureRec();
 
 		if (!note.getText().toString().equals("")) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			bp.setIdNote(wdb.Note_Add(n));
 		}
@@ -281,15 +281,15 @@ public class BloodPressureDetail extends Activity {
 		Log.d("selected Spinner", tag);
 		int idTag = rdb.Tag_GetIdByName(tag);
 
-		BloodPressureDataBinding bp = new BloodPressureDataBinding();
+		BloodPressureRec bp = new BloodPressureRec();
 
 		if (!note.getText().toString().equals("") && idNote == 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			bp.setIdNote(wdb.Note_Add(n));
 		}
 		if (idNote != 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			n.setId(idNote);
 			wdb.Note_Update(n);

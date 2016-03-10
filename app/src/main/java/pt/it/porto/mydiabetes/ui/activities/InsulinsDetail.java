@@ -10,7 +10,6 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -20,7 +19,7 @@ import android.view.MenuInflater;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.dataBinding.InsulinDataBinding;
+import pt.it.porto.mydiabetes.data.Insulin;
 
 
 public class InsulinsDetail extends Activity {
@@ -41,7 +40,7 @@ public class InsulinsDetail extends Activity {
 			DB_Read rdb = new DB_Read(this);
 			String id = args.getString("Id");
 			idInsulin = Integer.parseInt(id);
-			InsulinDataBinding toFill = rdb.Insulin_GetById(Integer.parseInt(id));
+			Insulin toFill = rdb.Insulin_GetById(Integer.parseInt(id));
 
 			EditText name = (EditText)findViewById(R.id.et_Insulins_Nome);
 			name.setText(toFill.getName());
@@ -106,23 +105,6 @@ public class InsulinsDetail extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void ShowDialogAddTarget(){
-		final Context c = this;
-		new AlertDialog.Builder(this)
-				.setTitle(getString(R.string.title_activity_info))
-				.setMessage(getString(R.string.how_to_add_insulins))
-				.setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						//Falta verificar se não está associada a nenhuma entrada da DB
-						//Rever porque não elimina o registo de glicemia
-						Intent intent = new Intent(c, Preferences.class);
-						intent.putExtra("tabPosition", 1);
-						startActivity(intent);
-						finish();
-					}
-				}).show();
-	}
-
 	public void AddNewInsulin(){
 		EditText name = (EditText)findViewById(R.id.et_Insulins_Nome);
 		EditText type = (EditText)findViewById(R.id.et_Insulins_Tipo);
@@ -169,7 +151,7 @@ public class InsulinsDetail extends Activity {
 
 		DB_Write wdb = new DB_Write(this);
 
-		InsulinDataBinding insulin = new InsulinDataBinding();
+		Insulin insulin = new Insulin();
 
 
 		insulin.setName(name.getText().toString());
@@ -181,13 +163,7 @@ public class InsulinsDetail extends Activity {
 		wdb.Insulin_Add(insulin);
 		wdb.close();
 
-		read = new DB_Read(this);
-		if(!read.Target_HasTargets()){
-			read.close();
-			ShowDialogAddTarget();
-		}else{
-			finish();
-		}
+		finish();
 	}
 
 
@@ -236,7 +212,7 @@ public class InsulinsDetail extends Activity {
 
 		DB_Write wdb = new DB_Write(this);
 
-		InsulinDataBinding insulin = new InsulinDataBinding();
+		Insulin insulin = new pt.it.porto.mydiabetes.data.Insulin();
 
 		insulin.setId(idInsulin);
 		insulin.setName(name.getText().toString());
@@ -248,13 +224,7 @@ public class InsulinsDetail extends Activity {
 		wdb.Insulin_Update(insulin);
 		wdb.close();
 
-		read = new DB_Read(this);
-		if(!read.Target_HasTargets()){
-			read.close();
-			ShowDialogAddTarget();
-		}else{
-			finish();
-		}
+		finish();
 	}
 
 

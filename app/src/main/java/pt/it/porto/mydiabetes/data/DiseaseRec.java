@@ -1,7 +1,7 @@
-package pt.it.porto.mydiabetes.ui.dataBinding;
+package pt.it.porto.mydiabetes.data;
 
 
-public class DiseaseRegDataBinding {
+public class DiseaseRec {
 
 	private int id;
 	private int idUser;
@@ -61,9 +61,9 @@ public class DiseaseRegDataBinding {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof DiseaseRegDataBinding)) return false;
+		if (!(o instanceof DiseaseRec)) return false;
 
-		DiseaseRegDataBinding that = (DiseaseRegDataBinding) o;
+		DiseaseRec that = (DiseaseRec) o;
 
 		if (id != that.id) return false;
 		if (idUser != that.idUser) return false;
@@ -76,7 +76,7 @@ public class DiseaseRegDataBinding {
 
 	@Override
 	public String toString() {
-		return "DiseaseRegDataBinding{" +
+		return "DiseaseRec{" +
 				"id=" + id +
 				", idUser=" + idUser +
 				", disease='" + disease + '\'' +

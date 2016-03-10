@@ -18,8 +18,8 @@ import android.widget.Toast;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -39,7 +39,7 @@ public class TagDetail extends Activity {
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
-			TagDataBinding toFill = null;
+			Tag toFill = null;
 			if (args.containsKey(DATA)) {
 				toFill = args.getParcelable(DATA);
 				if (toFill != null) {
@@ -151,7 +151,7 @@ public class TagDetail extends Activity {
 
 		DB_Write wdb = new DB_Write(this);
 
-		TagDataBinding tag = new TagDataBinding();
+		Tag tag = new Tag();
 
 
 		tag.setName(name.getText().toString());
@@ -194,7 +194,7 @@ public class TagDetail extends Activity {
 
 		DB_Write wdb = new DB_Write(this);
 
-		TagDataBinding tag = new TagDataBinding();
+		Tag tag = new Tag();
 
 		tag.setId(idTag);
 		tag.setName(name.getText().toString());

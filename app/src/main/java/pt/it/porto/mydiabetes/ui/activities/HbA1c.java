@@ -18,7 +18,7 @@ import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.dataBinding.HbA1cDataBinding;
+import pt.it.porto.mydiabetes.data.HbA1cRec;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -120,7 +120,7 @@ public class HbA1c extends Activity {
 		EditText datefrom = (EditText) findViewById(R.id.et_HbA1c_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_HbA1c_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<HbA1cDataBinding> allhba1c = rdb.HbA1c_GetBtDate(datefrom.getText().toString(), dateto.getText().toString());
+		ArrayList<HbA1cRec> allhba1c = rdb.HbA1c_GetBtDate(datefrom.getText().toString(), dateto.getText().toString());
 		rdb.close();
 		lv.setAdapter(new HbA1cAdapter(allhba1c, this));
 		lv.setEmptyView(findViewById(R.id.list_empty));

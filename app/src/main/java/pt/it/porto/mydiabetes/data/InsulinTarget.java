@@ -1,20 +1,20 @@
-package pt.it.porto.mydiabetes.ui.dataBinding;
+package pt.it.porto.mydiabetes.data;
 
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class TargetDataBinding implements Parcelable {
+public class InsulinTarget implements Parcelable {
 
-	public static final Creator<TargetDataBinding> CREATOR = new Creator<TargetDataBinding>() {
+	public static final Creator<InsulinTarget> CREATOR = new Creator<InsulinTarget>() {
 		@Override
-		public TargetDataBinding createFromParcel(Parcel in) {
-			return new TargetDataBinding(in);
+		public InsulinTarget createFromParcel(Parcel in) {
+			return new InsulinTarget(in);
 		}
 
 		@Override
-		public TargetDataBinding[] newArray(int size) {
-			return new TargetDataBinding[size];
+		public InsulinTarget[] newArray(int size) {
+			return new InsulinTarget[size];
 		}
 	};
 	private int id;
@@ -23,10 +23,10 @@ public class TargetDataBinding implements Parcelable {
 	private String end;
 	private double target;
 
-	public TargetDataBinding() {
+	public InsulinTarget() {
 	}
 
-	protected TargetDataBinding(Parcel in) {
+	protected InsulinTarget(Parcel in) {
 		id = in.readInt();
 		name = in.readString();
 		start = in.readString();
@@ -91,9 +91,9 @@ public class TargetDataBinding implements Parcelable {
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
-		if (!(o instanceof TargetDataBinding)) return false;
+		if (!(o instanceof InsulinTarget)) return false;
 
-		TargetDataBinding that = (TargetDataBinding) o;
+		InsulinTarget that = (InsulinTarget) o;
 
 		if (id != that.id) return false;
 		if (Double.compare(that.target, target) != 0) return false;
@@ -105,7 +105,7 @@ public class TargetDataBinding implements Parcelable {
 
 	@Override
 	public String toString() {
-		return "TargetDataBinding{" +
+		return "InsulinTarget{" +
 				"id=" + id +
 				", name='" + name + '\'' +
 				", start='" + start + '\'' +

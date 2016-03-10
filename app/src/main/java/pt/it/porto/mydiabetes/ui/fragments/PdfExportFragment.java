@@ -20,7 +20,7 @@ import pt.it.porto.mydiabetes.R;
 
 
 
-public class PdfExport extends Fragment {
+public class PdfExportFragment extends Fragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

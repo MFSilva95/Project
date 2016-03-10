@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.dataBinding.TargetDataBinding;
+import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.ui.listAdapters.TargetAdapter;
 
 
@@ -54,7 +54,7 @@ public class SettingsInsulinTargets extends BaseOldActivity {
 
     public void fillListView(ListView lv) {
         DB_Read rdb = new DB_Read(this);
-        ArrayList<TargetDataBinding> allTags = rdb.Target_GetAll();
+        ArrayList<InsulinTarget> allTags = rdb.Target_GetAll();
 
         rdb.close();
 

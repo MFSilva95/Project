@@ -14,16 +14,16 @@ import java.util.ArrayList;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.BloodPressureDetail;
-import pt.it.porto.mydiabetes.ui.dataBinding.BloodPressureDataBinding;
-import pt.it.porto.mydiabetes.ui.dataBinding.TagDataBinding;
+import pt.it.porto.mydiabetes.data.BloodPressureRec;
+import pt.it.porto.mydiabetes.data.Tag;
 
 
 public class BloodPressureAdapter extends BaseAdapter {
 
 	Context _c;
-	private ArrayList<BloodPressureDataBinding> _data;
+	private ArrayList<BloodPressureRec> _data;
 
-	public BloodPressureAdapter(ArrayList<BloodPressureDataBinding> data, Context c) {
+	public BloodPressureAdapter(ArrayList<BloodPressureRec> data, Context c) {
 		_data = data;
 		_c = c;
 	}
@@ -58,7 +58,7 @@ public class BloodPressureAdapter extends BaseAdapter {
 		TextView diastolic = (TextView) v.findViewById(R.id.tv_list_bloodpressure_diastolic_value);
 		TextView tag = (TextView) v.findViewById(R.id.tv_list_bloodpressure_tag);
 
-		BloodPressureDataBinding bp = _data.get(position);
+		BloodPressureRec bp = _data.get(position);
 		String _id = "" + bp.getId();
 
 		DB_Read rdb = new DB_Read(_c);
@@ -68,7 +68,7 @@ public class BloodPressureAdapter extends BaseAdapter {
 		systolic.setText(String.valueOf(bp.getSystolic()));
 		diastolic.setText(String.valueOf(bp.getDiastolic()));
 
-		TagDataBinding t = rdb.Tag_GetById(bp.getIdTag());
+		Tag t = rdb.Tag_GetById(bp.getIdTag());
 		rdb.close();
 		tag.setText(t.getName());
 		v.setTag(_id);

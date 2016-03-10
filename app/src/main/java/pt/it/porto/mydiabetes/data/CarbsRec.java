@@ -1,53 +1,53 @@
-package pt.it.porto.mydiabetes.ui.dataBinding;
+package pt.it.porto.mydiabetes.data;
 
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class CarbsDataBinding extends DateTimeDataBinding implements Parcelable {
+public class CarbsRec extends DateTime implements Parcelable {
 
-	public static final Creator<CarbsDataBinding> CREATOR = new Creator<CarbsDataBinding>() {
+	public static final Creator<CarbsRec> CREATOR = new Creator<CarbsRec>() {
 		@Override
-		public CarbsDataBinding createFromParcel(Parcel in) {
-			return new CarbsDataBinding(in);
+		public CarbsRec createFromParcel(Parcel in) {
+			return new CarbsRec(in);
 		}
 
 		@Override
-		public CarbsDataBinding[] newArray(int size) {
-			return new CarbsDataBinding[size];
+		public CarbsRec[] newArray(int size) {
+			return new CarbsRec[size];
 		}
 	};
 	private int id;
 	private int id_User;
 	private int value;
 	private String photopath;
-	private int id_Tag;
-	private int id_Note;
+	private int idTag;
+	private int idNote;
 
-	public CarbsDataBinding() {
+	public CarbsRec() {
 	}
 
-	public CarbsDataBinding(CarbsDataBinding oldCarbs) {
+	public CarbsRec(CarbsRec oldCarbs) {
 		super(oldCarbs);
 		if (oldCarbs == null) {
 			return;
 		}
 		id = oldCarbs.getId();
-		id_User = oldCarbs.getId_User();
+		id_User = oldCarbs.getIdUser();
 		value = oldCarbs.getCarbsValue();
 		photopath = oldCarbs.getPhotoPath();
-		id_Tag = oldCarbs.getId_Tag();
-		id_Note = oldCarbs.getId_Note();
+		idTag = oldCarbs.getIdTag();
+		idNote = oldCarbs.getIdNote();
 	}
 
-	protected CarbsDataBinding(Parcel in) {
+	protected CarbsRec(Parcel in) {
 		super(in);
 		id = in.readInt();
 		id_User = in.readInt();
 		value = in.readInt();
 		photopath = in.readString();
-		id_Tag = in.readInt();
-		id_Note = in.readInt();
+		idTag = in.readInt();
+		idNote = in.readInt();
 	}
 
 	public int getId() {
@@ -58,11 +58,11 @@ public class CarbsDataBinding extends DateTimeDataBinding implements Parcelable 
 		this.id = id;
 	}
 
-	public int getId_User() {
+	public int getIdUser() {
 		return id_User;
 	}
 
-	public void setId_User(int id_User) {
+	public void setIdUser(int id_User) {
 		this.id_User = id_User;
 	}
 
@@ -87,20 +87,20 @@ public class CarbsDataBinding extends DateTimeDataBinding implements Parcelable 
 	}
 
 
-	public int getId_Tag() {
-		return id_Tag;
+	public int getIdTag() {
+		return idTag;
 	}
 
-	public void setId_Tag(int id_Tag) {
-		this.id_Tag = id_Tag;
+	public void setIdTag(int id_Tag) {
+		this.idTag = id_Tag;
 	}
 
-	public int getId_Note() {
-		return id_Note;
+	public int getIdNote() {
+		return idNote;
 	}
 
-	public void setId_Note(int id_Note) {
-		this.id_Note = id_Note;
+	public void setIdNote(int id_Note) {
+		this.idNote = id_Note;
 	}
 
 
@@ -116,8 +116,8 @@ public class CarbsDataBinding extends DateTimeDataBinding implements Parcelable 
 		dest.writeInt(id_User);
 		dest.writeInt(value);
 		dest.writeString(photopath);
-		dest.writeInt(id_Tag);
-		dest.writeInt(id_Note);
+		dest.writeInt(idTag);
+		dest.writeInt(idNote);
 	}
 
 	@Override
@@ -127,34 +127,30 @@ public class CarbsDataBinding extends DateTimeDataBinding implements Parcelable 
 		} else if (o == null) {
 			return false;
 		} else {
-			if (!(o instanceof CarbsDataBinding)) {
+			if (!(o instanceof CarbsRec)) {
 				return false;
 			}
-			CarbsDataBinding otherCarbs = (CarbsDataBinding) o;
-			if (value == otherCarbs.getCarbsValue() &&
+			CarbsRec otherCarbs = (CarbsRec) o;
+			return value == otherCarbs.getCarbsValue() &&
 					(otherCarbs.getPhotoPath() == null || otherCarbs.getPhotoPath().equals(photopath)) &&
-					id_Tag == otherCarbs.getId_Tag() &&
+					idTag == otherCarbs.getIdTag() &&
 					((photopath != null && photopath.equals(otherCarbs.getPhotoPath())) || photopath == null && otherCarbs.getPhotoPath() == null) &&
-					id_Note == otherCarbs.getId_Note() &&
+					idNote == otherCarbs.getIdNote() &&
 					id == otherCarbs.getId() &&
-					super.equals(o)) {
-				return true;
-			} else {
-				return false;
-			}
+					super.equals(o);
 
 		}
 	}
 
 	@Override
 	public String toString() {
-		return "CarbsDataBinding{" +
+		return "CarbsRec{" +
 				"id=" + id +
 				", id_User=" + id_User +
 				", value=" + value +
 				", photopath='" + photopath + '\'' +
-				", id_Tag=" + id_Tag +
-				", id_Note=" + id_Note +
+				", idTag=" + idTag +
+				", idNote=" + idNote +
 				'}';
 	}
 }
