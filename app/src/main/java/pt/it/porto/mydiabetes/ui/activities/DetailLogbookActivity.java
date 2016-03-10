@@ -181,7 +181,8 @@ public class DetailLogbookActivity extends BaseMealActivity {
 											 public void onClick(DialogInterface dialog, int whichButton) {
 												 DB_Write wdb = new DB_Write(c);
 												 try {
-													 wdb.Logbook_Delete(carbsData.getId(), insulinData.getId(), glycemiaData.getId(), noteId);
+													 wdb.Logbook_Delete(carbsData != null ? carbsData.getId() : -1, insulinData != null ? insulinData.getId() : -1, glycemiaData != null ? glycemiaData.getId() : -1, noteId);
+													 setResult(DetailLogbookActivity.RESULT_SAVED_CHANGES);
 													 finish();
 												 } catch (Exception e) {
 													 Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
