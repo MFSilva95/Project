@@ -91,16 +91,16 @@ public class MyDiabetesContract {
 		public static class Insulin {
 			public static final String TABLE_NAME = "Reg_Insulin";
 
-			public static final String COLUMN_NAME_ID = TABLE_NAME + "." + "Id";
-			public static final String COLUMN_NAME_USER_ID = TABLE_NAME + "." + "Id_User";
-			public static final String COLUMN_NAME_INSULIN_ID = TABLE_NAME + "." + "Id_Insulin";
-			public static final String COLUMN_NAME_BLOODGLUCOSE_ID = TABLE_NAME + "." + "Id_BloodGlucose";
-			public static final String COLUMN_NAME_DATETIME = TABLE_NAME + "." + "DateTime";
-			public static final String COLUMN_NAME_DURATION = TABLE_NAME + "." + "Duration";
-			public static final String COLUMN_NAME_TARGET_BG = TABLE_NAME + "." + "Target_BG";
-			public static final String COLUMN_NAME_VALUE = TABLE_NAME + "." + "Value";
-			public static final String COLUMN_NAME_TAG_ID = TABLE_NAME + "." + "Id_Tag";
-			public static final String COLUMN_NAME_NOTE_ID = TABLE_NAME + "." + "Id_Note";
+			public static final String COLUMN_NAME_ID = "Id";
+			public static final String COLUMN_NAME_USER_ID = "Id_User";
+			public static final String COLUMN_NAME_INSULIN_ID = "Id_Insulin";
+			public static final String COLUMN_NAME_BLOODGLUCOSE_ID = "Id_BloodGlucose";
+			public static final String COLUMN_NAME_DATETIME = "DateTime";
+			public static final String COLUMN_NAME_DURATION = "Duration";
+			public static final String COLUMN_NAME_TARGET_BG = "Target_BG";
+			public static final String COLUMN_NAME_VALUE = "Value";
+			public static final String COLUMN_NAME_TAG_ID = "Id_Tag";
+			public static final String COLUMN_NAME_NOTE_ID = "Id_Note";
 		}
 
 		public static class Weight {
