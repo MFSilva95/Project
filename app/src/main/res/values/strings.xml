@@ -369,6 +369,9 @@
     <string name="login_password">Palavra-passe</string>
     <string name="login_extra_text">Se não tiver uma conta, pode criar uma em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
     <string name="login_auth_error">Erro na autenticação, verifique o nome de utilizador e password e tente novamente.</string>
+    <string name="login_no_internet_error">Sem ligação à Internet</string>
+    <string name="login_try_later">Tentar mais tarde</string>
+    <string name="login_try_again">Tentar novamente</string>
     <string name="cloudSync_edit_account">Editar conta</string>
     <string name="settings_edit_insulins">Editar Insulinas</string>
     <string name="settings_edit_insulins_targets">Editar Objectivos de Insulina</string>

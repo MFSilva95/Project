@@ -260,7 +260,7 @@ public class ImportExport extends BaseOldActivity {
 		FeatureWebSyncDialog webSyncDialog = new FeatureWebSyncDialog();
 		webSyncDialog.show(getFragmentManager(), "editAccount");
 		webSyncDialog.dismiss();
-		webSyncDialog.getUserDataPopUp(this);
+		webSyncDialog.getUserDataPopUp(this, -1, -1);
 	}
 
 	@SuppressWarnings("deprecation")

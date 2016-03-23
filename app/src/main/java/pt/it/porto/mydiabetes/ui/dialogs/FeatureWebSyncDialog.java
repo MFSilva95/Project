@@ -43,7 +43,7 @@ public class FeatureWebSyncDialog extends DialogFragment {
 				   @Override
 				   public void onClick(DialogInterface dialog, int id) {
 					   // activate feature
-					   getUserDataPopUp(context).show();
+					   getUserDataPopUp(context, -1, -1).show();
 				   }
 			   }).setNegativeButton(R.string.use_not, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
@@ -57,17 +57,17 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		return builder.create();
 	}
 
-	public Dialog getUserDataPopUp(final Context context) {
+	public Dialog getUserDataPopUp(final Context context, int okButtonMessage, int cancelButtonMessage) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		password = Preferences.getPassword(context);
 		username = Preferences.getUsername(context);
 
 		LayoutInflater inflater = LayoutInflater.from(context);
 		builder.setView(inflater.inflate(R.layout.dialog_account_input, null))
-			   .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				   @Override
-				   public void onClick(DialogInterface dialog, int which) {
-					   username = ((EditText) ((Dialog) dialog).findViewById(R.id.username)).getText().toString();
+				.setPositiveButton(okButtonMessage > 0 ? okButtonMessage : android.R.string.ok, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						username = ((EditText) ((Dialog) dialog).findViewById(R.id.username)).getText().toString();
 					   password = ((EditText) ((Dialog) dialog).findViewById(R.id.password)).getText().toString();
 					   AsyncTask<Void, Void, Void> saveTask = new AsyncTask<Void, Void, Void>() {
 						   @Override
@@ -85,7 +85,7 @@ public class FeatureWebSyncDialog extends DialogFragment {
 					   saveTask.execute();
 				   }
 			   })
-			   .setNegativeButton(android.R.string.cancel, null);
+				.setNegativeButton(cancelButtonMessage > 0 ? cancelButtonMessage : android.R.string.cancel, null);
 
 		Dialog dialog = builder.create();
 		currentShowingDialog = dialog;
@@ -131,7 +131,7 @@ public class FeatureWebSyncDialog extends DialogFragment {
 	}
 
 	private void showLoginError() {
-		Dialog userDataPopUp = getUserDataPopUp(context);
+		Dialog userDataPopUp = getUserDataPopUp(context, -1, -1);
 		userDataPopUp.show();
 		TextView errorText = ((TextView) userDataPopUp.findViewById(R.id.error));
 		errorText.setVisibility(View.VISIBLE);
@@ -139,11 +139,11 @@ public class FeatureWebSyncDialog extends DialogFragment {
 	}
 
 	private void showNoNetwork() {
-		Dialog userDataPopUp = getUserDataPopUp(context);
+		Dialog userDataPopUp = getUserDataPopUp(context, R.string.login_try_again, R.string.login_try_later);
 		userDataPopUp.show();
 		TextView errorText = ((TextView) userDataPopUp.findViewById(R.id.error));
 		errorText.setVisibility(View.VISIBLE);
-		errorText.setText("Sem ligação à Internet");
+		errorText.setText(R.string.login_no_internet_error);
 		currentShowingDialog = userDataPopUp;
 		currentShowingDialog.setCancelable(true);
 	}
