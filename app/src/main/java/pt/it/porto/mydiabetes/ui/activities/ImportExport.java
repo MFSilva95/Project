@@ -202,6 +202,11 @@ public class ImportExport extends BaseOldActivity {
 				}
 				Toast.makeText(getApplicationContext(), "Infelizmente falhou o envio, tente mais tarde.", Toast.LENGTH_SHORT).show();
 			}
+
+			@Override
+			public void noNetworkAvailable() {
+				onSyncUnSuccessful();
+			}
 		});
 
 	}

@@ -91,6 +91,10 @@ public class Preferences {
 	}
 
 	private static String getPasswordJB(Context context) throws GeneralSecurityException, IOException {
+		String cipherPassword = getPreferences(context).getString(PASSWORD, null);
+		if (cipherPassword == null) {
+			return null;
+		}
 		KeyStore keyStore = initKeyStore(context);
 
 		PrivateKey privateKey = getPrivateKey(context, keyStore);
@@ -105,8 +109,7 @@ public class Preferences {
 			output.init(Cipher.DECRYPT_MODE, privateKey);
 		}
 
-		byte[] password = output.doFinal(Base64.decode(getPreferences(context).getString(PASSWORD, ""), Base64.DEFAULT));
-
+		byte[] password = output.doFinal(Base64.decode(cipherPassword, Base64.DEFAULT));
 		return new String(password, "UTF-8");
 	}
 

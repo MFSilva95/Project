@@ -113,6 +113,17 @@ public class FeatureWebSyncDialog extends DialogFragment {
 					}
 				});
 			}
+
+			@Override
+			public void noNetworkAvailable() {
+				((Activity) FeatureWebSyncDialog.this.context).runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						currentShowingDialog.dismiss();
+						showNoNetwork();
+					}
+				});
+			}
 		});
 		progressDialog.setCancelable(false);
 		currentShowingDialog = progressDialog;
@@ -125,6 +136,16 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		TextView errorText = ((TextView) userDataPopUp.findViewById(R.id.error));
 		errorText.setVisibility(View.VISIBLE);
 		currentShowingDialog = userDataPopUp;
+	}
+
+	private void showNoNetwork() {
+		Dialog userDataPopUp = getUserDataPopUp(context);
+		userDataPopUp.show();
+		TextView errorText = ((TextView) userDataPopUp.findViewById(R.id.error));
+		errorText.setVisibility(View.VISIBLE);
+		errorText.setText("Sem ligação à Internet");
+		currentShowingDialog = userDataPopUp;
+		currentShowingDialog.setCancelable(true);
 	}
 
 

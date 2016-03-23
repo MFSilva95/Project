@@ -2,11 +2,11 @@ package pt.it.porto.mydiabetes.sync;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Environment;
 import android.os.Handler;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.UnknownHostException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -161,7 +161,11 @@ public class ServerSync {
 
 			@Override
 			public void onFailure(Call call, IOException e) {
-				ServerSync.this.onFailure();
+				if(e!=null && e instanceof UnknownHostException){
+					ServerSync.this.onNoNetworkAvailable();
+				} else {
+					ServerSync.this.onFailure();
+				}
 			}
 
 			@Override
@@ -177,6 +181,17 @@ public class ServerSync {
 		});
 	}
 
+	private void onNoNetworkAvailable() {
+		if (listener != null) {
+			mainHandler.post(new Runnable() {
+				@Override
+				public void run() {
+					listener.noNetworkAvailable();
+				}
+			});
+		}
+	}
+
 	private void setContext(Context context) {
 		this.context = context;
 	}
@@ -185,6 +200,8 @@ public class ServerSync {
 		void onSyncSuccessful();
 
 		void onSyncUnSuccessful();
+
+		void noNetworkAvailable();
 
 	}
 
