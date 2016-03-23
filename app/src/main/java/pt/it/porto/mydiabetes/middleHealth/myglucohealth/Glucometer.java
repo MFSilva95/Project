@@ -156,7 +156,7 @@ public class Glucometer implements Runnable {
             mBluetoothServerSocket = mBluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord(NAME_INSECURE, MY_UUID_INSECURE);
 //            mBluetoothSocket.connect();
 //            Log.d(TAG, "Now waiting for a glucometer connection...");
-            mBluetoothSocket = mBluetoothServerSocket.accept();
+            mBluetoothSocket = mBluetoothServerSocket.accept(20000); // 20 seconds
             Log.d(TAG, "Glucometer connection found!");
 //            mDevice.setAddress(mBluetoothSocket.getRemoteDevice().getAddress());
 //            mEventManager.deviceConnected(SYSTEM_ID, mDevice);

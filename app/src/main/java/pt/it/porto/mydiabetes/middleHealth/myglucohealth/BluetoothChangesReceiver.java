@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.middleHealth.myglucohealth;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +33,11 @@ public class BluetoothChangesReceiver extends BroadcastReceiver {
         Log.d(TAG, intent.toString());
 //		Log.d(TAG, intent.getExtras().toString());
         Log.d(TAG, "-----------------");
+        Object object = intent.getExtras().get(BluetoothDevice.EXTRA_DEVICE);
+        String deviceMac = object != null ? object.toString() : null;
+        if (deviceMac != null && !deviceMac.startsWith("00:13:7B")) {
+            return;
+        }
         if (onMeasurementListener == null) {
             onMeasurementListener = new MyMeasurementListener(context);
             Glucometer.getInstance().setOnMeasurementListener(onMeasurementListener);
