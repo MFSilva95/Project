@@ -22,6 +22,8 @@ import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 public class MealActivity extends BaseMealActivity {
 
 
+	public static final String BUNDLE_EXTRAS_GLYCEMIA_ID = "Bundle_extras_glycemia_id";
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.meal, menu);

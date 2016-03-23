@@ -24,6 +24,7 @@ import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.database.Usage;
+import pt.it.porto.mydiabetes.middleHealth.myglucohealth.BluetoothChangesRegisterService;
 import pt.it.porto.mydiabetes.ui.dialogs.FeatureIOBDialog;
 import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -59,6 +60,7 @@ public class Home extends BaseOldActivity {
 		});
 		setupSyncAlarm();
 		showNewFeatures();
+		BluetoothChangesRegisterService.startService(this.getApplicationContext());
 	}
 
 	private void setupSyncAlarm() {

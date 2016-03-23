@@ -372,4 +372,17 @@
     <string name="cloudSync_edit_account">Editar conta</string>
     <string name="settings_edit_insulins">Editar Insulinas</string>
     <string name="settings_edit_insulins_targets">Editar Objectivos de Insulina</string>
+
+
+    <plurals name="notification_text_new_glucose_measure">
+        <item quantity="zero">Não existem novas medições para adicionar!</item>
+        <item quantity="one">Foi adicionada 1 nova medição de Glicemia!</item>
+        <item quantity="other">Foram adicionadas %d novas medições de Glicemia!</item>
+    </plurals>
+    <plurals name="notification_text_new_meal">
+        <item quantity="one">Esta é recente. Clique para adicionar refeição.</item>
+        <item quantity="other">Uma é recente. Clique para adicionar refeição.</item>
+    </plurals>
+
+
 </resources>

@@ -1,4 +1,4 @@
-package pt.it.porto.mydiabetes.middleHealth.customDevices;
+package pt.it.porto.mydiabetes.middleHealth.CustomDevices;
 
 
 import android.util.Log;
