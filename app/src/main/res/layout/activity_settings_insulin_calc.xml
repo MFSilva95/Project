@@ -66,7 +66,7 @@
                 android:layout_height="match_parent"
                 android:hint="@string/hint_value3"
                 android:inputType="number"
-                android:textSize="18sp"></EditText>
+                android:textSize="18sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -92,7 +92,7 @@
                 android:layout_height="match_parent"
                 android:hint="@string/hint_value4"
                 android:inputType="number"
-                android:textSize="18sp"></EditText>
+                android:textSize="18sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -118,7 +118,7 @@
                 android:layout_height="match_parent"
                 android:hint="@string/hint_value5"
                 android:inputType="number"
-                android:textSize="18sp"></EditText>
+                android:textSize="18sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -144,11 +144,12 @@
                 android:layout_height="match_parent"
                 android:hint="@string/hint_value6"
                 android:inputType="number"
-                android:textSize="18sp"></EditText>
+                android:textSize="18sp"/>
         </LinearLayout>
 
 
         <LinearLayout
+            android:id="@+id/block_iob"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="?android:selectableItemBackground"

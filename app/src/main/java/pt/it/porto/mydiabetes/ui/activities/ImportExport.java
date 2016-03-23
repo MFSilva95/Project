@@ -33,7 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.*;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
 import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestoreFragment;
@@ -180,6 +180,11 @@ public class ImportExport extends BaseOldActivity {
 	}
 
 	public void syncCloud(View view) {
+		String username = pt.it.porto.mydiabetes.database.Preferences.getUsername(this);
+		if(username==null){
+			editAccount(null);
+			return;
+		}
 		dialog = new ProgressDialog(this);
 		dialog.show();
 		ServerSync.getInstance(this).send(new ServerSync.ServerSyncListener() {

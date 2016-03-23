@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
@@ -58,6 +59,10 @@ public class SettingsInsulin extends BaseOldActivity {
 		useActiveInsulin = (CheckBox) findViewById(R.id.use_IOB);
 		FeaturesDB features = new FeaturesDB(MyDiabetesStorage.getInstance(this));
 		useActiveInsulin.setChecked(features.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD));
+
+		if(!BuildConfig.IOB_AVAILABLE){
+			findViewById(R.id.block_iob).setVisibility(View.GONE);
+		}
 	}
 
 	@Override

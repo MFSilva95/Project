@@ -18,6 +18,7 @@ import android.widget.ScrollView;
 import java.text.ParseException;
 import java.util.Calendar;
 
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
@@ -162,7 +163,7 @@ public class Home extends BaseOldActivity {
 	}
 
 	private void showNewFeatures() {
-		if (Preferences.showFeatureForFirstTime(this, FeaturesDB.FEATURE_INSULIN_ON_BOARD)) {
+		if (BuildConfig.IOB_AVAILABLE && Preferences.showFeatureForFirstTime(this, FeaturesDB.FEATURE_INSULIN_ON_BOARD)) {
 			FeatureIOBDialog dialog = new FeatureIOBDialog();
 			dialog.setListener(new FeatureIOBDialog.ActivateFeatureDialogListener() {
 				@Override
@@ -179,7 +180,7 @@ public class Home extends BaseOldActivity {
 			});
 			dialog.show(getFragmentManager(), "newFeature");
 		}
-		if (Preferences.showFeatureForFirstTime(this, FeaturesDB.FEATURE_CLOUD_SYNC)) {
+		if (BuildConfig.SYNC_AVAILABLE && Preferences.showFeatureForFirstTime(this, FeaturesDB.FEATURE_CLOUD_SYNC)) {
 			FeatureWebSyncDialog dialog = new FeatureWebSyncDialog();
 			dialog.show(getFragmentManager(), "newFeature_sync");
 		}

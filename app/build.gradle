@@ -9,11 +9,17 @@ android {
         applicationId "pt.it.porto.mydiabetes"
         minSdkVersion 14
         targetSdkVersion 22
+        // vars to enable new features
+        buildConfigField "boolean", "IOB_AVAILABLE", "true"
+        buildConfigField "boolean", "SYNC_AVAILABLE", "true"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
     productFlavors {
         prod {
             buildConfigField "boolean", "USE_FABRIC", "false"
+            buildConfigField "boolean", "IOB_AVAILABLE", "false"
+            buildConfigField "boolean", "SYNC_AVAILABLE", "false"
         }
         devel {
             buildConfigField "boolean", "USE_FABRIC", "true"
@@ -39,9 +45,6 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
-    }
-    defaultConfig {
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 }
 

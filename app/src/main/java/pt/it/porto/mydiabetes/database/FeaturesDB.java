@@ -3,6 +3,8 @@ package pt.it.porto.mydiabetes.database;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import pt.it.porto.mydiabetes.BuildConfig;
+
 public class FeaturesDB {
 	public static final String FEATURE_INSULIN_ON_BOARD = "feature_insulin_on_board";
 	public static final String FEATURE_CLOUD_SYNC = "feature_cloud_sync/2";
@@ -14,6 +16,12 @@ public class FeaturesDB {
 	}
 
 	public boolean isFeatureActive(String feature) {
+		if(FEATURE_CLOUD_SYNC.equals(feature) && !BuildConfig.SYNC_AVAILABLE){
+			return false;
+		}
+		if(FEATURE_INSULIN_ON_BOARD.equals(feature) && !BuildConfig.IOB_AVAILABLE){
+			return false;
+		}
 		Cursor result = storage.query(MyDiabetesContract.Feature.TABLE_NAME, new String[]{MyDiabetesContract.Feature.COLUMN_NAME_ACTIVATED},
 				MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{feature}, null, null, null, 1);
 		if(result.getCount()==0){
