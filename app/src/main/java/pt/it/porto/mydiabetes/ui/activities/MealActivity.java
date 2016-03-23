@@ -1,6 +1,7 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -10,12 +11,12 @@ import android.widget.Spinner;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
@@ -23,6 +24,26 @@ public class MealActivity extends BaseMealActivity {
 
 
 	public static final String BUNDLE_EXTRAS_GLYCEMIA_ID = "Bundle_extras_glycemia_id";
+
+	private GlycemiaRec glycemiaData = null;
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		Bundle args = getIntent().getExtras();
+		if (args != null) {
+			if (args.containsKey(BUNDLE_EXTRAS_GLYCEMIA_ID)) {
+				int glycemiaId = args.getInt(BUNDLE_EXTRAS_GLYCEMIA_ID);
+				DB_Read db_read = new DB_Read(this);
+				glycemiaData = db_read.Glycemia_GetById(glycemiaId);
+				insulinCalculator = new InsulinCalculator(this);
+			}
+		}
+
+		super.onCreate(savedInstanceState);
+		if(glycemiaData!=null) {
+			fillDateHour(glycemiaData.getFormattedDate(), glycemiaData.getFormattedTime());
+		}
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,7 +120,10 @@ public class MealActivity extends BaseMealActivity {
 
 		Calendar calendar = Calendar.getInstance();
 		insulinCalculator.setTime(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null);
-
+		if (glycemiaData != null) {
+			insulinCalculator.setGlycemia(glycemiaData.getValue());
+			insulinCalculator.setTime(this, DateUtils.getFormattedDate(glycemiaData.getDateTime()), DateUtils.getFormattedTime(glycemiaData.getDateTime()));
+		}
 		double d = rdb.Target_GetTargetByTime(DateUtils.getFormattedTime(calendar));
 		if (d != 0) {
 			insulinCalculator.setGlycemiaTarget((int) d);
@@ -179,9 +203,11 @@ public class MealActivity extends BaseMealActivity {
 			ins.setIdNote(idnote);
 		}
 
+		GlycemiaRec gly=glycemiaData;
+		if (gly== null) {
+			gly = new GlycemiaRec();
+		}
 		if (!glycemia.getText().toString().equals("")) {
-			GlycemiaRec gly = new GlycemiaRec();
-
 			gly.setIdUser(idUser);
 			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
 			gly.setDateTime(getDate(), getTime());
@@ -190,7 +216,11 @@ public class MealActivity extends BaseMealActivity {
 				gly.setIdNote(idnote);
 			}
 
-			idGlycemia = reg.Glycemia_Save(gly);
+			if (glycemiaData != null) {
+				reg.Glycemia_Update(gly);
+			} else {
+				idGlycemia = reg.Glycemia_Save(gly);
+			}
 			Log.d("id glycemia", String.valueOf(idGlycemia));
 			hasGlycemia = true;
 		}
