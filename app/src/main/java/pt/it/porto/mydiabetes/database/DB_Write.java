@@ -7,21 +7,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.format.Time;
 import android.util.Log;
 
-import pt.it.porto.mydiabetes.ui.listAdapters.BloodPressureDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.CholesterolDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.DiseaseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinRegDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.TargetDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.WeightDataBinding;
+import pt.it.porto.mydiabetes.data.BloodPressureRec;
+import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.CholesterolRec;
+import pt.it.porto.mydiabetes.data.Disease;
+import pt.it.porto.mydiabetes.data.DiseaseRec;
+import pt.it.porto.mydiabetes.data.Exercise;
+import pt.it.porto.mydiabetes.data.ExerciseRec;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.HbA1cRec;
+import pt.it.porto.mydiabetes.data.Insulin;
+import pt.it.porto.mydiabetes.data.InsulinRec;
+import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.data.Tag;
+import pt.it.porto.mydiabetes.data.InsulinTarget;
+import pt.it.porto.mydiabetes.data.WeightRec;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class DB_Write {
@@ -88,7 +89,7 @@ public class DB_Write {
 		myDB.insert("Tag", null, toInsert);
 	}
 
-	public void Tag_Add(TagDataBinding t) {
+	public void Tag_Add(Tag t) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Name", t.getName());
 		toInsert.put("TimeStart", t.getStart());
@@ -96,7 +97,7 @@ public class DB_Write {
 		myDB.insert("Tag", null, toInsert);
 	}
 
-	public void Tag_Update(TagDataBinding t) {
+	public void Tag_Update(Tag t) {
 		ContentValues toUpdate = new ContentValues();
 		toUpdate.put("Name", t.getName());
 		toUpdate.put("TimeStart", t.getStart());
@@ -125,7 +126,7 @@ public class DB_Write {
 
 	}
 
-	public void Disease_Update(DiseaseDataBinding i) {
+	public void Disease_Update(Disease i) {
 		ContentValues toUpdate = new ContentValues();
 		toUpdate.put("Name", i.getName());
 
@@ -134,11 +135,11 @@ public class DB_Write {
 	}
 
 	//--------------- GLYCEMIA -------------------
-	public int Glycemia_Save(GlycemiaDataBinding obj) {
+	public int Glycemia_Save(GlycemiaRec obj) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", obj.getIdUser());
 		toInsert.put("Value", obj.getValue());
-		String datetime = obj.getDate() + " " + obj.getTime();
+		String datetime = DateUtils.formatToDb(obj.getDateTime());
 		toInsert.put("DateTime", datetime);
 		toInsert.put("Id_Tag", obj.getIdTag());
 		if (obj.getIdNote() > 0) {
@@ -149,11 +150,11 @@ public class DB_Write {
 		return (int) myDB.insert("Reg_BloodGlucose", null, toInsert);
 	}
 
-	public void Glycemia_Update(GlycemiaDataBinding obj) {
+	public void Glycemia_Update(GlycemiaRec obj) {
 		ContentValues toUpdate = new ContentValues();
 		toUpdate.put("Id_User", obj.getIdUser());
 		toUpdate.put("Value", obj.getValue());
-		String datetime = obj.getDate() + " " + obj.getTime();
+		String datetime = DateUtils.formatToDb(obj.getDateTime());
 		toUpdate.put("DateTime", datetime);
 		toUpdate.put("Id_Tag", obj.getIdTag());
 		if (obj.getIdNote() > 0) {
@@ -175,6 +176,10 @@ public class DB_Write {
 	}
 
 	//------------------ INSULIN ----------------------
+	@Deprecated
+	/**
+	 * Instead use @{code Insulin_Add(Insulin i)}
+	 */
 	public void Insulin_Add(Object[] obj) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Name", obj[0].toString());
@@ -187,7 +192,7 @@ public class DB_Write {
 		Log.d("Guardou", "Insulin");
 	}
 
-	public void Insulin_Add(InsulinDataBinding i) {
+	public void Insulin_Add(Insulin i) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Name", i.getName());
 		toInsert.put("Type", i.getType());
@@ -199,7 +204,7 @@ public class DB_Write {
 		Log.d("Guardou", "Insulin");
 	}
 
-	public void Insulin_Update(InsulinDataBinding i) {
+	public void Insulin_Update(Insulin i) {
 		ContentValues toUpdate = new ContentValues();
 		toUpdate.put("Name", i.getName());
 		toUpdate.put("Type", i.getType());
@@ -216,14 +221,14 @@ public class DB_Write {
 
 	//------------------ INSULIN REG ----------------------
 
-	public int Insulin_Save(InsulinRegDataBinding obj) {
+	public int Insulin_Save(InsulinRec obj) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", obj.getIdUser());
 		toInsert.put("Id_Insulin", obj.getIdInsulin());
 		if (obj.getIdBloodGlucose() > 0) {
 			toInsert.put("Id_BloodGlucose", obj.getIdBloodGlucose());
 		}
-		String datetime = obj.getDate() + " " + obj.getTime();
+		String datetime = DateUtils.formatToDb(obj.getDateTime());
 		toInsert.put("DateTime", datetime);
 		toInsert.put("Target_BG", obj.getTargetGlycemia());
 		toInsert.put("Value", obj.getInsulinUnits());
@@ -235,7 +240,7 @@ public class DB_Write {
 		return (int) myDB.insert("Reg_Insulin", null, toInsert);
 	}
 
-	public void Insulin_Update(InsulinRegDataBinding obj) {
+	public void Insulin_Update(InsulinRec obj) {
 		ContentValues toUpdate = new ContentValues();
 		toUpdate.put("Id_User", obj.getIdUser());
 		toUpdate.put("Id_Insulin", obj.getIdInsulin());
@@ -244,7 +249,7 @@ public class DB_Write {
 		} else {
 			toUpdate.putNull("Id_BloodGlucose");
 		}
-		String datetime = obj.getDate() + " " + obj.getTime();
+		String datetime = DateUtils.formatToDb(obj.getDateTime());
 		toUpdate.put("DateTime", datetime);
 		toUpdate.put("Target_BG", obj.getTargetGlycemia());
 		toUpdate.put("Value", obj.getInsulinUnits());
@@ -283,7 +288,7 @@ public class DB_Write {
 
 	}
 
-	public void Exercise_Update(ExerciseDataBinding i) {
+	public void Exercise_Update(Exercise i) {
 		ContentValues toUpdate = new ContentValues();
 		toUpdate.put("Name", i.getName());
 
@@ -293,13 +298,13 @@ public class DB_Write {
 
 	//------------------- EXERCISE REG ---------------------------
 
-	public int Exercise_Save(ExerciseRegDataBinding obj) {
+	public int Exercise_Save(ExerciseRec obj) {
 		ContentValues toInsert = new ContentValues();
-		toInsert.put("Id_User", obj.getId_User());
+		toInsert.put("Id_User", obj.getIdUser());
 		toInsert.put("Exercise", obj.getExercise());
 		toInsert.put("Duration", obj.getDuration());
 		toInsert.put("Effort", obj.getEffort());
-		String datetime = obj.getDate() + " " + obj.getTime();
+		String datetime = DateUtils.formatToDb(obj.getDateTime());
 		toInsert.put("StartDateTime", datetime);
 		if (obj.getIdNote() > 0) {
 			toInsert.put("Id_Note", obj.getIdNote());
@@ -310,20 +315,23 @@ public class DB_Write {
 
 	public void Exercise_Delete(int id) {
 		DB_Read rdb = new DB_Read(myContext);
-		int idNote = rdb.ExerciseReg_GetById(id).getIdNote();
+		ExerciseRec tmp = rdb.ExerciseReg_GetById(id);
+		if (tmp != null) {
+			int idNote = tmp.getIdNote();
+			Note_Delete(idNote);
+		}
 		rdb.close();
-		myDB.delete("Reg_Exercise", "Id=" + id, null);
-		Note_Delete(idNote);
+		myDB.delete("Reg_Exercise", "Id=?", new String[]{String.valueOf(id)});
 	}
 
-	public void Exercise_Update(ExerciseRegDataBinding obj) {
+	public void Exercise_Update(ExerciseRec obj) {
 
 		ContentValues toInsert = new ContentValues();
-		toInsert.put("Id_User", obj.getId_User());
+		toInsert.put("Id_User", obj.getIdUser());
 		toInsert.put("Exercise", obj.getExercise());
 		toInsert.put("Duration", obj.getDuration());
 		toInsert.put("Effort", obj.getEffort());
-		String datetime = obj.getDate() + " " + obj.getTime();
+		String datetime = DateUtils.formatToDb(obj.getDateTime());
 		toInsert.put("StartDateTime", datetime);
 		if (obj.getIdNote() > 0) {
 			toInsert.put("Id_Note", obj.getIdNote());
@@ -333,6 +341,7 @@ public class DB_Write {
 	}
 
 	//------------------- MEDICINE -------------------------------
+	@Deprecated
 	public void Medicine_Add(Object[] obj) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Name", obj[0].toString());
@@ -343,35 +352,61 @@ public class DB_Write {
 		Log.d("Guardou", "Medicine");
 	}
 
+	@Deprecated
 	public void Medicine_Remove(int id) {
 		myDB.delete("Medicine", "id=" + id, null);
 	}
 
 	//----------------- CARBS ------------------------------
-	public void Carbs_Save(CarbsDataBinding obj) {
+
+	/**
+	 * Saves a carb regist
+	 *
+	 * @param obj
+	 * @return the entry ID
+	 */
+	public int Carbs_Save(CarbsRec obj) {
 		ContentValues toInsert = new ContentValues();
-		toInsert.put("Id_User", obj.getId_User());
+		toInsert.put("Id_User", obj.getIdUser());
 		toInsert.put("Value", obj.getCarbsValue());
 		toInsert.put("PhotoPath", obj.getPhotoPath());
-		String datetime = obj.getDate() + " " + obj.getTime();
-		toInsert.put("DateTime", datetime);
-		toInsert.put("Id_Tag", obj.getId_Tag());
-		if (obj.getId_Note() > 0) {
-			toInsert.put("Id_Note", obj.getId_Note());
+		if (obj.getPhotoPath() != null) {
+			PhotoSyncDb photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(myContext));
+			photoSyncDb.addPhoto(obj.getPhotoPath());
 		}
-		myDB.insert("Reg_CarboHydrate", null, toInsert);
+		String datetime = DateUtils.formatToDb(obj.getDateTime());
+		toInsert.put("DateTime", datetime);
+		toInsert.put("Id_Tag", obj.getIdTag());
+		if (obj.getIdNote() > 0) {
+			toInsert.put("Id_Note", obj.getIdNote());
+		}
+		return (int) myDB.insert("Reg_CarboHydrate", null, toInsert);
 	}
 
-	public void Carbs_Update(CarbsDataBinding obj) {
+	public void Carbs_Update(CarbsRec obj) {
 		ContentValues toInsert = new ContentValues();
-		toInsert.put("Id_User", obj.getId_User());
+		toInsert.put("Id_User", obj.getIdUser());
 		toInsert.put("Value", obj.getCarbsValue());
 		toInsert.put("PhotoPath", obj.getPhotoPath());
-		String datetime = obj.getDate() + " " + obj.getTime();
+
+		DB_Read read = new DB_Read(myContext);
+		CarbsRec old = read.CarboHydrate_GetById(obj.getId());
+
+		PhotoSyncDb photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(myContext));
+		if (obj.getPhotoPath() != null && old.getPhotoPath() == null) { // if was added
+			photoSyncDb.addPhoto(obj.getPhotoPath());
+		} else if (old.getPhotoPath() != null && obj.getPhotoPath() == null) { // if was deleted
+			photoSyncDb.removePhoto(obj.getId());
+		} else if (old.getPhotoPath() != null && !obj.getPhotoPath().equals(old.getPhotoPath())) { // if photo changed
+			photoSyncDb.removePhoto(obj.getId());
+			photoSyncDb.addPhoto(obj.getPhotoPath());
+		}
+
+		String datetime = DateUtils.formatToDb(obj.getDateTime());
 		toInsert.put("DateTime", datetime);
-		toInsert.put("Id_Tag", obj.getId_Tag());
-		if (obj.getId_Note() > 0) {
-			toInsert.put("Id_Note", obj.getId_Note());
+		toInsert.put("Id_Tag", obj.getIdTag());
+		if (obj.getIdNote() > 0) {
+			toInsert.put("Id_Note", obj.getIdNote());
 		}
 
 		myDB.update("Reg_CarboHydrate", toInsert, "Id=" + obj.getId(), null);
@@ -379,12 +414,18 @@ public class DB_Write {
 	}
 
 	public void Carbs_Delete(int id) {
+		PhotoSyncDb photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(myContext));
+		photoSyncDb.removePhoto(id);
+
 		myDB.delete("Reg_CarboHydrate", "Id=" + id, null);
 		Log.d("Delete", "Reg_CarboHydrate");
 	}
 
 
 	public void Carbs_DeletePhoto(int id) {
+		PhotoSyncDb photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(myContext));
+		photoSyncDb.removePhoto(id);
+
 		ContentValues toUpdate = new ContentValues();
 		toUpdate.put("PhotoPath", "");
 
@@ -394,12 +435,12 @@ public class DB_Write {
 
 	//-------------- BLOODPRESSURE --------------
 
-	public void BloodPressure_Save(BloodPressureDataBinding bp) {
+	public void BloodPressure_Save(BloodPressureRec bp) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", bp.getIdUser());
 		toInsert.put("Systolic", bp.getSystolic());
 		toInsert.put("Diastolic", bp.getDiastolic());
-		String datetime = bp.getDate() + " " + bp.getTime();
+		String datetime = DateUtils.formatToDb(bp.getDateTime());
 		toInsert.put("DateTime", datetime);
 		toInsert.put("Id_Tag", bp.getIdTag());
 		if (bp.getIdNote() > 0) {
@@ -409,12 +450,12 @@ public class DB_Write {
 		myDB.insert("Reg_BloodPressure", null, toInsert);
 	}
 
-	public void BloodPressure_Update(BloodPressureDataBinding bp) {
+	public void BloodPressure_Update(BloodPressureRec bp) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", bp.getIdUser());
 		toInsert.put("Systolic", bp.getSystolic());
 		toInsert.put("Diastolic", bp.getDiastolic());
-		String datetime = bp.getDate() + " " + bp.getTime();
+		String datetime = DateUtils.formatToDb(bp.getDateTime());
 		toInsert.put("DateTime", datetime);
 		toInsert.put("Id_Tag", bp.getIdTag());
 		if (bp.getIdNote() > 0) {
@@ -433,14 +474,14 @@ public class DB_Write {
 	}
 
 	//------------------- NOTES -------------------
-	public int Note_Add(NoteDataBinding note) {
+	public int Note_Add(Note note) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Note", note.getNote());
 
 		return (int) myDB.insert("Note", null, toInsert);
 	}
 
-	public void Note_Update(NoteDataBinding note) {
+	public void Note_Update(Note note) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Note", note.getNote());
 
@@ -452,11 +493,11 @@ public class DB_Write {
 	}
 
 	//--------------- CHOLESTEROL ------------
-	public void Cholesterol_Save(CholesterolDataBinding bp) {
+	public void Cholesterol_Save(CholesterolRec bp) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", bp.getIdUser());
 		toInsert.put("Value", bp.getValue());
-		String datetime = bp.getDate() + " " + bp.getTime();
+		String datetime = DateUtils.formatToDb(bp.getDateTime());
 		toInsert.put("DateTime", datetime);
 		if (bp.getIdNote() > 0) {
 			toInsert.put("Id_Note", bp.getIdNote());
@@ -465,11 +506,11 @@ public class DB_Write {
 		myDB.insert("Reg_Cholesterol", null, toInsert);
 	}
 
-	public void Cholesterol_Update(CholesterolDataBinding bp) {
+	public void Cholesterol_Update(CholesterolRec bp) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", bp.getIdUser());
 		toInsert.put("Value", bp.getValue());
-		String datetime = bp.getDate() + " " + bp.getTime();
+		String datetime = DateUtils.formatToDb(bp.getDateTime());
 		toInsert.put("DateTime", datetime);
 		if (bp.getIdNote() > 0) {
 			toInsert.put("Id_Note", bp.getIdNote());
@@ -487,11 +528,11 @@ public class DB_Write {
 	}
 
 	//--------------- WEIGHT ------------
-	public void Weight_Save(WeightDataBinding bp) {
+	public void Weight_Save(WeightRec bp) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", bp.getIdUser());
 		toInsert.put("Value", bp.getValue());
-		String datetime = bp.getDate() + " " + bp.getTime();
+		String datetime = DateUtils.formatToDb(bp.getDateTime());
 		toInsert.put("DateTime", datetime);
 		if (bp.getIdNote() > 0) {
 			toInsert.put("Id_Note", bp.getIdNote());
@@ -500,11 +541,11 @@ public class DB_Write {
 		myDB.insert("Reg_Weight", null, toInsert);
 	}
 
-	public void Weight_Update(WeightDataBinding bp) {
+	public void Weight_Update(WeightRec bp) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", bp.getIdUser());
 		toInsert.put("Value", bp.getValue());
-		String datetime = bp.getDate() + " " + bp.getTime();
+		String datetime = DateUtils.formatToDb(bp.getDateTime());
 		toInsert.put("DateTime", datetime);
 		if (bp.getIdNote() > 0) {
 			toInsert.put("Id_Note", bp.getIdNote());
@@ -522,7 +563,7 @@ public class DB_Write {
 	}
 
 	//--------------- REG DISEASE------------
-	public void DiseaseReg_Save(DiseaseRegDataBinding disease) {
+	public void DiseaseReg_Save(DiseaseRec disease) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", disease.getIdUser());
 		toInsert.put("Disease", disease.getDisease());
@@ -537,7 +578,7 @@ public class DB_Write {
 		myDB.insert("Reg_Disease", null, toInsert);
 	}
 
-	public void DiseaseReg_Update(DiseaseRegDataBinding disease) {
+	public void DiseaseReg_Update(DiseaseRec disease) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", disease.getIdUser());
 		toInsert.put("Disease", disease.getDisease());
@@ -561,11 +602,11 @@ public class DB_Write {
 	}
 
 	//--------------- HBA1C ------------
-	public void HbA1c_Save(HbA1cDataBinding bp) {
+	public void HbA1c_Save(HbA1cRec bp) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", bp.getIdUser());
 		toInsert.put("Value", bp.getValue());
-		String datetime = bp.getDate() + " " + bp.getTime();
+		String datetime = DateUtils.formatToDb(bp.getDateTime());
 		toInsert.put("DateTime", datetime);
 		if (bp.getIdNote() > 0) {
 			toInsert.put("Id_Note", bp.getIdNote());
@@ -574,11 +615,11 @@ public class DB_Write {
 		myDB.insert("Reg_A1c", null, toInsert);
 	}
 
-	public void HbA1c_Update(HbA1cDataBinding bp) {
+	public void HbA1c_Update(HbA1cRec bp) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", bp.getIdUser());
 		toInsert.put("Value", bp.getValue());
-		String datetime = bp.getDate() + " " + bp.getTime();
+		String datetime = DateUtils.formatToDb(bp.getDateTime());
 		toInsert.put("DateTime", datetime);
 		if (bp.getIdNote() > 0) {
 			toInsert.put("Id_Note", bp.getIdNote());
@@ -602,7 +643,7 @@ public class DB_Write {
 
 	}
 
-	public void Target_Add(TargetDataBinding t) {
+	public void Target_Add(InsulinTarget t) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Name", t.getName());
 		toInsert.put("TimeStart", t.getStart());
@@ -611,7 +652,7 @@ public class DB_Write {
 		myDB.insert("BG_Target", null, toInsert);
 	}
 
-	public void Target_Update(TargetDataBinding t) {
+	public void Target_Update(InsulinTarget t) {
 		ContentValues toUpdate = new ContentValues();
 		toUpdate.put("Name", t.getName());
 		toUpdate.put("TimeStart", t.getStart());
@@ -652,7 +693,7 @@ public class DB_Write {
 		}
 		if (insToUpdate != -1 && bg_id != -1) {
 			DB_Read rdb = new DB_Read(myContext);
-			InsulinRegDataBinding ins = rdb.InsulinReg_GetById(insToUpdate);
+			InsulinRec ins = rdb.InsulinReg_GetById(insToUpdate);
 
 			ins.setIdBloodGlucose(-1);
 			Insulin_Update(ins);

@@ -1,4 +1,4 @@
-package pt.it.porto.mydiabetes.middleHealth.customDevices;
+package pt.it.porto.mydiabetes.middleHealth.CustomDevices;
 
 
 import android.util.Log;
@@ -59,7 +59,7 @@ public class Record {
 					+ min;
 	}
 	public static Record parseLastSync(String value){
-		Log.d(TAG,"Parse Last Sync: " + value);
+		Log.d(TAG,"Parse Last SyncFragment: " + value);
 		if (value == null || value.equals(""))
 			return null;
 		Record rec = null;

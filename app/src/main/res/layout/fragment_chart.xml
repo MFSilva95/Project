@@ -2,21 +2,19 @@
 <pt.it.porto.mydiabetes.ui.charts.BodyExpandFrameLayout
     android:id="@+id/frame"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#dedede"
+    android:background="@null"
     android:orientation="vertical"
     tools:context=".ui.fragments.ChartFragments">
 
-    <com.github.mikephil.charting.charts.LineChart
+    <lecho.lib.hellocharts.view.LineChartView
         android:id="@+id/chart"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="220dp"
         android:layout_margin="0dp"
-        android:padding="0dp"
-        />
+        android:padding="0dp"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_vals"
@@ -27,11 +25,16 @@
         android:choiceMode="singleChoice"
         android:clipToPadding="false"
         android:elevation="2dp"
-        android:paddingBottom="120dp"
+        android:paddingBottom="140dp"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical"
-        tools:listitem="@layout/list_item_graph_weights">
+        tools:listitem="@layout/list_item_multi_type">
 
     </android.support.v7.widget.RecyclerView>
+
+    <include
+        android:id="@+id/list_empty"
+        layout="@layout/list_empty"
+        android:visibility="gone"/>
 
 </pt.it.porto.mydiabetes.ui.charts.BodyExpandFrameLayout>

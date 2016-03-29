@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.dialogs;
 
-import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
@@ -12,17 +11,14 @@ import android.util.Log;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 	public static final String ARG_TIME = "time";
 	public static final String ARG_TEXT_BOX = "textbox";
-
-	@SuppressLint("SimpleDateFormat")
-	private static SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
 	EditText item;
 
@@ -67,10 +63,13 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 		c.set(Calendar.HOUR_OF_DAY, hour);
 		c.set(Calendar.MINUTE, min);
 
-		String timeString = timeFormat.format(c.getTime());
+		String timeString = DateUtils.getFormattedTime(c);
 		Log.d("time", timeString);
 		if (item != null) {
 			item.setText(timeString);
+		}
+		if (listener != null) {
+			listener.onTimeSet(timeString);
 		}
 		/*
 		item.setText(new StringBuilder()
@@ -92,19 +91,14 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 		return newFragment;
 	}
 
-	public static Calendar getCalendar(String date) {
-		try {
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(timeFormat.parse(date));
-			return calendar;
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return null;
+	TimePickerChangeListener listener;
+
+	public void setListener(TimePickerChangeListener listener) {
+		this.listener = listener;
 	}
 
-	public static String getFormatedDate(Calendar calendar) {
-		return timeFormat.format(calendar.getTime());
+	public interface TimePickerChangeListener {
+		void onTimeSet(String time);
 	}
 }
 

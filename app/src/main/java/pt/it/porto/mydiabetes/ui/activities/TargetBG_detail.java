@@ -18,14 +18,17 @@ import android.widget.Toast;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.TargetDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 public class TargetBG_detail extends Activity {
 
 	public static final String BUNDLE_GOAL = "GOAL";
 	public static final String BUNDLE_ID = "Id";
+	public static final String BUNDLE_DATA = "Data";
 
 	int idTarget = 0;
 
@@ -39,11 +42,20 @@ public class TargetBG_detail extends Activity {
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
+			InsulinTarget toFill = null;
+			if (args.containsKey(BUNDLE_DATA)) {
+				toFill = args.getParcelable(BUNDLE_DATA);
+			}
+
 			if (args.containsKey(BUNDLE_ID)) {
 				String id = args.getString("Id");
-				idTarget = Integer.parseInt(id);
 				DB_Read rdb = new DB_Read(this);
-				TargetDataBinding toFill = rdb.Target_GetById(Integer.parseInt(id));
+				toFill = rdb.Target_GetById(Integer.parseInt(id));
+				rdb.close();
+			}
+
+			if (toFill != null) {
+				idTarget = toFill.getId();
 
 				EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
 				name.setText(toFill.getName());
@@ -52,12 +64,12 @@ public class TargetBG_detail extends Activity {
 				EditText to = (EditText) findViewById(R.id.et_TargetBG_HourTo);
 				to.setText(toFill.getEnd());
 				EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
-				value.setText(String.valueOf(toFill.getTarget()));
+				value.setText(String.valueOf((int) toFill.getTarget()));
+			}
 
-				rdb.close();
-			} else if (args.containsKey(BUNDLE_GOAL)) {
+			if (args.containsKey(BUNDLE_GOAL)) {
 				float goal = args.getFloat(BUNDLE_GOAL);
-				((EditText) findViewById(R.id.et_TargetBG_Glycemia)).setText(String.format("%.1f", goal));
+				((EditText) findViewById(R.id.et_TargetBG_Glycemia)).setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) goal));
 			}
 
 		}
@@ -108,13 +120,13 @@ public class TargetBG_detail extends Activity {
 
 	public void showTimePickerDialogFrom(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourFrom,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
 	}
 
 	public void showTimePickerDialogTo(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourTo,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
 	}
 
@@ -151,7 +163,7 @@ public class TargetBG_detail extends Activity {
 
 		DB_Write wdb = new DB_Write(this);
 
-		TargetDataBinding target = new TargetDataBinding();
+		InsulinTarget target = new InsulinTarget();
 
 
 		target.setName(name.getText().toString());
@@ -201,7 +213,7 @@ public class TargetBG_detail extends Activity {
 
 		DB_Write wdb = new DB_Write(this);
 
-		TargetDataBinding target = new TargetDataBinding();
+		InsulinTarget target = new InsulinTarget();
 
 		target.setId(idTarget);
 		target.setName(name.getText().toString());

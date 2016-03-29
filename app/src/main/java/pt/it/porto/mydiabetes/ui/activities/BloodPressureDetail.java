@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -22,19 +21,18 @@ import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.data.BloodPressureRec;
+import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.BloodPressureDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.data.Tag;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class BloodPressureDetail extends Activity {
@@ -57,7 +55,7 @@ public class BloodPressureDetail extends Activity {
 			String id = args.getString("Id");
 			idBP = Integer.parseInt(id);
 
-			BloodPressureDataBinding toFill = rdb.BloodPressure_GetById(Integer.parseInt(id));
+			BloodPressureRec toFill = rdb.BloodPressure_GetById(Integer.parseInt(id));
 
 			Spinner tagSpinner = (Spinner) findViewById(R.id.sp_BloodPressureDetail_Tag);
 			SelectSpinnerItemByValue(tagSpinner, rdb.Tag_GetById(toFill.getIdTag()).getName());
@@ -66,12 +64,12 @@ public class BloodPressureDetail extends Activity {
 			EditText diastolic = (EditText) findViewById(R.id.et_BloodPressureDetail_Diastolic);
 			diastolic.setText(String.valueOf(toFill.getDiastolic()));
 			EditText data = (EditText) findViewById(R.id.et_BloodPressureDetail_Data);
-			data.setText(toFill.getDate());
+			data.setText(toFill.getFormattedDate());
 			EditText hora = (EditText) findViewById(R.id.et_BloodPressureDetail_Hora);
-			hora.setText(toFill.getTime());
+			hora.setText(toFill.getFormattedTime());
 			EditText note = (EditText) findViewById(R.id.et_BloodPressureDetail_Notes);
 			if (toFill.getIdNote() != -1) {
-				NoteDataBinding n = new NoteDataBinding();
+				Note n = new Note();
 				n = rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
 				idNote = n.getId();
@@ -138,21 +136,21 @@ public class BloodPressureDetail extends Activity {
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_BloodPressureDetail_Data);
 		final Calendar calendar = Calendar.getInstance();
-		date.setText(DatePickerFragment.getFormatedDate(calendar));
+		date.setText(DateUtils.getFormattedDate(calendar));
 
 		EditText hour = (EditText) findViewById(R.id.et_BloodPressureDetail_Hora);
-		hour.setText(TimePickerFragment.getFormatedDate(calendar));
+		hour.setText(DateUtils.getFormattedTime(calendar));
 	}
 
 	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_BloodPressureDetail_Data,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_BloodPressureDetail_Hora,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
 	}
 
@@ -160,12 +158,12 @@ public class BloodPressureDetail extends Activity {
 		Spinner spinner = (Spinner) findViewById(R.id.sp_BloodPressureDetail_Tag);
 		ArrayList<String> allTags = new ArrayList<String>();
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<TagDataBinding> t = rdb.Tag_GetAll();
+		ArrayList<Tag> t = rdb.Tag_GetAll();
 		rdb.close();
 
 
 		if (t != null) {
-			for (TagDataBinding i : t) {
+			for (Tag i : t) {
 				allTags.add(i.getName());
 			}
 		}
@@ -176,7 +174,7 @@ public class BloodPressureDetail extends Activity {
 	}
 
 	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
-		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
+		SpinnerAdapter adapter = spnr.getAdapter();
 		for (int position = 0; position < adapter.getCount(); position++) {
 			if (adapter.getItem(position).equals(value)) {
 				spnr.setSelection(position);
@@ -228,10 +226,10 @@ public class BloodPressureDetail extends Activity {
 		Log.d("selected Spinner", tag);
 		int idTag = rdb.Tag_GetIdByName(tag);
 
-		BloodPressureDataBinding bp = new BloodPressureDataBinding();
+		BloodPressureRec bp = new BloodPressureRec();
 
 		if (!note.getText().toString().equals("")) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			bp.setIdNote(wdb.Note_Add(n));
 		}
@@ -240,8 +238,7 @@ public class BloodPressureDetail extends Activity {
 		bp.setIdUser(idUser);
 		bp.setSystolic(Integer.parseInt(systolic.getText().toString()));
 		bp.setDiastolic(Integer.parseInt(diastolic.getText().toString()));
-		bp.setDate(data.getText().toString());
-		bp.setTime(hora.getText().toString());
+		bp.setDateTime(data.getText().toString(), hora.getText().toString());
 		bp.setIdTag(idTag);
 
 		wdb.BloodPressure_Save(bp);
@@ -284,15 +281,15 @@ public class BloodPressureDetail extends Activity {
 		Log.d("selected Spinner", tag);
 		int idTag = rdb.Tag_GetIdByName(tag);
 
-		BloodPressureDataBinding bp = new BloodPressureDataBinding();
+		BloodPressureRec bp = new BloodPressureRec();
 
 		if (!note.getText().toString().equals("") && idNote == 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			bp.setIdNote(wdb.Note_Add(n));
 		}
 		if (idNote != 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			n.setId(idNote);
 			wdb.Note_Update(n);
@@ -302,8 +299,7 @@ public class BloodPressureDetail extends Activity {
 		bp.setIdUser(idUser);
 		bp.setSystolic(Integer.parseInt(systolic.getText().toString()));
 		bp.setDiastolic(Integer.parseInt(diastolic.getText().toString()));
-		bp.setDate(data.getText().toString());
-		bp.setTime(hora.getText().toString());
+		bp.setDateTime(data.getText().toString(), hora.getText().toString());
 		bp.setIdTag(idTag);
 
 		wdb.BloodPressure_Update(bp);

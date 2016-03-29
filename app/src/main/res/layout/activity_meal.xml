@@ -409,20 +409,62 @@
             </LinearLayout>
         </LinearLayout>
 
-        <Button
-            android:id="@+id/addTargetObjective"
-            android:background="@drawable/btn_holo_tip"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="220dp"
-            android:layout_gravity="center_horizontal"
+        <FrameLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:onClick="addGlycemiaObjective"
-            android:text="@string/button_add_glicemia_objective"
-            android:textSize="16sp"
-            android:visibility="gone"
-            tools:visibility="visible"/>
+            android:orientation="horizontal">
 
+            <Button
+                android:id="@+id/addTargetObjective"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/btn_holo_tip"
+                android:gravity="center"
+                android:onClick="addGlycemiaObjective"
+                android:text="@string/button_add_glicemia_objective"
+                android:textSize="16sp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"/>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ToggleButton
+                        android:id="@+id/bt_insulin_calc_info"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textOn=""
+                        android:onClick="toggleInsulinCalcDetails"
+                        android:textOff=""
+                        android:background="@drawable/ic_bt_toggle_pointing"
+                        android:drawableTop="@android:drawable/ic_menu_info_details"/>
+                </FrameLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fragment_calcs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_black_background"
+            tools:layout="@layout/fragment_insulin_meal_calc"
+            tools:layout_height="200dp"/>
 
         <LinearLayout
             android:layout_width="fill_parent"

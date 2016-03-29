@@ -7,9 +7,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -32,7 +29,6 @@ import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,11 +36,13 @@ import java.util.Date;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.CarbsDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.NoteDataBinding;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.ImageUtils;
 
 
 public class CarboHydrateDetail extends Activity {
@@ -69,29 +67,28 @@ public class CarboHydrateDetail extends Activity {
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
 			DB_Read rdb = new DB_Read(this);
-			String id = args.getString("Id");
-			id_ch = Integer.parseInt(args.getString("Id"));
-			CarbsDataBinding toFill = rdb.CarboHydrate_GetById(Integer.parseInt(id));
+			id_ch = args.getInt("Id");
+			CarbsRec toFill = rdb.CarboHydrate_GetById(id_ch);
 
 			Spinner tagSpinner = (Spinner) findViewById(R.id.sp_CarboHydrateDetail_Tag);
-			SelectSpinnerItemByValue(tagSpinner, rdb.Tag_GetById(toFill.getId_Tag()).getName());
+			SelectSpinnerItemByValue(tagSpinner, rdb.Tag_GetById(toFill.getIdTag()).getName());
 			EditText carbs = (EditText) findViewById(R.id.et_CarboHydrateDetail_Value);
-			carbs.setText(toFill.getCarbsValue().toString());
+			carbs.setText(String.valueOf(toFill.getCarbsValue()));
 			EditText data = (EditText) findViewById(R.id.et_CarboHydrateDetail_Data);
-			data.setText(toFill.getDate());
-			Log.d("data reg carb", toFill.getDate());
-			hora.setText(toFill.getTime());
+			data.setText(toFill.getFormattedDate());
+			Log.d("data reg carb", toFill.getFormattedDate());
+			hora.setText(toFill.getFormattedTime());
 
 			EditText note = (EditText) findViewById(R.id.et_CarboHydrateDetail_Notes);
-			if (toFill.getId_Note() != -1) {
-				NoteDataBinding n = new NoteDataBinding();
-				n = rdb.Note_GetById(toFill.getId_Note());
+			if (toFill.getIdNote() != -1) {
+				Note n = new Note();
+				n = rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
 				idNote = n.getId();
 			}
 
 			EditText photopath = (EditText) findViewById(R.id.et_CarboHydrateDetail_Photo);
-			if (!toFill.getPhotoPath().equals("")) {
+			if (toFill.hasPhotoPath() && !new File(toFill.getPhotoPath()).exists()) {
 				photopath.setText(toFill.getPhotoPath());
 				Log.d("foto path", "foto: " + toFill.getPhotoPath());
 				ImageView img = (ImageView) findViewById(R.id.iv_CarboHydrateDetail_Photo);
@@ -99,13 +96,11 @@ public class CarboHydrateDetail extends Activity {
 				getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 				int height = (int) (displaymetrics.heightPixels * 0.1);
 				int width = (int) (displaymetrics.widthPixels * 0.1);
-				b = decodeSampledBitmapFromPath(toFill.getPhotoPath(), width, height);
+				b = ImageUtils.decodeSampledBitmapFromPath(toFill.getPhotoPath(), width, height);
 
 				img.setImageBitmap(b);
 
 			}
-
-			Log.d("photopath", toFill.getPhotoPath());
 
 			rdb.close();
 		} else {
@@ -181,21 +176,21 @@ public class CarboHydrateDetail extends Activity {
 	public void FillDateHour() {
 		EditText date = (EditText) findViewById(R.id.et_CarboHydrateDetail_Data);
 		final Calendar calendar = Calendar.getInstance();
-		date.setText(DatePickerFragment.getFormatedDate(calendar));
+		date.setText(DateUtils.getFormattedDate(calendar));
 
 		EditText hour = (EditText) findViewById(R.id.et_CarboHydrateDetail_Hora);
-		hour.setText(TimePickerFragment.getFormatedDate(calendar));
+		hour.setText(DateUtils.getFormattedTime(calendar));
 	}
 
 	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_CarboHydrateDetail_Data,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_CarboHydrateDetail_Hora,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
@@ -203,12 +198,12 @@ public class CarboHydrateDetail extends Activity {
 		Spinner spinner = (Spinner) findViewById(R.id.sp_CarboHydrateDetail_Tag);
 		ArrayList<String> allTags = new ArrayList<String>();
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<TagDataBinding> t = rdb.Tag_GetAll();
+		ArrayList<Tag> t = rdb.Tag_GetAll();
 		rdb.close();
 
 
 		if (t != null) {
-			for (TagDataBinding i : t) {
+			for (Tag i : t) {
 				allTags.add(i.getName());
 			}
 		}
@@ -247,21 +242,20 @@ public class CarboHydrateDetail extends Activity {
 		int idTag = rdb.Tag_GetIdByName(tag);
 		rdb.close();
 		DB_Write reg = new DB_Write(this);
-		CarbsDataBinding carb = new CarbsDataBinding();
+		CarbsRec carb = new CarbsRec();
 
 		if (!note.getText().toString().equals("")) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
-			carb.setId_Note(reg.Note_Add(n));
+			carb.setIdNote(reg.Note_Add(n));
 		}
 
 
-		carb.setId_User(idUser);
-		carb.setCarbsValue(Double.parseDouble(carbs.getText().toString()));
-		carb.setId_Tag(idTag);
+		carb.setIdUser(idUser);
+		carb.setCarbsValue(Integer.parseInt(carbs.getText().toString()));
+		carb.setIdTag(idTag);
 		carb.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-		carb.setDate(data.getText().toString());
-		carb.setTime(hora.getText().toString());
+		carb.setDateTime(data.getText().toString(), hora.getText().toString());
 
 
 		reg.Carbs_Save(carb);
@@ -312,7 +306,7 @@ public class CarboHydrateDetail extends Activity {
 				getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 				int height = (int) (displaymetrics.heightPixels * 0.1);
 				int width = (int) (displaymetrics.widthPixels * 0.1);
-				b = decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+				b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
 
 				img.setImageBitmap(b);
 				photopath.setText(imgUri.getPath());
@@ -353,99 +347,20 @@ public class CarboHydrateDetail extends Activity {
 			getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
 			int height = (int) (displaymetrics.heightPixels * 0.1);
 			int width = (int) (displaymetrics.widthPixels * 0.1);
-			b = decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+			b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
 
 			img.setImageBitmap(b);
 			photopath.setText(imgUri.getPath());
 		}
 	}
 
-	public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-		// Raw height and width of image
-		final int height = options.outHeight;
-		final int width = options.outWidth;
-		int inSampleSize = 1;
-
-		if (height > reqHeight || width > reqWidth) {
-
-			final int halfHeight = height / 2;
-			final int halfWidth = width / 2;
-
-			// Calculate the largest inSampleSize value that is a power of 2 and keeps both
-			// height and width larger than the requested height and width.
-			while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
-				inSampleSize *= 2;
-			}
-		}
-
-		return inSampleSize;
-	}
-
-
-	public static Bitmap decodeSampledBitmapFromPath(String path, int reqWidth, int reqHeight) {
-
-		// First decode with inJustDecodeBounds=true to check dimensions
-		final BitmapFactory.Options options = new BitmapFactory.Options();
-		options.inJustDecodeBounds = true;
-		//BitmapFactory.decodeResource(res, resId, options);
-		BitmapFactory.decodeFile(path, options);
-
-		// Calculate inSampleSize
-		options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-
-		// Decode bitmap with inSampleSize set
-		options.inJustDecodeBounds = false;
-		return adjustImageOrientation(BitmapFactory.decodeFile(path, options), path);
-	}
-
-
-	private static Bitmap adjustImageOrientation(Bitmap image, String picturePath) {
-		ExifInterface exif;
-		try {
-			exif = new ExifInterface(picturePath);
-			int exifOrientation = exif.getAttributeInt(
-					ExifInterface.TAG_ORIENTATION,
-					ExifInterface.ORIENTATION_NORMAL);
-
-			int rotate = 0;
-			switch (exifOrientation) {
-				case ExifInterface.ORIENTATION_ROTATE_90:
-					rotate = 90;
-					break;
-
-				case ExifInterface.ORIENTATION_ROTATE_180:
-					rotate = 180;
-					break;
-
-				case ExifInterface.ORIENTATION_ROTATE_270:
-					rotate = 270;
-					break;
-			}
-
-			if (rotate != 0) {
-				int w = image.getWidth();
-				int h = image.getHeight();
-
-				// Setting pre rotate
-				Matrix mtx = new Matrix();
-				mtx.preRotate(rotate);
-
-				// Rotating Bitmap & convert to ARGB_8888, required by tess
-				image = Bitmap.createBitmap(image, 0, 0, w, h, mtx, false);
-
-			}
-		} catch (IOException e) {
-			return null;
-		}
-		return image.copy(Bitmap.Config.ARGB_8888, true);
-	}
 
 
 	//PHOTO - END
 
 
 	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
-		SpinnerAdapter adapter = (SpinnerAdapter) spnr.getAdapter();
+		SpinnerAdapter adapter = spnr.getAdapter();
 		for (int position = 0; position < adapter.getCount(); position++) {
 			if (adapter.getItem(position).equals(value)) {
 				spnr.setSelection(position);
@@ -509,27 +424,26 @@ public class CarboHydrateDetail extends Activity {
 		int idTag = rdb.Tag_GetIdByName(tag);
 		rdb.close();
 		DB_Write reg = new DB_Write(this);
-		CarbsDataBinding carb = new CarbsDataBinding();
+		CarbsRec carb = new CarbsRec();
 
 		if (!note.getText().toString().equals("") && idNote == 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
-			carb.setId_Note(reg.Note_Add(n));
+			carb.setIdNote(reg.Note_Add(n));
 		}
 		if (idNote != 0) {
-			NoteDataBinding n = new NoteDataBinding();
+			Note n = new Note();
 			n.setNote(note.getText().toString());
 			n.setId(idNote);
 			reg.Note_Update(n);
 		}
 
 		carb.setId(id);
-		carb.setId_User(idUser);
-		carb.setCarbsValue(Double.parseDouble(carbs.getText().toString()));
-		carb.setId_Tag(idTag);
+		carb.setIdUser(idUser);
+		carb.setCarbsValue(Integer.parseInt(carbs.getText().toString()));
+		carb.setIdTag(idTag);
 		carb.setPhotoPath(photopath.getText().toString()); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-		carb.setDate(data.getText().toString());
-		carb.setTime(hora.getText().toString());
+		carb.setDateTime(data.getText().toString(), hora.getText().toString());
 
 
 		reg.Carbs_Update(carb);

@@ -1,139 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
-    
-	<LinearLayout
-	    android:id="@+id/ll_list_logbookreg_left"
-	    android:layout_width="75dp"
-	    android:layout_height="wrap_content"
-	    android:layout_marginLeft="3dp"
-	    android:orientation="vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_alignParentLeft="true" >
-	    <TextView
-	        android:id="@+id/tv_list_logbookreg_data"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="left"
-	        android:textSize="13sp" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="?android:selectableItemBackground"
+              android:minHeight="@dimen/list_row_default_height"
+              android:orientation="horizontal"
+              tools:layout_height="48dp">
+
+    <LinearLayout
+        android:id="@+id/ll_list_logbookreg_left"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="3dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
         <TextView
-	        android:id="@+id/tv_list_logbookreg_hora"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="left"
-	        android:textSize="13sp" />
+            android:id="@+id/tv_list_logbookreg_data"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:textSize="@dimen/list_text_small"
+            android:textStyle="bold"
+            tools:text="2016-01-27"/>
+
         <TextView
-	        android:id="@+id/tv_list_logbookreg_tag"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="left"
-	        android:textSize="13sp"
-	        android:lines="1"
-	        android:ellipsize="end" />
-	</LinearLayout>
-	
-	<LinearLayout
-	    android:id="@+id/ll_list_logbookreg_middleleft"
-	    android:layout_width="75dp"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_toLeftOf="@+id/ll_list_logbookreg_middle" >
-	    <TextView
-	        android:id="@+id/tv_list_logbookreg_carbs_title"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:text="@string/Carbs"
-	        android:textSize="16sp" />
-         
+            android:id="@+id/tv_list_logbookreg_hora"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="left"
+            android:textSize="@dimen/list_text_small"
+            android:textStyle="bold"
+            tools:text="11:50"/>
+
         <TextView
-	        android:id="@+id/tv_list_logbookreg_carbs_value"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:textSize="20sp"
-	        android:textStyle="bold" />
-       	<!-- 
+            android:id="@+id/tv_list_logbookreg_tag"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="left"
+            android:lines="1"
+            android:textSize="@dimen/list_text_small"
+            tools:text="Antes almoço"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_list_logbookreg_middleleft"
+        android:layout_width="75dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <TextView
-	        android:id="@+id/tv_list_logbookreg_carbsnunit"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:text="@string/grams"
-	        android:textSize="12sp" />
-	     -->
-	</LinearLayout>
-	
-	<LinearLayout
-	    android:id="@+id/ll_list_logbookreg_middle"
-	    android:layout_width="75dp"
-	    android:layout_height="wrap_content"
-	    android:orientation="vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_toLeftOf="@+id/ll_list_logbookreg_middleright" >
-	    <TextView
-	        android:id="@+id/tv_list_logbookreg_insulin"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:textSize="16sp"
-	        android:lines="1"
-	        android:ellipsize="end" />
+            android:id="@+id/tv_list_logbookreg_carbs_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/Carbs"
+            android:textSize="@dimen/list_text_small"/>
+
         <TextView
-	        android:id="@+id/tv_list_logbookreg_insulin_value"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:textSize="20sp"
-	        android:textStyle="bold" />
-       	<!-- 
+            android:id="@+id/tv_list_logbookreg_carbs_value"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/list_text_huge"
+            android:textStyle="bold"
+            tools:text="50"/>
+        <!--
+     <TextView
+         android:id="@+id/tv_list_logbookreg_carbsnunit"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_weight="1"
+         android:gravity="center_horizontal"
+         android:text="@string/grams"
+         android:textSize="12sp" />
+      -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_list_logbookreg_middle"
+        android:layout_width="75dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <TextView
-	        android:id="@+id/tv_list_logbookreg_insulinunit"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:text="uni."
-	        android:textSize="12sp" />
-         -->
-	</LinearLayout>
-	
-	<LinearLayout
-	    android:id="@+id/ll_list_logbookreg_middleright"
-	    android:layout_width="75dp"
-	    android:layout_height="wrap_content"
-	    android:layout_marginLeft="8dp"
-	    android:layout_marginRight="8dp"
-	    android:orientation="vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_toLeftOf="@+id/ib_list_logbookreg_detail" >
-	    <TextView
-	        android:id="@+id/tv_list_logbookreg_glycemia"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:text="@string/bloodglucose"
-	        android:textSize="16sp" />
+            android:id="@+id/tv_list_logbookreg_insulin"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="center_horizontal"
+            android:lines="1"
+            android:textSize="@dimen/list_text_small"
+            tools:text="Novolog"/>
+
         <TextView
-	        android:id="@+id/tv_list_logbookreg_glycemia_value"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:gravity="center_horizontal"
-	        android:textSize="20sp"
-	        android:textStyle="bold" />
+            android:id="@+id/tv_list_logbookreg_insulin_value"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/list_text_huge"
+            android:textStyle="bold"
+            tools:text="2.0"/>
+        <!--
+     <TextView
+         android:id="@+id/tv_list_logbookreg_insulinunit"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_weight="1"
+         android:gravity="center_horizontal"
+         android:text="uni."
+         android:textSize="12sp" />
+      -->
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_list_logbookreg_middleright"
+        android:layout_width="75dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_list_logbookreg_glycemia"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:text="@string/bloodglucose"
+            android:textSize="@dimen/list_text_small"/>
+
+        <TextView
+            android:id="@+id/tv_list_logbookreg_glycemia_value"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/list_text_huge"
+            android:textStyle="bold"
+            tools:text="100"/>
         <!-- 
         <TextView
 	        android:id="@+id/tv_list_logbookreg_glycemia_unit"
@@ -144,16 +156,12 @@
 	        android:text="@string/mg_dl"
 	        android:textSize="12sp" />
          -->
-	</LinearLayout>
-	<ImageButton
-        android:contentDescription="logbook_detail_img"
+    </LinearLayout>
+
+    <ImageView
         android:id="@+id/ib_list_logbookreg_detail"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:paddingRight="8dp"
-        android:paddingLeft="8dp"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/viewdetail"
-        android:background="@color/transparent" />
-</RelativeLayout>
+        android:layout_height="match_parent"
+        android:background="@color/transparent"
+        android:src="@drawable/viewdetail"/>
+</LinearLayout>

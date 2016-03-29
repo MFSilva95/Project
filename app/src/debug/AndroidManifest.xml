@@ -1,29 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application>
+
+        <receiver android:name="pt.it.porto.mydiabetes.middleHealth.myglucohealth.BootCompleteReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="pt.it.porto.mydiabetes.middleHealth.myglucohealth.BluetoothChangesRegisterService" />
+
+        <!--<activity-->
+        <!--android:name="pt.it.porto.mydiabetes.ui.activities.Charts"-->
+        <!--android:label="Charts"-->
+        <!--android:theme="@style/AppNewTheme">-->
+        <!--<intent-filter>-->
+        <!--<action android:name="android.intent.action.MAIN"/>-->
+        <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+        <!--</intent-filter>-->
+        <!--</activity>-->
+        <activity
+            android:name="pt.it.porto.mydiabetes.ui.activities.MultiDataChartActivity"
+            android:theme="@style/AppNewTheme" />
+        <activity
+            android:name="pt.it.porto.mydiabetes.ui.activities.SingleDataChartActivity"
+            android:theme="@style/AppNewTheme" />
+        <activity
+            android:name="pt.it.porto.mydiabetes.ui.activities.ListTestActivity"
+            android:theme="@style/AppNewTheme" />
 
         <service
             android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.MiddleHealth"
             android:enabled="true"
             android:exported="true"
             android:launchMode="singleTask"
-            android:process=":remote"
-            >
+            android:process=":remote">
             <intent-filter>
                 <!--
                      These are the interfaces supported by the service, which
                      you can bind to.
                 -->
-                <action android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IApplicationRegister"/>
-                <action android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IEventCallback"/>
-                <action android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IDevice"/>
-                <action android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IAgentActionService"/>
-                <action android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IPM_StoreActionService"/>
-                <action android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IScannerActionService"/>
-                <action android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IExternalDeviceApplication"/>
+                <action android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IApplicationRegister" />
+                <action android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IEventCallback" />
+                <action android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IDevice" />
+                <action android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IAgentActionService" />
+                <action android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IPM_StoreActionService" />
+                <action android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IScannerActionService" />
+                <action android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.IExternalDeviceApplication" />
             </intent-filter>
         </service>
 

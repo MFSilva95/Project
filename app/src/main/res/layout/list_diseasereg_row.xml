@@ -1,46 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
-	
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/list_row_default_height"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingStart="@dimen/activity_horizontal_margin"
+                android:background="?android:selectableItemBackground"
+                android:orientation="horizontal">
+
     <TextView
         android:id="@+id/tv_list_diseasereg_disease"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_width="fill_parent"
-        android:layout_height="48dp"
-        android:gravity="center_vertical"
+        android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/tv_list_diseasereg_startdate"
+        android:layout_toStartOf="@+id/tv_list_diseasereg_startdate"
+        android:gravity="center_vertical"
         android:textAppearance="@android:style/TextAppearance.Medium"
-        android:textStyle="bold" />
-	
-	<TextView
-	        android:id="@+id/tv_list_diseasereg_startdate"
-	        android:layout_width="80dp"
-	        android:layout_height="48dp"
-	        android:gravity="center_vertical"
-	        android:layout_marginLeft="8dp"
-	        android:layout_centerVertical="true"
-	        android:textAppearance="@android:style/TextAppearance.Small"
-	        android:layout_toLeftOf="@+id/tv_list_diseasereg_enddate" />
-	<TextView
-	        android:id="@+id/tv_list_diseasereg_enddate"
-	        android:layout_width="80dp"
-	        android:layout_height="48dp"
-	        android:gravity="center_vertical"
-	        android:layout_marginLeft="8dp"
-	        android:textAppearance="@android:style/TextAppearance.Small"
-	        android:layout_centerVertical="true"
-	        android:layout_toLeftOf="@+id/ib_list_diseasereg_detail" />
-	<ImageButton
-        android:contentDescription="diseasereg_detail_img"
+        android:textStyle="bold"
+        tools:text="gripe"/>
+
+    <TextView
+        android:id="@+id/tv_list_diseasereg_startdate"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_toLeftOf="@+id/tv_list_diseasereg_enddate"
+        android:layout_toStartOf="@+id/tv_list_diseasereg_enddate"
+        android:gravity="center_vertical"
+        android:textAppearance="@android:style/TextAppearance.Small"
+        tools:text="2015-02-01"/>
+
+    <TextView
+        android:id="@+id/tv_list_diseasereg_enddate"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_toLeftOf="@+id/ib_list_diseasereg_detail"
+        android:layout_toStartOf="@+id/ib_list_diseasereg_detail"
+        android:gravity="center_vertical"
+        android:textAppearance="@android:style/TextAppearance.Small"
+        tools:text="2015-02-07"/>
+
+    <ImageView
         android:id="@+id/ib_list_diseasereg_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:paddingRight="8dp"
-        android:paddingLeft="8dp"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:src="@drawable/viewdetail"
-        android:background="@color/transparent" />
+        android:layout_centerVertical="true"
+        android:background="@color/transparent"
+        android:src="@drawable/viewdetail"/>
 </RelativeLayout>

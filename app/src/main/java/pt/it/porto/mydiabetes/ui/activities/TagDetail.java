@@ -18,12 +18,14 @@ import android.widget.Toast;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.TagDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class TagDetail extends Activity {
 
+	public static final String DATA = "data";
 	int idTag = 0;
 	String id;
 
@@ -37,21 +39,30 @@ public class TagDetail extends Activity {
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
-			DB_Read rdb = new DB_Read(this);
-			id = args.getString("Id");
-			idTag = Integer.parseInt(id);
-			TagDataBinding toFill = rdb.Tag_GetById(Integer.parseInt(id));
+			Tag toFill = null;
+			if (args.containsKey(DATA)) {
+				toFill = args.getParcelable(DATA);
+				if (toFill != null) {
+					idTag = toFill.getId();
+				}
 
+			}
+			if (toFill == null) {
+				DB_Read rdb = new DB_Read(this);
+				id = args.getString("Id");
+				idTag = Integer.parseInt(id);
+				toFill = rdb.Tag_GetById(Integer.parseInt(id));
+
+
+				rdb.close();
+			}
 			EditText name = (EditText) findViewById(R.id.et_FaseDia_Nome);
 			name.setText(toFill.getName());
 			EditText from = (EditText) findViewById(R.id.et_FaseDia_HourFrom);
 			from.setText(toFill.getStart());
 			EditText to = (EditText) findViewById(R.id.et_FaseDia_HourTo);
 			to.setText(toFill.getEnd());
-
-			rdb.close();
-			if (Integer.parseInt(id) <= 9) {
-
+			if (idTag <= 9) {
 				name.setEnabled(false);
 			}
 		}
@@ -101,13 +112,13 @@ public class TagDetail extends Activity {
 
 	public void showTimePickerDialogFrom(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_FaseDia_HourFrom,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
 	}
 
 	public void showTimePickerDialogTo(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_FaseDia_HourTo,
-				TimePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
 	}
 
@@ -140,7 +151,7 @@ public class TagDetail extends Activity {
 
 		DB_Write wdb = new DB_Write(this);
 
-		TagDataBinding tag = new TagDataBinding();
+		Tag tag = new Tag();
 
 
 		tag.setName(name.getText().toString());
@@ -183,7 +194,7 @@ public class TagDetail extends Activity {
 
 		DB_Write wdb = new DB_Write(this);
 
-		TagDataBinding tag = new TagDataBinding();
+		Tag tag = new Tag();
 
 		tag.setId(idTag);
 		tag.setName(name.getText().toString());

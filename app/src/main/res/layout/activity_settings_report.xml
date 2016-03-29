@@ -1,0 +1,14 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".ui.activities.Preferences">
+
+    <fragment
+        android:id="@+id/fragment_pdf_export"
+        android:name="pt.it.porto.mydiabetes.ui.fragments.PdfExportFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_pdf_export"/>
+
+</RelativeLayout>

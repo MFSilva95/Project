@@ -3,7 +3,7 @@
 
     <string name="app_name">A Minha Diabetes</string>
     <string name="add_Exercise">Adicionar Exercício</string>
-    <string name="title_activity_my_data">Meus Dados</string>
+    <string name="title_activity_my_data">Os Meus Dados</string>
     <string name="title_activity_preferences">Configurações</string>
     <string name="title_activity_exercise">Registos de Exercício</string>
     <string name="save_MyData">Guardar</string>
@@ -134,7 +134,8 @@
     <string name="uporto" translatable="false">Univ. Porto</string>
 
 
-    <string name="sync">Sincronizar com PC</string>
+    <string name="sync_with_pc">Sincronizar com PC</string>
+    <string name="sync">Sincronização</string>
 
 
     <string name="qr">Ler QR</string>
@@ -225,6 +226,8 @@
     <string name="do_back">Efectuar Cópia de Segurança</string>
     <string name="restore_backup">Restaurar Cópia</string>
     <string name="restore_backup_button">Restaurar Cópia de Segurança</string>
+    <string name="restore_backup_success">Restauro efectuado com sucesso!</string>
+    <string name="restore_backup_error">Ocurreu um erro durante o restauro, verifique se a memória externa está disponivel!</string>
     <string name="last_backup">Última Cópia de Segurança</string>
     <string name="new_disease">Nova doença</string>
     <string name="new_exercise">Novo exercicio</string>
@@ -249,7 +252,7 @@
     <string name="hint_name">Jorge Mendes</string>
     <string name="diabetes_type">Tipo de diabetes</string>
     <string name="sensivity_factor">Fator de sensibilidade</string>
-    <string name="hint_value3" >ex.: 45</string>
+    <string name="hint_value3">ex.: 45</string>
     <string name="carbs_racio">Rácio Hidratos de Carbono</string>
     <string name="hint_value4">ex.: 10</string>
     <string name="hypoglycemia_limit">Limite para hipoglicemia</string>
@@ -328,6 +331,61 @@
     <string name="share_text">Enviado da aplicação: A Minha Diabetes</string>
     <string name="information_about_developers">Aplicação desenvolvida por Eduardo Soares, João Maia, João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
     <string name="button_add_glicemia_objective">Adicionar objectivo de glicemia</string>
+
+    <string name="correction_glycemia">Correcção Glicemia</string>
+    <string name="correction_hc">Correcção Hidratos</string>
+    <string name="insulin_active">Insulina ainda activa</string>
+    <string name="insulin_total">Total de Insulina a tomar</string>
+    <string name="minus_signal" translatable="false">-</string>
+    <string name="plus_signal" translatable="false">+</string>
+    <string name="use_not">Não usar</string>
+    <string name="use">Usar</string>
+    <string name="new_feature">Nova funcionalidade</string>
+    <string name="active_insulin">Insulina Activa</string>
+    <string name="new_feature_iob_text_1">Quando toma uma insulina esta não actua de imediato, mas sim ao longo de algumas horas. Como pode ver na imagem acima.</string>
+    <string name="new_feature_iob_text_2">Agora pode ter informação da insulina que ainda está activa no seu organismo quando for tomar uma nova insulina</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="report">Relatório</string>
+    <string name="insulin_calc">Cálculo Insulina</string>
+    <string name="use_iob">Usar Insulina Activa</string>
+    <string name="backup_restore_confirmation_dialog_text">Este processo vai subsituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
+    <string name="next_button">Seguinte</string>
+    <string name="notification_sync_recurrent">Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?</string>
+    <string name="notification_sync_first_time">Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?</string>
+    <string name="notification_sync_text">Envie os dados ao gestor do projecto</string>
+    <string name="see_in_chart">Ver em gráfico</string>
+    <string name="list_empty_message">Nenhum resultado encontrado\nAumente o intervalo de tempo</string>
+    <string name="show_labels">Mostrar valores</string>
+    <string name="show_hiperglicemia_limit">Mostrar limite de hiperglicemia</string>
+    <string name="show_hipoglicemia_limit">Mostrar limite de hipoglicemia</string>
+    <string name="filterdialog_title">Filtro</string>
+    <string name="filterdialog_subtitle_extras">Extras</string>
+    <string name="filterdialog_subtitle_data">Dados</string>
+    <string name="feature_cloud_sync">Sincronizar com cloud</string>
+    <string name="feature_cloud_sync_description1">Pode enviar para a cloud os seus dados de forma segura.</string>
+    <string name="feature_cloud_sync_description2">A qualquer momento pode aceder aos dados em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="login_username">Nome do utilizador</string>
+    <string name="login_password">Palavra-passe</string>
+    <string name="login_extra_text">Se não tiver uma conta, pode criar uma em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="login_auth_error">Erro na autenticação, verifique o nome de utilizador e password e tente novamente.</string>
+    <string name="login_no_internet_error">Sem ligação à Internet</string>
+    <string name="login_try_later">Tentar mais tarde</string>
+    <string name="login_try_again">Tentar novamente</string>
+    <string name="cloudSync_edit_account">Editar conta</string>
+    <string name="settings_edit_insulins">Editar Insulinas</string>
+    <string name="settings_edit_insulins_targets">Editar Objectivos de Insulina</string>
+
+
+    <plurals name="notification_text_new_glucose_measure">
+        <item quantity="zero">Não existem novas medições para adicionar!</item>
+        <item quantity="one">Foi adicionada 1 nova medição de Glicemia!</item>
+        <item quantity="other">Foram adicionadas %d novas medições de Glicemia!</item>
+    </plurals>
+    <plurals name="notification_text_new_meal">
+        <item quantity="one">Esta é recente. Clique para adicionar refeição.</item>
+        <item quantity="other">Uma é recente. Clique para adicionar refeição.</item>
+    </plurals>
 
 
 </resources>

@@ -58,7 +58,7 @@ public class TransferActivity extends Activity {
 			else {
 				showDialogTransf(false);
 			}
-		};
+		}
 	};
 	
 	private Handler handler1 = new Handler() {
@@ -69,7 +69,7 @@ public class TransferActivity extends Activity {
 			else {
 				showDialogProg();
 			}
-		};
+		}
 	};
 
 	private Handler handler_transf = new Handler() {
@@ -79,7 +79,7 @@ public class TransferActivity extends Activity {
 			} else {
 				showDialogFinal(false);
 			}
-		};
+		}
 	};
 
 	@Override
@@ -358,7 +358,7 @@ public class TransferActivity extends Activity {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this); 
 		builder.setTitle(R.string.transf_WaitTitle).
 		setMessage(this.getString(R.string.transf_WaitMesg));
-		dialog1 = builder.create();;
+		dialog1 = builder.create();
 		dialog1.show();
 		dialog1.setCanceledOnTouchOutside(false);
 	}

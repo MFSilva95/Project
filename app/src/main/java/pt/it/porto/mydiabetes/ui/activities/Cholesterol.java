@@ -18,9 +18,10 @@ import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.data.CholesterolRec;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.CholesterolAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.CholesterolDataBinding;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class Cholesterol extends Activity {
@@ -94,13 +95,13 @@ public class Cholesterol extends Activity {
 
 	public void showDatePickerDialogFrom(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Cholesterol_DataFrom,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Cholesterol_DataTo,
-				DatePickerFragment.getCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
@@ -109,19 +110,20 @@ public class Cholesterol extends Activity {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -180);
 
-		dateago.setText(DatePickerFragment.getFormatedDate(calendar));
+		dateago.setText(DateUtils.getFormattedDate(calendar));
 
 		EditText datenow = (EditText) findViewById(R.id.et_Cholesterol_DataTo);
 		calendar = Calendar.getInstance();
-		datenow.setText(DatePickerFragment.getFormatedDate(calendar));
+		datenow.setText(DateUtils.getFormattedDate(calendar));
 	}
 
 	public void fillListView(ListView lv) {
 		EditText datefrom = (EditText) findViewById(R.id.et_Cholesterol_DataFrom);
 		EditText dateto = (EditText) findViewById(R.id.et_Cholesterol_DataTo);
 		DB_Read rdb = new DB_Read(this);
-		ArrayList<CholesterolDataBinding> allcho = rdb.Cholesterol_GetBtDate(datefrom.getText().toString(), dateto.getText().toString());
+		ArrayList<CholesterolRec> allcho = rdb.Cholesterol_GetBtDate(datefrom.getText().toString(), dateto.getText().toString());
 		rdb.close();
 		lv.setAdapter(new CholesterolAdapter(allcho, this));
+		lv.setEmptyView(findViewById(R.id.list_empty));
 	}
 }
