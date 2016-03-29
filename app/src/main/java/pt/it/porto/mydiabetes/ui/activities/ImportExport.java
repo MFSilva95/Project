@@ -201,6 +201,7 @@ public class ImportExport extends BaseOldActivity {
 	}
 
 	public void share(View view) {
+		DB_BackupRestoreFragment.backup(getApplicationContext());
 		File backupFile = new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION);
 		if (backupFile.exists()) {
 			backupFile.setReadable(true, false); // making sure that other apps can read the file
