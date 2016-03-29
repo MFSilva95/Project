@@ -8,6 +8,8 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 import android.util.Log;
 
+import pt.it.porto.mydiabetes.BuildConfig;
+
 public class BluetoothChangesRegisterService extends Service {
     BluetoothChangesReceiver receiver;
 
@@ -36,7 +38,9 @@ public class BluetoothChangesRegisterService extends Service {
     }
 
     public static void startService(Context context){
-        Intent intentS = new Intent(context, BluetoothChangesRegisterService.class);
-        context.getApplicationContext().startService(intentS);
+        if(BuildConfig.GLUCOMETER_AVAILABLE) {
+            Intent intentS = new Intent(context, BluetoothChangesRegisterService.class);
+            context.getApplicationContext().startService(intentS);
+        }
     }
 }
