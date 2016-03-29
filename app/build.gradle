@@ -19,9 +19,6 @@ android {
     productFlavors {
         prod {
             buildConfigField "boolean", "USE_FABRIC", "false"
-            buildConfigField "boolean", "IOB_AVAILABLE", "false"
-            buildConfigField "boolean", "SYNC_AVAILABLE", "false"
-            buildConfigField "boolean", "GLUCOMETER_AVAILABLE", "false"
         }
         devel {
             buildConfigField "boolean", "USE_FABRIC", "true"
@@ -32,6 +29,9 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            buildConfigField "boolean", "IOB_AVAILABLE", "false"
+            buildConfigField "boolean", "SYNC_AVAILABLE", "false"
+            buildConfigField "boolean", "GLUCOMETER_AVAILABLE", "false"
         }
         debug {
             applicationIdSuffix ".debug"
