@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
-    package="pt.it.porto.mydiabetes"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    package="pt.it.porto.mydiabetes"
     android:versionCode="8"
     android:versionName="1.2.1">
 
@@ -83,9 +83,9 @@
         </activity>
         <activity
             android:name=".ui.activities.GlycemiaChartList"
-            android:theme="@style/AppNewThemeCompat"
             android:label="@string/title_activity_glycemia"
-            android:parentActivityName=".ui.activities.Home">
+            android:parentActivityName=".ui.activities.Home"
+            android:theme="@style/AppNewThemeCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -93,8 +93,8 @@
         <activity
             android:name=".ui.activities.InsulinChartList"
             android:label="@string/title_activity_insulin"
-            android:theme="@style/AppNewThemeCompat"
-            android:parentActivityName=".ui.activities.Home">
+            android:parentActivityName=".ui.activities.Home"
+            android:theme="@style/AppNewThemeCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -110,8 +110,8 @@
         <activity
             android:name=".ui.activities.CarbsChartList"
             android:label="@string/title_activity_carbo_hydrate"
-            android:theme="@style/AppNewThemeCompat"
-            android:parentActivityName=".ui.activities.Home">
+            android:parentActivityName=".ui.activities.Home"
+            android:theme="@style/AppNewThemeCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -142,9 +142,9 @@
         </activity>
         <activity
             android:name=".ui.activities.WeightChartList"
-            android:theme="@style/AppNewThemeCompat"
             android:label="@string/title_activity_weight"
-            android:parentActivityName=".ui.activities.Home">
+            android:parentActivityName=".ui.activities.Home"
+            android:theme="@style/AppNewThemeCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -328,8 +328,8 @@
         <activity
             android:name=".ui.activities.LogbookChartList"
             android:label="@string/title_activity_logbook"
-            android:theme="@style/AppNewThemeCompat"
-            android:parentActivityName=".ui.activities.Home">
+            android:parentActivityName=".ui.activities.Home"
+            android:theme="@style/AppNewThemeCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -383,7 +383,12 @@
             android:exported="true">
         </receiver>
 
-        <receiver android:name=".middleHealth.myglucohealth.BootCompleteReceiver"/>
+        <receiver android:name=".middleHealth.myglucohealth.BootCompleteReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
         <service android:name=".middleHealth.myglucohealth.BluetoothChangesRegisterService"/>
     </application>
 
