@@ -604,7 +604,11 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	}
 
 	public float getInsulinIntake() {
-		return Float.parseFloat(insulinIntake.getText().toString());
+		String insulinIn=insulinIntake.getText().toString();
+		if(insulinIn.isEmpty()){
+			return 0;
+		}
+		return  Float.parseFloat(insulinIntake.getText().toString());
 	}
 
 	public String getTime() {
