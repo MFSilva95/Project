@@ -123,7 +123,7 @@ public class MealActivity extends BaseMealActivity {
 		insulinCalculator.setTime(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null);
 		if (glycemiaData != null) {
 			insulinCalculator.setGlycemia(glycemiaData.getValue());
-			insulinCalculator.setTime(this, DateUtils.getFormattedDate(glycemiaData.getDateTime()), DateUtils.getFormattedTime(glycemiaData.getDateTime()));
+			insulinCalculator.setTime(this, glycemiaData.getDateTime().get(Calendar.HOUR_OF_DAY), glycemiaData.getDateTime().get(Calendar.MINUTE), DateUtils.getFormattedDate(glycemiaData.getDateTime()));
 		}
 		double d = rdb.Target_GetTargetByTime(DateUtils.getFormattedTime(calendar));
 		if (d != 0) {

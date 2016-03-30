@@ -55,56 +55,35 @@ public class Glucometer implements Runnable {
 
     private static final String BLUETOOTH_NOT_SUPPORTED_ERROR_MESSAGE = "Bluetooth is not supported on this device!";
 
-    private static Glucometer mInstance;
-
     private InputStream mInputStream;
     private OutputStream mOutputStream;
-    private BluetoothAdapter mBluetoothAdapter;
     private BluetoothServerSocket mBluetoothServerSocket;
     private BluetoothSocket mBluetoothSocket;
-    private boolean mRepeat;
-    private boolean mInitialized = false;
     private boolean mEraseAllDataOption = false;
-
-    private Glucometer() {
-    }
-
-    public static Glucometer getInstance() {
-        if (mInstance == null) {
-            mInstance = new Glucometer();
-        }
-
-        return mInstance;
-    }
-
-    public boolean initialize() {
-        if (mInitialized) {
-            return true;
-        }
-
-        // Get default bluetooth adapter:
-        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (mBluetoothAdapter == null) {
-            Log.d(TAG, BLUETOOTH_NOT_SUPPORTED_ERROR_MESSAGE);
-            return false;
-        }
-
-        mInitialized = true;
-
-        return true;
-    }
 
     @Override
     public void run() {
         Log.i(TAG, "running");
-        if (!initialize()) {
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter == null) {
+            Log.d(TAG, BLUETOOTH_NOT_SUPPORTED_ERROR_MESSAGE);
             return;
         }
-//        setRepeat(true);
-//        while (getRepeat()) {
-        // Wait for connection:
-        if (!waitForConnection()) {
-//                continue;
+
+        try {
+            // Create bluetooth server socket:
+            mBluetoothServerSocket = mBluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord(NAME_INSECURE, MY_UUID_INSECURE);
+//            mBluetoothSocket.connect();
+//            Log.d(TAG, "Now waiting for a glucometer connection...");
+            mBluetoothSocket = mBluetoothServerSocket.accept(10000); // 10 seconds
+            Log.d(TAG, "Glucometer connection found!");
+//            mDevice.setAddress(mBluetoothSocket.getRemoteDevice().getAddress());
+//            mEventManager.deviceConnected(SYSTEM_ID, mDevice);
+            mInputStream = mBluetoothSocket.getInputStream();
+            mOutputStream = mBluetoothSocket.getOutputStream();
+        } catch (IOException e) {
+            Log.d(TAG, "Error initializing sockets");
+            clearConnections();
             return;
         }
 
@@ -117,8 +96,21 @@ public class Glucometer implements Runnable {
         }
 
         // Close connection:
-        closeConnection();
-//        }
+        clearConnections();
+    }
+
+    Thread thread;
+    public void start() {
+        if (thread == null) {
+            thread=new Thread(this);
+            thread.start();
+        }
+    }
+
+    public void stop(){
+        if (thread != null) {
+            thread.interrupt();
+        }
     }
 
     private OnMeasurementListener onMeasurementListener;
@@ -133,10 +125,6 @@ public class Glucometer implements Runnable {
         }
     }
 
-    public void stop() {
-        setRepeat(false);
-    }
-
     public String getSystemId() {
         return SYSTEM_ID;
     }
@@ -149,27 +137,8 @@ public class Glucometer implements Runnable {
         mEraseAllDataOption = value;
     }
 
-    private boolean waitForConnection() {
-        try {
 
-            // Create bluetooth server socket:
-            mBluetoothServerSocket = mBluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord(NAME_INSECURE, MY_UUID_INSECURE);
-//            mBluetoothSocket.connect();
-//            Log.d(TAG, "Now waiting for a glucometer connection...");
-            mBluetoothSocket = mBluetoothServerSocket.accept(20000); // 20 seconds
-            Log.d(TAG, "Glucometer connection found!");
-//            mDevice.setAddress(mBluetoothSocket.getRemoteDevice().getAddress());
-//            mEventManager.deviceConnected(SYSTEM_ID, mDevice);
-            mInputStream = mBluetoothSocket.getInputStream();
-            mOutputStream = mBluetoothSocket.getOutputStream();
-        } catch (IOException e) {
-            Log.d(TAG, "Error initializing sockets");
-            return false;
-        }
-        return true;
-    }
-
-    private void closeConnection() {
+    private void clearConnections() {
         try {
             if (mInputStream != null) {
                 mInputStream.close();
@@ -189,7 +158,6 @@ public class Glucometer implements Runnable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        setRepeat(false);
     }
 
     private boolean readDataFromMeter() {
@@ -326,14 +294,6 @@ public class Glucometer implements Runnable {
 
         Log.d(TAG, "eraseDateFromGlucometer() - Bad response from glucometer.");
         return false;
-    }
-
-    private synchronized boolean getRepeat() {
-        return mRepeat;
-    }
-
-    private synchronized void setRepeat(boolean rep) {
-        mRepeat = rep;
     }
 
     private int getNumberOfRecords() throws Exception {
