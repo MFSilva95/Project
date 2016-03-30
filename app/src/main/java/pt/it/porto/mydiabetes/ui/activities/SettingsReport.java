@@ -31,17 +31,18 @@ import java.util.Calendar;
 import java.util.Date;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.data.BloodPressureRec;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.CholesterolRec;
 import pt.it.porto.mydiabetes.data.DiseaseRec;
-import pt.it.porto.mydiabetes.data.InsulinRec;
-import pt.it.porto.mydiabetes.data.WeightRec;
-import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.data.ExerciseRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.HbA1cRec;
+import pt.it.porto.mydiabetes.data.InsulinRec;
+import pt.it.porto.mydiabetes.data.UserInfo;
+import pt.it.porto.mydiabetes.data.WeightRec;
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class SettingsReport extends BaseOldActivity {
@@ -167,16 +168,14 @@ public class SettingsReport extends BaseOldActivity {
 		Font headerFont = new Font(Font.HELVETICA, 12, Font.NORMAL);
 		// Get user
 		DB_Read rdb = new DB_Read(this);
-		Object[] obj = rdb.MyData_Read();
-		String name = obj[1].toString();
+		UserInfo obj = rdb.MyData_Read();
+		String name = obj.getUsername();
 		rdb.close();
 		Log.d("nome", name);
-		header.add(new Paragraph("Nome: " + obj[1].toString(), headerFont));
-		header.add(new Paragraph("Diabetes: " + obj[2].toString(), headerFont));
-		header.add(new Paragraph("Rácio Insulina: " + obj[3].toString(),
-				headerFont));
-		header.add(new Paragraph("Rácio H. Carbono: " + obj[4].toString(),
-				headerFont));
+		header.add(new Paragraph("Nome: " + obj.getUsername()));
+		header.add(new Paragraph("Diabetes: " + obj.getDiabetesType().toString()));
+		header.add(new Paragraph("Rácio Insulina: " + obj.getInsulinRatio(), headerFont));
+		header.add(new Paragraph("Rácio H. Carbono: " + obj.getCarbsRatio(), headerFont));
 		LineSeparator ls = new LineSeparator();
 		header.add(ls);
 		addEmptyLine(header, 1);

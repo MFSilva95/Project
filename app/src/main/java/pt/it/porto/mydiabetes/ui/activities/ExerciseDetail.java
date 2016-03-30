@@ -25,10 +25,10 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.data.ExerciseRec;
 import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -186,8 +186,7 @@ public class ExerciseDetail extends Activity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		Object[] obj = rdb.MyData_Read();
-		int idUser = Integer.valueOf(obj[0].toString());
+		int idUser = rdb.getId();
 
 		DB_Write reg = new DB_Write(this);
 		ExerciseRec ex = new ExerciseRec();
@@ -290,9 +289,7 @@ public class ExerciseDetail extends Activity {
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
 		DB_Write wdb = new DB_Write(this);
-		Object[] obj = rdb.MyData_Read();
-
-		int idUser = Integer.valueOf(obj[0].toString());
+		int idUser = rdb.getId();
 		if (!rdb.Exercise_ExistName(exerciseSpinner.getText().toString())) {
 			wdb.Exercise_Add(exerciseSpinner.getText().toString());
 		}

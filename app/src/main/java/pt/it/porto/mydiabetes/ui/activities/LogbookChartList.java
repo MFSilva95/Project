@@ -20,11 +20,12 @@ import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.PointValue;
 import lecho.lib.hellocharts.util.ChartUtils;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.charts.data.ChartData;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
+import pt.it.porto.mydiabetes.data.UserInfo;
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.ui.charts.data.ChartData;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
@@ -60,11 +61,11 @@ public class LogbookChartList extends MultiDataChartActivity {
 		}
 
 		DB_Read dbRead = new DB_Read(this);
-		Object[] myData = dbRead.MyData_Read();
+		UserInfo myData = dbRead.MyData_Read();
 		dbRead.close();
 
-		hipoGlicemia = ((int) (double) myData[5]);
-		hiperGlicemia = (int) ((double) myData[6]);
+		hipoGlicemia = myData.getLowerRange();
+		hiperGlicemia = myData.getHigherRange();
 
 		super.onCreate(savedInstanceState);
 	}

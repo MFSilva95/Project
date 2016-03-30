@@ -24,6 +24,7 @@ import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.data.LogbookData;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Tag;
+import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.data.WeightRec;
 
 @SuppressLint("UseSparseArrays")
@@ -34,7 +35,6 @@ public class DB_Read {
 
 	public DB_Read(Context context) {
 		super();
-		// TODO Auto-generated constructor stub
 		DB_Handler db = new DB_Handler(context);
 		this.myContext = context;
 		this.myDB = db.getReadableDatabase();
@@ -48,44 +48,34 @@ public class DB_Read {
 
 	public boolean MyData_HasData() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM UserInfo", null);
-		return cursor.getCount() > 0;
+		boolean result = cursor.getCount() > 0;
+		cursor.close();
+		return result;
 	}
 
-	public Object[] MyData_Read() {
+	public UserInfo MyData_Read() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM UserInfo", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
-		Object[] obj = new Object[11];
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			//Id
-			obj[0] = Integer.parseInt(cursor.getString(0));
-			//Name
-			obj[1] = cursor.getString(1);
-			//Diabetes Type
-			obj[2] = cursor.getString(2);
-			//Insulin Ratio
-			obj[3] = Double.parseDouble(cursor.getString(3));
-			//Carbs Ratio
-			obj[4] = Double.parseDouble(cursor.getString(4));
-			//Lower Range
-			obj[5] = Double.parseDouble(cursor.getString(5));
-			//Higher Range
-			obj[6] = Double.parseDouble(cursor.getString(6));
-			//Birth Date
-			obj[7] = cursor.getString(7);
-			//Gender
-			obj[8] = cursor.getString(8);
-			//Height
-			obj[9] = Double.parseDouble(cursor.getString(9));
-			//DateTimeUpdate
-			obj[10] = cursor.getString(10);
-
+			UserInfo userInfo = new UserInfo(cursor);
 			cursor.close();
-			return obj;
+			return userInfo;
 		} else {
 			cursor.close();
 			return null;
 		}
+	}
+
+	public int getId() {
+		Cursor cursor = myDB.rawQuery("SELECT " + MyDiabetesContract.UserInfo.COLUMN_NAME_ID + " FROM UserInfo", null);
+		int val = -1;
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			val = Integer.parseInt(cursor.getString(0));
+		}
+		cursor.close();
+		return val;
 	}
 
 

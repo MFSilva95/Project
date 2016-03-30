@@ -1,10 +1,7 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
 import android.app.ActionBar;
-import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -20,6 +17,7 @@ import android.widget.Toast;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
@@ -33,7 +31,7 @@ import pt.it.porto.mydiabetes.utils.LocaleUtils;
 public class SettingsInsulin extends BaseOldActivity {
 
 	private CheckBox useActiveInsulin;
-	private Object[] myData;
+	private UserInfo myData;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -131,23 +129,23 @@ public class SettingsInsulin extends BaseOldActivity {
 		return true;
 	}
 
-	public Object[] getMyDataFromActivity() {
+	public UserInfo getMyDataFromActivity() {
 		Spinner dType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
 		EditText iRatio = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
 		EditText cRatio = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
 		EditText lRange = (EditText) findViewById(R.id.et_MyData_LowerRange);
 		EditText hRange = (EditText) findViewById(R.id.et_MyData_HigherRange);
 
-		myData[2] = dType.getSelectedItem().toString();
-		myData[3] = Integer.parseInt(iRatio.getText().toString());
-		myData[4] = Integer.parseInt(cRatio.getText().toString());
-		myData[5] = Integer.parseInt(lRange.getText().toString());
-		myData[6] = Integer.parseInt(hRange.getText().toString());
+		myData.setDiabetesType(dType.getSelectedItem().toString());
+		myData.setInsulinRatio(Integer.parseInt(iRatio.getText().toString()));
+		myData.setCarbsRatio(Integer.parseInt(cRatio.getText().toString()));
+		myData.setLowerRange(Integer.parseInt(lRange.getText().toString()));
+		myData.setHigherRange(Integer.parseInt(hRange.getText().toString()));
 
 		return myData;
 	}
 
-	public void setMyDataFromDB(Object[] obj) {
+	public void setMyDataFromDB(UserInfo obj) {
 		if (obj != null) {
 			Spinner dType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
 			EditText iRatio = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
@@ -155,21 +153,21 @@ public class SettingsInsulin extends BaseOldActivity {
 			EditText lRange = (EditText) findViewById(R.id.et_MyData_LowerRange);
 			EditText hRange = (EditText) findViewById(R.id.et_MyData_HigherRange);
 
+			String diabetesType=obj.getDiabetesType().getValue(this);
 			try {
-				dType.setSelection(Integer.parseInt(obj[2].toString()));
+				dType.setSelection(Integer.parseInt(diabetesType));
 			} catch (NumberFormatException e) {
-				// old format, we should deprecate soon
-				if (!dType.getSelectedItem().toString().equals(obj[2].toString())) {
-					if (dType.getSelectedItemId() == 0)
-						dType.setSelection(1);
-					else
-						dType.setSelection(0);
+				for (int i = 0; i < dType.getAdapter().getCount(); i++) {
+					if (dType.getAdapter().getItem(i).toString().equalsIgnoreCase(diabetesType)) {
+						dType.setSelection(i);
+						break;
+					}
 				}
 			}
-			iRatio.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) ((double) obj[3])));
-			cRatio.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) ((double) obj[4])));
-			lRange.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) ((double) obj[5])));
-			hRange.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) ((double) obj[6])));
+			iRatio.setText(String.format(LocaleUtils.MY_LOCALE, "%d", obj.getInsulinRatio()));
+			cRatio.setText(String.format(LocaleUtils.MY_LOCALE, "%d", obj.getCarbsRatio()));
+			lRange.setText(String.format(LocaleUtils.MY_LOCALE, "%d", obj.getLowerRange()));
+			hRange.setText(String.format(LocaleUtils.MY_LOCALE, "%d", obj.getHigherRange()));
 		}
 	}
 

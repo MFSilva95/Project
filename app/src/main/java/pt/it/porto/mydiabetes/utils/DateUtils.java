@@ -9,11 +9,13 @@ public class DateUtils {
     public static final String ISO8601_FORMAT = "yyyy-MM-dd HH:mm";
     public static final String ISO8601_FORMAT_SECONDS = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final String DATE_FORMAT_DB = "dd-MM-yyyy";
     public static final String TIME_FORMAT = "HH:mm";
     public static final String TIME_FORMAT_SECONDS = "HH:mm:ss";
     public static final SimpleDateFormat iso8601Format = new SimpleDateFormat(ISO8601_FORMAT, LocaleUtils.ENGLISH_LOCALE);
     public static final SimpleDateFormat iso8601FormatSeconds = new SimpleDateFormat(ISO8601_FORMAT_SECONDS, LocaleUtils.ENGLISH_LOCALE);
     public static final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, LocaleUtils.ENGLISH_LOCALE);
+    public static final SimpleDateFormat dateFormatDb = new SimpleDateFormat(DATE_FORMAT_DB, LocaleUtils.ENGLISH_LOCALE);
     public static final SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_FORMAT, LocaleUtils.ENGLISH_LOCALE);
     public static final SimpleDateFormat timeFormatSeconds = new SimpleDateFormat(TIME_FORMAT_SECONDS, LocaleUtils.ENGLISH_LOCALE);
 
@@ -47,7 +49,11 @@ public class DateUtils {
     public static Calendar getDateCalendar(String date) {
         Calendar calendar = Calendar.getInstance();
         try {
-            calendar.setTime(dateFormat.parse(date));
+            if(date.indexOf('-')==4) {
+                calendar.setTime(dateFormat.parse(date));
+            } else {
+                calendar.setTime(dateFormatDb.parse(date));
+            }
             return calendar;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -111,5 +117,11 @@ public class DateUtils {
 
     public static String getFormatedDateTime(Calendar calendar) {
         return iso8601Format.format(calendar.getTime());
+    }
+
+    public static Calendar parseDate(String string) throws ParseException {
+        Calendar result=Calendar.getInstance();
+        result.setTime(dateFormat.parse(string));
+        return result;
     }
 }

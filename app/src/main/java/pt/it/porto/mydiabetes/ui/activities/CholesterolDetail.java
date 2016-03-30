@@ -18,10 +18,10 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.data.CholesterolRec;
 import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -138,8 +138,7 @@ public class CholesterolDetail extends Activity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		Object[] obj = rdb.MyData_Read();
-		int idUser = Integer.valueOf(obj[0].toString());
+		int idUser = rdb.getId();
 
 		CholesterolRec cho = new CholesterolRec();
 
@@ -180,8 +179,7 @@ public class CholesterolDetail extends Activity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		Object[] obj = rdb.MyData_Read();
-		int idUser = Integer.valueOf(obj[0].toString());
+		int idUser = rdb.getId();
 
 		CholesterolRec cho = new CholesterolRec();
 

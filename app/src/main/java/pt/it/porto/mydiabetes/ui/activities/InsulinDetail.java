@@ -33,15 +33,16 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.database.FeaturesDB;
-import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Tag;
+import pt.it.porto.mydiabetes.data.UserInfo;
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.database.FeaturesDB;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment;
@@ -154,8 +155,8 @@ public class InsulinDetail extends Activity implements InsulinCalcFragment.CalcL
 
 			//Get id of user
 			DB_Read rdb = new DB_Read(this);
-			Object[] obj = rdb.MyData_Read();
-			final double iRatio = Double.valueOf(obj[3].toString());
+			UserInfo obj = rdb.MyData_Read();
+			final double iRatio = obj.getInsulinRatio();
 			rdb.close();
 
 			EditText target = (EditText) findViewById(R.id.et_InsulinDetail_TargetGlycemia);
@@ -518,8 +519,7 @@ public class InsulinDetail extends Activity implements InsulinCalcFragment.CalcL
 
 		//Get id of user
 		DB_Read rdb = new DB_Read(this);
-		Object[] obj = rdb.MyData_Read();
-		int idUser = Integer.valueOf(obj[0].toString());
+		int idUser = rdb.getId();
 
 		//Get id of selected tag
 		String tag = tagSpinner.getSelectedItem().toString();
@@ -611,8 +611,7 @@ public class InsulinDetail extends Activity implements InsulinCalcFragment.CalcL
 
 		//Get id of user
 		DB_Read rdb = new DB_Read(this);
-		Object[] obj = rdb.MyData_Read();
-		int idUser = Integer.valueOf(obj[0].toString());
+		int idUser = rdb.getId();
 
 		//Get id of selected tag
 		String tag = tagSpinner.getSelectedItem().toString();

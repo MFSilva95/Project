@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.Calendar;
 
+import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 
 public class InsulinCalculator implements Cloneable {
@@ -28,10 +29,10 @@ public class InsulinCalculator implements Cloneable {
 	public InsulinCalculator(Context context) {
 		this(0, 0);
 		DB_Read rdb = new DB_Read(context);
-		Object[] obj = rdb.MyData_Read();
+		UserInfo obj = rdb.MyData_Read();
 		rdb.close();
-		this.glycemiaRatio = (int) (double) Double.valueOf(obj[3].toString());
-		this.carbsRatio = (int) (double) Double.valueOf(obj[4].toString());
+		this.glycemiaRatio = obj.getInsulinRatio();
+		this.carbsRatio = obj.getCarbsRatio();
 	}
 
 	public float getInsulinTotal(boolean withIOB, boolean round) {

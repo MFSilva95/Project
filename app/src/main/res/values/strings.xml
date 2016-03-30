@@ -43,14 +43,18 @@
     <string name="transf_InfoTitle">Informação</string>
 
     <string-array name="Sex">
-        <item>Masculino</item>
-        <item>Feminino</item>
+        <item>@string/gender_male</item>
+        <item>@string/gender_female</item>
     </string-array>
     <string-array name="diabetes_Type">
-        <item>Tipo 1</item>
-        <item>Tipo 2</item>
-        <item>Gestacional</item>
+        <item>@string/diabetes_type_1</item>
+        <item>@string/diabetes_type_2</item>
+        <item>@string/diabetes_type_gestational</item>
     </string-array>
+
+    <string name="diabetes_type_1">Tipo 1</string>
+    <string name="diabetes_type_2">Tipo 2</string>
+    <string name="diabetes_type_gestational">Gestacional</string>
 
     <string name="title_activity_data_tools">Definições &amp; Ferramentas</string>
     <string name="title_activity_gly_ins_carbs">A Minha Diabetes</string>

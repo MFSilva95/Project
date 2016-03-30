@@ -15,9 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v4.app.NavUtils;
 import android.support.v4.app.ShareCompat;
-import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -209,7 +207,7 @@ public class ImportExport extends BaseOldActivity {
 			return;
 		}
 		DB_Read read = new DB_Read(this);
-		String patientName = (String) read.MyData_Read()[1];
+		String patientName = read.MyData_Read().getUsername();
 		Intent intent = ShareCompat.IntentBuilder.from(this)
 												 .setType("message/rfc822")
 												 .addEmailTo(PROJECT_MANAGER_EMAIL)
