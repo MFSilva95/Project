@@ -233,8 +233,7 @@ public class CarboHydrateDetail extends Activity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		Object[] obj = rdb.MyData_Read();
-		int idUser = Integer.valueOf(obj[0].toString());
+		int idUser = rdb.getId();
 
 		//Get id of selected tag
 		String tag = tagSpinner.getSelectedItem().toString();
@@ -415,8 +414,7 @@ public class CarboHydrateDetail extends Activity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		Object[] obj = rdb.MyData_Read();
-		int idUser = Integer.valueOf(obj[0].toString());
+		int idUser = rdb.getId();
 
 		//Get id of selected tag
 		String tag = tagSpinner.getSelectedItem().toString();

@@ -12,7 +12,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.data.BloodPressureRec;
@@ -29,6 +28,7 @@ import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Tag;
+import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
@@ -61,15 +61,14 @@ public class DB_WriteTest {
 	public void testMyData_Save() throws Exception {
 		DB_Write dbWrite = new DB_Write(mMockContext);
 		DB_Read dbRead = new DB_Read(mMockContext);
-		Object[] data = dbRead.MyData_Read();
-		Log.d("Data", Arrays.toString(data));
-		Assert.assertArrayEquals("Data is null as expected", null, data);
+		UserInfo data = dbRead.MyData_Read();
+		Assert.assertNull("Data is null as expected", data);
 
-		Object[] newData = getMockUserData();
+		UserInfo newData = getMockUserData();
 		dbWrite.MyData_Save(newData);
 		data = dbRead.MyData_Read();
 
-		Assert.assertArrayEquals("Data not equal", newData, data);
+		Assert.assertEquals("Data not equal", newData, data);
 		dbRead.close();
 		dbWrite.close();
 	}
@@ -1216,10 +1215,9 @@ public class DB_WriteTest {
 	}
 
 
-	static Object[] getMockUserData() {
+	static UserInfo getMockUserData() {
 		Calendar calendar = Calendar.getInstance();
-		//// FIXME: 07/03/16 insulin type and gender shouldn't be a string, this can complete breakage if language changes
-		return new Object[]{1, "Nome", "Tipo 1", 45.0, 50.0, 50.0, 150.0, "11-01-2011", "Homem", 1.85, DateUtils.formatToDb(calendar)};
+		return new UserInfo(1, "Nome", "Tipo 1", 45, 50, 50, 150, "11-01-2011", "Masculino", 1.85, DateUtils.formatToDb(calendar));
 	}
 
 

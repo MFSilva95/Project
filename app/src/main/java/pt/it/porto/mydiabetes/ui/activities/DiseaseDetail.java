@@ -22,12 +22,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.data.Disease;
 import pt.it.porto.mydiabetes.data.DiseaseRec;
 import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.data.Disease;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -157,8 +157,7 @@ public class DiseaseDetail extends Activity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		Object[] obj = rdb.MyData_Read();
-		int idUser = Integer.valueOf(obj[0].toString());
+		int idUser = rdb.getId();
 
 		//Get id of selected exercise
 		String disease = diseaseSpinner.getText().toString();
@@ -237,8 +236,7 @@ public class DiseaseDetail extends Activity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		Object[] obj = rdb.MyData_Read();
-		int idUser = Integer.valueOf(obj[0].toString());
+		int idUser = rdb.getId();
 
 		DiseaseRec dis = new DiseaseRec();
 

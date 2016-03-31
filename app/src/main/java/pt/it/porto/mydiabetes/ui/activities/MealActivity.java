@@ -15,6 +15,7 @@ import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -113,16 +114,16 @@ public class MealActivity extends BaseMealActivity {
 	@Override
 	InsulinCalculator getInsulinCalculator() {
 		DB_Read rdb = new DB_Read(this);
-		Object[] obj = rdb.MyData_Read();
-		double iRatio = Double.valueOf(obj[3].toString());
-		double cRatio = Double.valueOf(obj[4].toString());
-		InsulinCalculator insulinCalculator = new InsulinCalculator((int) iRatio, (int) cRatio);
+		UserInfo obj = rdb.MyData_Read();
+		int iRatio = obj.getInsulinRatio();
+		int cRatio = obj.getCarbsRatio();
+		InsulinCalculator insulinCalculator = new InsulinCalculator(iRatio, cRatio);
 
 		Calendar calendar = Calendar.getInstance();
 		insulinCalculator.setTime(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), null);
 		if (glycemiaData != null) {
 			insulinCalculator.setGlycemia(glycemiaData.getValue());
-			insulinCalculator.setTime(this, DateUtils.getFormattedDate(glycemiaData.getDateTime()), DateUtils.getFormattedTime(glycemiaData.getDateTime()));
+			insulinCalculator.setTime(this, glycemiaData.getDateTime().get(Calendar.HOUR_OF_DAY), glycemiaData.getDateTime().get(Calendar.MINUTE), DateUtils.getFormattedDate(glycemiaData.getDateTime()));
 		}
 		double d = rdb.Target_GetTargetByTime(DateUtils.getFormattedTime(calendar));
 		if (d != 0) {
@@ -139,8 +140,7 @@ public class MealActivity extends BaseMealActivity {
 
 		//Get id of user
 		DB_Read rdb = new DB_Read(this);
-		Object[] obj = rdb.MyData_Read();
-		int idUser = Integer.valueOf(obj[0].toString());
+		int idUser = rdb.getId();
 
 		//Get id of selected tag
 		String tag = tagSpinner.getSelectedItem().toString();
@@ -176,8 +176,7 @@ public class MealActivity extends BaseMealActivity {
 
 		//Get id of user
 		DB_Read rdb = new DB_Read(this);
-		Object[] obj = rdb.MyData_Read();
-		int idUser = Integer.valueOf(obj[0].toString());
+		int idUser = rdb.getId();
 
 		//Get id of selected phase of day
 		int idTag = rdb.Tag_GetIdByName(getPhaseOfDay());

@@ -18,9 +18,10 @@ import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.HbA1cRec;
 import pt.it.porto.mydiabetes.data.Insulin;
 import pt.it.porto.mydiabetes.data.InsulinRec;
+import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Tag;
-import pt.it.porto.mydiabetes.data.InsulinTarget;
+import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
@@ -44,40 +45,14 @@ public class DB_Write {
 		Log.d("Close", "DB_Write");
 	}
 
-	public void MyData_Save(Object[] obj) {
-		Cursor cursor = myDB.rawQuery("SELECT * FROM UserInfo WHERE Id=" + obj[0].toString(), null);
-
+	public void MyData_Save(UserInfo obj) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM UserInfo WHERE Id=" + obj.getId(), null);
+		ContentValues contentValues =obj.getContentValues();
 		if (cursor.getCount() == 1) {
 			cursor.moveToFirst();
-			ContentValues toUpdate = new ContentValues();
-			toUpdate.put("Name", obj[1].toString());
-			toUpdate.put("DType", obj[2].toString());
-			toUpdate.put("InsulinRatio", Double.parseDouble(obj[3].toString()));
-			toUpdate.put("CarbsRatio", Double.parseDouble(obj[4].toString()));
-			toUpdate.put("LowerRange", Double.parseDouble(obj[5].toString()));
-			toUpdate.put("HigherRange", Double.parseDouble(obj[6].toString()));
-			toUpdate.put("BDate", obj[7].toString());
-			toUpdate.put("Gender", obj[8].toString());
-			toUpdate.put("Height", Float.parseFloat(obj[9].toString()));
-			Time now = new Time(Time.getCurrentTimezone());
-			now.setToNow();
-			toUpdate.put("DateTimeUpdate", now.format("%Y-%m-%d %H:%M:%S"));
-			myDB.update("UserInfo", toUpdate, "Id=" + Integer.parseInt(cursor.getString(0)), null);
+			myDB.update("UserInfo", contentValues, "Id=" + Integer.parseInt(cursor.getString(0)), null);
 		} else {
-			ContentValues toInsert = new ContentValues();
-			toInsert.put("Name", obj[1].toString());
-			toInsert.put("DType", obj[2].toString());
-			toInsert.put("InsulinRatio", Double.parseDouble(obj[3].toString()));
-			toInsert.put("CarbsRatio", Double.parseDouble(obj[4].toString()));
-			toInsert.put("LowerRange", Double.parseDouble(obj[5].toString()));
-			toInsert.put("HigherRange", Double.parseDouble(obj[6].toString()));
-			toInsert.put("BDate", obj[7].toString());
-			toInsert.put("Gender", obj[8].toString());
-			toInsert.put("Height", Float.parseFloat(obj[9].toString()));
-			Time now = new Time(Time.getCurrentTimezone());
-			now.setToNow();
-			toInsert.put("DateTimeUpdate", now.format("%Y-%m-%d %H:%M:%S"));
-			myDB.insert("UserInfo", null, toInsert);
+			myDB.insert("UserInfo", null, contentValues);
 		}
 		Log.d("Guardou", "Preferencias");
 	}
