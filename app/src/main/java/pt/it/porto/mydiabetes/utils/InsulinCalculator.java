@@ -9,6 +9,9 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 
 public class InsulinCalculator implements Cloneable {
 
+	/** Indicates the linear decline per half an hour of the insulin on board
+	 */
+	public final float IOB_LINE_DECLINE = 0.125f;
 	InsulinCalculatorListener listener;
 	private int glycemiaRatio;
 	private int carbsRatio;
@@ -63,7 +66,7 @@ public class InsulinCalculator implements Cloneable {
 			if (minuteDiff < 0) {
 				insulinOnBoard = 0;
 			} else {
-				insulinOnBoard = (float) (dose - dose * (minuteDiff / 30 * 0.1));
+				insulinOnBoard = (dose - dose * (minuteDiff / 30 * IOB_LINE_DECLINE));
 				if (insulinOnBoard < 0) {
 					insulinOnBoard = 0;
 				}
