@@ -230,7 +230,7 @@
             android:onClick="insulinTargets"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:text="@string/settings_edit_insulins_targets"
+            android:text="@string/settings_edit_glicemia_targets"
             android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>
