@@ -378,7 +378,7 @@
     <string name="login_try_again">Tentar novamente</string>
     <string name="cloudSync_edit_account">Editar conta</string>
     <string name="settings_edit_insulins">Editar Insulinas</string>
-    <string name="settings_edit_insulins_targets">Editar Objectivos de Insulina</string>
+    <string name="settings_edit_glicemia_targets">Editar Objectivos de Glicemia</string>
 
 
     <plurals name="notification_text_new_glucose_measure">
