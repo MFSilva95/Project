@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
@@ -56,6 +57,9 @@ public class InsulinCalcFragment extends Fragment {
 		this.correctionGlycemia = (TextView) view.findViewById(R.id.correction_glycemia);
 		this.blockIOB = (LinearLayout) view.findViewById(R.id.block_iob);
 
+		if(!BuildConfig.IOB_AVAILABLE){
+			this.blockIOB.setVisibility(View.GONE);
+		}
 
 //		Bundle args = getArguments();
 
@@ -96,6 +100,9 @@ public class InsulinCalcFragment extends Fragment {
 	}
 
 	public void setInsulinOnBoard(float insulinOnBoard) {
+		if(!BuildConfig.IOB_AVAILABLE){
+			return;
+		}
 		if(Float.compare(insulinOnBoard, 0)==0){
 			this.blockIOB.setVisibility(View.GONE);
 		}else {
