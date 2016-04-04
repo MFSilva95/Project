@@ -90,13 +90,6 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 		setUpdateListeners();
 		setupInsulinCalculator();
 
-//		if (((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).isChecked()) {
-//			fragmentInsulinCalcsFragment=new InsulinCalcFragment();
-//			getFragmentManager().beginTransaction().replace(R.id.fragment_calcs, fragmentInsulinCalcsFragment).commit();
-//			getFragmentManager().executePendingTransactions();
-//			this.fragmentInsulinCalcsFragment= (InsulinCalcFragment)  getFragmentManager().findFragmentById(R.id.fragment_calcs);
-//		}
-
 		FeaturesDB featuresDB=new FeaturesDB(MyDiabetesStorage.getInstance(this));
 		useIOB=featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
 	}
@@ -112,6 +105,14 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 		super.onRestoreInstanceState(savedInstanceState);
 		if (savedInstanceState != null && savedInstanceState.containsKey(GENERATED_IMAGE_URI)) {
 			generatedImageUri = savedInstanceState.getParcelable(GENERATED_IMAGE_URI);
+		}
+
+		if (((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).isChecked()) {
+			fragmentInsulinCalcsFragment=new InsulinCalcFragment();
+			getFragmentManager().beginTransaction().replace(R.id.fragment_calcs, fragmentInsulinCalcsFragment).commit();
+			getFragmentManager().executePendingTransactions();
+			this.fragmentInsulinCalcsFragment= (InsulinCalcFragment)  getFragmentManager().findFragmentById(R.id.fragment_calcs);
+			showCalcs();
 		}
 	}
 
