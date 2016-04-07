@@ -169,6 +169,16 @@ public class ListsDataDb {
 	}
 
 
+	public Cursor getExerciseRegList(String startDate, String endDate) {
+		String[] rows = new String[]{MyDiabetesContract.Regist.Exercise.COLUMN_NAME_ID, MyDiabetesContract.Regist.Exercise.COLUMN_NAME_START_DATETIME, MyDiabetesContract.Regist.Exercise.COLUMN_NAME_EXERCISE_NAME, MyDiabetesContract.Regist.Exercise.COLUMN_NAME_DURATION, MyDiabetesContract.Regist.Exercise.COLUMN_NAME_EFFORT};
+		Cursor cursor = storage.rawQuery("SELECT " + DbUtils.toString(rows) +
+				" FROM " + MyDiabetesContract.Regist.Exercise.TABLE_NAME +
+				" WHERE " + MyDiabetesContract.Regist.Exercise.COLUMN_NAME_START_DATETIME + " > '" + startDate + " 00:00:00'" +
+				" AND " + MyDiabetesContract.Regist.Exercise.COLUMN_NAME_START_DATETIME + " < '" + endDate + " 23:59:59'" +
+				" ORDER BY " + MyDiabetesContract.Regist.Exercise.COLUMN_NAME_START_DATETIME + " DESC");
+		return cursor;
+	}
+
 		private Cursor getItemsList(String table, String[] rows, String startDate, String endDate) {
 		return storage.query(table, rows, "DateTime >= ? AND DateTime <= ?", new String[]{startDate, endDate}, null, null, "DateTime DESC");
 	}

@@ -75,6 +75,7 @@
         <activity
             android:name=".ui.activities.Exercise"
             android:label="@string/title_activity_exercise"
+            android:theme="@style/AppNewThemeCompat"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

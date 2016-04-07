@@ -1,8 +1,8 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.text.Editable;
@@ -13,18 +13,17 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.data.ExerciseRec;
+import pt.it.porto.mydiabetes.database.ListsDataDb;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
-public class Exercise extends Activity {
+public class Exercise extends BaseActivity {
 
 	ListView exercisesList;
 
@@ -33,7 +32,7 @@ public class Exercise extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_exercise);
 		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		FillDates();
 
 		exercisesList = (ListView) findViewById(R.id.ExercisesActivityList);
@@ -120,14 +119,13 @@ public class Exercise extends Activity {
 	}
 
 	public void fillListView(ListView lv) {
+		EditText dateFrom = (EditText) findViewById(R.id.et_Exercise_DataFrom);
+		EditText dateTo = (EditText) findViewById(R.id.et_Exercise_DataTo);
 
-		EditText datefrom = (EditText) findViewById(R.id.et_Exercise_DataFrom);
-		EditText dateto = (EditText) findViewById(R.id.et_Exercise_DataTo);
-		DB_Read rdb = new DB_Read(this);
-		ArrayList<ExerciseRec> allExercises = rdb.ExerciseReg_GetByDate(datefrom.getText().toString(), dateto.getText().toString());
+		ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
+		Cursor cursor = db.getExerciseRegList(dateFrom.getText().toString(), dateTo.getText().toString());
 
-		rdb.close();
-		lv.setAdapter(new ExerciseRegAdapter(allExercises, this));
+		lv.setAdapter(new ExerciseRegAdapter(cursor, this));
 		lv.setEmptyView(findViewById(R.id.list_empty));
 	}
 }

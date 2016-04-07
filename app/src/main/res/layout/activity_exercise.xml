@@ -8,8 +8,8 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="4dp">
+        android:background="@drawable/divider_shadow_down"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="fill_parent"
@@ -49,20 +49,18 @@
                 tools:text="2015-02-07"/>
         </LinearLayout>
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:background="@color/holo_blue_dark"/>
     </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+
         android:layout_weight="1">
 
         <ListView
             android:id="@+id/ExercisesActivityList"
             android:layout_width="match_parent"
+            tools:listitem="@layout/list_exercisereg_row"
             android:layout_height="match_parent">
         </ListView>
 

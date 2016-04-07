@@ -12,6 +12,7 @@
     <style name="AppNewThemeCompat" parent="Theme.AppCompat.Light.DarkActionBar">
         <!--<item name="background">@color/background_holo_dark</item>-->
         <item name="background">@android:color/white</item>
+        <item name="android:windowBackground">@android:color/white</item>
         <!--<item name="colorPrimary">@color/background_holo_dark</item>-->
         <item name="colorPrimary">@color/primary_material_dark</item>
         <item name="colorAccent">@color/primary_material_dark</item>
