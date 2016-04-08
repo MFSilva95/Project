@@ -20,7 +20,7 @@ public class SingleDataChartActivity extends AbstractChartActivity {
 
 	private Cursor cursor;
 
-	private Cursor getCursor() {
+	Cursor getCursor() {
 		if (cursor == null) {
 			initCursor();
 		}

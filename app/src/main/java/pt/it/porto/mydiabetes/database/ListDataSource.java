@@ -30,7 +30,7 @@ public class ListDataSource {
 		StringBuilder query = new StringBuilder(100);
 		query.append("SELECT ");
 		query.append(ROW_VALUE);
-		query.append(", strftime('%d-%m-%Y', ");
+		query.append(", strftime('%Y-%m-%d', ");
 		query.append(ROW_DATETIME);
 		query.append(") AS ");
 		query.append(ROW_DATE);
