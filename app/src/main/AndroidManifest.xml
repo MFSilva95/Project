@@ -75,8 +75,8 @@
         <activity
             android:name=".ui.activities.Exercise"
             android:label="@string/title_activity_exercise"
-            android:theme="@style/AppNewThemeCompat"
-            android:parentActivityName=".ui.activities.Home">
+            android:parentActivityName=".ui.activities.Home"
+            android:theme="@style/AppNewThemeCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -102,7 +102,8 @@
         <activity
             android:name=".ui.activities.BloodPressure"
             android:label="@string/title_activity_blood_pressure"
-            android:parentActivityName=".ui.activities.Home">
+            android:parentActivityName=".ui.activities.Home"
+            android:theme="@style/AppNewThemeCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>

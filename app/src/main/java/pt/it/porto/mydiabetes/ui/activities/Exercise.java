@@ -39,8 +39,8 @@ public class Exercise extends BaseActivity {
 		fillListView(exercisesList);
 
 
-		EditText datefrom = (EditText) findViewById(R.id.et_Exercise_DataFrom);
-		EditText dateto = (EditText) findViewById(R.id.et_Exercise_DataTo);
+		EditText datefrom = (EditText) findViewById(R.id.et_DataFrom);
+		EditText dateto = (EditText) findViewById(R.id.et_DataTo);
 		datefrom.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -95,32 +95,32 @@ public class Exercise extends BaseActivity {
 	}
 
 	public void FillDates() {
-		EditText dateago = (EditText) findViewById(R.id.et_Exercise_DataFrom);
+		EditText dateago = (EditText) findViewById(R.id.et_DataFrom);
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -8);
 
 		dateago.setText(DateUtils.getFormattedDate(calendar));
 
-		EditText datenow = (EditText) findViewById(R.id.et_Exercise_DataTo);
+		EditText datenow = (EditText) findViewById(R.id.et_DataTo);
 		calendar = Calendar.getInstance();
 		datenow.setText(DateUtils.getFormattedDate(calendar));
 	}
 
 	public void showDatePickerDialogFrom(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Exercise_DataFrom,
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_DataFrom,
 				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Exercise_DataTo,
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_DataTo,
 				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	public void fillListView(ListView lv) {
-		EditText dateFrom = (EditText) findViewById(R.id.et_Exercise_DataFrom);
-		EditText dateTo = (EditText) findViewById(R.id.et_Exercise_DataTo);
+		EditText dateFrom = (EditText) findViewById(R.id.et_DataFrom);
+		EditText dateTo = (EditText) findViewById(R.id.et_DataTo);
 
 		ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
 		Cursor cursor = db.getExerciseRegList(dateFrom.getText().toString(), dateTo.getText().toString());
