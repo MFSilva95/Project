@@ -1,76 +1,24 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.database.Cursor;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.ListAdapter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.data.HbA1cRec;
-import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.ListsDataDb;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
-public class HbA1c extends Activity {
-
-	ListView hba1cList;
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_hba1c);
-		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-
-		FillDates();
-		hba1cList = (ListView) findViewById(R.id.HbA1cActivityList);
-		fillListView(hba1cList);
-
-		EditText datefrom = (EditText) findViewById(R.id.et_HbA1c_DataFrom);
-		EditText dateto = (EditText) findViewById(R.id.et_HbA1c_DataTo);
-		datefrom.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				fillListView(hba1cList);
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-		});
-		dateto.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				fillListView(hba1cList);
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-		});
-	}
-
+public class HbA1c extends BaseListRangeActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -82,9 +30,6 @@ public class HbA1c extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
-				return true;
 			case R.id.menuItem_HbA1c:
 				Intent intent = new Intent(this, HbA1cDetail.class);
 				startActivity(intent);
@@ -93,37 +38,25 @@ public class HbA1c extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void showDatePickerDialogFrom(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_HbA1c_DataFrom,
-				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "DatePicker");
-	}
 
-	public void showDatePickerDialogTo(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_HbA1c_DataTo,
-				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "DatePicker");
-	}
-
-	public void FillDates() {
-		EditText dateago = (EditText) findViewById(R.id.et_HbA1c_DataFrom);
+	@Override
+	String getBaseStartDate() {
 		Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -180);
-		dateago.setText(DateUtils.getFormattedDate(calendar));
-
-		EditText datenow = (EditText) findViewById(R.id.et_HbA1c_DataTo);
-		calendar = Calendar.getInstance();
-		datenow.setText(DateUtils.getFormattedDate(calendar));
+		return DateUtils.getFormattedDate(calendar);
 	}
 
-	public void fillListView(ListView lv) {
-		EditText datefrom = (EditText) findViewById(R.id.et_HbA1c_DataFrom);
-		EditText dateto = (EditText) findViewById(R.id.et_HbA1c_DataTo);
-		DB_Read rdb = new DB_Read(this);
-		ArrayList<HbA1cRec> allhba1c = rdb.HbA1c_GetBtDate(datefrom.getText().toString(), dateto.getText().toString());
-		rdb.close();
-		lv.setAdapter(new HbA1cAdapter(allhba1c, this));
-		lv.setEmptyView(findViewById(R.id.list_empty));
+	@Override
+	String getBaseEndDate() {
+		Calendar calendar = Calendar.getInstance();
+		return DateUtils.getFormattedDate(calendar);
+	}
+
+	@Override
+	ListAdapter getListAdapter() {
+		ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
+		Cursor cursor = db.getHbA1cRegList(getStartDate(), getEndDate());
+		return new HbA1cAdapter(cursor, this);
 	}
 
 }

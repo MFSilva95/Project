@@ -137,6 +137,7 @@
         <activity
             android:name=".ui.activities.HbA1c"
             android:label="@string/title_activity_h1_a1c"
+            android:theme="@style/AppNewThemeCompat"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
