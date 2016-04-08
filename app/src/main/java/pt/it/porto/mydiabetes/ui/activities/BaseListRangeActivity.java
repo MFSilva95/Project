@@ -107,7 +107,7 @@ public abstract class BaseListRangeActivity extends BaseActivity {
 		return ((EditText) findViewById(R.id.et_DataFrom)).getText().toString();
 	}
 
-	public String getEndtDate(){
+	public String getEndDate(){
 		return ((EditText) findViewById(R.id.et_DataTo)).getText().toString();
 	}
 

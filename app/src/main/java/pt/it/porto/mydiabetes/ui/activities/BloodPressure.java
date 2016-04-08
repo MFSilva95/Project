@@ -51,7 +51,7 @@ public class BloodPressure extends BaseListRangeActivity {
 	@Override
 	ListAdapter getListAdapter() {
 		ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
-		Cursor cursor = db.getBloodPressureRegList(getStartDate(), getEndtDate());
+		Cursor cursor = db.getBloodPressureRegList(getStartDate(), getEndDate());
 		return new BloodPressureAdapter(cursor, this);
 	}
 }
