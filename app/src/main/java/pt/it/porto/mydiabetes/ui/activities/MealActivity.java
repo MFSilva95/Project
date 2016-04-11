@@ -53,6 +53,15 @@ public class MealActivity extends BaseMealActivity {
 	}
 
 	@Override
+	public boolean canSave() {
+		if (insulinCalculator.getCarbs() != 0 || insulinCalculator.getGlycemia() != 0) {
+			return true;
+		} else {
+			return super.canSave();
+		}
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.menuItem_MealDetail_Save) {
 			if (canSave()) {
@@ -137,6 +146,12 @@ public class MealActivity extends BaseMealActivity {
 	public void AddCarbsRead() {
 		Spinner tagSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
 		Uri imgUri = getImgUri();
+
+		if ((insulinCalculator.getCarbsRatio() == 0) && imgUri == null) {
+			// nothing to save
+			return;
+		}
+
 
 		//Get id of user
 		DB_Read rdb = new DB_Read(this);

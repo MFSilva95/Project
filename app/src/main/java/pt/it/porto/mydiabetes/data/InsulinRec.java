@@ -143,9 +143,7 @@ public class InsulinRec extends DateTime implements Parcelable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == null && idBloodGlucose == -1) {
-			return true;
-		} else if (o == null) {
+		if (o == null) {
 			return false;
 		} else {
 			if (!(o instanceof InsulinRec)) {

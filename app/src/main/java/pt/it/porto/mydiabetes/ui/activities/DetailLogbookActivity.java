@@ -473,7 +473,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 
 		int user_id = -1;
 		if (carbsData != null) {
-			user_id = carbsData.getIdUser(); // why is this method different from the other two?
+			user_id = carbsData.getIdUser();
 		} else if (glycemiaData != null) {
 			user_id = glycemiaData.getIdUser();
 		} else if (insulinData != null) {
@@ -519,9 +519,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		newCarbs.setIdTag(tagId);
 		newCarbs.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
 		newCarbs.setDateTime(date, time);
-		if (noteId != -1) {
-			newCarbs.setIdNote(noteId);
-		}
+		newCarbs.setIdNote(noteId);
 
 		if (carbsData == null && !newCarbs.equals(carbsData)) {
 			// needs to save it
@@ -537,9 +535,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		newGlicemia.setValue(insulinCalculator.getGlycemia());
 		newGlicemia.setDateTime(date, time);
 		newGlicemia.setIdTag(tagId);
-		if (noteId != -1) {
-			newGlicemia.setIdNote(noteId);
-		}
+		newGlicemia.setIdNote(noteId);
 
 		if (glycemiaData == null && !newGlicemia.equals(glycemiaData)) {
 			glycemiaRegId = reg.Glycemia_Save(newGlicemia);
@@ -562,6 +558,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		newInsulin.setTargetGlycemia(insulinCalculator.getInsulinTarget());
 		newInsulin.setInsulinUnits(insulinIntake);
 		newInsulin.setIdTag(tagId);
+		newInsulin.setIdNote(noteId);
 
 		if (insulinData == null && !newInsulin.equals(insulinData)) {
 			insulinRegId = reg.Insulin_Save(newInsulin);
