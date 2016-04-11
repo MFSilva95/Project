@@ -129,6 +129,7 @@
         <activity
             android:name=".ui.activities.Disease"
             android:label="@string/title_activity_disease"
+            android:theme="@style/AppNewThemeCompat"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
