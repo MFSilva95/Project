@@ -188,6 +188,7 @@
         <activity
             android:name=".ui.activities.InsulinDetail"
             android:label="@string/title_activity_insulin_detail"
+            android:theme="@style/AppNewThemeCompat"
             android:parentActivityName=".ui.activities.InsulinChartList">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -285,6 +286,7 @@
         <activity
             android:name=".ui.activities.MealActivity"
             android:label="@string/title_activity_meal"
+            android:theme="@style/AppNewThemeCompat"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -341,6 +343,7 @@
         <activity
             android:name=".ui.activities.DetailLogbookActivity"
             android:label="@string/title_activity_logbook_detail"
+            android:theme="@style/AppNewThemeCompat"
             android:parentActivityName=".ui.activities.LogbookChartList">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

@@ -51,7 +51,7 @@ import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
-public class InsulinDetail extends Activity implements InsulinCalcFragment.CalcListener {
+public class InsulinDetail extends BaseActivity implements InsulinCalcFragment.CalcListener {
 
 	int id_BG = 0;
 	int idNote = 0;

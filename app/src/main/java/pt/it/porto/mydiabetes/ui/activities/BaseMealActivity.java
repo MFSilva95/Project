@@ -47,7 +47,7 @@ import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
-public abstract class BaseMealActivity extends Activity implements CalcListener {
+public abstract class BaseMealActivity extends BaseActivity implements CalcListener {
 
 	// activity flags start for result
 	public final static int IMAGE_CAPTURE = 2;
@@ -72,7 +72,7 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_meal);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		insulinIntake = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
 		target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);

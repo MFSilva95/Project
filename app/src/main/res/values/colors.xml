@@ -15,4 +15,6 @@
     <color name="edittext_changed_color">#669900</color>
     <color name="edittext_error_color">#e53343</color>
     <color name="background">@android:color/white</color>
+    <color name="divider">#CABBBBBB</color>
+    <color name="divider_grey">#ef636363</color>
 </resources>
