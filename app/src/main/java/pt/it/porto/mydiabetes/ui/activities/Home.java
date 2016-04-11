@@ -32,7 +32,7 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.SyncAlarm;
 
 
-public class Home extends BaseOldActivity {
+public class Home extends BaseActivity {
 
 	private static final String TAG = "Home";
 
@@ -40,7 +40,7 @@ public class Home extends BaseOldActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-		getActionBar();
+		getSupportActionBar();
 
 		DB_Read read = new DB_Read(this);
 		if (!read.MyData_HasData()) {

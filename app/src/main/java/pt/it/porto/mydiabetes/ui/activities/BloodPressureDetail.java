@@ -35,7 +35,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
-public class BloodPressureDetail extends Activity {
+public class BloodPressureDetail extends BaseActivity {
 
 	int idBP = 0;
 	int idNote = 0;
@@ -45,7 +45,7 @@ public class BloodPressureDetail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_blood_pressure_detail);
 		// Show the Up button in the action bar.
-		getActionBar();
+		getSupportActionBar();
 
 		FillTagSpinner();
 

@@ -35,7 +35,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
-public class GlycemiaDetail extends Activity {
+public class GlycemiaDetail extends BaseActivity {
 
 	int idGlycemia = 0;
 	int idNote = 0;
@@ -45,7 +45,7 @@ public class GlycemiaDetail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_glycemia_detail);
 		// Show the Up button in the action bar.
-		getActionBar();
+		getSupportActionBar();
 		FillTagSpinner();
 
 		EditText hora = (EditText) findViewById(R.id.et_GlycemiaDetail_Hora);

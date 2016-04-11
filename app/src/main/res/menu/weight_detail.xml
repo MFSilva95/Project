@@ -6,7 +6,6 @@
         android:title="@string/save_GlycemiaDetail"
         android:icon="@drawable/ic_action_save"
         android:orderInCategory="100"
-        android:showAsAction="always"
         app:showAsAction="always"
         android:enabled="true"
         android:visible="true"/>
