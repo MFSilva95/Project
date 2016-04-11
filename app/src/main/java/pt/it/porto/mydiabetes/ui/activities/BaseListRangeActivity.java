@@ -4,6 +4,7 @@ import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ public abstract class BaseListRangeActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base_list_range_activity);
 		// Show the Up button in the action bar.
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 		ActionBar actionBar=getSupportActionBar();
 		if (actionBar != null) {
 			actionBar.setDisplayHomeAsUpEnabled(true);

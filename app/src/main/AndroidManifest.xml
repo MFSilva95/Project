@@ -76,7 +76,7 @@
             android:name=".ui.activities.Exercise"
             android:label="@string/title_activity_exercise"
             android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/AppNewThemeCompat">
+            android:theme="@style/AppThemeCustomToolBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -103,7 +103,7 @@
             android:name=".ui.activities.BloodPressure"
             android:label="@string/title_activity_blood_pressure"
             android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/AppNewThemeCompat">
+            android:theme="@style/AppThemeCustomToolBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -120,7 +120,7 @@
         <activity
             android:name=".ui.activities.Cholesterol"
             android:label="@string/title_activity_cholesterol"
-            android:theme="@style/AppNewThemeCompat"
+            android:theme="@style/AppThemeCustomToolBar"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -129,7 +129,7 @@
         <activity
             android:name=".ui.activities.Disease"
             android:label="@string/title_activity_disease"
-            android:theme="@style/AppNewThemeCompat"
+            android:theme="@style/AppThemeCustomToolBar"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -138,7 +138,7 @@
         <activity
             android:name=".ui.activities.HbA1c"
             android:label="@string/title_activity_h1_a1c"
-            android:theme="@style/AppNewThemeCompat"
+            android:theme="@style/AppThemeCustomToolBar"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

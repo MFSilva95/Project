@@ -1,15 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<android.support.design.widget.AppBarLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/material_grey_100"
-    android:orientation="vertical">
+    android:elevation="4dp"
+    app:elevation="4dp"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+
+        <!--<View-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="1dip"-->
+        <!--android:background="#CABBBBBB"/>-->
+    </android.support.v7.widget.Toolbar>
+
 
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="visible"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
         <EditText
             android:id="@+id/et_DataFrom"
@@ -26,6 +51,13 @@
             android:onClick="showDatePickerDialogFrom"
             android:textSize="18sp"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="-"/>
+
         <EditText
             android:id="@+id/et_DataTo"
             style="@style/Holo.Spinner"
@@ -41,9 +73,4 @@
             android:onClick="showDatePickerDialogTo"
             android:textSize="18sp"/>
     </LinearLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:background="#CABBBBBB"/>
-</LinearLayout>
+</android.support.design.widget.AppBarLayout>
