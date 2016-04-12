@@ -157,7 +157,8 @@ public class InsulinRec extends DateTime implements Parcelable {
 					targetGlycemia == otherInsulinRec.getTargetGlycemia() &&
 					Float.compare(insulinUnits, otherInsulinRec.getInsulinUnits()) == 0 &&
 					idTag == otherInsulinRec.getIdTag() &&
-					idNote == otherInsulinRec.getIdNote();
+					idNote == otherInsulinRec.getIdNote() &&
+					super.equals(o);
 		}
 	}
 

@@ -484,8 +484,6 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			Log.e("DetailLogbookActivity", "carbsData, glycemiaData and insulinData are all null");
 		}
 
-		String date = getDate();
-		String time = getTime();
 		String note = getNote();
 		Uri imgUri = getImgUri();
 
@@ -518,7 +516,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		newCarbs.setCarbsValue(insulinCalculator.getCarbs());
 		newCarbs.setIdTag(tagId);
 		newCarbs.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-		newCarbs.setDateTime(date, time);
+		newCarbs.setDateTime(getDateTime());
 		newCarbs.setIdNote(noteId);
 
 		if (carbsData == null && !newCarbs.equals(carbsData)) {
@@ -533,7 +531,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		GlycemiaRec newGlicemia = new GlycemiaRec(glycemiaData);
 		newGlicemia.setIdUser(user_id);
 		newGlicemia.setValue(insulinCalculator.getGlycemia());
-		newGlicemia.setDateTime(date, time);
+		newGlicemia.setDateTime(getDateTime());
 		newGlicemia.setIdTag(tagId);
 		newGlicemia.setIdNote(noteId);
 
@@ -554,7 +552,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		newInsulin.setIdUser(user_id);
 		newInsulin.setIdInsulin(insulinId);
 		newInsulin.setIdBloodGlucose(glycemiaRegId != -1 ? glycemiaRegId : -1);
-		newInsulin.setDateTime(date, time);
+		newInsulin.setDateTime(getDateTime());
 		newInsulin.setTargetGlycemia(insulinCalculator.getInsulinTarget());
 		newInsulin.setInsulinUnits(insulinIntake);
 		newInsulin.setIdTag(tagId);
