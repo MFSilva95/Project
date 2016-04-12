@@ -388,7 +388,7 @@
         <activity
             android:name=".ui.activities.WelcomeActivity"
             android:label="@string/title_activity_welcome"
-            android:theme="@style/AppNewTheme"/>
+            android:theme="@style/AppNewThemeCompat"/>
 
         <meta-data
             android:name="io.fabric.ApiKey"
