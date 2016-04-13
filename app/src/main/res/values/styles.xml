@@ -26,6 +26,7 @@
         <!--<item name="colorPrimary">@color/background_holo_dark</item>-->
         <item name="colorPrimary">@color/primary_material_dark</item>
         <item name="colorAccent">@color/primary_material_dark</item>
+        <item name="colorPrimaryDark">@color/black</item>
     </style>
     <!-- Application theme. -->
     <style name="AppTheme" parent="@android:style/Theme.Holo">
