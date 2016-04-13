@@ -5,7 +5,11 @@
                 android:layout_height="wrap_content"
                 android:background="?android:selectableItemBackground"
                 android:minHeight="@dimen/list_row_default_height"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/list_item_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/list_item_vertical_margin">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -13,8 +17,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="3dp"
-        android:layout_marginStart="3dp"
         android:orientation="vertical">
 
         <TextView
@@ -22,8 +24,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="@dimen/list_text_small"
-            android:textStyle="bold"
+            android:gravity="bottom"
+            android:lines="1"
+            android:textColor="@android:color/background_dark"
             tools:text="2016-02-10"/>
 
         <TextView
@@ -31,41 +34,39 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="@dimen/list_text_small"
-            android:textStyle="bold"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:textColor="@android:color/background_dark"
+            android:textStyle=""
             tools:text="11:00"/>
     </LinearLayout>
 
     <TextView
         android:id="@+id/tv_list_cholesterol_value"
+        style="@android:style/TextAppearance.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/tv_list_cholesterol_unit"
         android:layout_toStartOf="@+id/tv_list_cholesterol_unit"
-        android:textSize="@dimen/list_text_huge"
-        android:textStyle="bold"
+        android:paddingEnd="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingStart="8dp"
+        android:textColor="@android:color/background_dark"
         tools:text="@string/hint_value1"/>
 
     <TextView
         android:id="@+id/tv_list_cholesterol_unit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/ib_list_cholesterol_detail"
-        android:layout_toStartOf="@+id/ib_list_cholesterol_detail"
-        android:paddingLeft="8dp"
-        android:paddingStart="8dp"
-        android:text="@string/mg_dl"
-        android:textSize="@dimen/list_text_small"/>
-
-    <ImageView
-        android:id="@+id/ib_list_cholesterol_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:background="@color/transparent"
-        android:src="@drawable/viewdetail"/>
+        android:fontFamily="sans-serif-light"
+        android:gravity="center_horizontal"
+        android:text="@string/mg_dl"
+        android:textColor="@android:color/background_dark"/>
+
 </RelativeLayout>

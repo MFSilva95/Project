@@ -30,7 +30,7 @@ public class SyncFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View v = inflater.inflate(R.layout.fragment_sync, container, false);
-//		FillDates(v);
+//		fillDates(v);
 
 		if(!BuildConfig.SYNC_AVAILABLE){
 			v.findViewById(R.id.syncCloud).setVisibility(View.GONE);

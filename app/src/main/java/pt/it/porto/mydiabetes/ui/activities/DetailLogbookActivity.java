@@ -473,7 +473,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 
 		int user_id = -1;
 		if (carbsData != null) {
-			user_id = carbsData.getIdUser(); // why is this method different from the other two?
+			user_id = carbsData.getIdUser();
 		} else if (glycemiaData != null) {
 			user_id = glycemiaData.getIdUser();
 		} else if (insulinData != null) {
@@ -484,8 +484,6 @@ public class DetailLogbookActivity extends BaseMealActivity {
 			Log.e("DetailLogbookActivity", "carbsData, glycemiaData and insulinData are all null");
 		}
 
-		String date = getDate();
-		String time = getTime();
 		String note = getNote();
 		Uri imgUri = getImgUri();
 
@@ -518,10 +516,8 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		newCarbs.setCarbsValue(insulinCalculator.getCarbs());
 		newCarbs.setIdTag(tagId);
 		newCarbs.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-		newCarbs.setDateTime(date, time);
-		if (noteId != -1) {
-			newCarbs.setIdNote(noteId);
-		}
+		newCarbs.setDateTime(getDateTime());
+		newCarbs.setIdNote(noteId);
 
 		if (carbsData == null && !newCarbs.equals(carbsData)) {
 			// needs to save it
@@ -535,11 +531,9 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		GlycemiaRec newGlicemia = new GlycemiaRec(glycemiaData);
 		newGlicemia.setIdUser(user_id);
 		newGlicemia.setValue(insulinCalculator.getGlycemia());
-		newGlicemia.setDateTime(date, time);
+		newGlicemia.setDateTime(getDateTime());
 		newGlicemia.setIdTag(tagId);
-		if (noteId != -1) {
-			newGlicemia.setIdNote(noteId);
-		}
+		newGlicemia.setIdNote(noteId);
 
 		if (glycemiaData == null && !newGlicemia.equals(glycemiaData)) {
 			glycemiaRegId = reg.Glycemia_Save(newGlicemia);
@@ -558,10 +552,11 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		newInsulin.setIdUser(user_id);
 		newInsulin.setIdInsulin(insulinId);
 		newInsulin.setIdBloodGlucose(glycemiaRegId != -1 ? glycemiaRegId : -1);
-		newInsulin.setDateTime(date, time);
+		newInsulin.setDateTime(getDateTime());
 		newInsulin.setTargetGlycemia(insulinCalculator.getInsulinTarget());
 		newInsulin.setInsulinUnits(insulinIntake);
 		newInsulin.setIdTag(tagId);
+		newInsulin.setIdNote(noteId);
 
 		if (insulinData == null && !newInsulin.equals(insulinData)) {
 			insulinRegId = reg.Insulin_Save(newInsulin);

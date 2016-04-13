@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.listAdapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,61 +10,61 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.DiseaseDetail;
-import pt.it.porto.mydiabetes.data.DiseaseRec;
 
 
 public class DiseaseRegAdapter extends BaseAdapter {
 
 	Context _c;
-	private ArrayList<DiseaseRec> _data;
+	private Cursor cursor;
 
-	public DiseaseRegAdapter(ArrayList<DiseaseRec> data, Context c) {
-		_data = data;
+	public DiseaseRegAdapter(Cursor cursor, Context c) {
+		this.cursor = cursor;
 		_c = c;
 	}
 
 	@Override
 	public int getCount() {
-		return _data.size();
+		return cursor.getCount();
 	}
 
 	@Override
-	public Object getItem(int position) {
-		return _data.get(position);
+	public DiseaseReg getItem(int position) {
+		cursor.moveToPosition(position);
+		int pox = 0;
+		return new DiseaseReg(cursor.getInt(pox++), cursor.getString(pox++), cursor.getString(pox++), cursor.getString(pox));
 	}
 
 	@Override
 	public long getItemId(int position) {
-		return position;
+		return getItem(position).id;
 	}
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-
 		View v = convertView;
 		if (v == null) {
 			LayoutInflater vi = (LayoutInflater) _c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			v = vi.inflate(R.layout.list_diseasereg_row, parent, false);
+			v.setTag(new ViewHolder(v));
 		}
+		ViewHolder viewHolder = (ViewHolder) v.getTag();
 
-		TextView disease = (TextView) v.findViewById(R.id.tv_list_diseasereg_disease);
-		TextView start = (TextView) v.findViewById(R.id.tv_list_diseasereg_startdate);
-		TextView end = (TextView) v.findViewById(R.id.tv_list_diseasereg_enddate);
+		DiseaseReg dis = getItem(position);
+		viewHolder.item = dis;
 
-
-		final DiseaseRec dis = _data.get(position);
-		final String _id = "" + dis.getId();
-
-		disease.setText(dis.getDisease());
-		start.setText(dis.getStartDate());
-		end.setText((dis.getEndDate() != null) ? dis.getEndDate() : "");
-
-		v.setTag(_id);
-
+		viewHolder.diseaseName.setText(dis.diseaseName);
+		viewHolder.timeStart.setText(dis.timeStart);
+		if (dis.timeEnd == null) {
+			viewHolder.timeEnd.setVisibility(View.INVISIBLE);
+			viewHolder.divider.setVisibility(View.INVISIBLE);
+			viewHolder.divider.setVisibility(View.INVISIBLE);
+		} else {
+			viewHolder.timeEnd.setText(dis.timeEnd);
+			viewHolder.timeEnd.setVisibility(View.VISIBLE);
+			viewHolder.divider.setVisibility(View.VISIBLE);
+		}
 
 		v.setOnClickListener(new View.OnClickListener() {
 
@@ -71,7 +72,7 @@ public class DiseaseRegAdapter extends BaseAdapter {
 			public void onClick(View v) {
 				Intent intent = new Intent(v.getContext(), DiseaseDetail.class);
 				Bundle args = new Bundle();
-				args.putString("Id", (String) v.getTag());
+				args.putString("Id", String.valueOf(((ViewHolder) v.getTag()).item.id));
 
 				intent.putExtras(args);
 				v.getContext().startActivity(intent);
@@ -81,4 +82,32 @@ public class DiseaseRegAdapter extends BaseAdapter {
 		return v;
 	}
 
+	private class DiseaseReg {
+		int id;
+		String diseaseName;
+		String timeStart;
+		String timeEnd;
+
+		public DiseaseReg(int id, String diseaseName, String timeStart, String timeEnd) {
+			this.id = id;
+			this.diseaseName = diseaseName;
+			this.timeStart = timeStart;
+			this.timeEnd = timeEnd;
+		}
+	}
+
+	private class ViewHolder {
+		TextView diseaseName;
+		TextView timeStart;
+		TextView timeEnd;
+		TextView divider;
+		DiseaseReg item;
+
+		public ViewHolder(View view) {
+			diseaseName = (TextView) view.findViewById(R.id.tv_list_diseasereg_disease);
+			timeStart = (TextView) view.findViewById(R.id.tv_list_diseasereg_startdate);
+			timeEnd = (TextView) view.findViewById(R.id.tv_list_diseasereg_enddate);
+			divider = (TextView) view.findViewById(R.id.divider);
+		}
+	}
 }

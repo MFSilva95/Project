@@ -28,12 +28,14 @@ import android.widget.SpinnerAdapter;
 import android.widget.ToggleButton;
 
 import java.io.File;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
@@ -41,7 +43,6 @@ import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment.CalcListener;
-import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
@@ -618,6 +619,27 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 
 	public String getDate() {
 		return date.getText().toString();
+	}
+
+	Calendar dateTime=null;
+
+	public Calendar getDateTime(){
+		updateDateTime();
+		return dateTime;
+	}
+
+	private void updateDateTime(){
+		try {
+			// only udpates dateTime if needed
+			Calendar newDateTime = DateUtils.getDateTime(getDate(), getTime());
+			if(DateUtils.isSameTime(dateTime, newDateTime)){
+				return;
+			}
+			dateTime=newDateTime;
+			dateTime.set(Calendar.SECOND, Calendar.getInstance().get(Calendar.SECOND)); // we add seconds to be possible distinguish in logbook multiple references in same minute
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String getPhaseOfDay() {

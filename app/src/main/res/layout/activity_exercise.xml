@@ -5,64 +5,18 @@
               android:orientation="vertical"
               tools:context=".ui.activities.Exercise">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="4dp">
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/et_Exercise_DataFrom"
-                style="@style/Holo.Spinner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:gravity="center_horizontal"
-                android:inputType="date"
-                android:onClick="showDatePickerDialogFrom"
-                android:textSize="18sp"
-                tools:text="2014-02-07"/>
-
-            <EditText
-                android:id="@+id/et_Exercise_DataTo"
-                style="@style/Holo.Spinner"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_weight="1"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:gravity="center_horizontal"
-                android:inputType="date"
-                android:onClick="showDatePickerDialogTo"
-                android:textSize="18sp"
-                tools:text="2015-02-07"/>
-        </LinearLayout>
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:background="@color/holo_blue_dark"/>
-    </LinearLayout>
+    <include layout="@layout/header_date_from_to"/>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+
         android:layout_weight="1">
 
         <ListView
             android:id="@+id/ExercisesActivityList"
             android:layout_width="match_parent"
+            tools:listitem="@layout/list_exercisereg_row"
             android:layout_height="match_parent">
         </ListView>
 

@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:minHeight="@dimen/list_row_default_height"
-                android:background="?android:selectableItemBackground"
-                android:orientation="horizontal">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="?android:selectableItemBackground"
+              android:minHeight="@dimen/list_row_default_height"
+              android:orientation="horizontal"
+              android:paddingBottom="@dimen/list_item_vertical_margin"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:paddingTop="@dimen/list_item_vertical_margin"
+              tools:layout_height="48dp">
 
     <LinearLayout
         android:id="@+id/ll_list_bloodpressure_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="3dp"
-        android:layout_marginStart="3dp"
+        android:layout_gravity="center_vertical"
         android:orientation="vertical">
 
         <TextView
@@ -23,58 +24,51 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:textSize="@dimen/list_text_small"
-            android:textStyle="bold"
+            android:gravity="bottom"
+            android:lines="1"
+            android:textColor="@android:color/background_dark"
             tools:text="2016-02-10"/>
+
 
         <TextView
             android:id="@+id/tv_list_bloodpressure_hora"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
             android:gravity="center_vertical"
-            android:textSize="@dimen/list_text_small"
-            android:textStyle="bold"
+            android:lines="1"
+            android:textColor="@android:color/background_dark"
+            android:textStyle=""
             tools:text="11:00"/>
 
-        <TextView
-            android:id="@+id/tv_list_bloodpressure_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:textSize="@dimen/list_text_small"
-            tools:text="Outra"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_list_bloodpressure_middleleft"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@+id/ll_list_bloodpressure_middleright"
-        android:layout_toRightOf="@+id/ll_list_bloodpressure_left"
+        android:layout_weight="1"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_list_bloodpressure_systolic_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal"
             android:text="@string/systolic"
-            android:textSize="@dimen/list_text_small"/>
+            android:textColor="@android:color/background_dark"/>
 
         <TextView
             android:id="@+id/tv_list_bloodpressure_systolic_value"
+            style="@android:style/TextAppearance.Large"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:textSize="@dimen/list_text_huge"
-            android:textStyle="bold"
+            android:textColor="@android:color/background_dark"
             tools:text="85"/>
     </LinearLayout>
 
@@ -82,38 +76,25 @@
         android:id="@+id/ll_list_bloodpressure_middleright"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@+id/ib_list_bloodpressure_detail"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_list_bloodpressure_diastolic_text"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal"
             android:text="@string/diastolic"
-            android:textSize="@dimen/list_text_small"/>
+            android:textColor="@android:color/background_dark"/>
 
         <TextView
             android:id="@+id/tv_list_bloodpressure_diastolic_value"
+            style="@android:style/TextAppearance.Large"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:textSize="@dimen/list_text_huge"
-            android:textStyle="bold"
+            android:textColor="@android:color/background_dark"
             tools:text="110"/>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/ib_list_bloodpressure_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:background="@color/transparent"
-        android:src="@drawable/viewdetail"/>
-</RelativeLayout>
+</LinearLayout>

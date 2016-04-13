@@ -87,6 +87,8 @@ public class DateRangeDialog extends DialogFragment {
 				}
 			});
 			ListViewUtils.setListViewHeightBasedOnChildren(list);
+		} else {
+			layout.findViewById(R.id.txt_header_filters).setVisibility(View.GONE);
 		}
 		if (data != null && data.hasExtras()) {
 			layout.findViewById(R.id.extras).setVisibility(View.VISIBLE);

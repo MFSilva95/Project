@@ -3,9 +3,14 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="?android:selectableItemBackground"
+                android:background="?selectableItemBackground"
                 android:minHeight="@dimen/list_row_default_height"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/list_item_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/list_item_vertical_margin"
+                tools:layout_height="48dp">
 
     <LinearLayout
         android:id="@+id/ll_list_exercisereg_left"
@@ -14,7 +19,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="3dp"
         android:orientation="vertical">
 
         <TextView
@@ -23,8 +27,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="bottom"
-            android:textSize="@dimen/list_text_small"
-            android:textStyle="bold"
+            android:lines="1"
+            android:textColor="@android:color/background_dark"
             tools:text="2016-02-10"/>
 
         <TextView
@@ -32,9 +36,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
             android:gravity="center_vertical"
-            android:textSize="@dimen/list_text_small"
-            android:textStyle="bold"
+            android:lines="1"
+            android:textColor="@android:color/background_dark"
+            android:textStyle=""
             tools:text="11:00"/>
 
     </LinearLayout>
@@ -54,20 +60,23 @@
 
         <TextView
             android:id="@+id/tv_list_exercisereg_exercise"
+            style="@android:style/TextAppearance.Large"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:textSize="@dimen/list_text_huge"
+            android:textColor="@android:color/background_dark"
             tools:text="cardio"/>
 
         <TextView
             android:id="@+id/tv_list_exercisereg_effort"
+            style="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal"
-            android:textSize="@dimen/list_text_small"
+            android:textColor="@android:color/background_dark"
             tools:text="Muito Leve"/>
     </LinearLayout>
 
@@ -75,38 +84,31 @@
         android:id="@+id/ll_list_exercisereg_middleright"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@+id/ib_list_exercisereg_detail"
         android:orientation="vertical">
 
         <TextView
             android:id="@+id/tv_list_exercisereg_duration"
+            style="@android:style/TextAppearance.Large"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center_horizontal"
-            android:textSize="@dimen/list_text_big"
-            android:textStyle="bold"
+            android:textColor="@android:color/background_dark"
             tools:text="60"/>
 
         <TextView
             android:id="@+id/tv_list_exercisereg_exercise_minutes"
+            style="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal"
             android:text="@string/minutes"
-            android:textSize="@dimen/list_text_small"/>
+            android:textColor="@android:color/background_dark"/>
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/ib_list_exercisereg_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:background="@color/transparent"
-        android:src="@drawable/viewdetail"/>
 </RelativeLayout>

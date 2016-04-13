@@ -169,6 +169,56 @@ public class ListsDataDb {
 	}
 
 
+	public Cursor getExerciseRegList(String startDate, String endDate) {
+		String[] rows = new String[]{MyDiabetesContract.Regist.Exercise.COLUMN_NAME_ID, MyDiabetesContract.Regist.Exercise.COLUMN_NAME_START_DATETIME, MyDiabetesContract.Regist.Exercise.COLUMN_NAME_EXERCISE_NAME, MyDiabetesContract.Regist.Exercise.COLUMN_NAME_DURATION, MyDiabetesContract.Regist.Exercise.COLUMN_NAME_EFFORT};
+		Cursor cursor = storage.rawQuery("SELECT " + DbUtils.toString(rows) +
+				" FROM " + MyDiabetesContract.Regist.Exercise.TABLE_NAME +
+				" WHERE " + MyDiabetesContract.Regist.Exercise.COLUMN_NAME_START_DATETIME + " > '" + startDate + " 00:00:00'" +
+				" AND " + MyDiabetesContract.Regist.Exercise.COLUMN_NAME_START_DATETIME + " < '" + endDate + " 23:59:59'" +
+				" ORDER BY " + MyDiabetesContract.Regist.Exercise.COLUMN_NAME_START_DATETIME + " DESC");
+		return cursor;
+	}
+
+	public Cursor getBloodPressureRegList(String startDate, String endDate) {
+		String[] rows = new String[]{MyDiabetesContract.Regist.BloodPressure.COLUMN_NAME_ID, MyDiabetesContract.Regist.BloodPressure.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.BloodPressure.COLUMN_NAME_SYSTOLIC, MyDiabetesContract.Regist.BloodPressure.COLUMN_NAME_DIASTOLIC};
+		Cursor cursor = storage.rawQuery("SELECT " + DbUtils.toString(rows) +
+				" FROM " + MyDiabetesContract.Regist.BloodPressure.TABLE_NAME +
+				" WHERE " + MyDiabetesContract.Regist.BloodPressure.COLUMN_NAME_DATETIME + " > '" + startDate + " 00:00:00'" +
+				" AND " + MyDiabetesContract.Regist.BloodPressure.COLUMN_NAME_DATETIME + " < '" + endDate + " 23:59:59'" +
+				" ORDER BY " + MyDiabetesContract.Regist.BloodPressure.COLUMN_NAME_DATETIME + " DESC");
+		return cursor;
+	}
+
+	public Cursor getCholesterolRegList(String startDate, String endDate) {
+		String[] rows = new String[]{MyDiabetesContract.Regist.Cholesterol.COLUMN_NAME_ID, MyDiabetesContract.Regist.Cholesterol.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.Cholesterol.COLUMN_NAME_VALUE};
+		Cursor cursor = storage.rawQuery("SELECT " + DbUtils.toString(rows) +
+				" FROM " + MyDiabetesContract.Regist.Cholesterol.TABLE_NAME +
+				" WHERE " + MyDiabetesContract.Regist.Cholesterol.COLUMN_NAME_DATETIME + " > '" + startDate + " 00:00:00'" +
+				" AND " + MyDiabetesContract.Regist.Cholesterol.COLUMN_NAME_DATETIME + " < '" + endDate + " 23:59:59'" +
+				" ORDER BY " + MyDiabetesContract.Regist.Cholesterol.COLUMN_NAME_DATETIME + " DESC");
+		return cursor;
+	}
+
+	public Cursor getHbA1cRegList(String startDate, String endDate) {
+		String[] rows = new String[]{MyDiabetesContract.Regist.A1c.COLUMN_NAME_ID, MyDiabetesContract.Regist.A1c.COLUMN_NAME_DATETIME, MyDiabetesContract.Regist.A1c.COLUMN_NAME_VALUE};
+		Cursor cursor = storage.rawQuery("SELECT " + DbUtils.toString(rows) +
+				" FROM " + MyDiabetesContract.Regist.A1c.TABLE_NAME +
+				" WHERE " + MyDiabetesContract.Regist.A1c.COLUMN_NAME_DATETIME + " > '" + startDate + " 00:00:00'" +
+				" AND " + MyDiabetesContract.Regist.A1c.COLUMN_NAME_DATETIME + " < '" + endDate + " 23:59:59'" +
+				" ORDER BY " + MyDiabetesContract.Regist.A1c.COLUMN_NAME_DATETIME + " DESC");
+		return cursor;
+	}
+
+	public Cursor getDiseaseRegList(String startDate, String endDate) {
+		String[] rows = new String[]{MyDiabetesContract.Regist.Disease.COLUMN_NAME_ID, MyDiabetesContract.Regist.Disease.COLUMN_NAME_DISEASE, MyDiabetesContract.Regist.Disease.COLUMN_NAME_DATE_START, MyDiabetesContract.Regist.Disease.COLUMN_NAME_DATE_END};
+		Cursor cursor = storage.rawQuery("SELECT " + DbUtils.toString(rows) +
+				" FROM " + MyDiabetesContract.Regist.Disease.TABLE_NAME +
+				" WHERE " + MyDiabetesContract.Regist.Disease.COLUMN_NAME_DATE_START + " > '" + startDate + " 00:00:00'" +
+				" AND " + MyDiabetesContract.Regist.Disease.COLUMN_NAME_DATE_START + " < '" + endDate + " 23:59:59'" +
+				" ORDER BY " + MyDiabetesContract.Regist.Disease.COLUMN_NAME_DATE_START + " DESC");
+		return cursor;
+	}
+
 		private Cursor getItemsList(String table, String[] rows, String startDate, String endDate) {
 		return storage.query(table, rows, "DateTime >= ? AND DateTime <= ?", new String[]{startDate, endDate}, null, null, "DateTime DESC");
 	}

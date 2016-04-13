@@ -2,8 +2,8 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="pt.it.porto.mydiabetes"
-    android:versionCode="13"
-    android:versionName="1.3.4">
+    android:versionCode="14"
+    android:versionName="1.4">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -75,7 +75,8 @@
         <activity
             android:name=".ui.activities.Exercise"
             android:label="@string/title_activity_exercise"
-            android:parentActivityName=".ui.activities.Home">
+            android:parentActivityName=".ui.activities.Home"
+            android:theme="@style/AppThemeCustomToolBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -101,7 +102,8 @@
         <activity
             android:name=".ui.activities.BloodPressure"
             android:label="@string/title_activity_blood_pressure"
-            android:parentActivityName=".ui.activities.Home">
+            android:parentActivityName=".ui.activities.Home"
+            android:theme="@style/AppThemeCustomToolBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -118,6 +120,7 @@
         <activity
             android:name=".ui.activities.Cholesterol"
             android:label="@string/title_activity_cholesterol"
+            android:theme="@style/AppThemeCustomToolBar"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -126,6 +129,7 @@
         <activity
             android:name=".ui.activities.Disease"
             android:label="@string/title_activity_disease"
+            android:theme="@style/AppThemeCustomToolBar"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -134,6 +138,7 @@
         <activity
             android:name=".ui.activities.HbA1c"
             android:label="@string/title_activity_h1_a1c"
+            android:theme="@style/AppThemeCustomToolBar"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
