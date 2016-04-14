@@ -38,7 +38,6 @@ import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Tag;
-import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
@@ -62,6 +61,7 @@ public class InsulinDetail extends Activity implements InsulinCalcFragment.CalcL
 	private InsulinCalcFragment fragmentInsulinCalcsFragment;
 	private EditText insulinIntake;
 	private boolean useIOB;
+	private boolean changeCausedByOtherInput=false;
 
 	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
 		SpinnerAdapter adapter = spnr.getAdapter();
@@ -153,18 +153,13 @@ public class InsulinDetail extends Activity implements InsulinCalcFragment.CalcL
 			setTagByTime();
 
 
-			//Get id of user
-			DB_Read rdb = new DB_Read(this);
-			UserInfo obj = rdb.MyData_Read();
-			final double iRatio = obj.getInsulinRatio();
-			rdb.close();
-
 			EditText target = (EditText) findViewById(R.id.et_InsulinDetail_TargetGlycemia);
 			EditText glycemia = (EditText) findViewById(R.id.et_InsulinDetail_Glycemia);
 
 			target.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
+					changeCausedByOtherInput=true;
 					String text = s.toString();
 					int val = 0;
 					if (!text.isEmpty()) {
@@ -191,6 +186,7 @@ public class InsulinDetail extends Activity implements InsulinCalcFragment.CalcL
 			glycemia.addTextChangedListener(new TextWatcher() {
 				@Override
 				public void onTextChanged(CharSequence s, int start, int before, int count) {
+					changeCausedByOtherInput=true;
 					String text = s.toString();
 					int val = 0;
 					if (text.isEmpty()) {
@@ -231,6 +227,28 @@ public class InsulinDetail extends Activity implements InsulinCalcFragment.CalcL
 				public void afterTextChanged(Editable s) {
 				}
 			});
+
+			insulinIntake.addTextChangedListener(new TextWatcher() {
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+				}
+
+				@Override
+				public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+				}
+
+				@Override
+				public void afterTextChanged(Editable s) {
+					if(changeCausedByOtherInput){
+						changeCausedByOtherInput=false;
+					}else{
+						stopAutoUpdateInsulinIntake();
+					}
+
+				}
+			});
 		}
 
 		FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(this));
@@ -242,9 +260,23 @@ public class InsulinDetail extends Activity implements InsulinCalcFragment.CalcL
 		if (fragmentInsulinCalcsFragment != null) {
 			showCalcs();
 		}
+		if(!shouldUpdateInsulinIntake()){
+			return;
+		}
 
 		float insulin = insulinCalculator.getInsulinTotal(useIOB, true);
 		insulinIntake.setText(String.valueOf(insulin > 0 ? insulin : 0));
+	}
+
+
+	boolean autoUpdate = true;
+
+	private boolean shouldUpdateInsulinIntake() {
+		return autoUpdate;
+	}
+
+	private void stopAutoUpdateInsulinIntake() {
+		this.autoUpdate = false;
 	}
 
 	@Override
