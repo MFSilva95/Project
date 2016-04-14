@@ -19,12 +19,12 @@ import android.widget.ToggleButton;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
@@ -177,25 +177,25 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		if (item.getItemId() == R.id.menuItem_LogbookDetail_Delete) {
 			final Context c = this;
 			new AlertDialog.Builder(this).setTitle(getString(R.string.deleteReading))
-										 .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
-											 public void onClick(DialogInterface dialog, int whichButton) {
-												 DB_Write wdb = new DB_Write(c);
-												 try {
-													 wdb.Logbook_Delete(carbsData != null ? carbsData.getId() : -1, insulinData != null ? insulinData.getId() : -1, glycemiaData != null ? glycemiaData.getId() : -1, noteId);
-													 setResult(DetailLogbookActivity.RESULT_SAVED_CHANGES);
-													 finish();
-												 } catch (Exception e) {
-													 Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
-												 }
-												 wdb.close();
-											 }
-										 })
-										 .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
-											 public void onClick(DialogInterface dialog, int whichButton) {
-												 // Do nothing.
-											 }
-										 })
-										 .show();
+					.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							DB_Write wdb = new DB_Write(c);
+							try {
+								wdb.Logbook_Delete(carbsData != null ? carbsData.getId() : -1, insulinData != null ? insulinData.getId() : -1, glycemiaData != null ? glycemiaData.getId() : -1, noteId);
+								setResult(DetailLogbookActivity.RESULT_SAVED_CHANGES);
+								finish();
+							} catch (Exception e) {
+								Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
+							}
+							wdb.close();
+						}
+					})
+					.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							// Do nothing.
+						}
+					})
+					.show();
 			return true;
 		} else if (item.getItemId() == R.id.menuItem_LogbookDetail_EditSave) {
 			saveData();
@@ -212,18 +212,18 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		if (needsToSave()) {
 			final Context c = this;
 			new AlertDialog.Builder(this).setTitle("Dados foram alterados, deseja sair sem gravar as alterações?")
-										 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
-											 public void onClick(DialogInterface dialog, int whichButton) {
-												 dialog.dismiss();
-												 finish();
-											 }
-										 })
-										 .setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
-											 public void onClick(DialogInterface dialog, int whichButton) {
-												 saveData();
-											 }
-										 })
-										 .show();
+					.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							dialog.dismiss();
+							finish();
+						}
+					})
+					.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							saveData();
+						}
+					})
+					.show();
 		} else {
 			super.onBackPressed();
 		}
@@ -472,24 +472,29 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		DB_Write reg = new DB_Write(this);
 
 		int user_id = -1;
+		Calendar originalDateTime = null;
 		if (carbsData != null) {
 			user_id = carbsData.getIdUser();
+			originalDateTime = carbsData.getDateTime();
 		} else if (glycemiaData != null) {
 			user_id = glycemiaData.getIdUser();
+			originalDateTime = glycemiaData.getDateTime();
 		} else if (insulinData != null) {
 			user_id = insulinData.getIdUser();
+			originalDateTime = insulinData.getDateTime();
 		} else {
 			// go to database and get it!
 			// it shouldn't be necessary, if we are where some of this values are defined
 			Log.e("DetailLogbookActivity", "carbsData, glycemiaData and insulinData are all null");
 		}
 
+
 		String note = getNote();
 		Uri imgUri = getImgUri();
 
 		// IDs
 		int carbsRegId = 0;
-		int glycemiaRegId = glycemiaData!=null?glycemiaData.getId(): -1;
+		int glycemiaRegId = glycemiaData != null ? glycemiaData.getId() : -1;
 		int insulinRegId = 0;
 
 
@@ -510,13 +515,17 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		int tagId = rdb.Tag_GetIdByName(tagSelected);
 		rdb.close();
 
+		Calendar newDateTime=getDateTime();
+		if (originalDateTime != null) {
+			newDateTime.set(Calendar.SECOND, originalDateTime.get(Calendar.SECOND));
+		}
 		// save carbs
 		CarbsRec newCarbs = new CarbsRec(carbsData);
 		newCarbs.setIdUser(user_id);
 		newCarbs.setCarbsValue(insulinCalculator.getCarbs());
 		newCarbs.setIdTag(tagId);
 		newCarbs.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-		newCarbs.setDateTime(getDateTime());
+		newCarbs.setDateTime(newDateTime);
 		newCarbs.setIdNote(noteId);
 
 		if (carbsData == null && !newCarbs.equals(carbsData)) {
@@ -531,7 +540,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		GlycemiaRec newGlicemia = new GlycemiaRec(glycemiaData);
 		newGlicemia.setIdUser(user_id);
 		newGlicemia.setValue(insulinCalculator.getGlycemia());
-		newGlicemia.setDateTime(getDateTime());
+		newGlicemia.setDateTime(newDateTime);
 		newGlicemia.setIdTag(tagId);
 		newGlicemia.setIdNote(noteId);
 
@@ -552,7 +561,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		newInsulin.setIdUser(user_id);
 		newInsulin.setIdInsulin(insulinId);
 		newInsulin.setIdBloodGlucose(glycemiaRegId != -1 ? glycemiaRegId : -1);
-		newInsulin.setDateTime(getDateTime());
+		newInsulin.setDateTime(newDateTime);
 		newInsulin.setTargetGlycemia(insulinCalculator.getInsulinTarget());
 		newInsulin.setInsulinUnits(insulinIntake);
 		newInsulin.setIdTag(tagId);
