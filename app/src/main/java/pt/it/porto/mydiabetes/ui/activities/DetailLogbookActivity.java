@@ -8,11 +8,16 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
@@ -287,13 +292,13 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	}
 
 	@Override
-	protected void dateChanged(EditText view, String text) {
+	protected void dateChanged(TextView view, String text) {
 		boolean changed = !date.equals(text);
 		updateIndicator(view, changed);
 	}
 
 	@Override
-	protected void timeChanged(EditText view, String text) {
+	protected void timeChanged(TextView view, String text) {
 		updateIndicator(view, !time.equals(text));
 		DB_Read rdb = new DB_Read(this);
 		int d = (int) rdb.Target_GetTargetByTime(text);
@@ -306,7 +311,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 		}
 	}
 
-	private void updateIndicator(EditText view, boolean valueChanged) {
+	private void updateIndicator(TextView view, boolean valueChanged) {
 		if (valueChanged) {
 			view.setBackgroundResource(R.drawable.edit_text_holo_dark_changed);
 		} else {
@@ -355,9 +360,8 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	}
 
 	void setToggleIconImage(int resource) {
-		ToggleButton button = (ToggleButton) findViewById(R.id.bt_insulin_calc_info);
-		button.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, resource);
-		button.setChecked(false);
+		ImageButton button = (ImageButton) findViewById(R.id.bt_insulin_calc_info);
+		button.setImageDrawable(ContextCompat.getDrawable(this, resource));
 	}
 
 	@Override

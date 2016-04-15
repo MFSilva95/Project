@@ -6,12 +6,15 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -22,9 +25,11 @@ import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.io.File;
@@ -43,6 +48,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment.CalcListener;
+import pt.it.porto.mydiabetes.ui.views.ExtendedEditText;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
@@ -54,13 +60,14 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 	public final static int IMAGE_CAPTURE = 2;
 	public final static int IMAGE_VIEW = 3;
 	private static final String GENERATED_IMAGE_URI = "generated_image_uri";
+	private static final String CALCS_OPEN = "calcs open";
 	protected InsulinCalculator insulinCalculator = null;
 	private EditText insulinIntake;
 	private EditText glycemia;
 	private EditText carbs;
 	private EditText target;
-	private EditText time;
-	private EditText date;
+	private TextView time;
+	private TextView date;
 	private Uri imgUri;
 	private Bitmap b;
 	private Uri generatedImageUri;
@@ -77,10 +84,10 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 
 		insulinIntake = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
 		target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);
-		glycemia = (EditText) findViewById(R.id.et_MealDetail_Glycemia);
+		glycemia = (EditText) findViewById(R.id.glycemia);
 		carbs = (EditText) findViewById(R.id.et_MealDetail_Carbs);
-		time = (EditText) findViewById(R.id.et_MealDetail_Hora);
-		date = (EditText) findViewById(R.id.et_MealDetail_Date);
+		time = (TextView) findViewById(R.id.et_MealDetail_Hora);
+		date = (TextView) findViewById(R.id.et_MealDetail_Date);
 
 
 		fillTagSpinner();
@@ -99,6 +106,7 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putParcelable(GENERATED_IMAGE_URI, generatedImageUri);
+		outState.putBoolean(CALCS_OPEN, isFragmentShowing());
 	}
 
 	@Override
@@ -108,7 +116,8 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 			generatedImageUri = savedInstanceState.getParcelable(GENERATED_IMAGE_URI);
 		}
 
-		if (((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).isChecked()) {
+		if (savedInstanceState != null && savedInstanceState.getBoolean(CALCS_OPEN, false)) {
+			((ImageButton) findViewById(R.id.bt_insulin_calc_info)).setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_info_outline_grey_900_24dp));
 			fragmentInsulinCalcsFragment=new InsulinCalcFragment();
 			getFragmentManager().beginTransaction().replace(R.id.fragment_calcs, fragmentInsulinCalcsFragment).commit();
 			getFragmentManager().executePendingTransactions();
@@ -217,6 +226,9 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}
+					((ExtendedEditText) target).setSuffix("mg/dl");
+				} else{
+					((ExtendedEditText) target).setSuffix(null);
 				}
 				insulinCalculator.setGlycemiaTarget(val);
 				setInsulinIntake();
@@ -239,6 +251,7 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 				int val = 0;
 				if (text.isEmpty()) {
 					val = 0;
+					((ExtendedEditText) glycemia).setSuffix(null);
 				} else {
 					try {
 						val = Integer.parseInt(s.toString());
@@ -246,6 +259,7 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 						e.printStackTrace();
 					}
 				}
+				((ExtendedEditText) glycemia).setSuffix("mg/dl");
 				insulinCalculator.setGlycemia(val);
 				setInsulinIntake();
 				glycemiaChanged(glycemia, text);
@@ -271,7 +285,11 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}
+					((ExtendedEditText) carbs).setSuffix("grams");
+				}else{
+					((ExtendedEditText) carbs).setSuffix(null);
 				}
+
 				insulinCalculator.setCarbs(val);
 				setInsulinIntake();
 				carbsChanged(carbs, text);
@@ -325,13 +343,16 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 			public void afterTextChanged(Editable s) {
 				String text = s.toString();
 //				float val = 0;
-//				if (!text.isEmpty()) {
+				if (!text.isEmpty()) {
 //					try {
 //						val = Float.parseFloat(s.toString());
 //					} catch (NumberFormatException e) {
 //						e.printStackTrace();
 //					}
-//				}
+					((ExtendedEditText) insulinIntake).setSuffix(BaseMealActivity.this.getString(R.string.units));
+				}else{
+					((ExtendedEditText) insulinIntake).setSuffix(null);
+				}
 				insulinIntakeChanged(insulinIntake, text);
 			}
 
@@ -346,9 +367,9 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 
 	protected abstract void insulinIntakeChanged(EditText view, String text);
 
-	protected abstract void dateChanged(EditText view, String text);
+	protected abstract void dateChanged(TextView view, String text);
 
-	protected abstract void timeChanged(EditText view, String text);
+	protected abstract void timeChanged(TextView view, String text);
 
 	void showUpdateIndicator(EditText view, boolean valueChanged) {
 		if (valueChanged) {
@@ -399,13 +420,13 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 
 	private void showDatePickerDialog(View v) {
 		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MealDetail_Date,
-				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
+				DateUtils.getDateCalendar(((TextView) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	private void showTimePickerDialog(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_MealDetail_Hora,
-				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(((TextView) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
@@ -489,7 +510,7 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 				ScaleAnimation animation = new ScaleAnimation(1, 1, 0, 1, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
 				animation.setDuration(700);
 				findViewById(R.id.fragment_calcs).startAnimation(animation);
-				((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setChecked(true);
+				((ImageButton) findViewById(R.id.bt_insulin_calc_info)).setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_info_outline_grey_900_24dp));
 			}
 		}
 
@@ -533,12 +554,13 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 				}
 			});
 			insulinCalculator.setListener(null);
+			((ImageButton) findViewById(R.id.bt_insulin_calc_info)).setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_information_outline_grey600_24dp));
 		}
 	}
 
 	public void toggleInsulinCalcDetails(View view) {
 		expandInsulinCalcsAuto = false;
-		if (((ToggleButton) view).isChecked()) {
+		if(!isFragmentShowing()){
 			showCalcs();
 		} else {
 			hideCalcs();

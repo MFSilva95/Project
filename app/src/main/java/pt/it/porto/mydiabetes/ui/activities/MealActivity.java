@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -96,12 +97,12 @@ public class MealActivity extends BaseMealActivity {
 	}
 
 	@Override
-	protected void dateChanged(EditText view, String text) {
+	protected void dateChanged(TextView view, String text) {
 
 	}
 
 	@Override
-	protected void timeChanged(EditText view, String text) {
+	protected void timeChanged(TextView view, String text) {
 		DB_Read rdb = new DB_Read(this);
 		double d = rdb.Target_GetTargetByTime(text);
 		rdb.close();
@@ -186,7 +187,7 @@ public class MealActivity extends BaseMealActivity {
 
 	public void AddInsulinRead() {
 		Spinner insulinSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
-		EditText glycemia = (EditText) findViewById(R.id.et_MealDetail_Glycemia);
+		EditText glycemia = (EditText) findViewById(R.id.glycemia);
 		EditText target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);
 
 		//Get id of user
