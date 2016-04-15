@@ -143,9 +143,7 @@ public class InsulinRec extends DateTime implements Parcelable {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o == null && idBloodGlucose == -1) {
-			return true;
-		} else if (o == null) {
+		if (o == null) {
 			return false;
 		} else {
 			if (!(o instanceof InsulinRec)) {
@@ -159,7 +157,8 @@ public class InsulinRec extends DateTime implements Parcelable {
 					targetGlycemia == otherInsulinRec.getTargetGlycemia() &&
 					Float.compare(insulinUnits, otherInsulinRec.getInsulinUnits()) == 0 &&
 					idTag == otherInsulinRec.getIdTag() &&
-					idNote == otherInsulinRec.getIdNote();
+					idNote == otherInsulinRec.getIdNote() &&
+					super.equals(o);
 		}
 	}
 

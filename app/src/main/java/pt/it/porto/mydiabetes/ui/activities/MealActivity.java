@@ -53,6 +53,15 @@ public class MealActivity extends BaseMealActivity {
 	}
 
 	@Override
+	public boolean canSave() {
+		if (insulinCalculator.getCarbs() != 0 || insulinCalculator.getGlycemia() != 0) {
+			return true;
+		} else {
+			return super.canSave();
+		}
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.menuItem_MealDetail_Save) {
 			if (canSave()) {
@@ -138,6 +147,12 @@ public class MealActivity extends BaseMealActivity {
 		Spinner tagSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
 		Uri imgUri = getImgUri();
 
+		if ((insulinCalculator.getCarbsRatio() == 0) && imgUri == null) {
+			// nothing to save
+			return;
+		}
+
+
 		//Get id of user
 		DB_Read rdb = new DB_Read(this);
 		int idUser = rdb.getId();
@@ -162,7 +177,7 @@ public class MealActivity extends BaseMealActivity {
 		carb.setCarbsValue(insulinCalculator.getCarbs());
 		carb.setIdTag(idTag);
 		carb.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
-		carb.setDateTime(getDate(), getTime());
+		carb.setDateTime(getDateTime());
 
 
 		reg.Carbs_Save(carb);
@@ -209,7 +224,7 @@ public class MealActivity extends BaseMealActivity {
 		if (!glycemia.getText().toString().equals("")) {
 			gly.setIdUser(idUser);
 			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
-			gly.setDateTime(getDate(), getTime());
+			gly.setDateTime(getDateTime());
 			gly.setIdTag(idTag);
 			if (idnote > 0) {
 				gly.setIdNote(idnote);
@@ -228,7 +243,7 @@ public class MealActivity extends BaseMealActivity {
 		ins.setIdInsulin(idInsulin);
 		ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
 		ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
-		ins.setDateTime(getDate(), getTime());
+		ins.setDateTime(getDateTime());
 		ins.setInsulinUnits(getInsulinIntake());
 		ins.setIdTag(idTag);
 
