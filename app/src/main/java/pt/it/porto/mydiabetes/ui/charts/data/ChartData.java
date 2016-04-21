@@ -82,10 +82,6 @@ public abstract class ChartData implements Parcelable {
 
 	public abstract Cursor getCursor(Context context);
 
-	public Cursor getHeadersCursor(Context context) {
-		return null;
-	}
-
 	public abstract ArrayList<String> getTables();
 
 	public void setupFilter(Context context, ListView list) {

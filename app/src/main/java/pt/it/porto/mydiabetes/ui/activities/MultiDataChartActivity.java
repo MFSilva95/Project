@@ -20,7 +20,6 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 	protected ChartFragment.SelectItemToListCalculation selectItemToListCalculator;
 
 	private Cursor cursor;
-	private Cursor headersCursor;
 	protected ArrayList<String> tables;
 
 	protected Cursor getCursor() {
@@ -30,16 +29,8 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 		return cursor;
 	}
 
-	protected Cursor getHeadersCursor(){
-		if(cursor==null){
-			initCursor();
-		}
-		return headersCursor;
-	}
-
 	private void initCursor() {
 		cursor=getChartData().getCursor(this);
-		headersCursor=getChartData().getHeadersCursor(this);
 		tables=getChartData().getTables();
 //		String[] tables = new String[]{MyDiabetesContract.Regist.Insulin.TABLE_NAME + " JOIN " + MyDiabetesContract.Insulin.TABLE_NAME,
 //				MyDiabetesContract.Regist.CarboHydrate.TABLE_NAME};

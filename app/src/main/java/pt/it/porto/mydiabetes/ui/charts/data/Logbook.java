@@ -115,9 +115,4 @@ public class Logbook extends ChartData {
 		dest.writeStringArray(extras);
 		dest.writeBooleanArray(extrasActive);
 	}
-
-	@Override
-	public Cursor getHeadersCursor(Context context) {
-		return new ListDataSource(MyDiabetesStorage.getInstance(context)).getLogbookDataHeaders(true, true, true, getStartDate(), getEndDate(), -1);
-	}
 }

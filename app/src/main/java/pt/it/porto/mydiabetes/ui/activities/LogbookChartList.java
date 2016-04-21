@@ -4,15 +4,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -76,7 +73,7 @@ public class LogbookChartList extends MultiDataChartActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == LogbookChartList.DETAILS && resultCode == DetailLogbookActivity.RESULT_SAVED_CHANGES) {
+		if (requestCode==LogbookChartList.DETAILS && resultCode == DetailLogbookActivity.RESULT_SAVED_CHANGES) {
 			updateTimeRange();
 			setupContent();
 		}
@@ -200,83 +197,26 @@ public class LogbookChartList extends MultiDataChartActivity {
 
 	@Override
 	public RecyclerView.Adapter getRecyclerViewAdapter() {
-		return new ListAdapter(getCursor(), getHeadersCursor());
+		return new ListAdapter(getCursor());
 	}
 
-	class ListAdapter extends RecyclerView.Adapter<LogbookChartList.ListAdapter.Holder> implements FastScrollRecyclerView.SectionedAdapter {
+	class ListAdapter extends RecyclerView.Adapter<LogbookChartList.ListAdapter.Holder> {
 
 		private Cursor cursor;
-		private Cursor headersCursor;
 
-		public ListAdapter(Cursor cursor, Cursor headersCursor) {
+		public ListAdapter(Cursor cursor) {
 			this.cursor = cursor;
-			this.headersCursor = headersCursor;
 		}
 
-		private int getHeaderPosition(int position) {
-			int numberOfEntriesTill = 0;
-			if (headersCursor.moveToFirst()) {
-				do {
-					numberOfEntriesTill += headersCursor.getInt(1);
-					if (numberOfEntriesTill >= position) {
-						return headersCursor.getPosition();
-					}
-				} while (headersCursor.moveToNext());
-
-			}
-			return headersCursor.getPosition();
-		}
-
-		private boolean isHeaderPosition(int position, int headerPosition){
-			if(position==0){
-				return true;
-			} else {
-				int pox=0, sum=0;
-				while (pox<headerPosition){
-					headersCursor.moveToPosition(pox);
-					sum+=headersCursor.getInt(1);
-					pox++;
-				}
-				return sum==position;
-			}
-		}
-
-		@Override
-		public int getItemViewType(int position) {
-			int headerPosition=getHeaderPosition(position); // compensate the positions here is a header
-			if(isHeaderPosition(position, headerPosition)){
-				return 1;
-			}
-			cursor.moveToPosition(position-headerPosition-1);
-			String yearMonth = cursor.getString(0).substring(0, 7); // YYYY-MM
-			boolean hasNext = cursor.moveToNext();
-			if (hasNext) {
-				if (cursor.getString(0).substring(0, 7).equals(yearMonth)) {
-					return 0; // type for values
-				} else {
-					return 1; // type for date header
-				}
-			}
-			return 0;
-		}
 
 		@Override
 		public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-			if (viewType == 1) {
-				return new HeaderHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.listchart_header_row, parent, false));
-			}
 			return new Holder(LayoutInflater.from(parent.getContext()).inflate(R.layout.listchart_logbook_row, parent, false));
 		}
 
 		@Override
 		public void onBindViewHolder(Holder holder, int position) {
-			if (holder instanceof HeaderHolder) {
-				headersCursor.moveToPosition(getHeaderPosition(position));
-				holder.date.setText(headersCursor.getString(0));
-				return;
-			}
-
-			cursor.moveToPosition(position-getHeaderPosition(position)-1);
+			cursor.moveToPosition(position);
 			cursor.getInt(0);
 
 			String date = cursor.getString(0);
@@ -351,16 +291,7 @@ public class LogbookChartList extends MultiDataChartActivity {
 
 		@Override
 		public int getItemCount() {
-			return cursor == null ? 0 : cursor.getCount() + (headersCursor == null ? 0 : headersCursor.getCount());
-		}
-
-		@NonNull
-		@Override
-		public String getSectionName(int position) {
-			if(cursor.moveToPosition(position-getHeaderPosition(position)-1)) {
-				return cursor.getString(0).substring(0, 10);
-			}
-			return "";
+			return cursor == null ? 0 : cursor.getCount();
 		}
 
 		public class Holder extends RecyclerView.ViewHolder {
@@ -397,14 +328,6 @@ public class LogbookChartList extends MultiDataChartActivity {
 				itemView.setOnClickListener(listener);
 				itemView.setTag(this);
 			}
-		}
-
-		public class HeaderHolder extends Holder {
-
-			public HeaderHolder(View view) {
-				super(view);
-			}
-
 		}
 	}
 }
