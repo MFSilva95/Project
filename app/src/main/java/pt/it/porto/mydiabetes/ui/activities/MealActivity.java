@@ -14,6 +14,7 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.Insulin;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.UserInfo;
@@ -42,7 +43,7 @@ public class MealActivity extends BaseMealActivity {
 		}
 
 		super.onCreate(savedInstanceState);
-		if(glycemiaData!=null) {
+		if (glycemiaData != null) {
 			fillDateHour(glycemiaData.getFormattedDate(), glycemiaData.getFormattedTime());
 		}
 	}
@@ -159,7 +160,10 @@ public class MealActivity extends BaseMealActivity {
 		int idUser = rdb.getId();
 
 		//Get id of selected tag
-		String tag = tagSpinner.getSelectedItem().toString();
+		String tag = null;
+		if (tagSpinner != null) {
+			tag = tagSpinner.getSelectedItem().toString();
+		}
 		Log.d("selected Spinner", tag);
 		int idTag = rdb.Tag_GetIdByName(tag);
 		rdb.close();
@@ -167,7 +171,7 @@ public class MealActivity extends BaseMealActivity {
 		CarbsRec carb = new CarbsRec();
 
 		String note = getNote();
-		if (!note.isEmpty()) {
+		if (note != null && !note.isEmpty()) {
 			Note n = new Note();
 			n.setNote(note);
 			carb.setIdNote(reg.Note_Add(n));
@@ -198,9 +202,16 @@ public class MealActivity extends BaseMealActivity {
 		int idTag = rdb.Tag_GetIdByName(getPhaseOfDay());
 
 		//Get id of selected insulin
-		String insulin = insulinSpinner.getSelectedItem().toString();
+		String insulin = null;
+		if (insulinSpinner != null) {
+			insulin = insulinSpinner.getSelectedItem().toString();
+		}
 		Log.d("selected Spinner", insulin);
-		int idInsulin = rdb.Insulin_GetByName(insulin).getId();
+		Insulin insulin_ = rdb.Insulin_GetByName(insulin);
+		int idInsulin = 0;
+		if (insulin_ != null) {
+			idInsulin = insulin_.getId();
+		}
 
 
 		int idGlycemia = 0;
@@ -211,18 +222,18 @@ public class MealActivity extends BaseMealActivity {
 
 		int idnote = 0;
 		String note = getNote();
-		if (!note.isEmpty()) {
+		if (note!=null && !note.isEmpty()) {
 			Note n = new Note();
 			n.setNote(note);
 			idnote = reg.Note_Add(n);
 			ins.setIdNote(idnote);
 		}
 
-		GlycemiaRec gly=glycemiaData;
-		if (gly== null) {
+		GlycemiaRec gly = glycemiaData;
+		if (gly == null) {
 			gly = new GlycemiaRec();
 		}
-		if (!glycemia.getText().toString().equals("")) {
+		if (glycemia!=null && !glycemia.getText().toString().equals("")) {
 			gly.setIdUser(idUser);
 			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
 			gly.setDateTime(getDateTime());
@@ -243,7 +254,7 @@ public class MealActivity extends BaseMealActivity {
 		ins.setIdUser(idUser);
 		ins.setIdInsulin(idInsulin);
 		ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
-		ins.setTargetGlycemia(Integer.parseInt(target.getText().toString()));
+		ins.setTargetGlycemia(target != null ? Integer.parseInt(target.getText().toString()) : 0);
 		ins.setDateTime(getDateTime());
 		ins.setInsulinUnits(getInsulinIntake());
 		ins.setIdTag(idTag);

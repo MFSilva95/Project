@@ -6,15 +6,15 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.app.ActionBar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -25,12 +25,12 @@ import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import java.io.File;
 import java.text.ParseException;
@@ -62,6 +62,9 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 	private static final String GENERATED_IMAGE_URI = "generated_image_uri";
 	private static final String CALCS_OPEN = "calcs open";
 	protected InsulinCalculator insulinCalculator = null;
+	protected InsulinCalcFragment fragmentInsulinCalcsFragment;
+	boolean useIOB = true;
+	Calendar dateTime = null;
 	private EditText insulinIntake;
 	private EditText glycemia;
 	private EditText carbs;
@@ -72,15 +75,16 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 	private Bitmap b;
 	private Uri generatedImageUri;
 	private boolean showAddGlycemiaTarget;
-	protected InsulinCalcFragment fragmentInsulinCalcsFragment;
 	private boolean expandInsulinCalcsAuto = false;
-	boolean useIOB=true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_meal);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		ActionBar actionBar = getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 
 		insulinIntake = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
 		target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);
@@ -98,8 +102,8 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 		setUpdateListeners();
 		setupInsulinCalculator();
 
-		FeaturesDB featuresDB=new FeaturesDB(MyDiabetesStorage.getInstance(this));
-		useIOB=featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
+		FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(this));
+		useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
 	}
 
 	@Override
@@ -117,11 +121,14 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 		}
 
 		if (savedInstanceState != null && savedInstanceState.getBoolean(CALCS_OPEN, false)) {
-			((ImageButton) findViewById(R.id.bt_insulin_calc_info)).setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_info_outline_grey_900_24dp));
-			fragmentInsulinCalcsFragment=new InsulinCalcFragment();
+			ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
+			if (calcInsulinInfo != null) {
+				calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_info_outline_grey_900_24dp));
+			}
+			fragmentInsulinCalcsFragment = new InsulinCalcFragment();
 			getFragmentManager().beginTransaction().replace(R.id.fragment_calcs, fragmentInsulinCalcsFragment).commit();
 			getFragmentManager().executePendingTransactions();
-			this.fragmentInsulinCalcsFragment= (InsulinCalcFragment)  getFragmentManager().findFragmentById(R.id.fragment_calcs);
+			this.fragmentInsulinCalcsFragment = (InsulinCalcFragment) getFragmentManager().findFragmentById(R.id.fragment_calcs);
 			showCalcs();
 		}
 	}
@@ -149,8 +156,11 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 		String result = rdb.Tag_GetByTime(value).getName();
 		rdb.close();
 		Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
-		SpinnerAdapter adapter = spinner.getAdapter();
-		for (int position = 0; position < adapter.getCount(); position++) {
+		SpinnerAdapter adapter = null;
+		if (spinner != null) {
+			adapter = spinner.getAdapter();
+		}
+		for (int position = 0; position < (adapter != null ? adapter.getCount() : 0); position++) {
 			if (adapter.getItem(position).equals(result)) {
 				spinner.setSelection(position);
 				return;
@@ -160,8 +170,11 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 
 	private void setupMealImage() {
 		ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
+		if (imageView == null) {
+			return;
+		}
 		if (imgUri == null) {
-			imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.newphoto, null));
+			imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
 		} else {
 			DisplayMetrics displaymetrics = new DisplayMetrics();
 			getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -173,7 +186,11 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 	}
 
 	private void setupClickListeners() {
-		findViewById(R.id.iv_MealDetail_Photo).setOnClickListener(new View.OnClickListener() {
+		ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
+		if (imageView == null) {
+			return;
+		}
+		imageView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (imgUri != null) {
@@ -191,19 +208,25 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 			}
 		});
 
-		findViewById(R.id.addTargetObjective).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				addGlycemiaObjective();
-			}
-		});
+		View view = findViewById(R.id.addTargetObjective);
+		if (view != null) {
+			view.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					addGlycemiaObjective();
+				}
+			});
+		}
 
-		findViewById(R.id.bt_insulin_calc_info).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				toggleInsulinCalcDetails(v);
-			}
-		});
+		view = findViewById(R.id.bt_insulin_calc_info);
+		if (view != null) {
+			view.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					toggleInsulinCalcDetails(v);
+				}
+			});
+		}
 	}
 
 	private void setUpdateListeners() {
@@ -227,7 +250,7 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 						e.printStackTrace();
 					}
 					((ExtendedEditText) target).setSuffix("mg/dl");
-				} else{
+				} else {
 					((ExtendedEditText) target).setSuffix(null);
 				}
 				insulinCalculator.setGlycemiaTarget(val);
@@ -286,7 +309,7 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 						e.printStackTrace();
 					}
 					((ExtendedEditText) carbs).setSuffix("grams");
-				}else{
+				} else {
 					((ExtendedEditText) carbs).setSuffix(null);
 				}
 
@@ -350,7 +373,7 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 //						e.printStackTrace();
 //					}
 					((ExtendedEditText) insulinIntake).setSuffix(BaseMealActivity.this.getString(R.string.units));
-				}else{
+				} else {
 					((ExtendedEditText) insulinIntake).setSuffix(null);
 				}
 				insulinIntakeChanged(insulinIntake, text);
@@ -415,7 +438,9 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 
 		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allTags);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(adapter);
+		if (spinner != null) {
+			spinner.setAdapter(adapter);
+		}
 	}
 
 	private void showDatePickerDialog(View v) {
@@ -429,7 +454,6 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 				DateUtils.getTimeCalendar(((TextView) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "DatePicker");
 	}
-
 
 	private void fillInsulinSpinner() {
 		Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
@@ -447,7 +471,9 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 		}
 		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allInsulins);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(adapter);
+		if (spinner != null) {
+			spinner.setAdapter(adapter);
+		}
 
 	}
 
@@ -470,8 +496,11 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 	public void setImageUri(Uri data) {
 		imgUri = data;
 		ImageView img = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
+		if (img == null) {
+			return;
+		}
 		if (imgUri == null || !new File(imgUri.getPath()).exists()) {
-			img.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.newphoto, null));
+			img.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
 		} else {
 			DisplayMetrics displaymetrics = new DisplayMetrics();
 			getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
@@ -484,7 +513,11 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 
 	private void addGlycemiaObjective() {
 		Intent intent = new Intent(this, TargetBG_detail.class);
-		String goal = ((EditText) findViewById(R.id.et_MealDetail_TargetGlycemia)).getText().toString();
+		EditText targetGlycemia = ((EditText) findViewById(R.id.et_MealDetail_TargetGlycemia));
+		String goal = null;
+		if (targetGlycemia != null) {
+			goal = targetGlycemia.getText().toString();
+		}
 		if (!TextUtils.isEmpty(goal)) {
 			float target = Float.parseFloat(goal);
 			Bundle bundle = new Bundle();
@@ -509,8 +542,14 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 
 				ScaleAnimation animation = new ScaleAnimation(1, 1, 0, 1, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
 				animation.setDuration(700);
-				findViewById(R.id.fragment_calcs).startAnimation(animation);
-				((ImageButton) findViewById(R.id.bt_insulin_calc_info)).setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_info_outline_grey_900_24dp));
+				FrameLayout fragmentCalcs = (FrameLayout) findViewById(R.id.fragment_calcs);
+				if (fragmentCalcs != null) {
+					fragmentCalcs.startAnimation(animation);
+				}
+				ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
+				if (calcInsulinInfo != null) {
+					calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_info_outline_grey_900_24dp));
+				}
 			}
 		}
 
@@ -533,7 +572,10 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 		if (fragmentInsulinCalcsFragment != null) {
 			ScaleAnimation animation = new ScaleAnimation(1, 1, 1, 0, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
 			animation.setDuration(700);
-			findViewById(R.id.fragment_calcs).startAnimation(animation);
+			FrameLayout fragmentCalcs = (FrameLayout) findViewById(R.id.fragment_calcs);
+			if (fragmentCalcs != null) {
+				fragmentCalcs.startAnimation(animation);
+			}
 			animation.setAnimationListener(new Animation.AnimationListener() {
 				@Override
 				public void onAnimationStart(Animation animation) {
@@ -554,13 +596,16 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 				}
 			});
 			insulinCalculator.setListener(null);
-			((ImageButton) findViewById(R.id.bt_insulin_calc_info)).setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_information_outline_grey600_24dp));
+			ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
+			if (calcInsulinInfo != null) {
+				calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_information_outline_grey600_24dp));
+			}
 		}
 	}
 
 	public void toggleInsulinCalcDetails(View view) {
 		expandInsulinCalcsAuto = false;
-		if(!isFragmentShowing()){
+		if (!isFragmentShowing()) {
 			showCalcs();
 		} else {
 			hideCalcs();
@@ -596,10 +641,14 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 
 	public void setGlycemiaTarget(int val) {
 		target.setText(String.format(LocaleUtils.MY_LOCALE, "%d", val));
+		View targetObjective = findViewById(R.id.addTargetObjective);
+		if (targetObjective == null) {
+			return;
+		}
 		if (val != 0) {
-			findViewById(R.id.addTargetObjective).setVisibility(View.GONE);
+			targetObjective.setVisibility(View.GONE);
 		} else {
-			findViewById(R.id.addTargetObjective).setVisibility(View.VISIBLE);
+			targetObjective.setVisibility(View.VISIBLE);
 		}
 	}
 
@@ -628,11 +677,11 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 	}
 
 	public float getInsulinIntake() {
-		String insulinIn=insulinIntake.getText().toString();
-		if(insulinIn.isEmpty()){
+		String insulinIn = insulinIntake.getText().toString();
+		if (insulinIn.isEmpty()) {
 			return 0;
 		}
-		return  Float.parseFloat(insulinIntake.getText().toString());
+		return Float.parseFloat(insulinIntake.getText().toString());
 	}
 
 	public String getTime() {
@@ -643,39 +692,48 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 		return date.getText().toString();
 	}
 
-	Calendar dateTime=null;
-
-	public Calendar getDateTime(){
+	public Calendar getDateTime() {
 		updateDateTime();
 		return dateTime;
 	}
 
-	private void updateDateTime(){
+	private void updateDateTime() {
 		try {
 			// only udpates dateTime if needed
 			Calendar newDateTime = DateUtils.getDateTime(getDate(), getTime());
-			if(DateUtils.isSameTime(dateTime, newDateTime)){
+			if (DateUtils.isSameTime(dateTime, newDateTime)) {
 				return;
 			}
-			dateTime=newDateTime;
+			dateTime = newDateTime;
 			dateTime.set(Calendar.SECOND, Calendar.getInstance().get(Calendar.SECOND)); // we add seconds to be possible distinguish in logbook multiple references in same minute
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 	}
 
+	@Nullable
 	public String getPhaseOfDay() {
 		Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
-		return spinner.getSelectedItem().toString();
+		if (spinner != null) {
+			return spinner.getSelectedItem().toString();
+		}
+		return null;
 	}
 
+	@Nullable
 	public String getNote() {
 		EditText note = (EditText) findViewById(R.id.et_MealDetail_Notes);
-		return note.getText().toString();
+		if (note != null) {
+			return note.getText().toString();
+		}
+		return null;
 	}
 
 	void setNote(String note) {
-		((EditText) findViewById(R.id.et_MealDetail_Notes)).setText(note);
+		EditText notes = ((EditText) findViewById(R.id.et_MealDetail_Notes));
+		if (notes != null) {
+			notes.setText(note);
+		}
 	}
 
 	public boolean canSave() {
@@ -692,9 +750,10 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 		return false;
 	}
 
+	@Nullable
 	public String getInsulin() {
 		Spinner insulin = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
-		return insulin.getSelectedItem().toString();
+		return insulin != null ? insulin.getSelectedItem().toString() : null;
 	}
 
 	@Override
@@ -708,7 +767,13 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 
 		if (insulinName != null) {
 			Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
-			SpinnerAdapter adapter = spinner.getAdapter();
+			SpinnerAdapter adapter = null;
+			if (spinner != null) {
+				adapter = spinner.getAdapter();
+			}
+			if (adapter == null) {
+				return;
+			}
 			for (int position = 0; position < adapter.getCount(); position++) {
 				if (adapter.getItem(position).equals(insulinName)) {
 					spinner.setSelection(position);
