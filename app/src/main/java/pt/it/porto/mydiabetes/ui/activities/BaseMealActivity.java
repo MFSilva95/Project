@@ -54,7 +54,7 @@ import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
-public abstract class BaseMealActivity extends BaseActivity implements CalcListener {
+public abstract class BaseMealActivity extends FormActivity implements CalcListener {
 
 	// activity flags start for result
 	public final static int IMAGE_CAPTURE = 2;
@@ -80,11 +80,6 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.fragment_meal);
-		ActionBar actionBar = getSupportActionBar();
-		if (actionBar != null) {
-			actionBar.setDisplayHomeAsUpEnabled(true);
-		}
 
 		insulinIntake = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
 		target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);
@@ -249,9 +244,6 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}
-					((ExtendedEditText) target).setSuffix("mg/dl");
-				} else {
-					((ExtendedEditText) target).setSuffix(null);
 				}
 				insulinCalculator.setGlycemiaTarget(val);
 				setInsulinIntake();
@@ -274,7 +266,6 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 				int val = 0;
 				if (text.isEmpty()) {
 					val = 0;
-					((ExtendedEditText) glycemia).setSuffix(null);
 				} else {
 					try {
 						val = Integer.parseInt(s.toString());
@@ -282,7 +273,6 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 						e.printStackTrace();
 					}
 				}
-				((ExtendedEditText) glycemia).setSuffix("mg/dl");
 				insulinCalculator.setGlycemia(val);
 				setInsulinIntake();
 				glycemiaChanged(glycemia, text);
@@ -308,9 +298,6 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					}
-					((ExtendedEditText) carbs).setSuffix("grams");
-				} else {
-					((ExtendedEditText) carbs).setSuffix(null);
 				}
 
 				insulinCalculator.setCarbs(val);
@@ -372,9 +359,6 @@ public abstract class BaseMealActivity extends BaseActivity implements CalcListe
 //					} catch (NumberFormatException e) {
 //						e.printStackTrace();
 //					}
-					((ExtendedEditText) insulinIntake).setSuffix(BaseMealActivity.this.getString(R.string.units));
-				} else {
-					((ExtendedEditText) insulinIntake).setSuffix(null);
 				}
 				insulinIntakeChanged(insulinIntake, text);
 			}
