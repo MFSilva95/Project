@@ -2,30 +2,34 @@ package pt.it.porto.mydiabetes.ui.views;
 
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.support.design.widget.TextInputEditText;
+import android.text.Editable;
 import android.text.TextPaint;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.widget.EditText;
+
+import pt.it.porto.mydiabetes.R;
 
 /**
- * This is an extended EditText with a Prefix and Suffix.
- *
+ * This is an extended EditText with a Suffix.
  */
-public class ExtendedEditText extends EditText {
+public class ExtendedEditText extends TextInputEditText {
 	private static final String TAG = "ExtendedEditText";
-	private int extraPadding;
 	// Stuff to do with our rendering
 	TextPaint mTextPaint = new TextPaint();
 	float mFontHeight;
-
 	// The actual suffix
 	String mSuffix = "";
-
 	// These are used to store details obtained from the EditText's rendering process
 	Rect line0bounds = new Rect();
 	int mLine0Baseline;
+	TextWatcher textWatcher;
+	private int extraPadding;
+	private boolean showSuffix = false;
 
 	public ExtendedEditText(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -38,6 +42,44 @@ public class ExtendedEditText extends EditText {
 //		mTextPaint.setTextSize(mFontHeight);
 //		mTextPaint.setTextAlign(Paint.Align.LEFT);
 		extraPadding = (int) (mTextPaint.measureText(" ") / 2);
+		TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ExtendedEditText, 0, 0);
+		try {
+			mSuffix = a.getString(R.styleable.ExtendedEditText_suffix);
+		} finally {
+			a.recycle();
+		}
+		setupSuffix();
+	}
+
+	private void setupSuffix() {
+		super.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+				if (textWatcher != null) {
+					textWatcher.beforeTextChanged(s, start, count, after);
+				}
+
+			}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				if (textWatcher != null) {
+					textWatcher.onTextChanged(s, start, before, count);
+				}
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+				if (s != null && !s.toString().isEmpty() && mSuffix != null) {
+					showSuffix = true;
+				} else {
+					showSuffix = false;
+				}
+				if (textWatcher != null) {
+					textWatcher.afterTextChanged(s);
+				}
+			}
+		});
 	}
 
 	@Override
@@ -59,7 +101,7 @@ public class ExtendedEditText extends EditText {
 	public void onDraw(Canvas c) {
 		mLine0Baseline = getLineBounds(0, line0bounds);
 		super.onDraw(c);
-		if (mSuffix != null) {
+		if (mSuffix != null && showSuffix) {
 			// Now we can calculate what we need!
 			int xSuffix = (int) mTextPaint.measureText(getText().toString()) + extraPadding + getPaddingLeft();
 
@@ -71,4 +113,13 @@ public class ExtendedEditText extends EditText {
 		}
 	}
 
+	@Override
+	public void addTextChangedListener(TextWatcher watcher) {
+		this.textWatcher = watcher;
+	}
+
+	@Override
+	public void removeTextChangedListener(TextWatcher watcher) {
+		this.textWatcher = null;
+	}
 }
