@@ -122,8 +122,10 @@
                     android:imeOptions="actionGo"
                     android:inputType="number"
                     android:maxLines="1"
+                    android:maxLength="3"
                     android:nextFocusDown="@+id/et_MealDetail_Carbs"
                     app:suffix="@string/mg_dl"
+                    app:suffix_color="@color/text_units"
                     tools:text="150"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -158,7 +160,7 @@
                     android:hint="Objectivo de Glicemia"
                     android:imeOptions="actionGo"
                     android:inputType="numberDecimal"
-                    android:maxLength="4"
+                    android:maxLength="3"
                     android:maxLines="1"
                     app:suffix="@string/mg_dl"
                     tools:text="82"/>
@@ -306,12 +308,11 @@
                 <pt.it.porto.mydiabetes.ui.views.ExtendedEditText
                     android:id="@+id/et_MealDetail_InsulinUnits"
                     android:layout_width="match_parent"
-
                     android:layout_height="wrap_content"
                     android:hint="Insulina a Administrar"
                     android:imeOptions="actionDone"
                     android:inputType="numberDecimal"
-                    android:maxLength="4"
+                    android:maxLength="3"
                     android:maxLines="1"
                     app:suffix="@string/units"/>
             </android.support.design.widget.TextInputLayout>

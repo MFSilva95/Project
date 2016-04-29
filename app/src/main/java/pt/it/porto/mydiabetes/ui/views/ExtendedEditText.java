@@ -4,9 +4,11 @@ package pt.it.porto.mydiabetes.ui.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextPaint;
 import android.text.TextWatcher;
@@ -20,7 +22,7 @@ import pt.it.porto.mydiabetes.R;
 public class ExtendedEditText extends TextInputEditText {
 	private static final String TAG = "ExtendedEditText";
 	// Stuff to do with our rendering
-	TextPaint mTextPaint = new TextPaint();
+	TextPaint mTextPaint;
 	float mFontHeight;
 	// The actual suffix
 	String mSuffix = "";
@@ -38,13 +40,15 @@ public class ExtendedEditText extends TextInputEditText {
 
 //		mTextPaint.setColor(getCurrentTextColor());
 //		mTextPaint.setTypeface(this.getTypeface());
-		mTextPaint = getPaint();
+		mTextPaint = new TextPaint(getPaint());
 //		mTextPaint.setTextSize(mFontHeight);
 //		mTextPaint.setTextAlign(Paint.Align.LEFT);
 		extraPadding = (int) (mTextPaint.measureText(" ") / 2);
 		TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ExtendedEditText, 0, 0);
 		try {
 			mSuffix = a.getString(R.styleable.ExtendedEditText_suffix);
+			//noinspection ResourceType
+			mTextPaint.setColor( a.getColor(R.styleable.ExtendedEditText_suffix_color, ResourcesCompat.getColor(getResources(), R.color.text_units, null)));
 		} finally {
 			a.recycle();
 		}
