@@ -379,6 +379,10 @@
     <string name="cloudSync_edit_account">Editar conta</string>
     <string name="settings_edit_insulins">Editar Insulinas</string>
     <string name="settings_edit_glicemia_targets">Editar Objectivos de Glicemia</string>
+    <string name="glycemia_objective">Objectivo de Glicemia</string>
+    <string name="glycemia_measure">Glicemia Lida</string>
+    <string name="insulin_intake">Insulina a Administrar</string>
+    <string name="carbs_intake">Hidratos de Carbono Consumidos</string>
 
 
     <plurals name="notification_text_new_glucose_measure">

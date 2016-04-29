@@ -146,7 +146,7 @@ public class MealActivity extends BaseMealActivity {
 
 
 	public void AddCarbsRead() {
-		Spinner tagSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Tag);
+		Spinner tagSpinner = (Spinner) findViewById(R.id.tag);
 		Uri imgUri = getImgUri();
 
 		if ((insulinCalculator.getCarbsRatio() == 0) && imgUri == null) {
@@ -192,7 +192,7 @@ public class MealActivity extends BaseMealActivity {
 	public void AddInsulinRead() {
 		Spinner insulinSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
 		EditText glycemia = (EditText) findViewById(R.id.glycemia);
-		EditText target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);
+		EditText target = (EditText) findViewById(R.id.glycemia_target);
 
 		//Get id of user
 		DB_Read rdb = new DB_Read(this);

@@ -9,14 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -335,14 +333,14 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	}
 
 	void setModeRefresh() {
-		findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.edit_text_holo_dark_error);
+		findViewById(R.id.insulin_intake).setBackgroundResource(R.drawable.edit_text_holo_dark_error);
 		setToggleIconImage(R.drawable.ic_cached_grey_400_24dp);
 		undo = true;
 		mode = MODE_REFRESH;
 	}
 
 	void setModeRevert() {
-		findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.edit_text_holo_dark_changed);
+		findViewById(R.id.insulin_intake).setBackgroundResource(R.drawable.edit_text_holo_dark_changed);
 		setToggleIconImage(R.drawable.ic_redo_flip_grey_400_24dp);
 		mode = MODE_REVERT;
 		autoUpdate = true;
@@ -351,7 +349,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	void setModeInfo() {
 		undo = false;
 		autoUpdate = false;
-		findViewById(R.id.et_MealDetail_InsulinUnits).setBackgroundResource(R.drawable.default_edit_text_holo_dark);
+		findViewById(R.id.insulin_intake).setBackgroundResource(R.drawable.default_edit_text_holo_dark);
 		setToggleIconImage(android.R.drawable.ic_menu_info_details);
 		if (fragmentInsulinCalcsFragment != null) {
 			((ToggleButton) findViewById(R.id.bt_insulin_calc_info)).setChecked(true);
@@ -384,7 +382,7 @@ public class DetailLogbookActivity extends BaseMealActivity {
 	}
 
 	@Override
-	boolean shouldSetInsulin() {
+	protected boolean shouldSetInsulin() {
 		return autoUpdate;
 	}
 

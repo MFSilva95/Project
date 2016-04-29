@@ -5,7 +5,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:scrollbars="vertical"
-            tools:context=".ui.activities.BaseMealActivity">
+            tools:context=".ui.activities.FormActivity">
 
     <LinearLayout
         android:id="@+id/section_dateTime"
@@ -27,7 +27,7 @@
                 android:src="@drawable/ic_access_time_black_48dp"/>
 
             <TextView
-                android:id="@+id/et_MealDetail_Date"
+                android:id="@+id/date"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_2x"
@@ -39,7 +39,6 @@
                 android:background="?selectableItemBackground"
                 android:clickable="true"
                 android:gravity="center_vertical"
-                android:onClick="setDate"
                 android:paddingEnd="16dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="16dp"
@@ -49,7 +48,7 @@
                 />
 
             <TextView
-                android:id="@+id/et_MealDetail_Hora"
+                android:id="@+id/time"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/height_2x"
@@ -64,7 +63,7 @@
                 tools:text="18:00"/>
 
             <Spinner
-                android:id="@+id/sp_MealDetail_Tag"
+                android:id="@+id/tag"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_2x"
                 android:layout_alignParentBottom="true"
@@ -118,12 +117,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="0dp"
-                    android:hint="Glicemia Lida"
+                    android:hint="@string/glycemia_measure"
                     android:imeOptions="actionGo"
                     android:inputType="number"
                     android:maxLines="1"
                     android:maxLength="3"
-                    android:nextFocusDown="@+id/et_MealDetail_Carbs"
+                    android:nextFocusDown="@+id/carbs"
                     app:suffix="@string/mg_dl"
                     app:suffix_color="@color/text_units"
                     tools:text="150"/>
@@ -154,10 +153,10 @@
                 android:paddingStart="4dp">
 
                 <pt.it.porto.mydiabetes.ui.views.ExtendedEditText
-                    android:id="@+id/et_MealDetail_TargetGlycemia"
+                    android:id="@+id/glycemia_target"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="Objectivo de Glicemia"
+                    android:hint="@string/glycemia_objective"
                     android:imeOptions="actionGo"
                     android:inputType="numberDecimal"
                     android:maxLength="3"
@@ -215,14 +214,14 @@
                 android:src="@drawable/meal_black"/>
 
             <pt.it.porto.mydiabetes.ui.views.ExtendedEditText
-                android:id="@+id/et_MealDetail_Carbs"
+                android:id="@+id/carbs"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_toRightOf="@id/img"
                 android:background="@null"
                 android:gravity="center_vertical"
-                android:hint="Hidratos de Carbono Consumidos"
+                android:hint="@string/carbs_intake"
                 android:imeOptions="actionDone"
                 android:inputType="numberDecimal"
                 android:maxLength="3"
@@ -306,10 +305,10 @@
                 app:errorEnabled="false">
 
                 <pt.it.porto.mydiabetes.ui.views.ExtendedEditText
-                    android:id="@+id/et_MealDetail_InsulinUnits"
+                    android:id="@+id/insulin_intake"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Insulina a Administrar"
+                    android:hint="@string/insulin_intake"
                     android:imeOptions="actionDone"
                     android:inputType="numberDecimal"
                     android:maxLength="3"
@@ -362,13 +361,14 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
+            android:id="@+id/notes_section"
             android:layout_height="64dp">
 
             <EditText
-                android:id="@+id/et_MealDetail_Notes"
+                android:id="@+id/notes"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Notas"
+                android:hint="@string/notes"
                 android:maxLines="5"/>
         </android.support.design.widget.TextInputLayout>
 
