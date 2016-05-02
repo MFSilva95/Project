@@ -50,6 +50,14 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 	public final static int IMAGE_VIEW = 3;
 	private static final String GENERATED_IMAGE_URI = "generated_image_uri";
 	private static final String CALCS_OPEN = "calcs open";
+	// sections of UI list
+	public static int SECTION_DATETIME = R.id.section_dateTime;
+	public static int SECTION_GLICEMIA = R.id.section_glicemia;
+	public static int[] SECTION_TARGET_GLICEMIA = new int[]{R.id.insulin_obj, R.id.addTargetObjective};
+	public static int SECTION_CARBS = R.id.section_carbs;
+	public static int SECTION_INSULIN = R.id.section_insulin;
+
+	// fragment with cacls of insulin
 	protected InsulinCalcFragment fragmentInsulinCalcsFragment;
 	protected InsulinCalculator insulinCalculator = null;
 	boolean useIOB = true;
@@ -57,12 +65,10 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 	private TextView date;
 	private EditText insulinIntake;
 	private EditText target;
-
 	private Uri generatedImageUri;
 	private Uri imgUri;
 	private Bitmap b;
 	private boolean expandInsulinCalcsAuto = false;
-
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +99,6 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 		outState.putBoolean(CALCS_OPEN, isFragmentShowing());
 	}
 
-
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
@@ -113,7 +118,6 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 			showCalcs();
 		}
 	}
-
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -299,7 +303,6 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 		}
 	}
 
-
 	private void addGlycemiaObjective() {
 		Intent intent = new Intent(this, TargetBG_detail.class);
 		EditText targetGlycemia = ((EditText) findViewById(R.id.glycemia_target));
@@ -315,7 +318,6 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 		}
 		startActivity(intent);
 	}
-
 
 	private boolean isFragmentShowing() {
 		return fragmentInsulinCalcsFragment != null;
@@ -537,5 +539,31 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 	public void setup() {
 		fragmentInsulinCalcsFragment = (InsulinCalcFragment) getFragmentManager().findFragmentById(R.id.fragment_calcs);
 		showCalcs();
+	}
+
+	/***
+	 * Hide sections
+	 */
+	public void hideSection(int... sections) {
+		for (int section : sections) {
+			View view = findViewById(section);
+			if (view != null) {
+				view.setVisibility(View.GONE);
+			}
+		}
+	}
+
+	/**
+	 * Show section
+	 *
+	 * @param sections
+	 */
+	public void showSection(int... sections) {
+		for (int section : sections) {
+			View view = findViewById(section);
+			if (view != null) {
+				view.setVisibility(View.VISIBLE);
+			}
+		}
 	}
 }

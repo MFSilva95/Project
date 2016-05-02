@@ -85,7 +85,7 @@
         <RelativeLayout
             android:id="@+id/section_glicemia"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_2x2"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
@@ -146,6 +146,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="@dimen/height_2x"
+                android:layout_below="@id/glycemia_txt"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="@dimen/height_2x"
                 android:layout_marginTop="2dp"
@@ -191,13 +192,14 @@
                 android:background="?selectableItemBackground"
                 android:src="@drawable/ic_history_grey_700_24dp"
                 android:visibility="gone"/>
-        </RelativeLayout>
 
         <View
+            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/divider"
             />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/section_carbs"
@@ -254,14 +256,15 @@
                 android:background="?selectableItemBackground"
                 android:src="@drawable/ic_photo_camera_grey_600_24dp"/>
 
-        </RelativeLayout>
 
 
         <View
+            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/divider"
             />
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/section_insulin"
@@ -343,9 +346,9 @@
                 android:background="?selectableItemBackground"
                 android:src="@drawable/ic_history_grey_700_24dp"
                 android:visibility="gone"/>
-        </RelativeLayout>
 
         <FrameLayout
+            android:layout_below="@id/insulin_admin"
             android:id="@+id/fragment_calcs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -354,10 +357,12 @@
             tools:layout_height="200dp"/>
 
         <View
+            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/divider"
             />
+        </RelativeLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
