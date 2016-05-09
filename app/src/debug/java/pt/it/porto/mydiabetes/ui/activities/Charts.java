@@ -44,8 +44,4 @@ public class Charts extends BaseActivity {
 		startActivity(intent);
 	}
 
-	public void test(View view) {
-		Intent intent = new Intent(this, ListTestActivity.class);
-		startActivity(intent);
-	}
 }

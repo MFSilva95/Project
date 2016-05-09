@@ -1,19 +1,18 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
 import android.app.AlarmManager;
+import android.app.DialogFragment;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.MotionEvent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.view.View.OnTouchListener;
-import android.widget.ScrollView;
+import android.widget.EditText;
+import android.widget.ListView;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -22,12 +21,15 @@ import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
+import pt.it.porto.mydiabetes.database.ListsDataDb;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.database.Usage;
 import pt.it.porto.mydiabetes.middleHealth.myglucohealth.BluetoothChangesRegisterService;
+import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.FeatureIOBDialog;
 import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
+import pt.it.porto.mydiabetes.ui.listAdapters.LogbookAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.SyncAlarm;
 
@@ -36,11 +38,51 @@ public class Home extends BaseOldActivity {
 
 	private static final String TAG = "Home";
 
+
+	ListView logbookList;
+	private EditText dateFrom;
+	private EditText dateTo;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-		getActionBar();
+		dateFrom = (EditText) findViewById(R.id.et_Logbook_DataFrom);
+		dateTo = (EditText) findViewById(R.id.et_Logbook_DataTo);
+		logbookList = (ListView) findViewById(R.id.LogbookActivityList);
+
+		FillDates();
+
+		dateFrom.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				fillListView(logbookList);
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
+		dateTo.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count) {
+				fillListView(logbookList);
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+			}
+
+			@Override
+			public void afterTextChanged(Editable s) {
+			}
+		});
+
+		fillListView(logbookList);
 
 		DB_Read read = new DB_Read(this);
 		if (!read.MyData_HasData()) {
@@ -50,19 +92,43 @@ public class Home extends BaseOldActivity {
 		}
 		read.close();
 
-		final GestureDetector gestureDetector;
-		gestureDetector = new GestureDetector(this, new MyGestureDetector());
-		ScrollView sv = (ScrollView) findViewById(R.id.homeScrollView);
-		sv.setOnTouchListener(new OnTouchListener() {
 
-			public boolean onTouch(View v, MotionEvent event) {
-				return !gestureDetector.onTouchEvent(event);
-			}
-		});
 		setupSyncAlarm();
 		showNewFeatures();
 		BluetoothChangesRegisterService.startService(this.getApplicationContext());
+
 	}
+
+	public void FillDates() {
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_YEAR, -3);
+		if (dateFrom.getText().length() == 0) {
+			dateFrom.setText(DateUtils.getFormattedDate(calendar));
+		}
+
+		calendar = Calendar.getInstance();
+		if (dateTo.getText().length() == 0) {
+			dateTo.setText(DateUtils.getFormattedDate(calendar));
+		}
+	}
+
+
+	public void fillListView(ListView lv) {
+		ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
+		Cursor cursor = db.getLogbookList(dateFrom.getText().toString(), dateTo.getText().toString());
+		lv.setAdapter(new LogbookAdapter(cursor, this));
+	}
+
+	public void showDatePickerDialogFrom(View v) {
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Logbook_DataFrom, DateUtils.getDateCalendar(((EditText) v).getText().toString()));
+		newFragment.show(getFragmentManager(), "DatePicker");
+	}
+
+	public void showDatePickerDialogTo(View v) {
+		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Logbook_DataTo, DateUtils.getDateCalendar(((EditText) v).getText().toString()));
+		newFragment.show(getFragmentManager(), "DatePicker");
+	}
+
 
 	private void setupSyncAlarm() {
 		SharedPreferences preferences = pt.it.porto.mydiabetes.database.Preferences.getPreferences(this);
@@ -97,69 +163,12 @@ public class Home extends BaseOldActivity {
 		}
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.home, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menuItem_Home:
-				Call_DataTools();
-				return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 
 	public void ShowDialogAddData() {
 		Intent intent = new Intent(this, WelcomeActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		startActivity(intent);
 		finish();
-	}
-
-	public void Call_DataTools() {
-		Intent intent = new Intent(this, DataTools.class);
-		startActivity(intent);
-	}
-
-	public void Call_OutrasLeituras(View view) {
-		Intent intent = new Intent(this, ExBPChoDisWei.class);
-		startActivity(intent);
-	}
-
-	public void Call_Meal(View view) {
-		Intent intent = new Intent(this, MealActivity.class);
-		startActivity(intent);
-	}
-
-	public void Call_Glycemia(View view) {
-		Intent intent = new Intent(this, GlycemiaChartList.class);
-		startActivity(intent);
-	}
-
-	public void Call_Exercise(View view) {
-		Intent intent = new Intent(this, Exercise.class);
-		startActivity(intent);
-	}
-
-	public void Call_Insulin(View view) {
-		Intent intent = new Intent(this, InsulinChartList.class);
-		startActivity(intent);
-	}
-
-	public void Call_Carbs(View view) {
-		Intent intent = new Intent(this, CarbsChartList.class);
-		startActivity(intent);
-	}
-
-	//ADDED BY ZE ORNELAS
-	public void Call_Logbook(View view) {
-		Intent intent = new Intent(this, LogbookChartList.class);
-		startActivity(intent);
 	}
 
 	private void showNewFeatures() {
@@ -183,30 +192,6 @@ public class Home extends BaseOldActivity {
 		if (BuildConfig.SYNC_AVAILABLE && Preferences.showFeatureForFirstTime(this, FeaturesDB.FEATURE_CLOUD_SYNC)) {
 			FeatureWebSyncDialog dialog = new FeatureWebSyncDialog();
 			dialog.show(getFragmentManager(), "newFeature_sync");
-		}
-	}
-
-	private class MyGestureDetector extends SimpleOnGestureListener {
-
-		private static final int SWIPE_MIN_DISTANCE = 120;
-		private static final int SWIPE_MAX_OFF_PATH = 250;
-		private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-
-
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			if (e1 != null && e2 != null) {
-				System.out.println(" in onFling() :: ");
-				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH) return false;
-				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-
-					//Right
-					Call_OutrasLeituras(getCurrentFocus());
-
-				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					//Left
-				}
-			}
-			return super.onFling(e1, e2, velocityX, velocityY);
 		}
 	}
 }
