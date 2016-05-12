@@ -9,7 +9,9 @@
 	tools:context=".ui.activities.Home"
 	android:orientation="vertical">
 
-	<include layout="@layout/activity_logbook" />
+	<!--<include layout="@layout/activity_logbook" /> -->
+	<include layout="@layout/activity_advices" />
+
 
 	<android.support.design.widget.FloatingActionButton
 		android:id="@+id/fab"
