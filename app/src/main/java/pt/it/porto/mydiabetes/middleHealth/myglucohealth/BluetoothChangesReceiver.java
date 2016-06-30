@@ -17,7 +17,7 @@ import pt.it.porto.mydiabetes.database.DeviceMeasureDb;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.Measure;
 import pt.it.porto.mydiabetes.middleHealth.utils.IntentBuilder;
-import pt.it.porto.mydiabetes.ui.activities.MealActivity;
+import pt.it.porto.mydiabetes.ui.activities.Meal;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class BluetoothChangesReceiver extends BroadcastReceiver {
@@ -68,7 +68,7 @@ public class BluetoothChangesReceiver extends BroadcastReceiver {
 
                 bigText += " " + resources.getQuantityString(R.plurals.notification_text_new_meal, 1, 1);
                 Intent intent = IntentBuilder.buildMealIntent(context, id);
-                build(context, 0, MealActivity.class, text, bigText, intent);
+                build(context, 0, Meal.class, text, bigText, intent);
             }
         }
 

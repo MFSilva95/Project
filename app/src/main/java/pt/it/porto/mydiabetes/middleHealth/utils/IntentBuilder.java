@@ -3,12 +3,12 @@ package pt.it.porto.mydiabetes.middleHealth.utils;
 import android.content.Context;
 import android.content.Intent;
 
-import pt.it.porto.mydiabetes.ui.activities.MealActivity;
+import pt.it.porto.mydiabetes.ui.activities.Meal;
 
 public class IntentBuilder {
     public static Intent buildMealIntent(Context context, int measureId) {
-        Intent intent = new Intent(context, MealActivity.class);
-        intent.putExtra(MealActivity.BUNDLE_EXTRAS_GLYCEMIA_ID, measureId);
+        Intent intent = new Intent(context, Meal.class);
+        intent.putExtra(Meal.BUNDLE_EXTRAS_GLYCEMIA_ID, measureId);
         return intent;
     }
 

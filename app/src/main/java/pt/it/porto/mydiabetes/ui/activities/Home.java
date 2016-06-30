@@ -1,5 +1,6 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.DialogFragment;
 import android.app.PendingIntent;
@@ -27,6 +28,7 @@ import java.util.Comparator;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.data.Advice;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
@@ -41,6 +43,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
 import pt.it.porto.mydiabetes.ui.listAdapters.AdviceAdapter;
 import pt.it.porto.mydiabetes.ui.listAdapters.LogbookAdapter;
 import pt.it.porto.mydiabetes.ui.usability.AdviceTouchHelper;
+import pt.it.porto.mydiabetes.utils.AdviceAlertReceiver;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.SyncAlarm;
 
@@ -62,91 +65,34 @@ public class Home extends BaseOldActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-       // dateFrom = (EditText) findViewById(R.id.et_Logbook_DataFrom);
-       // dateTo = (EditText) findViewById(R.id.et_Logbook_DataTo);
 
-        //logbookList = (ListView) findViewById(R.id.LogbookActivityList);
         adviceList = (RecyclerView) findViewById(R.id.AdviceHomeList);
-
-        //fillDates();
         fillAdviceList(adviceList);
 
-
-       /* dateFrom.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                fillListView(logbookList);
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        dateTo.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                fillListView(logbookList);
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-
-        fillListView(logbookList);
-
-        DB_Read read = new DB_Read(this);
-        if (!read.MyData_HasData()) {
-            ShowDialogAddData();
-            read.close();
-            return; // making sure no more code of the on create method is executed
-        }
-        read.close();
-
-        */
-        setupSyncAlarm();
-        showNewFeatures();
-        BluetoothChangesRegisterService.startService(this.getApplicationContext());
-
-    }
-
-    public void fillDates() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, -3);
-        if (dateFrom.getText().length() == 0) {
-            dateFrom.setText(DateUtils.getFormattedDate(calendar));
-        }
-
-        calendar = Calendar.getInstance();
-        if (dateTo.getText().length() == 0) {
-            dateTo.setText(DateUtils.getFormattedDate(calendar));
-        }
-    }
-
-
-    public void fillListView(ListView lv) {
-        ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
-        Cursor cursor = db.getLogbookList(dateFrom.getText().toString(), dateTo.getText().toString());
-        lv.setAdapter(new LogbookAdapter(cursor, this));
     }
 
     public void fillAdviceList(RecyclerView lv) {
 
         ArrayList<Advice> adviceList = new ArrayList<Advice>();
 
-        Advice myAdvice1 = new Advice("5 - Já fez exercicio hoje?","Exercicio fisico é fundamental para uma boa gestão da diabetes",5);
-        Advice myAdvice2 = new Advice("1 - Já fez exercicio hoje?","Exercicio fisico é fundamental para uma boa gestão da diabetes",1);
-        Advice myAdvice3 = new Advice("2 - Já fez exercicio hoje?","Exercicio fisico é fundamental para uma boa gestão da diabetes",2);
-        Advice myAdvice4 = new Advice("4 - Já fez exercicio hoje?","Exercicio fisico é fundamental para uma boa gestão da diabetes",4);
-        Advice myAdvice5 = new Advice("3 - Já fez exercicio hoje?","Exercicio fisico é fundamental para uma boa gestão da diabetes",3);
+        //getAllYapAdvices -> put them into adviceList.
+
+        /*for(RawAdvice advice:advicesFromYap){
+            Advice newAdvice = new Advice(cenas do conselho);
+            if(newAdvice.getType().equals(Advice.AdviceTypes.ALERT)){
+                setupAlarm(advice);
+            }
+            adviceList.add(newAdvice);
+        }*/
+
+        String[] temp = {"AVISO IMPORTANTE LOL","Meal","10:s"};
+
+        Advice myAdvice1 = new Advice("5 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "normal", temp, 9);
+        Advice myAdvice2 = new Advice("1 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "ALERT", temp, 6);
+        setupAlarm(myAdvice2);
+        Advice myAdvice3 = new Advice("2 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "question", temp, 2);
+        Advice myAdvice4 = new Advice("4 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "normal", temp, 4);
+        Advice myAdvice5 = new Advice("3 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "alert", temp, 3);
 
         adviceList.add(myAdvice1);
         adviceList.add(myAdvice2);
@@ -164,91 +110,23 @@ public class Home extends BaseOldActivity {
         lv.setAdapter(adviceAdapter);
         lv.setLayoutManager(new LinearLayoutManager(this));
 
-        lv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                TextView thisView = (TextView) v;
-                System.out.println("CENAS!");
-                Toast.makeText(v.getContext(),"cenas: "+thisView.getText(),Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
-    public void showDatePickerDialogFrom(View v) {
-        DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Logbook_DataFrom, DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-        newFragment.show(getFragmentManager(), "DatePicker");
-    }
+    private void setupAlarm(Advice currentAdvice) {
 
-    public void showDatePickerDialogTo(View v) {
-        DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Logbook_DataTo, DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-        newFragment.show(getFragmentManager(), "DatePicker");
-    }
+        AlarmManager alm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AdviceAlertReceiver.class);
 
+        Bundle extras = new Bundle();
+        extras.putString("RegistryClassName", currentAdvice.getRegistryType());
+        extras.putString("NotificationText", currentAdvice.getNotificationText());
+        intent.putExtras(extras);
 
-    private void setupSyncAlarm() {
-        SharedPreferences preferences = pt.it.porto.mydiabetes.database.Preferences.getPreferences(this);
-        Calendar calendar = Calendar.getInstance();
-        AlarmManager alm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, SyncAlarm.class);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        if (!preferences.contains(SyncAlarm.SYNC_ALARM_LAST_SYNC)) { // only sets it if needed
-            Usage usage = new Usage(MyDiabetesStorage.getInstance(this));
-            String date = usage.getOldestRegist();
+        //alm.set(AlarmManager.RTC_WAKEUP, currentAdvice.getTime().getTimeInMillis(), alarmIntent);
 
-            try {
-                calendar.setTime(DateUtils.iso8601Format.parse(date));
-            } catch (ParseException e) {
-                e.printStackTrace();
-                return;
-            }
-            calendar.roll(Calendar.DAY_OF_YEAR, 7);
-            calendar.set(Calendar.HOUR_OF_DAY, 21); // Maybe change later?
-
-            alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
-        } else {
-            calendar.setTimeInMillis(preferences.getLong(SyncAlarm.SYNC_ALARM_LAST_SYNC, System.currentTimeMillis()));
-            calendar.roll(Calendar.DAY_OF_YEAR, 7);
-            calendar.set(Calendar.HOUR_OF_DAY, 21); // Maybe change later?
-            if (calendar.before(Calendar.getInstance())) {
-                alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
-            } else if (!preferences.contains(SyncAlarm.SYNC_ALARM_PREFERENCE)) {
-                preferences.edit().putInt(SyncAlarm.SYNC_ALARM_PREFERENCE, 1).apply();
-                alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
-            }
-        }
-    }
-
-
-    public void ShowDialogAddData() {
-        Intent intent = new Intent(this, WelcomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-    }
-
-    private void showNewFeatures() {
-        if (BuildConfig.IOB_AVAILABLE && Preferences.showFeatureForFirstTime(this, FeaturesDB.FEATURE_INSULIN_ON_BOARD)) {
-            FeatureIOBDialog dialog = new FeatureIOBDialog();
-            dialog.setListener(new FeatureIOBDialog.ActivateFeatureDialogListener() {
-                @Override
-                public void useFeature() {
-                    FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(getApplicationContext()));
-                    featuresDB.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, true);
-                }
-
-                @Override
-                public void notUseFeature() {
-                    FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(getApplicationContext()));
-                    featuresDB.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, false);
-                }
-            });
-            dialog.show(getFragmentManager(), "newFeature");
-        }
-        if (BuildConfig.SYNC_AVAILABLE && Preferences.showFeatureForFirstTime(this, FeaturesDB.FEATURE_CLOUD_SYNC)) {
-            FeatureWebSyncDialog dialog = new FeatureWebSyncDialog();
-            dialog.show(getFragmentManager(), "newFeature_sync");
-        }
+        long timeTest = System.currentTimeMillis() + 5 * 1000;
+        alm.set(AlarmManager.RTC_WAKEUP, timeTest, alarmIntent);
     }
 }
 

@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/content"
-    style="?android:textAppearanceMedium"
-    android:layout_width="match_parent"
+<LinearLayout
+
     android:layout_height="wrap_content"
-    android:lineSpacingMultiplier="1.2"
-    android:padding="16dp"
-    android:text="testing"/>
+    android:layout_width="match_parent"
+    android:layout_margin="1dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:id="@+id/adviceRowBackground"
+        android:layout_margin="5dp"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingMultiplier="1.2"
+            android:padding="16dp"
+            android:text="testing"
+            style="?android:textAppearanceMedium"/>
+
+    </LinearLayout>
+</LinearLayout>
+

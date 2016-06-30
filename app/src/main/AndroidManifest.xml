@@ -284,7 +284,7 @@
                 android:value=".ui.activities.Preferences"/>
         </activity>
         <activity
-            android:name=".ui.activities.MealActivity"
+            android:name=".ui.activities.Meal"
             android:label="@string/title_activity_meal"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
@@ -384,6 +384,12 @@
 
         <receiver
             android:name=".utils.SyncAlarm"
+            android:enabled="true"
+            android:exported="true">
+        </receiver>
+
+        <receiver
+            android:name=".utils.AdviceAlertReceiver"
             android:enabled="true"
             android:exported="true">
         </receiver>

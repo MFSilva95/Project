@@ -1,23 +1,70 @@
 package pt.it.porto.mydiabetes.data;
 
+import android.app.DialogFragment;
+
+import java.util.Calendar;
+
+import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
+
 /**
  * Created by Diogo on 12/05/2016.
  */
 public class Advice implements Comparable<Advice> {
 
-    private String notificationText;
+    public String getRegistryType() {
+        return registryType;
+    }
+
+    public String getTimer() {
+        return timer;
+    }
+
+    public String getSummaryText() {
+        return summaryText;
+    }
+
+    public enum AdviceTypes{NORMAL, SUGGESTION, QUESTION, ALERT};
+
+    private String summaryText;
     private String expandedText;
     private int urgency;
+    private String type;
 
-    public Advice(String notText, String expText, int urgency){
+    private String notificationText;
+    private String registryType;
+    private String timer;
+
+
+    public Advice(String summaryText, String expText, String adviceType, String[] adviceArgs, int urgency){
         this.expandedText = expText;
-        this.notificationText = notText;
+        this.summaryText = summaryText;
+        this.type = adviceType;
         this.urgency = urgency;
+        parseAdvice(adviceArgs);
     }
 
-    public String getExpandedText() {
-        return expandedText;
+    private void parseAdvice(String[] adviceAttr) {
+        if(this.type.equals(AdviceTypes.ALERT.toString())){
+            this.notificationText = adviceAttr[0];
+            this.registryType = adviceAttr[1];
+            this.timer = adviceAttr[2];
+            //run alert
+        }
+        if(this.type.equals(AdviceTypes.QUESTION) && this.urgency >=7){
+            this.notificationText = adviceAttr[0];
+        }
+        if(this.type.equals(AdviceTypes.SUGGESTION)){
+            this.registryType = adviceAttr[0];
+        }
     }
+
+    public Calendar getTime(){
+        Calendar calendar = YapDroid.string2Time(timer);
+        return calendar;
+    }
+
+    public String getExpandedText() {return expandedText;}
+    public String getType() {return type;}
 
     public int getUrgency() {
         return urgency;
@@ -29,6 +76,9 @@ public class Advice implements Comparable<Advice> {
 
     @Override
     public int compareTo(Advice advice) {
-        return (this.getUrgency()-advice.getUrgency());
+
+        //return (this.getUrgency()-advice.getUrgency());
+        return (advice.getUrgency()-this.getUrgency());
     }
 }
+
