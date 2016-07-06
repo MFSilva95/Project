@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -30,6 +31,7 @@ import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.data.Advice;
+import pt.it.porto.mydiabetes.data.Task;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.ListsDataDb;
@@ -41,8 +43,10 @@ import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.FeatureIOBDialog;
 import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
 import pt.it.porto.mydiabetes.ui.listAdapters.AdviceAdapter;
+import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.ui.listAdapters.LogbookAdapter;
 import pt.it.porto.mydiabetes.ui.usability.AdviceTouchHelper;
+import pt.it.porto.mydiabetes.ui.usability.HomeTouchHelper;
 import pt.it.porto.mydiabetes.utils.AdviceAlertReceiver;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.SyncAlarm;
@@ -54,7 +58,7 @@ public class Home extends BaseOldActivity {
 
 
     ListView logbookList;
-    RecyclerView adviceList;
+    RecyclerView homeList;
 
     private EditText dateFrom;
     private EditText dateTo;
@@ -66,14 +70,22 @@ public class Home extends BaseOldActivity {
         setContentView(R.layout.activity_home);
 
 
-        adviceList = (RecyclerView) findViewById(R.id.AdviceHomeList);
-        fillAdviceList(adviceList);
+        homeList = (RecyclerView) findViewById(R.id.AdviceHomeList);
+        FloatingActionButton myFab = (FloatingActionButton) this.findViewById(R.id.fab);
+        myFab.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(), "cenas", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        fillAdviceList(homeList);
 
     }
 
     public void fillAdviceList(RecyclerView lv) {
 
         ArrayList<Advice> adviceList = new ArrayList<Advice>();
+        ArrayList<Task> taskList = new ArrayList<Task>();
 
         //getAllYapAdvices -> put them into adviceList.
 
@@ -102,12 +114,44 @@ public class Home extends BaseOldActivity {
 
         Collections.sort(adviceList);
 
-        AdviceAdapter adviceAdapter = new AdviceAdapter(adviceList, this);
 
-        ItemTouchHelper.Callback callback = new AdviceTouchHelper(adviceAdapter);
+
+        String[] temp2 = {"AVISO IMPORTANTE LOL","Meal","10:s"};
+
+        Task myTask1 = new Task("5 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 9);
+        Task myTask2 = new Task("1 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 6);
+        //setupAlarm(myTask2);
+        Task myTask3 = new Task("2 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 2);
+        Task myTask4 = new Task("4 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 4);
+        Task myTask5 = new Task("3 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 3);
+
+        taskList.add(myTask1);
+        taskList.add(myTask2);
+        taskList.add(myTask3);
+        taskList.add(myTask4);
+        taskList.add(myTask5);
+
+        Collections.sort(adviceList);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        HomeAdapter homeAdapter = new HomeAdapter(adviceList, taskList, this);
+
+        ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
         helper.attachToRecyclerView(lv);
-        lv.setAdapter(adviceAdapter);
+        lv.setAdapter(homeAdapter);
         lv.setLayoutManager(new LinearLayoutManager(this));
 
     }
