@@ -14,8 +14,8 @@
 
     <color name="edittext_changed_color">#dddd66</color>
     <color name="edittext_error_color">#e53343</color>
-    <color name="background">@android:color/white</color>
-
+    <!--<color name="background">#abbbcb</color>-->
+    <color name="background">#eeeeee</color>
 
     <color name="primary">#3F51B5</color>
     <color name="primary_dark">#303F9F</color>

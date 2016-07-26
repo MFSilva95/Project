@@ -1,15 +1,14 @@
 package pt.it.porto.mydiabetes.data;
 
-import android.app.DialogFragment;
-
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
+import pt.it.porto.mydiabetes.utils.HomeElement;
 
 /**
  * Created by Diogo on 12/05/2016.
  */
-public class Advice implements Comparable<Advice> {
+public class Advice extends HomeElement implements Comparable<Advice> {
 
     public String getRegistryType() {
         return registryType;
@@ -36,6 +35,7 @@ public class Advice implements Comparable<Advice> {
 
 
     public Advice(String summaryText, String expText, String adviceType, String[] adviceArgs, int urgency){
+        super(Type.ADVICE);
         this.expandedText = expText;
         this.summaryText = summaryText;
         this.type = adviceType;

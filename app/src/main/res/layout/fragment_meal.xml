@@ -7,6 +7,7 @@
             tools:context=".ui.activities.BaseMealActivity">
 
     <LinearLayout
+        android:id="@+id/TESTING"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:descendantFocusability="beforeDescendants"

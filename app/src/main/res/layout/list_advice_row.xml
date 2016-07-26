@@ -10,7 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:id="@+id/adviceRowBackground"
-        android:layout_margin="5dp"
+        android:layout_margin = "2dp"
+        android:layout_marginLeft="2.5dp"
+        android:layout_marginRight="2.5dp"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -18,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingMultiplier="1.2"
-            android:padding="16dp"
+            android:padding="8dp"
             android:text="testing"
             style="?android:textAppearanceMedium"/>
 

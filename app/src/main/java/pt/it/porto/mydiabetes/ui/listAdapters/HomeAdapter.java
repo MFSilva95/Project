@@ -2,7 +2,12 @@ package pt.it.porto.mydiabetes.ui.listAdapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.graphics.Typeface;
+import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +19,13 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.Advice;
+import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Task;
+import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
+import pt.it.porto.mydiabetes.utils.HomeElement;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 /**
@@ -23,134 +34,298 @@ import pt.it.porto.mydiabetes.data.Task;
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
     Context c;
-    private ArrayList<Advice> adviceList;
-    private ArrayList<Task> taskList;
+    private Cursor cursor;
+    private ArrayList<HomeElement> homeList;
+    private int currentViewIndex = 0;
+    private int metricsIndex;
 
+
+    public HomeElement getFromHomeList(int index){
+        return homeList.get(index);
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
+
+        TextView data;
+        TextView hora;
+        TextView insulinValue;
+        TextView insulinName;
+        TextView gvalue;
+        TextView cvalue;
+        TextView ctag;
+        TextView tag;
+        TextView gtag;
+        HomeElement item;
+
         public LinearLayout view;
-        public ViewHolder(LinearLayout v) {
+
+        public ViewHolder(LinearLayout v, Boolean isLog) {
             super(v);
             view = v;
+            if(isLog){
+                if (view.getTag().equals("logbookItem")) {
+                    data = (TextView) view.findViewById(R.id.tv_list_logbookreg_data);
+                    hora = (TextView) view.findViewById(R.id.tv_list_logbookreg_hora);
+                    insulinValue = (TextView) view.findViewById(R.id.tv_list_logbookreg_insulin_value);
+                    insulinName = (TextView) view.findViewById(R.id.tv_list_logbookreg_insulin);
+                    gvalue = (TextView) view.findViewById(R.id.tv_list_logbookreg_glycemia_value);
+                    gtag = (TextView) view.findViewById(R.id.tv_list_logbookreg_glycemia);
+                    cvalue = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_value);
+                    ctag = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_title);
+                    tag = (TextView) view.findViewById(R.id.tv_list_logbookreg_tag);
+                }
+            }
         }
     }
 
-    public HomeAdapter(ArrayList<Advice> adviceList, ArrayList<Task> taskList, Context c) {
-        this.adviceList = adviceList;
-        this.taskList = taskList;
+    public HomeAdapter(ArrayList<Advice> adviceList, ArrayList<Task> taskList,Context c) {
+        this.homeList = new ArrayList<>();
+        if(adviceList.size()>0){
+            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "ADVICES"));
+            this.homeList.addAll(adviceList);
+        }
+        if(taskList.size()>0){
+            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "TASKS"));
+            this.homeList.addAll(taskList);
+        }
+
+
         this.c = c;
+    }
+    public HomeAdapter(ArrayList<Advice> adviceList, ArrayList<Task> taskList, Cursor cursor, Context c) {
+
+        this.cursor = cursor;
+        this.c = c;
+        this.homeList = new ArrayList<>();
+
+        if(adviceList.size()>0){
+            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "ADVICES"));
+            this.homeList.addAll(adviceList);
+        }
+        if(taskList.size()>0){
+            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "TASKS"));
+            this.homeList.addAll(taskList);
+        }
+        if(cursor.getCount()>0){
+            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "GLUCOSE REGISTRIES"));
+            metricsIndex = homeList.size();
+            this.homeList.addAll(cursorToList(cursor));
+        }
     }
 
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
-        // create a new view
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_advice_row, parent, false);
-        ViewHolder vh = new ViewHolder((LinearLayout) v);
-        return vh;
+
+        View v = null;
+        ViewHolder vh;
+
+        switch (viewType) {
+            case 0:
+//                Log.i("________POSITION_____", "OTHER");
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_advice_row, parent, false);
+                vh = new ViewHolder((LinearLayout) v, false);
+                return vh;
+            case 1:
+//                Log.i("________POSITION_____", "LOGBOOK!");
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_logbook_row, parent, false);
+                vh = new ViewHolder((LinearLayout) v, true);
+                v.setTag(vh);
+                return vh;
+        }
+        return null;
     }
+
+    @Override
+    public int getItemViewType(int position) {
+        // Just as an example, return 0 or 2 depending on position
+        // Note that unlike in ListView adapters, types don't have to be contiguous
+        if(homeList.get(position).getDisplayType().equals(HomeElement.Type.LOGITEM)){return 1;}
+        return 0;
+    }
+
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        if(position==0){//advice title
-            holder.view.setTag("separador");
+
+        currentViewIndex = position+1;
+
+        HomeElement currentView = homeList.get(position);
+
+        if(currentView.getDisplayType().equals(HomeElement.Type.HEADER)){
+            //its an header
             LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
+            textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
             TextView rowText = (TextView) textHolder.getChildAt(0);
-            rowText.setText("CONSELHOS");
-        }
-        if(position>0 && position < adviceList.size()+1){//advice
+            rowText.setTextColor(ContextCompat.getColor(c, R.color.cardview_light_background));
+            //textHolder.setBackgroundColor(Color.parseColor("#33333333"));
+            rowText.setTypeface(Typeface.MONOSPACE);
+            rowText.setText(currentView.getName());
+        }else{
+            if(currentView.getDisplayType().equals(HomeElement.Type.LOGITEM)){
+                //its a logbookItem
+                View v = holder.view;
+                HomeElement logbook_datab = homeList.get(position);
+                holder.item = logbook_datab;
+                holder.data.setText(logbook_datab.getFormattedDate());
+                holder.hora.setText(logbook_datab.getFormattedTime());
+                holder.tag.setText(logbook_datab.getTag());
+                if (logbook_datab.getInsulinId() != -1) {
+                    holder.insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", logbook_datab.getInsulinVal()));
+                    holder.insulinName.setText(logbook_datab.getInsulinName());
+                    holder.insulinValue.setVisibility(View.VISIBLE);
+                    holder.insulinName.setVisibility(View.VISIBLE);
+                } else {
+                    holder.insulinValue.setVisibility(View.INVISIBLE);
+                    holder.insulinName.setVisibility(View.INVISIBLE);
+                }
+                if (logbook_datab.getGlycemiaId() != -1) {
+                    holder.gvalue.setText(String.valueOf(logbook_datab.getGlycemia()));
+                    holder.gvalue.setVisibility(View.VISIBLE);
+                    holder.gtag.setVisibility(View.VISIBLE);
+                } else {
+                    holder.gvalue.setVisibility(View.INVISIBLE);
+                    holder.gtag.setVisibility(View.INVISIBLE);
+                }
+                if (logbook_datab.getCarbsId() != -1) {
+                    holder.cvalue.setText(String.valueOf(logbook_datab.getCarbs()));
+                    holder.cvalue.setVisibility(View.VISIBLE);
+                    holder.ctag.setVisibility(View.VISIBLE);
+                } else {
+                    holder.cvalue.setVisibility(View.INVISIBLE);
+                    holder.ctag.setVisibility(View.INVISIBLE);
+                }
+                v.setOnClickListener(new View.OnClickListener() {
 
-            holder.view.setTag("");
-            final int myPos = position-1;
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(v.getContext(), DetailLogbookActivity.class);
+                        Bundle args = new Bundle();
+                        HomeElement logbookDataBinding = ((ViewHolder) v.getTag()).item;
+                        if (logbookDataBinding.getGlycemiaId() != -1) {
+                            GlycemiaRec glycemiaRec = new GlycemiaRec();
+                            glycemiaRec.setId(logbookDataBinding.getGlycemiaId());
+                            args.putString("bg", String.valueOf(glycemiaRec.getId())); //bg id
+                            args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, glycemiaRec);
+                        }
+                        if (logbookDataBinding.getCarbsId() != -1) {
+                            CarbsRec carbs = new CarbsRec();
+                            carbs.setId(logbookDataBinding.getCarbsId());
+                            args.putString("ch", String.valueOf(carbs.getId())); //ch id
+                            args.putParcelable(DetailLogbookActivity.ARG_CARBS, carbs);
+                        }
+                        if (logbookDataBinding.getInsulinId() != -1) {
+                            InsulinRec insulin = new InsulinRec();
+                            insulin.setId(logbookDataBinding.getInsulinId());
+                            args.putString("ins", String.valueOf(insulin.getId())); //ins id
+                            args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);
+                        }
+                        intent.putExtras(args);
+                        v.getContext().startActivity(intent);
+                    }
+                });
 
-            Advice identity = adviceList.get(myPos);
-
-            if(identity.getUrgency()>7){
-                holder.view.setBackgroundColor(Color.RED);
             }else{
-                if(identity.getUrgency()>5){
-                    holder.view.setBackgroundColor(Color.YELLOW);
+                if(currentView.getDisplayType().equals(HomeElement.Type.ADVICE)){
+                    //its an advice
+                    final Advice currentAdvice = (Advice) currentView;
+
+                /*if(currentAdvice.getUrgency()>7){
+                    holder.view.setBackgroundColor(Color.RED);
                 }else{
-                    holder.view.setBackgroundColor(Color.GREEN);
+                    if(currentAdvice.getUrgency()>5){
+                        holder.view.setBackgroundColor(Color.YELLOW);
+                    }else{
+                        holder.view.setBackgroundColor(Color.GREEN);
+                    }
+                }*/
+
+                    LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
+                    //textHolder.setBackgroundColor(Color.WHITE);
+                    textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
+                    TextView rowText = (TextView) textHolder.getChildAt(0);
+                    rowText.setText(currentAdvice.getSummaryText());
+
+                    //holder.view.setText(adviceList.get(position).getNotificationText());
+                    holder.view.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(c);
+                            builder.setMessage(currentAdvice.getExpandedText());
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+                    });
+
+
+                }else{
+                    //its a task
+                    final Task currentTask = (Task) currentView;
+
+                /*if(currentTask.getUrgency()>7){
+                    holder.view.setBackgroundColor(Color.RED);
+                }else{
+                    if(currentTask.getUrgency()>5){
+                        holder.view.setBackgroundColor(Color.YELLOW);
+                    }else{
+                        holder.view.setBackgroundColor(Color.GREEN);
+                    }
+                }*/
+
+                    LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
+                    //textHolder.setBackgroundColor(Color.WHITE);
+                    textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
+                    TextView rowText = (TextView) textHolder.getChildAt(0);
+                    rowText.setText(currentTask.getSummaryText());
+
+                    //holder.view.setText(adviceList.get(position).getNotificationText());
+                    holder.view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final AlertDialog.Builder builder = new AlertDialog.Builder(c);
+                            builder.setMessage(currentTask.getExpandedText());
+                            AlertDialog dialog = builder.create();
+                            dialog.show();
+                        }
+                    });
                 }
             }
-
-            LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
-            textHolder.setBackgroundColor(Color.WHITE);
-            TextView rowText = (TextView) textHolder.getChildAt(0);
-            rowText.setText(identity.getSummaryText());
-
-            //holder.view.setText(adviceList.get(position).getNotificationText());
-            holder.view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(c);
-                    builder.setMessage(adviceList.get(myPos).getExpandedText());
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-            });
-
-
-        }
-        if(position == adviceList.size()+1){//task separator
-            holder.view.setTag("separador");
-            LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
-            TextView rowText = (TextView) textHolder.getChildAt(0);
-            rowText.setText("TAREFAS");
-        }
-        if(position > adviceList.size()+1){//task
-
-            holder.view.setTag("");
-            final int taskPosition = position - adviceList.size()-2;
-            Task identity = taskList.get(taskPosition);
-
-            if(identity.getUrgency()>7){
-                holder.view.setBackgroundColor(Color.RED);
-            }else{
-                if(identity.getUrgency()>5){
-                    holder.view.setBackgroundColor(Color.YELLOW);
-                }else{
-                    holder.view.setBackgroundColor(Color.GREEN);
-                }
-            }
-
-
-
-            LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
-            textHolder.setBackgroundColor(Color.WHITE);
-            TextView rowText = (TextView) textHolder.getChildAt(0);
-            rowText.setText(identity.getSummaryText());
-
-            //holder.view.setText(adviceList.get(position).getNotificationText());
-            holder.view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final AlertDialog.Builder builder = new AlertDialog.Builder(c);
-                    builder.setMessage(adviceList.get(taskPosition).getExpandedText());
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
-            });
-
-
         }
     }
 
     public void remove(int position) {
-        if( position < adviceList.size()+taskList.size()){
-            if(position<adviceList.size()){
-                adviceList.remove(position);
-            }else{
-                taskList.remove(position-adviceList.size());
-            }
-            notifyItemRemoved(position);
-        }
+        notifyItemRemoved(position);
+        homeList.remove(position);
     }
+
 
     @Override
     public int getItemCount() {
-        return adviceList.size()+taskList.size()+2;
+        return homeList.size();
     }
+
+    public HomeElement getItem(int position) {
+        cursor.moveToPosition(position);
+        int pox = 0;
+        return new HomeElement(
+                cursor.getString(pox++),
+                cursor.getString(pox++),
+                cursor.getInt(pox++),
+                cursor.getFloat(pox++),
+                cursor.getString(pox++),
+                cursor.getInt(pox++),
+                cursor.getInt(pox++),
+                cursor.getInt(pox++),
+                cursor.getInt(pox));
+    }
+    public ArrayList cursorToList(Cursor cursor){
+        ArrayList<HomeElement> cursorList = new ArrayList<>();
+        for(int index=0;index<cursor.getCount();index++){
+            cursorList.add(getItem(index));
+        }
+        return cursorList;
+    }
+
 }

@@ -40,7 +40,16 @@ public class LogbookAdapter extends BaseAdapter {
 	public LogbookItem getItem(int position) {
 		cursor.moveToPosition(position);
 		int pox = 0;
-		return new LogbookItem(cursor.getString(pox++), cursor.getString(pox++), cursor.getInt(pox++), cursor.getFloat(pox++), cursor.getString(pox++), cursor.getInt(pox++), cursor.getInt(pox++), cursor.getInt(pox++), cursor.getInt(pox));
+		return new LogbookItem(
+				cursor.getString(pox++),
+				cursor.getString(pox++),
+				cursor.getInt(pox++),
+				cursor.getFloat(pox++),
+				cursor.getString(pox++),
+				cursor.getInt(pox++),
+				cursor.getInt(pox++),
+				cursor.getInt(pox++),
+				cursor.getInt(pox));
 	}
 
 	@Override

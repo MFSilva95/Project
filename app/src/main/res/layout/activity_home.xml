@@ -1,31 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-	xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:fitsSystemWindows="true"
-	tools:context=".ui.activities.Home"
-	android:orientation="vertical">
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.activities.Home">
 
-	<!--<include layout="@layout/activity_logbook" /> -->
-	<include layout="@layout/activity_advices" />
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background"
+        android:fitsSystemWindows="false">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/activity_home_list" />
+
+                <include layout="@layout/activity_logbook" />
 
 
-	<android.support.design.widget.FloatingActionButton
-		android:id="@+id/fab"
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:layout_gravity="bottom|end"
-		android:layout_margin="@dimen/fab_margin"
-		app:backgroundTint="?colorAccent"
-		app:rippleColor="?colorPrimaryDark"
-		app:borderWidth="0dp"
-		app:elevation="6dp"
-		app:fabSize="normal"
-		android:src="@android:drawable/ic_input_add" />
+            </LinearLayout>
 
-	<!--android:onClick="test"-->
+        </ScrollView>
 
-</android.support.design.widget.CoordinatorLayout>
+
+        <include layout="@layout/fab_layout" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:headerLayout="@layout/navigation_view"
+        app:menu="@menu/drawer" />
+
+</android.support.v4.widget.DrawerLayout>
+
+    <!--<include layout="@layout/activity_tasks" />--><!--<include layout="@layout/activity_advices" />-->
+
+
+    <!--<android.support.design.widget.CoordinatorLayout--><!--xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:app="http://schemas.android.com/apk/res-auto"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:fitsSystemWindows="false"--><!--android:orientation="vertical"--><!--android:id="@+id/main"--><!--tools:context=".ui.activities.Home">-->
+
+
+    <!--<include layout="@layout/activity_advices"--><!--android:id="@+id/advices"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"/>--><!--<include layout="@layout/activity_tasks"--><!--android:id="@+id/tasks"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"/>-->
+
+    <!--<LinearLayout--><!--android:id="@+id/fab_container"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_gravity="bottom|end"--><!--android:clipChildren="false"--><!--android:orientation="vertical">-->
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+
+    <!--android:id="@+id/mini_fab1"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_gravity="center"--><!--android:layout_margin="@dimen/fab_margin"--><!--android:src="@drawable/meal"--><!--android:visibility="visible"--><!--app:backgroundTint="?colorAccent"--><!--app:borderWidth="1dp"--><!--app:elevation="6dp"-->
+
+    <!--app:fabSize="mini"-->
+
+    <!--app:rippleColor="?colorPrimaryDark"--><!--tools:visibility="visible" />-->
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+
+    <!--android:id="@+id/mini_fab2"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_gravity="center"-->
+
+    <!--android:layout_margin="@dimen/fab_margin"--><!--android:src="@drawable/insulin"--><!--android:visibility="visible"-->
+
+    <!--app:backgroundTint="?colorAccent"--><!--app:borderWidth="1dp"-->
+
+    <!--app:elevation="6dp"-->
+
+    <!--app:fabSize="mini"--><!--app:rippleColor="?colorPrimaryDark"--><!--tools:visibility="visible" />-->
+
+    <!--<android.support.design.widget.FloatingActionButton-->
+
+    <!--android:id="@+id/mini_fab3"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"-->
+
+    <!--android:layout_gravity="center"--><!--android:layout_margin="@dimen/fab_margin"--><!--android:src="@drawable/carbs"--><!--android:visibility="visible"--><!--app:backgroundTint="?colorAccent"-->
+
+    <!--app:borderWidth="1dp"--><!--app:elevation="6dp"-->
+
+    <!--app:fabSize="mini"-->
+
+    <!--app:rippleColor="?colorPrimaryDark"--><!--tools:visibility="visible" />-->
+
+    <!--<android.support.design.widget.FloatingActionButton--><!--android:id="@+id/fab"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_gravity="bottom|end"--><!--android:layout_margin="@dimen/fab_margin"--><!--android:src="@android:drawable/ic_input_add"--><!--app:backgroundTint="?colorAccent"--><!--app:borderWidth="1dp"--><!--app:elevation="6dp"--><!--app:fabSize="normal"--><!--app:rippleColor="?colorPrimaryDark" />--><!--</LinearLayout>-->
+
+    <!--&lt;!&ndash;android:onClick="test"&ndash;&gt;-->
+
+
+    <!--</android.support.design.widget.CoordinatorLayout>-->

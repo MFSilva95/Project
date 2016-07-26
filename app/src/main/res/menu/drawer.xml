@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <group android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/userTasks"
+            android:checked="false"
+            android:title="As minhas tarefas" />
+
+        <item
+            android:id="@+id/userLogbook"
+            android:checked="false"
+            android:title="O meu Logbook" />
+
+        <item
+            android:id="@+id/personalData"
+            android:checked="false"
+            android:title="Definições Pessoais" />
+
+        <item
+            android:id="@+id/diabetesData"
+            android:checked="false"
+            android:title="Definições Gestão Diabetes" />
+
+    </group>
+
+</menu>
