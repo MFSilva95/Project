@@ -3,17 +3,16 @@ package pt.it.porto.mydiabetes.ui.usability;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
-import pt.it.porto.mydiabetes.ui.listAdapters.AdviceAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.TaskAdapter;
+import pt.it.porto.mydiabetes.ui.listAdapters.TaskListAdapter;
 
 /**
  * Created by Diogo on 11/05/2016.
  */
 public class TaskTouchHelper extends ItemTouchHelper.SimpleCallback {
 
-    private TaskAdapter taskAdapter;
+    private TaskListAdapter taskAdapter;
 
-    public TaskTouchHelper(TaskAdapter TaskAdapter){
+    public TaskTouchHelper(TaskListAdapter TaskAdapter){
         super(ItemTouchHelper.RIGHT | ItemTouchHelper.RIGHT, ItemTouchHelper.RIGHT| ItemTouchHelper.RIGHT);
         this.taskAdapter = TaskAdapter;
     }

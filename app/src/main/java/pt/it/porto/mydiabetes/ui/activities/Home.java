@@ -135,8 +135,8 @@ public class Home extends BaseOldActivity {
 
 
                 //Checking if the item is in checked state or not, if not make it in checked state
-                if(menuItem.isChecked()) menuItem.setChecked(false);
-                else menuItem.setChecked(true);
+                /*if(menuItem.isChecked()) menuItem.setChecked(false);
+                else menuItem.setChecked(true);*/
 
                 //Closing drawer on item click
                 drawerLayout.closeDrawers();
@@ -144,8 +144,11 @@ public class Home extends BaseOldActivity {
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()){
 
-
                     //Replacing the main content with ContentFragment Which is our Inbox View;
+                    case R.id.userTasks:
+                        Intent intent = new Intent(getApplicationContext(), TaskListActivity.class);
+                        startActivity(intent);
+                        return true;
                     case R.id.personalData:
                         Toast.makeText(getApplicationContext(),"Inbox Selected",Toast.LENGTH_SHORT).show();
                         return true;
@@ -406,7 +409,7 @@ public class Home extends BaseOldActivity {
 
         Collections.sort(receiverTaskList);
 
-        /*TaskAdapter taskAdapter = new TaskAdapter(receiverTaskList, this);
+        /*TaskListAdapter taskAdapter = new TaskListAdapter(receiverTaskList, this);
 
         ItemTouchHelper.Callback callback = new TaskTouchHelper(taskAdapter);
         ItemTouchHelper helper = new ItemTouchHelper(callback);

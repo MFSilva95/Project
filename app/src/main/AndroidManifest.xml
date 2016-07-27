@@ -363,6 +363,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Preferences"/>
         </activity>
+        <activity
+            android:name=".ui.activities.TaskListActivity"
+            android:parentActivityName=".ui.activities.Home"
+            android:theme="@style/AppNewTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.Preferences"/>
+        </activity>
         <!-- <activity
             android:name="com.example.projetoandroid.CloudServerActivity"
             android:label="@string/title_activity_cloud_server" >

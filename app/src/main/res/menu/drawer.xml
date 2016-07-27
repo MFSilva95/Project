@@ -7,7 +7,7 @@
         <item
             android:id="@+id/userTasks"
             android:checked="false"
-            android:title="As minhas tarefas" />
+            android:title="As minhas tarefas"/>
 
         <item
             android:id="@+id/userLogbook"

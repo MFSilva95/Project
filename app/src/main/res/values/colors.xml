@@ -16,6 +16,7 @@
     <color name="edittext_error_color">#e53343</color>
     <!--<color name="background">#abbbcb</color>-->
     <color name="background">#eeeeee</color>
+    <color name="activity_blue">#bbccff</color>
 
     <color name="primary">#3F51B5</color>
     <color name="primary_dark">#303F9F</color>

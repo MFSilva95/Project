@@ -13,14 +13,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.Advice;
 import pt.it.porto.mydiabetes.data.Task;
 
 
 /**
  * Created by Diogo on 11/05/2016.
  */
-public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
+public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHolder>{
 
     Context c;
     private ArrayList<Task> taskList;
@@ -36,7 +35,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
         }
     }
 
-    public TaskAdapter(ArrayList<Task> taskList, Context c) {
+    public TaskListAdapter(ArrayList<Task> taskList, Context c) {
         this.taskList = taskList;
         this.c = c;
         this.numberElements = taskList.size();
@@ -46,6 +45,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
     public ViewHolder onCreateViewHolder(final ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_advice_row, parent, false);
+        v.setBackgroundColor(Color.parseColor("#eeeeee"));
         ViewHolder vh = new ViewHolder((LinearLayout) v);
         return vh;
     }
@@ -55,18 +55,18 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
 
         Task identity = taskList.get(position);
 
-        if(identity.getUrgency()>7){
-            holder.view.setBackgroundColor(Color.RED);
-        }else{
-            if(identity.getUrgency()>5){
-                holder.view.setBackgroundColor(Color.YELLOW);
-            }else{
-                holder.view.setBackgroundColor(Color.GREEN);
-            }
-        }
+//        if(identity.getUrgency()>7){
+//            holder.view.setBackgroundColor(Color.RED);
+//        }else{
+//            if(identity.getUrgency()>5){
+//                holder.view.setBackgroundColor(Color.YELLOW);
+//            }else{
+//                holder.view.setBackgroundColor(Color.GREEN);
+//            }
+//        }
 
         LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
-        textHolder.setBackgroundColor(Color.WHITE);
+        //textHolder.setBackgroundColor(Color.WHITE);
         TextView rowText = (TextView) textHolder.getChildAt(0);
         rowText.setText(identity.getSummaryText());
 

@@ -36,9 +36,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     Context c;
     private Cursor cursor;
     private ArrayList<HomeElement> homeList;
-    private int currentViewIndex = 0;
-    private int metricsIndex;
-
 
     public HomeElement getFromHomeList(int index){
         return homeList.get(index);
@@ -109,7 +106,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         }
         if(cursor.getCount()>0){
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "GLUCOSE REGISTRIES"));
-            metricsIndex = homeList.size();
             this.homeList.addAll(cursorToList(cursor));
         }
     }
@@ -147,9 +143,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
-
-        currentViewIndex = position+1;
 
         HomeElement currentView = homeList.get(position);
 
