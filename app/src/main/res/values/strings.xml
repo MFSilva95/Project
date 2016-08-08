@@ -392,4 +392,27 @@
     </plurals>
 
 
+
+
+
+
+    <string-array name="task_period_list">
+        <item>Todos os Dias</item>
+        <item>Semanal</item>
+        <item>Mensal</item>
+        <item>Anual</item>
+    </string-array>
+
+    <string-array name="task_type_list">
+        <item>Glicemia</item>
+        <item>Insulina</item>
+        <item>Refeição</item>
+        <item>Exercicio</item>
+        <item>Peso</item>
+        <item>Colesterol</item>
+    </string-array>
+
+
+
+
 </resources>

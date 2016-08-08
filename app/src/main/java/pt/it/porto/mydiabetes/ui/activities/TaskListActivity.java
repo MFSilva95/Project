@@ -1,16 +1,12 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
-import android.view.View;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,23 +17,23 @@ import pt.it.porto.mydiabetes.ui.dialogs.NewTaskDialog;
 import pt.it.porto.mydiabetes.ui.listAdapters.TaskListAdapter;
 import pt.it.porto.mydiabetes.ui.usability.TaskTouchHelper;
 
-public class TaskListActivity extends BaseOldActivity {
+public class TaskListActivity extends BaseActivity {
 
 	ArrayList<Task> receiverTaskList = new ArrayList<>();
 	private RecyclerView taskList;
 	private FloatingActionButton fab;
-	private Boolean fabOpen = false;
-	private String ROTATION = "rotation";
+	//private Boolean fabOpen = false;
+	//private String ROTATION = "rotation";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tasklist);
 		fillTaskList();
-		setFab();
+		//setFab();
 	}
 
-	private void setFab() {
+	/*private void setFab() {
 		fab = (FloatingActionButton) findViewById(R.id.taskFab);
 		fab.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -47,24 +43,24 @@ public class TaskListActivity extends BaseOldActivity {
 				}else{
 					NewTaskDialog dialog = NewTaskDialog.newInstance();
 					FragmentManager myManager = getFragmentManager();
-					//dialog.show(myManager,"cenas");
+					dialog.show(myManager,"cenas");
 					animateFab(-45);
 					fabOpen = true;
 				}
 			}
 		});
-	}
-	private void animateFab(int i) {
+	}*/
+	/*private void animateFab(int i) {
 		AnimatorSet animatorSet = new AnimatorSet();
 		animatorSet.playTogether(createRotationAnimator(i));
 		animatorSet.start();
-	}
+	}*/
 
-	private Animator createRotationAnimator(float ang) {
+	/*private Animator createRotationAnimator(float ang) {
 		float rotation = fab.getRotation();
 		return ObjectAnimator.ofFloat(fab, ROTATION, rotation, rotation + ang)
 				.setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
-	}
+	}*/
 
 
 	private void fillTaskList() {
@@ -102,4 +98,15 @@ public class TaskListActivity extends BaseOldActivity {
 		return super.onCreateOptionsMenu(menu);
 	}
 
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		if(item!=null){
+			if(item.getTitle().equals("Adicionar Tarefa")){
+				NewTaskDialog dialog = NewTaskDialog.newInstance();
+				dialog.show(getSupportFragmentManager(), null);
+			}
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }

@@ -224,17 +224,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                     //its an advice
                     final Advice currentAdvice = (Advice) currentView;
 
-                /*if(currentAdvice.getUrgency()>7){
-                    holder.view.setBackgroundColor(Color.RED);
-                }else{
-                    if(currentAdvice.getUrgency()>5){
-                        holder.view.setBackgroundColor(Color.YELLOW);
-                    }else{
-                        holder.view.setBackgroundColor(Color.GREEN);
-                    }
-                }*/
-
                     LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
+                    textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
+                    TextView myText = (TextView) textHolder.getChildAt(0);
+
+                if(currentAdvice.getUrgency()>7){
+                    myText.setTextColor(Color.RED);
+                            //holder.view.setBackgroundColor(Color.RED);
+//                }else{
+//                    if(currentAdvice.getUrgency()>5){
+//                        myText.setTextColor(Color.YELLOW);
+//                       // holder.view.setBackgroundColor(Color.YELLOW);
+//                    }else{
+//                        myText.setTextColor(Color.GREEN);
+//                        //holder.view.setBackgroundColor(Color.GREEN);
+//                    }
+                }
+
+                    //LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
                     //textHolder.setBackgroundColor(Color.WHITE);
                     textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
                     TextView rowText = (TextView) textHolder.getChildAt(0);
@@ -257,6 +264,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                     //its a task
                     final Task currentTask = (Task) currentView;
 
+
+                    LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
+                    textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
+                    TextView myText = (TextView) textHolder.getChildAt(0);
+
+                    if(currentTask.getUrgency()>7){
+                        myText.setTextColor(Color.RED);}
+
                 /*if(currentTask.getUrgency()>7){
                     holder.view.setBackgroundColor(Color.RED);
                 }else{
@@ -267,7 +282,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                     }
                 }*/
 
-                    LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
+                    //LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
                     //textHolder.setBackgroundColor(Color.WHITE);
                     textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
                     TextView rowText = (TextView) textHolder.getChildAt(0);
