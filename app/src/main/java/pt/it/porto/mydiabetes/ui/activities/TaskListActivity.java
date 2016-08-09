@@ -102,9 +102,11 @@ public class TaskListActivity extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		if(item!=null){
-			if(item.getTitle().equals("Adicionar Tarefa")){
-				NewTaskDialog dialog = NewTaskDialog.newInstance();
-				dialog.show(getSupportFragmentManager(), null);
+			if(item.getTitle()!=null){
+				if(item.getTitle().equals("Adicionar Tarefa")){
+					NewTaskDialog dialog = NewTaskDialog.newInstance();
+					dialog.show(getSupportFragmentManager(), null);
+				}
 			}
 		}
 		return super.onOptionsItemSelected(item);

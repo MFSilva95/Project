@@ -8,7 +8,10 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +19,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -24,10 +29,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.Advice;
 import pt.it.porto.mydiabetes.data.Task;
@@ -39,7 +46,7 @@ import pt.it.porto.mydiabetes.ui.usability.HomeTouchHelper;
 import pt.it.porto.mydiabetes.utils.AdviceAlertReceiver;
 
 
-public class Home extends BaseOldActivity {
+public class Home extends BaseActivity {
 
     private static final String TAG = "Home";
     boolean fabOpen = false;
@@ -124,6 +131,49 @@ public class Home extends BaseOldActivity {
         fillHomeList();
 
         //----------------------nav
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+        DrawerLayout.DrawerListener Dlistener = new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View view, float v) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View view) {
+                CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
+
+                userImg.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setType("image/*");
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+
+                        //Toast.makeText(v.getContext(), "Change Picture?", Toast.LENGTH_LONG).show();
+
+
+                    }
+                });
+            }
+
+
+
+            @Override
+            public void onDrawerClosed(View view) {
+                // your refresh code can be called from here
+            }
+
+            @Override
+            public void onDrawerStateChanged(int i) {
+
+            }
+        };
+        drawerLayout.addDrawerListener(Dlistener);
+
+
+/*
+        */
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
@@ -138,25 +188,30 @@ public class Home extends BaseOldActivity {
                 /*if(menuItem.isChecked()) menuItem.setChecked(false);
                 else menuItem.setChecked(true);*/
 
+
                 //Closing drawer on item click
                 drawerLayout.closeDrawers();
+                Intent intent;
 
                 //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()){
 
                     //Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.userTasks:
-                        Intent intent = new Intent(getApplicationContext(), TaskListActivity.class);
+                        intent = new Intent(getApplicationContext(), TaskListActivity.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.userLogbook:
+                        intent = new Intent(getApplicationContext(), LogbookChartList.class);
                         startActivity(intent);
                         return true;
                     case R.id.personalData:
-                        Toast.makeText(getApplicationContext(),"Inbox Selected",Toast.LENGTH_SHORT).show();
+                        intent = new Intent(getApplicationContext(), Preferences.class);
+                        startActivity(intent);
                         return true;
-
-                    // For rest of the options we just show a toast on click
-
                     case R.id.diabetesData:
-                        Toast.makeText(getApplicationContext(),"Stared Selected",Toast.LENGTH_SHORT).show();
+                        intent = new Intent(getApplicationContext(), SettingsInsulin.class);
+                        startActivity(intent);
                         return true;
                     default:
                         Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
@@ -165,34 +220,39 @@ public class Home extends BaseOldActivity {
                 }
             }
         });
+    }
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-        /*ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.openDrawer, R.string.closeDrawer){
 
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                // Code here will be triggered once the drawer closes as we dont want anything to happen so we leave this blank
-                super.onDrawerClosed(drawerView);
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+        if (requestCode == 1) {
+
+            Uri resulttUri = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resulttUri);
+
+                CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
+                userImg.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 60, 60, false));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                // Code here will be triggered once the drawer open as we dont want anything to happen so we leave this blank
+            /*Log.i("CENAS", "CENAS: "+resulttUri.getPath());
 
-                super.onDrawerOpened(drawerView);
-            }
-        };*/
+            CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
+            File imgFile = new  File(resulttUri.getPath());
 
-        //Setting the actionbarToggle to drawer layout
-        //drawerLayout.setDrawerListener(actionBarDrawerToggle);
+            if(imgFile.exists()){
 
-        //calling sync state is necessay or else your hamburger icon wont show up
-        //actionBarDrawerToggle.syncState();
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
 
+                userImg.setImageBitmap(myBitmap);
 
-
-
-
+            }*/
+        }
     }
 
     private void fillHomeList() {
@@ -255,13 +315,13 @@ public class Home extends BaseOldActivity {
         });
         miniFab1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), Meal.class);
+                Intent intent = new Intent(v.getContext(), GlycemiaDetail.class);
                 startActivity(intent);
             }
         });
         miniFab2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), InsulinChartList.class);
+                Intent intent = new Intent(v.getContext(), InsulinDetail.class);
                 startActivity(intent);
             }
         });
@@ -273,25 +333,25 @@ public class Home extends BaseOldActivity {
         });
         miniFab4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), Meal.class);
+                Intent intent = new Intent(v.getContext(), DiseaseDetail.class);
                 startActivity(intent);
             }
         });
         miniFab5.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), Meal.class);
+                Intent intent = new Intent(v.getContext(), CholesterolDetail.class);
                 startActivity(intent);
             }
         });
         miniFab6.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), Meal.class);
+                Intent intent = new Intent(v.getContext(), WeightDetail.class);
                 startActivity(intent);
             }
         });
         miniFab7.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), Meal.class);
+                Intent intent = new Intent(v.getContext(), ExerciseDetail.class);
                 startActivity(intent);
             }
         });
@@ -481,26 +541,33 @@ public class Home extends BaseOldActivity {
             dateTo.setText(DateUtils.getFormattedDate(calendar));
         }*/
     }
-    /*public void fillListView(ListView lv) {
-        ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
-//        Cursor cursor = db.getLogbookList(dateFrom.getText().toString(), dateTo.getText().toString());
-        Cursor cursor = db.getAllLogbookListWithin(5);
-        lv.setAdapter(new LogbookAdapter(cursor, this));
-    }*/
-//    public void showDatePickerDialogFrom(View v) {
-//        DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Logbook_DataFrom, DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-//        newFragment.show(getFragmentManager(), "DatePicker");
-//    }
-//    public void showDatePickerDialogTo(View v) {
-//        DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Logbook_DataTo, DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-//        newFragment.show(getFragmentManager(), "DatePicker");
-//    }
 
     public void ShowDialogAddData() {
         Intent intent = new Intent(this, WelcomeActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.home_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        if(item!=null){
+            if(item.getTitle().equals("homeSettings")){
+                if(drawerLayout.isDrawerOpen(Gravity.LEFT)){
+                    drawerLayout.closeDrawer(Gravity.LEFT);
+                }else{
+                    drawerLayout.openDrawer(Gravity.LEFT);
+                }
+            }
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 
