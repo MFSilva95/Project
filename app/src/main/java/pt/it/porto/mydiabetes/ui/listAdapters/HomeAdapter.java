@@ -86,8 +86,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "TASKS"));
             this.homeList.addAll(taskList);
         }
-
-
         this.c = c;
     }
     public HomeAdapter(ArrayList<Advice> adviceList, ArrayList<Task> taskList, Cursor cursor, Context c) {
@@ -108,6 +106,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "GLUCOSE REGISTRIES"));
             this.homeList.addAll(cursorToList(cursor));
         }
+        this.homeList.add(new HomeElement(HomeElement.Type.SPACE,""));
+        this.homeList.add(new HomeElement(HomeElement.Type.SPACE,""));
     }
 
     @Override
@@ -146,15 +146,17 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
         HomeElement currentView = homeList.get(position);
 
-        if(currentView.getDisplayType().equals(HomeElement.Type.HEADER)){
-            //its an header
-            LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
-            textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
-            TextView rowText = (TextView) textHolder.getChildAt(0);
-            rowText.setTextColor(ContextCompat.getColor(c, R.color.cardview_light_background));
-            //textHolder.setBackgroundColor(Color.parseColor("#33333333"));
-            rowText.setTypeface(Typeface.MONOSPACE);
-            rowText.setText(currentView.getName());
+        if(currentView.getDisplayType().equals(HomeElement.Type.HEADER)|| currentView.getDisplayType().equals(HomeElement.Type.SPACE)){
+            if(currentView.getDisplayType().equals(HomeElement.Type.HEADER)){
+                //its an header
+                LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
+                textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
+                TextView rowText = (TextView) textHolder.getChildAt(0);
+                rowText.setTextColor(ContextCompat.getColor(c, R.color.cardview_light_background));
+                //textHolder.setBackgroundColor(Color.parseColor("#33333333"));
+                rowText.setTypeface(Typeface.MONOSPACE);
+                rowText.setText(currentView.getName());
+            }
         }else{
             if(currentView.getDisplayType().equals(HomeElement.Type.LOGITEM)){
                 //its a logbookItem

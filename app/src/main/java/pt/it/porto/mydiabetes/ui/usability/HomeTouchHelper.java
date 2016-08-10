@@ -29,7 +29,9 @@ public class HomeTouchHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         HomeAdapter.ViewHolder thisHolder = (HomeAdapter.ViewHolder) viewHolder;
-        if (homeAdapter.getFromHomeList(thisHolder.getAdapterPosition()).getDisplayType().equals(HomeElement.Type.LOGITEM) || homeAdapter.getFromHomeList(thisHolder.getAdapterPosition()).getDisplayType().equals(HomeElement.Type.HEADER)) return 0;
+        if (homeAdapter.getFromHomeList(thisHolder.getAdapterPosition()).getDisplayType().equals(HomeElement.Type.LOGITEM) ||
+                homeAdapter.getFromHomeList(thisHolder.getAdapterPosition()).getDisplayType().equals(HomeElement.Type.HEADER) ||
+                homeAdapter.getFromHomeList(thisHolder.getAdapterPosition()).getDisplayType().equals(HomeElement.Type.SPACE)) return 0;
         return super.getSwipeDirs(recyclerView, viewHolder);
     }
 

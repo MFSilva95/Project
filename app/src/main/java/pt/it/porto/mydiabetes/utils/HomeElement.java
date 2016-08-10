@@ -9,7 +9,7 @@ import java.util.Calendar;
 public class HomeElement {
 
 
-    public enum Type{ADVICE, TASK, HEADER, LOGITEM};
+    public enum Type{ADVICE, TASK, HEADER, SPACE, LOGITEM};
     private Type displayType;
     private String name;
 
