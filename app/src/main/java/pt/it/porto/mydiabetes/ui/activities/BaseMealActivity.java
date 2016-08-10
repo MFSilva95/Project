@@ -23,8 +23,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import java.io.File;
@@ -35,6 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.Advice;
 import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
@@ -48,7 +51,9 @@ import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
+//public abstract class BaseMealActivity extends Activity implements CalcListener {
 public abstract class BaseMealActivity extends Activity implements CalcListener {
+
 
 	// activity flags start for result
 	public final static int IMAGE_CAPTURE = 2;
@@ -73,7 +78,14 @@ public abstract class BaseMealActivity extends Activity implements CalcListener 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_meal);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+
+		//IF ADVICE
+		Advice myAdvice1 = new Advice(this, "5 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "normal", null, 9);
+		LinearLayout adviceHolder = (LinearLayout) findViewById(R.id.adviceMealHolder);
+		TextView adviceView = (TextView) findViewById(R.id.mealAdvice);
+		adviceView.setText(myAdvice1.getExpandedText());
+		adviceHolder.setVisibility(View.VISIBLE);
+		//IF ADVICE
 
 		insulinIntake = (EditText) findViewById(R.id.et_MealDetail_InsulinUnits);
 		target = (EditText) findViewById(R.id.et_MealDetail_TargetGlycemia);

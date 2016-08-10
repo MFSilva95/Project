@@ -3,10 +3,8 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -43,7 +41,6 @@ import pt.it.porto.mydiabetes.database.ListsDataDb;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.ui.usability.HomeTouchHelper;
-import pt.it.porto.mydiabetes.utils.AdviceAlertReceiver;
 
 
 public class Home extends BaseActivity {
@@ -90,11 +87,30 @@ public class Home extends BaseActivity {
     ArrayList<Task> receiverTaskList = new ArrayList<>();
     ArrayList<Advice> receiverAdviceList = new ArrayList<>();
 
+    SharedPreferences mPrefs;
+
+    Uri defaultImgUri;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        mPrefs = getSharedPreferences("label", 0);
+
+        String imgUriString = mPrefs.getString("userImgUri", "default");
+
+        if(imgUriString.equals("default")){
+            defaultImgUri = null;
+        }else{
+            defaultImgUri = Uri.parse(imgUriString);
+        }
+
+
+
 
         DB_Read read = new DB_Read(this);
         if (!read.MyData_HasData()) {
@@ -141,14 +157,25 @@ public class Home extends BaseActivity {
             @Override
             public void onDrawerOpened(View view) {
                 CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
+                if(defaultImgUri!=null){
+                    Bitmap bitmap = null;
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(view.getContext().getContentResolver(), defaultImgUri);
+                        userImg.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 60, 60, false));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 
                 userImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();
                         intent.setType("image/*");
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
+                        intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, 1);
+                        //intent.setAction(Intent.ACTION_GET_CONTENT);
+                        //startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
 
                         //Toast.makeText(v.getContext(), "Change Picture?", Toast.LENGTH_LONG).show();
 
@@ -230,17 +257,21 @@ public class Home extends BaseActivity {
 
         if (requestCode == 1) {
 
-            Uri resulttUri = data.getData();
+            Uri resultUri = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resulttUri);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
 
                 CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
                 userImg.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 60, 60, false));
+
+                SharedPreferences.Editor mEditor = mPrefs.edit();
+                mEditor.putString("userImgUri", resultUri+"").commit();
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            /*Log.i("CENAS", "CENAS: "+resulttUri.getPath());
+            /*
 
             CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
             File imgFile = new  File(resulttUri.getPath());
@@ -493,12 +524,12 @@ public class Home extends BaseActivity {
 
         String[] temp = {"AVISO IMPORTANTE","Meal","10:s"};
 
-        Advice myAdvice1 = new Advice("5 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "normal", temp, 9);
-        Advice myAdvice2 = new Advice("1 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "ALERT", temp, 6);
-        setupAlarm(myAdvice2);
-        Advice myAdvice3 = new Advice("2 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "question", temp, 2);
-        Advice myAdvice4 = new Advice("4 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "normal", temp, 4);
-        Advice myAdvice5 = new Advice("3 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "alert", temp, 3);
+        Advice myAdvice1 = new Advice(this, "5 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "normal", temp, 9);
+        Advice myAdvice2 = new Advice(this, "1 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "ALERT", temp, 6);
+        Advice myAdvice3 = new Advice(this, "1 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "ALERT", temp, 6);
+        //Advice myAdvice3 = new Advice("2 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "question", temp, 2);
+        Advice myAdvice4 = new Advice(this, "4 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "normal", temp, 4);
+        Advice myAdvice5 = new Advice(this, "3 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "alert", temp, 3);
 
         receiverAdviceList.add(myAdvice1);
         receiverAdviceList.add(myAdvice2);
@@ -510,22 +541,7 @@ public class Home extends BaseActivity {
 
     }
 
-    private void setupAlarm(Advice currentAdvice) {
 
-        AlarmManager alm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, AdviceAlertReceiver.class);
-
-        Bundle extras = new Bundle();
-        extras.putString("RegistryClassName", currentAdvice.getRegistryType());
-        extras.putString("NotificationText", currentAdvice.getNotificationText());
-        intent.putExtras(extras);
-
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-        //alm.set(AlarmManager.RTC_WAKEUP, currentAdvice.getTime().getTimeInMillis(), alarmIntent);
-
-        long timeTest = System.currentTimeMillis() + 5 * 1000;
-        alm.set(AlarmManager.RTC_WAKEUP, timeTest, alarmIntent);
-    }
 
     //----------------------logbook
 

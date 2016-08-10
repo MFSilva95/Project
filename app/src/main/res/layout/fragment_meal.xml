@@ -7,13 +7,40 @@
             tools:context=".ui.activities.BaseMealActivity">
 
     <LinearLayout
-        android:id="@+id/TESTING"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:descendantFocusability="beforeDescendants"
         android:focusableInTouchMode="true"
         android:orientation="vertical"
         android:paddingTop="8dp">
+
+        <LinearLayout
+            android:id="@+id/adviceMealHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/edittext_error_color"/>
+            <TextView
+                android:id="@+id/mealAdvice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="16sp"
+                android:textColor="@color/edittext_error_color"/>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/edittext_error_color"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="fill_parent"

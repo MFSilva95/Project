@@ -3,14 +3,10 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -26,7 +22,6 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 public class Meal extends BaseMealActivity {
-
 
 	public static final String BUNDLE_EXTRAS_GLYCEMIA_ID = "Bundle_extras_glycemia_id";
 
@@ -48,23 +43,6 @@ public class Meal extends BaseMealActivity {
 		if(glycemiaData!=null) {
 			fillDateHour(glycemiaData.getFormattedDate(), glycemiaData.getFormattedTime());
 		}
-		//EXTRA
-
-		LayoutInflater vi = getLayoutInflater();
-		View advice_notice = vi.inflate(R.layout.home_list_separator, null);
-
-		// fill in any details dynamically here
-		TextView textView = (TextView) advice_notice.findViewById(R.id.home_list_separator_text);
-		textView.setText("Ayy limao");
-
-		// insert into main view
-
-		ViewGroup insertPoint = (ViewGroup) getWindow().getDecorView().getRootView();
-		//ViewGroup insertPoint = (ViewGroup) findViewById(R.id.ID VIEW A MUDAR).getParent();
-		insertPoint.addView(advice_notice, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-
-		//EXTRA
 	}
 
 	@Override

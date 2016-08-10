@@ -1,8 +1,15 @@
 package pt.it.porto.mydiabetes.data;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
+import pt.it.porto.mydiabetes.utils.AdviceAlertReceiver;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 
 /**
@@ -34,21 +41,24 @@ public class Advice extends HomeElement implements Comparable<Advice> {
     private String timer;
 
 
-    public Advice(String summaryText, String expText, String adviceType, String[] adviceArgs, int urgency){
+    public Advice(Context currentContext, String summaryText, String expText, String adviceType, String[] adviceArgs, int urgency){
         super(Type.ADVICE);
         this.expandedText = expText;
         this.summaryText = summaryText;
         this.type = adviceType;
         this.urgency = urgency;
-        parseAdvice(adviceArgs);
+        if(this.type.equals(AdviceTypes.ALERT.toString())){
+            parseArgs(adviceArgs);
+            setupAlarm(currentContext);
+        }
     }
 
-    private void parseAdvice(String[] adviceAttr) {
+    private void parseArgs(String[] adviceAttr) {
         if(this.type.equals(AdviceTypes.ALERT.toString())){
             this.notificationText = adviceAttr[0];
             this.registryType = adviceAttr[1];
             this.timer = adviceAttr[2];
-            //run alert
+
         }
         if(this.type.equals(AdviceTypes.QUESTION) && this.urgency >=7){
             this.notificationText = adviceAttr[0];
@@ -61,6 +71,25 @@ public class Advice extends HomeElement implements Comparable<Advice> {
     public Calendar getTime(){
         Calendar calendar = YapDroid.string2Time(timer);
         return calendar;
+    }
+    private void setupAlarm(Context ctxt) {
+
+        AlarmManager alm = (AlarmManager) ctxt.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(ctxt, AdviceAlertReceiver.class);
+
+
+
+        Bundle extras = new Bundle();
+        extras.putString("RegistryClassName", this.getRegistryType());
+        extras.putString("NotificationText", this.getNotificationText());
+        intent.putExtras(extras);
+
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(ctxt, 0, intent, 0);
+        //alm.set(AlarmManager.RTC_WAKEUP, currentAdvice.getTime().getTimeInMillis(), alarmIntent);
+
+        //long timeTest = System.currentTimeMillis() + 5 * 1000;
+        long timeTest = getTime().getTimeInMillis();
+        alm.set(AlarmManager.RTC_WAKEUP, timeTest, alarmIntent);
     }
 
     public String getExpandedText() {return expandedText;}

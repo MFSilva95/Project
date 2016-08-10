@@ -1,9 +1,9 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.os.Bundle;
 
 import com.crashlytics.android.Crashlytics;
 
