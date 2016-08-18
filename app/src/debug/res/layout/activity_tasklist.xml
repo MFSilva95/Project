@@ -19,9 +19,7 @@
             <TextView
                 android:gravity="center"
                 android:textSize="20dp"
-                android:fontFamily="monospace"
-                android:textColor= "@color/cardview_light_background"
-                android:background="@color/default_color"
+                android:textColor= "@color/primary_text_holo_dark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="A minha Lista de Tarefas"/>

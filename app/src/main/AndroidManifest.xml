@@ -183,75 +183,93 @@
         <activity
             android:name=".ui.activities.GlycemiaDetail"
             android:label="@string/title_activity_glycemia_detail"
-            android:parentActivityName=".ui.activities.GlycemiaChartList">
+            android:theme="@style/AppNewThemeCompat"
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.GlycemiaChartList"/>
+                android:value=".ui.activities.Home"/>
         </activity>
         <activity
             android:name=".ui.activities.InsulinDetail"
             android:label="@string/title_activity_insulin_detail"
-            android:parentActivityName=".ui.activities.InsulinChartList">
+            android:theme="@style/AppNewThemeCompat"
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.InsulinChartList"/>
+                android:value=".ui.activities.Home"/>
         </activity>
         <activity
             android:name=".ui.activities.ExerciseDetail"
             android:label="@string/title_activity_exercise_detail"
-            android:parentActivityName=".ui.activities.Exercise">
+            android:theme="@style/AppNewThemeCompat"
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Exercise"/>
+                android:value=".ui.activities.Home"/>
+        </activity>
+        <activity
+            android:name=".ui.activities.MealActivity"
+            android:label="@string/title_activity_meal"
+            android:theme="@style/AppNewThemeCompat"
+            android:parentActivityName=".ui.activities.Home">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.Home"/>
         </activity>
         <activity
             android:name=".ui.activities.CarboHydrateDetail"
             android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/AppNewThemeCompat"
             android:label="@string/title_activity_carbo_hydrate_detail"
-            android:parentActivityName=".ui.activities.CarbsChartList">
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.CarbsChartList"/>
+                android:value=".ui.activities.Home"/>
         </activity>
         <activity
             android:name=".ui.activities.BloodPressureDetail"
             android:label="@string/title_activity_blood_pressure_detail"
-            android:parentActivityName=".ui.activities.BloodPressure">
+            android:theme="@style/AppNewThemeCompat"
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.BloodPressure"/>
+                android:value=".ui.activities.Home"/>
         </activity>
         <activity
             android:name=".ui.activities.CholesterolDetail"
             android:label="@string/title_activity_cholesterol_detail"
-            android:parentActivityName=".ui.activities.Cholesterol">
+            android:theme="@style/AppNewThemeCompat"
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Cholesterol"/>
+                android:value=".ui.activities.Home"/>
         </activity>
         <activity
             android:name=".ui.activities.WeightDetail"
             android:label="@string/title_activity_weight_detail"
-            android:parentActivityName=".ui.activities.WeightChartList">
+            android:theme="@style/AppNewThemeCompat"
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.WeightChartList"/>
+                android:value=".ui.activities.Home"/>
         </activity>
         <activity
             android:name=".ui.activities.HbA1cDetail"
             android:label="@string/title_activity_hb_a1c_detail"
-            android:parentActivityName=".ui.activities.HbA1c">
+            android:theme="@style/AppNewThemeCompat"
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.HbA1c"/>
+                android:value=".ui.activities.Home"/>
         </activity>
         <activity
             android:name=".ui.activities.DiseaseDetail"
             android:label="@string/title_activity_disease_detail"
-            android:parentActivityName=".ui.activities.Disease">
+            android:theme="@style/AppNewThemeCompat"
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Disease"/>
+                android:value=".ui.activities.Home"/>
         </activity>
         <activity
             android:name=".ui.activities.ImportExport"
@@ -284,15 +302,6 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Preferences"/>
-        </activity>
-        <activity
-            android:name=".ui.activities.Meal"
-            android:label="@string/title_activity_meal"
-            android:parentActivityName=".ui.activities.Home">
-            <meta-data
-                android:theme="@style/Theme.AppCompat.Light"
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Home"/>
         </activity>
         <activity
             android:name=".ui.activities.Info"

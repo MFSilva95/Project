@@ -81,10 +81,11 @@ public class Advice extends HomeElement implements Comparable<Advice> {
 
         Bundle extras = new Bundle();
         extras.putString("RegistryClassName", this.getRegistryType());
+        //Log.i("Tagz", "RAWRAWRAWRAWRAWRAWR "+this.getRegistryType());
         extras.putString("NotificationText", this.getNotificationText());
         intent.putExtras(extras);
 
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(ctxt, 0, intent, 0);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(ctxt, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         //alm.set(AlarmManager.RTC_WAKEUP, currentAdvice.getTime().getTimeInMillis(), alarmIntent);
 
         //long timeTest = System.currentTimeMillis() + 5 * 1000;

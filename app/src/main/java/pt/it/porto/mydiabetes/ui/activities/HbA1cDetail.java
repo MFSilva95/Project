@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
@@ -28,7 +27,7 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
-public class HbA1cDetail extends Activity {
+public class HbA1cDetail extends BaseActivity {
 
 	int idHbA1c = 0;
 	int idNote = 0;
@@ -38,7 +37,7 @@ public class HbA1cDetail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_hba1c_detail);
 		// Show the Up button in the action bar.
-		getActionBar();
+		getSupportActionBar();
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {

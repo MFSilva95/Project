@@ -17,7 +17,7 @@
     <!--<color name="background">#abbbcb</color>-->
     <color name="background">#eeeeee</color>
     <color name="activity_blue">#bbccff</color>
-
+    <color name="primaryDark">#1a237e</color>
     <color name="primary">#3F51B5</color>
     <color name="primary_dark">#303F9F</color>
     <color name="primary_light">#C5CAE9</color>
@@ -26,6 +26,6 @@
     <color name="secondary_text">#727272</color>
     <color name="icons">#FFFFFF</color>
     <color name="divider">#B6B6B6</color>
-
+    <color name="text_units">#5b5b5b</color>
 
 </resources>

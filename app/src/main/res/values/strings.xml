@@ -413,6 +413,42 @@
     </string-array>
 
 
+    <string name="glycemia_objective">Objectivo de Glicemia</string>
+    <string name="glycemia_measure">Glicemia Lida</string>
+    <string name="insulin_intake">Insulina a Administrar</string>
+    <string name="carbs_intake">Hidratos de Carbono Consumidos</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </resources>

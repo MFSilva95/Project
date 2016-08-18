@@ -34,6 +34,7 @@ import java.util.Collections;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.data.Advice;
 import pt.it.porto.mydiabetes.data.Task;
 import pt.it.porto.mydiabetes.database.DB_Read;
@@ -91,6 +92,8 @@ public class Home extends BaseActivity {
 
     Uri defaultImgUri;
 
+    private YapDroid yapDroid;
+
 
 
     @Override
@@ -98,6 +101,8 @@ public class Home extends BaseActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        yapDroid = YapDroid.newInstance(this);
 
         mPrefs = getSharedPreferences("label", 0);
 
@@ -108,8 +113,6 @@ public class Home extends BaseActivity {
         }else{
             defaultImgUri = Uri.parse(imgUriString);
         }
-
-
 
 
         DB_Read read = new DB_Read(this);
@@ -287,6 +290,12 @@ public class Home extends BaseActivity {
     }
 
     private void fillHomeList() {
+
+        String teste1 = yapDroid.getYapSingleAdvice();
+        ArrayList<String> teste2 = yapDroid.getYapMultipleAdvices();
+
+//        Log.i("Cenas", "AYYYYYYYYyyyy... "+teste1+ " TESTE2_SIZE: "+teste2.size());
+
         fillTaskList();
         fillAdviceList();
 
@@ -358,7 +367,7 @@ public class Home extends BaseActivity {
         });
         miniFab3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), Meal.class);
+                Intent intent = new Intent(v.getContext(), MealActivity.class);
                 startActivity(intent);
             }
         });
@@ -483,7 +492,7 @@ public class Home extends BaseActivity {
 
 
 
-        String[] temp2 = {"AVISO IMPORTANTE","Meal","10:s"};
+        String[] temp2 = {"AVISO IMPORTANTE","MealActivity","10:s"};
 
         Task myTask1 = new Task("5 - ", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 9);
         Task myTask2 = new Task("1 - ", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 6);
@@ -522,7 +531,7 @@ public class Home extends BaseActivity {
             adviceList.add(newAdvice);
         }*/
 
-        String[] temp = {"AVISO IMPORTANTE","Meal","10:s"};
+        String[] temp = {"AVISO IMPORTANTE PARA SI VEJA COM CUIDADO","MealActivity","10:s"};
 
         Advice myAdvice1 = new Advice(this, "5 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "normal", temp, 9);
         Advice myAdvice2 = new Advice(this, "1 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "ALERT", temp, 6);

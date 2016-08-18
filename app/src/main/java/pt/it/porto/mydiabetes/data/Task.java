@@ -1,16 +1,10 @@
 package pt.it.porto.mydiabetes.data;
 
-import android.app.AlarmManager;
-import android.app.DialogFragment;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
-import pt.it.porto.mydiabetes.utils.AdviceAlertReceiver;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 
 /**
@@ -68,7 +62,7 @@ public class Task extends HomeElement implements Comparable<Task> {
 
     public void setupAlarm(Context c) {
 
-        AlarmManager alm = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
+        /*AlarmManager alm = (AlarmManager) c.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(c, AdviceAlertReceiver.class);
 
         Bundle extras = new Bundle();
@@ -76,7 +70,7 @@ public class Task extends HomeElement implements Comparable<Task> {
         intent.putExtras(extras);
 
         PendingIntent alarmIntent = PendingIntent.getBroadcast(c, 0, intent, 0);
-        alm.set(AlarmManager.RTC_WAKEUP, getTime().getTimeInMillis(), alarmIntent);
+        alm.set(AlarmManager.RTC_WAKEUP, getTime().getTimeInMillis(), alarmIntent);*/
 
         //long timeTest = System.currentTimeMillis() + 5 * 1000;
         //alm.set(AlarmManager.RTC_WAKEUP, timeTest, alarmIntent);
