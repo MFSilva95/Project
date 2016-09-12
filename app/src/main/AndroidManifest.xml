@@ -354,7 +354,8 @@
         <activity
             android:name=".ui.activities.DetailLogbookActivity"
             android:label="@string/title_activity_logbook_detail"
-            android:parentActivityName=".ui.activities.LogbookChartList">
+            android:parentActivityName=".ui.activities.LogbookChartList"
+            android:theme="@style/AppNewThemeCompat">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.LogbookChartList"/>

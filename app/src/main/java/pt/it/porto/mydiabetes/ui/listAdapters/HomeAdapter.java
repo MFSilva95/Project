@@ -103,7 +103,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             this.homeList.addAll(taskList);
         }
         if(cursor.getCount()>0){
-            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "GLUCOSE REGISTRIES"));
+            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "RECENT REGISTRIES"));
             this.homeList.addAll(cursorToList(cursor));
         }
         this.homeList.add(new HomeElement(HomeElement.Type.SPACE,""));

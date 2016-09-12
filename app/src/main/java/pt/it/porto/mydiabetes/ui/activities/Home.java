@@ -300,7 +300,7 @@ public class Home extends BaseActivity {
         fillAdviceList();
 
         ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
-        Cursor cursor = db.getAllLogbookListWithin(5);
+        Cursor cursor = db.getAllLogbookListWithin(10);
         HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, receiverTaskList, cursor,this);
 
         ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
