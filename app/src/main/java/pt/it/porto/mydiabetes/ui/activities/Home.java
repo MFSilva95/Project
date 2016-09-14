@@ -291,11 +291,6 @@ public class Home extends BaseActivity {
 
     private void fillHomeList() {
 
-        String teste1 = yapDroid.getYapSingleAdvice();
-        ArrayList<String> teste2 = yapDroid.getYapMultipleAdvices();
-
-//        Log.i("Cenas", "AYYYYYYYYyyyy... "+teste1+ " TESTE2_SIZE: "+teste2.size());
-
         fillTaskList();
         fillAdviceList();
 
@@ -490,9 +485,9 @@ public class Home extends BaseActivity {
 
     private void fillTaskList() {
 
+        //ArrayList<String> taskListFromYap = yapDroid.getYapMultipleTasks();
 
-
-        String[] temp2 = {"AVISO IMPORTANTE","MealActivity","10:s"};
+        /*String[] temp2 = {"AVISO IMPORTANTE","MealActivity","10:s"};
 
         Task myTask1 = new Task("5 - ", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 9);
         Task myTask2 = new Task("1 - ", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 6);
@@ -500,15 +495,26 @@ public class Home extends BaseActivity {
         Task myTask3 = new Task("2 - ", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 2);
         Task myTask4 = new Task("4 - ", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 4);
         Task myTask5 = new Task("3 - ", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 3);
+        */
+        /*for(String taskString:taskListFromYap){
 
+            String urgency = null;
+            int urgencyValue = Integer.parseInt(urgency);
+            String expTxt = null;
+            String message = null;
+            //String[] temp2 = {"AVISO IMPORTANTE","MealActivity","10:s"};
+
+            Task newTask = new Task(message, expTxt, null, urgencyValue);
+        }/
+        /*
         receiverTaskList.add(myTask1);
         receiverTaskList.add(myTask2);
         receiverTaskList.add(myTask3);
         receiverTaskList.add(myTask4);
-        receiverTaskList.add(myTask5);
+        receiverTaskList.add(myTask5);*/
 
-        Collections.sort(receiverTaskList);
-
+        //Collections.sort(receiverTaskList);
+        receiverTaskList = yapDroid.getYapMultipleTasks();
         /*TaskListAdapter taskAdapter = new TaskListAdapter(receiverTaskList, this);
 
         ItemTouchHelper.Callback callback = new TaskTouchHelper(taskAdapter);
