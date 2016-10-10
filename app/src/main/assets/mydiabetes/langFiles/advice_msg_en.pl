@@ -4,6 +4,15 @@
 %                                                                                                            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+msg('hadHypoGlycemia', ['You have a low Glycemia value.', 'A new test will -be agended to check if your values have estabilized.',[adviceTimer,'alarmMessage','Glycemia',600,s],9]).
+msg('hadLowGlucose',  ['You have a low Glycemia value.', 'A new test will -be agended to check if your values have estabilized.',[adviceTimer,'alarmMessage','Glycemia',600,s],9 ]).
+msg('hadRecentInsulin',  ['You have a low Glycemia value.', 'A new test will -be agended to check if your values have estabilized.',[adviceTimer,'alarmMessage','Glycemia',600,s],9 ]).
+
+%%types are: NORMAL, SUGGESTION, QUESTION, ALERT};
+
+
+
 %%In this file Messages are inserted or defined
 %% messages must have the format msg(ID, Message with extra options separated by "-")
 
@@ -37,17 +46,18 @@ msg('mealUserWithHighWeight', 'You should moderate the portion of your meals and
 %% Essencial Task messages
 %%------------------------------------------------------------------------------------------------------------
 
-msg('Tsk_glycemiaReg', 'You dont test your Glucose for far too long. The last registrated value has expired. Please perform a new test./10').
-msg('Tsk_hbA1cReg', 'You dont test your HbA1c for far too long. The last registrated value has expired. Please perform a new test./10').
-msg('Tsk_arterialPReg', 'You dont test your Arterial Pressure for far too long. The last registrated value has expired. Please perform a new test./10').
-msg('Tsk_weightReg', 'You dont weight yourself for far too long. The last registrated value has expired. Please perform a new weighing./10').
-msg('Tsk_cholesterolReg', 'You dont test your Cholesterol for far too long. The last registrated value has expired. Please perform a new test./10').
+msg('Tsk_Reg_glucose', 'You dont test your Glucose for far too long. The last registrated value has expired. Please perform a new test./10').
+msg('Tsk_Reg_hbA1c', 'You dont test your HbA1c for far too long. The last registrated value has expired. Please perform a new test./10').
+msg('Tsk_Reg_arterialP', 'You dont test your Arterial Pressure for far too long. The last registrated value has expired. Please perform a new test./10').
+msg('Tsk_Reg_weight', 'You dont weight yourself for far too long. The last registrated value has expired. Please perform a new weighing./10').
+msg('Tsk_Reg_cholesterol', 'You dont test your Cholesterol for far too long. The last registrated value has expired. Please perform a new test./10').
 
 %%------------------------------------------------------------------------------------------------------------
 %% Other Task messages
 %%------------------------------------------------------------------------------------------------------------
 
-msg('Tsk_doExerciseTwoTimesADay', 'You must Exercise at least two times a day and register it.').
+msg('Tsk_doTwoTimesADay_exercise', 'You must Exercise at least two times a day and register it.', 'Exercicio fisico is fundamental para uma boa gestao da diabetes', null, 4).
+msg('Tsk_doOnceAMonth_exercise', 'You must Exercise at least once a Month and register it.', 'Exercicio fisico is fundamental para uma boa gestao da diabetes', null, 5).
 
 msg(hipoglicemia,[(exercise, '+'), (meal,'-'), (insulin,'+')],'To avoid this situation you should eat before exercising, your insulin intake before exercising could have had an impact on this situation.').
 msg(hipoglicemia, [(exercise, '+'),(meal,'-')],'To avoid this situation you should eat before exercising.').

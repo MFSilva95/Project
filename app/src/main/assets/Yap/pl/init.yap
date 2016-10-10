@@ -112,6 +112,7 @@ otherwise.
 
 :- compile_expressions.
 
+:- bootstrap('bootutils.yap').
 :- bootstrap('bootlists.yap').
 :- bootstrap('consult.yap').
 :- bootstrap('preddecls.yap').
@@ -119,18 +120,15 @@ otherwise.
 :- bootstrap('meta.yap').
 :- bootstrap('newmod.yap').
 
-
 :- bootstrap('atoms.yap').
 :- bootstrap('os.yap').
 :- bootstrap('grammar.yap').
+:- bootstrap('directives.yap').
 :- bootstrap('absf.yap').
-%:-set_prolog_flag(gc_trace, verbose).
-%:- set_prolog_flag( verbose_file_search, true ).
 
 :- dynamic prolog:'$parent_module'/2.
 
 :- [
-    'directives.yap',
 	 'preds.yap',
 	 'modules.yap'
    ].
@@ -176,6 +174,7 @@ otherwise.
      'spy.yap',
      'udi.yap'].
 
+
 :- meta_predicate(log_event(+,:)).
 
 :- dynamic prolog:'$user_defined_flag'/4.
@@ -193,9 +192,6 @@ version(yap,[6,3]).
 :- dynamic 'extensions_to_present_answer'/1.
 
 :- 	['arrays.yap'].
-
-:- 	['undefined.yap'].
-
 %:- start_low_level_trace.
 
 :- multifile user:portray_message/2.
@@ -232,6 +228,8 @@ sub-goal  _NG_ will replace  _G_ and will be processed in the same
 :- dynamic goal_expansion/2.
 
 :- use_module('messages.yap').
+
+:- 	['undefined.yap'].
 
 :- use_module('hacks.yap').
 
@@ -340,6 +338,8 @@ If this hook predicate succeeds it must instantiate the  _Action_ argument to th
 
 :- dynamic user:exception/3.
 
+
+:- reconsult('pathconf.yap').
 /*
    Add some tests
 */

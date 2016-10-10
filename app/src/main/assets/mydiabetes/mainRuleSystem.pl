@@ -17,6 +17,7 @@
 
 %%writeProfile(ProfileFact):- profileFileLocation(Location), tell(Location), atom_concat(ProfileFact,'.', NewProfileFact), write(NewProfileFact), nl, listing(ProfileFact), told.
 
+getProfile(4).
 %%getProfile(Result):- profileFileLocation(Location), reconsult(Location), profile(Result).
 %%getProfile(Result):- profileFileLocation(Location), userProfileDefinition, reconsult(Location), profile(Result).
 
@@ -32,62 +33,26 @@
 
 %%Retorna apenas o advice mais urgente do tipo de registo type
 
-masterRule( single_advice, Condition, Type, ListFilteredAdvices):- adviceRelatedParameters(Type, ParameterList),
-getAdvices( Condition, ParameterList, ListAllAdvices),
+masterRule( single_advice, Condition, Type, MostUrgentAdvice):- 
+getAllAdvices( Condition, Type, ListAllAdvices),
 filter( ListAllAdvices, [ID, _]),
 msg( ID, MostUrgentAdvice).
 
 %%Retorna o numero de conselhos indicado pelo user Profile
 
-masterRule( multiple_advice, Condition, Type, UserType, ListFilteredAdvices):- getAllAdvices( Condition, ParameterList, ListAllAdvices),
+masterRule( multiple_advice, Condition, Type, ListFilteredAdvices):-
+getAllAdvices( Condition, Type, ListAllAdvices),
 quick_sort(ListAllAdvices, OrderedAdviceIDList),
 getProfile(ProfileNumber),
-filterByProfile( OrderedAdviceIDList, ListFilteredIds, ProfileNumber),
+length(OrderedAdviceIDList, ListLength),
+minNumAdv(ProfileNumber, ListLength, MinNumber),
+filterByProfile( ListFilteredIds, OrderedAdviceIDList, MinNumber),
 getListFilteredAdvices( ListFilteredIds, ListFilteredAdvices ).
 
+masterRule(task, TaskList):- findall(ID , hasTask(exercise, ID), TaskIDList), getAllTasks(TaskIDList, TaskList).
 
-masterRule(task,TaskList):- findall(Description ,task(Description), TaskList).
-
-
-
-%%------------------------------------------------------------------------------------------------------------
-%% Searches a list of possible causes for a crisis
-%%------------------------------------------------------------------------------------------------------------
-
-searchCause(CrisisType, ListCauses):- findall(Cause, possibleCause(CrisisType, Cause), ListCauses).
-
-%%------------------------------------------------------------------------------------------------------------
-%% Takes the filtered list of IDs and returns a list of Advices
-%%------------------------------------------------------------------------------------------------------------
-
-getListFilteredAdvices([[ID|_]], [MostUrgentAdvice]) :- msg( ID, MostUrgentAdvice).
-getListFilteredAdvices([[ID|_]|Rest], ListFilteredAdvices) :- msg( ID, MostUrgentAdvice), getListFilteredAdvices([[ID|_]|Rest], [MostUrgentAdvice|ListFilteredAdvices]).
-
-%%------------------------------------------------------------------------------------------------------------
-%% For the type "Type", and list of subtypes returns a list of Advices Id and their respective Risks
-%%------------------------------------------------------------------------------------------------------------
-
-getAdvices( Condition, [Parameter], [[ID,Risk]] ) :- inRisk( Condition, true, Parameter, Risk, ID).
-getAdvices( Condition, [Parameter|Rest], [[ID,Risk]] ) :- inRisk( Condition, Parameter, Risk, ID), getAdvices( Condition, Rest, [[ID,Risk]] ).
-
-
-%%------------------------------------------------------------------------------------------------------------
-%% For the type "Type", and list of subtypes returns a list of Advices Id and their respective Risks
-%%------------------------------------------------------------------------------------------------------------
-
-getAllAdvices( Condition, [Parameter], [[ID,Risk]] ) :- findall([ID,Risk] , inRisk( Condition, true, Parameter, Risk, ID), TaskList).
-getAllAdvices( Condition, [Parameter], [[ID,Risk]] ) :- findall([ID,Risk] , inRisk( Condition, false, Parameter, Risk, ID), TaskList).
-
-getAllAdvices( Condition, [Parameter|Rest], [[ID,Risk]|AdviceList] ) :- findall([ID,Risk] , inRisk( Condition, true, Parameter, Risk, ID), TaskList), getAllAdvices( Condition, Rest, AdviceList ).
-getAllAdvices( Condition, [Parameter|Rest], [[ID,Risk]|AdviceList] ) :- findall([ID,Risk] , inRisk( Condition, false, Parameter, Risk, ID), TaskList), getAllAdvices( Condition, Rest, AdviceList ).
-
-
-%%------------------------------------------------------------------------------------------------------------
-%% Returns a list of Task's for the user to do
-%%------------------------------------------------------------------------------------------------------------
-
-getAllTasks([Description] ) :- hasTask(Description).
-getAllTasks([Description|TaskList]):- hasTask(Description), getAllTasks(TaskList).
+getAllTasks([IDListHead], [[SmallTxt, ExpandedTxt, Alarm, Urgency]]):- msg(IDListHead, SmallTxt, ExpandedTxt, Alarm, Urgency).
+getAllTasks([IDListHead|Rest], [[SmallTxt, ExpandedTxt, Alarm, Urgency]|TaskList]):- msg(IDListHead, SmallTxt, ExpandedTxt, Alarm, Urgency), getAllTasks(Rest, TaskList).
 
 
 %%------------------------------------------------------------------------------------------------------------
@@ -102,9 +67,49 @@ filter([[_,Risk]|Rest],[IDN,RiskN]) :- filter(Rest,[IDN,RiskN]), RiskN > Risk.
 %% Filter filters the list of advices and returns the number of advices the users profile dictates.
 %%------------------------------------------------------------------------------------------------------------
 
-filterByProfile(_,[],_).
-filterByProfile([X],[X|_],1).
+filterByProfile([],_,0).
 filterByProfile([H|ListFiltered],[H|L], ProfileNumber) :- filterByProfile(ListFiltered,L, K1), ProfileNumber is K1 + 1.
+
+
+%%------------------------------------------------------------------------------------------------------------
+%% Searches a list of possible causes for a crisis
+%%------------------------------------------------------------------------------------------------------------
+
+searchCause(CrisisType, ListCauses):- findall(Cause, possibleCause(CrisisType, Cause), ListCauses).
+
+%%------------------------------------------------------------------------------------------------------------
+%% Takes the filtered list of IDs and returns a list of Advices
+%%------------------------------------------------------------------------------------------------------------
+
+getListFilteredAdvices([[ID|_]], [MostUrgentAdvice]) :- msg( ID, MostUrgentAdvice).
+getListFilteredAdvices([[ID|_]|Rest], [MostUrgentAdvice|ListFilteredAdvices]) :- msg( ID, MostUrgentAdvice), getListFilteredAdvices( Rest, ListFilteredAdvices).
+
+%%------------------------------------------------------------------------------------------------------------
+%% For the type "Type", and list of subtypes returns a list of Advices Id and their respective Risks
+%%------------------------------------------------------------------------------------------------------------
+
+getAdvices( Condition, [Parameter], [[ID,Risk]] ) :- inRisk( Condition, Parameter, Risk, ID).
+getAdvices( Condition, [Parameter|Rest], [[ID,Risk]] ) :- inRisk( Condition, Parameter, Risk, ID), getAdvices( Condition, Rest, [[ID,Risk]] ).
+
+
+%%------------------------------------------------------------------------------------------------------------
+%% For the type "Type", and list of subtypes returns a list of Advices Id and their respective Risks
+%%------------------------------------------------------------------------------------------------------------
+
+getAllAdvices( Condition, Parameter, TaskList ) :- findall([ID,Risk] , inRisk( Condition, Parameter, Risk, ID), TaskList).
+
+%%------------------------------------------------------------------------------------------------------------
+%% Returns a list of Task's for the user to do
+%%------------------------------------------------------------------------------------------------------------
+
+%getAllTasks([Description] ) :- hasTask(Description).
+%getAllTasks([Description|TaskList]):- hasTask(Description), getAllTasks(TaskList).
+
+%% verify if proffile number is bigger than the number of advices
+%%returns the minimum
+
+minNumAdv(Num1,Num2,Num1):- Num1<Num2.
+minNumAdv(Num1,Num2,Num2).
 
 
 %%------------------------------------------------------------------------------------------------------------

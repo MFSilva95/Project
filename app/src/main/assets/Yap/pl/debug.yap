@@ -276,6 +276,36 @@ be lost.
 	'$debugger_input',
 	'$do_spy'(G, Mod, CP, spy).
 
+'$spy'([Mod|G], A1) :- 
+	G =.. L,
+	lists:append( L, [A1], NL),
+	NG =.. NL,
+	'$spy'([Mod|NG]).
+
+'$spy'([Mod|G], A1, A2) :- 
+	G =.. L,
+	lists:append( L, [A1, A2], NL),
+	NG =.. NL,
+	'$spy'([Mod|NG]).
+
+'$spy'([Mod|G], A1, A2, A3) :- 
+	G =.. L,
+	lists:append( L, [A1, A2, A3], NL),
+	NG =.. NL,
+	'$spy'([Mod|NG]).
+
+'$spy'([Mod|G], A1, A2, A3, A4) :- 
+	G =.. L,
+	lists:append( L, [A1, A2, A3, A4], NL),
+	NG =.. NL,
+	'$spy'([Mod|NG]).
+
+'$spy'([Mod|G], A1, A2, A3, A4, A5) :- 
+	G =.. L,
+	lists:append( L, [A1, A2, A3, A4, A5], NL),
+	NG =.. NL,
+	'$spy'([Mod|NG]).
+
 /**
   * @pred debugger_input.
   * name of stream used for debugging,
@@ -373,33 +403,42 @@ be lost.
 	'$current_choice_point'(CP),
 	'$system_catch'('$loop_spy2'(GoalNumber, G, Module, CalledFromDebugger, CP),
 		    Module, Error,
-		    '$loop_spy_event'(Error, GoalNumber, G, Module, CalledFromDebugger)).
+		    '$TraceError'(Error, GoalNumber, G, Module, CalledFromDebugger)).
 
-% handle weird things happening in the debugger.
-'$loop_spy_event'('$pass'(Event), _, _, _, _) :- !,
-	throw(Event).
-'$loop_spy_event'(error('$retry_spy'(G0),_), GoalNumber, G, Module, CalledFromDebugger) :-
-	G0 >= GoalNumber, !,
-	'$loop_spy'(GoalNumber, G, Module, CalledFromDebugger).
-'$loop_spy_event'(error('$retry_spy'(GoalNumber),_), _, _, _, _) :- !,
-	throw(error('$retry_spy'(GoalNumber),[])).
-'$loop_spy_event'(error('$fail_spy'(G0),_), GoalNumber, G, Module, CalledFromDebugger) :-
+/**
+  * @pred '$TraceError'(+Exception, +CurrentGoalId, +CurrentGoal, +Module, +Status)
+  *
+  * forward exception until leaving the debugger or
+  * finding a matching frame:
+  *
+*/
+%%% - retry: forward throw while the call is newer than goal
+'$TraceError'('$forward'('$retry_spy'(G0)), GoalNumber, G, Module, CalledFromDebugger) :-
+	( G0 >= GoalNumber
+  ->
+	'$loop_spy'(GoalNumber, G, Module, CalledFromDebugger)
+;
+	throw('$forward'('$retry_spy'(G0)))
+  ).
+%%% - backtrack long distance
+'$TraceError'('$forward'('$fail_spy'(G0)), GoalNumber, G, Module, CalledFromDebugger) :-
 	G0 >= GoalNumber, !,
 	'$loop_fail'(GoalNumber, G, Module, CalledFromDebugger).
-'$loop_spy_event'(error('$fail_spy'(GoalNumber),_), _, _, _, _) :- !,
-	throw(error('$fail_spy'(GoalNumber),[])).
-'$loop_spy_event'(error('$done_spy'(G0),_), GoalNumber, _G, _, CalledFromDebugger) :-
-	G0 >= GoalNumber, !,
-	'$continue_debugging'(zip, CalledFromDebugger).
-'$loop_spy_event'(error('$done_spy'(GoalNumber),_), _, _, _, _) :- !,
-	throw(error('$done_spy'(GoalNumber),[])).
-'$loop_spy_event'(Event, GoalNumber, G, Module, CalledFromDebugger) :-
+'$TraceError'('$forward'('$fail_spy'(GoalNumber)), _, _, _, _) :- !,
+	throw(error('$fail_spy'(GoalNumber))).
+%%%
+%%% - forward through the debugger
+'$TraceError'('$forward'('$wrapper'(Event)), _, _, _, _) :-
+	!,
+	throw(Event).
+%%% - anything else, leave to the user and restore the catch
+'$TraceError'(Event, GoalNumber, G, Module, CalledFromDebugger) :-
 	'$debug_error'(Event),
 	'$system_catch'(
 		     ('$trace'(exception(Event),G,Module,GoalNumber,_),fail),
 		     Module,
-		     error(NewEvent,NewContext),
-		     '$loop_spy_event'(error(NewEvent,NewContext), GoalNumber, G, Module, CalledFromDebugger)
+		     Error,
+		     '$TraceError'(Error, GoalNumber, G, Module, CalledFromDebugger)
 		    ).
 
 
@@ -553,7 +592,7 @@ be lost.
 
 '$spycall_expanded'(G, M, CalledFromDebugger, InRedo) :-
 	'$undefined'(G, M), !,
-	'$get_undefined_pred'(G, M, Goal, NM), NM \= M,
+	'$get_undefined_pred'(G, M,  Goal, NM), NM \= M,
 	'$spycall'(Goal, NM, CalledFromDebugger, InRedo).
 '$spycall_expanded'(G, M, _CalledFromDebugger, InRedo) :-
 	CP is '$last_choice_pt',
@@ -721,7 +760,6 @@ be lost.
     lists:memberchk( call_tracer, Opts),
             !,			% <'Depth
         	'$skipeol'(0'C),
-        '$start_low_level_trace',
         	'__NB_setval__'('$debug_jump',false).
 '$action'(0'^,_,_,G,_,_) :- !,			% '
 	'$print_deb_sterm'(G),
@@ -746,7 +784,7 @@ be lost.
 	halt.
 '$action'(0'f,_,CallId,_,_,_) :- !,		% 'f		fail
 	'$scan_number'(0'f, CallId, GoalId),    %'f
-	throw(error('$fail_spy'(GoalId),[])).
+	throw('$forward'('$fail_spy'(GoalId))).
 '$action'(0'h,_,_,_,_,_) :- !,			% 'h		help
 	'$action_help',
 	'$skipeol'(104),
@@ -795,8 +833,12 @@ be lost.
 	nodebug.
 '$action'(0'r,_,CallId,_,_,_) :- !,		        % 'r		retry
     '$scan_number'(0'r,CallId,ScanNumber),		% '
+				%	set_prolog_flag(debug, true),
+    throw('$forward'('$retry_spy'(ScanNumber))).
+'$action'(0'r,_,CallId,_,_,_) :- !,		        % 'r		retry
+    '$scan_number'(0'r,CallId,ScanNumber),		% '
 %	set_prolog_flag(debug, true),
-	throw(error('$retry_spy'(ScanNumber),[])).
+	throw('$forward'('$wrapper'(ScanNumber))).
 '$action'(0's,P,CallNumber,_,_,on) :- !,		% 's		skip
 	'$skipeol'(0's),				% '
 	(
@@ -827,6 +869,8 @@ be lost.
         '$scan_number'(0'g,-1,HowMany),         % '
         '$show_ancestors'(HowMany),
 	fail.
+'$action'(0'T,exception(G),_,_,_,_) :- !,	% 'T		throw
+	throw( '$forward'('$wrapper'(G))).
 '$action'(C,_,_,_,_,_) :-
 	'$skipeol'(C),
 	'$ilgl'(C),
@@ -920,6 +964,7 @@ be lost.
 	format(user_error,'+        spy this    -       nospy this~n', []),
 	format(user_error,'^        view subg   ^^      view using~n', []),
 	format(user_error,'A        choices     g [N]   ancestors~n', []),
+	format(user_error,'T        throw       ~n', []),
 	format(user_error,'! g execute goal~n', []).
 
 '$ilgl'(C) :-
@@ -1017,7 +1062,7 @@ be lost.
 	'$debugger_skip_loop_spy2'(CPs1,CPs2),
 	'$debugger_skip_spycall'(CPs2,CPs3),
 	'$debugger_skip_loop_spy2'(CPs3,[Catch|_]),
-	yap_hacks:choicepoint(Catch,_,prolog,'$catch',3,'$catch'(_,'$loop_spy_event'(_,_,G,_,_),_),_).
+	yap_hacks:choicepoint(Catch,_,prolog,'$catch',3,'$catch'(_,'$TraceError'(_,_,G,_,_),_),_).
 
 
 '$cps'([CP|CPs]) :-

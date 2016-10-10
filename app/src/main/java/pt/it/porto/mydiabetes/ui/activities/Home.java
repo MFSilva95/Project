@@ -85,7 +85,8 @@ public class Home extends BaseActivity {
     private ListView logbookList;
     private RecyclerView homeList;
 
-    ArrayList<Task> receiverTaskList = new ArrayList<>();
+    ArrayList<Task> taskListFromYap = new ArrayList<>();
+    //ArrayList<Task> receiverTaskList = new ArrayList<>();
     ArrayList<Advice> receiverAdviceList = new ArrayList<>();
 
     SharedPreferences mPrefs;
@@ -148,6 +149,8 @@ public class Home extends BaseActivity {
         //fillListView(logbookList);
 
         fillHomeList();
+
+
 
         //----------------------nav
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
@@ -296,7 +299,7 @@ public class Home extends BaseActivity {
 
         ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
         Cursor cursor = db.getAllLogbookListWithin(10);
-        HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, receiverTaskList, cursor,this);
+        HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor,this);
 
         ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
@@ -485,8 +488,6 @@ public class Home extends BaseActivity {
 
     private void fillTaskList() {
 
-        //ArrayList<String> taskListFromYap = yapDroid.getYapMultipleTasks();
-
         /*String[] temp2 = {"AVISO IMPORTANTE","MealActivity","10:s"};
 
         Task myTask1 = new Task("5 - ", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 9);
@@ -514,7 +515,11 @@ public class Home extends BaseActivity {
         receiverTaskList.add(myTask5);*/
 
         //Collections.sort(receiverTaskList);
-        receiverTaskList = yapDroid.getYapMultipleTasks();
+
+
+        taskListFromYap = yapDroid.getYapMultipleTasks();
+
+        //receiverTaskList = yapDroid.getYapMultipleTasks();
         /*TaskListAdapter taskAdapter = new TaskListAdapter(receiverTaskList, this);
 
         ItemTouchHelper.Callback callback = new TaskTouchHelper(taskAdapter);
@@ -526,7 +531,7 @@ public class Home extends BaseActivity {
     public void fillAdviceList() {
 
 
-
+        receiverAdviceList.addAll(yapDroid.getYapMultipleAdvices());
         //getAllYapAdvices -> put them into adviceList.
 
         /*for(RawAdvice advice:advicesFromYap){
@@ -537,7 +542,7 @@ public class Home extends BaseActivity {
             adviceList.add(newAdvice);
         }*/
 
-        String[] temp = {"AVISO IMPORTANTE PARA SI VEJA COM CUIDADO","MealActivity","10:s"};
+        /*String[] temp = {"AVISO IMPORTANTE PARA SI VEJA COM CUIDADO","MealActivity","10:s"};
 
         Advice myAdvice1 = new Advice(this, "5 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "normal", temp, 9);
         Advice myAdvice2 = new Advice(this, "1 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "ALERT", temp, 6);
@@ -550,7 +555,7 @@ public class Home extends BaseActivity {
         receiverAdviceList.add(myAdvice2);
         receiverAdviceList.add(myAdvice3);
         receiverAdviceList.add(myAdvice4);
-        receiverAdviceList.add(myAdvice5);
+        receiverAdviceList.add(myAdvice5);*/
 
         Collections.sort(receiverAdviceList);
 

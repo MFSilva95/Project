@@ -600,10 +600,12 @@ Defines the relation:  _P_ is a currently defined predicate whose name is the at
 */
 current_predicate(A,T0) :-
 	'$yap_strip_module'(T0, M, T),
+	(nonvar(T) -> functor(T, A, _) ; true ),
 	(
 	 '$current_predicate'(A,M, T, user)
     ;
 	 '$imported_predicate'(T, M, T1, M1),
+	 functor(T1, A, _),
 	 \+ '$is_system_predicate'(T1,M1)
     ).
 
@@ -659,7 +661,7 @@ system_predicate(P0) :-
   YAP also supports the ISO standard built-in system_predicate/1, that
   provides similar functionality and is compatible with most other Prolog
   systems.
-  
+
 */
 system_predicate(A, P0) :-
 	'$yap_strip_module'(P0, M, P),
@@ -674,7 +676,7 @@ system_predicate(A, P0) :-
 
 
 /**
-  @pred  current_predicate( _F_) is iso
+  @pred  current_predicate( F ) is iso
 
   True if _F_ is the predicate indicator for a currently defined user or
   library predicate.The indicator  _F_ is of the form _Mod_:_Na_/_Ar_ or _Na/Ar_,
@@ -683,50 +685,34 @@ system_predicate(A, P0) :-
 */
 current_predicate(F0) :-
 	'$yap_strip_module'(F0, M, F),
-	(var(F) ->
-	 F = A/N,
+	must_bind_to_type( predicate_indicator, F ),
+	'$c_i_predicate'( F, M ).
+
+'$c_i_predicate'( A/N, M ) :-
+	!,
+	(
+	 ground(A/N)
+	->
+	 atom(A), integer(N),
+	 functor(S, A, N),
+	 current_predicate(A, M:S)
+	;
 	 current_predicate(A, M:S),
 	 functor(S, A, N)
+	 ).
+'$c_i_predicate'( A//N, M ) :-
+	(
+	 ground(A)
+	->
+	 atom(A), integer(N),
+	 N2 is N+2,
+	 functor(S, A, N2),
+	 current_predicate(A, M:S)
 	;
-	 (
-	  functor(F,AN,2)
-	 ->
-	   true
-	 ;
-	  '$do_error'(type_error(predicate_indicator,F0),
-		      current_predicate(F0))
-	 ),
-	 arg(1,F,A),
-	 (atom(A) -> true ;
-	  var(A) -> true ;
-	  '$do_error'(type_error(predicate_indicator,F0),current_predicate(F0))
-	 ),
-	 arg(2,F,N),
-	 (integer(N) -> true ;
-	  var(N) -> true ;
-	  '$do_error'(type_error(predicate_indicator,F0),current_predicate(F0))
-	 ),
-	 ( AN == '/'
-	 ->
-	   current_predicate(A, M:S),
-	   functor( S, A, N)
-	 ;
-	   AN == '//'
-	 ->
-	   current_predicate(A, M:S),
-	   Ar2 is N+2,
-	   functor( S, A, Ar2)
-	 ;
-	   '$do_error'(type_error(predicate_indicator,F0),current_predicate(F0))
-	 )
+	 current_predicate(A, M:S),
+	 functor(S, A, N2),
+	 N is N2-2
 	).
-
-
-'$imported_predicate'(A, ImportingMod, A/Arity, G, Flags) :-
-	'$get_undefined_pred'(G, ImportingMod, G0, ExportingMod),
-	functor(G, A, Arity),
-	'$pred_exists'(G, ExportingMod),
-	'$predicate_flags'(G0, ExportingMod, Flags, Flags).
 
 /** @pred  current_key(? _A_,? _K_)
 
@@ -816,6 +802,13 @@ clause_property(ClauseRef, predicate(PredicateIndicator)) :-
 	functor(P, N, Ar),
 	'$set_flag'(P, M, Flag, V).
 
+%% '$set_flag'(P, M, trace, off) :-
+% set a predicate flag
+%
+'$set_flag'(P, M, trace, off) :-
+	'$predicate_flags'(P,M,F,F),
+  FN is F \/ 0x400000000,
+	'$predicate_flags'(P,M,F,FN).
 
 /**
 @}

@@ -73,11 +73,11 @@ inRisk( end, glucose, 9, ID) :- ID = 'hasLowGlucose',  hasRecentValueLow(glucose
 %%type insulin ----------
 inRisk( start, insulin, 9, ID) :- ID = 'hadHypoGlycemia',  hasRecentValueUnderMin(glucose). 
 inRisk( start, insulin, 9, ID) :- ID = 'hadLowGlucose',  hasRecentValueLow(glucose). 
-inRisk( start, insulin, 9, ID) :- ID = 'hadRecentInsulin',  hasRecently(insulin). 
-inRisk( start, insulin, 9, ID) :- ID = 'hadRecenlyExercise',  hasRecently(exercise). 
+inRisk( start, insulin, 9, ID) :- ID = 'hadRecentInsulin',  hadRecently(insulin).
+inRisk( start, insulin, 9, ID) :- ID = 'hadRecenlyExercise',  hadRecently(exercise).
 
 %%type carboHydrate ----------
-inRisk( start, carboHydrate, 9, ID) :- ID = 'hadHypoGlycemia',  hasRecentValueUnderMin(glucose). 
+inRisk( start, carboHydrate, 8, ID) :- ID = 'hadHypoGlycemia',  hasRecentValueUnderMin(glucose). 
 inRisk( start, carboHydrate, 9, ID) :- ID = 'hadHyperGlycemia', hasRecentValueAboveMax(glucose). 
 inRisk( start, carboHydrate, 9, ID) :- ID = 'hadHighGlucose', hasRecentValueHigh(glucose). 
 inRisk( start, carboHydrate, 9, ID) :- ID = 'hadLowGlucose',  hasRecentValueLow(glucose). 
@@ -174,18 +174,39 @@ possibleCause(hypoglycemia, insulin) :- not(hadRecently(insulin)).
 %% Essencial Tasks: the SABR needs these registry types updated to function properlly 
 %%------------------------------------------------------------------------------------------------------------
 
-hasTask(Description) :- timeOfLastGlucoseRegistry(LastRegTime), maxTimeUntested(glucose, MaxTime), safetyInterval(SafetyInterval), LastRegTime > MaxTime - SafetyInterval, msg('Tsk_glucoseReg', Description).
-hasTask(Description) :- timeOfLastHbA1cRegistry(LastRegTime), maxTimeUntested(hbA1c, MaxTime), safetyInterval(SafetyInterval), LastRegTime > MaxTime - SafetyInterval, msg('Tsk_hbA1cReg', Description).
-hasTask(Description) :- timeOfLastArterialPressureRegistry(LastRegTime), maxTimeUntested(arterialPressure, MaxTime), safetyInterval(SafetyInterval), LastRegTime > MaxTime - SafetyInterval, msg('Tsk_arterialPReg', Description).
-hasTask(Description) :- timeOfLastWeightRegistry(LastRegTime), maxTimeUntested(weight, MaxTime), safetyInterval(SafetyInterval), LastRegTime > MaxTime - SafetyInterval, msg('Tsk_weightReg', Description).
-hasTask(Description) :- timeOfLastCholesterolRegistry(LastRegTime), maxTimeUntested(cholesterol, MaxTime), safetyInterval(SafetyInterval), LastRegTime > MaxTime - SafetyInterval, msg('Tsk_cholesterolReg', Description).
+%%hasTask(RegistryType, Description) :-
+%%timeSinceLastRegistry(RegistryType, [LastRegTimeValue|LastRegTimeMagnitude]),
+%%timeConverter(LastRegTimeValue, LastRegTimeMagnitude, LastRegTimeInSec),
+%%maxTimeUntested(RegistryType, [MaxTimeValue|MaxTimeMagnitude]),
+%%timeConverter(MaxTimeValue, MaxTimeMagnitude, maxTimeUntestedInSec),
+%%safetyInterval(SafetyInterval),
+%%LastRegTimeInSec > maxTimeUntestedInSec - SafetyInterval,
+%%atom_concat('Tsk_Reg_', glucose, MessageId),
+%%msg(MessageId, Description).
+
 
 %%------------------------------------------------------------------------------------------------------------
 %% Other Tasks: these tasks are advised to the majority of diabetics 
 %%------------------------------------------------------------------------------------------------------------
 
-%hasTask(Description) :- numberExercisesToday < 2, msg('Tsk_doExerciseTwoTimesADay', Description).
+hasTask(RegistryType, ID) :-
+numberOfRegistriesToday(RegistryType, NumRegistries),
+NumRegistries < 2,
+atom_concat('Tsk_doTwoTimesADay_', RegistryType, ID).
 
+
+%%------------------------------------------------------------------------------------------------------------
+%% Tasks For Testing only START
+%%------------------------------------------------------------------------------------------------------------
+
+hasTask(RegistryType, ID) :-
+numberOfRegistriesToday(RegistryType, NumRegistries),
+NumRegistries < 3,
+atom_concat('Tsk_doOnceAMonth_', RegistryType, ID).
+
+%%------------------------------------------------------------------------------------------------------------
+%% Tasks For Testing only END
+%%------------------------------------------------------------------------------------------------------------
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                                                            %

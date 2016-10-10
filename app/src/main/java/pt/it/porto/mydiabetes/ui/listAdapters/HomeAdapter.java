@@ -288,7 +288,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                     //textHolder.setBackgroundColor(Color.WHITE);
                     textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
                     TextView rowText = (TextView) textHolder.getChildAt(0);
-                    rowText.setText(currentTask.getSummaryText());
+                    rowText.setText(". "+currentTask.getSummaryText());
 
                     //holder.view.setText(adviceList.get(position).getNotificationText());
                     holder.view.setOnClickListener(new View.OnClickListener() {

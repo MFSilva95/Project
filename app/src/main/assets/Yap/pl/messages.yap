@@ -94,7 +94,7 @@ Translates a message-term into a string object. Primarily intended for SWI-Prolo
 
  */
 prolog:message_to_string(Event, Message) :-
-	translate_message(Event, Message, []).
+	translate_message(Event, warning, Message, []).
 
 
 %%	@pred compose_message(+Term, +Level, +Lines, -Lines0) is det
@@ -103,7 +103,9 @@ prolog:message_to_string(Event, Message) :-
 %	The first is used for errors and warnings that can be related
 %	to source-location.  Note that syntax errors have their own
 %	source-location and should therefore not be handled this way.
-compose_message( Term, _Level ) -->
+compose_message( Term, Level ) -->
+	['   ~w:'- [Level]
+	],
 	prolog:message(Term), !.
 compose_message( query(_QueryResult,_), _Level) -->
 	[].
@@ -893,6 +895,10 @@ prolog:print_message(Severity, Msg) :-
 	->
 	 !,
 	 format(user_error, 'uninstantiated message~n', [])
+ ;
+	 Severity == silent
+ ->
+	 true
 	;
 	 '$pred_exists'(portray_message(_,_),user),
 	 user:portray_message(Severity, Msg)
@@ -909,12 +915,24 @@ prolog:print_message(Level, _Msg) :-
 	Level \= warning,
 	!.
 prolog:print_message(_, _Msg) :-
-	% first step at hook processi --ng
+	% first step at hook processing
 	'$nb_getval'('$if_skip_mode',skip,fail),
 	!.
 prolog:print_message(force(_Severity), Msg) :- !,
 	print(user_error,Msg).
 % This predicate has more hooks than a pirate ship!
+prolog:print_message(Severity, Term) :-
+	prolog:message( Term,Lines0, [ end(Id)]),
+	Lines = [begin(Severity, Id)| Lines0],
+	(
+	 user:message_hook(Term, Severity, Lines)
+	->
+	 true
+	;
+	 prefix( Severity, Prefix ),
+	 prolog:print_message_lines(user_error, Prefix, Lines)
+	),
+	!.
 prolog:print_message(Severity, Term) :-
 	translate_message( Term, Severity, Lines0, [ end(Id)]),
 	Lines = [begin(Severity, Id)| Lines0],

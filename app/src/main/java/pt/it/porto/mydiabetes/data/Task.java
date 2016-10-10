@@ -33,18 +33,36 @@ public class Task extends HomeElement implements Comparable<Task> {
     private String timer;
 
 
+    public Task(){
+        super(Type.TASK);
+    }
+
     public Task(String summaryText, String expText, String[] taskArgs, int urgency){
         super(Type.TASK);
         this.expandedText = expText;
         this.summaryText = summaryText;
-
         this.urgency = urgency;
         parseTask(taskArgs);
     }
+    public void setSummaryText(String summaryText){
+        this.summaryText = summaryText;
+    }
+    public void setExpText(String expandedText){
+        this.expandedText = expandedText;
+    }
+    public void setTaskArgs(String[] taskArgs){
+        parseTask(taskArgs);
+    }
+    public void setUrg(int urg){
+        this.urgency = urg;
+    }
 
     private void parseTask(String[] adviceAttr) {
-        this.notificationText = adviceAttr[0];
-        this.timer = adviceAttr[1];
+        if(adviceAttr!=null){
+            this.notificationText = adviceAttr[0];
+            this.registryType = adviceAttr[1];
+            this.timer = adviceAttr[2];
+        }
     }
 
     public Calendar getTime(){
@@ -74,6 +92,19 @@ public class Task extends HomeElement implements Comparable<Task> {
 
         //long timeTest = System.currentTimeMillis() + 5 * 1000;
         //alm.set(AlarmManager.RTC_WAKEUP, timeTest, alarmIntent);
+    }
+
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "summaryText='" + summaryText + '\'' +
+                ", expandedText='" + expandedText + '\'' +
+                ", urgency=" + urgency +
+                ", notificationText='" + notificationText + '\'' +
+                ", registryType='" + registryType + '\'' +
+                ", timer='" + timer + '\'' +
+                '}';
     }
 
     @Override

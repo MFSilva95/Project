@@ -40,6 +40,28 @@ public class Advice extends HomeElement implements Comparable<Advice> {
     private String registryType;
     private String timer;
 
+    public void setSummaryText(String summaryText){
+        this.summaryText = summaryText;
+    }
+    public void setExpandedText(String expandedText){
+        this.expandedText = expandedText;
+    }
+    public void setUrgency(int urgency){
+        this.urgency = urgency;
+    }
+    public void setType(String type){
+        this.type = type;
+    }
+
+    public void setNotification(String[] notificationParams){
+        notificationText = notificationParams[0];
+        registryType = notificationParams[1];
+        timer = notificationParams[2];
+    }
+
+    public Advice(){
+        super(Type.ADVICE);
+    }
 
     public Advice(Context currentContext, String summaryText, String expText, String adviceType, String[] adviceArgs, int urgency){
         super(Type.ADVICE);

@@ -1,4 +1,4 @@
-vv/*************************************************************************
+/*************************************************************************
 *									 *
   *	 YAP Prolog  							 *
 *									 *
@@ -469,7 +469,6 @@ load_files(Files,Opts) :-
     open( F, read, Stream , [type(binary)] ),
 	(
 	 '$q_header'( Stream, Type ),
-     writeln(File:Type),
 	 Type == file
 	->
 	 !
@@ -492,7 +491,7 @@ load_files(Files,Opts) :-
        working_directory( _, OldD),
        '$lf_opt'('$location', TOpts, ParentF:_Line),
        '$reexport'( TOpts, ParentF, Reexport, ImportList, File ),
-       '$early_print'(informational, loaded( loaded, F, M, T, H)),
+       print_message(informational, loaded( loaded, F, M, T, H)),
        working_directory( _, OldD),
        '$exec_initialization_goals',
        '$current_module'(_M, Mod).
@@ -654,7 +653,7 @@ db_files(Fs) :-
 
 '$do_lf'(_ContextModule, Stream, _UserFile, _File, _TOpts) :-
 	stream_property(Stream, file_name(Y)),
-	b_getval('$loop_streams',Sts0),
+	'$nb_getval'('$loop_streams',Sts0, Sts0 = []),
 	lists:member(Stream0, Sts0),
 	stream_property(Stream0, file_name(Y)),
 	!.
@@ -698,7 +697,7 @@ db_files(Fs) :-
 	    EndMsg = consulted
 	),
 	current_prolog_flag(verbose_load, VerboseLoad),
-	'$early_print'(informational, loading(StartMsg, UserFile)),
+	print_message(informational, loading(StartMsg, UserFile)),
 	'$lf_opt'(skip_unix_header , TOpts, SkipUnixHeader),
 	( SkipUnixHeader == true
 	    ->
@@ -712,7 +711,7 @@ db_files(Fs) :-
 	'$current_module'(Mod, SourceModule),
 	set_prolog_flag(verbose_load, VerboseLoad),
 	H is heapused-H0, '$cputime'(TF,_), T is TF-T0,
-	'$early_print'(informational, loaded(EndMsg, File, Mod, T, H)),
+	print_message(informational, loaded(EndMsg, File, Mod, T, H)),
 	'$end_consult',
 	nb_setval('$loop_streams',Sts0),
 	'$q_do_save_file'(File, UserFile, TOpts ),
@@ -736,7 +735,6 @@ db_files(Fs) :-
 	nb_setval('$qcompile', ContextQCompiling),
 	( LC == 0 -> prompt(_,'   |: ') ; true),
 	'$exec_initialization_goals',
-	% format( 'O=~w~n', [Mod=UserFile] ),
 	!.
 
 
@@ -850,12 +848,12 @@ nb_setval('$if_le1vel',0).
     '$loaded'(Y, X,  Mod, _OldY, _L, include, _, Dir, []),
     ( '$nb_getval'('$included_file', OY, fail ) -> true ; OY = [] ),
 	nb_setval('$included_file', Y),
-	'$early_print'(informational, loading(including, Y)),
+	print_message(informational, loading(including, Y)),
 	'$loop'(Stream,Status),
 	set_stream(OldStream, alias(loop_stream) ),
         close(Stream),
 	H is heapused-H0, '$cputime'(TF,_), T is TF-T0,
-	'$early_print'(informational, loaded(included, Y, Mod, T, H)),
+	print_message(informational, loaded(included, Y, Mod, T, H)),
 	working_directory(_Dir, Dir0),
 	'$including'(Y, Old),
         nb_setval('$included_file',OY).
@@ -1158,9 +1156,9 @@ unload_file( F0 ) :-
     erase(R),
     fail.
 '$unload_file'( FileName, _F0 ) :-
-    recorded('$mf','$mf_clause'(FileName,_Name,_Arity,_Module,ClauseRef), R),
+    recorded('$mf','$mf_clause'(FileName,_Name,_Arity, Module,ClauseRef), R),
     erase(R),
-    '$erase_clause'(ClauseRef),
+    '$erase_clause'(ClauseRef, Module),
     fail.
 '$unload_file'( FileName, _F0 ) :-
     recorded('$multifile_dynamic'(_,_,_), '$mf'(_Na,_A,_M,FileName,R), R1),
@@ -1333,7 +1331,7 @@ last one, onto underscores.
 
 '$add_multifile'(File,Name,Arity,Module) :-
 	recorded('$multifile_defs','$defined'(File,Name,Arity,Module), _), !.
-%	'$early_print'(warning,declaration((multifile Module:Name/Arity),ignored)).
+%	print_message(warning,declaration((multifile Module:Name/Arity),ignored)).
 '$add_multifile'(File,Name,Arity,Module) :-
 	recordz('$multifile_defs','$defined'(File,Name,Arity,Module),_), !,
 	fail.
@@ -1576,7 +1574,7 @@ End of conditional compilation.
 
 
 '$if_call'(G) :-
-	catch('$eval_if'(G), E, ('$early_print'(error, E), fail)).
+	catch('$eval_if'(G), E, (print_message(error, E), fail)).
 
 '$eval_if'(Goal) :-
 	expand_term(Goal,TrueGoal),
