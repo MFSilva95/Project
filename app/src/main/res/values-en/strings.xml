@@ -1,5 +1,5 @@
 <resources>
-
+    <string name="advice">Advice</string>
     <string name="Carbs">Carbs</string>
     <string name="Exercise">Exercise</string>
     <string name="Glycemia">Glycemia</string>

@@ -45,10 +45,9 @@ hasLastValueAboveMax(_).
 hasLastValueUnderMin(_).
 
 hasRecentValueAboveMax(_).
-hasRecentValueAboveMax(_).
+hasRecentValueUnderMin(_).
 
-hasRecentValueUnderMin(_).
-hasRecentValueUnderMin(_).
+hasRecently(meal).
 
 hasRecentValueHigh(_).
 hasRecentValueLow(_).

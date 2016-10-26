@@ -5,16 +5,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
-msg('hadHypoGlycemia', ['You have a low Glycemia value.', 'A new test will -be agended to check if your values have estabilized.',[adviceTimer,'alarmMessage','Glycemia',600,s],9]).
-msg('hadLowGlucose',  ['You have a low Glycemia value.', 'A new test will -be agended to check if your values have estabilized.',[adviceTimer,'alarmMessage','Glycemia',600,s],9 ]).
-msg('hadRecentInsulin',  ['You have a low Glycemia value.', 'A new test will -be agended to check if your values have estabilized.',[adviceTimer,'alarmMessage','Glycemia',600,s],9 ]).
+msg('hadHypoGlycemia', ['You have a low Glycemia value.', 'You should eat 15 grams of carbohydrates and re-test your glycaemia values. \n\n A new glycaemia registry has already been scheduled.',['ALERT','alarmMessage','Glycemia',6,s],9]).
+msg('hadLowGlucose',  ['You should eat to compensate the exercise done.', 'A new test will -be agended to check if your values have estabilized.',['SUGGESTION','InsulinDetail'],5]).
+msg('hadRecentInsulin',  ['Congratulations! you ve been loosing weight.', 'A new test will -be agended to check if your values have estabilized.',['ALERT','alarmMessage','Glycemia',6,s],6 ]).
 
 %%types are: NORMAL, SUGGESTION, QUESTION, ALERT};
 
 
 
 %%In this file Messages are inserted or defined
-%% messages must have the format msg(ID, Message with extra options separated by "-")
 
 msg('hasHighGlucose', 'You have a high Glycemia value. A new test will be agended to check if your values have estabilized./adviceTimer-Glycemia-600-s/').
 msg('hasLowGlucose', 'You have a low Glycemia value. A new test will -be agended to check if your values have estabilized./adviceTimer-Glycemia-600-s/').

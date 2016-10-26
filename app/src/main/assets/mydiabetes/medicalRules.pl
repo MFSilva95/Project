@@ -65,53 +65,50 @@ safetyInterval(600).
 
 
 %%type glicemia ----------
-inRisk( end, glucose, 9, ID) :- ID = 'hasHyperGlycemia', hasRecentValueAboveMax(glucose).
-inRisk( end, glucose, 9, ID) :- ID = 'hasHypoGlycemia',  hasRecentValueUnderMin(glucose).
-inRisk( end, glucose, 9, ID) :- ID = 'hasHighGlucose', hasRecentValueHigh(glucose).
-inRisk( end, glucose, 9, ID) :- ID = 'hasLowGlucose',  hasRecentValueLow(glucose).
+inRisk( end, glucose, 9, hasHyperGlycemia) :-hasRecentValueAboveMax(glucose).
+inRisk( end, glucose, 9, hasHypoGlycemia) :- hasRecentValueUnderMin(glucose).
+inRisk( end, glucose, 9, hasHighGlucose) :- hasRecentValueHigh(glucose).
+inRisk( end, glucose, 9, hasLowGlucose) :- hasRecentValueLow(glucose).
 
 %%type insulin ----------
-inRisk( start, insulin, 9, ID) :- ID = 'hadHypoGlycemia',  hasRecentValueUnderMin(glucose). 
-inRisk( start, insulin, 9, ID) :- ID = 'hadLowGlucose',  hasRecentValueLow(glucose). 
-inRisk( start, insulin, 9, ID) :- ID = 'hadRecentInsulin',  hadRecently(insulin).
-inRisk( start, insulin, 9, ID) :- ID = 'hadRecenlyExercise',  hadRecently(exercise).
+inRisk( start, insulin, 9, hadHypoGlycemia) :- hasRecentValueUnderMin(glucose).
+inRisk( start, insulin, 9, hadLowGlucose) :- hasRecentValueLow(glucose).
+inRisk( start, insulin, 9, hadRecentInsulin) :- hasRecently(insulin).
+inRisk( start, insulin, 9, hadRecenlyExercise) :-hasRecently(exercise).
 
 %%type carboHydrate ----------
-inRisk( start, carboHydrate, 8, ID) :- ID = 'hadHypoGlycemia',  hasRecentValueUnderMin(glucose). 
-inRisk( start, carboHydrate, 9, ID) :- ID = 'hadHyperGlycemia', hasRecentValueAboveMax(glucose). 
-inRisk( start, carboHydrate, 9, ID) :- ID = 'hadHighGlucose', hasRecentValueHigh(glucose). 
-inRisk( start, carboHydrate, 9, ID) :- ID = 'hadLowGlucose',  hasRecentValueLow(glucose). 
-inRisk( start, carboHydrate, 3, ID) :- ID = 'mealExercisedRecently', hasRecently(exercise). 
+inRisk( start, carboHydrate, 8, hadHypoGlycemia) :- hasRecentValueUnderMin(glucose).
+inRisk( start, carboHydrate, 9, hadHyperGlycemia) :- hasRecentValueAboveMax(glucose).
+inRisk( start, carboHydrate, 9, hadHighGlucose) :- hasRecentValueHigh(glucose).
+inRisk( start, carboHydrate, 9, hadLowGlucose) :- hasRecentValueLow(glucose).
+inRisk( start, carboHydrate, 3, mealExercisedRecently) :- hasRecently(exercise).
 
-inRisk( end, carboHydrate, 9, ID) :- ID = 'hasHyperGlycemia', hasRecentValueAboveMax(glucose).
-inRisk( end, carboHydrate, 9, ID) :- ID = 'hasHypoGlycemia',  hasRecentValueUnderMin(glucose).
-inRisk( end, carboHydrate, 9, ID) :- ID = 'hasHighGlucose', hasRecentValueHigh(glucose).
-inRisk( end, carboHydrate, 9, ID) :- ID = 'hasLowGlucose',  hasRecentValueLow(glucose).
+inRisk( end, carboHydrate, 9, hasHyperGlycemia) :- hasRecentValueAboveMax(glucose).
+inRisk( end, carboHydrate, 9, hasHypoGlycemia) :- hasRecentValueUnderMin(glucose).
+inRisk( end, carboHydrate, 9, hasHighGlucose) :- hasRecentValueHigh(glucose).
+inRisk( end, carboHydrate, 9, hasLowGlucose) :- hasRecentValueLow(glucose).
 
 %%type exercise ----------
-inRisk( start, exercise, 9, ID) :- ID = 'hasLowGlucose',  hasRecentValueLow(glucose). 
-inRisk( start, exercise, 9, ID) :- ID = 'hadRecentInsulin',  hasRecently(insulin). 
-inRisk( start, exercise, 9, ID) :- ID = 'hadRecentExercise',  hasRecently(exercise). 
-inRisk( start, exercises, 9, ID) :- ID = 'haventEatBeforeExercise',  not(hasRecently(carboHydrate)).
+inRisk( start, exercise, 9, hasLowGlucose) :- hasRecentValueLow(glucose).
+inRisk( start, exercise, 9, hadRecentInsulin) :- hasRecently(insulin).
+inRisk( start, exercise, 9, hadRecentExercise) :- hasRecently(exercise).
+inRisk( start, exercises, 9, haventEatBeforeExercise) :- not(hasRecently(carboHydrate)).
 
 %%type disease ----------
-inRisk( end, disease, 9, ID) :- ID = 'isSick',  isSick, createTask("check your glycaemia for cetones").
+inRisk( end, disease, 9, isSick) :- isSick, createTask("check your glycaemia for cetones").
 
 %%type weight ----------
-inRisk( end, weight, 9, ID) :- ID = 'gotBetterWeight',  insertedBetterValue(weight).
+inRisk( end, weight, 9, gotBetterWeight) :- insertedBetterValue(weight).
 
 %%type hbA1c ----------
-inRisk( start, hbA1c, 9, ID) :- ID = 'gotBetterHbA1c',  insertedBetterValue(hbA1c).
-inRisk( end, hbA1c, 9, ID) :- ID = 'hasHighHbA1c', hasRecentValueAboveMax(hbA1c).
+inRisk( start, hbA1c, 9, gotBetterHbA1c) :- insertedBetterValue(hbA1c).
+inRisk( end, hbA1c, 9, hasHighHbA1c) :- hasRecentValueAboveMax(hbA1c).
 
 %%arterialPressure ----------
-inRisk( end, arterialPressure, 3, ID) :- ID = 'hasHighArterialPressure', hasRecentValueAboveMax(arterialPressure).
-inRisk( end, arterialPressure, 3, ID) :- ID = 'hasLowArterialPressure', hasRecentValueUnderMin(arterialPressure).
+inRisk( end, arterialPressure, 3, hasHighArterialPressure) :- hasRecentValueAboveMax(arterialPressure).
+inRisk( end, arterialPressure, 3, hasLowArterialPressure) :- hasRecentValueUnderMin(arterialPressure).
 
-%%inRisk( start, true, carboHydrate, 3, ID) :- ID = 'mealUserWithHighWeight', hasHighWeight.
-
-%% Null case: No advice to be given
-inRisk( _, _, 0, false,  ID) :- ID = 'NULL'.
+%%inRisk( start, true, carboHydrate, 3, mealUserWithHighWeight) :- hasHighWeight.
 
 hasHipoglicemia(lightModerate) :- lastValue(glucose, Value), minValue(glucose, GlucoseMinValue), Value =< GlucoseMinValue, Value > (50.0).
 

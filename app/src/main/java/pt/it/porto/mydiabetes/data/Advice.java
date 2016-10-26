@@ -21,10 +21,6 @@ public class Advice extends HomeElement implements Comparable<Advice> {
         return registryType;
     }
 
-    public String getTimer() {
-        return timer;
-    }
-
     public String getSummaryText() {
         return summaryText;
     }
@@ -38,7 +34,8 @@ public class Advice extends HomeElement implements Comparable<Advice> {
 
     private String notificationText;
     private String registryType;
-    private String timer;
+    private int time;
+    private String timeUnit;
 
     public void setSummaryText(String summaryText){
         this.summaryText = summaryText;
@@ -52,11 +49,20 @@ public class Advice extends HomeElement implements Comparable<Advice> {
     public void setType(String type){
         this.type = type;
     }
+    public String getAdviceType(){
+        return this.type;
+    }
+    public void setRegistryType(String regType){
+        this.registryType = regType;
+    }
 
-    public void setNotification(String[] notificationParams){
+    public void setNotification(String[] notificationParams, Context context){
         notificationText = notificationParams[0];
         registryType = notificationParams[1];
-        timer = notificationParams[2];
+        time = Integer.parseInt(notificationParams[2]);
+        timeUnit = notificationParams[3];
+        setupAlarm(context);
+
     }
 
     public Advice(){
@@ -79,19 +85,25 @@ public class Advice extends HomeElement implements Comparable<Advice> {
         if(this.type.equals(AdviceTypes.ALERT.toString())){
             this.notificationText = adviceAttr[0];
             this.registryType = adviceAttr[1];
-            this.timer = adviceAttr[2];
-
+            time = Integer.parseInt(adviceAttr[2]);
+            timeUnit = adviceAttr[3];
         }
-        if(this.type.equals(AdviceTypes.QUESTION) && this.urgency >=7){
-            this.notificationText = adviceAttr[0];
+        if(this.type.equals(AdviceTypes.QUESTION)){
+            //is something present?
+            //if yes assert id:
+            this.registryType = adviceAttr[0]; //saves id to assert
+            //id to assert missing.
         }
         if(this.type.equals(AdviceTypes.SUGGESTION)){
+            //makes suggestion on what to do:
+            //ex: you should registry something
+            //needs normal text: expText with question: registry type
             this.registryType = adviceAttr[0];
         }
     }
 
     public Calendar getTime(){
-        Calendar calendar = YapDroid.string2Time(timer);
+        Calendar calendar = YapDroid.string2Time(time, timeUnit);
         return calendar;
     }
     private void setupAlarm(Context ctxt) {
@@ -99,18 +111,13 @@ public class Advice extends HomeElement implements Comparable<Advice> {
         AlarmManager alm = (AlarmManager) ctxt.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(ctxt, AdviceAlertReceiver.class);
 
-
-
         Bundle extras = new Bundle();
         extras.putString("RegistryClassName", this.getRegistryType());
-        //Log.i("Tagz", "RAWRAWRAWRAWRAWRAWR "+this.getRegistryType());
         extras.putString("NotificationText", this.getNotificationText());
         intent.putExtras(extras);
 
         PendingIntent alarmIntent = PendingIntent.getBroadcast(ctxt, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        //alm.set(AlarmManager.RTC_WAKEUP, currentAdvice.getTime().getTimeInMillis(), alarmIntent);
 
-        //long timeTest = System.currentTimeMillis() + 5 * 1000;
         long timeTest = getTime().getTimeInMillis();
         alm.set(AlarmManager.RTC_WAKEUP, timeTest, alarmIntent);
     }
@@ -128,8 +135,6 @@ public class Advice extends HomeElement implements Comparable<Advice> {
 
     @Override
     public int compareTo(Advice advice) {
-
-        //return (this.getUrgency()-advice.getUrgency());
         return (advice.getUrgency()-this.getUrgency());
     }
 }

@@ -1,7 +1,9 @@
 package pt.it.porto.mydiabetes.ui.listAdapters;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.data.Advice;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
@@ -36,6 +39,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     Context c;
     private Cursor cursor;
     private ArrayList<HomeElement> homeList;
+    private YapDroid myYapInstance;
 
     public HomeElement getFromHomeList(int index){
         return homeList.get(index);
@@ -88,11 +92,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         }
         this.c = c;
     }
-    public HomeAdapter(ArrayList<Advice> adviceList, ArrayList<Task> taskList, Cursor cursor, Context c) {
+    public HomeAdapter(ArrayList<Advice> adviceList, ArrayList<Task> taskList, Cursor cursor, Context c, YapDroid myYap) {
 
         this.cursor = cursor;
         this.c = c;
         this.homeList = new ArrayList<>();
+        this.myYapInstance = myYap;
 
         if(adviceList.size()>0){
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "ADVICES"));
@@ -254,10 +259,53 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
                         @Override
                         public void onClick(View v) {
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(c);
-                            builder.setMessage(currentAdvice.getExpandedText());
-                            AlertDialog dialog = builder.create();
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                            // Get the layout inflater
+                            LayoutInflater inflater = LayoutInflater.from(v.getContext());
+                            // Inflate and set the layout for the dialog
+                            // Pass null as the parent view because its going in the dialog layout
+                            builder.setView(inflater.inflate(R.layout.dialog_new_advice, null));
+
+                            if(!currentAdvice.getAdviceType().equals("ALERT") || !currentAdvice.getAdviceType().equals("NORMAL")){
+                                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        if(currentAdvice.getAdviceType().equals("QUESTION")){
+                                            myYapInstance.insertRule("has("+currentAdvice.getRegistryType()+")");
+                                        }
+                                        if(currentAdvice.getAdviceType().equals("SUGGESTION")){
+                                            Class<?> wantedAct = null;
+                                            String classPath = "";
+                                            try {
+                                                 classPath = "pt.it.porto.mydiabetes.ui.activities."+currentAdvice.getRegistryType();
+                                                wantedAct = Class.forName(classPath);
+
+                                            } catch (ClassNotFoundException e) {
+                                                // TODO Auto-generated catch block
+                                                e.printStackTrace();
+                                            }
+
+                                            Intent intent = new Intent(c, wantedAct);
+                                            c.startActivity(intent);
+                                        }
+                                        dialog.dismiss();
+                                    }
+                                });
+                            }
+
+                            Dialog dialog = builder.create();
                             dialog.show();
+
+                            TextView textView = (TextView) dialog.findViewById(R.id.popup_text);
+                            textView.setText(currentAdvice.getExpandedText());
+
                         }
                     });
 

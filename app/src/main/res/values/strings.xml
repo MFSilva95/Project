@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="advice">Conselho</string>
     <string name="app_name">A Minha Diabetes</string>
     <string name="add_Exercise">Adicionar Exercício</string>
     <string name="title_activity_my_data">Os Meus Dados</string>

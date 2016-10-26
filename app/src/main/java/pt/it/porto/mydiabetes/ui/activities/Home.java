@@ -299,7 +299,7 @@ public class Home extends BaseActivity {
 
         ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
         Cursor cursor = db.getAllLogbookListWithin(10);
-        HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor,this);
+        HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor,this, yapDroid);
 
         ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
@@ -531,7 +531,7 @@ public class Home extends BaseActivity {
     public void fillAdviceList() {
 
 
-        receiverAdviceList.addAll(yapDroid.getYapMultipleAdvices());
+        receiverAdviceList.addAll(yapDroid.getYapMultipleAdvices(getApplicationContext()));
         //getAllYapAdvices -> put them into adviceList.
 
         /*for(RawAdvice advice:advicesFromYap){
