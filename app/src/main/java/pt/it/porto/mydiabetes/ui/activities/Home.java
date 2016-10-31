@@ -22,7 +22,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -49,8 +48,6 @@ public class Home extends BaseActivity {
     private static final String TAG = "Home";
     boolean fabOpen = false;
 
-    private EditText dateFrom;
-    private EditText dateTo;
     private FloatingActionButton fab;
     private FloatingActionButton phantom_fab;
 
@@ -138,16 +135,11 @@ public class Home extends BaseActivity {
         miniFab6 = (FloatingActionButton) findViewById(R.id.mini_fab6);
         miniFab7 = (FloatingActionButton) findViewById(R.id.mini_fab7);
 
-//        dateFrom = (EditText) findViewById(R.id.et_Logbook_DataFrom);
-//        dateTo = (EditText) findViewById(R.id.et_Logbook_DataTo);
         logbookList = (ListView) findViewById(R.id.LogbookActivityList);
 
-        //setEditTextListeners();
         setFabClickListeners();
         setOffsets();
         fillDates();
-        //fillListView(logbookList);
-
         fillHomeList();
 
 
@@ -180,12 +172,6 @@ public class Home extends BaseActivity {
                         intent.setType("image/*");
                         intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(intent, 1);
-                        //intent.setAction(Intent.ACTION_GET_CONTENT);
-                        //startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1);
-
-                        //Toast.makeText(v.getContext(), "Change Picture?", Toast.LENGTH_LONG).show();
-
-
                     }
                 });
             }
@@ -194,7 +180,7 @@ public class Home extends BaseActivity {
 
             @Override
             public void onDrawerClosed(View view) {
-                // your refresh code can be called from here
+
             }
 
             @Override
@@ -217,19 +203,11 @@ public class Home extends BaseActivity {
             public boolean onNavigationItemSelected(MenuItem menuItem) {
 
 
-                //Checking if the item is in checked state or not, if not make it in checked state
-                /*if(menuItem.isChecked()) menuItem.setChecked(false);
-                else menuItem.setChecked(true);*/
-
-
-                //Closing drawer on item click
                 drawerLayout.closeDrawers();
                 Intent intent;
 
-                //Check to see which item was being clicked and perform appropriate action
                 switch (menuItem.getItemId()){
 
-                    //Replacing the main content with ContentFragment Which is our Inbox View;
                     case R.id.userTasks:
                         intent = new Intent(getApplicationContext(), TaskListActivity.class);
                         startActivity(intent);
@@ -276,19 +254,6 @@ public class Home extends BaseActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-            /*
-
-            CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
-            File imgFile = new  File(resulttUri.getPath());
-
-            if(imgFile.exists()){
-
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-
-                userImg.setImageBitmap(myBitmap);
-
-            }*/
         }
     }
 
@@ -308,37 +273,6 @@ public class Home extends BaseActivity {
         homeList.setLayoutManager(new LinearLayoutManager(this));
     }
 
-   /* private void setEditTextListeners() {
-
-        dateFrom.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                fillListView(logbookList);
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-        dateTo.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                fillListView(logbookList);
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-        });
-    }*/
     private void setFabClickListeners() {
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -487,95 +421,18 @@ public class Home extends BaseActivity {
     }
 
     private void fillTaskList() {
-
-        /*String[] temp2 = {"AVISO IMPORTANTE","MealActivity","10:s"};
-
-        Task myTask1 = new Task("5 - ", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 9);
-        Task myTask2 = new Task("1 - ", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 6);
-        //setupAlarm(myTask2);
-        Task myTask3 = new Task("2 - ", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 2);
-        Task myTask4 = new Task("4 - ", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 4);
-        Task myTask5 = new Task("3 - ", "Exercicio fisico é fundamental para uma boa gestão da diabetes", temp2, 3);
-        */
-        /*for(String taskString:taskListFromYap){
-
-            String urgency = null;
-            int urgencyValue = Integer.parseInt(urgency);
-            String expTxt = null;
-            String message = null;
-            //String[] temp2 = {"AVISO IMPORTANTE","MealActivity","10:s"};
-
-            Task newTask = new Task(message, expTxt, null, urgencyValue);
-        }/
-        /*
-        receiverTaskList.add(myTask1);
-        receiverTaskList.add(myTask2);
-        receiverTaskList.add(myTask3);
-        receiverTaskList.add(myTask4);
-        receiverTaskList.add(myTask5);*/
-
-        //Collections.sort(receiverTaskList);
-
-
         taskListFromYap = yapDroid.getYapMultipleTasks();
-
-        //receiverTaskList = yapDroid.getYapMultipleTasks();
-        /*TaskListAdapter taskAdapter = new TaskListAdapter(receiverTaskList, this);
-
-        ItemTouchHelper.Callback callback = new TaskTouchHelper(taskAdapter);
-        ItemTouchHelper helper = new ItemTouchHelper(callback);
-        helper.attachToRecyclerView(lv);
-        lv.setAdapter(taskAdapter);
-        lv.setLayoutManager(new LinearLayoutManager(this));*/
     }
     public void fillAdviceList() {
-
-
         receiverAdviceList.addAll(yapDroid.getYapMultipleAdvices(getApplicationContext()));
-        //getAllYapAdvices -> put them into adviceList.
-
-        /*for(RawAdvice advice:advicesFromYap){
-            Advice newAdvice = new Advice(cenas do conselho);
-            if(newAdvice.getType().equals(Advice.AdviceTypes.ALERT)){
-                setupAlarm(advice);
-            }
-            adviceList.add(newAdvice);
-        }*/
-
-        /*String[] temp = {"AVISO IMPORTANTE PARA SI VEJA COM CUIDADO","MealActivity","10:s"};
-
-        Advice myAdvice1 = new Advice(this, "5 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "normal", temp, 9);
-        Advice myAdvice2 = new Advice(this, "1 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "ALERT", temp, 6);
-        Advice myAdvice3 = new Advice(this, "1 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "ALERT", temp, 6);
-        //Advice myAdvice3 = new Advice("2 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "question", temp, 2);
-        Advice myAdvice4 = new Advice(this, "4 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "normal", temp, 4);
-        Advice myAdvice5 = new Advice(this, "3 - Já fez exercicio hoje?", "Exercicio fisico é fundamental para uma boa gestão da diabetes", "alert", temp, 3);
-
-        receiverAdviceList.add(myAdvice1);
-        receiverAdviceList.add(myAdvice2);
-        receiverAdviceList.add(myAdvice3);
-        receiverAdviceList.add(myAdvice4);
-        receiverAdviceList.add(myAdvice5);*/
-
         Collections.sort(receiverAdviceList);
 
     }
 
-
-
-    //----------------------logbook
-
     public void fillDates() {
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_YEAR, -3);
-/*        if (dateFrom.getText().length() == 0) {
-            dateFrom.setText(DateUtils.getFormattedDate(calendar));
-        }*/
-
         calendar = Calendar.getInstance();
-        /*if (dateTo.getText().length() == 0) {
-            dateTo.setText(DateUtils.getFormattedDate(calendar));
-        }*/
     }
 
     public void ShowDialogAddData() {

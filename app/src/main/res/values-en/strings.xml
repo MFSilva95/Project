@@ -1,5 +1,15 @@
 <resources>
     <string name="advice">Advice</string>
+    <string name="task">Task</string>
+    <string name="advices">Advices</string>
+    <string name="tasks">Tasks</string>
+    <string name="recentReg">Recent Registries</string>
+
+    <string name="navTask">My Tasks</string>
+    <string name="navLog">My Logbook</string>
+    <string name="navPersonalTools">Personal options</string>
+    <string name="navDiabetesTools">Diabetes options</string>
+
     <string name="Carbs">Carbs</string>
     <string name="Exercise">Exercise</string>
     <string name="Glycemia">Glycemia</string>
@@ -42,4 +52,6 @@
     <string name="hint_value7">e.g.: 1.82</string>
     <string name="hint_weight">80 (in kg)</string>
     <string name="hour">Hour</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="advice">Conselho</string>
+    <string name="task">Tarefa</string>
+    <string name="advices">Conselhos</string>
+    <string name="tasks">Tarefas</string>
+    <string name="recentReg">Registos Recentes</string>
+
+    <string name="navTask">As minhas tarefas</string>
+    <string name="navLog">O meu Logbook</string>
+    <string name="navPersonalTools">Definições Pessoais</string>
+    <string name="navDiabetesTools">Definições Gestão Diabetes</string>
+
     <string name="app_name">A Minha Diabetes</string>
     <string name="add_Exercise">Adicionar Exercício</string>
     <string name="title_activity_my_data">Os Meus Dados</string>

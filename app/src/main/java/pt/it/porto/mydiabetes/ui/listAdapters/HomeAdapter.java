@@ -100,11 +100,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         this.myYapInstance = myYap;
 
         if(adviceList.size()>0){
-            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "ADVICES"));
+            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.advices)));
             this.homeList.addAll(adviceList);
         }
         if(taskList.size()>0){
-            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "TASKS"));
+            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.tasks)));
             this.homeList.addAll(taskList);
         }
         if(cursor.getCount()>0){
@@ -265,16 +265,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                             LayoutInflater inflater = LayoutInflater.from(v.getContext());
                             // Inflate and set the layout for the dialog
                             // Pass null as the parent view because its going in the dialog layout
-                            builder.setView(inflater.inflate(R.layout.dialog_new_advice, null));
+                            builder.setView(inflater.inflate(R.layout.dialog_exp_advice, null));
 
-                            if(!currentAdvice.getAdviceType().equals("ALERT") || !currentAdvice.getAdviceType().equals("NORMAL")){
-                                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            if(!currentAdvice.getAdviceType().equals("ALERT") && !currentAdvice.getAdviceType().equals("NORMAL")){
+                                builder.setNegativeButton(v.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
                                     }
                                 });
-                                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         if(currentAdvice.getAdviceType().equals("QUESTION")){
@@ -342,10 +342,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                     holder.view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            final AlertDialog.Builder builder = new AlertDialog.Builder(c);
-                            builder.setMessage(currentTask.getExpandedText());
-                            AlertDialog dialog = builder.create();
+
+                            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                            // Get the layout inflater
+                            LayoutInflater inflater = LayoutInflater.from(v.getContext());
+                            // Inflate and set the layout for the dialog
+                            // Pass null as the parent view because its going in the dialog layout
+                            builder.setView(inflater.inflate(R.layout.dialog_exp_task, null));
+
+                            Dialog dialog = builder.create();
                             dialog.show();
+
+                            TextView textView = (TextView) dialog.findViewById(R.id.popup_task_text);
+                            textView.setText(currentTask.getExpandedText());
                         }
                     });
                 }

@@ -7,22 +7,22 @@
         <item
             android:id="@+id/userTasks"
             android:checked="false"
-            android:title="As minhas tarefas"/>
+            android:title="@string/navTask"/>
 
         <item
             android:id="@+id/userLogbook"
             android:checked="false"
-            android:title="O meu Logbook" />
+            android:title="@string/navLog" />
 
         <item
             android:id="@+id/personalData"
             android:checked="false"
-            android:title="Definições Pessoais" />
+            android:title="@string/navPersonalTools" />
 
         <item
             android:id="@+id/diabetesData"
             android:checked="false"
-            android:title="Definições Gestão Diabetes" />
+            android:title="@string/navDiabetesTools" />
 
     </group>
 
