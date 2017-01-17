@@ -4,14 +4,23 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 
 import io.fabric.sdk.android.Fabric;
+import lecho.lib.hellocharts.model.Line;
 import pt.it.porto.mydiabetes.BuildConfig;
+import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
+import pt.it.porto.mydiabetes.data.Advice;
 
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
+
+	Advice activityAdvice;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -19,7 +28,9 @@ public class BaseActivity extends AppCompatActivity {
 		if (BuildConfig.USE_FABRIC) {
 			Fabric.with(this, new Crashlytics());
 		}
+		if(getRegType()!=null){activityAdvice = YapDroid.newInstance(getApplicationContext()).getSingleAdvice("start", getRegType(), this.getApplicationContext());}
 	}
+	public abstract String getRegType();
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {

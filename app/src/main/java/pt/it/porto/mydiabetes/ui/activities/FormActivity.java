@@ -24,6 +24,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 import android.widget.TextView;
@@ -74,6 +75,15 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_form);
+
+		if(activityAdvice==null){
+			LinearLayout adviceFrame = (LinearLayout) findViewById(R.id.adviceFrame);
+			adviceFrame.setVisibility(View.INVISIBLE);
+		}else{
+			TextView advice = (TextView) findViewById(R.id.advice);
+
+			advice.setText(this.activityAdvice.getExpandedText());
+		}
 
 		time = (TextView) findViewById(R.id.time);
 		date = (TextView) findViewById(R.id.date);

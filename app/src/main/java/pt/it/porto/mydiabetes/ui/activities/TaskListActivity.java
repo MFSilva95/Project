@@ -19,6 +19,10 @@ import pt.it.porto.mydiabetes.ui.usability.TaskTouchHelper;
 
 public class TaskListActivity extends BaseActivity {
 
+
+	@Override
+	public String getRegType(){return null;}
+
 	ArrayList<Task> receiverTaskList = new ArrayList<>();
 	private RecyclerView taskList;
 	private FloatingActionButton fab;

@@ -32,6 +32,10 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 public class DetailLogbookActivity extends BaseMealActivity {
+
+	@Override
+	public String getRegType(){return "Meal";}
+
 	public static final String ARG_CARBS = "ARG_CARBS";
 	public static final String ARG_INSULIN = "ARG_INSULIN";
 	public static final String ARG_BLOOD_GLUCOSE = "ARG_BLOOD_GLUCOSE";

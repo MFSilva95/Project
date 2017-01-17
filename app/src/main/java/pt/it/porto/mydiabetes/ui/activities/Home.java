@@ -45,6 +45,10 @@ import pt.it.porto.mydiabetes.ui.usability.HomeTouchHelper;
 
 public class Home extends BaseActivity {
 
+
+    @Override
+    public String getRegType(){return null;}
+
     private static final String TAG = "Home";
     boolean fabOpen = false;
 

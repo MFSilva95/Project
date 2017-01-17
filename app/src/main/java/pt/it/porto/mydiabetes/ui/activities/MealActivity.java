@@ -26,6 +26,10 @@ import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 public class MealActivity extends BaseMealActivity {
 
 
+    @Override
+    public String getRegType(){return "Meal";}
+
+
 	public static final String BUNDLE_EXTRAS_GLYCEMIA_ID = "Bundle_extras_glycemia_id";
 
 	private GlycemiaRec glycemiaData = null;

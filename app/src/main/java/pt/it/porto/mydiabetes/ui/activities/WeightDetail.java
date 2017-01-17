@@ -29,6 +29,11 @@ import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 public class WeightDetail extends BaseActivity {
 
+
+
+	@Override
+	public String getRegType(){return "Weight";}
+
 	int idWeight = 0;
 	int idNote = 0;
 

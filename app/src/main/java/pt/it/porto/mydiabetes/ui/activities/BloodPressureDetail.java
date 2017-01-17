@@ -38,6 +38,8 @@ public class BloodPressureDetail extends BaseActivity {
 
 	int idBP = 0;
 	int idNote = 0;
+	@Override
+	public String getRegType(){return "BloodPressure";}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

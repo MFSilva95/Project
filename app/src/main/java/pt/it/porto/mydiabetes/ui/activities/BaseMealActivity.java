@@ -27,6 +27,7 @@ public abstract class BaseMealActivity extends FormActivity {
 	private EditText target;
 	private TextView time;
 	private TextView date;
+	private TextView advice;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

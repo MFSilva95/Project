@@ -18,6 +18,10 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class SingleDataChartActivity extends AbstractChartActivity {
 
+
+	@Override
+	public String getRegType(){return null;}
+
 	private Cursor cursor;
 
 	Cursor getCursor() {

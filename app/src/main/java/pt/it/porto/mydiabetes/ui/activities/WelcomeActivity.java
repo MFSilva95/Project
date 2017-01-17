@@ -27,6 +27,10 @@ import pt.it.porto.mydiabetes.ui.fragments.register.PersonalDataFragment;
  */
 public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 
+
+	@Override
+	public String getRegType(){return null;}
+
 	// save state
 	private final static String BUNDLE_CURRENT_FRAGMENT = "current_fragment";
 	private final static String BUNDLE_SHOW_BUTTON_ACTIVE = "next_button_active";

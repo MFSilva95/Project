@@ -19,6 +19,9 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 	private static final String TAG = MultiDataChartActivity.class.getCanonicalName();
 	protected ChartFragment.SelectItemToListCalculation selectItemToListCalculator;
 
+	@Override
+	public String getRegType(){return null;}
+
 	private Cursor cursor;
 	protected ArrayList<String> tables;
 

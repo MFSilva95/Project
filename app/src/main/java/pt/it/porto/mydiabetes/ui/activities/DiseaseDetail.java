@@ -36,6 +36,10 @@ public class DiseaseDetail extends BaseActivity {
 	int idNote = 0;
 
 	@Override
+	public String getRegType(){return "Disease";}
+
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_disease_detail);
