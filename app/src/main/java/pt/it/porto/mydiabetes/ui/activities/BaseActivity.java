@@ -20,7 +20,7 @@ import pt.it.porto.mydiabetes.data.Advice;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-	Advice activityAdvice;
+	//Advice activityAdvice = null;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 		if (BuildConfig.USE_FABRIC) {
 			Fabric.with(this, new Crashlytics());
 		}
-		if(getRegType()!=null){activityAdvice = YapDroid.newInstance(getApplicationContext()).getSingleAdvice("start", getRegType(), this.getApplicationContext());}
+		//if(getRegType()!=null){activityAdvice = YapDroid.newInstance(getApplicationContext()).getSingleAdvice("start", getRegType(), this.getApplicationContext());}
 	}
 	public abstract String getRegType();
 
