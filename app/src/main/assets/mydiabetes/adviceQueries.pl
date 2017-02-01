@@ -48,6 +48,8 @@ hasRecentValueAboveMax(_).
 hasRecentValueUnderMin(_).
 
 hasRecently(meal).
+hadRecently(exercise).
+hadRecently(insulin).
 
 hasRecentValueHigh(_).
 hasRecentValueLow(_).

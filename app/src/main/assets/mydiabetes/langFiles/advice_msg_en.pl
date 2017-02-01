@@ -4,36 +4,37 @@
 %                                                                                                            %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-msg('hadHypoGlycemia', ['You have a low Glycemia value.', 'You should eat 15 grams of carbohydrates and re-test your glycaemia values. \n\n A new glycaemia registry has already been scheduled.',['ALERT','alarmMessage','Glycemia',6,s],9]).
-msg('hadLowGlucose',  ['You should eat to compensate the exercise done.', 'A new test will -be agended to check if your values have estabilized.',['SUGGESTION','InsulinDetail'],5]).
-msg('hadRecentInsulin',  ['Congratulations! you ve been loosing weight.', 'A new test will -be agended to check if your values have estabilized.',['ALERT','alarmMessage','Glycemia',6,s],6 ]).
-
 %%types are: NORMAL, SUGGESTION, QUESTION, ALERT};
 
+msg('hasHypoGlycemia', ['You have a low Glycemia value.', 'You should eat 15 grams of carbohydrates and re-test your glycaemia values. \n\n A new glycaemia registry has already been scheduled.',['ALERT','alarmMessage','Glycemia',6,s],9]).
+
+msg('hasLowGlucose_exercise_insulin',  ['Low Glucose after exercising!','You shouldnt adminstrate such a large dose of insulin when exercising. ',['NORMAL'],5]).
 
 
-%%In this file Messages are inserted or defined
+msg('hasBetterWeight',  ['Congratulations!', 'Congratulations! you ve been loosing weight.',['NORMAL'],6 ]).
+msg('hasBetterWeight_wealthy',  ['Congratulations!', 'Congratulations! You have a weight within healthy standards',['NORMAL'],6 ]).
 
-msg('hasHighGlucose', 'You have a high Glycemia value. A new test will be agended to check if your values have estabilized./adviceTimer-Glycemia-600-s/').
-msg('hasLowGlucose', 'You have a low Glycemia value. A new test will -be agended to check if your values have estabilized./adviceTimer-Glycemia-600-s/').
 
-msg('hasHighHbA1c', 'You have a high HbA1c value. A new test will be agended to check if your values have estabilized./adviceTimer-HbA1c-600-s/').
-msg('hasLowHbA1c', 'You have a low HbA1c value. A new test will be agended to check if your values have estabilized./adviceTimer-HbA1c-600-s/').
 
-msg('hasHighCholesterol', 'You have a high Cholesterol value. A new test will be agended to check if your values have estabilized./adviceTimer-Cholesterol-600-s/').
-msg('hasLowCholesterol', 'You have a low Cholesterol value. A new test will be agended to check if your values have estabilized./adviceTimer-Cholesterol-600-s/').
-						 
-msg('hasHighInsulin', 'The value of insulin inserted is above the normal value. A new test will be agended to check if this dose didnt afflict you./adviceTimer-Glycemia-600-s/').
 
-msg('hasHighWeight', 'Your Weight is high. Please be careful with your weight./simpleAdvice/').
-msg('hasLowWeight', 'Your Weight is low. Please be careful with your weight./simpleAdvice/').
 
-msg('hasHighArterialPressure', 'You have a high Arterial Pressure value. A new test will be agended to check if this dose didnt afflict you./adviceTimer-BloodPressure-600-s/').
-msg('hasLowArterialPressure', 'You have a low Arterial Pressure value. A new test will be agended to check if this dose didnt afflict you./adviceTimer-BloodPressure-600-s/').
 
-msg('mealExercisedRecently', 'You have recently made physical exercise. Be aware that the suggested insulin value may not correspond to the real value due to physical exercise not being considerer in the insulin calculation./simpleAdvice/').
-msg('mealUserWithHighWeight', 'You should moderate the portion of your meals and be careful with your weight./simpleAdvice/').
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                                                                                            %

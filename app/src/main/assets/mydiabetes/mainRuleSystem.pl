@@ -75,7 +75,20 @@ filterByProfile([H|ListFiltered],[H|L], ProfileNumber) :- filterByProfile(ListFi
 %% Searches a list of possible causes for a crisis
 %%------------------------------------------------------------------------------------------------------------
 
-searchCause(CrisisType, ListCauses):- findall(Cause, possibleCause(CrisisType, Cause), ListCauses).
+
+searchCause([],[nocause]).
+searchCause([[Type, Bool]], [[Type, Bool]]):- isCausePresent(Type,Bool).
+searchCause([[Type, Bool]|CrisisList], [[Type, Bool]|Rest]):- isCausePresent(Type, Bool), searchCause(CrisisList, Rest).
+searchCause([PossibleCrisis|CrisisList], Rest):- searchCause(CrisisList, Rest).
+
+
+getPossibleCauses(Crisis, CauseList):- possibleCrisisExplanation(Crisis, PossibleCauseList), searchCause(PossibleCauseList, CauseList).
+
+isCausePresent(ATRIB, 1):- hadRecent(ATRIB).
+isCausePresent(ATRIB, 0):- not(hadRecent(ATRIB)).
+
+getMessageID(MyId,[[Cause|_]], NewID):- atom_concat('_', Cause, Cause_), atom_concat(MyId, Cause_, NewID).
+getMessageID(MyId,[[Cause|_]| CauseList], NewID2):- atom_concat('_', Cause, Cause_), atom_concat(MyId, Cause_, NewID), getMessageID(NewID, CauseList, NewID2).
 
 %%------------------------------------------------------------------------------------------------------------
 %% Takes the filtered list of IDs and returns a list of Advices
@@ -142,36 +155,12 @@ verifyOutDatedParameters(Parameter, [MissingID]) :- not(hasRecently(Parameter)),
 verifyOutDatedParameters([Parameter|Rest], MissingIDList) :- not(hasRecently(Parameter)), atom_concat('missing:', Parameter, MissingID), verifyOutDatedParameters(Rest, MissingIDList).
 
 
-checkAllCauses(Situation, Explanation):-
-possibleCause(Situation, PossibleCauses),
-checkPossibleCauses(PossibleCauses, ConfirmedCauses),
-msg(Situation, ConfirmedCauses, Explanation).
+%%checkAllCauses(Situation, Explanation):-
+%%possibleCause(Situation, PossibleCauses),
+%%checkPossibleCauses(PossibleCauses, ConfirmedCauses),
+%%msg(Situation, ConfirmedCauses, Explanation).
 
-checkPossibleCauses([(RegType, PresenceOf)], [(RegType, PresenceOf)]):- isCausePresent(RegType, PresenceOf).
-checkPossibleCauses([(RegType, PresenceOf)|Rest], [(RegType, PresenceOf)|ListConfirmedCauses]):-
-isCausePresent(RegType, PresenceOf),
-checkPossibleCauses(Rest, ListConfirmedCauses).
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%  de fora para ja
-%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%masterRule( single_advice, Condition, Type, Language, ListFilteredAdvices):- setLanguageFile(Language, LangFile),
-%% reconsult(['prologFiles/adviceQuerries','prologFiles/medicalRules', LangFile]),
-%% adviceRelatedParameters(Type, ParameterList),
-%% getAdvices( Condition, ParameterList, ListAllAdvices),
-%% filter( ListAllAdvices, [ID, _]),
-%% msg( ID, MostUrgentAdvice).
-
-
-%%masterRule( multiple_advice, Condition, Type, Language, UserType, ListFilteredAdvices):- setLanguageFile(Language, LangFile),
-%% reconsult(['prologFiles/adviceQuerries','prologFiles/medicalRules', LangFile]),
-%% adviceRelatedParameters(Type, ParameterList),
-%% verifyOutDatedParameters,
-%% getAllAdvices( Condition, ParameterList, ListAllAdvices),
-%% quick_sort(ListAllAdvices, OrderedAdviceIDList),
-%% profile(UserType, ProfileNumber),
-%% filterByProfile( OrderedAdviceIDList, ListFilteredIds, ProfileNumber),
-%% getListFilteredAdvices( ListFilteredIds, ListFilteredAdvices ).
+%%checkPossibleCauses([(RegType, PresenceOf)], [(RegType, PresenceOf)]):- isCausePresent(RegType, PresenceOf).
+%%checkPossibleCauses([(RegType, PresenceOf)|Rest], [(RegType, PresenceOf)|ListConfirmedCauses]):-
+%%isCausePresent(RegType, PresenceOf),
+%%checkPossibleCauses(Rest, ListConfirmedCauses).

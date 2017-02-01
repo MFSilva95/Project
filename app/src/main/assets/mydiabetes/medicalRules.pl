@@ -65,52 +65,65 @@ safetyInterval(600).
 
 
 %%type glicemia ----------
-inRisk( end, glucose, 9, hasHyperGlycemia) :-hasRecentValueAboveMax(glucose).
-inRisk( end, glucose, 9, hasHypoGlycemia) :- hasRecentValueUnderMin(glucose).
-inRisk( end, glucose, 9, hasHighGlucose) :- hasRecentValueHigh(glucose).
-inRisk( end, glucose, 9, hasLowGlucose) :- hasRecentValueLow(glucose).
+inRisk( end, glucose, 9, hasHypoGlycemia) :- hasRecentValueUnderMin(glucose). %%acao imediata
+%%inRisk( end, glucose, 9, hasHyperGlycemia) :-hasRecentValueAboveMax(glucose). %%acao imediata -> ver que aconselhar
+
+%%Glicemia em estado anomalo ver causa!!
+
+inRisk(end, glucose, 5, MsgID):- hasRecentValueLow(glucose),
+getPossibleCauses(lowGlucose, PossibleCauses),
+getMessageID(hasLowGlucose, PossibleCauses, MsgID).
+
+inRisk(end, glucose, 5, MsgID):- hasRecentValueHigh(glucose),
+getPossibleCauses(highGlucose, PossibleCauses),
+getMessageID(highGlucose, PossibleCauses, MsgID).
+
 
 %%type insulin ----------
-inRisk( start, insulin, 9, hadHypoGlycemia) :- hasRecentValueUnderMin(glucose).
-inRisk( start, insulin, 9, hadLowGlucose) :- hasRecentValueLow(glucose).
-inRisk( start, insulin, 9, hadRecentInsulin) :- hasRecently(insulin).
-inRisk( start, insulin, 9, hadRecenlyExercise) :-hasRecently(exercise).
+%%inRisk( start, insulin, 9, hadHypoBeforeInsulin :- hasRecentValueUnderMin(glucose).
+%%inRisk( start, insulin, 9, hadLowBeforeInsulin) :- hasRecentValueLow(glucose).
+%%inRisk( start, insulin, 9, hadRecentInsulinBeforeInsulin) :- hasRecently(insulin).
+%%inRisk( start, insulin, 9, hadRecenlyExerciseBeforeInsulin) :-hasRecently(exercise).
 
 %%type carboHydrate ----------
-inRisk( start, carboHydrate, 8, hadHypoGlycemia) :- hasRecentValueUnderMin(glucose).
-inRisk( start, carboHydrate, 9, hadHyperGlycemia) :- hasRecentValueAboveMax(glucose).
-inRisk( start, carboHydrate, 9, hadHighGlucose) :- hasRecentValueHigh(glucose).
-inRisk( start, carboHydrate, 9, hadLowGlucose) :- hasRecentValueLow(glucose).
-inRisk( start, carboHydrate, 3, mealExercisedRecently) :- hasRecently(exercise).
+%%inRisk( start, carboHydrate, 8, hadHypoGlycemia) :- hasRecentValueUnderMin(glucose).
+%%inRisk( start, carboHydrate, 9, hadHyperGlycemia) :- hasRecentValueAboveMax(glucose).
+%%inRisk( start, carboHydrate, 9, hadHighBeforeMeal) :- hasRecentValueHigh(glucose).
+%%inRisk( start, carboHydrate, 9, hadLowGlucose) :- hasRecentValueLow(glucose).
+%%inRisk( start, carboHydrate, 3, mealExercisedRecently) :- hasRecently(exercise).
 
-inRisk( end, carboHydrate, 9, hasHyperGlycemia) :- hasRecentValueAboveMax(glucose).
-inRisk( end, carboHydrate, 9, hasHypoGlycemia) :- hasRecentValueUnderMin(glucose).
-inRisk( end, carboHydrate, 9, hasHighGlucose) :- hasRecentValueHigh(glucose).
-inRisk( end, carboHydrate, 9, hasLowGlucose) :- hasRecentValueLow(glucose).
+%%inRisk( end, carboHydrate, 9, hasHyperGlycemia) :- hasRecentValueAboveMax(glucose).
+%%inRisk( end, carboHydrate, 9, hasHypoGlycemia) :- hasRecentValueUnderMin(glucose).
+%%inRisk( end, carboHydrate, 9, hasHighGlucose) :- hasRecentValueHigh(glucose).
+%%inRisk( end, carboHydrate, 9, hasLowGlucose) :- hasRecentValueLow(glucose).
 
 %%type exercise ----------
-inRisk( start, exercise, 9, hasLowGlucose) :- hasRecentValueLow(glucose).
-inRisk( start, exercise, 9, hadRecentInsulin) :- hasRecently(insulin).
-inRisk( start, exercise, 9, hadRecentExercise) :- hasRecently(exercise).
-inRisk( start, exercises, 9, haventEatBeforeExercise) :- not(hasRecently(carboHydrate)).
+%%inRisk( start, exercise, 9, hasLowGlucose) :- hasRecentValueLow(glucose).
+%%inRisk( start, exercise, 9, hadRecentInsulin) :- hasRecently(insulin).
+%%inRisk( start, exercise, 9, hadRecentExercise) :- hasRecently(exercise).
+%%inRisk( start, exercises, 9, haventEatBeforeExercise) :- not(hasRecently(carboHydrate)).
 
 %%type disease ----------
-inRisk( end, disease, 9, isSick) :- isSick, createTask("check your glycaemia for cetones").
+%%inRisk( end, disease, 9, isSick) :- isSick, createTask("check your glycaemia for cetones").
 
 %%type weight ----------
-inRisk( end, weight, 9, gotBetterWeight) :- insertedBetterValue(weight).
+%%inRisk( end, weight, 9, gotBetterWeight) :- insertedBetterValue(weight).
 
 %%type hbA1c ----------
-inRisk( start, hbA1c, 9, gotBetterHbA1c) :- insertedBetterValue(hbA1c).
-inRisk( end, hbA1c, 9, hasHighHbA1c) :- hasRecentValueAboveMax(hbA1c).
+%%inRisk( start, hbA1c, 9, gotBetterHbA1c) :- insertedBetterValue(hbA1c).
+%%inRisk( end, hbA1c, 9, hasHighHbA1c) :- hasRecentValueAboveMax(hbA1c).
 
 %%arterialPressure ----------
-inRisk( end, arterialPressure, 3, hasHighArterialPressure) :- hasRecentValueAboveMax(arterialPressure).
-inRisk( end, arterialPressure, 3, hasLowArterialPressure) :- hasRecentValueUnderMin(arterialPressure).
+%%inRisk( end, arterialPressure, 3, hasHighArterialPressure) :- hasRecentValueAboveMax(arterialPressure).
+%%inRisk( end, arterialPressure, 3, hasLowArterialPressure) :- hasRecentValueUnderMin(arterialPressure).
 
 %%inRisk( start, true, carboHydrate, 3, mealUserWithHighWeight) :- hasHighWeight.
 
-hasHipoglicemia(lightModerate) :- lastValue(glucose, Value), minValue(glucose, GlucoseMinValue), Value =< GlucoseMinValue, Value > (50.0).
+%%hasHipoglicemia(lightModerate) :- lastValue(glucose, Value), minValue(glucose, GlucoseMinValue), Value =< GlucoseMinValue, Value > (50.0).
+
+
+
+testeMedico(Resultado):- atom_concat('lol','lel', Resultado).
 
 
 %%-------------------------------------------------------------------------------------------------------------REVER-------------------
@@ -134,30 +147,6 @@ hasHipoglicemia(lightModerate) :- lastValue(glucose, Value), minValue(glucose, G
 
 
 %%-------------------------------------------------------------------------------------------------------------REVER-------------------
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                                                                                            %
-%                                        Casuality Division                                                  %
-%                                                                                                            %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-possibleCause(hypoglycemia, exercise) :- hadRecently(exercise).
-possibleCause(hypoglycemia, carboHydrate) :- not(hadRecently(carboHydrate)).
-possibleCause(hypoglycemia, insulin) :- hadRecently(insulin).
-possibleCause(hypoglycemia, stress).
-
-possibleCause(hyperglycemia, carboHydrate) :- hadRecently(carboHydrate).
-possibleCause(hyperglycemia, stress).
-possibleCause(hyperglycemia, disease):- isSick.
-possibleCause(hypoglycemia, insulin) :- not(hadRecently(insulin)).
-
-%%inRisk( end, glucose, 7, ID) :- ID = 'hasHighGlucoseInsuRecent', hadRecently(insulin), hasRecentValueHigh(glucose).
-%%inRisk( end, glucose, 7, ID) :- ID = 'hasLowGlucoseInsuRecent', hadRecently(insulin), hasRecentValueLow(glucose).
 
 
 
@@ -212,12 +201,12 @@ atom_concat('Tsk_doOnceAMonth_', RegistryType, ID).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                                                            %
+%                                        Casuality Division                                                  %
+%                                                                                                            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-isCausePresent(ATRIB, '+'):- hadRecent(ATRIB).
-isCausePresent(ATRIB, '-'):- not(hadRecent(ATRIB)).
-
-possibleCause(hipoglicemia, [(exercise,'+'), (meal,'-'), (insulin, '+')]).
-
-crisisExplanation(hipoglicemia, [(exercise, '+'),(meal,'-'),(insulin, '+')], Text):- Text = 'To avoid this situation you should eat before exercising, your insulin intake before exercising could have had an impact on this situation.'.
-crisisExplanation(hipoglicemia, [(exercise, '+'),(meal,'-')], Text):- Text = 'To avoid this situation you should eat before exercising.'.
-crisisExplanation(hipoglicemia, [(exercise, '+')], Text):- Text = 'your exercise was not well compensated'.
+possibleCrisisExplanation(lowGlucose, [[exercise, 1],[meal, 0],[insulin, 1]]).
+possibleCrisisExplanation(highGlucose, [[meal, 1],[insulin, 0],[disease, 1]]).
+%%possibleCause(hypoglycemia, stress).

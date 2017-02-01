@@ -104,7 +104,7 @@ public class Home extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        yapDroid = YapDroid.newInstance(this);
+        //yapDroid = YapDroid.newInstance(this);
 
         mPrefs = getSharedPreferences("label", 0);
 
@@ -268,7 +268,8 @@ public class Home extends BaseActivity {
 
         ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
         Cursor cursor = db.getAllLogbookListWithin(10);
-        HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor,this, yapDroid);
+        //HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor,this, yapDroid);
+        HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor,this);
 
         ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
@@ -426,9 +427,11 @@ public class Home extends BaseActivity {
 
     private void fillTaskList() {
         taskListFromYap = yapDroid.getYapMultipleTasks();
+        //taskListFromYap = ;
     }
     public void fillAdviceList() {
-        receiverAdviceList.addAll(yapDroid.getYapMultipleAdvices(getApplicationContext()));
+        receiverAdviceList.addAll(yapDroid.getAllEndAdvices(getApplicationContext()));
+        //receiverAdviceList.addAll(adviceList);
         Collections.sort(receiverAdviceList);
 
     }

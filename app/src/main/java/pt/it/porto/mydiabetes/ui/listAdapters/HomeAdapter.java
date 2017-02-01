@@ -92,12 +92,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         }
         this.c = c;
     }
-    public HomeAdapter(ArrayList<Advice> adviceList, ArrayList<Task> taskList, Cursor cursor, Context c, YapDroid myYap) {
-
+    //public HomeAdapter(ArrayList<Advice> adviceList, ArrayList<Task> taskList, Cursor cursor, Context c, YapDroid myYap) {
+    public HomeAdapter(ArrayList<Advice> adviceList, ArrayList<Task> taskList, Cursor cursor, Context c) {
         this.cursor = cursor;
         this.c = c;
         this.homeList = new ArrayList<>();
-        this.myYapInstance = myYap;
 
         if(adviceList.size()>0){
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.advices)));
@@ -278,7 +277,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
                                         if(currentAdvice.getAdviceType().equals("QUESTION")){
-                                            myYapInstance.insertRule("has("+currentAdvice.getRegistryType()+")");
+                                            //myYapInstance.insertRule("has("+currentAdvice.getRegistryType()+")");
                                         }
                                         if(currentAdvice.getAdviceType().equals("SUGGESTION")){
                                             Class<?> wantedAct = null;
