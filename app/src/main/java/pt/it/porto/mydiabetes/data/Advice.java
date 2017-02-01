@@ -9,7 +9,6 @@ import android.os.Bundle;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
-import pt.it.porto.mydiabetes.utils.AdviceAlertReceiver;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 
 /**
@@ -108,7 +107,7 @@ public class Advice extends HomeElement implements Comparable<Advice> {
     }
     private void setupAlarm(Context ctxt) {
 
-        AlarmManager alm = (AlarmManager) ctxt.getSystemService(Context.ALARM_SERVICE);
+        /*AlarmManager alm = (AlarmManager) ctxt.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(ctxt, AdviceAlertReceiver.class);
 
         Bundle extras = new Bundle();
@@ -119,7 +118,7 @@ public class Advice extends HomeElement implements Comparable<Advice> {
         PendingIntent alarmIntent = PendingIntent.getBroadcast(ctxt, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         long timeTest = getTime().getTimeInMillis();
-        alm.set(AlarmManager.RTC_WAKEUP, timeTest, alarmIntent);
+        alm.set(AlarmManager.RTC_WAKEUP, timeTest, alarmIntent);*/
     }
 
     public String getExpandedText() {return expandedText;}

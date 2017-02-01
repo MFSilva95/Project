@@ -426,12 +426,37 @@ public class Home extends BaseActivity {
     }
 
     private void fillTaskList() {
-        taskListFromYap = yapDroid.getYapMultipleTasks();
-        //taskListFromYap = ;
+        //taskListFromYap = yapDroid.getYapMultipleTasks();
+        Task task1 = new Task();
+        task1.setSummaryText("Fazer exercicio hoje!");
+        task1.setExpText("Hoje fiquei de fazer exercicio. O gim está à minha espera!");
+        task1.setUrg(5);
+
+        Task task2 = new Task();
+        task2.setSummaryText("Actualizar dados!");
+        task2.setExpText("Fazer a sincronização da bomba com a aplicação!");
+        task2.setUrg(3);
+
+        taskListFromYap = new ArrayList<>();
+        taskListFromYap.add(task1);
+        taskListFromYap.add(task2);
     }
     public void fillAdviceList() {
-        receiverAdviceList.addAll(yapDroid.getAllEndAdvices(getApplicationContext()));
-        //receiverAdviceList.addAll(adviceList);
+        //receiverAdviceList.addAll(yapDroid.getAllEndAdvices(getApplicationContext()));
+        Advice task1 = new Advice();
+        task1.setSummaryText("Fazer exercicio hoje!");
+        task1.setExpandedText("Hoje fiquei de fazer exercicio. O gim está à minha espera!");
+        task1.setUrgency(5);
+
+        Advice task2 = new Advice();
+        task2.setSummaryText("Actualizar dados!");
+        task2.setExpandedText("Fazer a sincronização da bomba com a aplicação!");
+        task2.setUrgency(3);
+
+        ArrayList<Advice> adviceList = new ArrayList<>();
+        adviceList.add(task1);
+        adviceList.add(task2);
+        receiverAdviceList.addAll(adviceList);
         Collections.sort(receiverAdviceList);
 
     }
