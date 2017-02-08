@@ -20,12 +20,6 @@
         android:layout_gravity="bottom"
         android:layout_margin="0dp">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_alignParentTop="true"
-            android:background="@color/material_grey_300"/>
-
         <Button
             android:id="@+id/restoreDb"
             style="@style/Regist.Button"
@@ -60,6 +54,13 @@
                 android:layout_height="10dp"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/dot_big"
+                />
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/dot_small"
                 />
 
             <View
