@@ -403,10 +403,6 @@
     </plurals>
 
 
-
-
-
-
     <string-array name="task_period_list">
         <item>Todos os Dias</item>
         <item>Semanal</item>
@@ -428,38 +424,6 @@
     <string name="glycemia_measure">Glicemia Lida</string>
     <string name="insulin_intake">Insulina a Administrar</string>
     <string name="carbs_intake">Hidratos de Carbono Consumidos</string>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 </resources>
