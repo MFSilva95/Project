@@ -223,7 +223,7 @@
     <string name="start">Inicio</string>
     <string name="hint_value" translatable="false">120</string>
     <string name="hint_value1" translatable="false">95</string>
-    <string name="hint_hour" translatable="false">15:30</string>
+    <string name="hint_hour">15:30</string>
     <string name="hint_value2" translatable="false">90</string>
     <string name="glycemia_value">Valor de glicemia</string>
     <string name="hemoglobin_value">Valor Hemoglobina Glicosilada</string>
@@ -364,7 +364,7 @@
     <string name="report">Relatório</string>
     <string name="insulin_calc">Cálculo Insulina</string>
     <string name="use_iob">Usar Insulina Activa</string>
-    <string name="backup_restore_confirmation_dialog_text">Este processo vai subsituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
+    <string name="backup_restore_confirmation_dialog_text">Este processo vai substituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
     <string name="next_button">Seguinte</string>
     <string name="notification_sync_recurrent">Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?</string>
     <string name="notification_sync_first_time">Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?</string>
