@@ -302,7 +302,7 @@
         <RelativeLayout
             android:id="@+id/section_insulin"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_2x2"
+            android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <ImageView
@@ -353,20 +353,6 @@
             </android.support.design.widget.TextInputLayout>
 
             <ImageButton
-                android:id="@+id/bt_insulin_calc_info"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="4dp"
-                android:layout_marginEnd="04dp"
-                android:layout_marginRight="04dp"
-                android:background="?selectableItemBackground"
-                android:padding="12dp"
-                android:src="@drawable/ic_information_outline_grey600_24dp"/>
-
-            <ImageButton
                 android:id="@+id/revert_admin"
                 android:layout_width="@dimen/height_2x"
                 android:layout_height="@dimen/height_2x"
@@ -395,6 +381,17 @@
             android:layout_height="1dp"
             android:background="@color/divider"
             />
+
+            <ImageButton
+                android:id="@+id/bt_insulin_calc_info"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="?selectableItemBackground"
+                android:padding="12dp"
+                android:src="@drawable/ic_information_outline_grey600_24dp"
+                android:layout_alignTop="@+id/insulin_admin"
+                android:layout_alignRight="@+id/insulin_admin"
+                android:layout_alignEnd="@+id/insulin_admin" />
         </RelativeLayout>
 
         <android.support.design.widget.TextInputLayout

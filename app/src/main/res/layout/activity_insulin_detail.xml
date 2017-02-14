@@ -320,7 +320,6 @@
             android:id="@+id/fragment_calcs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/light_black_background"
             tools:layout="@layout/fragment_insulin_meal_calc"
             tools:layout_height="200dp"/>
 
