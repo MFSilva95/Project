@@ -280,7 +280,7 @@
     <string name="hint_value7">ex.: 1.82</string>
     <string name="grams">gramas</string>
     <string name="percent" translatable="false">%</string>
-    <string name="kg" translatable="false">Kg</string>
+    <string name="weight_unit">Kg</string>
     <string name="uni">uni.</string>
     <string name="insulin_method">Modo de Administração</string>
     <string name="read_value">Valor de Leitura</string>

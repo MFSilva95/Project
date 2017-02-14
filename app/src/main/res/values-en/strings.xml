@@ -50,7 +50,7 @@
     <string name="hint_value5">e.g.: 70</string>
     <string name="hint_value6">e.g.: 150</string>
     <string name="hint_value7">e.g.: 1.82</string>
-    <string name="hint_weight">80 (in kg)</string>
+    <string name="hint_weight">170 (in lbs)</string>
     <string name="hour">Hour</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -285,7 +285,7 @@
     <string name="birth_date">Data de Nascimento</string>
     <string name="hint_birth_date" translatable="false">1980-04-22</string>
     <string name="percent" translatable="false">%</string>
-    <string name="kg" translatable="false">Kg</string>
+    <string name="weight_unit">lbs</string>
     <string name="uni">uni.</string>
     <string name="insulin_method">Modo de Administração</string>
     <string name="read_value">Valor de Leitura</string>
