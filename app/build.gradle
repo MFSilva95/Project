@@ -79,6 +79,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.github.lecho:hellocharts-android:v1.5.8'
     compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.simplecityapps:recyclerview-fastscroll:1.0.6'
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }

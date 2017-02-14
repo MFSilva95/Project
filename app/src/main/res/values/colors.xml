@@ -29,4 +29,5 @@
     <color name="divider">#B6B6B6</color>
     <color name="text_units">#5b5b5b</color>
 
+    <color name="divider_grey">#ef636363</color>
 </resources>

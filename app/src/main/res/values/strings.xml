@@ -251,7 +251,7 @@
     <string name="action">Ação</string>
     <string name="new_medicine">Novo medicamento</string>
     <string name="hint_medicine">Ben u Ron 1000</string>
-    <string name="units">Unidades</string>
+    <string name="units">unidades</string>
     <string name="pills">comprimidos</string>
     <string name="new_label">Nova etiqueta</string>
     <string name="breakfast">Pequeno almoço</string>
@@ -390,6 +390,10 @@
     <string name="cloudSync_edit_account">Editar conta</string>
     <string name="settings_edit_insulins">Editar Insulinas</string>
     <string name="settings_edit_glicemia_targets">Editar Objectivos de Glicemia</string>
+    <string name="glycemia_objective">Objectivo de Glicemia</string>
+    <string name="glycemia_measure">Glicemia Lida</string>
+    <string name="insulin_intake">Insulina a Administrar</string>
+    <string name="carbs_intake">Hidratos de Carbono Consumidos</string>
 
 
     <plurals name="notification_text_new_glucose_measure">
@@ -418,12 +422,6 @@
         <item>Peso</item>
         <item>Colesterol</item>
     </string-array>
-
-
-    <string name="glycemia_objective">Objectivo de Glicemia</string>
-    <string name="glycemia_measure">Glicemia Lida</string>
-    <string name="insulin_intake">Insulina a Administrar</string>
-    <string name="carbs_intake">Hidratos de Carbono Consumidos</string>
 
 
 </resources>

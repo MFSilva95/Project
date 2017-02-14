@@ -41,6 +41,13 @@ import pt.it.porto.mydiabetes.database.ListsDataDb;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.ui.usability.HomeTouchHelper;
+import pt.it.porto.mydiabetes.database.Preferences;
+import pt.it.porto.mydiabetes.database.Usage;
+import pt.it.porto.mydiabetes.middleHealth.myglucohealth.BluetoothChangesRegisterService;
+import pt.it.porto.mydiabetes.ui.dialogs.FeatureIOBDialog;
+import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
+import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.SyncAlarm;
 
 
 public class Home extends BaseActivity {

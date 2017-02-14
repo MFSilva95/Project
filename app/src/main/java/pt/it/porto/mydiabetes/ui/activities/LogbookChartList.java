@@ -4,12 +4,15 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -73,7 +76,7 @@ public class LogbookChartList extends MultiDataChartActivity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode==LogbookChartList.DETAILS && resultCode == DetailLogbookActivity.RESULT_SAVED_CHANGES) {
+		if (requestCode == LogbookChartList.DETAILS && resultCode == DetailLogbookActivity.RESULT_SAVED_CHANGES) {
 			updateTimeRange();
 			setupContent();
 		}
@@ -200,7 +203,7 @@ public class LogbookChartList extends MultiDataChartActivity {
 		return new ListAdapter(getCursor());
 	}
 
-	class ListAdapter extends RecyclerView.Adapter<LogbookChartList.ListAdapter.Holder> {
+	class ListAdapter extends RecyclerView.Adapter<LogbookChartList.ListAdapter.Holder> implements FastScrollRecyclerView.SectionedAdapter {
 
 		private Cursor cursor;
 
@@ -292,6 +295,15 @@ public class LogbookChartList extends MultiDataChartActivity {
 		@Override
 		public int getItemCount() {
 			return cursor == null ? 0 : cursor.getCount();
+		}
+
+		@NonNull
+		@Override
+		public String getSectionName(int position) {
+			if (cursor.moveToPosition(position)) {
+				return cursor.getString(0).substring(0, 10);
+			}
+			return "";
 		}
 
 		public class Holder extends RecyclerView.ViewHolder {

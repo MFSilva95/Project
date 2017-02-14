@@ -65,7 +65,7 @@
                 android:textSize="18sp"/>
 
             <EditText
-                android:id="@+id/et_MealDetail_Hora"
+                android:id="@+id/time"
                 style="@style/Holo.Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
             android:orientation="horizontal">
 
             <Spinner
-                android:id="@+id/sp_MealDetail_Tag"
+                android:id="@+id/tag"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"/>
         </LinearLayout>
@@ -160,7 +160,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/et_MealDetail_Glycemia"
+                android:id="@+id/glycemia"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:width="100dp"
@@ -270,7 +270,7 @@
                     android:textSize="16sp"/>
 
                 <EditText
-                    android:id="@+id/et_MealDetail_Carbs"
+                    android:id="@+id/carbs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -359,7 +359,7 @@
                     android:textSize="16sp"/>
 
                 <EditText
-                    android:id="@+id/et_MealDetail_TargetGlycemia"
+                    android:id="@+id/glycemia_target"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -391,7 +391,7 @@
                     android:textSize="16sp"/>
 
                 <EditText
-                    android:id="@+id/et_MealDetail_InsulinUnits"
+                    android:id="@+id/insulin_intake"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -504,7 +504,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/et_MealDetail_Notes"
+                android:id="@+id/notes"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

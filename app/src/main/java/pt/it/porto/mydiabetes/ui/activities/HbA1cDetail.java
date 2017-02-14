@@ -29,10 +29,6 @@ import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 public class HbA1cDetail extends BaseActivity {
 
-
-	@Override
-	public String getRegType(){return "HbA1c";}
-
 	int idHbA1c = 0;
 	int idNote = 0;
 

@@ -38,7 +38,7 @@
             android:layout_marginRight="23dp"
             android:layout_marginStart="15dp"
             android:layout_weight="1"
-            android:background="@color/lineguide"/>
+            android:background="@color/divider_grey"/>
 
         <TextView
             android:id="@+id/correction_glycemia"
@@ -72,7 +72,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginStart="15dp"
             android:layout_weight="1"
-            android:background="@color/lineguide"/>
+            android:background="@color/divider_grey"/>
 
         <TextView
             style="@style/TextAppearance.AppCompat.Body2"
@@ -116,7 +116,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginStart="15dp"
             android:layout_weight="1"
-            android:background="@color/lineguide"/>
+            android:background="@color/divider_grey"/>
 
         <TextView
             style="@style/TextAppearance.AppCompat.Body2"
@@ -165,7 +165,7 @@
             android:layout_marginRight="17dp"
             android:layout_marginStart="15dp"
             android:layout_weight="1"
-            android:background="@color/lineguide"/>
+            android:background="@color/divider_grey"/>
 
         <TextView
             android:id="@+id/result_total"

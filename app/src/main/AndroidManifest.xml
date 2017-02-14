@@ -173,7 +173,8 @@
         <activity
             android:name=".ui.activities.ExBPChoDisWei"
             android:label="@string/title_activity_ex_bpcho_dis_wei"
-            android:parentActivityName=".ui.activities.GlyInsCarbs">
+            android:theme="@style/AppNewThemeCompat"
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -378,7 +379,7 @@
         <activity
             android:name=".ui.activities.TaskListActivity"
             android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/AppNewTheme">
+            android:theme="@style/NewHomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Preferences"/>

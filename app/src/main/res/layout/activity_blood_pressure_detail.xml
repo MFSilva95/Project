@@ -24,7 +24,7 @@
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@android:color/holo_blue_dark"
+		        android:background="@color/divider"
 		        android:layout_gravity="center_vertical" />
             
             <TextView
@@ -32,13 +32,13 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
 		        android:text="@string/date_hour"
-		        android:textSize="16sp"
+				style="@style/SectionHeader"
 		        android:gravity="center_vertical|center_horizontal" />
             
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@android:color/holo_blue_dark"
+		        android:background="@color/divider"
 		        android:layout_gravity="center_vertical" />
         </LinearLayout>
         <LinearLayout
@@ -86,7 +86,7 @@
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@android:color/holo_blue_dark"
+		        android:background="@color/divider"
 		        android:layout_gravity="center_vertical" />
             
             <TextView
@@ -94,13 +94,13 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.75"
 		        android:text="@string/time_of_day"
-		        android:textSize="16sp"
+				style="@style/SectionHeader"
 		        android:gravity="center_vertical|center_horizontal" />
             
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@android:color/holo_blue_dark" 
+		        android:background="@color/divider"
 		        android:layout_gravity="center_vertical" />
         </LinearLayout>
         <LinearLayout
@@ -125,7 +125,7 @@
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@android:color/holo_blue_dark"
+		        android:background="@color/divider"
 		        android:layout_gravity="center_vertical" />
             
             <TextView
@@ -133,13 +133,13 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.75"
 		        android:text="@string/bloodpressure"
-		        android:textSize="16sp"
+				style="@style/SectionHeader"
 		        android:gravity="center_vertical|center_horizontal" />
             
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@android:color/holo_blue_dark"
+		        android:background="@color/divider"
 		        android:layout_gravity="center_vertical" />
         </LinearLayout>
         <LinearLayout
@@ -159,7 +159,7 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:text="@string/systolic"
-			        android:textSize="16sp"
+					style="@style/Subheading"
 			        android:layout_gravity="center_horizontal" />
 	            <EditText
 			        android:id="@+id/et_BloodPressureDetail_Systolic"
@@ -181,7 +181,7 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:text="@string/diastolic"
-			        android:textSize="16sp"
+					style="@style/Subheading"
 			        android:layout_gravity="center_horizontal" />
 	            <EditText
 			        android:id="@+id/et_BloodPressureDetail_Diastolic"
@@ -205,7 +205,7 @@
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@android:color/holo_blue_dark"
+		        android:background="@color/divider"
 		        android:layout_gravity="center_vertical" />
             
             <TextView
@@ -213,13 +213,13 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.75"
 		        android:text="@string/notes"
-		        android:textSize="16sp"
+				style="@style/SectionHeader"
 		        android:gravity="center_vertical|center_horizontal" />
             
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@android:color/holo_blue_dark"
+		        android:background="@color/divider"
 		        android:layout_gravity="center_vertical" />
         </LinearLayout>
     	<LinearLayout

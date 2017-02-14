@@ -29,9 +29,6 @@ import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 public class CholesterolDetail extends BaseActivity {
 
-	@Override
-	public String getRegType(){return "Cholesterol";}
-
 	int idCho = 0;
 	int idNote = 0;
 

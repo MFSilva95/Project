@@ -35,10 +35,6 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class ExerciseDetail extends BaseActivity {
 
-	@Override
-	public String getRegType(){return "Exercise";}
-
-
 	int idNote = 0;
 	int idExercise = 0;
 

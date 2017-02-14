@@ -1,9 +1,10 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/menuItem_Home"
         android:orderInCategory="100"
-        android:showAsAction="always"
+        app:showAsAction="always"
         android:icon="@drawable/settings"
         android:title="@string/data_config"
         android:enabled="true" 

@@ -25,10 +25,6 @@ import pt.it.porto.mydiabetes.database.DB_Write;
 
 public class GlycemiaDetail extends FormActivity {
 
-
-	@Override
-	public String getRegType(){return "Glycemia";}
-
 	int idGlycemia = 0;
 	int idNote = 0;
 
@@ -46,7 +42,6 @@ public class GlycemiaDetail extends FormActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		//Log.e("RAWR","CENAS: "+this.activityAdvice);
 		hideSection(FormActivity.SECTION_CARBS);
 		hideSection(FormActivity.SECTION_INSULIN);
 		hideSection(FormActivity.SECTION_TARGET_GLICEMIA);

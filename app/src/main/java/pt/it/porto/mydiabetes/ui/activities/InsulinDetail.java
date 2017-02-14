@@ -51,10 +51,6 @@ import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 public class InsulinDetail extends BaseActivity implements InsulinCalcFragment.CalcListener {
 
-
-	@Override
-	public String getRegType(){return "Insulin";}
-
 	int id_BG = 0;
 	int idNote = 0;
 	int idIns = 0;

@@ -4,10 +4,6 @@
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
-    <style name="AppNewTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/primary_material_dark</item>
-        <item name="colorAccent">@color/primary_material_dark</item>
-    </style>
 
 
     <style name="NewHomeTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -33,15 +29,17 @@
         <!--<item name="android:textColorPrimary">@color/abc_primary_text_material_dark</item>-->
         <!-- enable window content transitions -->
         <!--<item name="android:windowActivityTransitions">true</item>-->
+        <item name="android:windowActivityTransitions">true</item>
     </style>
 
     <style name="AppThemeCustomToolBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="background">@android:color/white</item>
-        <item name="android:windowBackground">@android:color/white</item>
+        <!--<item name="android:windowBackground">@android:color/white</item>-->
         <!--<item name="colorPrimary">@color/background_holo_dark</item>-->
-        <item name="colorPrimary">@color/primary_material_dark</item>
-        <item name="colorAccent">@color/primary_material_dark</item>
-        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:windowActivityTransitions">true</item>
     </style>
     <!-- Application theme. -->
     <style name="AppTheme" parent="@android:style/Theme.Holo">
@@ -104,13 +102,13 @@
 
 
     <style name="SectionHeader" parent="TextAppearance.AppCompat">
-        <!--<item name="android:fontFamily">sans-serif-medium</item>-->
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">18sp</item>
     </style>
 
     <style name="Subheading" parent="TextAppearance.AppCompat">
-        <!--<item name="android:fontFamily">sans-serif-regular</item>-->
+        <item name="android:fontFamily">sans-serif-regular</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">16sp</item>
     </style>
@@ -124,5 +122,23 @@
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
+    <style name="HomeButtonStyle" parent="Widget.AppCompat.Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">85dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:textColor">@color/primary_text_holo_dark</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="HomeButtonTheme" parent="AppNewThemeCompat">
+        <item name="colorButtonNormal">?colorPrimary</item>
+        <item name="colorControlHighlight">?colorAccent</item>
+    </style>
 
 </resources>

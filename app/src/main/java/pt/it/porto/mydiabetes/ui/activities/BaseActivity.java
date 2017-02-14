@@ -30,7 +30,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 		}
 		//if(getRegType()!=null){activityAdvice = YapDroid.newInstance(getApplicationContext()).getSingleAdvice("start", getRegType(), this.getApplicationContext());}
 	}
-	public abstract String getRegType();
+
+	public String getRegType() {
+		return null;
+	}
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
