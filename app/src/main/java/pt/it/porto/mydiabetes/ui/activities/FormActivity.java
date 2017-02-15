@@ -76,7 +76,7 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_form);
 		LinearLayout adviceFrame = (LinearLayout) findViewById(R.id.adviceFrame);
-		adviceFrame.setVisibility(View.INVISIBLE);
+		adviceFrame.setVisibility(View.GONE);
 		/*if(activityAdvice==null){
 			LinearLayout adviceFrame = (LinearLayout) findViewById(R.id.adviceFrame);
 			adviceFrame.setVisibility(View.INVISIBLE);

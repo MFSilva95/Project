@@ -8,7 +8,6 @@
             tools:context=".ui.activities.FormActivity">
 
     <LinearLayout
-        android:id="@+id/section_dateTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -143,7 +142,9 @@
                 android:layout_marginStart="@dimen/height_2x"
                 android:layout_marginTop="0dp"
                 android:paddingLeft="4dp"
+                android:paddingRight="4dp"
                 android:paddingStart="4dp"
+                android:paddingEnd="4dp"
                 android:paddingTop="2dp"
                 app:errorEnabled="false">
 
@@ -242,33 +243,6 @@
             android:layout_height="@dimen/height_2x"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@id/img"
-                android:layout_width="@dimen/height_2x"
-                android:layout_height="@dimen/height_2x"
-                android:layout_gravity="center_vertical"
-                android:padding="16dp"
-                android:src="@drawable/meal_black"/>
-
-            <pt.it.porto.mydiabetes.ui.views.ExtendedEditText
-                android:id="@+id/carbs"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_toRightOf="@id/img"
-                android:background="@null"
-                android:gravity="center_vertical"
-                android:hint="@string/carbs_intake"
-                android:imeOptions="actionDone"
-                android:inputType="numberDecimal"
-                android:maxLength="3"
-                android:maxLines="1"
-                android:paddingEnd="16dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="16dp"
-                android:paddingStart="8dp"
-                app:suffix="@string/grams"/>
-
             <ImageButton
                 android:id="@+id/revert_carbs"
                 android:layout_width="@dimen/height_2x"
@@ -298,6 +272,40 @@
                 android:layout_alignParentBottom="true"
                 android:background="@color/divider"
                 />
+
+            <ImageView
+                android:id="@id/img"
+                android:layout_width="@dimen/height_2x"
+                android:layout_height="@dimen/height_2x"
+                android:layout_gravity="center_vertical"
+                android:padding="16dp"
+                android:src="@drawable/meal_black"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"/>
+
+            <pt.it.porto.mydiabetes.ui.views.ExtendedEditText
+                android:id="@+id/carbs"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:hint="@string/carbs_intake"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:maxLength="3"
+                android:maxLines="1"
+                android:paddingEnd="16dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="16dp"
+                android:paddingStart="8dp"
+                android:layout_toRightOf="@id/img"
+                android:layout_toEndOf="@id/img"
+                app:suffix="@string/grams"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -331,8 +339,8 @@
                 android:id="@+id/insulin_admin"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:layout_alignParentBottom="true"
                 android:layout_marginEnd="8dp"
+                android:layout_below="@+id/sp_MealDetail_Insulin"
                 android:layout_marginLeft="@dimen/height_2x"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="@dimen/height_2x"
