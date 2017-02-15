@@ -20,12 +20,17 @@ import pt.it.porto.mydiabetes.ui.fragments.register.AddInsulinsFragment;
 import pt.it.porto.mydiabetes.ui.fragments.register.FactorsFragment;
 import pt.it.porto.mydiabetes.ui.fragments.register.OnFormEnd;
 import pt.it.porto.mydiabetes.ui.fragments.register.PersonalDataFragment;
+import pt.it.porto.mydiabetes.ui.fragments.register.welcomeFragment;
 
 
 /**
  * A login screen that offers login via email/password.
  */
 public class WelcomeActivity extends BaseActivity implements OnFormEnd {
+
+
+	@Override
+	public String getRegType(){return null;}
 
 	// save state
 	private final static String BUNDLE_CURRENT_FRAGMENT = "current_fragment";
@@ -47,7 +52,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 	// UI references.
 	private LinearLayout pageIndicators;
 	private int currentFragment = 0;
-	private Fragment[] fragmentPages = new Fragment[]{new PersonalDataFragment(), new FactorsFragment(), new AddInsulinsFragment(), new AddGlycemiaObjectivesFragment()};
+	private Fragment[] fragmentPages = new Fragment[]{new welcomeFragment(), new PersonalDataFragment(), new FactorsFragment(), new AddInsulinsFragment(), new AddGlycemiaObjectivesFragment()};
 
 	// user inserted data
 	private Bundle data = new Bundle();
@@ -79,7 +84,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 				next();
 			}
 		});
-		getSupportActionBar().setSubtitle(((RegistryFragmentPage) fragmentPages[currentFragment]).getSubtitle());
+		//getSupportActionBar().setSubtitle(((RegistryFragmentPage) fragmentPages[currentFragment]).getSubtitle());
 		if(nextButtonActive){
 			activateNextButton();
 		}else{
@@ -141,7 +146,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 						.commit();
 				setPageIndicator(currentFragment, currentFragment + 1);
 				currentFragment++;
-				getSupportActionBar().setSubtitle(((RegistryFragmentPage) fragmentPages[currentFragment]).getSubtitle());
+				//getSupportActionBar().setSubtitle(((RegistryFragmentPage) fragmentPages[currentFragment]).getSubtitle());
 			}
 		}
 	}
@@ -161,8 +166,8 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 		dest.setBackgroundResource(R.drawable.dot_big);
 		AnimatorSet animatorSet = new AnimatorSet();
 
-		ObjectAnimator originAnimator = ObjectAnimator.ofFloat(orig, "alpha", (float) 1.0, (float) 0.25);
-		ObjectAnimator destAnimator = ObjectAnimator.ofFloat(dest, "alpha", (float) 0.25, (float) 1.0);
+		ObjectAnimator originAnimator = ObjectAnimator.ofFloat(orig, "alpha", (float) 1.0, (float) 0.2);
+		ObjectAnimator destAnimator = ObjectAnimator.ofFloat(dest, "alpha", (float) 0.2, (float) 1.0);
 		animatorSet.play(originAnimator).with(destAnimator);
 		animatorSet.start();
 		animatorSet.addListener(new Animator.AnimatorListener() {

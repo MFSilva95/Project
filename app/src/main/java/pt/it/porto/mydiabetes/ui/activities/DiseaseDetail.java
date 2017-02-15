@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
@@ -31,17 +30,21 @@ import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
-public class DiseaseDetail extends Activity {
+public class DiseaseDetail extends BaseActivity {
 
 	int idDisease = 0;
 	int idNote = 0;
+
+	@Override
+	public String getRegType(){return "Disease";}
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_disease_detail);
 		// Show the Up button in the action bar.
-		getActionBar();
+		getSupportActionBar();
 		FillDiseaseAC();
 
 

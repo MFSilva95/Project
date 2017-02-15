@@ -1,4 +1,14 @@
 <resources>
+    <string name="advice">Advice</string>
+    <string name="task">Task</string>
+    <string name="advices">Advices</string>
+    <string name="tasks">Tasks</string>
+    <string name="recentReg">Recent Registries</string>
+
+    <string name="navTask">My Tasks</string>
+    <string name="navLog">My Logbook</string>
+    <string name="navPersonalTools">Personal options</string>
+    <string name="navDiabetesTools">Diabetes options</string>
 
     <string name="Carbs">Carbs</string>
     <string name="Exercise">Exercise</string>
@@ -40,6 +50,135 @@
     <string name="hint_value5">e.g.: 70</string>
     <string name="hint_value6">e.g.: 150</string>
     <string name="hint_value7">e.g.: 1.82</string>
-    <string name="hint_weight">80 (in kg)</string>
+    <string name="hint_weight">170 (in lbs)</string>
     <string name="hour">Hour</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+    <string-array name="daytimes">
+        <item>Waking up</item>
+        <item>Before Breakfast</item>
+        <item>After Breakfast</item>
+        <item>Before Lunch</item>
+        <item>After Lunch</item>
+        <item>Before Dinner</item>
+        <item>After Dinner</item>
+        <item>Going to bed</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="bg_targets">
+        <item>Day</item>
+        <item>Night</item>
+    </string-array>
+
+
+    <string name="add_Exercise">Add Exercise</string>
+    <string name="title_activity_my_data">My Data</string>
+    <string name="title_activity_preferences">Preferences</string>
+    <string name="title_activity_exercise">Exercise Register</string>
+    <string name="save_MyData">Save</string>
+    <string name="title_activity_glycemia">Glycemia Register</string>
+    <string name="add_Glycemia">Add Glycemia</string>
+    <string name="title_activity_insulin">Insulin Register</string>
+    <string name="title_activity_logbook">LogBook</string>
+    <string name="add_Insulin">Add Insulin</string>
+    <string name="title_activity_carbo_hydrate">Carbohydrates Register</string>
+    <string name="title_activity_cholesterol">Cholesterol Register</string>
+    <string name="title_activity_disease">Disease Register</string>
+    <string name="title_activity_h1_a1c">A1c Register</string>
+    <string name="title_activity_weight">Weight Register</string>
+    <string name="add_Weight">Add Weight</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_TagsFragment">Add Tag</string>
+    <string name="add_ExercisesFragment">Add Exercise</string>
+
+    <string name="add_MedicinesFragment">Add Medicament</string>
+    <string name="delete_MedicinesFragment">Delete Medicament?</string>
+    <string name="error_MedicinesFragment">You cannot delete this medicament, it is referred in the Register!</string>
+    <string name="delete_Disease">Delete Disease?</string>
+    <string name="title_activity_transfer">Transfer to PC</string>
+    <string name="title_activity_scan">Scan</string>
+    <string name="title_activity_cloud_server">CloudServerActivity</string>
+    <string name="transf_WaitMesg">Wait Connection</string>
+    <string name="transf_WaitTitle">Atention</string>
+    <string name="transf_ConnOK">Connection Established</string>
+    <string name="transf_InfoTitle">Information</string>
+
+    <string-array name="Sex">
+        <item>@string/gender_male</item>
+        <item>@string/gender_female</item>
+    </string-array>
+    <string-array name="diabetes_Type">
+        <item>@string/diabetes_type_1</item>
+        <item>@string/diabetes_type_2</item>
+        <item>@string/diabetes_type_gestational</item>
+    </string-array>
+    <string name="diabetes_type_1">Type 1</string>
+    <string name="diabetes_type_2">Type 2</string>
+    <string name="diabetes_type_gestational">Gestational</string>
+    <string name="title_activity_data_tools">Definitions &amp; Tools</string>
+    <string name="title_activity_glycemia_detail">Glycemia Register</string>
+    <string name="save_GlycemiaDetail">Save</string>
+    <string name="title_activity_insulin_detail">Insulin Register</string>
+    <string name="title_activity_exercise_detail">Exercise Register</string>
+    <string name="title_activity_logbook_detail">Logbook Register</string>
+    <string name="save_detail">Save</string>
+    <string name="delete_detail">Delete</string>
+    <string name="deleteReading">Delete Reading?</string>
+    <string name="positiveButton">Yes</string>
+    <string name="negativeButton">Cancel</string>
+    <string name="saveButton">Save</string>
+    <string name="deleteException">Cannot delete this Reading!</string>
+    <string name="deleteAlert">Alert!</string>
+    <string name="deleteConfirmationSingular">The following item will be deleted:</string>
+    <string name="deleteConfirmationPlural">The following items will be deleted:</string>
+    <string name="deleteCarbsReg">Carbohydrates Register</string>
+    <string name="deleteGlycemiaReg">Glycemia Register</string>
+    <string name="deleteInsulinReg">Insulin Register</string>
+
+    <string-array name="Effort">
+        <item>Very Light</item>
+        <item>Light</item>
+        <item>Moderate</item>
+        <item>Intense</item>
+        <item>Very Intense</item>
+    </string-array>
+
+    <string name="title_activity_carbo_hydrate_detail">Carbohydrates Register</string>
+    <string name="title_activity_cholesterol_detail">Cholesterol Register</string>
+    <string name="title_activity_weight_detail">Weight Register</string>
+    <string name="title_activity_hb_a1c_detail">A1c Register</string>
+    <string name="title_activity_disease_detail">Disease Register</string>
+    <string name="title_activity_import_export">Import &amp; Export</string>
+    <string name="title_activity_tag_detail">Day Time</string>
+    <string name="title_activity_target_bg_detail">Glycemia Objective</string>
+    <string name="title_activity_insulins_detail">Insulin</string>
+    <string name="title_activity_meal">Meal</string>
+    <string name="title_activity_info">Information</string>
+    <string name="delete_Exercise">Delete Exercise?</string>
+
+
+    <string-array name="task_period_list">
+        <item>Every Day</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
+
+    <string-array name="task_type_list">
+        <item>Glycemia</item>
+        <item>Insulin</item>
+        <item>Meal</item>
+        <item>Exercise</item>
+        <item>Weight</item>
+        <item>Cholesterol</item>
+    </string-array>
+
+
+    <string name="glycemia_objective">Glycemia Objective</string>
+    <string name="glycemia_measure">Glycemia Read</string>
+    <string name="insulin_intake">Insulin to Administrate</string>
+    <string name="carbs_intake">Carbohidrates Consumption</string>
+
+
 </resources>

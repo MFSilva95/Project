@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="advice">Conselho</string>
+    <string name="task">Tarefa</string>
+    <string name="advices">Conselhos</string>
+    <string name="tasks">Tarefas</string>
+    <string name="recentReg">Registos Recentes</string>
+
+    <string name="navTask">As minhas tarefas</string>
+    <string name="navLog">O meu Logbook</string>
+    <string name="navPersonalTools">Definições Pessoais</string>
+    <string name="navDiabetesTools">Definições Gestão Diabetes</string>
 
     <string name="app_name">A Minha Diabetes</string>
     <string name="add_Exercise">Adicionar Exercício</string>
@@ -213,7 +223,7 @@
     <string name="start">Inicio</string>
     <string name="hint_value" translatable="false">120</string>
     <string name="hint_value1" translatable="false">95</string>
-    <string name="hint_hour" translatable="false">15:30</string>
+    <string name="hint_hour">15:30</string>
     <string name="hint_value2" translatable="false">90</string>
     <string name="glycemia_value">Valor de glicemia</string>
     <string name="hemoglobin_value">Valor Hemoglobina Glicosilada</string>
@@ -241,7 +251,7 @@
     <string name="action">Ação</string>
     <string name="new_medicine">Novo medicamento</string>
     <string name="hint_medicine">Ben u Ron 1000</string>
-    <string name="units">Unidades</string>
+    <string name="units">unidades</string>
     <string name="pills">comprimidos</string>
     <string name="new_label">Nova etiqueta</string>
     <string name="breakfast">Pequeno almoço</string>
@@ -270,7 +280,7 @@
     <string name="hint_value7">ex.: 1.82</string>
     <string name="grams">gramas</string>
     <string name="percent" translatable="false">%</string>
-    <string name="kg" translatable="false">Kg</string>
+    <string name="weight_unit">Kg</string>
     <string name="uni">uni.</string>
     <string name="insulin_method">Modo de Administração</string>
     <string name="read_value">Valor de Leitura</string>
@@ -327,6 +337,7 @@
     <string name="time_separator_preposition">A</string>
     <string name="subtitle_diabetes_factors">Detalhes e Factores</string>
     <string name="subtitle_personal_data">Dados Pessoais</string>
+    <string name="welcome">Início</string>
 
     <string name="no_measures_added_to_database">Não foram adicionadas novas medições.</string>
     <string name="measures_added_to_database">Foram adicionadas %d novas medições!</string>
@@ -353,7 +364,7 @@
     <string name="report">Relatório</string>
     <string name="insulin_calc">Cálculo Insulina</string>
     <string name="use_iob">Usar Insulina Activa</string>
-    <string name="backup_restore_confirmation_dialog_text">Este processo vai subsituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
+    <string name="backup_restore_confirmation_dialog_text">Este processo vai substituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
     <string name="next_button">Seguinte</string>
     <string name="notification_sync_recurrent">Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?</string>
     <string name="notification_sync_first_time">Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?</string>
@@ -379,6 +390,10 @@
     <string name="cloudSync_edit_account">Editar conta</string>
     <string name="settings_edit_insulins">Editar Insulinas</string>
     <string name="settings_edit_glicemia_targets">Editar Objectivos de Glicemia</string>
+    <string name="glycemia_objective">Objectivo de Glicemia</string>
+    <string name="glycemia_measure">Glicemia Lida</string>
+    <string name="insulin_intake">Insulina a Administrar</string>
+    <string name="carbs_intake">Hidratos de Carbono Consumidos</string>
 
 
     <plurals name="notification_text_new_glucose_measure">
@@ -390,6 +405,23 @@
         <item quantity="one">Esta é recente. Clique para adicionar refeição.</item>
         <item quantity="other">Uma é recente. Clique para adicionar refeição.</item>
     </plurals>
+
+
+    <string-array name="task_period_list">
+        <item>Todos os Dias</item>
+        <item>Semanal</item>
+        <item>Mensal</item>
+        <item>Anual</item>
+    </string-array>
+
+    <string-array name="task_type_list">
+        <item>Glicemia</item>
+        <item>Insulina</item>
+        <item>Refeição</item>
+        <item>Exercicio</item>
+        <item>Peso</item>
+        <item>Colesterol</item>
+    </string-array>
 
 
 </resources>

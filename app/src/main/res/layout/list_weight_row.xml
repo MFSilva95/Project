@@ -61,7 +61,7 @@
         android:layout_gravity="center_vertical"
         android:fontFamily="sans-serif-light"
         android:gravity="center_horizontal"
-        android:text="@string/kg"
+        android:text="@string/weight_unit"
         android:textColor="@android:color/background_dark"/>
 
 </LinearLayout>

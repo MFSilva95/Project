@@ -23,7 +23,7 @@
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark"
+		        android:background="@color/divider"
 		        android:layout_gravity="center_vertical" />
             
             <TextView
@@ -31,13 +31,13 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
 		        android:text="@string/date_hour"
-		        android:textSize="16sp"
+				style="@style/SectionHeader"
 		        android:gravity="center_vertical|center_horizontal" />
             
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark" 
+		        android:background="@color/divider" 
 		        android:layout_gravity="center_vertical" />
         </LinearLayout>
         <LinearLayout
@@ -55,7 +55,6 @@
 		        android:layout_marginRight="16dp"
 		        android:textSize="18sp"
 		        android:gravity="center_horizontal"
-		        style="@style/Holo.Spinner"
 		        android:focusable="false"
 		        android:focusableInTouchMode="false"
 		        android:onClick="showDatePickerDialog" />
@@ -69,7 +68,6 @@
 		        android:layout_marginRight="16dp"
 		        android:textSize="18sp"
 		        android:gravity="center_horizontal"
-		        style="@style/Holo.Spinner"
 		        android:focusable="false"
 		        android:focusableInTouchMode="false"
 		        android:onClick="showTimePickerDialog" />
@@ -85,7 +83,7 @@
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark"
+		        android:background="@color/divider"
 		        android:layout_gravity="center_vertical" />
             
             <TextView
@@ -93,13 +91,13 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.75"
 		        android:text="@string/read_value"
-		        android:textSize="16sp"
+				style="@style/SectionHeader"
 		        android:gravity="center_vertical|center_horizontal" />
             
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark" 
+		        android:background="@color/divider" 
 		        android:layout_gravity="center_vertical" />
         </LinearLayout>
         
@@ -127,8 +125,9 @@
             <TextView
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
-		        android:text="@string/kg"
+		        android:text="@string/weight_unit"
 		        android:textSize="16sp"
+				style="@style/FormCaption"
 		        android:gravity="center_vertical|center_horizontal" />
         </LinearLayout>
         
@@ -144,7 +143,7 @@
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark"
+		        android:background="@color/divider"
 		        android:layout_gravity="center_vertical" />
             
             <TextView
@@ -152,13 +151,13 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.75"
 		        android:text="@string/notes"
-		        android:textSize="16sp"
+				style="@style/SectionHeader"
 		        android:gravity="center_vertical|center_horizontal" />
             
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark" 
+		        android:background="@color/divider" 
 		        android:layout_gravity="center_vertical" />
         </LinearLayout>
     	<LinearLayout

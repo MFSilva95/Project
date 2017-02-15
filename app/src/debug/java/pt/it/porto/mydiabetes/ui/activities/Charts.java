@@ -10,6 +10,10 @@ import pt.it.porto.mydiabetes.ui.charts.data.Weight;
 
 public class Charts extends BaseActivity {
 
+
+	@Override
+	public String getRegType(){return null;}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -44,8 +48,4 @@ public class Charts extends BaseActivity {
 		startActivity(intent);
 	}
 
-	public void test(View view) {
-		Intent intent = new Intent(this, ListTestActivity.class);
-		startActivity(intent);
-	}
 }

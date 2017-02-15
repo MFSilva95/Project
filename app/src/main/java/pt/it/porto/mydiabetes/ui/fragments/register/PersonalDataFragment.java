@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -18,6 +19,9 @@ import android.widget.RadioGroup;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.R;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
@@ -194,14 +198,15 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 	}
 
 	public void showDatePickerDialog() {
-		DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+
+		final DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), R.style.style_date_picker_dialog, new DatePickerDialog.OnDateSetListener() {
 			@Override
 			public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 				setDate(year, month, day);
 				allFieldsAreValid();
 			}
 		}, birthdayDate.get(Calendar.YEAR), birthdayDate.get(Calendar.MONTH), birthdayDate.get(Calendar.DAY_OF_MONTH));
-		datePickerDialog.setCancelable(false);
+
 		datePickerDialog.show();
 	}
 
@@ -215,4 +220,6 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 		displayDate.append(birthdayDate.get(Calendar.YEAR));
 		mDateView.setText(displayDate.toString());
 	}
+
+
 }

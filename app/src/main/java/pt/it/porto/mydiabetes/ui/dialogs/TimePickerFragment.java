@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -20,7 +21,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 	public static final String ARG_TIME = "time";
 	public static final String ARG_TEXT_BOX = "textbox";
 
-	EditText item;
+	TextView item;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 			if (calendar == null) {
 				calendar = Calendar.getInstance();
 			}
-			item = (EditText) getActivity().findViewById(args.getInt(ARG_TEXT_BOX));
+			item = (TextView) getActivity().findViewById(args.getInt(ARG_TEXT_BOX));
 		} else {
 			calendar = Calendar.getInstance();
 		}

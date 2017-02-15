@@ -23,7 +23,7 @@
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark"
+		        android:background="@color/divider"
 		        android:layout_gravity="center_vertical" />
             
             <TextView
@@ -31,13 +31,13 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="0.75"
 		        android:text="@string/disease_period"
-		        android:textSize="16sp"
+				style="@style/SectionHeader"
 		        android:gravity="center_vertical|center_horizontal" />
             
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark" 
+		        android:background="@color/divider" 
 		        android:layout_gravity="center_vertical" />
         </LinearLayout>
         <LinearLayout
@@ -56,18 +56,16 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:text="@string/from"
-			        android:textSize="16sp"
+					style="@style/Subheading"
 			        android:layout_gravity="center_horizontal" />
 	            <EditText
 			        android:id="@+id/et_DiseaseRegDetail_DataFrom"
 			        android:layout_width="match_parent"
-			        android:layout_height="wrap_content"
-			        android:layout_weight="1"
+			        android:layout_height="match_parent"
 			        android:layout_marginLeft="16dp"
 			        android:layout_marginRight="16dp"
 			        android:textSize="18sp"
 			        android:gravity="center_horizontal"
-			        style="@style/Holo.Spinner"
 			        android:focusable="false"
 			        android:focusableInTouchMode="false"
 			        android:onClick="showDatePickerDialogFrom" />
@@ -82,18 +80,16 @@
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:text="@string/to"
-			        android:textSize="16sp"
+					style="@style/Subheading"
 			        android:layout_gravity="center_horizontal" />
 	            <EditText
 			        android:id="@+id/et_DiseaseRegDetail_DataTo"
 			        android:layout_width="match_parent"
-			        android:layout_height="wrap_content"
-			        android:layout_weight="1"
+			        android:layout_height="match_parent"
 			        android:layout_marginLeft="16dp"
 			        android:layout_marginRight="16dp"
-			        android:textSize="18sp"
+					style="@style/Subheading"
 			        android:gravity="center_horizontal"
-			        style="@style/Holo.Spinner"
 			        android:focusable="false"
 			        android:focusableInTouchMode="false"
 			        android:onClick="showDatePickerDialogTo" />
@@ -109,7 +105,7 @@
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark"
+		        android:background="@color/divider"
 		        android:layout_gravity="center_vertical" />
             
             <TextView
@@ -117,13 +113,13 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
 		        android:text="@string/disease"
-		        android:textSize="16sp"
+				style="@style/SectionHeader"
 		        android:gravity="center_vertical|center_horizontal" />
             
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark" 
+		        android:background="@color/divider" 
 		        android:layout_gravity="center_vertical" />
         </LinearLayout>
         <LinearLayout
@@ -152,7 +148,7 @@
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark"
+		        android:background="@color/divider"
 		        android:layout_gravity="center_vertical" />
             
             <TextView
@@ -160,13 +156,13 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
 		        android:text="@string/notes"
-		        android:textSize="16sp"
+				style="@style/SectionHeader"
 		        android:gravity="center_vertical|center_horizontal" />
             
             <View android:layout_height="1dip"
 		        android:layout_width="fill_parent" 
 		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark" 
+		        android:background="@color/divider" 
 		        android:layout_gravity="center_vertical" />
         </LinearLayout>
     	<LinearLayout

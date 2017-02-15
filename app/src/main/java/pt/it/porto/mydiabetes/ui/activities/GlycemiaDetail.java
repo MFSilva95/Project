@@ -1,100 +1,87 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.Note;
-import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
-public class GlycemiaDetail extends Activity {
+public class GlycemiaDetail extends FormActivity {
 
 	int idGlycemia = 0;
 	int idNote = 0;
 
+	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
+		SpinnerAdapter adapter = spnr.getAdapter();
+		for (int position = 0; position < adapter.getCount(); position++) {
+			if (adapter.getItem(position).equals(value)) {
+				spnr.setSelection(position);
+				return;
+			}
+		}
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_glycemia_detail);
-		// Show the Up button in the action bar.
-		getActionBar();
-		FillTagSpinner();
 
-		EditText hora = (EditText) findViewById(R.id.et_GlycemiaDetail_Hora);
+		hideSection(FormActivity.SECTION_CARBS);
+		hideSection(FormActivity.SECTION_INSULIN);
+		hideSection(FormActivity.SECTION_TARGET_GLICEMIA);
+
+		TextView hora = (TextView) findViewById(R.id.time);
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
 			DB_Read rdb = new DB_Read(this);
 			idGlycemia = args.getInt("Id");
 			GlycemiaRec toFill = rdb.Glycemia_GetById(idGlycemia);
+			if (toFill != null) {
+				TextView date = (TextView) findViewById(R.id.date);
+				if (date != null) {
+					date.setText(toFill.getFormattedDate());
+				}
+				if (hora != null) {
+					hora.setText(toFill.getFormattedTime());
+				}
+				EditText glycemia = (EditText) findViewById(R.id.glycemia);
+				if (glycemia != null) {
+					glycemia.setText(String.valueOf(toFill.getValue()));
+				}
+				Spinner spinner = (Spinner) findViewById(R.id.tag);
+				SelectSpinnerItemByValue(spinner, rdb.Tag_GetById(toFill.getIdTag()).getName());
 
-			EditText date = (EditText) findViewById(R.id.et_GlycemiaDetail_Data);
-			date.setText(toFill.getFormattedDate());
-			hora.setText(toFill.getFormattedTime());
-			EditText glycemia = (EditText) findViewById(R.id.et_GlycemiaDetail_Glycemia);
-			glycemia.setText(String.valueOf(toFill.getValue()));
-			Spinner spinner = (Spinner) findViewById(R.id.sp_GlycemiaDetail_Tag);
-			SelectSpinnerItemByValue(spinner, rdb.Tag_GetById(toFill.getIdTag()).getName());
-
-			EditText note = (EditText) findViewById(R.id.et_GlycemiaDetail_Notes);
-			if (toFill.getIdNote() != -1) {
-				Note n = new Note();
-				n = rdb.Note_GetById(toFill.getIdNote());
-				note.setText(n.getNote());
-				idNote = n.getId();
+				EditText note = (EditText) findViewById(R.id.notes);
+				if (toFill.getIdNote() != -1) {
+					Note n = rdb.Note_GetById(toFill.getIdNote());
+					if (note != null && n != null) {
+						note.setText(n.getNote());
+						idNote = n.getId();
+					}
+				}
 			}
 
 			rdb.close();
-		} else {
-			FillDateHour();
-			SetTagByTime();
 		}
 
-
-		hora.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before, int count) {
-				SetTagByTime();
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-			}
-
-			@Override
-			public void afterTextChanged(Editable s) {
-			}
-		});
 	}
-
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -108,10 +95,7 @@ public class GlycemiaDetail extends Activity {
 		}
 
 		return super.onCreateOptionsMenu(menu);
-
-
 	}
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -135,55 +119,29 @@ public class GlycemiaDetail extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-
-	public void FillDateHour() {
-		EditText date = (EditText) findViewById(R.id.et_GlycemiaDetail_Data);
-		final Calendar calendar = Calendar.getInstance();
-		date.setText(DateUtils.getFormattedDate(calendar));
-
-		EditText hour = (EditText) findViewById(R.id.et_GlycemiaDetail_Hora);
-		hour.setText(DateUtils.getFormattedTime(calendar));
-	}
-
-	public void FillTagSpinner() {
-		Spinner spinner = (Spinner) findViewById(R.id.sp_GlycemiaDetail_Tag);
-		ArrayList<String> allTags = new ArrayList<String>();
-		DB_Read rdb = new DB_Read(this);
-		ArrayList<Tag> t = rdb.Tag_GetAll();
-		rdb.close();
-
-
-		if (t != null) {
-			for (Tag i : t) {
-				allTags.add(i.getName());
-			}
-		}
-
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allTags);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinner.setAdapter(adapter);
-	}
-
 	public void AddGlycemiaRead() {
-		Spinner TagSpinner = (Spinner) findViewById(R.id.sp_GlycemiaDetail_Tag);
-		EditText glycemia = (EditText) findViewById(R.id.et_GlycemiaDetail_Glycemia);
-		EditText data = (EditText) findViewById(R.id.et_GlycemiaDetail_Data);
-		EditText hora = (EditText) findViewById(R.id.et_GlycemiaDetail_Hora);
-		EditText note = (EditText) findViewById(R.id.et_GlycemiaDetail_Notes);
+		Spinner tagSpinner = (Spinner) findViewById(R.id.tag);
+		EditText glycemia = (EditText) findViewById(R.id.glycemia);
+		TextView date = (TextView) findViewById(R.id.date);
+		TextView time = (TextView) findViewById(R.id.time);
+		EditText note = (EditText) findViewById(R.id.notes);
 
-		if (glycemia.getText().toString().equals("")) {
+		if (glycemia != null && glycemia.getText().toString().equals("")) {
 			glycemia.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(glycemia, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
 
-		//Get id of user 
+		//Get id of user
 		DB_Read rdb = new DB_Read(this);
 		int idUser = rdb.getId();
 
 		//Get id of selected tag
-		String tag = TagSpinner.getSelectedItem().toString();
+		String tag = null;
+		if (tagSpinner != null) {
+			tag = tagSpinner.getSelectedItem().toString();
+		}
 		Log.d("selected Spinner", tag);
 		int idTag = rdb.Tag_GetIdByName(tag);
 		rdb.close();
@@ -191,7 +149,7 @@ public class GlycemiaDetail extends Activity {
 		DB_Write reg = new DB_Write(this);
 		GlycemiaRec gly = new GlycemiaRec();
 
-		if (!note.getText().toString().equals("")) {
+		if (note != null && !note.getText().toString().equals("")) {
 			Note n = new Note();
 			n.setNote(note.getText().toString());
 			gly.setIdNote(reg.Note_Add(n));
@@ -199,8 +157,12 @@ public class GlycemiaDetail extends Activity {
 
 
 		gly.setIdUser(idUser);
-		gly.setValue(Integer.parseInt(glycemia.getText().toString()));
-		gly.setDateTime(data.getText().toString(), hora.getText().toString());
+		if (glycemia != null) {
+			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
+		}
+		if (date != null && time != null) {
+			gly.setDateTime(date.getText().toString(), time.getText().toString());
+		}
 		gly.setIdTag(idTag);
 
 
@@ -211,24 +173,27 @@ public class GlycemiaDetail extends Activity {
 	}
 
 	public void UpdateGlycemiaRead(int id) {
-		Spinner TagSpinner = (Spinner) findViewById(R.id.sp_GlycemiaDetail_Tag);
-		EditText glycemia = (EditText) findViewById(R.id.et_GlycemiaDetail_Glycemia);
-		EditText data = (EditText) findViewById(R.id.et_GlycemiaDetail_Data);
-		EditText hora = (EditText) findViewById(R.id.et_GlycemiaDetail_Hora);
-		EditText note = (EditText) findViewById(R.id.et_GlycemiaDetail_Notes);
+		Spinner tagSpinner = (Spinner) findViewById(R.id.tag);
+		EditText glycemia = (EditText) findViewById(R.id.glycemia);
+		TextView date = (TextView) findViewById(R.id.date);
+		TextView time = (TextView) findViewById(R.id.time);
+		EditText note = (EditText) findViewById(R.id.notes);
 
-		if (glycemia.getText().toString().equals("")) {
+		if (glycemia != null && glycemia.getText().toString().equals("")) {
 			glycemia.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(glycemia, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
 
-		//Get id of user 
+		//Get id of user
 		DB_Read rdb = new DB_Read(this);
 		int idUser = rdb.getId();
 
-		String tag = TagSpinner.getSelectedItem().toString();
+		String tag = null;
+		if (tagSpinner != null) {
+			tag = tagSpinner.getSelectedItem().toString();
+		}
 		Log.d("selected Spinner", tag);
 		int idTag = rdb.Tag_GetIdByName(tag);
 		rdb.close();
@@ -236,12 +201,12 @@ public class GlycemiaDetail extends Activity {
 		DB_Write reg = new DB_Write(this);
 		GlycemiaRec gly = new GlycemiaRec();
 
-		if (!note.getText().toString().equals("") && idNote == 0) {
+		if (note != null && !note.getText().toString().equals("") && idNote == 0) {
 			Note n = new Note();
 			n.setNote(note.getText().toString());
 			gly.setIdNote(reg.Note_Add(n));
 		}
-		if (idNote != 0) {
+		if (idNote != 0 && note != null) {
 			Note n = new Note();
 			n.setNote(note.getText().toString());
 			n.setId(idNote);
@@ -250,8 +215,12 @@ public class GlycemiaDetail extends Activity {
 
 		gly.setId(id);
 		gly.setIdUser(idUser);
-		gly.setValue(Integer.parseInt(glycemia.getText().toString()));
-		gly.setDateTime(data.getText().toString(), hora.getText().toString());
+		if (glycemia != null) {
+			gly.setValue(Integer.parseInt(glycemia.getText().toString()));
+		}
+		if (date != null && time != null) {
+			gly.setDateTime(date.getText().toString(), time.getText().toString());
+		}
 		gly.setIdTag(idTag);
 
 		reg.Glycemia_Update(gly);
@@ -284,38 +253,19 @@ public class GlycemiaDetail extends Activity {
 				}).show();
 	}
 
-	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
-		SpinnerAdapter adapter = spnr.getAdapter();
-		for (int position = 0; position < adapter.getCount(); position++) {
-			if (adapter.getItem(position).equals(value)) {
-				spnr.setSelection(position);
-				return;
-			}
-		}
-	}
-
 	public void goUp() {
 		NavUtils.navigateUpFromSameTask(this);
 	}
 
-	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_GlycemiaDetail_Data,
-				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "DatePicker");
+
+	@Override
+	void insulinsNotFound() {
+
 	}
 
-	public void showTimePickerDialog(View v) {
-		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_GlycemiaDetail_Hora,
-				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "timePicker");
+	@Override
+	protected boolean shouldSetInsulin() {
+		return false;
 	}
 
-	public void SetTagByTime() {
-		Spinner tagSpinner = (Spinner) findViewById(R.id.sp_GlycemiaDetail_Tag);
-		EditText hora = (EditText) findViewById(R.id.et_GlycemiaDetail_Hora);
-		DB_Read rdb = new DB_Read(this);
-		String name = rdb.Tag_GetByTime(hora.getText().toString()).getName();
-		rdb.close();
-		SelectSpinnerItemByValue(tagSpinner, name);
-	}
 }

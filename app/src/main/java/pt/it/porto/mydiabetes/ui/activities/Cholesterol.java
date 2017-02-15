@@ -17,6 +17,9 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class Cholesterol extends BaseListRangeActivity {
 
+	@Override
+	public String getRegType(){return "Cholesterol";}
+
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

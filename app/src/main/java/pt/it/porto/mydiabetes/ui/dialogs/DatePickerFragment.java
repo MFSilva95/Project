@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.DatePicker;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.Calendar;
 
@@ -18,7 +18,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 	public static final String ARG_DATE = "date";
 	public static final String ARG_TEXT_BOX = "textbox";
 
-	EditText item;
+	TextView item;
 
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -30,10 +30,11 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 			if (calendar == null) {
 				calendar = Calendar.getInstance();
 			}
-			item = (EditText) getActivity().findViewById(args.getInt(ARG_TEXT_BOX));
+			item = (TextView) getActivity().findViewById(args.getInt(ARG_TEXT_BOX));
 		} else {
 			calendar = Calendar.getInstance();
 		}
+
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH);
 		int day = calendar.get(Calendar.DAY_OF_MONTH);

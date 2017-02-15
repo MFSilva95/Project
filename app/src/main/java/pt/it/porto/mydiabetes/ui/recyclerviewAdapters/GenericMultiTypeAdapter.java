@@ -14,6 +14,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.R;
 
 public class GenericMultiTypeAdapter extends RecyclerView.Adapter<GenericMultiTypeAdapter.Holder> {
+
 	protected Cursor cursor;
 	private HashMap<String, Integer> positions;
 	private int[] resourceIcons;

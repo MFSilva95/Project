@@ -20,6 +20,10 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class HbA1c extends BaseListRangeActivity {
 
+
+	@Override
+	public String getRegType(){return "HbA1c";}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.

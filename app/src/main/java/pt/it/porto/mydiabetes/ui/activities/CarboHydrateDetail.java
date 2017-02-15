@@ -45,7 +45,7 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 
 
-public class CarboHydrateDetail extends Activity {
+public class CarboHydrateDetail extends BaseActivity {
 
 	//photo variables - start
 	final private int CAPTURE_IMAGE = 2;
@@ -60,7 +60,7 @@ public class CarboHydrateDetail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_carbohydrate_detail);
 		// Show the Up button in the action bar.
-		getActionBar();
+		getSupportActionBar();
 		FillTagSpinner();
 		EditText hora = (EditText) findViewById(R.id.et_CarboHydrateDetail_Hora);
 

@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
@@ -28,7 +27,7 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
-public class CholesterolDetail extends Activity {
+public class CholesterolDetail extends BaseActivity {
 
 	int idCho = 0;
 	int idNote = 0;
@@ -38,7 +37,7 @@ public class CholesterolDetail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_cholesterol_detail);
 		// Show the Up button in the action bar.
-		getActionBar();
+		getSupportActionBar();
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {

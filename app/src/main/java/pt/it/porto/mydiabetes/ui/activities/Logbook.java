@@ -1,12 +1,10 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
 import android.app.Activity;
-import android.app.DialogFragment;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -15,7 +13,6 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.ListsDataDb;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
-import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.LogbookAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
@@ -29,8 +26,8 @@ public class Logbook extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_logbook);
-		dateFrom = (EditText) findViewById(R.id.et_Logbook_DataFrom);
-		dateTo = (EditText) findViewById(R.id.et_Logbook_DataTo);
+//		dateFrom = (EditText) findViewById(R.id.et_Logbook_DataFrom);
+//		dateTo = (EditText) findViewById(R.id.et_Logbook_DataTo);
 		logbookList = (ListView) findViewById(R.id.LogbookActivityList);
 
 		FillDates();
@@ -88,14 +85,14 @@ public class Logbook extends Activity {
 		lv.setAdapter(new LogbookAdapter(cursor, this));
 	}
 
-	public void showDatePickerDialogFrom(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Logbook_DataFrom, DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "DatePicker");
-	}
-
-	public void showDatePickerDialogTo(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Logbook_DataTo, DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "DatePicker");
-	}
+//	public void showDatePickerDialogFrom(View v) {
+//		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Logbook_DataFrom, DateUtils.getDateCalendar(((EditText) v).getText().toString()));
+//		newFragment.show(getFragmentManager(), "DatePicker");
+//	}
+//
+//	public void showDatePickerDialogTo(View v) {
+//		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_Logbook_DataTo, DateUtils.getDateCalendar(((EditText) v).getText().toString()));
+//		newFragment.show(getFragmentManager(), "DatePicker");
+//	}
 
 }

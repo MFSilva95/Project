@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <group android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/userTasks"
+            android:checked="false"
+            android:title="@string/navTask"/>
+
+        <item
+            android:id="@+id/userLogbook"
+            android:checked="false"
+            android:title="@string/navLog" />
+
+        <item
+            android:id="@+id/personalData"
+            android:checked="false"
+            android:title="@string/navPersonalTools" />
+
+        <item
+            android:id="@+id/diabetesData"
+            android:checked="false"
+            android:title="@string/navDiabetesTools" />
+
+    </group>
+
+</menu>

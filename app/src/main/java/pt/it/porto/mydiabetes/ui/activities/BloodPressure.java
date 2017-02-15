@@ -18,6 +18,9 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 public class BloodPressure extends BaseListRangeActivity {
 
 	@Override
+	public String getRegType(){return "BloodPressure";}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.blood_pressure, menu);

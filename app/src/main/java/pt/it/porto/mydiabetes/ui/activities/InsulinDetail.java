@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -50,7 +49,7 @@ import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
-public class InsulinDetail extends Activity implements InsulinCalcFragment.CalcListener {
+public class InsulinDetail extends BaseActivity implements InsulinCalcFragment.CalcListener {
 
 	int id_BG = 0;
 	int idNote = 0;

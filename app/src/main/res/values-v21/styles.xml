@@ -6,4 +6,15 @@
         <item name="android:colorPrimary">@color/primary_material_dark</item>
         <item name="android:colorAccent">@color/primary_material_dark</item>
     </style>
+
+    <style name="style_date_picker_dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:datePickerStyle">@style/style_date_picker</item>
+        <item name="android:textSize">20sp</item>
+
+    </style>
+
+    <style name="style_date_picker" parent="android:Widget.Material.Light.DatePicker">
+        <item name="android:datePickerMode">spinner</item>
+    </style>
+
 </resources>

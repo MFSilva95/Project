@@ -11,5 +11,10 @@
     <dimen name="list_text_small">12sp</dimen>
     <dimen name="list_row_default_height">48dp</dimen>
     <dimen name="list_item_vertical_margin">6dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="phantom_fab_margin">20dp</dimen>
+
+    <dimen name="height_2x">56dp</dimen>
+    <dimen name="height_2x2">112dp</dimen>
 
 </resources>
