@@ -75,7 +75,6 @@
     </style>
 
     <style name="Regist.Spinner" parent="Base.Widget.AppCompat.EditText">
-
         <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
         <item name="android:maxLines">1</item>
         <item name="android:paddingLeft">0dp</item>
@@ -83,6 +82,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">@dimen/abc_edit_text_inset_horizontal_material</item>
         <item name="android:singleLine">true</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Regist.Button" parent="Widget.AppCompat.Button.Borderless.Colored">
@@ -118,6 +118,8 @@
         <!--<item name="android:fontFamily">sans-serif-regular</item>-->
     </style>
 
+
+    <!-- New Theme -->
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splash</item>
     </style>
@@ -135,10 +137,29 @@
         <item name="android:textColor">@color/primary_text_holo_dark</item>
         <item name="android:textSize">12sp</item>
     </style>
+    <style name="welcomeTheme" parent="Theme.Design.Light.NoActionBar">
+        <item name="android:windowBackground">@color/green_background</item>
+        <item name="android:colorPrimary">@color/green_bar</item>
+        <item name="android:colorPrimaryDark">@color/green_bar</item>
+        <item name="android:navigationBarColor">@color/green_bar</item>
+        <item name="android:colorAccent">@color/green_bar</item>
+    </style>
 
     <style name="HomeButtonTheme" parent="AppNewThemeCompat">
         <item name="colorButtonNormal">?colorPrimary</item>
         <item name="colorControlHighlight">?colorAccent</item>
     </style>
+
+    <style name="welcomeEditText" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/hint_grey</item>
+        <item name="colorControlActivated">@color/green_selected</item>
+    </style>
+
+    <style name="welcomeRadioButton" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/hint_grey</item>
+        <item name="colorControlActivated">@color/green_selected</item>
+    </style>
+
+
 
 </resources>

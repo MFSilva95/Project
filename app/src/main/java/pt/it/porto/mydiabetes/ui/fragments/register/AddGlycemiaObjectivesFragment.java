@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.ui.fragments.register;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -21,6 +24,7 @@ import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjetivesElement;
 import pt.it.porto.mydiabetes.utils.ArraysUtils;
+import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
 
 /**
@@ -39,6 +43,7 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 
 	private OnFormEnd mListener;
 	private RecyclerView list;
+	private TextView title;
 	private ArrayList<GlycemiaObjectivesData> items = new ArrayList<>(3);
 
 	/**
@@ -73,12 +78,22 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		View layout = inflater.inflate(R.layout.fragment_register_insulins, container, false);
 		list = (RecyclerView) layout.findViewById(R.id.insulin_list);
 
+		title = (TextView) layout.findViewById(R.id.title);
+		title.setText("Novo Objetivo de Glicemia");
+
 		list.setAdapter(new InsulinAdapter());
 		list.setLayoutManager(new LinearLayoutManager(getContext()));
 		list.setItemAnimator(new DefaultItemAnimator());
 		if (savedInstanceState != null) {
 			items = (ArrayList) savedInstanceState.getSerializable(STATE_ITEMS);
 		}
+
+		FloatingActionButton myFab = (FloatingActionButton) layout.findViewById(R.id.floatingActionButton);
+		myFab.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				addGlycemiaObjective();
+			}
+		});
 
 
 		return layout;
@@ -226,19 +241,6 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		}
 	}
 
-	class ButtonHolder extends Holder {
-
-		public ButtonHolder(View itemView, String text) {
-			super(itemView);
-			((Button) itemView).setText(text);
-			itemView.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					addGlycemiaObjective();
-				}
-			});
-		}
-	}
 
 	class InsulinAdapter extends RecyclerView.Adapter<Holder> {
 		private static final int TYPE_NEW_INSULIN = 0;
@@ -247,15 +249,7 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		@Override
 		public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
 			LayoutInflater layoutInflator = getLayoutInflater(null);
-			if (viewType == TYPE_FOOTER_BUTTON) {
-				return new ButtonHolder(layoutInflator.inflate(R.layout.list_item_new_element_button, parent, false), getContext().getString(R.string.new_glycemia_objective));
-			}
 			return new GlycemiaHolder(layoutInflator.inflate(R.layout.list_item_new_glycemia_objective, parent, false));
-		}
-
-		@Override
-		public int getItemViewType(int position) {
-			return position == items.size() ? TYPE_FOOTER_BUTTON : TYPE_NEW_INSULIN;
 		}
 
 		@Override
@@ -268,7 +262,7 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 
 		@Override
 		public int getItemCount() {
-			return items.size() + 1;
+			return items.size();
 		}
 	}
 

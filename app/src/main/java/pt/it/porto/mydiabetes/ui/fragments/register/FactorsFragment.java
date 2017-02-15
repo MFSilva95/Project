@@ -9,12 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
+import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
 
 /**
@@ -60,15 +63,21 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View layout = inflater.inflate(R.layout.fragment_register_factors, container, false);
-
 		diabetesType = (Spinner) layout.findViewById(R.id.diabetes_type);
+
+		ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.diabetes_Type , R.layout.welcome_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		diabetesType.setAdapter(adapter);
+
 		sensibilityFactor = (EditText) layout.findViewById(R.id.sensibility_factor);
 		carbsRatio = (EditText) layout.findViewById(R.id.carbs_ratio);
 		hypoglycemiaLimit = (EditText) layout.findViewById(R.id.hypoglycemia_limit);
 		hyperglycemiaLimit = (EditText) layout.findViewById(R.id.hyperglycemia_limit);
 
+
 		return layout;
 	}
+
 
 	public void onButtonPressed(Uri uri) {
 		if (mListener != null) {

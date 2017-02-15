@@ -7,12 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import lecho.lib.hellocharts.model.Line;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestoreFragment;
 import pt.it.porto.mydiabetes.ui.fragments.register.AddGlycemiaObjectivesFragment;
@@ -21,6 +24,7 @@ import pt.it.porto.mydiabetes.ui.fragments.register.FactorsFragment;
 import pt.it.porto.mydiabetes.ui.fragments.register.OnFormEnd;
 import pt.it.porto.mydiabetes.ui.fragments.register.PersonalDataFragment;
 import pt.it.porto.mydiabetes.ui.fragments.register.welcomeFragment;
+import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
 
 /**
@@ -51,6 +55,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 
 	// UI references.
 	private LinearLayout pageIndicators;
+	private LinearLayout welcomeLayout;
 	private int currentFragment = 0;
 	private Fragment[] fragmentPages = new Fragment[]{new welcomeFragment(), new PersonalDataFragment(), new FactorsFragment(), new AddInsulinsFragment(), new AddGlycemiaObjectivesFragment()};
 
@@ -108,8 +113,19 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 				}
 			});
 		}
+		welcomeLayout = (LinearLayout) findViewById(R.id.welcome_layout);
+		welcomeLayout.setOnTouchListener(new OnSwipeTouchListener(welcomeLayout.getContext()) {
 
+			@Override
+			public void onSwipeLeft() {
+				next();
+			}
 
+			@Override
+			public void onSwipeRight() {
+				previous();
+			}
+		});
 	}
 
 
@@ -150,6 +166,21 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 			}
 		}
 	}
+
+	private void previous() {
+		hideKeyboard();
+		fragmentPages[currentFragment] = getSupportFragmentManager().findFragmentById(R.id.content_fragment);
+		if (currentFragment - 1  != -1) {
+				getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right)
+						.remove(fragmentPages[currentFragment])
+						.add(R.id.content_fragment, fragmentPages[currentFragment - 1])
+						.commit();
+				setPageIndicator(currentFragment, currentFragment - 1);
+				currentFragment--;
+				//getSupportActionBar().setSubtitle(((RegistryFragmentPage) fragmentPages[currentFragment]).getSubtitle());
+			}
+	}
+
 
 	private void hideKeyboard() {
 		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);

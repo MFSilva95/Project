@@ -400,8 +400,8 @@
         <activity
             android:name=".ui.activities.WelcomeActivity"
             android:label="@string/title_activity_welcome"
-            android:theme="@style/Theme.Design.Light.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
+            android:theme="@style/welcomeTheme"
+            android:windowSoftInputMode="adjustResize">
         </activity>
 
         <activity

@@ -15,9 +15,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
+import android.widget.Toast;
 
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -95,6 +98,7 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 				((RadioButton) mGenderGroup.getChildAt(1)).setError(null);
 			}
 		});
+
 		return layout;
 	}
 
