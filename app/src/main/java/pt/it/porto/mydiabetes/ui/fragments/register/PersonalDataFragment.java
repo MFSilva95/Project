@@ -2,32 +2,46 @@ package pt.it.porto.mydiabetes.ui.fragments.register;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
+
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.features.ImagePickerActivity;
+
+import com.esafirm.imagepicker.model.Image;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -44,12 +58,21 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 	public static final int DEFAULT_BIRTHDAY_MONTH = 5;
 	public static final int DEFAULT_BIRTHDAY_DAY = 15;
 
+	private static final int RC_CODE_PICKER = 2000;
+
+
+
 	private OnFormEnd mListener;
 	private EditText mNameView;
 	private EditText mHeightView;
 	private EditText mDateView;
 	private GregorianCalendar birthdayDate;
 	private RadioGroup mGenderGroup;
+	private CircleImageView profileImage;
+	private ArrayList<Image> images = new ArrayList<>();
+	private String filename = "profilePhoto.png";
+
+
 
 	/**
 	 * Use this factory method to create a new instance of
@@ -74,7 +97,7 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View layout = inflater.inflate(R.layout.fragment_register_personal_data, container, false);
+		final View layout = inflater.inflate(R.layout.fragment_register_personal_data, container, false);
 		mNameView = (EditText) layout.findViewById(R.id.name);
 
 		mHeightView = (EditText) layout.findViewById(R.id.height);
@@ -99,7 +122,60 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 			}
 		});
 
+		profileImage = (CircleImageView) layout.findViewById(R.id.profile_image);
+		profileImage.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+
+				Intent intent = new Intent(getContext(), ImagePickerActivity.class);
+
+				intent.putExtra(ImagePicker.EXTRA_FOLDER_MODE, true);
+				intent.putExtra(ImagePicker.EXTRA_MODE, ImagePicker.MODE_SINGLE);
+				intent.putExtra(ImagePicker.EXTRA_SHOW_CAMERA, false);
+				intent.putExtra(ImagePicker.EXTRA_SELECTED_IMAGES, images);
+				intent.putExtra(ImagePicker.EXTRA_FOLDER_TITLE, "Album");
+				intent.putExtra(ImagePicker.EXTRA_IMAGE_TITLE, "Tap to select images");
+				intent.putExtra(ImagePicker.EXTRA_IMAGE_DIRECTORY, "Camera");
+
+				startActivityForResult(intent, RC_CODE_PICKER);
+			}
+
+
+
+		});
+
 		return layout;
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
+			images = data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
+			Bitmap bmp = BitmapFactory.decodeFile(images.get(0).getPath());
+			profileImage.setImageBitmap(bmp);
+
+
+			ContextWrapper cw = new ContextWrapper(getContext());
+			// path to /data/data/yourapp/app_data/imageDir
+			File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+			// Create imageDir
+			File mypath=new File(directory,filename);
+			FileOutputStream fos = null;
+			try {
+				fos = new FileOutputStream(mypath);
+				// Use the compress method on the BitMap object to write image to the OutputStream
+				bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 	}
 
 	public void onButtonPressed(Uri uri) {
@@ -107,6 +183,9 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 			mListener.formFillEnded();
 		}
 	}
+
+
+
 
 	@Override
 	public void onAttach(Context context) {

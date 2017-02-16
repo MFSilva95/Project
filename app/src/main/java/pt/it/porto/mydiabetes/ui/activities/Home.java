@@ -3,10 +3,13 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,6 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +30,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.features.ImagePickerActivity;
+import com.esafirm.imagepicker.model.Image;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -42,12 +52,6 @@ import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.ui.usability.HomeTouchHelper;
 import pt.it.porto.mydiabetes.database.Preferences;
-import pt.it.porto.mydiabetes.database.Usage;
-import pt.it.porto.mydiabetes.middleHealth.myglucohealth.BluetoothChangesRegisterService;
-import pt.it.porto.mydiabetes.ui.dialogs.FeatureIOBDialog;
-import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
-import pt.it.porto.mydiabetes.utils.DateUtils;
-import pt.it.porto.mydiabetes.utils.SyncAlarm;
 
 
 public class Home extends BaseActivity {
@@ -61,6 +65,11 @@ public class Home extends BaseActivity {
 
     private FloatingActionButton fab;
     private FloatingActionButton phantom_fab;
+
+    private static final int RC_CODE_PICKER = 2000;
+    private ArrayList<Image> images = new ArrayList<>();
+    private CircleImageView userImg;
+    private String filename = "profilePhoto.png";
 
     private float offset1;
     private float offset2;
@@ -115,15 +124,6 @@ public class Home extends BaseActivity {
 
         mPrefs = getSharedPreferences("label", 0);
 
-        String imgUriString = mPrefs.getString("userImgUri", "default");
-
-        if(imgUriString.equals("default")){
-            defaultImgUri = null;
-        }else{
-            defaultImgUri = Uri.parse(imgUriString);
-        }
-
-
         DB_Read read = new DB_Read(this);
         if (!read.MyData_HasData()) {
             ShowDialogAddData();
@@ -165,24 +165,31 @@ public class Home extends BaseActivity {
 
             @Override
             public void onDrawerOpened(View view) {
-                CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
-                if(defaultImgUri!=null){
-                    Bitmap bitmap = null;
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(view.getContext().getContentResolver(), defaultImgUri);
-                        userImg.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 60, 60, false));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                userImg = (CircleImageView) findViewById(R.id.profile_image);
+
+                ContextWrapper cw = new ContextWrapper(getBaseContext());
+                File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+                // Create imageDir
+                File mypath=new File(directory,filename);
+                if(mypath.exists()){
+                    Bitmap bmp = BitmapFactory.decodeFile(mypath.getPath());
+                    userImg.setImageBitmap(bmp);
                 }
 
                 userImg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent();
-                        intent.setType("image/*");
-                        intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(intent, 1);
+                        Intent intent = new Intent(getBaseContext(), ImagePickerActivity.class);
+
+                        intent.putExtra(ImagePicker.EXTRA_FOLDER_MODE, true);
+                        intent.putExtra(ImagePicker.EXTRA_MODE, ImagePicker.MODE_SINGLE);
+                        intent.putExtra(ImagePicker.EXTRA_SHOW_CAMERA, false);
+                        intent.putExtra(ImagePicker.EXTRA_SELECTED_IMAGES, images);
+                        intent.putExtra(ImagePicker.EXTRA_FOLDER_TITLE, "Album");
+                        intent.putExtra(ImagePicker.EXTRA_IMAGE_TITLE, "Tap to select images");
+                        intent.putExtra(ImagePicker.EXTRA_IMAGE_DIRECTORY, "Camera");
+
+                        startActivityForResult(intent, RC_CODE_PICKER);
                     }
                 });
             }
@@ -247,25 +254,35 @@ public class Home extends BaseActivity {
 
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
+            images = data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
+            Bitmap bmp = BitmapFactory.decodeFile(images.get(0).getPath());
+            userImg.setImageBitmap(bmp);
 
 
-        if (requestCode == 1) {
+            ContextWrapper cw = new ContextWrapper(getBaseContext());
+            // path to /data/data/yourapp/app_data/imageDir
+            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+            // Create imageDir
+            File mypath=new File(directory,filename);
 
-            Uri resultUri = data.getData();
+            FileOutputStream fos = null;
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
-
-                CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
-                userImg.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 60, 60, false));
-
-                SharedPreferences.Editor mEditor = mPrefs.edit();
-                mEditor.putString("userImgUri", resultUri+"").commit();
-
-            } catch (IOException e) {
+                fos = new FileOutputStream(mypath);
+                // Use the compress method on the BitMap object to write image to the OutputStream
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
+
     }
 
     private void fillHomeList() {

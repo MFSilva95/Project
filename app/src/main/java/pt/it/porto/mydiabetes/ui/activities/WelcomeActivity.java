@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import lecho.lib.hellocharts.model.Line;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestoreFragment;
@@ -126,6 +128,7 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 				previous();
 			}
 		});
+
 	}
 
 
