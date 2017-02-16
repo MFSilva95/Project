@@ -118,7 +118,7 @@ public class Home extends BaseActivity {
 
         mPrefs = getSharedPreferences("label", 0);
 
-        imgUriString = mPrefs.getString("userImgUri", "default");
+        imgUriString = mPrefs.getString("userImgUri", null);
 
         DB_Read read = new DB_Read(this);
         if (!read.MyData_HasData()) {
