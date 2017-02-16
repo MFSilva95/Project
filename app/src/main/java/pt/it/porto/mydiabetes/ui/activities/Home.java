@@ -3,10 +3,13 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -17,6 +20,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +30,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -39,22 +47,18 @@ import pt.it.porto.mydiabetes.data.Task;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.ListsDataDb;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
+import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.ui.usability.HomeTouchHelper;
-import pt.it.porto.mydiabetes.database.Preferences;
-import pt.it.porto.mydiabetes.database.Usage;
-import pt.it.porto.mydiabetes.middleHealth.myglucohealth.BluetoothChangesRegisterService;
-import pt.it.porto.mydiabetes.ui.dialogs.FeatureIOBDialog;
-import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
-import pt.it.porto.mydiabetes.utils.DateUtils;
-import pt.it.porto.mydiabetes.utils.SyncAlarm;
 
 
 public class Home extends BaseActivity {
 
 
     @Override
-    public String getRegType(){return null;}
+    public String getRegType() {
+        return null;
+    }
 
     private static final String TAG = "Home";
     boolean fabOpen = false;
@@ -100,14 +104,13 @@ public class Home extends BaseActivity {
     SharedPreferences mPrefs;
 
     Uri defaultImgUri;
+    String imgUriString;
 
     private YapDroid yapDroid;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -115,14 +118,7 @@ public class Home extends BaseActivity {
 
         mPrefs = getSharedPreferences("label", 0);
 
-        String imgUriString = mPrefs.getString("userImgUri", "default");
-
-        if(imgUriString.equals("default")){
-            defaultImgUri = null;
-        }else{
-            defaultImgUri = Uri.parse(imgUriString);
-        }
-
+        imgUriString = mPrefs.getString("userImgUri", "default");
 
         DB_Read read = new DB_Read(this);
         if (!read.MyData_HasData()) {
@@ -154,7 +150,6 @@ public class Home extends BaseActivity {
         fillHomeList();
 
 
-
         //----------------------nav
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
         DrawerLayout.DrawerListener Dlistener = new DrawerLayout.DrawerListener() {
@@ -166,27 +161,27 @@ public class Home extends BaseActivity {
             @Override
             public void onDrawerOpened(View view) {
                 CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
-                if(defaultImgUri!=null){
-                    Bitmap bitmap = null;
-                    try {
-                        bitmap = MediaStore.Images.Media.getBitmap(view.getContext().getContentResolver(), defaultImgUri);
-                        userImg.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 60, 60, false));
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                if(imgUriString!=null){
+                    Bitmap newImg = loadImageFromStorage(imgUriString);
+                    if(newImg!=null) {
+                        userImg.setImageBitmap(Bitmap.createScaledBitmap(newImg, 60, 60, false));
                     }
+                }else{
+                    userImg.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent();
+                            intent.setType("image/*");
+                            intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            try {
+                                startActivityForResult(intent, 1);
+                            } catch (Exception e) {
+                                Log.i("IMGTEST", "ERROR:" + e.toString());
+                            }
+                        }
+                    });
                 }
-
-                userImg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent();
-                        intent.setType("image/*");
-                        intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        startActivityForResult(intent, 1);
-                    }
-                });
             }
-
 
 
             @Override
@@ -217,7 +212,7 @@ public class Home extends BaseActivity {
                 drawerLayout.closeDrawers();
                 Intent intent;
 
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
 
                     case R.id.userTasks:
                         intent = new Intent(getApplicationContext(), TaskListActivity.class);
@@ -236,7 +231,7 @@ public class Home extends BaseActivity {
                         startActivity(intent);
                         return true;
                     default:
-                        Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
                         return true;
 
                 }
@@ -245,6 +240,7 @@ public class Home extends BaseActivity {
     }
 
 
+    Uri avatarURI;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -252,20 +248,61 @@ public class Home extends BaseActivity {
 
         if (requestCode == 1) {
 
-            Uri resultUri = data.getData();
+            if (data != null) {
+                avatarURI = data.getData();
+                try {
+
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), avatarURI);
+
+                    if (bitmap != null) {
+                        String imgPath = saveToInternalStorage(bitmap);
+                        Bitmap newImg = loadImageFromStorage(imgPath);
+                        CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
+                        if (userImg != null) {
+                            userImg.setImageBitmap(Bitmap.createScaledBitmap(newImg, 60, 60, false));
+                        }
+                        SharedPreferences.Editor mEditor = mPrefs.edit();
+                        mEditor.putString("userImgUri", imgPath).commit();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private Bitmap loadImageFromStorage(String path) {
+        Bitmap b = null;
+        try {
+            File f = new File(path, "profile.jpg");
+            b = BitmapFactory.decodeStream(new FileInputStream(f));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return b;
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage) {
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("myprofileimg", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath = new File(directory, "profile.jpg");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), resultUri);
-
-                CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
-                userImg.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 60, 60, false));
-
-                SharedPreferences.Editor mEditor = mPrefs.edit();
-                mEditor.putString("userImgUri", resultUri+"").commit();
-
+                fos.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        return directory.getAbsolutePath();
     }
 
     private void fillHomeList() {
@@ -276,7 +313,7 @@ public class Home extends BaseActivity {
         ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
         Cursor cursor = db.getAllLogbookListWithin(10);
         //HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor,this, yapDroid);
-        HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor,this);
+        HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor, this);
 
         ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
         ItemTouchHelper helper = new ItemTouchHelper(callback);
@@ -288,10 +325,10 @@ public class Home extends BaseActivity {
     private void setFabClickListeners() {
         fab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(fabOpen){
+                if (fabOpen) {
                     disableFloationActionButtonOptions();
                     fabOpen = false;
-                }else{
+                } else {
                     enableFloationActionButtonOptions();
                     fabOpen = true;
                 }
@@ -340,7 +377,8 @@ public class Home extends BaseActivity {
             }
         });
     }
-    private void setOffsets(){
+
+    private void setOffsets() {
         fabContainer_v.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
@@ -358,13 +396,13 @@ public class Home extends BaseActivity {
             @Override
             public boolean onPreDraw() {
                 fabContainer_h.getViewTreeObserver().removeOnPreDrawListener(this);
-                offset4 = phantom_fab.getX() - miniFab4.getX()-phantom_fab.getWidth()/2;
+                offset4 = phantom_fab.getX() - miniFab4.getX() - phantom_fab.getWidth() / 2;
                 miniFab4.setTranslationX(offset4);
-                offset5 = phantom_fab.getX() - miniFab5.getX()-phantom_fab.getWidth()/2;
+                offset5 = phantom_fab.getX() - miniFab5.getX() - phantom_fab.getWidth() / 2;
                 miniFab5.setTranslationX(offset5);
-                offset6 = phantom_fab.getX() - miniFab6.getX()-phantom_fab.getWidth()/2;
+                offset6 = phantom_fab.getX() - miniFab6.getX() - phantom_fab.getWidth() / 2;
                 miniFab6.setTranslationX(offset6);
-                offset7 = phantom_fab.getX() - miniFab7.getX()-phantom_fab.getWidth()/2;
+                offset7 = phantom_fab.getX() - miniFab7.getX() - phantom_fab.getWidth() / 2;
                 miniFab7.setTranslationX(offset7);
                 return true;
             }
@@ -374,7 +412,7 @@ public class Home extends BaseActivity {
 
     /**
      * @param view
-     * @param ang How many degrees to rotate
+     * @param ang  How many degrees to rotate
      * @return
      */
     private Animator createRotationAnimator(View view, float ang) {
@@ -382,23 +420,28 @@ public class Home extends BaseActivity {
         return ObjectAnimator.ofFloat(view, ROTATION, rotation, rotation + ang)
                 .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
     }
+
     private Animator createTranslateAnimator(View view, float offset) {
         float position = view.getY();
         return ObjectAnimator.ofFloat(view, TRANSLATION_Y, position, position + offset)
                 .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
     }
+
     private Animator createCollapseAnimatorY(View view, float offset) {
         return ObjectAnimator.ofFloat(view, TRANSLATION_Y, 0, offset)
                 .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
     }
+
     private Animator createCollapseAnimatorX(View view, float offset) {
         return ObjectAnimator.ofFloat(view, TRANSLATION_X, 0, offset)
                 .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
     }
+
     private Animator createExpandAnimatorY(View view, float offset) {
         return ObjectAnimator.ofFloat(view, TRANSLATION_Y, offset, 0)
                 .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
     }
+
     private Animator createExpandAnimatorX(View view, float offset) {
         return ObjectAnimator.ofFloat(view, TRANSLATION_X, offset, 0)
                 .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
@@ -418,6 +461,7 @@ public class Home extends BaseActivity {
 
         animatorSet.start();
     }
+
     private void enableFloationActionButtonOptions() {
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(
@@ -448,6 +492,7 @@ public class Home extends BaseActivity {
         taskListFromYap.add(task1);
         taskListFromYap.add(task2);
     }
+
     public void fillAdviceList() {
         //receiverAdviceList.addAll(yapDroid.getAllEndAdvices(getApplicationContext()));
         Advice task1 = new Advice();
@@ -490,11 +535,11 @@ public class Home extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item!=null){
-            if(item.getTitle().equals("homeSettings")){
-                if(drawerLayout.isDrawerOpen(Gravity.LEFT)){
+        if (item != null) {
+            if (item.getTitle().equals("homeSettings")) {
+                if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
                     drawerLayout.closeDrawer(Gravity.LEFT);
-                }else{
+                } else {
                     drawerLayout.openDrawer(Gravity.LEFT);
                 }
             }
