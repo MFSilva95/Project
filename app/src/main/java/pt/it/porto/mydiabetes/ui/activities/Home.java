@@ -108,7 +108,7 @@ public class Home extends BaseActivity {
 
     SharedPreferences mPrefs;
 
-    Uri defaultImgUri;
+    Bitmap bmp;
 
     private YapDroid yapDroid;
 
@@ -257,7 +257,7 @@ public class Home extends BaseActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             images = data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
-            Bitmap bmp = BitmapFactory.decodeFile(images.get(0).getPath());
+            bmp = BitmapFactory.decodeFile(images.get(0).getPath());
             userImg.setImageBitmap(bmp);
 
 

@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.ui.fragments.register;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -28,21 +29,12 @@ import pt.it.porto.mydiabetes.ui.views.InsulinElement;
 import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnFormEnd} interface
- * to handle interaction events.
- * Use the {@link AddInsulinsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddInsulinsFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
 
 	private static final String TAG = AddInsulinsFragment.class.getCanonicalName();
 
 	private static final String STATE_ITEMS = "items";
 
-	private OnFormEnd mListener;
 	private RecyclerView list;
 	private TextView title;
 	private ArrayList<InsulinData> items = new ArrayList<>(3);
@@ -111,35 +103,6 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 		list.getAdapter().notifyItemInserted(items.size());
 	}
 
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.formFillEnded();
-		}
-	}
-
-	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-
-		if (context instanceof OnFormEnd) {
-			mListener = (OnFormEnd) context;
-			if (items.size() == 0) {
-				mListener.deactivateNextButton();
-			} else {
-				mListener.activateNextButton();
-			}
-		} else {
-			throw new RuntimeException(context.toString()
-					+ " must implement OnFormEnd");
-		}
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		mListener = null;
-	}
-
 	@Override
 	public boolean allFieldsAreValid() {
 		boolean cancel = false;
@@ -175,11 +138,6 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 				Log.d("AddInsulinFragment", "Failed to add! Already exists?");
 			}
 		}
-	}
-
-	@Override
-	public int getSubtitle() {
-		return R.string.preferences_insulins;
 	}
 
 
@@ -229,9 +187,6 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 			@Override
 			public void dataUpdated(InsulinData data) {
 //				items.add(data.getPosition(), data);
-				if(mListener!=null) {
-					mListener.activateNextButton();
-				}
 			}
 
 			@Override
@@ -244,4 +199,10 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 			}
 		});
 	}
+
+	@Override
+	public int getSubtitle() {
+		return R.string.preferences_insulins;
+	}
+
 }

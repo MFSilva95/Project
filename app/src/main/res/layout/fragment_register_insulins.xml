@@ -44,9 +44,7 @@
             android:orientation="vertical"
             android:scrollbarStyle="outsideOverlay"
             android:scrollbars="vertical"
-            tools:listitem="@layout/listitem_new_insulin"
-            android:layout_marginRight="15dp"
-            android:layout_marginLeft="15dp">
+            tools:listitem="@layout/listitem_new_insulin">
 
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>

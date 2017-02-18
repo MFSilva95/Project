@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.ui.fragments.register;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,24 +21,16 @@ import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnFormEnd} interface
- * to handle interaction events.
- * Use the {@link FactorsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FactorsFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
 
 
 	private static final String TAG = FactorsFragment.class.getCanonicalName();
-	private OnFormEnd mListener;
 	private Spinner diabetesType;
 	private EditText sensibilityFactor;
 	private EditText carbsRatio;
 	private EditText hypoglycemiaLimit;
 	private EditText hyperglycemiaLimit;
+	private View layout = null;
 
 	/**
 	 * Use this factory method to create a new instance of
@@ -62,7 +55,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View layout = inflater.inflate(R.layout.fragment_register_factors, container, false);
+		layout = inflater.inflate(R.layout.fragment_register_factors, container, false);
 		diabetesType = (Spinner) layout.findViewById(R.id.diabetes_type);
 
 		ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.diabetes_Type , R.layout.welcome_spinner_item);
@@ -76,30 +69,6 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 
 		return layout;
-	}
-
-
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.formFillEnded();
-		}
-	}
-
-	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-		if (context instanceof OnFormEnd) {
-			mListener = (OnFormEnd) context;
-		} else {
-			throw new RuntimeException(context.toString()
-					+ " must implement OnFormEnd");
-		}
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		mListener = null;
 	}
 
 	@Override
@@ -177,11 +146,6 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		}
 	}
 
-	@Override
-	public int getSubtitle() {
-		return R.string.subtitle_diabetes_factors;
-	}
-
 	private float getNumber(String val) {
 		float result = -1;
 		try {
@@ -190,4 +154,9 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		}
 		return result;
 	}
+	@Override
+	public int getSubtitle() {
+		return R.string.subtitle_diabetes_factors;
+	}
+
 }

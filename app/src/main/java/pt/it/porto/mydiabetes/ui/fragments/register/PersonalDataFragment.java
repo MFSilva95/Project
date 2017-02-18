@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 
@@ -21,6 +22,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -44,14 +46,6 @@ import java.util.Locale;
 import static android.app.Activity.RESULT_OK;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnFormEnd} interface
- * to handle interaction events.
- * Use the {@link PersonalDataFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class PersonalDataFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
 
 	public static final int DEFAULT_BIRTHDAY_YEAR = 1980;
@@ -62,15 +56,16 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 
 
 
-	private OnFormEnd mListener;
+	private CircleImageView profileImage;
+	private ArrayList<Image> images = new ArrayList<>();
+	private String filename = "profilePhoto.png";
+	private View layout = null;
 	private EditText mNameView;
 	private EditText mHeightView;
 	private EditText mDateView;
 	private GregorianCalendar birthdayDate;
 	private RadioGroup mGenderGroup;
-	private CircleImageView profileImage;
-	private ArrayList<Image> images = new ArrayList<>();
-	private String filename = "profilePhoto.png";
+	private Bitmap bmp;
 
 
 
@@ -96,8 +91,9 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
+
 		// Inflate the layout for this fragment
-		final View layout = inflater.inflate(R.layout.fragment_register_personal_data, container, false);
+		layout = inflater.inflate(R.layout.fragment_register_personal_data, container, false);
 		mNameView = (EditText) layout.findViewById(R.id.name);
 
 		mHeightView = (EditText) layout.findViewById(R.id.height);
@@ -151,8 +147,8 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
 			images = data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
-			Bitmap bmp = BitmapFactory.decodeFile(images.get(0).getPath());
-			profileImage.setImageBitmap(bmp);
+			bmp = BitmapFactory.decodeFile(images.get(0).getPath());
+
 
 
 			ContextWrapper cw = new ContextWrapper(getContext());
@@ -174,35 +170,11 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 					e.printStackTrace();
 				}
 			}
+			profileImage.setImageURI(Uri.parse(mypath.getAbsolutePath()));
 		}
 
 	}
 
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.formFillEnded();
-		}
-	}
-
-
-
-
-	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-		if (context instanceof OnFormEnd) {
-			mListener = (OnFormEnd) context;
-		} else {
-			throw new RuntimeException(context.toString()
-					+ " must implement OnFormEnd");
-		}
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		mListener = null;
-	}
 
 	@Override
 	public boolean allFieldsAreValid() {
@@ -265,10 +237,6 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 				.append('-').append(birthdayDate.get(Calendar.MONTH)+1).append('-').append(birthdayDate.get(Calendar.YEAR)).toString());
 	}
 
-	@Override
-	public int getSubtitle() {
-		return R.string.subtitle_personal_data;
-	}
 
 	public static boolean isHeightValid(String height) {
 		float val = 0;
@@ -302,6 +270,11 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 		displayDate.append(' ');
 		displayDate.append(birthdayDate.get(Calendar.YEAR));
 		mDateView.setText(displayDate.toString());
+	}
+
+	@Override
+	public int getSubtitle() {
+		return R.string.subtitle_personal_data;
 	}
 
 
