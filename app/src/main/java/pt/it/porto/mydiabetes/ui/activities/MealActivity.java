@@ -28,6 +28,7 @@ public class MealActivity extends BaseMealActivity {
 
     @Override
     public String getRegType(){return "Meal";}
+	private static final int CHANGES_OCCURRED = 1;
 
 
 	public static final String BUNDLE_EXTRAS_GLYCEMIA_ID = "Bundle_extras_glycemia_id";
@@ -73,6 +74,7 @@ public class MealActivity extends BaseMealActivity {
 			if (canSave()) {
 				AddCarbsRead();
 				AddInsulinRead();
+				setResult(CHANGES_OCCURRED);
 				finish();
 			}
 			return true;

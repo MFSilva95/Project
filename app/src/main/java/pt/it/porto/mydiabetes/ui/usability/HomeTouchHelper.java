@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.usability;
 
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.utils.HomeElement;
@@ -18,8 +19,6 @@ public class HomeTouchHelper extends ItemTouchHelper.SimpleCallback {
         this.homeAdapter = homeAdapter;
     }
 
-
-
     @Override
     public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
         //TODO: Not implemented here
@@ -29,20 +28,25 @@ public class HomeTouchHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
         HomeAdapter.ViewHolder thisHolder = (HomeAdapter.ViewHolder) viewHolder;
-        if (homeAdapter.getFromHomeList(thisHolder.getAdapterPosition()).getDisplayType().equals(HomeElement.Type.LOGITEM) ||
-                homeAdapter.getFromHomeList(thisHolder.getAdapterPosition()).getDisplayType().equals(HomeElement.Type.HEADER) ||
-                homeAdapter.getFromHomeList(thisHolder.getAdapterPosition()).getDisplayType().equals(HomeElement.Type.SPACE)) return 0;
+        switch (homeAdapter.getFromHomeList(thisHolder.getAdapterPosition()).getDisplayType()){
+            case HEADER:
+            case LOGITEM:
+            case SPACE:
+                return 0;
+        }
         return super.getSwipeDirs(recyclerView, viewHolder);
     }
 
     @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-        //Remove item
         HomeAdapter.ViewHolder thisHolder = (HomeAdapter.ViewHolder) viewHolder;
-        if (homeAdapter.getFromHomeList(thisHolder.getAdapterPosition()).getDisplayType().equals(HomeElement.Type.ADVICE) || homeAdapter.getFromHomeList(thisHolder.getAdapterPosition()).getDisplayType().equals(HomeElement.Type.TASK)){
-            if(direction==ItemTouchHelper.RIGHT) {
-                homeAdapter.remove(viewHolder.getAdapterPosition());
-            }
+
+        switch (homeAdapter.getFromHomeList(thisHolder.getAdapterPosition()).getDisplayType()){
+            case ADVICE:
+            case TASK:
+                if(direction==ItemTouchHelper.RIGHT) {
+                    homeAdapter.remove(viewHolder.getAdapterPosition());
+                }
         }
     }
 }

@@ -11,6 +11,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
@@ -38,7 +41,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
     Context c;
     private Cursor cursor;
-    private ArrayList<HomeElement> homeList;
+    private List<HomeElement> homeList;
     private YapDroid myYapInstance;
 
     public HomeElement getFromHomeList(int index){
@@ -65,7 +68,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             super(v);
             view = v;
             if(isLog){
-                if (view.getTag().equals("logbookItem")) {
+                //if (view.getTag().equals("logbookItem")) {
                     data = (TextView) view.findViewById(R.id.tv_list_logbookreg_data);
                     hora = (TextView) view.findViewById(R.id.tv_list_logbookreg_hora);
                     insulinValue = (TextView) view.findViewById(R.id.tv_list_logbookreg_insulin_value);
@@ -75,13 +78,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                     cvalue = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_value);
                     ctag = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_title);
                     tag = (TextView) view.findViewById(R.id.tv_list_logbookreg_tag);
-                }
+                //}
             }
         }
     }
 
     public HomeAdapter(ArrayList<Advice> adviceList, ArrayList<Task> taskList,Context c) {
-        this.homeList = new ArrayList<>();
+        this.homeList = new LinkedList<>();
         if(adviceList.size()>0){
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "ADVICES"));
             this.homeList.addAll(adviceList);
@@ -96,7 +99,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     public HomeAdapter(ArrayList<Advice> adviceList, ArrayList<Task> taskList, Cursor cursor, Context c) {
         this.cursor = cursor;
         this.c = c;
-        this.homeList = new ArrayList<>();
+        this.homeList = new LinkedList<>();
 
         if(adviceList.size()>0){
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.advices)));
@@ -122,7 +125,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
         switch (viewType) {
             case 0:
-//                Log.i("________POSITION_____", "OTHER");
+//                Log.i("________POSITION_____", ADVICE");
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_advice_row, parent, false);
                 vh = new ViewHolder((LinearLayout) v, false);
                 return vh;
@@ -132,16 +135,37 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                 vh = new ViewHolder((LinearLayout) v, true);
                 v.setTag(vh);
                 return vh;
+            case 2:
+                //Log.i("________POSITION_____", "EMPTY");
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_home_row, parent, false);
+                vh = new ViewHolder((LinearLayout) v, true);
+                v.setTag(vh);
+                return vh;
+            case 3:
+                // Log.i("________POSITION_____", "HEADER");
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_home_row, parent, false);
+                vh = new ViewHolder((LinearLayout) v, true);
+                v.setTag(vh);
+                return vh;
         }
         return null;
     }
 
     @Override
     public int getItemViewType(int position) {
-        // Just as an example, return 0 or 2 depending on position
-        // Note that unlike in ListView adapters, types don't have to be contiguous
-        if(homeList.get(position).getDisplayType().equals(HomeElement.Type.LOGITEM)){return 1;}
-        return 0;
+        switch (homeList.get(position).getDisplayType()){
+            case ADVICE:
+                return 0;
+            case HEADER:
+                return 3;
+            case LOGITEM:
+                return 1;
+            case SPACE:
+                return 2;
+            case TASK:
+                return 0;
+        }
+        return 2;
     }
 
 
@@ -149,46 +173,119 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         HomeElement currentView = homeList.get(position);
-
-        if(currentView.getDisplayType().equals(HomeElement.Type.HEADER)|| currentView.getDisplayType().equals(HomeElement.Type.SPACE)){
-            if(currentView.getDisplayType().equals(HomeElement.Type.HEADER)){
+        LinearLayout textHolder = null;
+        TextView rowText = null;
+        TextView myText = null;
+        View v = null;
+        //Log.i("Home", "onBindViewHolder: "+currentView.getDisplayType()+" Pos:"+position);
+        switch (currentView.getDisplayType()) {
+            case HEADER:
                 //its an header
-                LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
+                textHolder = (LinearLayout) holder.view.getChildAt(0);
                 textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
-                TextView rowText = (TextView) textHolder.getChildAt(0);
+                rowText = (TextView) textHolder.getChildAt(0);
                 rowText.setTextColor(ContextCompat.getColor(c, R.color.cardview_light_background));
-                //textHolder.setBackgroundColor(Color.parseColor("#33333333"));
                 rowText.setTypeface(Typeface.MONOSPACE);
                 rowText.setText(currentView.getName());
-            }
-        }else{
-            if(currentView.getDisplayType().equals(HomeElement.Type.LOGITEM)){
+                break;
+            case ADVICE:
+                //its an advice
+                final Advice currentAdvice = (Advice) currentView;
+
+                textHolder = (LinearLayout) holder.view.getChildAt(0);
+                textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
+                myText= (TextView) textHolder.getChildAt(0);
+
+                if (currentAdvice.getUrgency() > 7) {
+                    myText.setTextColor(Color.RED);
+                }
+                textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
+                rowText = (TextView) textHolder.getChildAt(0);
+                rowText.setText(currentAdvice.getSummaryText());
+
+                holder.view.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                        // Get the layout inflater
+                        LayoutInflater inflater = LayoutInflater.from(v.getContext());
+                        // Inflate and set the layout for the dialog
+                        // Pass null as the parent view because its going in the dialog layout
+                        builder.setView(inflater.inflate(R.layout.dialog_exp_advice, null));
+
+                        if (!currentAdvice.getAdviceType().equals("ALERT") && !currentAdvice.getAdviceType().equals("NORMAL")) {
+                            builder.setNegativeButton(v.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (currentAdvice.getAdviceType().equals("QUESTION")) {
+                                        //myYapInstance.insertRule("has("+currentAdvice.getRegistryType()+")");
+                                    }
+                                    if (currentAdvice.getAdviceType().equals("SUGGESTION")) {
+                                        Class<?> wantedAct = null;
+                                        String classPath = "";
+                                        try {
+                                            classPath = "pt.it.porto.mydiabetes.ui.activities." + currentAdvice.getRegistryType();
+                                            wantedAct = Class.forName(classPath);
+
+                                        } catch (ClassNotFoundException e) {
+                                            // TODO Auto-generated catch block
+                                            e.printStackTrace();
+                                        }
+
+                                        Intent intent = new Intent(c, wantedAct);
+                                        c.startActivity(intent);
+                                    }
+                                    dialog.dismiss();
+                                }
+                            });
+                        }
+
+                        Dialog dialog = builder.create();
+                        dialog.show();
+
+                        TextView textView = (TextView) dialog.findViewById(R.id.popup_text);
+                        textView.setText(currentAdvice.getExpandedText());
+
+                    }
+                });
+
+                break;
+            case LOGITEM:
+
                 //its a logbookItem
-                View v = holder.view;
-                HomeElement logbook_datab = homeList.get(position);
-                holder.item = logbook_datab;
-                holder.data.setText(logbook_datab.getFormattedDate());
-                holder.hora.setText(logbook_datab.getFormattedTime());
-                holder.tag.setText(logbook_datab.getTag());
-                if (logbook_datab.getInsulinId() != -1) {
-                    holder.insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", logbook_datab.getInsulinVal()));
-                    holder.insulinName.setText(logbook_datab.getInsulinName());
+                v = holder.view;
+
+                holder.item = currentView;
+                holder.data.setText(currentView.getFormattedDate());
+                holder.hora.setText(currentView.getFormattedTime());
+                holder.tag.setText(currentView.getTag());
+                if (currentView.getInsulinId() != -1) {
+                    holder.insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", currentView.getInsulinVal()));
+                    holder.insulinName.setText(currentView.getInsulinName());
                     holder.insulinValue.setVisibility(View.VISIBLE);
                     holder.insulinName.setVisibility(View.VISIBLE);
                 } else {
                     holder.insulinValue.setVisibility(View.INVISIBLE);
                     holder.insulinName.setVisibility(View.INVISIBLE);
                 }
-                if (logbook_datab.getGlycemiaId() != -1) {
-                    holder.gvalue.setText(String.valueOf(logbook_datab.getGlycemia()));
+                if (currentView.getGlycemiaId() != -1) {
+                    holder.gvalue.setText(String.valueOf(currentView.getGlycemia()));
                     holder.gvalue.setVisibility(View.VISIBLE);
                     holder.gtag.setVisibility(View.VISIBLE);
                 } else {
                     holder.gvalue.setVisibility(View.INVISIBLE);
                     holder.gtag.setVisibility(View.INVISIBLE);
                 }
-                if (logbook_datab.getCarbsId() != -1) {
-                    holder.cvalue.setText(String.valueOf(logbook_datab.getCarbs()));
+                if (currentView.getCarbsId() != -1) {
+                    holder.cvalue.setText(String.valueOf(currentView.getCarbs()));
                     holder.cvalue.setVisibility(View.VISIBLE);
                     holder.ctag.setVisibility(View.VISIBLE);
                 } else {
@@ -224,146 +321,52 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                         v.getContext().startActivity(intent);
                     }
                 });
+                break;
+            case SPACE:
 
-            }else{
-                if(currentView.getDisplayType().equals(HomeElement.Type.ADVICE)){
-                    //its an advice
-                    final Advice currentAdvice = (Advice) currentView;
 
-                    LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
-                    textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
-                    TextView myText = (TextView) textHolder.getChildAt(0);
 
-                if(currentAdvice.getUrgency()>7){
+                break;
+            case TASK:
+                //its a task
+                final Task currentTask = (Task) currentView;
+                textHolder = (LinearLayout) holder.view.getChildAt(0);
+                textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
+                myText = (TextView) textHolder.getChildAt(0);
+
+                if (currentTask.getUrgency() > 7) {
                     myText.setTextColor(Color.RED);
-                            //holder.view.setBackgroundColor(Color.RED);
-//                }else{
-//                    if(currentAdvice.getUrgency()>5){
-//                        myText.setTextColor(Color.YELLOW);
-//                       // holder.view.setBackgroundColor(Color.YELLOW);
-//                    }else{
-//                        myText.setTextColor(Color.GREEN);
-//                        //holder.view.setBackgroundColor(Color.GREEN);
-//                    }
                 }
 
-                    //LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
-                    //textHolder.setBackgroundColor(Color.WHITE);
-                    textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
-                    TextView rowText = (TextView) textHolder.getChildAt(0);
-                    rowText.setText(currentAdvice.getSummaryText());
+                textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
+                rowText = (TextView) textHolder.getChildAt(0);
+                rowText.setText(". " + currentTask.getSummaryText());
+                holder.view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
 
-                    //holder.view.setText(adviceList.get(position).getNotificationText());
-                    holder.view.setOnClickListener(new View.OnClickListener() {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                        // Get the layout inflater
+                        LayoutInflater inflater = LayoutInflater.from(v.getContext());
+                        // Inflate and set the layout for the dialog
+                        // Pass null as the parent view because its going in the dialog layout
+                        builder.setView(inflater.inflate(R.layout.dialog_exp_task, null));
 
-                        @Override
-                        public void onClick(View v) {
+                        Dialog dialog = builder.create();
+                        dialog.show();
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                            // Get the layout inflater
-                            LayoutInflater inflater = LayoutInflater.from(v.getContext());
-                            // Inflate and set the layout for the dialog
-                            // Pass null as the parent view because its going in the dialog layout
-                            builder.setView(inflater.inflate(R.layout.dialog_exp_advice, null));
-
-                            if(!currentAdvice.getAdviceType().equals("ALERT") && !currentAdvice.getAdviceType().equals("NORMAL")){
-                                builder.setNegativeButton(v.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        if(currentAdvice.getAdviceType().equals("QUESTION")){
-                                            //myYapInstance.insertRule("has("+currentAdvice.getRegistryType()+")");
-                                        }
-                                        if(currentAdvice.getAdviceType().equals("SUGGESTION")){
-                                            Class<?> wantedAct = null;
-                                            String classPath = "";
-                                            try {
-                                                 classPath = "pt.it.porto.mydiabetes.ui.activities."+currentAdvice.getRegistryType();
-                                                wantedAct = Class.forName(classPath);
-
-                                            } catch (ClassNotFoundException e) {
-                                                // TODO Auto-generated catch block
-                                                e.printStackTrace();
-                                            }
-
-                                            Intent intent = new Intent(c, wantedAct);
-                                            c.startActivity(intent);
-                                        }
-                                        dialog.dismiss();
-                                    }
-                                });
-                            }
-
-                            Dialog dialog = builder.create();
-                            dialog.show();
-
-                            TextView textView = (TextView) dialog.findViewById(R.id.popup_text);
-                            textView.setText(currentAdvice.getExpandedText());
-
-                        }
-                    });
-
-
-                }else{
-                    //its a task
-                    final Task currentTask = (Task) currentView;
-
-
-                    LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
-                    textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
-                    TextView myText = (TextView) textHolder.getChildAt(0);
-
-                    if(currentTask.getUrgency()>7){
-                        myText.setTextColor(Color.RED);}
-
-                /*if(currentTask.getUrgency()>7){
-                    holder.view.setBackgroundColor(Color.RED);
-                }else{
-                    if(currentTask.getUrgency()>5){
-                        holder.view.setBackgroundColor(Color.YELLOW);
-                    }else{
-                        holder.view.setBackgroundColor(Color.GREEN);
+                        TextView textView = (TextView) dialog.findViewById(R.id.popup_task_text);
+                        textView.setText(currentTask.getExpandedText());
                     }
-                }*/
-
-                    //LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
-                    //textHolder.setBackgroundColor(Color.WHITE);
-                    textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
-                    TextView rowText = (TextView) textHolder.getChildAt(0);
-                    rowText.setText(". "+currentTask.getSummaryText());
-
-                    //holder.view.setText(adviceList.get(position).getNotificationText());
-                    holder.view.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                            // Get the layout inflater
-                            LayoutInflater inflater = LayoutInflater.from(v.getContext());
-                            // Inflate and set the layout for the dialog
-                            // Pass null as the parent view because its going in the dialog layout
-                            builder.setView(inflater.inflate(R.layout.dialog_exp_task, null));
-
-                            Dialog dialog = builder.create();
-                            dialog.show();
-
-                            TextView textView = (TextView) dialog.findViewById(R.id.popup_task_text);
-                            textView.setText(currentTask.getExpandedText());
-                        }
-                    });
-                }
-            }
+                });
+                break;
         }
     }
 
     public void remove(int position) {
-        notifyItemRemoved(position);
+        //Log.i("HOME", "remove: POS:"+position);
         homeList.remove(position);
+        notifyItemRemoved(position);
     }
 
 
@@ -372,24 +375,25 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         return homeList.size();
     }
 
-    public HomeElement getItem(int position) {
-        cursor.moveToPosition(position);
-        int pox = 0;
-        return new HomeElement(
-                cursor.getString(pox++),
-                cursor.getString(pox++),
-                cursor.getInt(pox++),
-                cursor.getFloat(pox++),
-                cursor.getString(pox++),
-                cursor.getInt(pox++),
-                cursor.getInt(pox++),
-                cursor.getInt(pox++),
-                cursor.getInt(pox));
+    public HomeElement getLOGITEMItem(int position) {
+            cursor.moveToPosition(position);
+            int pox = 0;
+            return new HomeElement(
+                    cursor.getString(pox++),
+                    cursor.getString(pox++),
+                    cursor.getInt(pox++),
+                    cursor.getFloat(pox++),
+                    cursor.getString(pox++),
+                    cursor.getInt(pox++),
+                    cursor.getInt(pox++),
+                    cursor.getInt(pox++),
+                    cursor.getInt(pox));
     }
+
     public ArrayList cursorToList(Cursor cursor){
         ArrayList<HomeElement> cursorList = new ArrayList<>();
         for(int index=0;index<cursor.getCount();index++){
-            cursorList.add(getItem(index));
+            cursorList.add(getLOGITEMItem(index));
         }
         return cursorList;
     }

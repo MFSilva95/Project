@@ -1,5 +1,7 @@
 package pt.it.porto.mydiabetes.utils;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.util.Calendar;
 

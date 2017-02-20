@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -61,6 +62,10 @@ public class Home extends BaseActivity {
     }
 
     private static final String TAG = "Home";
+
+    private static final int CHANGES_OCCURRED = 1;
+    private static final int NO_CHANGES_OCCURRED = 0;
+
     boolean fabOpen = false;
 
     private FloatingActionButton fab;
@@ -161,12 +166,12 @@ public class Home extends BaseActivity {
             @Override
             public void onDrawerOpened(View view) {
                 CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
-                if(imgUriString!=null){
+                if (imgUriString != null) {
                     Bitmap newImg = loadImageFromStorage(imgUriString);
-                    if(newImg!=null) {
+                    if (newImg != null) {
                         userImg.setImageBitmap(Bitmap.createScaledBitmap(newImg, 60, 60, false));
                     }
-                }else{
+                } else {
                     userImg.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -245,29 +250,36 @@ public class Home extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        //Log.i(TAG, "onActivityResult: HELLO M8");
 
-        if (requestCode == 1) {
-
-            if (data != null) {
-                avatarURI = data.getData();
-                try {
-
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), avatarURI);
-
-                    if (bitmap != null) {
-                        String imgPath = saveToInternalStorage(bitmap);
-                        Bitmap newImg = loadImageFromStorage(imgPath);
-                        CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
-                        if (userImg != null) {
-                            userImg.setImageBitmap(Bitmap.createScaledBitmap(newImg, 60, 60, false));
+        switch (requestCode) {
+            case 1:
+                if (data != null) {
+                    avatarURI = data.getData();
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), avatarURI);
+                        if (bitmap != null) {
+                            String imgPath = saveToInternalStorage(bitmap);
+                            Bitmap newImg = loadImageFromStorage(imgPath);
+                            CircleImageView userImg = (CircleImageView) findViewById(R.id.profile_image);
+                            if (userImg != null) {
+                                userImg.setImageBitmap(Bitmap.createScaledBitmap(newImg, 60, 60, false));
+                            }
+                            SharedPreferences.Editor mEditor = mPrefs.edit();
+                            mEditor.putString("userImgUri", imgPath).commit();
                         }
-                        SharedPreferences.Editor mEditor = mPrefs.edit();
-                        mEditor.putString("userImgUri", imgPath).commit();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-            }
+                break;
+            case 2:
+            case 3:
+            case 4:
+                if (resultCode == CHANGES_OCCURRED) {
+                    fillHomeList();
+                }
+                break;
         }
     }
 
@@ -305,7 +317,10 @@ public class Home extends BaseActivity {
         return directory.getAbsolutePath();
     }
 
+    ItemTouchHelper itemTouchHelper;
+
     private void fillHomeList() {
+
 
         fillTaskList();
         fillAdviceList();
@@ -315,9 +330,13 @@ public class Home extends BaseActivity {
         //HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor,this, yapDroid);
         HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor, this);
 
+        if (itemTouchHelper != null) {
+            itemTouchHelper.attachToRecyclerView(null);
+        }
         ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
-        ItemTouchHelper helper = new ItemTouchHelper(callback);
-        helper.attachToRecyclerView(homeList);
+        itemTouchHelper = new ItemTouchHelper(callback);
+        itemTouchHelper.attachToRecyclerView(homeList);
+        homeList.setItemAnimator(new DefaultItemAnimator());
         homeList.setAdapter(homeAdapter);
         homeList.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -349,7 +368,8 @@ public class Home extends BaseActivity {
         miniFab3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), MealActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 2);
+                //startActivity(intent);
             }
         });
         miniFab4.setOnClickListener(new View.OnClickListener() {
@@ -508,6 +528,7 @@ public class Home extends BaseActivity {
         ArrayList<Advice> adviceList = new ArrayList<>();
         adviceList.add(task1);
         adviceList.add(task2);
+        receiverAdviceList.clear();
         receiverAdviceList.addAll(adviceList);
         Collections.sort(receiverAdviceList);
 
