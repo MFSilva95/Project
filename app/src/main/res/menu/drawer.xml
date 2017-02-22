@@ -23,7 +23,14 @@
             android:id="@+id/diabetesData"
             android:checked="false"
             android:title="@string/navDiabetesTools" />
-
+        <item
+            android:id="@+id/preferences"
+            android:checked="false"
+            android:title="@string/title_activity_preferences" />
+        <item
+            android:id="@+id/importAndExport"
+            android:checked="false"
+            android:title="@string/title_activity_import_export" />
     </group>
 
 </menu>

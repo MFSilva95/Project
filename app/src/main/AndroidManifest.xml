@@ -28,7 +28,7 @@
         <activity
             android:name=".ui.activities.MyData"
             android:label="@string/title_activity_my_data"
-            android:parentActivityName=".ui.activities.DataTools">
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.DataTools"/>
@@ -36,7 +36,7 @@
         <activity
             android:name=".ui.activities.Preferences"
             android:label="@string/title_activity_preferences"
-            android:parentActivityName=".ui.activities.DataTools">
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.DataTools"/>
@@ -273,7 +273,7 @@
         <activity
             android:name=".ui.activities.ImportExport"
             android:label="@string/title_activity_import_export"
-            android:parentActivityName=".ui.activities.DataTools">
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.DataTools"/>

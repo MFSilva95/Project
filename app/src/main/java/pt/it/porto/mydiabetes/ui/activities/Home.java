@@ -48,7 +48,6 @@ import pt.it.porto.mydiabetes.data.Task;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.ListsDataDb;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
-import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.ui.usability.HomeTouchHelper;
 
@@ -228,11 +227,19 @@ public class Home extends BaseActivity {
                         startActivity(intent);
                         return true;
                     case R.id.personalData:
-                        intent = new Intent(getApplicationContext(), Preferences.class);
+                        intent = new Intent(getApplicationContext(), MyData.class);
                         startActivity(intent);
                         return true;
                     case R.id.diabetesData:
                         intent = new Intent(getApplicationContext(), SettingsInsulin.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.importAndExport:
+                        intent = new Intent(getApplicationContext(), ImportExport.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.preferences:
+                        intent = new Intent(getApplicationContext(), Preferences.class);
                         startActivity(intent);
                         return true;
                     default:
