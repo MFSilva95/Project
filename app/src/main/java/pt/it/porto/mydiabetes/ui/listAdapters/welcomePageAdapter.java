@@ -1,4 +1,4 @@
-package pt.it.porto.mydiabetes.utils;
+package pt.it.porto.mydiabetes.ui.listAdapters;
 
 
 import android.support.v4.app.Fragment;
@@ -11,7 +11,7 @@ import pt.it.porto.mydiabetes.ui.fragments.register.FactorsFragment;
 import pt.it.porto.mydiabetes.ui.fragments.register.PersonalDataFragment;
 import pt.it.porto.mydiabetes.ui.fragments.register.welcomeFragment;
 
-public class ListPageAdapter extends FragmentPagerAdapter {
+public class welcomePageAdapter extends FragmentPagerAdapter {
     private static final int FRAGMENT_ONE_POSITION = 0;
     private static final int FRAGMENT_TWO_POSITION = 1;
     private static final int FRAGMENT_THREE_POSITION = 2;
@@ -19,7 +19,7 @@ public class ListPageAdapter extends FragmentPagerAdapter {
     private static final int FRAGMENT_FIVE_POSITION = 4;
     private static final int COUNT = 5;
 
-    public ListPageAdapter(FragmentManager fm) {
+    public welcomePageAdapter(FragmentManager fm) {
         super(fm);
     }
 

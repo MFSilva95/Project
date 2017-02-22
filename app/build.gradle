@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "pt.it.porto.mydiabetes"
-        minSdkVersion 14
+        minSdkVersion 19
         targetSdkVersion 25
         // vars to enable new features
         buildConfigField "boolean", "IOB_AVAILABLE", "true"
@@ -107,4 +107,5 @@ dependencies {
 
 
     compile 'com.google.android.gms:play-services-appindexing:8.4.0'
+    compile 'com.android.support:appcompat-v7:25.1.1'
 }

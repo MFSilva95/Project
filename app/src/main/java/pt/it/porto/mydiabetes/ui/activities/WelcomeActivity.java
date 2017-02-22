@@ -9,10 +9,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -22,7 +20,7 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestoreFragment;
 
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
-import pt.it.porto.mydiabetes.utils.ListPageAdapter;
+import pt.it.porto.mydiabetes.ui.listAdapters.welcomePageAdapter;
 
 
 /**
@@ -70,7 +68,7 @@ public class WelcomeActivity extends BaseActivity {
 		setContentView(R.layout.activity_welcome);
 		pageIndicators = (LinearLayout) findViewById(R.id.page_indicator);
 		mViewPager = (CustomViewPager) super.findViewById(R.id.content_fragment);
-		adapter = new ListPageAdapter(super.getSupportFragmentManager());
+		adapter = new welcomePageAdapter(super.getSupportFragmentManager());
 		mViewPager.setAdapter(adapter);
 		mViewPager.setOffscreenPageLimit(3);
 

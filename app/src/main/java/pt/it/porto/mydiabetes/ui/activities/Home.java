@@ -1,33 +1,22 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.esafirm.imagepicker.features.ImagePicker;
@@ -38,81 +27,38 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
-import pt.it.porto.mydiabetes.data.Advice;
-import pt.it.porto.mydiabetes.data.Task;
-import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.database.ListsDataDb;
-import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
-import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
-import pt.it.porto.mydiabetes.ui.usability.HomeTouchHelper;
 import pt.it.porto.mydiabetes.database.Preferences;
+import pt.it.porto.mydiabetes.utils.CustomViewPager;
+import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
 
 
 public class Home extends BaseActivity {
 
-
-    @Override
-    public String getRegType(){return null;}
+    private static final String SELECTED_ITEM = "arg_selected_item";
 
     private static final String TAG = "Home";
-    boolean fabOpen = false;
-
-    private FloatingActionButton fab;
-    private FloatingActionButton phantom_fab;
-
     private static final int RC_CODE_PICKER = 2000;
+    Bitmap bmp;
     private ArrayList<Image> images = new ArrayList<>();
     private CircleImageView userImg;
     private String filename = "profilePhoto.png";
 
-    private float offset1;
-    private float offset2;
-    private float offset3;
-    private float offset4;
-    private float offset5;
-    private float offset6;
-    private float offset7;
-
-    private static final String TRANSLATION_Y = "translationY";
-    private static final String TRANSLATION_X = "translationX";
-    private static final String ROTATION = "rotation";
 
     private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
-
-    private LinearLayout fabContainer_v;
-    private LinearLayout fabContainer_h;
-
-
-    private FloatingActionButton miniFab1;
-    private FloatingActionButton miniFab2;
-    private FloatingActionButton miniFab3;
-    private FloatingActionButton miniFab4;
-    private FloatingActionButton miniFab5;
-    private FloatingActionButton miniFab6;
-    private FloatingActionButton miniFab7;
-
-    private ListView logbookList;
-    private RecyclerView homeList;
-
-    ArrayList<Task> taskListFromYap = new ArrayList<>();
-    //ArrayList<Task> receiverTaskList = new ArrayList<>();
-    ArrayList<Advice> receiverAdviceList = new ArrayList<>();
-
-    SharedPreferences mPrefs;
-
-    Bitmap bmp;
-
-    private YapDroid yapDroid;
+    private CustomViewPager mViewPager;
+    private PagerAdapter adapter;
+    private BottomNavigationView bottomNavigationView;
 
 
+    @Override
+    public String getRegType() {
+        return null;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,47 +66,26 @@ public class Home extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //yapDroid = YapDroid.newInstance(this);
-
-        mPrefs = getSharedPreferences("label", 0);
-
-        DB_Read read = new DB_Read(this);
-        if (!read.MyData_HasData()) {
-            ShowDialogAddData();
-            read.close();
-            return;
-        }
-        read.close();
-        homeList = (RecyclerView) findViewById(R.id.HomeListDisplay);
-
-        fabContainer_v = (LinearLayout) findViewById(R.id.fab_container_v);
-        fabContainer_h = (LinearLayout) findViewById(R.id.fab_container_h);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        phantom_fab = (FloatingActionButton) findViewById(R.id.fab_);
-        miniFab1 = (FloatingActionButton) findViewById(R.id.mini_fab1);
-        miniFab2 = (FloatingActionButton) findViewById(R.id.mini_fab2);
-        miniFab3 = (FloatingActionButton) findViewById(R.id.mini_fab3);
-
-        miniFab4 = (FloatingActionButton) findViewById(R.id.mini_fab4);
-        miniFab5 = (FloatingActionButton) findViewById(R.id.mini_fab5);
-        miniFab6 = (FloatingActionButton) findViewById(R.id.mini_fab6);
-        miniFab7 = (FloatingActionButton) findViewById(R.id.mini_fab7);
-
-        logbookList = (ListView) findViewById(R.id.LogbookActivityList);
-
-        setFabClickListeners();
-        setOffsets();
-        fillDates();
-        fillHomeList();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
 
+        mViewPager = (CustomViewPager) super.findViewById(R.id.content_home_fragment);
+        adapter = new homePageAdapter(super.getSupportFragmentManager());
+        mViewPager.setAdapter(adapter);
+        mViewPager.setOffscreenPageLimit(1);
+        mViewPager.blockSwipeRight(true);
+        mViewPager.blockSwipeLeft(true);
+        mViewPager.setCurrentItem(1);
+
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
         //----------------------nav
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+
         DrawerLayout.DrawerListener Dlistener = new DrawerLayout.DrawerListener() {
             @Override
             public void onDrawerSlide(View view, float v) {
-
             }
 
             @Override
@@ -170,8 +95,8 @@ public class Home extends BaseActivity {
                 ContextWrapper cw = new ContextWrapper(getBaseContext());
                 File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
                 // Create imageDir
-                File mypath=new File(directory,filename);
-                if(mypath.exists()){
+                File mypath = new File(directory, filename);
+                if (mypath.exists()) {
                     Bitmap bmp = BitmapFactory.decodeFile(mypath.getPath());
                     userImg.setImageBitmap(bmp);
                 }
@@ -194,37 +119,25 @@ public class Home extends BaseActivity {
                 });
             }
 
-
-
             @Override
             public void onDrawerClosed(View view) {
-
             }
 
             @Override
             public void onDrawerStateChanged(int i) {
-
             }
         };
+
         drawerLayout.addDrawerListener(Dlistener);
-
-
-/*
-        */
-
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-
             // This method will trigger on item Click of navigation menu
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-
-
                 drawerLayout.closeDrawers();
                 Intent intent;
 
-                switch (menuItem.getItemId()){
+                switch (menuItem.getItemId()) {
 
                     case R.id.userTasks:
                         intent = new Intent(getApplicationContext(), TaskListActivity.class);
@@ -243,15 +156,14 @@ public class Home extends BaseActivity {
                         startActivity(intent);
                         return true;
                     default:
-                        Toast.makeText(getApplicationContext(),"Somethings Wrong",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
                         return true;
-
                 }
             }
         });
+
+        setupBottomNavigationView();
     }
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -265,7 +177,7 @@ public class Home extends BaseActivity {
             // path to /data/data/yourapp/app_data/imageDir
             File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
             // Create imageDir
-            File mypath=new File(directory,filename);
+            File mypath = new File(directory, filename);
 
             FileOutputStream fos = null;
             try {
@@ -285,239 +197,61 @@ public class Home extends BaseActivity {
 
     }
 
-    private void fillHomeList() {
 
-        fillTaskList();
-        fillAdviceList();
-
-        ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
-        Cursor cursor = db.getAllLogbookListWithin(10);
-        //HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor,this, yapDroid);
-        HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor,this);
-
-        ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
-        ItemTouchHelper helper = new ItemTouchHelper(callback);
-        helper.attachToRecyclerView(homeList);
-        homeList.setAdapter(homeAdapter);
-        homeList.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    private void setFabClickListeners() {
-        fab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(fabOpen){
-                    disableFloationActionButtonOptions();
-                    fabOpen = false;
-                }else{
-                    enableFloationActionButtonOptions();
-                    fabOpen = true;
-                }
-            }
-        });
-        miniFab1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), GlycemiaDetail.class);
-                startActivity(intent);
-            }
-        });
-        miniFab2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), InsulinDetail.class);
-                startActivity(intent);
-            }
-        });
-        miniFab3.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), MealActivity.class);
-                startActivity(intent);
-            }
-        });
-        miniFab4.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), DiseaseDetail.class);
-                startActivity(intent);
-            }
-        });
-        miniFab5.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), CholesterolDetail.class);
-                startActivity(intent);
-            }
-        });
-        miniFab6.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), WeightDetail.class);
-                startActivity(intent);
-            }
-        });
-        miniFab7.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ExerciseDetail.class);
-                startActivity(intent);
-            }
-        });
-    }
-    private void setOffsets(){
-        fabContainer_v.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                fabContainer_v.getViewTreeObserver().removeOnPreDrawListener(this);
-                offset1 = fab.getY() - miniFab1.getY();
-                miniFab1.setTranslationY(offset1);
-                offset2 = fab.getY() - miniFab2.getY();
-                miniFab2.setTranslationY(offset2);
-                offset3 = fab.getY() - miniFab3.getY();
-                miniFab3.setTranslationY(offset3);
-                return true;
-            }
-        });
-        fabContainer_h.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                fabContainer_h.getViewTreeObserver().removeOnPreDrawListener(this);
-                offset4 = phantom_fab.getX() - miniFab4.getX()-phantom_fab.getWidth()/2;
-                miniFab4.setTranslationX(offset4);
-                offset5 = phantom_fab.getX() - miniFab5.getX()-phantom_fab.getWidth()/2;
-                miniFab5.setTranslationX(offset5);
-                offset6 = phantom_fab.getX() - miniFab6.getX()-phantom_fab.getWidth()/2;
-                miniFab6.setTranslationX(offset6);
-                offset7 = phantom_fab.getX() - miniFab7.getX()-phantom_fab.getWidth()/2;
-                miniFab7.setTranslationX(offset7);
-                return true;
-            }
-        });
-    }
-
-
-    /**
-     * @param view
-     * @param ang How many degrees to rotate
-     * @return
-     */
-    private Animator createRotationAnimator(View view, float ang) {
-        float rotation = fab.getRotation();
-        return ObjectAnimator.ofFloat(view, ROTATION, rotation, rotation + ang)
-                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
-    }
-    private Animator createTranslateAnimator(View view, float offset) {
-        float position = view.getY();
-        return ObjectAnimator.ofFloat(view, TRANSLATION_Y, position, position + offset)
-                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
-    }
-    private Animator createCollapseAnimatorY(View view, float offset) {
-        return ObjectAnimator.ofFloat(view, TRANSLATION_Y, 0, offset)
-                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
-    }
-    private Animator createCollapseAnimatorX(View view, float offset) {
-        return ObjectAnimator.ofFloat(view, TRANSLATION_X, 0, offset)
-                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
-    }
-    private Animator createExpandAnimatorY(View view, float offset) {
-        return ObjectAnimator.ofFloat(view, TRANSLATION_Y, offset, 0)
-                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
-    }
-    private Animator createExpandAnimatorX(View view, float offset) {
-        return ObjectAnimator.ofFloat(view, TRANSLATION_X, offset, 0)
-                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
-    }
-
-    private void disableFloationActionButtonOptions() {
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(
-                createRotationAnimator(fab, 45f),
-                createCollapseAnimatorY(miniFab1, offset1),
-                createCollapseAnimatorY(miniFab2, offset2),
-                createCollapseAnimatorY(miniFab3, offset3),
-                createCollapseAnimatorX(miniFab4, offset4),
-                createCollapseAnimatorX(miniFab5, offset5),
-                createCollapseAnimatorX(miniFab6, offset6),
-                createCollapseAnimatorX(miniFab7, offset7));
-
-        animatorSet.start();
-    }
-    private void enableFloationActionButtonOptions() {
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(
-                createRotationAnimator(fab, -45f),
-                createExpandAnimatorY(miniFab1, offset1),
-                createExpandAnimatorY(miniFab2, offset2),
-                createExpandAnimatorY(miniFab3, offset3),
-                createExpandAnimatorX(miniFab4, offset4),
-                createExpandAnimatorX(miniFab5, offset5),
-                createExpandAnimatorX(miniFab6, offset6),
-                createExpandAnimatorX(miniFab7, offset7));
-        animatorSet.start();
-    }
-
-    private void fillTaskList() {
-        //taskListFromYap = yapDroid.getYapMultipleTasks();
-        Task task1 = new Task();
-        task1.setSummaryText("Fazer exercicio hoje!");
-        task1.setExpText("Hoje fiquei de fazer exercicio. O gim está à minha espera!");
-        task1.setUrg(5);
-
-        Task task2 = new Task();
-        task2.setSummaryText("Actualizar dados!");
-        task2.setExpText("Fazer a sincronização da bomba com a aplicação!");
-        task2.setUrg(3);
-
-        taskListFromYap = new ArrayList<>();
-        taskListFromYap.add(task1);
-        taskListFromYap.add(task2);
-    }
-    public void fillAdviceList() {
-        //receiverAdviceList.addAll(yapDroid.getAllEndAdvices(getApplicationContext()));
-        Advice task1 = new Advice();
-        task1.setSummaryText("Fazer exercicio hoje!");
-        task1.setExpandedText("Hoje fiquei de fazer exercicio. O gim está à minha espera!");
-        task1.setUrgency(5);
-
-        Advice task2 = new Advice();
-        task2.setSummaryText("Actualizar dados!");
-        task2.setExpandedText("Fazer a sincronização da bomba com a aplicação!");
-        task2.setUrgency(3);
-
-        ArrayList<Advice> adviceList = new ArrayList<>();
-        adviceList.add(task1);
-        adviceList.add(task2);
-        receiverAdviceList.addAll(adviceList);
-        Collections.sort(receiverAdviceList);
-
-    }
-
-    public void fillDates() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DAY_OF_YEAR, -3);
-        calendar = Calendar.getInstance();
-    }
-
-    public void ShowDialogAddData() {
-        Intent intent = new Intent(this, WelcomeActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        finish();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.home_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        if(item!=null){
-            if(item.getTitle().equals("homeSettings")){
-                if(drawerLayout.isDrawerOpen(Gravity.LEFT)){
+        if (item != null) {
+            if (item.getTitle().equals("homeSettings")) {
+                if (drawerLayout.isDrawerOpen(Gravity.LEFT)) {
                     drawerLayout.closeDrawer(Gravity.LEFT);
-                }else{
+                } else {
                     drawerLayout.openDrawer(Gravity.LEFT);
                 }
             }
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void setupBottomNavigationView() {
+        // Get the menu from our navigationBottomView.
+        Menu bottomNavigationViewMenu = bottomNavigationView.getMenu();
+        // Uncheck the first menu item (the default item which is always checked by the support library is at position 0).
+        bottomNavigationViewMenu.findItem(R.id.action_favorites).setChecked(false);
+        // Check the wished first menu item to be shown to the user.
+        bottomNavigationViewMenu.findItem(R.id.action_schedules).setChecked(true);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                Menu bottomNavigationMenu = bottomNavigationView.getMenu();
+                for (int i = 0; i < bottomNavigationMenu.size(); i++) {
+                    if (item.getItemId() != bottomNavigationMenu.getItem(i).getItemId()) {
+                        bottomNavigationMenu.getItem(i).setChecked(false);
+                    }
+                }
+
+                switch (item.getItemId()) {
+                    case R.id.action_favorites :
+                        mViewPager.setCurrentItem(0);
+                        break;
+                    case R.id.action_schedules :
+                        mViewPager.setCurrentItem(1);
+                        break;
+                    case R.id.action_music :
+                        mViewPager.setCurrentItem(2);
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+
+
+
 }
 
 

@@ -17,6 +17,5 @@
         <item name="android:datePickerMode">spinner</item>
     </style>
 
-    <style name="test" parent="android:Theme.Material.Light.NoActionBar" />
 
 </resources>

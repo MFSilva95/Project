@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_favorites"
+        android:icon="@drawable/ic_favorite_white_24dp"
+        android:title="Favoritos" />
+    <item
+        android:id="@+id/action_schedules"
+        android:icon="@drawable/ic_access_time_white_24dp"
+        android:title="Horário" />
+    <item
+        android:id="@+id/action_music"
+        android:icon="@drawable/ic_audiotrack_white_24dp"
+        android:title="Música" />
+</menu>

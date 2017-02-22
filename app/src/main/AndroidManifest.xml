@@ -413,6 +413,22 @@
             </intent-filter>
         </activity>
 
+
+
+
+        <activity
+            android:name=".ui.activities.AddEvent"
+            android:label="Test"
+            android:parentActivityName=".ui.activities.Home"
+            android:theme="@style/NewHomeTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pt.it.porto.mydiabetes.ui.activities.Home"/>
+        </activity>
+
+
+
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="7601388bb7cc37077c533c82536ee42dbc14d1a0"/>
