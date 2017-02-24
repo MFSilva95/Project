@@ -13,7 +13,6 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -69,6 +68,17 @@ public class Home extends BaseActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
+                this,  drawerLayout, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close
+        );
+
+        drawerLayout.addDrawerListener(mDrawerToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        mDrawerToggle.syncState();
+
 
 
         mViewPager = (CustomViewPager) super.findViewById(R.id.content_home_fragment);
@@ -130,6 +140,7 @@ public class Home extends BaseActivity {
 
         drawerLayout.addDrawerListener(Dlistener);
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             // This method will trigger on item Click of navigation menu
             @Override
@@ -138,7 +149,6 @@ public class Home extends BaseActivity {
                 Intent intent;
 
                 switch (menuItem.getItemId()) {
-
                     case R.id.userTasks:
                         intent = new Intent(getApplicationContext(), TaskListActivity.class);
                         startActivity(intent);
@@ -199,7 +209,7 @@ public class Home extends BaseActivity {
 
 
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item != null) {
@@ -212,15 +222,15 @@ public class Home extends BaseActivity {
             }
         }
         return super.onOptionsItemSelected(item);
-    }
+    }*/
 
     private void setupBottomNavigationView() {
         // Get the menu from our navigationBottomView.
         Menu bottomNavigationViewMenu = bottomNavigationView.getMenu();
         // Uncheck the first menu item (the default item which is always checked by the support library is at position 0).
-        bottomNavigationViewMenu.findItem(R.id.action_favorites).setChecked(false);
+        bottomNavigationViewMenu.findItem(R.id.action_health).setChecked(false);
         // Check the wished first menu item to be shown to the user.
-        bottomNavigationViewMenu.findItem(R.id.action_schedules).setChecked(true);
+        bottomNavigationViewMenu.findItem(R.id.action_register).setChecked(true);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -234,13 +244,13 @@ public class Home extends BaseActivity {
                 }
 
                 switch (item.getItemId()) {
-                    case R.id.action_favorites :
+                    case R.id.action_health:
                         mViewPager.setCurrentItem(0);
                         break;
-                    case R.id.action_schedules :
+                    case R.id.action_register:
                         mViewPager.setCurrentItem(1);
                         break;
-                    case R.id.action_music :
+                    case R.id.action_person:
                         mViewPager.setCurrentItem(2);
                         break;
                 }
