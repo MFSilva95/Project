@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "pt.it.porto.mydiabetes"
-        minSdkVersion 14
+        minSdkVersion 19
         targetSdkVersion 25
         // vars to enable new features
         buildConfigField "boolean", "IOB_AVAILABLE", "true"

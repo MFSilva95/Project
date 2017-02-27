@@ -1,8 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -19,15 +16,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -68,41 +62,15 @@ public class Home extends BaseActivity {
     boolean fabOpen = false;
 
     private FloatingActionButton fab;
-    private FloatingActionButton phantom_fab;
 
-    private float offset1;
-    private float offset2;
-    private float offset3;
-    private float offset4;
-    private float offset5;
-    private float offset6;
-    private float offset7;
-
-    private static final String TRANSLATION_Y = "translationY";
-    private static final String TRANSLATION_X = "translationX";
-    private static final String ROTATION = "rotation";
-
-    private Toolbar toolbar;
     private NavigationView navigationView;
     private DrawerLayout drawerLayout;
 
-    private LinearLayout fabContainer_v;
-    private LinearLayout fabContainer_h;
-
-
-    private FloatingActionButton miniFab1;
-    private FloatingActionButton miniFab2;
-    private FloatingActionButton miniFab3;
-    private FloatingActionButton miniFab4;
-    private FloatingActionButton miniFab5;
-    private FloatingActionButton miniFab6;
-    private FloatingActionButton miniFab7;
 
     private ListView logbookList;
     private RecyclerView homeList;
 
     ArrayList<Task> taskListFromYap = new ArrayList<>();
-    //ArrayList<Task> receiverTaskList = new ArrayList<>();
     ArrayList<Advice> receiverAdviceList = new ArrayList<>();
 
     SharedPreferences mPrefs;
@@ -132,24 +100,17 @@ public class Home extends BaseActivity {
         }
         read.close();
         homeList = (RecyclerView) findViewById(R.id.HomeListDisplay);
-
-        fabContainer_v = (LinearLayout) findViewById(R.id.fab_container_v);
-        fabContainer_h = (LinearLayout) findViewById(R.id.fab_container_h);
         fab = (FloatingActionButton) findViewById(R.id.fab);
-        phantom_fab = (FloatingActionButton) findViewById(R.id.fab_);
-        miniFab1 = (FloatingActionButton) findViewById(R.id.mini_fab1);
-        miniFab2 = (FloatingActionButton) findViewById(R.id.mini_fab2);
-        miniFab3 = (FloatingActionButton) findViewById(R.id.mini_fab3);
-
-        miniFab4 = (FloatingActionButton) findViewById(R.id.mini_fab4);
-        miniFab5 = (FloatingActionButton) findViewById(R.id.mini_fab5);
-        miniFab6 = (FloatingActionButton) findViewById(R.id.mini_fab6);
-        miniFab7 = (FloatingActionButton) findViewById(R.id.mini_fab7);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), NewHomeRegistry.class);
+                startActivity(intent);
+            }
+        });
 
         logbookList = (ListView) findViewById(R.id.LogbookActivityList);
 
-        setFabClickListeners();
-        setOffsets();
         fillDates();
         fillHomeList();
 
@@ -346,161 +307,6 @@ public class Home extends BaseActivity {
         homeList.setItemAnimator(new DefaultItemAnimator());
         homeList.setAdapter(homeAdapter);
         homeList.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    private void setFabClickListeners() {
-        fab.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (fabOpen) {
-                    disableFloationActionButtonOptions();
-                    fabOpen = false;
-                } else {
-                    enableFloationActionButtonOptions();
-                    fabOpen = true;
-                }
-            }
-        });
-        miniFab1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), GlycemiaDetail.class);
-                startActivity(intent);
-            }
-        });
-        miniFab2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), InsulinDetail.class);
-                startActivity(intent);
-            }
-        });
-        miniFab3.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), MealActivity.class);
-                startActivityForResult(intent, 2);
-                //startActivity(intent);
-            }
-        });
-        miniFab4.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), DiseaseDetail.class);
-                startActivity(intent);
-            }
-        });
-        miniFab5.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), CholesterolDetail.class);
-                startActivity(intent);
-            }
-        });
-        miniFab6.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), WeightDetail.class);
-                startActivity(intent);
-            }
-        });
-        miniFab7.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), ExerciseDetail.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void setOffsets() {
-        fabContainer_v.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                fabContainer_v.getViewTreeObserver().removeOnPreDrawListener(this);
-                offset1 = fab.getY() - miniFab1.getY();
-                miniFab1.setTranslationY(offset1);
-                offset2 = fab.getY() - miniFab2.getY();
-                miniFab2.setTranslationY(offset2);
-                offset3 = fab.getY() - miniFab3.getY();
-                miniFab3.setTranslationY(offset3);
-                return true;
-            }
-        });
-        fabContainer_h.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                fabContainer_h.getViewTreeObserver().removeOnPreDrawListener(this);
-                offset4 = phantom_fab.getX() - miniFab4.getX() - phantom_fab.getWidth() / 2;
-                miniFab4.setTranslationX(offset4);
-                offset5 = phantom_fab.getX() - miniFab5.getX() - phantom_fab.getWidth() / 2;
-                miniFab5.setTranslationX(offset5);
-                offset6 = phantom_fab.getX() - miniFab6.getX() - phantom_fab.getWidth() / 2;
-                miniFab6.setTranslationX(offset6);
-                offset7 = phantom_fab.getX() - miniFab7.getX() - phantom_fab.getWidth() / 2;
-                miniFab7.setTranslationX(offset7);
-                return true;
-            }
-        });
-    }
-
-
-    /**
-     * @param view
-     * @param ang  How many degrees to rotate
-     * @return
-     */
-    private Animator createRotationAnimator(View view, float ang) {
-        float rotation = fab.getRotation();
-        return ObjectAnimator.ofFloat(view, ROTATION, rotation, rotation + ang)
-                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
-    }
-
-    private Animator createTranslateAnimator(View view, float offset) {
-        float position = view.getY();
-        return ObjectAnimator.ofFloat(view, TRANSLATION_Y, position, position + offset)
-                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
-    }
-
-    private Animator createCollapseAnimatorY(View view, float offset) {
-        return ObjectAnimator.ofFloat(view, TRANSLATION_Y, 0, offset)
-                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
-    }
-
-    private Animator createCollapseAnimatorX(View view, float offset) {
-        return ObjectAnimator.ofFloat(view, TRANSLATION_X, 0, offset)
-                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
-    }
-
-    private Animator createExpandAnimatorY(View view, float offset) {
-        return ObjectAnimator.ofFloat(view, TRANSLATION_Y, offset, 0)
-                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
-    }
-
-    private Animator createExpandAnimatorX(View view, float offset) {
-        return ObjectAnimator.ofFloat(view, TRANSLATION_X, offset, 0)
-                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
-    }
-
-    private void disableFloationActionButtonOptions() {
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(
-                createRotationAnimator(fab, 45f),
-                createCollapseAnimatorY(miniFab1, offset1),
-                createCollapseAnimatorY(miniFab2, offset2),
-                createCollapseAnimatorY(miniFab3, offset3),
-                createCollapseAnimatorX(miniFab4, offset4),
-                createCollapseAnimatorX(miniFab5, offset5),
-                createCollapseAnimatorX(miniFab6, offset6),
-                createCollapseAnimatorX(miniFab7, offset7));
-
-        animatorSet.start();
-    }
-
-    private void enableFloationActionButtonOptions() {
-        AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playTogether(
-                createRotationAnimator(fab, -45f),
-                createExpandAnimatorY(miniFab1, offset1),
-                createExpandAnimatorY(miniFab2, offset2),
-                createExpandAnimatorY(miniFab3, offset3),
-                createExpandAnimatorX(miniFab4, offset4),
-                createExpandAnimatorX(miniFab5, offset5),
-                createExpandAnimatorX(miniFab6, offset6),
-                createExpandAnimatorX(miniFab7, offset7));
-        animatorSet.start();
     }
 
     private void fillTaskList() {

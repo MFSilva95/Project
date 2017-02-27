@@ -1,5 +1,28 @@
 <resources>
 
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="MyToolbar">
+        <item name="theme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="android:background">?colorPrimary</item>
+        <item name="android:color">?colorAccent</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="Widget.MyApp.HeaderBar.Spinner" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:dropDownSelector">?android:selectableItemBackground</item>
+        <item name="android:divider">@null</item>
+    </style>
+
+
     <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
@@ -29,7 +52,6 @@
         <!--<item name="android:textColorPrimary">@color/abc_primary_text_material_dark</item>-->
         <!-- enable window content transitions -->
         <!--<item name="android:windowActivityTransitions">true</item>-->
-        <item name="android:windowActivityTransitions">true</item>
     </style>
 
     <style name="AppThemeCustomToolBar" parent="Theme.AppCompat.Light.NoActionBar">
@@ -39,7 +61,6 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primaryDark</item>
         <item name="colorAccent">@color/accent</item>
-        <item name="android:windowActivityTransitions">true</item>
     </style>
     <!-- Application theme. -->
     <style name="AppTheme" parent="@android:style/Theme.Holo">
