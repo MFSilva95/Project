@@ -8,20 +8,23 @@
     android:id="@+id/main"
     android:fitsSystemWindows="false">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
         android:id="@+id/registry_toolbar"
+        style="@style/MyToolbar"
         android:layout_width="match_parent"
-        android:background="@color/activity_blue"
-        android:layout_height="50dp">
+        android:layout_height="60dp"
+        app:layout_collapseMode="pin"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginLeft="16dp">
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/date"
+                android:id="@+id/registryDate"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:layout_gravity="start"
@@ -31,20 +34,20 @@
                 android:text="Today"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="0dp"
-                android:padding="10dp"
+                android:padding="5dp"
                 tools:text="Today"/>
 
             <TextView
-                android:id="@+id/time"
+                android:id="@+id/registerTime"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
                 android:background="?selectableItemBackground"
                 android:clickable="true"
                 android:gravity="center|start"
-                android:text="18:00"
+                android:text=""
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="48dp"
-                android:padding="10dp"
+                android:padding="5dp"
                 tools:text="18:00"/>
 
             <Spinner
@@ -57,19 +60,17 @@
                 android:layout_marginEnd="0dp"
                 android:textAlignment="inherit"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="10dp"
+                android:padding="5dp"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="96dp"/>
 
         </LinearLayout>
-    </LinearLayout>
-
-
+    </android.support.v7.widget.Toolbar>
 
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:paddingTop="60dp"
+        android:layout_marginTop="60dp"
         android:layout_height="match_parent">
 
         <include layout="@layout/content_add_event"/>

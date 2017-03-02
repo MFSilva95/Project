@@ -35,6 +35,8 @@
         <item name="colorPrimary">@color/primary</item>
         <item name="android:textColorPrimary">@color/primary_text</item>
         <item name="background">@color/background</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
 

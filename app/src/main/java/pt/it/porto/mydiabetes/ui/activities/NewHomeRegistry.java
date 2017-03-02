@@ -5,49 +5,98 @@ package pt.it.porto.mydiabetes.ui.activities;
  */
 
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
+
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageButton;
+import android.widget.DatePicker;
+
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
+import android.view.View.OnClickListener;
+import android.widget.TimePicker;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.listAdapters.StringSpinnerAdapter;
+import pt.it.porto.mydiabetes.utils.DateUtils;
+
 
 public class NewHomeRegistry extends AppCompatActivity {
 
-    LinearLayout bottomSheetViewgroup;
-    BottomSheetBehavior bottomSheetBehavior;
-    LinearLayout contentLayout;
-    ArrayList<String> buttons;
+    private LinearLayout bottomSheetViewgroup;
+    private BottomSheetBehavior bottomSheetBehavior;
+    private LinearLayout contentLayout;
+    private ArrayList<String> buttons;
+    private Calendar registerDate;
+    private TextView registerDateTextV;
+    private TextView registerTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
         bottomSheetViewgroup = (LinearLayout) findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetViewgroup);
         contentLayout = (LinearLayout) findViewById(R.id.content_panel);
+        registerDateTextV = (TextView) findViewById(R.id.registryDate);
+        registerTime = (TextView) findViewById(R.id.registerTime);
+
         bottomSheetViewgroup.setVisibility(View.INVISIBLE);
         buttons = new ArrayList<>();
         bottomSheetViewgroup.setVisibility(View.VISIBLE);
+
+
+        registerDateTextV.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View view) {
+				showDatePickerDialog(view);
+            }
+		});
+
+        Calendar time = Calendar.getInstance();
+        String currentTime = android.text.format.DateFormat.getTimeFormat(this.getApplicationContext()).format(new java.util.Date() );
+
+        registerTime.setText( currentTime);
+        registerTime.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                showTimePickerDialog(view);
+            }
+        });
+
+
+
+
+
+/*
+        Calendar time = DateUtils.getTimeCalendar(text);
+        if (time != null) {
+            insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), null);
+        }*/
+
 
         /*((TextInputLayout) findViewById(R.id.insulin_obj)).getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -61,8 +110,8 @@ public class NewHomeRegistry extends AppCompatActivity {
             }
         });*/
 
-        /*Toolbar toolbar = (Toolbar) findViewById(R.id.registry_toolbar);
-        setSupportActionBar(toolbar);*/
+        Toolbar toolbar = (Toolbar) findViewById(R.id.registry_toolbar);
+        setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +120,7 @@ public class NewHomeRegistry extends AppCompatActivity {
                 save();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         (findViewById(R.id.bt_add_more_content)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,6 +131,70 @@ public class NewHomeRegistry extends AppCompatActivity {
         });
         ((Spinner) findViewById(R.id.tag)).setAdapter(new StringSpinnerAdapter(this, getResources().getStringArray(R.array.daytimes)));
         setupBottomSheet();
+
+        setDate(time.get(Calendar.YEAR), time.get(Calendar.MONTH), time.get(Calendar.DAY_OF_MONTH));
+    }
+
+    public void showTimePickerDialog(View v) {
+        Calendar mcurrentTime = Calendar.getInstance();
+        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+        int minute = mcurrentTime.get(Calendar.MINUTE);
+        TimePickerDialog mTimePicker;
+
+        mTimePicker = new TimePickerDialog(v.getContext(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                final Calendar c = Calendar.getInstance();
+                c.set(Calendar.HOUR_OF_DAY, selectedHour);
+                c.set(Calendar.MINUTE, selectedMinute);
+                String timeString = DateUtils.getFormattedTime(c);
+                registerTime.setText( timeString);
+            }
+        }, hour, minute, true);//Yes 24 hour time
+        mTimePicker.setTitle("Select Time");
+        mTimePicker.show();
+    }
+
+    public void showDatePickerDialog(View v) {
+
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                v.getContext(),
+                R.style.style_date_picker_dialog,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        setDate(year, month, day);
+                    }
+                },
+                registerDate.get(Calendar.YEAR),
+                registerDate.get(Calendar.MONTH),
+                registerDate.get(Calendar.DAY_OF_MONTH)){
+
+                @Override
+                protected void onCreate(Bundle savedInstanceState)
+                {
+                    super.onCreate(savedInstanceState);
+                    int year = getContext().getResources()
+                        .getIdentifier("android:id/year", null, null);
+                    if(year != 0){  View yearPicker = findViewById(year);
+                        if(yearPicker != null){
+                            yearPicker.setVisibility(View.GONE);
+                        }
+                    }
+                }
+            };
+        datePickerDialog.show();
+    }
+
+    private void setDate(int year, int month, int day) {
+        registerDate = new GregorianCalendar(year, month, day);
+        StringBuilder displayDate = new StringBuilder(18);
+        displayDate.append(registerDate.get(Calendar.DAY_OF_MONTH));
+        displayDate.append(" ");
+        displayDate.append(registerDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+        //displayDate.append(' ');
+        //displayDate.append(registerDate.get(Calendar.YEAR));
+        registerDateTextV.setText(displayDate.toString());
     }
 
     @Override
