@@ -547,6 +547,27 @@ public class DB_Read {
 		return n;
 	}
 
+	@Nullable
+	public ExerciseRec getLastExercice() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Exercise;", null);
+		cursor.moveToLast();
+		if (cursor.getCount()==0) {
+			return null;
+		}
+		ExerciseRec tmp = new ExerciseRec();
+		tmp.setId(cursor.getInt(0));
+		tmp.setIdUser(cursor.getInt(1));
+		tmp.setExercise(cursor.getString(2));
+		tmp.setDuration(cursor.getInt(3));
+		tmp.setEffort(cursor.getString(4));
+		tmp.setDateTime(cursor.getString(5));
+		tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
+
+		cursor.close();
+		return tmp;
+
+	}
+
 
 	public HashMap<Integer, String> Exercise_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Exercise", null);
@@ -812,6 +833,25 @@ public class DB_Read {
 
 	}
 
+	@Nullable
+	public CholesterolRec getLastCholesterol() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol;", null);
+		cursor.moveToLast();
+		if (cursor.getCount()==0) {
+			return null;
+		}
+
+		CholesterolRec tmp = new CholesterolRec();
+		tmp.setId(cursor.getInt(0));
+		tmp.setIdUser(cursor.getInt(1));
+		tmp.setValue(cursor.getDouble(2));
+		tmp.setDateTime(cursor.getString(3));
+		tmp.setIdNote((!cursor.isNull(4)) ? cursor.getInt(4) : -1);
+
+		cursor.close();
+		return tmp;
+
+	}
 
 	//--------------- WEIGHT -----------------
 	public ArrayList<WeightRec> Weight_GetBtDate(String from, String to) {
@@ -844,6 +884,26 @@ public class DB_Read {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Weight WHERE Id='" + id + "';", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		cursor.moveToFirst();
+		if (cursor.getCount()==0) {
+			return null;
+		}
+
+		WeightRec tmp = new WeightRec();
+		tmp.setId(cursor.getInt(0));
+		tmp.setIdUser(cursor.getInt(1));
+		tmp.setValue(cursor.getDouble(2));
+		tmp.setDateTime(cursor.getString(3));
+		tmp.setIdNote((!cursor.isNull(4)) ? cursor.getInt(4) : -1);
+
+		cursor.close();
+		return tmp;
+
+	}
+
+	@Nullable
+	public WeightRec getLastWeight() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Weight", null);
+		cursor.moveToLast();
 		if (cursor.getCount()==0) {
 			return null;
 		}
@@ -952,6 +1012,26 @@ public class DB_Read {
 		tmp.setStartDate(cursor.getString(3));
 		tmp.setEndDate((!cursor.isNull(4)) ? cursor.getString(4) : null);
 		tmp.setIdNote((!cursor.isNull(5)) ? cursor.getInt(5) : -1);
+
+		cursor.close();
+		return tmp;
+
+	}
+
+	@Nullable
+	public DiseaseRec getLastDisease() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Disease;", null);
+		cursor.moveToLast();
+		if (cursor.getCount()==0) {
+			return null;
+		}
+		DiseaseRec tmp = new DiseaseRec();
+		tmp.setId(cursor.getInt(0));
+		tmp.setIdUser(cursor.getInt(1));
+		tmp.setDisease(cursor.getString(2));
+		tmp.setStartDate(cursor.getString(3));
+		tmp.setEndDate(cursor.getString(4));
+		tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
 
 		cursor.close();
 		return tmp;

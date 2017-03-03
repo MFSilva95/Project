@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,14 +10,698 @@
         android:layout_height="match_parent"
         android:background="@color/background">
 
-        <TextView
-            android:text="LEFT"
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textView2"
-            android:textColor="@color/black" />
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:elevation="2dp"
+                        android:layout_marginRight="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:src="@drawable/ic_weight"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:background="@color/transparent"
+                                android:scaleType="fitStart"
+                                android:padding="5dp"
+                                android:id="@+id/image"
+                                android:layout_centerHorizontal="true"
+                                />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_below="@+id/image"
+                                android:id="@+id/title"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:text="Exercício"
+                                android:maxLines="1"
+                                android:textSize="18sp"
+                                android:textStyle="bold" />
+
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_centerHorizontal="true"
+                                android:layout_below="@+id/title"
+                                android:id="@+id/values">
+
+                                <TextView
+                                    android:id="@+id/value1"
+                                    android:text="N/a"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="20sp" />
+
+                                <TextView
+                                    android:textColor="@color/black"
+                                    android:text="Min"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingLeft="5dp" />
+
+                            </LinearLayout>
+
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:id="@+id/lastrecord"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:text="Último Registo:"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/black"
+                                android:layout_below="@id/values"
+                                android:layout_marginTop="5dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:text="xx-xx-xxxx"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/black"
+                                android:layout_below="@id/lastrecord"
+                                android:id="@+id/date1" />
+
+
+                        </RelativeLayout>
+
+                        <ImageButton
+                            android:src="@drawable/ic_add"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@color/transparent"
+                            android:scaleType="fitStart"
+                            android:padding="12dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="#fff"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical"
+                        android:elevation="2dp"
+                        android:layout_marginLeft="5dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:src="@drawable/ic_bed"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:background="@color/transparent"
+                                android:scaleType="fitStart"
+                                android:padding="5dp"
+                                android:id="@+id/image"
+                                android:layout_centerHorizontal="true"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:id="@+id/title"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:text="Doença"
+                                android:maxLines="1"
+                                android:textSize="18sp"
+                                android:textStyle="bold"
+                                android:layout_below="@+id/image"/>
+
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_centerHorizontal="true"
+                                android:layout_below="@+id/title"
+                                android:id="@+id/values">
+
+                                <TextView
+                                    android:id="@+id/value2"
+                                    android:text="N/a"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textSize="20sp" />
+
+                                <TextView
+                                    android:textColor="@color/black"
+                                    android:text="Dias Doente"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingLeft="5dp" />
+
+                            </LinearLayout>
+
+
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:id="@+id/lastrecord"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:text="Último Registo:"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/black"
+                                android:layout_below="@id/values"
+                                android:layout_marginTop="5dp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:text="xx-xx-xxxx"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textColor="@color/black"
+                                android:layout_below="@id/lastrecord"
+                                android:id="@+id/date2" />
+
+
+                        </RelativeLayout>
+
+                        <ImageButton
+                            android:src="@drawable/ic_add"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@color/transparent"
+                            android:scaleType="fitStart"
+                            android:padding="12dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#fff"
+                    android:layout_marginBottom="10dp"
+                    android:elevation="2dp"
+                    android:gravity="center_vertical">
+
+                    <!--This is the marker Icon on the left-->
+                    <!--Use margin if you need more space to divider-->
+
+
+                    <RelativeLayout
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+
+                        <!--This is the bold title text, eg. BARONS-->
+
+
+                        <!--This is the address that is shown, eg 3 ADDERLEY ST, CAPE TOWN,-->
+
+                        <!--This will display a string when the gps is on, not shown in image as gps was off in screenshot-->
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/ic_scale"
+                            android:id="@+id/image"
+                            android:padding="5dp" />
+
+                        <View
+                            android:background="@color/ef_grey"
+                            android:layout_toRightOf="@id/image"
+                            android:layout_weight="1"
+                            android:id="@+id/sep"
+                            android:layout_width="1dp"
+                            android:layout_height="50dp"
+                            android:layout_centerVertical="true"/>
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textStyle="bold"
+                            android:text="Peso"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:layout_toRightOf="@id/sep"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="5dp" />
+
+                        <TextView
+                            android:id="@+id/lastrecord"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Ultimo Registo:"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/image"
+                            android:layout_below="@+id/title"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:id="@+id/value3"
+                            android:text="N/a"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/lastrecord"
+                            android:textSize="20sp"
+                            android:layout_marginTop="5dp" />
+
+                        <TextView
+                            android:textColor="@color/black"
+                            android:text="Kg"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/value3"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="2dp" />
+
+
+                        <TextView
+                            android:textColor="@color/black"
+                            android:id="@+id/date3"
+                            android:text="xx-xx-xxxx"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/lastrecord"
+                            android:layout_below="@id/value3"/>
+
+                    </RelativeLayout>
+
+                    <ImageButton
+                        android:src="@drawable/ic_add"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/transparent"
+                        android:scaleType="fitStart"
+                        android:padding="12dp"/>
+
+                    <!--This is the red map button on the right-->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#fff"
+                    android:layout_marginBottom="10dp"
+                    android:elevation="2dp"
+                    android:gravity="center_vertical">
+
+                    <!--This is the marker Icon on the left-->
+                    <!--Use margin if you need more space to divider-->
+
+
+                    <RelativeLayout
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+
+                        <!--This is the bold title text, eg. BARONS-->
+
+
+                        <!--This is the address that is shown, eg 3 ADDERLEY ST, CAPE TOWN,-->
+
+                        <!--This will display a string when the gps is on, not shown in image as gps was off in screenshot-->
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/ic_cardiogram"
+                            android:id="@+id/image"
+                            android:padding="5dp" />
+
+                        <View
+                            android:background="@color/ef_grey"
+                            android:layout_toRightOf="@id/image"
+                            android:layout_weight="1"
+                            android:id="@+id/sep"
+                            android:layout_width="1dp"
+                            android:layout_height="50dp"
+                            android:layout_centerVertical="true"/>
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textStyle="bold"
+                            android:text="Batimento"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:layout_toRightOf="@id/sep"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="5dp" />
+
+                        <TextView
+                            android:id="@+id/lastrecord"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Ultimo Registo:"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/image"
+                            android:layout_below="@+id/title"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:id="@+id/value4"
+                            android:text="N/a"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/lastrecord"
+                            android:textSize="20sp"
+                            android:layout_marginTop="5dp" />
+
+                        <TextView
+                            android:textColor="@color/black"
+                            android:text="Bpm"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/value4"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="2dp" />
+
+
+                        <TextView
+                            android:textColor="@color/black"
+                            android:id="@+id/date4"
+                            android:text="xx-xx-xxxx"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/lastrecord"
+                            android:layout_below="@id/value4"/>
+
+                    </RelativeLayout>
+
+                    <ImageButton
+                        android:src="@drawable/ic_add"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/transparent"
+                        android:scaleType="fitStart"
+                        android:padding="12dp"/>
+
+                    <!--This is the red map button on the right-->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#fff"
+                    android:layout_marginBottom="10dp"
+                    android:elevation="2dp"
+                    android:gravity="center_vertical">
+
+                    <!--This is the marker Icon on the left-->
+                    <!--Use margin if you need more space to divider-->
+
+
+                    <RelativeLayout
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+
+                        <!--This is the bold title text, eg. BARONS-->
+
+
+                        <!--This is the address that is shown, eg 3 ADDERLEY ST, CAPE TOWN,-->
+
+                        <!--This will display a string when the gps is on, not shown in image as gps was off in screenshot-->
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/ic_blood"
+                            android:id="@+id/image"
+                            android:padding="5dp" />
+
+                        <View
+                            android:background="@color/ef_grey"
+                            android:layout_toRightOf="@id/image"
+                            android:layout_weight="1"
+                            android:id="@+id/sep"
+                            android:layout_width="1dp"
+                            android:layout_height="50dp"
+                            android:layout_centerVertical="true"/>
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textStyle="bold"
+                            android:text="Colesterol"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:layout_toRightOf="@id/sep"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="5dp" />
+
+                        <TextView
+                            android:id="@+id/lastrecord"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Ultimo Registo:"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/image"
+                            android:layout_below="@+id/title"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:id="@+id/value5"
+                            android:text="N/a"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/lastrecord"
+                            android:textSize="20sp"
+                            android:layout_marginTop="5dp" />
+
+                        <TextView
+                            android:textColor="@color/black"
+                            android:text="mg/dl"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/value5"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="2dp" />
+
+
+                        <TextView
+                            android:textColor="@color/black"
+                            android:id="@+id/date5"
+                            android:text="xx-xx-xxxx"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/lastrecord"
+                            android:layout_below="@id/value5"/>
+
+                    </RelativeLayout>
+
+                    <ImageButton
+                        android:src="@drawable/ic_add"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/transparent"
+                        android:scaleType="fitStart"
+                        android:padding="12dp"/>
+
+                    <!--This is the red map button on the right-->
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#fff"
+                    android:layout_marginBottom="10dp"
+                    android:elevation="2dp"
+                    android:gravity="center_vertical">
+
+                    <!--This is the marker Icon on the left-->
+                    <!--Use margin if you need more space to divider-->
+
+
+                    <RelativeLayout
+                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
+
+                        <!--This is the bold title text, eg. BARONS-->
+
+
+                        <!--This is the address that is shown, eg 3 ADDERLEY ST, CAPE TOWN,-->
+
+                        <!--This will display a string when the gps is on, not shown in image as gps was off in screenshot-->
+                        <ImageView
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            app:srcCompat="@drawable/ic_test_tube"
+                            android:id="@+id/image"
+                            android:padding="5dp" />
+
+                        <View
+                            android:background="@color/ef_grey"
+                            android:layout_toRightOf="@id/image"
+                            android:layout_weight="1"
+                            android:id="@+id/sep"
+                            android:layout_width="1dp"
+                            android:layout_height="50dp"
+                            android:layout_centerVertical="true"/>
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textStyle="bold"
+                            android:text="HbA1c"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="20sp"
+                            android:layout_toRightOf="@id/sep"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="5dp" />
+
+                        <TextView
+                            android:id="@+id/lastrecord"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:text="Ultimo Registo:"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@+id/image"
+                            android:layout_below="@+id/title"
+                            android:layout_weight="1"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp" />
+
+                        <TextView
+                            android:id="@+id/value6"
+                            android:text="N/a"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/lastrecord"
+                            android:textSize="20sp"
+                            android:layout_marginTop="5dp" />
+
+                        <TextView
+                            android:textColor="@color/black"
+                            android:text="%"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/value6"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="2dp" />
+
+
+                        <TextView
+                            android:textColor="@color/black"
+                            android:id="@+id/date6"
+                            android:text="xx-xx-xxxx"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toRightOf="@id/lastrecord"
+                            android:layout_below="@id/value6"/>
+
+                    </RelativeLayout>
+
+                    <ImageButton
+                        android:src="@drawable/ic_add"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@color/transparent"
+                        android:scaleType="fitStart"
+                        android:padding="12dp"/>
+
+                    <!--This is the red map button on the right-->
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </ScrollView>
 
         <include layout="@layout/fab_home_left_layout" />
 
-        </android.support.design.widget.CoordinatorLayout>
+    </android.support.design.widget.CoordinatorLayout>
+
 </LinearLayout>

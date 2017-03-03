@@ -4,16 +4,35 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.CholesterolRec;
+import pt.it.porto.mydiabetes.data.DiseaseRec;
+import pt.it.porto.mydiabetes.data.ExerciseRec;
+import pt.it.porto.mydiabetes.data.WeightRec;
+import pt.it.porto.mydiabetes.database.ListsDataDb;
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.CholesterolDetail;
 import pt.it.porto.mydiabetes.ui.activities.DiseaseDetail;
 import pt.it.porto.mydiabetes.ui.activities.ExerciseDetail;
@@ -21,6 +40,7 @@ import pt.it.porto.mydiabetes.ui.activities.GlycemiaDetail;
 import pt.it.porto.mydiabetes.ui.activities.InsulinDetail;
 import pt.it.porto.mydiabetes.ui.activities.MealActivity;
 import pt.it.porto.mydiabetes.ui.activities.WeightDetail;
+
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 
 /**
@@ -28,6 +48,11 @@ import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
  */
 
 public class homeLeftFragment extends Fragment  {
+
+    private WeightRec weightRec;
+    private CholesterolRec cholesterolRec;
+    private ExerciseRec exerciseRec;
+    private DiseaseRec diseaseRec;
 
     private FloatingActionButton miniFab4;
     private FloatingActionButton miniFab5;
@@ -72,6 +97,55 @@ public class homeLeftFragment extends Fragment  {
         miniFab5 = (FloatingActionButton) layout.findViewById(R.id.mini_fab5);
         miniFab6 = (FloatingActionButton) layout.findViewById(R.id.mini_fab6);
         miniFab7 = (FloatingActionButton) layout.findViewById(R.id.mini_fab7);
+
+        TextView weightText = (TextView)layout.findViewById(R.id.value3);
+        TextView weightDate = (TextView)layout.findViewById(R.id.date3);
+        TextView cholesterolText = (TextView) layout.findViewById(R.id.value5);
+        TextView cholesterolDate = (TextView) layout.findViewById(R.id.date5);
+        TextView exerciseText = (TextView) layout.findViewById(R.id.value1);
+        TextView exerciseDate = (TextView) layout.findViewById(R.id.date1);
+        TextView diseaseText = (TextView) layout.findViewById(R.id.value2);
+        TextView diseaseDate = (TextView) layout.findViewById(R.id.date2);
+
+
+        //Read MyData From DB
+        DB_Read db = new DB_Read(getContext());
+        weightRec = db.getLastWeight();
+        cholesterolRec = db.getLastCholesterol();
+        exerciseRec = db.getLastExercice();
+        diseaseRec = db.getLastDisease();
+
+        db.close();
+
+        if(exerciseRec!= null){
+            exerciseText.setText(exerciseRec.getDuration()+"");
+            exerciseDate.setText(exerciseRec.getFormattedDate()+"");
+        }
+
+        if(diseaseRec!= null){
+            SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            try {
+                Date date2 = myFormat.parse(diseaseRec.getEndDate());
+                Date date1 = myFormat.parse(diseaseRec.getStartDate());
+                long diff = date2.getTime() - date1.getTime();
+                diseaseText.setText(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)+"");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            diseaseDate.setText(diseaseRec.getStartDate());
+        }
+
+        if(cholesterolRec != null){
+            cholesterolText.setText(cholesterolRec.getValue()+"");
+            cholesterolDate.setText(cholesterolRec.getFormattedDate()+"");
+        }
+
+        if(weightRec != null) {
+            weightText.setText(weightRec.getValue() + "");
+            weightDate.setText(weightRec.getFormattedDate() + "");
+        }
+
         setFabClickListeners();
         setOffsets();
 
