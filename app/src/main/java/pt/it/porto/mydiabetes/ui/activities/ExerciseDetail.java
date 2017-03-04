@@ -46,6 +46,7 @@ public class ExerciseDetail extends BaseActivity {
 		getSupportActionBar();
 		FillExerciseSpinner();
 		FillEffortSpinner();
+		Log.e("ENTRA","ENTRA");
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
@@ -320,4 +321,6 @@ public class ExerciseDetail extends BaseActivity {
 
 		NavUtils.navigateUpFromSameTask(this);
 	}
+
+
 }

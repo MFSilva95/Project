@@ -786,6 +786,31 @@ public class DB_Read {
 
 	}
 
+	@Nullable
+	public BloodPressureRec getLastBloodPressure() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure;", null);
+		cursor.moveToLast();
+		if (cursor.getCount()==0) {
+			return null;
+		}
+
+		BloodPressureRec tmp = new BloodPressureRec();
+		tmp.setId(cursor.getInt(0));
+		tmp.setIdUser(cursor.getInt(1));
+		tmp.setSystolic(cursor.getInt(2));
+		tmp.setDiastolic(cursor.getInt(3));
+		tmp.setDateTime(cursor.getString(4));
+		tmp.setIdTag(cursor.getInt(5));
+		tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
+
+		cursor.close();
+		return tmp;
+
+	}
+
+
+
+
 	//----------- CHOLESTEROL ---------------
 	public ArrayList<CholesterolRec> Cholesterol_GetBtDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE  DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
@@ -953,6 +978,26 @@ public class DB_Read {
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		cursor.moveToFirst();
 		if (cursor.getCount() == 0) {
+			return null;
+		}
+
+		HbA1cRec tmp = new HbA1cRec();
+		tmp.setId(cursor.getInt(0));
+		tmp.setIdUser(cursor.getInt(1));
+		tmp.setValue(cursor.getDouble(2));
+		tmp.setDateTime(cursor.getString(3));
+		tmp.setIdNote((!cursor.isNull(4)) ? cursor.getInt(4) : -1);
+
+		cursor.close();
+		return tmp;
+
+	}
+
+	@Nullable
+	public HbA1cRec getLastHbA1c() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_A1c", null);
+		cursor.moveToLast();
+		if (cursor.getCount()==0) {
 			return null;
 		}
 

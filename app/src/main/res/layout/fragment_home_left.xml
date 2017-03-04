@@ -35,7 +35,8 @@
                         android:gravity="center_horizontal"
                         android:orientation="vertical"
                         android:elevation="2dp"
-                        android:layout_marginRight="5dp">
+                        android:layout_marginRight="5dp"
+                        android:id="@+id/layout1">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -91,20 +92,6 @@
                             </LinearLayout>
 
 
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:id="@+id/lastrecord"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:text="Último Registo:"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:ellipsize="end"
-                                android:maxLines="1"
-                                android:textColor="@color/black"
-                                android:layout_below="@id/values"
-                                android:layout_marginTop="5dp" />
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -114,7 +101,7 @@
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:layout_below="@id/lastrecord"
+                                android:layout_below="@id/values"
                                 android:id="@+id/date1" />
 
 
@@ -124,9 +111,10 @@
                             android:src="@drawable/ic_add"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:background="@color/transparent"
                             android:scaleType="fitStart"
-                            android:padding="12dp" />
+                            android:padding="12dp"
+                            android:id="@+id/button1"
+                            android:background="@drawable/button_background"/>
                     </LinearLayout>
 
                     <LinearLayout
@@ -137,7 +125,8 @@
                         android:gravity="center_horizontal"
                         android:orientation="vertical"
                         android:elevation="2dp"
-                        android:layout_marginLeft="5dp">
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/layout2">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -192,20 +181,6 @@
                             </LinearLayout>
 
 
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:id="@+id/lastrecord"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:text="Último Registo:"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:ellipsize="end"
-                                android:maxLines="1"
-                                android:textColor="@color/black"
-                                android:layout_below="@id/values"
-                                android:layout_marginTop="5dp" />
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -215,7 +190,7 @@
                                 android:ellipsize="end"
                                 android:maxLines="1"
                                 android:textColor="@color/black"
-                                android:layout_below="@id/lastrecord"
+                                android:layout_below="@id/values"
                                 android:id="@+id/date2" />
 
 
@@ -225,9 +200,10 @@
                             android:src="@drawable/ic_add"
                             android:layout_width="50dp"
                             android:layout_height="50dp"
-                            android:background="@color/transparent"
+                            android:background="@drawable/button_background"
                             android:scaleType="fitStart"
-                            android:padding="12dp" />
+                            android:padding="12dp"
+                            android:id="@+id/button2" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -239,7 +215,8 @@
                     android:background="#fff"
                     android:layout_marginBottom="10dp"
                     android:elevation="2dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:id="@+id/layout3">
 
                     <!--This is the marker Icon on the left-->
                     <!--Use margin if you need more space to divider-->
@@ -285,24 +262,12 @@
                             android:layout_height="wrap_content"
                             android:textSize="20sp"
                             android:layout_toRightOf="@id/sep"
-                            android:layout_marginTop="5dp"
-                            android:layout_weight="1"
-                            android:layout_marginLeft="5dp" />
-
-                        <TextView
-                            android:id="@+id/lastrecord"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:text="Ultimo Registo:"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/image"
-                            android:layout_below="@+id/title"
-                            android:layout_weight="1"
                             android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp" />
+                            android:layout_marginRight="40dp"
+                            android:layout_centerVertical="true"/>
+
+
+
 
                         <TextView
                             android:id="@+id/value3"
@@ -310,9 +275,10 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/lastrecord"
+                            android:layout_toRightOf="@id/sep"
                             android:textSize="20sp"
-                            android:layout_marginTop="5dp" />
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="120dp" />
 
                         <TextView
                             android:textColor="@color/black"
@@ -321,7 +287,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/value3"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="15dp"
                             android:layout_marginLeft="2dp" />
 
 
@@ -332,8 +298,9 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/lastrecord"
-                            android:layout_below="@id/value3"/>
+                            android:layout_toRightOf="@id/sep"
+                            android:layout_below="@id/value3"
+                            android:layout_marginLeft="120dp" />
 
                     </RelativeLayout>
 
@@ -341,9 +308,10 @@
                         android:src="@drawable/ic_add"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:background="@color/transparent"
+                        android:background="@drawable/button_background"
                         android:scaleType="fitStart"
-                        android:padding="12dp"/>
+                        android:padding="12dp"
+                        android:id="@+id/button3" />
 
                     <!--This is the red map button on the right-->
                 </LinearLayout>
@@ -355,7 +323,8 @@
                     android:background="#fff"
                     android:layout_marginBottom="10dp"
                     android:elevation="2dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:id="@+id/layout4">
 
                     <!--This is the marker Icon on the left-->
                     <!--Use margin if you need more space to divider-->
@@ -401,24 +370,9 @@
                             android:layout_height="wrap_content"
                             android:textSize="20sp"
                             android:layout_toRightOf="@id/sep"
-                            android:layout_marginTop="5dp"
+                            android:layout_centerVertical="true"
                             android:layout_weight="1"
                             android:layout_marginLeft="5dp" />
-
-                        <TextView
-                            android:id="@+id/lastrecord"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:text="Ultimo Registo:"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/image"
-                            android:layout_below="@+id/title"
-                            android:layout_weight="1"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp" />
 
                         <TextView
                             android:id="@+id/value4"
@@ -426,19 +380,21 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/lastrecord"
+                            android:layout_toRightOf="@id/sep"
                             android:textSize="20sp"
-                            android:layout_marginTop="5dp" />
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="120dp " />
 
                         <TextView
                             android:textColor="@color/black"
-                            android:text="Bpm"
+                            android:text="mmHg"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/value4"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="2dp" />
+                            android:layout_marginTop="15dp"
+                            android:layout_marginLeft="2dp"
+                            android:textSize="12sp" />
 
 
                         <TextView
@@ -448,8 +404,9 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/lastrecord"
-                            android:layout_below="@id/value4"/>
+                            android:layout_toRightOf="@id/sep"
+                            android:layout_below="@id/value4"
+                            android:paddingLeft="120dp" />
 
                     </RelativeLayout>
 
@@ -457,9 +414,10 @@
                         android:src="@drawable/ic_add"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:background="@color/transparent"
+                        android:background="@drawable/button_background"
                         android:scaleType="fitStart"
-                        android:padding="12dp"/>
+                        android:padding="12dp"
+                        android:id="@+id/button4" />
 
                     <!--This is the red map button on the right-->
                 </LinearLayout>
@@ -471,7 +429,8 @@
                     android:background="#fff"
                     android:layout_marginBottom="10dp"
                     android:elevation="2dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:id="@+id/layout5">
 
                     <!--This is the marker Icon on the left-->
                     <!--Use margin if you need more space to divider-->
@@ -517,24 +476,9 @@
                             android:layout_height="wrap_content"
                             android:textSize="20sp"
                             android:layout_toRightOf="@id/sep"
-                            android:layout_marginTop="5dp"
+                            android:layout_centerVertical="true"
                             android:layout_weight="1"
                             android:layout_marginLeft="5dp" />
-
-                        <TextView
-                            android:id="@+id/lastrecord"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:text="Ultimo Registo:"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/image"
-                            android:layout_below="@+id/title"
-                            android:layout_weight="1"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp" />
 
                         <TextView
                             android:id="@+id/value5"
@@ -542,9 +486,10 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/lastrecord"
+                            android:layout_toRightOf="@id/sep"
                             android:textSize="20sp"
-                            android:layout_marginTop="5dp" />
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="120dp" />
 
                         <TextView
                             android:textColor="@color/black"
@@ -553,7 +498,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/value5"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="15dp"
                             android:layout_marginLeft="2dp" />
 
 
@@ -564,8 +509,9 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/lastrecord"
-                            android:layout_below="@id/value5"/>
+                            android:layout_toRightOf="@id/sep"
+                            android:layout_below="@id/value5"
+                            android:layout_marginLeft="120dp" />
 
                     </RelativeLayout>
 
@@ -573,9 +519,10 @@
                         android:src="@drawable/ic_add"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:background="@color/transparent"
+                        android:background="@drawable/button_background"
                         android:scaleType="fitStart"
-                        android:padding="12dp"/>
+                        android:padding="12dp"
+                        android:id="@+id/button5" />
 
                     <!--This is the red map button on the right-->
                 </LinearLayout>
@@ -587,7 +534,8 @@
                     android:background="#fff"
                     android:layout_marginBottom="10dp"
                     android:elevation="2dp"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:id="@+id/layout6">
 
                     <!--This is the marker Icon on the left-->
                     <!--Use margin if you need more space to divider-->
@@ -635,22 +583,8 @@
                             android:layout_toRightOf="@id/sep"
                             android:layout_marginTop="5dp"
                             android:layout_weight="1"
-                            android:layout_marginLeft="5dp" />
-
-                        <TextView
-                            android:id="@+id/lastrecord"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:text="Ultimo Registo:"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textColor="@color/black"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_toRightOf="@+id/image"
-                            android:layout_below="@+id/title"
-                            android:layout_weight="1"
                             android:layout_marginLeft="5dp"
-                            android:layout_marginRight="5dp" />
+                            android:layout_centerVertical="true"/>
 
                         <TextView
                             android:id="@+id/value6"
@@ -658,9 +592,10 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/lastrecord"
+                            android:layout_toRightOf="@id/sep"
                             android:textSize="20sp"
-                            android:layout_marginTop="5dp" />
+                            android:layout_marginTop="10dp"
+                            android:layout_marginLeft="120dp" />
 
                         <TextView
                             android:textColor="@color/black"
@@ -669,7 +604,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_toRightOf="@id/value6"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="15dp"
                             android:layout_marginLeft="2dp" />
 
 
@@ -680,8 +615,9 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toRightOf="@id/lastrecord"
-                            android:layout_below="@id/value6"/>
+                            android:layout_toRightOf="@id/sep"
+                            android:layout_below="@id/value6"
+                            android:layout_marginLeft="120dp" />
 
                     </RelativeLayout>
 
@@ -689,9 +625,10 @@
                         android:src="@drawable/ic_add"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:background="@color/transparent"
+                        android:background="@drawable/button_background"
                         android:scaleType="fitStart"
-                        android:padding="12dp"/>
+                        android:padding="12dp"
+                        android:id="@+id/button6" />
 
                     <!--This is the red map button on the right-->
                 </LinearLayout>
@@ -700,7 +637,6 @@
             </LinearLayout>
         </ScrollView>
 
-        <include layout="@layout/fab_home_left_layout" />
 
     </android.support.design.widget.CoordinatorLayout>
 
