@@ -84,6 +84,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="5dp"
+                                android:layout_alignBaseline="@id/value1"
                                 android:text="Min"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
                                 android:textColor="@color/black"/>
@@ -174,6 +175,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="5dp"
                                 android:text="Dias Doente"
+                                android:layout_alignBaseline="@id/value2"
                                 android:textAppearance="?android:attr/textAppearanceSmall"
                                 android:textColor="@color/black"/>
 
@@ -283,6 +285,7 @@
                         android:layout_marginLeft="2dp"
                         android:layout_marginTop="15dp"
                         android:layout_toRightOf="@id/value3"
+                        android:layout_alignBaseline="@id/value3"
                         android:text="Kg"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/black"/>
@@ -388,6 +391,7 @@
                         android:layout_marginLeft="2dp"
                         android:layout_marginTop="15dp"
                         android:layout_toRightOf="@id/value4"
+                        android:layout_alignBaseline="@id/value4"
                         android:text="mmHg"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/black"
@@ -494,6 +498,7 @@
                         android:layout_marginLeft="2dp"
                         android:layout_marginTop="15dp"
                         android:layout_toRightOf="@id/value5"
+                        android:layout_alignBaseline="@id/value5"
                         android:text="mg/dl"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/black"/>
@@ -600,6 +605,7 @@
                         android:layout_marginLeft="2dp"
                         android:layout_marginTop="15dp"
                         android:layout_toRightOf="@id/value6"
+                        android:layout_alignBaseline="@id/value6"
                         android:text="%"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColor="@color/black"/>
