@@ -26,616 +26,647 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-                <LinearLayout
-                    android:id="@+id/layout1"
+                <android.support.v7.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    android:background="#fff"
-                    android:elevation="2dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    app:elevation="2dp">
 
-                    <RelativeLayout
+                    <LinearLayout
+                        android:id="@+id/layout1"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
 
-                        <ImageView
-                            android:id="@+id/image"
-                            android:layout_width="60dp"
-                            android:layout_height="60dp"
-                            android:layout_centerHorizontal="true"
-                            android:background="@color/transparent"
-                            android:padding="5dp"
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/image"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:background="@color/transparent"
+                                android:padding="5dp"
+                                android:scaleType="fitStart"
+                                android:src="@drawable/ic_weight"
+                                />
+
+                            <TextView
+                                android:id="@+id/title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/image"
+                                android:layout_centerHorizontal="true"
+                                android:maxLines="1"
+                                android:text="Exercício"
+                                android:textSize="18sp"
+                                android:textStyle="bold"/>
+
+
+                            <LinearLayout
+                                android:id="@+id/values"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/title"
+                                android:layout_centerHorizontal="true"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/value1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="N/a"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    android:textSize="20sp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignBaseline="@id/value1"
+                                    android:paddingLeft="5dp"
+                                    android:text="Min"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    android:textColor="@color/black"/>
+
+                            </LinearLayout>
+
+
+                            <TextView
+                                android:id="@+id/date1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/values"
+                                android:layout_centerHorizontal="true"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="@color/black"
+                                tools:text="xx-xx-xxxx"/>
+
+
+                        </RelativeLayout>
+
+                        <ImageButton
+                            android:id="@+id/button1"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="12dp"
                             android:scaleType="fitStart"
-                            android:src="@drawable/ic_weight"
-                            />
+                            android:src="@drawable/ic_add"/>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
 
-                        <TextView
-                            android:id="@+id/title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/image"
-                            android:layout_centerHorizontal="true"
-                            android:maxLines="1"
-                            android:text="Exercício"
-                            android:textSize="18sp"
-                            android:textStyle="bold"/>
-
-
-                        <LinearLayout
-                            android:id="@+id/values"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/title"
-                            android:layout_centerHorizontal="true"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:id="@+id/value1"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="N/a"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textSize="20sp"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="5dp"
-                                android:layout_alignBaseline="@id/value1"
-                                android:text="Min"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="@color/black"/>
-
-                        </LinearLayout>
-
-
-                        <TextView
-                            android:id="@+id/date1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@id/values"
-                            android:layout_centerHorizontal="true"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/black"
-                            tools:text="xx-xx-xxxx"/>
-
-
-                    </RelativeLayout>
-
-                    <ImageButton
-                        android:id="@+id/button1"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="?attr/selectableItemBackgroundBorderless"
-                        android:padding="12dp"
-                        android:scaleType="fitStart"
-                        android:src="@drawable/ic_add"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout2"
+                <android.support.v7.widget.CardView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="1"
-                    android:background="#fff"
-                    android:elevation="2dp"
-                    android:gravity="center_horizontal"
-                    android:orientation="vertical">
+                    app:elevation="2dp">
+
+                    <LinearLayout
+                        android:id="@+id/layout2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/image"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerHorizontal="true"
+                                android:background="@color/transparent"
+                                android:padding="5dp"
+                                android:scaleType="fitStart"
+                                android:src="@drawable/ic_bed"/>
+
+                            <TextView
+                                android:id="@+id/title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/image"
+                                android:layout_centerHorizontal="true"
+                                android:maxLines="1"
+                                android:text="Doença"
+                                android:textSize="18sp"
+                                android:textStyle="bold"/>
+
+
+                            <LinearLayout
+                                android:id="@+id/values"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/title"
+                                android:layout_centerHorizontal="true"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/value2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="N/a"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    android:textSize="20sp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignBaseline="@id/value2"
+                                    android:paddingLeft="5dp"
+                                    android:text="Dias Doente"
+                                    android:textAppearance="?android:attr/textAppearanceSmall"
+                                    android:textColor="@color/black"/>
+
+                            </LinearLayout>
+
+
+                            <TextView
+                                android:id="@+id/date2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/values"
+                                android:layout_centerHorizontal="true"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textAppearance="?android:attr/textAppearanceSmall"
+                                android:textColor="@color/black"
+                                tools:text="xx-xx-xxxx"/>
+
+
+                        </RelativeLayout>
+
+                        <ImageButton
+                            android:id="@+id/button2"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:padding="12dp"
+                            android:scaleType="fitStart"
+                            android:src="@drawable/ic_add"/>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"
+                app:elevation="2dp">
+
+                <LinearLayout
+                    android:id="@+id/layout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <!--This is the marker Icon on the left-->
+                    <!--Use margin if you need more space to divider-->
+
 
                     <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
 
+                        <!--This is the bold title text, eg. BARONS-->
+
+
+                        <!--This is the address that is shown, eg 3 ADDERLEY ST, CAPE TOWN,-->
+
+                        <!--This will display a string when the gps is on, not shown in image as gps was off in screenshot-->
                         <ImageView
                             android:id="@+id/image"
                             android:layout_width="60dp"
                             android:layout_height="60dp"
-                            android:layout_centerHorizontal="true"
-                            android:background="@color/transparent"
                             android:padding="5dp"
-                            android:scaleType="fitStart"
-                            android:src="@drawable/ic_bed"/>
+                            app:srcCompat="@drawable/ic_scale"/>
+
+                        <View
+                            android:id="@+id/sep"
+                            android:layout_width="1dp"
+                            android:layout_height="50dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/image"
+                            android:layout_weight="1"
+                            android:background="@color/ef_grey"/>
 
                         <TextView
                             android:id="@+id/title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/image"
-                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_toRightOf="@id/sep"
+                            android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="Doença"
-                            android:textSize="18sp"
+                            android:text="Peso"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textSize="20sp"
                             android:textStyle="bold"/>
 
 
-                        <LinearLayout
-                            android:id="@+id/values"
+                        <TextView
+                            android:id="@+id/value3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/title"
-                            android:layout_centerHorizontal="true"
-                            android:orientation="horizontal">
+                            android:layout_marginLeft="120dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_toRightOf="@id/sep"
+                            android:text="N/a"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textSize="20sp"/>
 
-                            <TextView
-                                android:id="@+id/value2"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="N/a"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textSize="20sp"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:paddingLeft="5dp"
-                                android:text="Dias Doente"
-                                android:layout_alignBaseline="@id/value2"
-                                android:textAppearance="?android:attr/textAppearanceSmall"
-                                android:textColor="@color/black"/>
-
-                        </LinearLayout>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/value3"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_toRightOf="@id/value3"
+                            android:text="Kg"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/black"/>
 
 
                         <TextView
-                            android:id="@+id/date2"
+                            android:id="@+id/date3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/values"
-                            android:layout_centerHorizontal="true"
-                            android:ellipsize="end"
-                            android:maxLines="1"
+                            android:layout_below="@id/value3"
+                            android:layout_marginLeft="120dp"
+                            android:layout_toRightOf="@id/sep"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/black"
                             tools:text="xx-xx-xxxx"/>
 
-
                     </RelativeLayout>
 
                     <ImageButton
-                        android:id="@+id/button2"
+                        android:id="@+id/button3"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:background="?attr/selectableItemBackgroundBorderless"
                         android:padding="12dp"
                         android:scaleType="fitStart"
                         android:src="@drawable/ic_add"/>
+                    <!--This is the red map button on the right-->
                 </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-            </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/layout3"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
-                android:background="#fff"
-                android:elevation="2dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <!--This is the marker Icon on the left-->
-                <!--Use margin if you need more space to divider-->
+                app:elevation="2dp">
 
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp">
+                <LinearLayout
+                    android:id="@+id/layout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                    <!--This is the bold title text, eg. BARONS-->
+                    <!--This is the marker Icon on the left-->
+                    <!--Use margin if you need more space to divider-->
 
 
-                    <!--This is the address that is shown, eg 3 ADDERLEY ST, CAPE TOWN,-->
-
-                    <!--This will display a string when the gps is on, not shown in image as gps was off in screenshot-->
-                    <ImageView
-                        android:id="@+id/image"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:padding="5dp"
-                        app:srcCompat="@drawable/ic_scale"/>
-
-                    <View
-                        android:id="@+id/sep"
-                        android:layout_width="1dp"
-                        android:layout_height="50dp"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/image"
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:background="@color/ef_grey"/>
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
 
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="40dp"
-                        android:layout_toRightOf="@id/sep"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="Peso"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textSize="20sp"
-                        android:textStyle="bold"/>
+                        <!--This is the bold title text, eg. BARONS-->
 
 
-                    <TextView
-                        android:id="@+id/value3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="120dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/sep"
-                        android:text="N/a"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textSize="20sp"/>
+                        <!--This is the address that is shown, eg 3 ADDERLEY ST, CAPE TOWN,-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_toRightOf="@id/value3"
-                        android:layout_alignBaseline="@id/value3"
-                        android:text="Kg"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/black"/>
+                        <!--This will display a string when the gps is on, not shown in image as gps was off in screenshot-->
+                        <ImageView
+                            android:id="@+id/image"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:padding="5dp"
+                            app:srcCompat="@drawable/ic_cardiogram"/>
+
+                        <View
+                            android:id="@+id/sep"
+                            android:layout_width="1dp"
+                            android:layout_height="50dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/image"
+                            android:layout_weight="1"
+                            android:background="@color/ef_grey"/>
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_toRightOf="@id/sep"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="Batimento"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textSize="20sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/value4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="120dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_toRightOf="@id/sep"
+                            android:text="N/a"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textSize="20sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/value4"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_toRightOf="@id/value4"
+                            android:text="mmHg"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/black"
+                            android:textSize="12sp"/>
 
 
-                    <TextView
-                        android:id="@+id/date3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/value3"
-                        android:layout_marginLeft="120dp"
-                        android:layout_toRightOf="@id/sep"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/black"
-                        tools:text="xx-xx-xxxx"/>
+                        <TextView
+                            android:id="@+id/date4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/value4"
+                            android:layout_toRightOf="@id/sep"
+                            android:paddingLeft="120dp"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/black"
+                            tools:text="xx-xx-xxxx"/>
 
-                </RelativeLayout>
+                    </RelativeLayout>
 
-                <ImageButton
-                    android:id="@+id/button3"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="12dp"
-                    android:scaleType="fitStart"
-                    android:src="@drawable/ic_add"/>
+                    <ImageButton
+                        android:id="@+id/button4"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="12dp"
+                        android:scaleType="fitStart"
+                        android:src="@drawable/ic_add"/>
 
-                <!--This is the red map button on the right-->
-            </LinearLayout>
+                    <!--This is the red map button on the right-->
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-            <LinearLayout
-                android:id="@+id/layout4"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
-                android:background="#fff"
-                android:elevation="2dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                app:elevation="2dp">
 
-                <!--This is the marker Icon on the left-->
-                <!--Use margin if you need more space to divider-->
+                <LinearLayout
+                    android:id="@+id/layout5"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp">
-
-                    <!--This is the bold title text, eg. BARONS-->
+                    <!--This is the marker Icon on the left-->
+                    <!--Use margin if you need more space to divider-->
 
 
-                    <!--This is the address that is shown, eg 3 ADDERLEY ST, CAPE TOWN,-->
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
 
-                    <!--This will display a string when the gps is on, not shown in image as gps was off in screenshot-->
-                    <ImageView
-                        android:id="@+id/image"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:padding="5dp"
-                        app:srcCompat="@drawable/ic_cardiogram"/>
+                        <!--This is the bold title text, eg. BARONS-->
 
-                    <View
-                        android:id="@+id/sep"
-                        android:layout_width="1dp"
+
+                        <!--This is the address that is shown, eg 3 ADDERLEY ST, CAPE TOWN,-->
+
+                        <!--This will display a string when the gps is on, not shown in image as gps was off in screenshot-->
+                        <ImageView
+                            android:id="@+id/image"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:padding="5dp"
+                            app:srcCompat="@drawable/ic_blood"/>
+
+                        <View
+                            android:id="@+id/sep"
+                            android:layout_width="1dp"
+                            android:layout_height="50dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/image"
+                            android:layout_weight="1"
+                            android:background="@color/ef_grey"/>
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_toRightOf="@id/sep"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="Colesterol"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textSize="20sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/value5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="120dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_toRightOf="@id/sep"
+                            android:text="N/a"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textSize="20sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/value5"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_toRightOf="@id/value5"
+                            android:text="mg/dl"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/black"/>
+
+
+                        <TextView
+                            android:id="@+id/date5"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/value5"
+                            android:layout_marginLeft="120dp"
+                            android:layout_toRightOf="@id/sep"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/black"
+                            tools:text="xx-xx-xxxx"/>
+
+                    </RelativeLayout>
+
+                    <ImageButton
+                        android:id="@+id/button5"
+                        android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/image"
-                        android:layout_weight="1"
-                        android:background="@color/ef_grey"/>
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="12dp"
+                        android:scaleType="fitStart"
+                        android:src="@drawable/ic_add"/>
 
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@id/sep"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="Batimento"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textSize="20sp"
-                        android:textStyle="bold"/>
+                    <!--This is the red map button on the right-->
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
-                    <TextView
-                        android:id="@+id/value4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="120dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/sep"
-                        android:text="N/a"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textSize="20sp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_toRightOf="@id/value4"
-                        android:layout_alignBaseline="@id/value4"
-                        android:text="mmHg"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/black"
-                        android:textSize="12sp"/>
-
-
-                    <TextView
-                        android:id="@+id/date4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/value4"
-                        android:layout_toRightOf="@id/sep"
-                        android:paddingLeft="120dp"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/black"
-                        tools:text="xx-xx-xxxx"/>
-
-                </RelativeLayout>
-
-                <ImageButton
-                    android:id="@+id/button4"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="12dp"
-                    android:scaleType="fitStart"
-                    android:src="@drawable/ic_add"/>
-
-                <!--This is the red map button on the right-->
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout5"
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginBottom="10dp"
-                android:background="#fff"
-                android:elevation="2dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                app:elevation="2dp">
 
-                <!--This is the marker Icon on the left-->
-                <!--Use margin if you need more space to divider-->
+                <LinearLayout
+                    android:id="@+id/layout6"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp">
-
-                    <!--This is the bold title text, eg. BARONS-->
+                    <!--This is the marker Icon on the left-->
+                    <!--Use margin if you need more space to divider-->
 
 
-                    <!--This is the address that is shown, eg 3 ADDERLEY ST, CAPE TOWN,-->
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp">
 
-                    <!--This will display a string when the gps is on, not shown in image as gps was off in screenshot-->
-                    <ImageView
-                        android:id="@+id/image"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:padding="5dp"
-                        app:srcCompat="@drawable/ic_blood"/>
+                        <!--This is the bold title text, eg. BARONS-->
 
-                    <View
-                        android:id="@+id/sep"
-                        android:layout_width="1dp"
+
+                        <!--This is the address that is shown, eg 3 ADDERLEY ST, CAPE TOWN,-->
+
+                        <!--This will display a string when the gps is on, not shown in image as gps was off in screenshot-->
+                        <ImageView
+                            android:id="@+id/image"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:padding="5dp"
+                            app:srcCompat="@drawable/ic_test_tube"/>
+
+                        <View
+                            android:id="@+id/sep"
+                            android:layout_width="1dp"
+                            android:layout_height="50dp"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@id/image"
+                            android:layout_weight="1"
+                            android:background="@color/ef_grey"/>
+
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_toRightOf="@id/sep"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:text="HbA1c"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textSize="20sp"
+                            android:textStyle="bold"/>
+
+                        <TextView
+                            android:id="@+id/value6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="120dp"
+                            android:layout_marginTop="10dp"
+                            android:layout_toRightOf="@id/sep"
+                            android:text="N/a"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textSize="20sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBaseline="@id/value6"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="15dp"
+                            android:layout_toRightOf="@id/value6"
+                            android:text="%"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/black"/>
+
+
+                        <TextView
+                            android:id="@+id/date6"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/value6"
+                            android:layout_marginLeft="120dp"
+                            android:layout_toRightOf="@id/sep"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@color/black"
+                            tools:text="xx-xx-xxxx"/>
+
+                    </RelativeLayout>
+
+                    <ImageButton
+                        android:id="@+id/button6"
+                        android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/image"
-                        android:layout_weight="1"
-                        android:background="@color/ef_grey"/>
+                        android:background="?attr/selectableItemBackgroundBorderless"
+                        android:padding="12dp"
+                        android:scaleType="fitStart"
+                        android:src="@drawable/ic_add"/>
 
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@id/sep"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="Colesterol"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textSize="20sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:id="@+id/value5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="120dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/sep"
-                        android:text="N/a"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textSize="20sp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_toRightOf="@id/value5"
-                        android:layout_alignBaseline="@id/value5"
-                        android:text="mg/dl"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/black"/>
-
-
-                    <TextView
-                        android:id="@+id/date5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/value5"
-                        android:layout_marginLeft="120dp"
-                        android:layout_toRightOf="@id/sep"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/black"
-                        tools:text="xx-xx-xxxx"/>
-
-                </RelativeLayout>
-
-                <ImageButton
-                    android:id="@+id/button5"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="12dp"
-                    android:scaleType="fitStart"
-                    android:src="@drawable/ic_add"/>
-
-                <!--This is the red map button on the right-->
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/layout6"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:background="#fff"
-                android:elevation="2dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <!--This is the marker Icon on the left-->
-                <!--Use margin if you need more space to divider-->
-
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp">
-
-                    <!--This is the bold title text, eg. BARONS-->
-
-
-                    <!--This is the address that is shown, eg 3 ADDERLEY ST, CAPE TOWN,-->
-
-                    <!--This will display a string when the gps is on, not shown in image as gps was off in screenshot-->
-                    <ImageView
-                        android:id="@+id/image"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:padding="5dp"
-                        app:srcCompat="@drawable/ic_test_tube"/>
-
-                    <View
-                        android:id="@+id/sep"
-                        android:layout_width="1dp"
-                        android:layout_height="50dp"
-                        android:layout_centerVertical="true"
-                        android:layout_toRightOf="@id/image"
-                        android:layout_weight="1"
-                        android:background="@color/ef_grey"/>
-
-                    <TextView
-                        android:id="@+id/title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_toRightOf="@id/sep"
-                        android:layout_weight="1"
-                        android:ellipsize="end"
-                        android:maxLines="1"
-                        android:text="HbA1c"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textSize="20sp"
-                        android:textStyle="bold"/>
-
-                    <TextView
-                        android:id="@+id/value6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="120dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_toRightOf="@id/sep"
-                        android:text="N/a"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textSize="20sp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginTop="15dp"
-                        android:layout_toRightOf="@id/value6"
-                        android:layout_alignBaseline="@id/value6"
-                        android:text="%"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/black"/>
-
-
-                    <TextView
-                        android:id="@+id/date6"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/value6"
-                        android:layout_marginLeft="120dp"
-                        android:layout_toRightOf="@id/sep"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@color/black"
-                        tools:text="xx-xx-xxxx"/>
-
-                </RelativeLayout>
-
-                <ImageButton
-                    android:id="@+id/button6"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:padding="12dp"
-                    android:scaleType="fitStart"
-                    android:src="@drawable/ic_add"/>
-
-                <!--This is the red map button on the right-->
-            </LinearLayout>
-
+                    <!--This is the red map button on the right-->
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
