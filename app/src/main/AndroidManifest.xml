@@ -360,7 +360,7 @@
             android:name=".ui.activities.LogbookChartList"
             android:label="@string/title_activity_logbook"
             android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/AppNewThemeCompat">
+            android:theme="@style/NewHomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
