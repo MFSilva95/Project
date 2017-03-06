@@ -1,18 +1,52 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".ui.fragments.register.PersonalDataFragment">
+             tools:context=".ui.fragments.register.PersonalDataFragment"
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/insulin_list"
+    <android.support.design.widget.FloatingActionButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_plus"
+        android:id="@+id/floatingActionButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        app:backgroundTint="@android:color/holo_orange_light"
+        android:layout_margin="16dp" />
+
+    <LinearLayout
         android:orientation="vertical"
-        android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="vertical"
-        tools:listitem="@layout/listitem_new_insulin">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin">
 
-    </android.support.v7.widget.RecyclerView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/title"
+            android:textSize="26sp"
+            android:paddingTop="15dp"
+            android:fontFamily="sans-serif-thin"
+            android:textStyle="bold|italic"
+            android:textColor="@android:color/white" />
 
-</FrameLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/insulin_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:scrollbarStyle="outsideOverlay"
+            android:scrollbars="vertical"
+            tools:listitem="@layout/listitem_new_insulin">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+
+</RelativeLayout>

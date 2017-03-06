@@ -415,8 +415,8 @@
         <activity
             android:name=".ui.activities.WelcomeActivity"
             android:label="@string/title_activity_welcome"
-            android:theme="@style/Theme.Design.Light.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
+            android:theme="@style/welcomeTheme"
+            android:windowSoftInputMode="adjustResize">
         </activity>
 
         <activity
@@ -427,6 +427,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+
+
+        <activity
+            android:name=".ui.activities.AddEvent"
+            android:label="Test"
+            android:parentActivityName=".ui.activities.Home"
+            android:theme="@style/NewHomeTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="pt.it.porto.mydiabetes.ui.activities.Home"/>
+        </activity>
+
+
+
 
         <meta-data
             android:name="io.fabric.ApiKey"
@@ -442,7 +458,11 @@
             android:name=".utils.AdviceAlertReceiver"
             android:enabled="true"
             android:exported="true">
-        </receiver>
+        </receiver><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

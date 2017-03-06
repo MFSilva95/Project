@@ -41,7 +41,7 @@ public class GlyInsCarbs extends Activity {
 
 	
 
-	@Override
+	/*@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.home, menu);
@@ -63,7 +63,7 @@ public class GlyInsCarbs extends Activity {
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
+	}*/
 	
 	public void Call_Glycemia(View view){
 		Intent intent = new Intent(this, Glycemia.class);

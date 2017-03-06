@@ -2,51 +2,72 @@ package pt.it.porto.mydiabetes.ui.fragments.register;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
+
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.features.ImagePickerActivity;
+
+import com.esafirm.imagepicker.model.Image;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.R;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import static android.app.Activity.RESULT_OK;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnFormEnd} interface
- * to handle interaction events.
- * Use the {@link PersonalDataFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class PersonalDataFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
 
 	public static final int DEFAULT_BIRTHDAY_YEAR = 1980;
 	public static final int DEFAULT_BIRTHDAY_MONTH = 5;
 	public static final int DEFAULT_BIRTHDAY_DAY = 15;
 
-	private OnFormEnd mListener;
+	private static final int RC_CODE_PICKER = 2000;
+
+
+
+	private CircleImageView profileImage;
+	private ArrayList<Image> images = new ArrayList<>();
+	private String filename = "profilePhoto.png";
+	private View layout = null;
 	private EditText mNameView;
 	private EditText mHeightView;
 	private EditText mDateView;
 	private GregorianCalendar birthdayDate;
 	private RadioGroup mGenderGroup;
+	private Bitmap bmp;
+
+
 
 	/**
 	 * Use this factory method to create a new instance of
@@ -70,8 +91,9 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
+
 		// Inflate the layout for this fragment
-		View layout = inflater.inflate(R.layout.fragment_register_personal_data, container, false);
+		layout = inflater.inflate(R.layout.fragment_register_personal_data, container, false);
 		mNameView = (EditText) layout.findViewById(R.id.name);
 
 		mHeightView = (EditText) layout.findViewById(R.id.height);
@@ -95,31 +117,64 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 				((RadioButton) mGenderGroup.getChildAt(1)).setError(null);
 			}
 		});
+
+		profileImage = (CircleImageView) layout.findViewById(R.id.profile_image);
+		profileImage.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+
+				Intent intent = new Intent(getContext(), ImagePickerActivity.class);
+
+				intent.putExtra(ImagePicker.EXTRA_FOLDER_MODE, true);
+				intent.putExtra(ImagePicker.EXTRA_MODE, ImagePicker.MODE_SINGLE);
+				intent.putExtra(ImagePicker.EXTRA_SHOW_CAMERA, false);
+				intent.putExtra(ImagePicker.EXTRA_SELECTED_IMAGES, images);
+				intent.putExtra(ImagePicker.EXTRA_FOLDER_TITLE, "Album");
+				intent.putExtra(ImagePicker.EXTRA_IMAGE_TITLE, "Tap to select images");
+				intent.putExtra(ImagePicker.EXTRA_IMAGE_DIRECTORY, "Camera");
+
+				startActivityForResult(intent, RC_CODE_PICKER);
+			}
+
+
+
+		});
+
 		return layout;
 	}
 
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.formFillEnded();
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
+			images = data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
+			bmp = BitmapFactory.decodeFile(images.get(0).getPath());
+
+
+
+			ContextWrapper cw = new ContextWrapper(getContext());
+			// path to /data/data/yourapp/app_data/imageDir
+			File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+			// Create imageDir
+			File mypath=new File(directory,filename);
+			FileOutputStream fos = null;
+			try {
+				fos = new FileOutputStream(mypath);
+				// Use the compress method on the BitMap object to write image to the OutputStream
+				bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			profileImage.setImageURI(Uri.parse(mypath.getAbsolutePath()));
 		}
+
 	}
 
-	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-		if (context instanceof OnFormEnd) {
-			mListener = (OnFormEnd) context;
-		} else {
-			throw new RuntimeException(context.toString()
-					+ " must implement OnFormEnd");
-		}
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		mListener = null;
-	}
 
 	@Override
 	public boolean allFieldsAreValid() {
@@ -182,10 +237,6 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 				.append('-').append(birthdayDate.get(Calendar.MONTH)+1).append('-').append(birthdayDate.get(Calendar.YEAR)).toString());
 	}
 
-	@Override
-	public int getSubtitle() {
-		return R.string.subtitle_personal_data;
-	}
 
 	public static boolean isHeightValid(String height) {
 		float val = 0;
@@ -219,6 +270,11 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 		displayDate.append(' ');
 		displayDate.append(birthdayDate.get(Calendar.YEAR));
 		mDateView.setText(displayDate.toString());
+	}
+
+	@Override
+	public int getSubtitle() {
+		return R.string.subtitle_personal_data;
 	}
 
 

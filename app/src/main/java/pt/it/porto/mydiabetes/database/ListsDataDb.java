@@ -1,7 +1,9 @@
 package pt.it.porto.mydiabetes.database;
 
 import android.database.Cursor;
+import android.util.Log;
 
+import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.utils.DbUtils;
 
 public class ListsDataDb {
@@ -134,6 +136,7 @@ public class ListsDataDb {
 		String[] rows = new String[]{MyDiabetesContract.Regist.Weight.COLUMN_NAME_ID, MyDiabetesContract.Regist.Weight.COLUMN_NAME_VALUE, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME};
 		return storage.query(MyDiabetesContract.Regist.Weight.TABLE_NAME, rows, MyDiabetesContract.Regist.Weight.COLUMN_NAME_DATETIME + "<= ?", new String[]{endDate}, null, null, "DateTime DESC", numberOfItems);
 	}
+
 
 	public Cursor getInsulinRegList(String startDate, String endDate) {
 		Cursor cursor = storage.rawQuery("SELECT * " +

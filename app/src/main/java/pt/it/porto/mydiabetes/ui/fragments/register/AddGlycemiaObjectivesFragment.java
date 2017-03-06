@@ -3,6 +3,8 @@ package pt.it.porto.mydiabetes.ui.fragments.register;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -21,24 +25,17 @@ import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjetivesElement;
 import pt.it.porto.mydiabetes.utils.ArraysUtils;
+import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnFormEnd} interface
- * to handle interaction events.
- * Use the {@link AddGlycemiaObjectivesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
 
 	private static final String TAG = AddGlycemiaObjectivesFragment.class.getCanonicalName();
 
 	private static final String STATE_ITEMS = "items";
 
-	private OnFormEnd mListener;
 	private RecyclerView list;
+	private TextView title;
 	private ArrayList<GlycemiaObjectivesData> items = new ArrayList<>(3);
 
 	/**
@@ -73,12 +70,22 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		View layout = inflater.inflate(R.layout.fragment_register_insulins, container, false);
 		list = (RecyclerView) layout.findViewById(R.id.insulin_list);
 
+		title = (TextView) layout.findViewById(R.id.title);
+		title.setText("Novo Objetivo de Glicemia");
+
 		list.setAdapter(new InsulinAdapter());
 		list.setLayoutManager(new LinearLayoutManager(getContext()));
 		list.setItemAnimator(new DefaultItemAnimator());
 		if (savedInstanceState != null) {
 			items = (ArrayList) savedInstanceState.getSerializable(STATE_ITEMS);
 		}
+
+		FloatingActionButton myFab = (FloatingActionButton) layout.findViewById(R.id.floatingActionButton);
+		myFab.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				addGlycemiaObjective();
+			}
+		});
 
 
 		return layout;
@@ -89,34 +96,6 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		list.getAdapter().notifyItemInserted(items.size());
 	}
 
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.formFillEnded();
-		}
-	}
-
-	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-
-		if (context instanceof OnFormEnd) {
-			mListener = (OnFormEnd) context;
-			if (items.size() == 0) {
-				mListener.deactivateNextButton();
-			} else {
-				mListener.activateNextButton();
-			}
-		} else {
-			throw new RuntimeException(context.toString()
-					+ " must implement OnFormEnd");
-		}
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		mListener = null;
-	}
 
 	@Override
 	public boolean allFieldsAreValid() {
@@ -204,12 +183,6 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		}
 	}
 
-	@Override
-	public int getSubtitle() {
-		return R.string.title_activity_target_bg_detail;
-	}
-
-
 	class Holder extends RecyclerView.ViewHolder {
 
 		public Holder(View itemView) {
@@ -226,19 +199,6 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		}
 	}
 
-	class ButtonHolder extends Holder {
-
-		public ButtonHolder(View itemView, String text) {
-			super(itemView);
-			((Button) itemView).setText(text);
-			itemView.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					addGlycemiaObjective();
-				}
-			});
-		}
-	}
 
 	class InsulinAdapter extends RecyclerView.Adapter<Holder> {
 		private static final int TYPE_NEW_INSULIN = 0;
@@ -247,15 +207,7 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		@Override
 		public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
 			LayoutInflater layoutInflator = getLayoutInflater(null);
-			if (viewType == TYPE_FOOTER_BUTTON) {
-				return new ButtonHolder(layoutInflator.inflate(R.layout.list_item_new_element_button, parent, false), getContext().getString(R.string.new_glycemia_objective));
-			}
 			return new GlycemiaHolder(layoutInflator.inflate(R.layout.list_item_new_glycemia_objective, parent, false));
-		}
-
-		@Override
-		public int getItemViewType(int position) {
-			return position == items.size() ? TYPE_FOOTER_BUTTON : TYPE_NEW_INSULIN;
 		}
 
 		@Override
@@ -268,7 +220,7 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 
 		@Override
 		public int getItemCount() {
-			return items.size() + 1;
+			return items.size();
 		}
 	}
 
@@ -279,9 +231,6 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 			@Override
 			public void dataUpdated(GlycemiaObjectivesData data) {
 //				items.add(data.getPosition(), data);
-				if (mListener != null) {
-					mListener.activateNextButton();
-				}
 			}
 
 			@Override
@@ -293,5 +242,10 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 				list.getAdapter().notifyItemRemoved(pox);
 			}
 		});
+	}
+
+	@Override
+	public int getSubtitle() {
+		return R.string.title_activity_target_bg_detail;
 	}
 }

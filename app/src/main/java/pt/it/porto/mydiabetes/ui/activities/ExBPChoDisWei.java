@@ -36,7 +36,7 @@ public class ExBPChoDisWei extends BaseActivity {
 	}
 
 
-	@Override
+	/*@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.home, menu);
@@ -54,7 +54,7 @@ public class ExBPChoDisWei extends BaseActivity {
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
+	}*/
 
 
 	public void Call_DataTools() {

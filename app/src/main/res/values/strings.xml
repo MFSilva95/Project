@@ -424,4 +424,7 @@
     </string-array>
 
 
+    navigation_drawer_open
+    <string name="navigation_drawer_open">open</string>
+    <string name="navigation_drawer_close">close</string>
 </resources>

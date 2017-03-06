@@ -45,7 +45,7 @@
                     android:text="@string/insulin_method"/>
 
                 <TextView
-                    android:id="@+id/admininistration_method"
+                    android:id="@+id/admininistration_method_show"
                     style="@style/Regist.TextView"
                     tools:text="@string/insulin_method"/>
             </LinearLayout>
@@ -85,22 +85,41 @@
 
             <EditText
                 android:id="@id/name"
-                style="@style/Regist.EditText"
+                style="@style/welcomeEditText"
                 android:layout_marginBottom="0dp"
                 android:hint="@string/insulin"
-                android:inputType="textPersonName|textCapSentences"/>
+                android:inputType="textPersonName|textCapSentences"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <TextView
                 style="@style/Regist.TextView"
                 android:text="@string/insulin_method"/>
 
-            <EditText
-                android:id="@id/admininistration_method"
-                style="@style/Regist.EditText"
-                android:layout_marginBottom="0dp"
-                android:hint="@string/hint_insulin_type"
-                android:imeOptions="actionDone"
-                android:inputType="text|textCapSentences"/>
+            <RadioGroup
+                android:id="@+id/admininistration_method_insert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal">
+
+                <RadioButton
+                    android:id="@+id/caneta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Caneta"
+                    android:theme="@style/welcomeRadioButton"/>
+
+
+                <RadioButton
+                    android:id="@+id/bomba"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="Bomba"
+                    android:theme="@style/welcomeRadioButton"/>
+            </RadioGroup>
 
             <TextView
                 style="@style/Regist.TextView"
@@ -108,9 +127,10 @@
 
             <Spinner
                 android:id="@id/insulin_type"
-                style="@style/Regist.Spinner"
                 android:layout_marginBottom="0dp"
-                android:entries="@array/insulin_action"/>
+                android:entries="@array/insulin_action"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:id="@+id/buttons_edit"
@@ -125,7 +145,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Cancelar"/>
+                    android:text="Cancelar"
+                    android:textColor="@android:color/black" />
 
                 <View
                     android:layout_width="1dp"
@@ -138,7 +159,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Remover"/>
+                    android:text="Remover"
+                    android:textColor="@android:color/black" />
 
                 <View
                     android:layout_width="1dp"
@@ -151,7 +173,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Ok"/>
+                    android:text="Ok"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -167,7 +190,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Cancelar"/>
+                    android:text="Cancelar"
+                    android:textColor="@android:color/black" />
 
                 <View
                     android:layout_width="1dp"
@@ -180,7 +204,8 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="Ok"/>
+                    android:text="Ok"
+                    android:textColor="@android:color/black" />
             </LinearLayout>
         </LinearLayout>
 

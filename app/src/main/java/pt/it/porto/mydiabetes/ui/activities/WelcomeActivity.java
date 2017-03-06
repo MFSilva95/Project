@@ -7,30 +7,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestoreFragment;
-import pt.it.porto.mydiabetes.ui.fragments.register.AddGlycemiaObjectivesFragment;
-import pt.it.porto.mydiabetes.ui.fragments.register.AddInsulinsFragment;
-import pt.it.porto.mydiabetes.ui.fragments.register.FactorsFragment;
-import pt.it.porto.mydiabetes.ui.fragments.register.OnFormEnd;
-import pt.it.porto.mydiabetes.ui.fragments.register.PersonalDataFragment;
-import pt.it.porto.mydiabetes.ui.fragments.register.welcomeFragment;
+
+import pt.it.porto.mydiabetes.utils.CustomViewPager;
+import pt.it.porto.mydiabetes.ui.listAdapters.welcomePageAdapter;
 
 
 /**
  * A login screen that offers login via email/password.
  */
-public class WelcomeActivity extends BaseActivity implements OnFormEnd {
+public class WelcomeActivity extends BaseActivity {
+
 
 
 	@Override
-	public String getRegType(){return null;}
+	public String getRegType() {
+		return null;
+	}
 
 	// save state
 	private final static String BUNDLE_CURRENT_FRAGMENT = "current_fragment";
@@ -51,22 +54,27 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 
 	// UI references.
 	private LinearLayout pageIndicators;
+	private CustomViewPager mViewPager;
+	private PagerAdapter adapter;
 	private int currentFragment = 0;
-	private Fragment[] fragmentPages = new Fragment[]{new welcomeFragment(), new PersonalDataFragment(), new FactorsFragment(), new AddInsulinsFragment(), new AddGlycemiaObjectivesFragment()};
+	private int lastFragment = 0;
 
 	// user inserted data
 	private Bundle data = new Bundle();
-	private boolean nextButtonActive=true;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_welcome);
 		pageIndicators = (LinearLayout) findViewById(R.id.page_indicator);
+		mViewPager = (CustomViewPager) super.findViewById(R.id.content_fragment);
+		adapter = new welcomePageAdapter(super.getSupportFragmentManager());
+		mViewPager.setAdapter(adapter);
+		mViewPager.setOffscreenPageLimit(3);
 
 		if (savedInstanceState != null) {
 			currentFragment = savedInstanceState.getInt(BUNDLE_CURRENT_FRAGMENT, 0);
-			nextButtonActive = savedInstanceState.getBoolean(BUNDLE_SHOW_BUTTON_ACTIVE, true);
+
 			data = savedInstanceState.getBundle(BUNDLE_DATA);
 			if (data == null) {
 				data = new Bundle();
@@ -74,8 +82,6 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 			if (currentFragment != 0) {
 				setPageIndicator(0, currentFragment);
 			}
-		} else {
-			getSupportFragmentManager().beginTransaction().add(R.id.content_fragment, fragmentPages[currentFragment]).commit();
 		}
 		Button nextButton = (Button) findViewById(R.id.nextBT);
 		nextButton.setOnClickListener(new View.OnClickListener() {
@@ -84,19 +90,14 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 				next();
 			}
 		});
-		//getSupportActionBar().setSubtitle(((RegistryFragmentPage) fragmentPages[currentFragment]).getSubtitle());
-		if(nextButtonActive){
-			activateNextButton();
-		}else{
-			deactivateNextButton();
-		}
-		if(DB_BackupRestoreFragment.hasBackup()){
+
+		if (DB_BackupRestoreFragment.hasBackup()) {
 			Button button = (Button) findViewById(R.id.restoreDb);
 			button.setVisibility(View.VISIBLE);
 			button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if(DB_BackupRestoreFragment.restoreBackup(getApplicationContext())){
+					if (DB_BackupRestoreFragment.restoreBackup(getApplicationContext())) {
 						// jump to home
 						Intent intent = new Intent(getBaseContext(), Home.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -109,6 +110,25 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 			});
 		}
 
+		mViewPager.blockSwipeRight(true);
+		mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+			@Override
+			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+			}
+
+			@Override
+			public void onPageSelected(int position) {
+				hideKeyboard();
+				lastFragment = currentFragment;
+				currentFragment = position;
+				setPageIndicator(lastFragment, currentFragment);
+			}
+
+			@Override
+			public void onPageScrollStateChanged(int state) {
+
+			}
+		});
 
 	}
 
@@ -117,44 +137,30 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putInt(BUNDLE_CURRENT_FRAGMENT, currentFragment);
-		outState.putBoolean(BUNDLE_SHOW_BUTTON_ACTIVE, nextButtonActive);
 		outState.putBundle(BUNDLE_DATA, data);
 	}
 
-	/**
-	 * Attempts to sign in or register the account specified by the login form.
-	 * If there are form errors (invalid email, missing fields, etc.), the
-	 * errors are presented and no actual login attempt is made.
-	 */
 	private void next() {
 		hideKeyboard();
-		fragmentPages[currentFragment] = getSupportFragmentManager().findFragmentById(R.id.content_fragment);
-		if (((RegistryFragmentPage) fragmentPages[currentFragment]).allFieldsAreValid()) {
-			((RegistryFragmentPage) fragmentPages[currentFragment]).saveData(data);
-			if (currentFragment + 1 == fragmentPages.length) {
-				// we are in the last fragment page
-				// save data and exit
+		Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.content_fragment + ":" + mViewPager.getCurrentItem());
+		if (((RegistryFragmentPage) page).allFieldsAreValid()) {
+			((RegistryFragmentPage) page).saveData(data);
+			if (currentFragment + 1 == adapter.getCount()) {
 				Intent intent = new Intent(this, Home.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(intent);
 				finish();
 			} else {
-				// moves to next page
-				getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_left)
-						.remove(fragmentPages[currentFragment])
-						.add(R.id.content_fragment, fragmentPages[currentFragment + 1])
-						.commit();
-				setPageIndicator(currentFragment, currentFragment + 1);
-				currentFragment++;
-				//getSupportActionBar().setSubtitle(((RegistryFragmentPage) fragmentPages[currentFragment]).getSubtitle());
+				mViewPager.setCurrentItem(currentFragment+1);
 			}
 		}
 	}
 
+
 	private void hideKeyboard() {
-		InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+		InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 		View currentFocus = getCurrentFocus();
-		if(currentFocus!=null) {
+		if (currentFocus != null) {
 			imm.hideSoftInputFromWindow(currentFocus.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
 		}
 	}
@@ -194,28 +200,6 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 		});
 	}
 
-	@Override
-	public void formFillEnded() {
-		next();
-	}
-
-	@Override
-	public void activateNextButton() {
-		View v=findViewById(R.id.nextBT);
-		if(v!=null){
-			v.setEnabled(true);
-		}
-		nextButtonActive=true;
-	}
-
-	@Override
-	public void deactivateNextButton() {
-		View v=findViewById(R.id.nextBT);
-		if(v!=null){
-			v.setEnabled(false);
-		}
-		nextButtonActive=false;
-	}
 
 	public interface RegistryFragmentPage {
 		boolean allFieldsAreValid();
@@ -224,6 +208,8 @@ public class WelcomeActivity extends BaseActivity implements OnFormEnd {
 
 		int getSubtitle();
 	}
+
+
 
 }
 
