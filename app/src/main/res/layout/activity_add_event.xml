@@ -10,7 +10,7 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/registry_toolbar"
-        style="@style/MyToolbar"
+        app:theme="@style/MyToolbar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         app:layout_collapseMode="pin"

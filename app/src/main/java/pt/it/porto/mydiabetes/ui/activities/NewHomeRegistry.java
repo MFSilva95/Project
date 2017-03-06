@@ -32,7 +32,6 @@ import android.widget.TimePicker;
 import java.util.ArrayList;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
@@ -87,28 +86,6 @@ public class NewHomeRegistry extends AppCompatActivity {
             }
         });
 
-
-
-
-
-/*
-        Calendar time = DateUtils.getTimeCalendar(text);
-        if (time != null) {
-            insulinCalculator.setTime(this, time.get(Calendar.HOUR_OF_DAY), time.get(Calendar.MINUTE), null);
-        }*/
-
-
-        /*((TextInputLayout) findViewById(R.id.insulin_obj)).getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    // do your stuff here
-                    showBottomSheet();
-                    hideKeyboard();
-                }
-                return false;
-            }
-        });*/
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.registry_toolbar);
         setSupportActionBar(toolbar);
@@ -192,8 +169,6 @@ public class NewHomeRegistry extends AppCompatActivity {
         displayDate.append(registerDate.get(Calendar.DAY_OF_MONTH));
         displayDate.append(" ");
         displayDate.append(registerDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
-        //displayDate.append(' ');
-        //displayDate.append(registerDate.get(Calendar.YEAR));
         registerDateTextV.setText(displayDate.toString());
     }
 
@@ -256,7 +231,7 @@ public class NewHomeRegistry extends AppCompatActivity {
     }
 
 
-    void setupBottomSheet() {
+    private void setupBottomSheet() {
         //
         bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -286,7 +261,7 @@ public class NewHomeRegistry extends AppCompatActivity {
                 if (buttons.contains("meal")) {
                     removeContent(buttons.indexOf("meal"));
                     buttons.remove("meal");
-                    bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(false);
+                    bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(false);
                 } else {
                     addContent(R.layout.meal_content_edit);
                     v.getAnimation();
@@ -308,7 +283,7 @@ public class NewHomeRegistry extends AppCompatActivity {
                 if (buttons.contains("insulin")) {
                     removeContent(buttons.indexOf("insulin"));
                     buttons.remove("insulin");
-                    bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(false);
+                    bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(false);
                 } else {
                     addContent(R.layout.insulin_content_edit);
                     v.getAnimation();

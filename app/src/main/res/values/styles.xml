@@ -13,6 +13,11 @@
         <item name="android:divider">@null</item>
     </style>
 
+    <style name="ToolbarStyle" parent="NewHomeTheme">
+        <item name="android:textColorPrimary">@color/primary_text</item>
+        <item name="actionMenuTextColor">@color/primary_text</item>
+    </style>
+
 
     <!--
         Base application theme, dependent on API level. This theme is replaced
@@ -24,7 +29,7 @@
         <item name="colorAccent">@color/accent</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorPrimary">@color/primary</item>
-        <item name="android:textColorPrimary">@color/black</item>
+
         <item name="background">@color/background</item>
     </style>
 
@@ -38,10 +43,13 @@
         <item name="color">@android:color/white</item>
     </style>
 
-    <style name="AddMealTheme" parent="NewHomeTheme">
+    <style name="AddRegisterTheme" parent="NewHomeTheme">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:textColor">#424342</item>
     </style>
+
+
 
 
     <style name="AppNewThemeCompat" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -178,12 +186,13 @@
     </style>
 
 
-    <style name="MyToolbar">
-        <item name="theme">@style/ThemeOverlay.AppCompat.Dark</item>
+    <style name="MyToolbar" parent="NewHomeTheme">
         <item name="navigationIcon">@drawable/abc_ic_ab_back_material</item>
         <item name="android:background">?colorPrimary</item>
-        <item name="android:elevation">4dp</item>
-        <item name="android:color">?colorAccent</item>
+        <item name="android:color">@color/primary_text</item>
+        <item name="android:textColorPrimary">@color/primary_text</item>
+        <item name="android:textColor">@color/primary_text</item>
+        <item name="actionMenuTextColor">@color/primary_text</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
