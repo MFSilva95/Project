@@ -10,17 +10,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.esafirm.imagepicker.features.ImagePicker;
@@ -28,13 +25,13 @@ import com.esafirm.imagepicker.features.ImagePickerActivity;
 import com.esafirm.imagepicker.model.Image;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
-import pt.it.porto.mydiabetes.data.Advice;
-import pt.it.porto.mydiabetes.data.Task;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
@@ -44,25 +41,21 @@ public class Home extends BaseActivity {
 
 	public static final int CHANGES_OCCURRED = 1;
 	public static final int NO_CHANGES_OCCURRED = 0;
-
-	boolean fabOpen = false;
-
 	private static final String SELECTED_ITEM = "arg_selected_item";
-
 	private static final String TAG = "Home";
+
+
 	private static final int RC_CODE_PICKER = 2000;
-	Bitmap bmp;
+	private Bitmap bmp;
 	private ArrayList<Image> images = new ArrayList<>();
 	private CircleImageView userImg;
-	private String filename = "profilePhoto.png";
+	private String userImgFileName = "profilePhoto.png";
 
 
 	private NavigationView navigationView;
 	private DrawerLayout drawerLayout;
 
-
 	SharedPreferences mPrefs;
-	Uri defaultImgUri;
 	String imgUriString;
 
 	private YapDroid yapDroid;
@@ -78,7 +71,6 @@ public class Home extends BaseActivity {
 
 
 		mPrefs = getSharedPreferences("label", 0);
-
 		imgUriString = mPrefs.getString("userImgUri", null);
 
 		DB_Read read = new DB_Read(this);
@@ -128,7 +120,7 @@ public class Home extends BaseActivity {
 				ContextWrapper cw = new ContextWrapper(getBaseContext());
 				File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
 				// Create imageDir
-				File mypath = new File(directory, filename);
+				File mypath = new File(directory, userImgFileName);
 				if (mypath.exists()) {
 					Bitmap bmp = BitmapFactory.decodeFile(mypath.getPath());
 					userImg.setImageBitmap(bmp);
@@ -211,10 +203,29 @@ public class Home extends BaseActivity {
 		if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
 			images = data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
 			bmp = BitmapFactory.decodeFile(images.get(0).getPath());
+
+			ContextWrapper cw = new ContextWrapper(this);
+			// path to /data/data/yourapp/app_data/imageDir
+			File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+			// Create imageDir
+			File mypath = new File(directory, userImgFileName);
+			FileOutputStream fos = null;
+
+			try {
+				fos = new FileOutputStream(mypath);
+				// Use the compress method on the BitMap object to write image to the OutputStream
+				bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 			userImg.setImageBitmap(bmp);
 		}
-
-		//Log.i(TAG, "onActivityResult: HELLO M8");
 	}
 
 

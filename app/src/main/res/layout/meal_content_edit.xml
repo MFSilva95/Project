@@ -20,7 +20,7 @@
         android:layout_height="72dp"
         android:layout_gravity="center_vertical"
         android:padding="24dp"
-        android:src="@drawable/ic_restaurant_menu_black_24dp"/>
+        android:src="@drawable/ic_meal"/>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/glycemia_txt"
