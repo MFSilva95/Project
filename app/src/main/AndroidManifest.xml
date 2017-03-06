@@ -92,7 +92,7 @@
             android:name=".ui.activities.Exercise"
             android:label="@string/title_activity_exercise"
             android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/AppThemeCustomToolBar">
+            android:theme="@style/NewHomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -119,7 +119,7 @@
             android:name=".ui.activities.BloodPressure"
             android:label="@string/title_activity_blood_pressure"
             android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/AppThemeCustomToolBar">
+            android:theme="@style/NewHomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -136,7 +136,7 @@
         <activity
             android:name=".ui.activities.Cholesterol"
             android:label="@string/title_activity_cholesterol"
-            android:theme="@style/AppThemeCustomToolBar"
+            android:theme="@style/NewHomeTheme"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -145,7 +145,7 @@
         <activity
             android:name=".ui.activities.Disease"
             android:label="@string/title_activity_disease"
-            android:theme="@style/AppThemeCustomToolBar"
+            android:theme="@style/NewHomeTheme"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -154,7 +154,7 @@
         <activity
             android:name=".ui.activities.HbA1c"
             android:label="@string/title_activity_h1_a1c"
-            android:theme="@style/AppThemeCustomToolBar"
+            android:theme="@style/NewHomeTheme"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -164,7 +164,7 @@
             android:name=".ui.activities.WeightChartList"
             android:label="@string/title_activity_weight"
             android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/AppNewThemeCompat">
+            android:theme="@style/NewHomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -215,7 +215,7 @@
         <activity
             android:name=".ui.activities.ExerciseDetail"
             android:label="@string/title_activity_exercise_detail"
-            android:theme="@style/AppNewThemeCompat"
+            android:theme="@style/NewHomeTheme"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -243,7 +243,7 @@
         <activity
             android:name=".ui.activities.BloodPressureDetail"
             android:label="@string/title_activity_blood_pressure_detail"
-            android:theme="@style/AppNewThemeCompat"
+            android:theme="@style/NewHomeTheme"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -252,7 +252,7 @@
         <activity
             android:name=".ui.activities.CholesterolDetail"
             android:label="@string/title_activity_cholesterol_detail"
-            android:theme="@style/AppNewThemeCompat"
+            android:theme="@style/NewHomeTheme"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -261,7 +261,7 @@
         <activity
             android:name=".ui.activities.WeightDetail"
             android:label="@string/title_activity_weight_detail"
-            android:theme="@style/AppNewThemeCompat"
+            android:theme="@style/NewHomeTheme"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -270,7 +270,7 @@
         <activity
             android:name=".ui.activities.HbA1cDetail"
             android:label="@string/title_activity_hb_a1c_detail"
-            android:theme="@style/AppNewThemeCompat"
+            android:theme="@style/NewHomeTheme"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -279,7 +279,7 @@
         <activity
             android:name=".ui.activities.DiseaseDetail"
             android:label="@string/title_activity_disease_detail"
-            android:theme="@style/AppNewThemeCompat"
+            android:theme="@style/NewHomeTheme"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

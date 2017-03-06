@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,7 +46,11 @@ public class DiseaseDetail extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_disease_detail);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 		FillDiseaseAC();
 
 
@@ -56,7 +62,7 @@ public class DiseaseDetail extends BaseActivity {
 			DiseaseRec toFill = rdb.DiseaseReg_GetById(Integer.parseInt(id));
 
 			AutoCompleteTextView diseaseSpinner = (AutoCompleteTextView) findViewById(R.id.ac_DiseaseRegDetail_Disease);
-			EditText dataFrom = (EditText) findViewById(R.id.et_DiseaseRegDetail_DataFrom);
+            EditText dataFrom = (EditText) findViewById(R.id.et_DiseaseRegDetail_DataFrom);
 			EditText dataTo = (EditText) findViewById(R.id.et_DiseaseRegDetail_DataTo);
 			EditText note = (EditText) findViewById(R.id.et_DiseaseRegDetail_Notes);
 			diseaseSpinner.setText(toFill.getDisease());
@@ -95,7 +101,7 @@ public class DiseaseDetail extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
+				finish();
 				return true;
 			case R.id.menuItem_DiseaseRegDetail_Save:
 				AddDiseaseRead();
@@ -188,7 +194,7 @@ public class DiseaseDetail extends BaseActivity {
 		reg.close();
 		rdb.close();
 
-		goUp();
+		finish();
 	}
 
 	public void DeleteDiseaseRead() {
@@ -202,7 +208,7 @@ public class DiseaseDetail extends BaseActivity {
 						DB_Write wdb = new DB_Write(c);
 						try {
 							wdb.DiseaseReg_Delete(idDisease);
-							goUp();
+							finish();
 						} catch (Exception e) {
 							Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
 						}
@@ -215,10 +221,6 @@ public class DiseaseDetail extends BaseActivity {
 						// Do nothing.
 					}
 				}).show();
-	}
-
-	public void goUp() {
-		NavUtils.navigateUpFromSameTask(this);
 	}
 
 	public void UpdateDiseaseRead() {
@@ -274,6 +276,6 @@ public class DiseaseDetail extends BaseActivity {
 		wdb.close();
 		rdb.close();
 
-		goUp();
+		finish();
 	}
 }

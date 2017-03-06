@@ -4,8 +4,11 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,7 +40,11 @@ public class HbA1cDetail extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_hba1c_detail);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
@@ -82,7 +89,8 @@ public class HbA1cDetail extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
+				//NavUtils.navigateUpFromSameTask(this);
+				finish();
 				return true;
 			case R.id.menuItem_HbA1cDetail_Save:
 				AddHbA1cRead();
@@ -156,7 +164,7 @@ public class HbA1cDetail extends BaseActivity {
 		wdb.close();
 		rdb.close();
 
-		goUp();
+		finish();
 	}
 
 	public void UpdateHbA1cRead() {
@@ -202,7 +210,7 @@ public class HbA1cDetail extends BaseActivity {
 		wdb.close();
 		rdb.close();
 
-		goUp();
+		finish();
 	}
 
 	public void DeleteHbA1cRead() {
@@ -216,7 +224,7 @@ public class HbA1cDetail extends BaseActivity {
 						DB_Write wdb = new DB_Write(c);
 						try {
 							wdb.HbA1c_Delete(idHbA1c);
-							goUp();
+							finish();
 						} catch (Exception e) {
 							Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
 						}
@@ -229,10 +237,6 @@ public class HbA1cDetail extends BaseActivity {
 						// Do nothing.
 					}
 				}).show();
-	}
-
-	public void goUp() {
-		NavUtils.navigateUpFromSameTask(this);
 	}
 
 }

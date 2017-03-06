@@ -5,7 +5,8 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,7 +44,11 @@ public class ExerciseDetail extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_exercise_detail);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 		FillExerciseSpinner();
 		FillEffortSpinner();
 		Log.e("ENTRA","ENTRA");
@@ -100,7 +105,7 @@ public class ExerciseDetail extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
+				finish();
 				return true;
 			case R.id.menuItem_ExerciseDetail_Save:
 				AddExerciseRead();
@@ -220,7 +225,7 @@ public class ExerciseDetail extends BaseActivity {
 		reg.close();
 		rdb.close();
 
-		NavUtils.navigateUpFromSameTask(this);
+		finish();
 	}
 
 	public static void SelectSpinnerItemByValue(Spinner spnr, String value) {
@@ -244,7 +249,7 @@ public class ExerciseDetail extends BaseActivity {
 						DB_Write wdb = new DB_Write(c);
 						try {
 							wdb.Exercise_Delete(id);
-							goUp();
+							finish();
 						} catch (Exception e) {
 							Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
 						}
@@ -259,9 +264,6 @@ public class ExerciseDetail extends BaseActivity {
 				}).show();
 	}
 
-	public void goUp() {
-		NavUtils.navigateUpFromSameTask(this);
-	}
 
 	public void UpdateExerciseRead(int id) {
 		AutoCompleteTextView exerciseSpinner = (AutoCompleteTextView) findViewById(R.id.ac_ExerciseDetail_Exercise);
@@ -319,7 +321,7 @@ public class ExerciseDetail extends BaseActivity {
 		wdb.close();
 		rdb.close();
 
-		NavUtils.navigateUpFromSameTask(this);
+		finish();
 	}
 
 

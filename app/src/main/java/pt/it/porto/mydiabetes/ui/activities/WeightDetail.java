@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -39,7 +41,11 @@ public class WeightDetail extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_weight_detail);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
@@ -157,7 +163,7 @@ public class WeightDetail extends BaseActivity {
 		wdb.close();
 		rdb.close();
 
-		goUp();
+		finish();
 	}
 
 	public void UpdateWeightRead() {
@@ -202,7 +208,7 @@ public class WeightDetail extends BaseActivity {
 
 		wdb.close();
 		rdb.close();
-		goUp();
+		finish();
 	}
 
 	public void DeleteWeightRead() {
@@ -216,7 +222,7 @@ public class WeightDetail extends BaseActivity {
 						DB_Write wdb = new DB_Write(c);
 						try {
 							wdb.Weight_Delete(idWeight);
-							goUp();
+							finish();
 						} catch (Exception e) {
 							Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
 						}
@@ -229,10 +235,6 @@ public class WeightDetail extends BaseActivity {
 						// Do nothing.
 					}
 				}).show();
-	}
-
-	public void goUp() {
-		NavUtils.navigateUpFromSameTask(this);
 	}
 
 }

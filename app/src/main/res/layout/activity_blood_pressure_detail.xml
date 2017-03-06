@@ -1,245 +1,279 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:scrollbars="vertical"
-    tools:context=".ui.activities.BloodPressureDetail" >
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.activities.BloodPressureDetail">
 
-    <LinearLayout
-        android:paddingTop="8dp"
-        android:layout_width="fill_parent"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:descendantFocusability="beforeDescendants"
-		android:focusableInTouchMode="true">
-        
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp"
-        	android:layout_marginTop="8dp" >
-        	
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider"
-		        android:layout_gravity="center_vertical" />
-            
-            <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:text="@string/date_hour"
-				style="@style/SectionHeader"
-		        android:gravity="center_vertical|center_horizontal" />
-            
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider"
-		        android:layout_gravity="center_vertical" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp" >
-	        
-	        <EditText
-		        android:id="@+id/et_BloodPressureDetail_Data"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:layout_marginLeft="16dp"
-		        android:layout_marginRight="16dp"
-		        android:textSize="18sp"
-		        android:gravity="center_horizontal"
-		        style="@style/Holo.Spinner"
-		        android:focusable="false"
-		        android:focusableInTouchMode="false"
-		        android:onClick="showDatePickerDialog" />
-	        
-	        <EditText
-		        android:id="@+id/et_BloodPressureDetail_Hora"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:layout_marginLeft="16dp"
-		        android:layout_marginRight="16dp"
-		        android:textSize="18sp"
-		        android:gravity="center_horizontal"
-		        style="@style/Holo.Spinner"
-		        android:focusable="false"
-		        android:focusableInTouchMode="false"
-		        android:onClick="showTimePickerDialog" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp"
-        	android:layout_marginTop="8dp" >
-        	
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider"
-		        android:layout_gravity="center_vertical" />
-            
-            <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="0.75"
-		        android:text="@string/time_of_day"
-				style="@style/SectionHeader"
-		        android:gravity="center_vertical|center_horizontal" />
-            
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider"
-		        android:layout_gravity="center_vertical" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:gravity="center_horizontal" >
-                        
-            <Spinner
-			    android:id="@+id/sp_BloodPressureDetail_Tag"
-			    android:layout_width="wrap_content"
-			    android:layout_height="36dp" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp"
-        	android:layout_marginTop="8dp" >
-        	
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider"
-		        android:layout_gravity="center_vertical" />
-            
-            <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="0.75"
-		        android:text="@string/bloodpressure"
-				style="@style/SectionHeader"
-		        android:gravity="center_vertical|center_horizontal" />
-            
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider"
-		        android:layout_gravity="center_vertical" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:gravity="center_horizontal"
-        	android:baselineAligned="false" >
-            
-            <LinearLayout
-	            android:orientation="vertical"
-	            android:layout_width="0dp"
-	        	android:layout_height="wrap_content"
-	        	android:layout_weight="1"
-	        	android:gravity="center_vertical" >
-	        	<TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="@string/systolic"
-					style="@style/Subheading"
-			        android:layout_gravity="center_horizontal" />
-	            <EditText
-			        android:id="@+id/et_BloodPressureDetail_Systolic"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_gravity="center_horizontal"
-			        android:gravity="center_horizontal"
-			        android:width="100dp"
-			        android:textSize="24sp"
-			        android:inputType="numberDecimal" />
-            </LinearLayout>
-            <LinearLayout
-	            android:orientation="vertical"
-	            android:layout_width="0dp"
-	        	android:layout_height="wrap_content"
-	        	android:layout_weight="1"
-	        	android:gravity="center_vertical" >
-	        	<TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="@string/diastolic"
-					style="@style/Subheading"
-			        android:layout_gravity="center_horizontal" />
-	            <EditText
-			        android:id="@+id/et_BloodPressureDetail_Diastolic"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_gravity="center_horizontal"
-			        android:gravity="center_horizontal"
-			        android:width="100dp"
-			        android:textSize="24sp"
-			        android:inputType="numberDecimal" />
-            </LinearLayout>
-        </LinearLayout>
-        
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp"
-        	android:layout_marginTop="8dp" >
-        	
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider"
-		        android:layout_gravity="center_vertical" />
-            
-            <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="0.75"
-		        android:text="@string/notes"
-				style="@style/SectionHeader"
-		        android:gravity="center_vertical|center_horizontal" />
-            
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider"
-		        android:layout_gravity="center_vertical" />
-        </LinearLayout>
-    	<LinearLayout
-	            android:orientation="vertical"
-	            android:layout_width="fill_parent"
-	        	android:layout_height="0dp"
-	        	android:layout_weight="1"
-	        	android:gravity="center_vertical" >
-	            <EditText
-			        android:id="@+id/et_BloodPressureDetail_Notes"
-			        android:layout_width="fill_parent"
-			        android:layout_height="wrap_content"
-			        android:layout_gravity="center_horizontal"
-			        android:gravity="top|left"
-			        android:singleLine="false"
-			        android:lines="2"
-			        android:inputType="textMultiLine"
-			        android:textSize="16sp"/>
-          </LinearLayout>    
-        
-    </LinearLayout>
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/ToolBarStyle" />
 
-</ScrollView>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:orientation="vertical"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:paddingTop="8dp">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+
+                <TextView
+                    style="@style/SectionHeader"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/date_hour" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_BloodPressureDetail_Data"
+                    style="@style/Holo.Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="1"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center_horizontal"
+                    android:onClick="showDatePickerDialog"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/et_BloodPressureDetail_Hora"
+                    style="@style/Holo.Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="1"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center_horizontal"
+                    android:onClick="showTimePickerDialog"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+
+                <TextView
+                    style="@style/SectionHeader"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/time_of_day" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/sp_BloodPressureDetail_Tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+
+                <TextView
+                    style="@style/SectionHeader"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/bloodpressure" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Subheading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/systolic" />
+
+                    <EditText
+                        android:id="@+id/et_BloodPressureDetail_Systolic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:width="100dp"
+                        android:gravity="center_horizontal"
+                        android:inputType="numberDecimal"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <TextView
+                        style="@style/Subheading"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:text="@string/diastolic" />
+
+                    <EditText
+                        android:id="@+id/et_BloodPressureDetail_Diastolic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:width="100dp"
+                        android:gravity="center_horizontal"
+                        android:inputType="numberDecimal"
+                        android:textSize="24sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+
+                <TextView
+                    style="@style/SectionHeader"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/notes" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/et_BloodPressureDetail_Notes"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="top|left"
+                    android:inputType="textMultiLine"
+                    android:lines="2"
+                    android:singleLine="false"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

@@ -73,7 +73,7 @@ public abstract class BaseListRangeActivity extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
+				finish();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -116,4 +116,10 @@ public abstract class BaseListRangeActivity extends BaseActivity {
 	abstract String getBaseStartDate();
 	abstract String getBaseEndDate();
 	abstract ListAdapter getListAdapter();
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		fillListView(list);
+	}
 }

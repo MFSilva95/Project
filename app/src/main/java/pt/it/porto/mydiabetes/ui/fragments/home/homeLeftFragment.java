@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.ui.fragments.home;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -14,6 +15,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -55,6 +57,7 @@ import pt.it.porto.mydiabetes.ui.activities.Cholesterol;
 import pt.it.porto.mydiabetes.ui.activities.CholesterolDetail;
 import pt.it.porto.mydiabetes.ui.activities.Disease;
 import pt.it.porto.mydiabetes.ui.activities.DiseaseDetail;
+import pt.it.porto.mydiabetes.ui.activities.Exercise;
 import pt.it.porto.mydiabetes.ui.activities.ExerciseDetail;
 import pt.it.porto.mydiabetes.ui.activities.ExercisesDetail;
 import pt.it.porto.mydiabetes.ui.activities.GlycemiaDetail;
@@ -65,6 +68,7 @@ import pt.it.porto.mydiabetes.ui.activities.MealActivity;
 import pt.it.porto.mydiabetes.ui.activities.WeightChartList;
 import pt.it.porto.mydiabetes.ui.activities.WeightDetail;
 
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -73,6 +77,7 @@ import pt.it.porto.mydiabetes.ui.activities.WeightDetail;
 
 public class homeLeftFragment extends Fragment  {
 
+
     private WeightRec weightRec;
     private CholesterolRec cholesterolRec;
     private ExerciseRec exerciseRec;
@@ -80,21 +85,33 @@ public class homeLeftFragment extends Fragment  {
     private BloodPressureRec bloodPressureRec;
     private HbA1cRec hbA1cRec;
 
-    private long currentTime= System.currentTimeMillis();
 
-    ImageButton button1;
-    ImageButton button2;
-    ImageButton button3;
-    ImageButton button4;
-    ImageButton button5;
-    ImageButton button6;
+    private ImageButton button1;
+    private ImageButton button2;
+    private ImageButton button3;
+    private ImageButton button4;
+    private ImageButton button5;
+    private ImageButton button6;
 
-    LinearLayout layout1;
-    LinearLayout layout2;
-    LinearLayout layout3;
-    LinearLayout layout4;
-    LinearLayout layout5;
-    LinearLayout layout6;
+    private LinearLayout layout1;
+    private LinearLayout layout2;
+    private LinearLayout layout3;
+    private LinearLayout layout4;
+    private LinearLayout layout5;
+    private LinearLayout layout6;
+
+    private TextView exerciseText;
+    private TextView exerciseDate;
+    private TextView diseaseText;
+    private TextView diseaseDate;
+    private TextView weightText;
+    private TextView weightDate;
+    private TextView bloodPressureText;
+    private TextView bloodPressureDate;
+    private TextView cholesterolText;
+    private TextView cholesterolDate;
+    private TextView hba1cText;
+    private TextView hba1cDate;
 
     public static pt.it.porto.mydiabetes.ui.fragments.home.homeLeftFragment newInstance() {
         pt.it.porto.mydiabetes.ui.fragments.home.homeLeftFragment fragment = new pt.it.porto.mydiabetes.ui.fragments.home.homeLeftFragment();
@@ -129,82 +146,20 @@ public class homeLeftFragment extends Fragment  {
         layout5 = (LinearLayout) layout.findViewById(R.id.layout5);
         layout6 = (LinearLayout) layout.findViewById(R.id.layout6);
 
-        TextView exerciseText = (TextView) layout.findViewById(R.id.value1);
-        TextView exerciseDate = (TextView) layout.findViewById(R.id.date1);
-        TextView diseaseText = (TextView) layout.findViewById(R.id.value2);
-        TextView diseaseDate = (TextView) layout.findViewById(R.id.date2);
-        TextView weightText = (TextView)layout.findViewById(R.id.value3);
-        TextView weightDate = (TextView)layout.findViewById(R.id.date3);
-        TextView bloodPressureText = (TextView) layout.findViewById(R.id.value4);
-        TextView bloodPressureDate = (TextView) layout.findViewById(R.id.date4);
-        TextView cholesterolText = (TextView) layout.findViewById(R.id.value5);
-        TextView cholesterolDate = (TextView) layout.findViewById(R.id.date5);
-        TextView hba1cText = (TextView) layout.findViewById(R.id.value6);
-        TextView hba1cDate = (TextView) layout.findViewById(R.id.date6);
+        exerciseText = (TextView) layout.findViewById(R.id.value1);
+        exerciseDate = (TextView) layout.findViewById(R.id.date1);
+        diseaseText = (TextView) layout.findViewById(R.id.value2);
+        diseaseDate = (TextView) layout.findViewById(R.id.date2);
+        weightText = (TextView)layout.findViewById(R.id.value3);
+        weightDate = (TextView)layout.findViewById(R.id.date3);
+        bloodPressureText = (TextView) layout.findViewById(R.id.value4);
+        bloodPressureDate = (TextView) layout.findViewById(R.id.date4);
+        cholesterolText = (TextView) layout.findViewById(R.id.value5);
+        cholesterolDate = (TextView) layout.findViewById(R.id.date5);
+        hba1cText = (TextView) layout.findViewById(R.id.value6);
+        hba1cDate = (TextView) layout.findViewById(R.id.date6);
 
-
-        //Read MyData From DB
-        DB_Read db = new DB_Read(getContext());
-        weightRec = db.getLastWeight();
-        cholesterolRec = db.getLastCholesterol();
-        exerciseRec = db.getLastExercice();
-        diseaseRec = db.getLastDisease();
-        bloodPressureRec = db.getLastBloodPressure();
-        hbA1cRec = db.getLastHbA1c();
-        db.close();
-
-        if(exerciseRec!= null){
-            exerciseText.setText(exerciseRec.getDuration()+"");
-            String time = exerciseRec.getFormattedDate()+" "+exerciseRec.getFormattedTime();
-            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
-            exerciseDate.setText(dateText+"");
-        }
-
-        if(diseaseRec!= null){
-            SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-            try {
-                Date date2 = myFormat.parse(diseaseRec.getEndDate());
-                Date date1 = myFormat.parse(diseaseRec.getStartDate());
-                long diff = date2.getTime() - date1.getTime();
-                diseaseText.setText(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)+"");
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            String time = diseaseRec.getStartDate()+" 00:00";
-            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.DAY_IN_MILLIS);
-            diseaseDate.setText(dateText+"");
-        }
-
-        if(bloodPressureRec != null){
-            bloodPressureText.setText(bloodPressureRec.getSystolic()+"/"+bloodPressureRec.getDiastolic());
-            String time = bloodPressureRec.getFormattedDate()+" "+bloodPressureRec.getFormattedTime();
-            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
-            bloodPressureDate.setText(dateText+"");
-        }
-
-        if(cholesterolRec != null){
-            cholesterolText.setText(cholesterolRec.getValue()+"");
-            String time = cholesterolRec.getFormattedDate()+" "+cholesterolRec.getFormattedTime();
-            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
-            cholesterolDate.setText(dateText+"");
-        }
-
-
-        if(hbA1cRec != null){
-            hba1cText.setText(hbA1cRec.getValue()+"");
-            String time = hbA1cRec.getFormattedDate()+" "+hbA1cRec.getFormattedTime();
-            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
-            hba1cDate.setText(dateText+"");
-        }
-
-        if(weightRec != null) {
-            weightText.setText(weightRec.getValue() + "");
-            String time = weightRec.getFormattedDate()+" "+weightRec.getFormattedTime();
-            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
-            weightDate.setText(dateText+"");
-        }
-
+        readDb();
         setButtonListeners();
 
         return layout;
@@ -252,7 +207,7 @@ public class homeLeftFragment extends Fragment  {
             @Override
             public void onClick(View view) {
                 //addExercice.show();
-                Intent intent = new Intent(view.getContext(), ExercisesDetail.class);
+                Intent intent = new Intent(view.getContext(), Exercise.class);
                 startActivity(intent);
             }
         });
@@ -355,5 +310,83 @@ public class homeLeftFragment extends Fragment  {
 
     }
 
+    private void readDb(){
+        long currentTime= System.currentTimeMillis();
+        //Read MyData From DB
+        DB_Read db = new DB_Read(getContext());
+        weightRec = db.getLastWeight();
+        cholesterolRec = db.getLastCholesterol();
+        exerciseRec = db.getLastExercice();
+        diseaseRec = db.getLastDisease();
+        bloodPressureRec = db.getLastBloodPressure();
+        hbA1cRec = db.getLastHbA1c();
+        db.close();
 
+        if(exerciseRec!= null){
+            exerciseText.setText(exerciseRec.getDuration()+"");
+            String time = exerciseRec.getFormattedDate()+" "+exerciseRec.getFormattedTime();
+            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
+            exerciseDate.setText(dateText+"");
+        }
+
+        if(diseaseRec!= null){
+            SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            try {
+                Date date1 = myFormat.parse(diseaseRec.getStartDate());
+                Date date2;
+                long diff;
+                if(diseaseRec.getEndDate() == null){
+                    diff = currentTime - date1.getTime();
+                }else{
+                    date2 = myFormat.parse(diseaseRec.getEndDate());
+                    diff = date2.getTime() - date1.getTime();
+                }
+
+                diseaseText.setText(TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS)+"");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String time = diseaseRec.getStartDate()+" 00:00";
+            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.DAY_IN_MILLIS);
+            diseaseDate.setText(dateText+"");
+        }
+
+        if(bloodPressureRec != null){
+            bloodPressureText.setText(bloodPressureRec.getSystolic()+"/"+bloodPressureRec.getDiastolic());
+            String time = bloodPressureRec.getFormattedDate()+" "+bloodPressureRec.getFormattedTime();
+            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
+            bloodPressureDate.setText(dateText+"");
+        }
+
+        if(cholesterolRec != null){
+            cholesterolText.setText(cholesterolRec.getValue()+"");
+            String time = cholesterolRec.getFormattedDate()+" "+cholesterolRec.getFormattedTime();
+            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
+            cholesterolDate.setText(dateText+"");
+        }
+
+
+        if(hbA1cRec != null){
+            hba1cText.setText(hbA1cRec.getValue()+"");
+            String time = hbA1cRec.getFormattedDate()+" "+hbA1cRec.getFormattedTime();
+            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
+            hba1cDate.setText(dateText+"");
+        }
+
+        if(weightRec != null) {
+            weightText.setText(weightRec.getValue() + "");
+            String time = weightRec.getFormattedDate()+" "+weightRec.getFormattedTime();
+            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
+            weightDate.setText(dateText+"");
+        }
+
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        readDb();
+    }
 }

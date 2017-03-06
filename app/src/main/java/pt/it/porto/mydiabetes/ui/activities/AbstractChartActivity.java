@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,6 +22,7 @@ import pt.it.porto.mydiabetes.ui.fragments.ChartFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public abstract class AbstractChartActivity extends BaseActivity implements ChartFragment.OnFragmentInteractionListener, DateRangeDialog.TimeUpdate {
+	private ActionBar actionBar;
 
 	public static final int MAX_VALUES_IN_GRAPH = 100;
 	public static final int[] CHART_LINE_COLORS = {Color.RED, R.color.holo_blue_dark, Color.DKGRAY};
@@ -37,10 +39,12 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_graphs);
-		ActionBar actionbar = getSupportActionBar();
-		if (actionbar != null) {
-			actionbar.setDisplayHomeAsUpEnabled(true);
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
+
 
 		timeStart = Calendar.getInstance();
 		timeStart.roll(Calendar.WEEK_OF_YEAR, false);
@@ -111,11 +115,11 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 
 	protected void setupContent() {
 		ChartFragment fragment = (ChartFragment) getSupportFragmentManager().findFragmentById(R.id.chart_fragment);
+		actionBar.setTitle(getName());
 		fragment.setListAdapter(getRecyclerViewAdapter());
 		List<Line> chartLines = getChartLines();
 		fragment.setChartData(chartLines);
 		fragment.setSelectItemToListCalculation(getSelectItemToListCalculation(chartLines));
-		fragment.setName(getName());
 		fragment.endSetup();
 	}
 

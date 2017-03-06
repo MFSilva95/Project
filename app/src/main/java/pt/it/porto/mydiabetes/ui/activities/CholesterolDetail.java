@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -37,7 +39,12 @@ public class CholesterolDetail extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_cholesterol_detail);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		// Show the Up button in the action bar.
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
@@ -82,7 +89,7 @@ public class CholesterolDetail extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
+				finish();
 				return true;
 			case R.id.menuItem_CholesterolDetail_Save:
 				AddCholesterolRead();
@@ -157,7 +164,7 @@ public class CholesterolDetail extends BaseActivity {
 		wdb.close();
 		rdb.close();
 
-		goUp();
+		finish();
 	}
 
 	public void UpdateCholesterolRead() {
@@ -204,7 +211,7 @@ public class CholesterolDetail extends BaseActivity {
 		wdb.close();
 		rdb.close();
 
-		goUp();
+		finish();
 	}
 
 	public void DeleteCholesterolRead() {
@@ -218,7 +225,7 @@ public class CholesterolDetail extends BaseActivity {
 						DB_Write wdb = new DB_Write(c);
 						try {
 							wdb.Cholesterol_Delete(idCho);
-							goUp();
+							finish();
 						} catch (Exception e) {
 							Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
 						}
@@ -231,9 +238,5 @@ public class CholesterolDetail extends BaseActivity {
 						// Do nothing.
 					}
 				}).show();
-	}
-
-	public void goUp() {
-		NavUtils.navigateUpFromSameTask(this);
 	}
 }

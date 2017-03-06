@@ -300,11 +300,6 @@ public class ChartFragment extends Fragment {
 		setupScrool();
 	}
 
-	public void setName(String name) {
-		this.name = name;
-		((AppCompatActivity) mListener).getSupportActionBar().setTitle(name);
-	}
-
 	public void setSelectItemToListCalculation(SelectItemToListCalculation selectItemToListCalculation) {
 		this.selectItemToListCalculation = selectItemToListCalculation;
 	}

@@ -1,221 +1,249 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:scrollbars="vertical"
-    tools:context=".ui.activities.ExerciseDetail" >
+    android:layout_height="wrap_content"
+    tools:context=".ui.activities.ExerciseDetail">
 
-    <LinearLayout
-        android:paddingTop="8dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+    <android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:elevation="4dp"
+    android:minHeight="?attr/actionBarSize"
+    app:theme="@style/ToolBarStyle" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
         android:orientation="vertical"
-        android:descendantFocusability="beforeDescendants"
-		android:focusableInTouchMode="true">
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp"
-        	android:layout_marginTop="8dp" >
-        	
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider"
-		        android:layout_gravity="center_vertical" />
-            
-            <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:text="@string/start"
-				style="@style/SectionHeader"
-		        android:gravity="center_vertical|center_horizontal" />
-            
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider" 
-		        android:layout_gravity="center_vertical" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp" >
-	        
-	        <EditText
-		        android:id="@+id/et_ExerciseDetail_Data"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:layout_marginLeft="16dp"
-		        android:layout_marginRight="16dp"
-		        android:textSize="18sp"
-		        android:gravity="center_horizontal"
-		        android:focusable="false"
-		        android:focusableInTouchMode="false"
-		        android:onClick="showDatePickerDialog" />
-	        
-	        <EditText
-		        android:id="@+id/et_ExerciseDetail_Hora"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:layout_marginLeft="16dp"
-		        android:layout_marginRight="16dp"
-		        android:textSize="18sp"
-		        android:gravity="center_horizontal"
-		        android:focusable="false"
-		        android:focusableInTouchMode="false"
-		        android:onClick="showTimePickerDialog" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp"
-        	android:layout_marginTop="8dp" >
-        	
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider"
-		        android:layout_gravity="center_vertical" />
-            
-            <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="0.75"
-		        android:text="@string/exercise_duration"
-				style="@style/SectionHeader"
-		        android:gravity="center_vertical|center_horizontal" />
-            
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider" 
-		        android:layout_gravity="center_vertical" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:gravity="center_horizontal" >
-	        
-            <AutoCompleteTextView
-			    android:id="@+id/ac_ExerciseDetail_Exercise"
-			    android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:singleLine="true"
-		        android:textSize="24sp"
-		        android:hint="@string/hint_exercise1"
-		        android:layout_marginLeft="16dp"
-		        android:layout_marginRight="16dp" />
-            
-            <EditText
-		        android:id="@+id/et_ExerciseDetail_Duration"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:hint="@string/minutes"
-		        android:layout_marginLeft="16dp"
-		        android:layout_marginRight="16dp"
-		        android:gravity="center_horizontal"
-		        android:width="100dp"
-		        android:textSize="24sp"
-		        android:inputType="number" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp"
-        	android:layout_marginTop="8dp" >
-        	
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider"
-		        android:layout_gravity="center_vertical" />
-            
-            <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:text="@string/effort"
-				style="@style/SectionHeader"
-		        android:gravity="center_vertical|center_horizontal" />
-            
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider" 
-		        android:layout_gravity="center_vertical" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:gravity="center_horizontal" >
-            <Spinner
-			    android:id="@+id/sp_ExerciseDetail_Effort"
-			    android:layout_width="wrap_content"
-			    android:layout_height="36dp" />
-        </LinearLayout>
-        
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp"
-        	android:layout_marginTop="8dp" >
-        	
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider"
-		        android:layout_gravity="center_vertical" />
-            
-            <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="0.75"
-		        android:text="@string/notes"
-				style="@style/SectionHeader"
-		        android:gravity="center_vertical|center_horizontal" />
-            
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/divider" 
-		        android:layout_gravity="center_vertical" />
-        </LinearLayout>
-    	<LinearLayout
-	            android:orientation="vertical"
-	            android:layout_width="fill_parent"
-	        	android:layout_height="0dp"
-	        	android:layout_weight="1"
-	        	android:gravity="center_vertical" >
-	            <EditText
-			        android:id="@+id/et_ExerciseDetail_Notes"
-			        android:layout_width="fill_parent"
-			        android:layout_height="wrap_content"
-			        android:layout_gravity="center_horizontal"
-			        android:gravity="top|left"
-			        android:singleLine="false"
-			        android:lines="2"
-			        android:inputType="textMultiLine"
-			        android:textSize="16sp"/>
-        </LinearLayout>
-    </LinearLayout>
+        android:scrollbars="vertical">
 
-</ScrollView>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:descendantFocusability="beforeDescendants"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:paddingTop="8dp">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+
+                <TextView
+                    style="@style/SectionHeader"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/start" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_ExerciseDetail_Data"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="1"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center_horizontal"
+                    android:onClick="showDatePickerDialog"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/et_ExerciseDetail_Hora"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="1"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:gravity="center_horizontal"
+                    android:onClick="showTimePickerDialog"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+
+                <TextView
+                    style="@style/SectionHeader"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/exercise_duration" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <AutoCompleteTextView
+                    android:id="@+id/ac_ExerciseDetail_Exercise"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="1"
+                    android:hint="@string/hint_exercise1"
+                    android:singleLine="true"
+                    android:textSize="24sp" />
+
+                <EditText
+                    android:id="@+id/et_ExerciseDetail_Duration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="1"
+                    android:width="100dp"
+                    android:gravity="center_horizontal"
+                    android:hint="@string/minutes"
+                    android:inputType="number"
+                    android:textSize="24sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+
+                <TextView
+                    style="@style/SectionHeader"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/effort" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/sp_ExerciseDetail_Effort"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+
+                <TextView
+                    style="@style/SectionHeader"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.75"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="@string/notes" />
+
+                <View
+                    android:layout_width="fill_parent"
+                    android:layout_height="1dip"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <EditText
+                    android:id="@+id/et_ExerciseDetail_Notes"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="top|left"
+                    android:inputType="textMultiLine"
+                    android:lines="2"
+                    android:singleLine="false"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+</RelativeLayout>

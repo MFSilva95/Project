@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -46,7 +48,11 @@ public class BloodPressureDetail extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_blood_pressure_detail);
 		// Show the Up button in the action bar.
-		getSupportActionBar();
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 
 		FillTagSpinner();
 
@@ -119,7 +125,7 @@ public class BloodPressureDetail extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
+				finish();
 				return true;
 			case R.id.menuItem_BloodPressureDetail_Save:
 				AddBloodPressureRead();
@@ -245,7 +251,7 @@ public class BloodPressureDetail extends BaseActivity {
 
 		wdb.close();
 		rdb.close();
-		goUp();
+		finish();
 
 
 	}
@@ -305,7 +311,7 @@ public class BloodPressureDetail extends BaseActivity {
 
 		wdb.close();
 		rdb.close();
-		goUp();
+		finish();
 	}
 
 	public void DeleteBloodPressureRead() {
@@ -319,7 +325,7 @@ public class BloodPressureDetail extends BaseActivity {
 						DB_Write wdb = new DB_Write(c);
 						try {
 							wdb.BloodPressure_Delete(idBP);
-							goUp();
+							finish();
 						} catch (Exception e) {
 							Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
 						}
@@ -332,9 +338,5 @@ public class BloodPressureDetail extends BaseActivity {
 						// Do nothing.
 					}
 				}).show();
-	}
-
-	public void goUp() {
-		NavUtils.navigateUpFromSameTask(this);
 	}
 }
