@@ -8,15 +8,19 @@
     android:id="@+id/main"
     android:fitsSystemWindows="false">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/registry_toolbar"
-        app:theme="@style/MyToolbar"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        app:layout_collapseMode="pin"
-        app:popupTheme="@style/AppTheme.PopupOverlay"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/registry_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:minHeight="?attr/actionBarSize"
+            app:theme="@style/MyToolbar"
+            app:layout_collapseMode="pin"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"

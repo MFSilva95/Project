@@ -30,7 +30,7 @@
         <activity
             android:name=".ui.activities.NewHomeRegistry"
             android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/AddRegisterTheme">
+            android:theme="@style/NewHomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
