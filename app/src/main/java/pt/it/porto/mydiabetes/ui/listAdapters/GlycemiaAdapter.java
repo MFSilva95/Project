@@ -2,43 +2,40 @@ package pt.it.porto.mydiabetes.ui.listAdapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.text.ParseException;
-import java.util.Calendar;
+import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.ui.activities.GlycemiaDetail;
-import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.ui.activities.TargetBG_detail;
+import pt.it.porto.mydiabetes.data.InsulinTarget;
 
 
 public class GlycemiaAdapter extends BaseAdapter {
 
-	private Cursor cursor;
-	private Context context;
+	Context _c;
+	private ArrayList<InsulinTarget> _data;
 
-	public GlycemiaAdapter(Cursor cursor, Context c) {
-		this.cursor = cursor;
-		context = c;
+	public GlycemiaAdapter(ArrayList<InsulinTarget> data, Context c) {
+		_data = data;
+		_c = c;
 	}
 
 
 	@Override
 	public int getCount() {
-		return cursor.getCount();
+		return _data.size();
 	}
 
 	@Override
-	public GlycemiaItem getItem(int position) {
-		cursor.moveToPosition(position);
-		int pox = 0;
-		return new GlycemiaItem(cursor.getInt(pox++), cursor.getString(pox++), cursor.getInt(pox++), cursor.getString(pox));
+	public Object getItem(int position) {
+		return _data.get(position);
 	}
 
 	@Override
@@ -50,81 +47,41 @@ public class GlycemiaAdapter extends BaseAdapter {
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		View v = convertView;
 		if (v == null) {
-			LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.list_glycemia_row, parent, false);
-			v.setTag(new ViewHolder(v));
+			LayoutInflater vi = (LayoutInflater) _c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			v = vi.inflate(R.layout.list_target_row, parent, false);
 		}
 
-		ViewHolder viewHolder = (ViewHolder) v.getTag();
-		GlycemiaItem glycemia = getItem(position);
+		LinearLayout rLayout = (LinearLayout) v.findViewById(R.id.TargetBGRow);
 
-		viewHolder.id = glycemia.id;
-
-		viewHolder.date.setText(glycemia.getFormattedDate());
-		viewHolder.time.setText(glycemia.getFormattedTime());
-		viewHolder.value.setTag(String.valueOf(glycemia.id));
-		viewHolder.value.setText(String.valueOf(glycemia.value));
-		viewHolder.tag.setText(glycemia.tag);
+		TextView targetName = (TextView) v.findViewById(R.id.list_targetName);
+		TextView targetStart = (TextView) v.findViewById(R.id.list_targetStart);
+		TextView targetEnd = (TextView) v.findViewById(R.id.list_targetEnd);
+		TextView targetvalue = (TextView) v.findViewById(R.id.list_targetValue);
 
 
-		v.setOnClickListener(new View.OnClickListener() {
+		InsulinTarget target = _data.get(position);
+		rLayout.setTag(target);
+		targetName.setText(target.getName());
+		targetStart.setText(target.getStart());
+		targetEnd.setText(target.getEnd());
+
+		targetvalue.setText(String.valueOf((int) target.getTarget()));
+
+		rLayout.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(final View v) {
-				Intent intent = new Intent(v.getContext(), GlycemiaDetail.class);
+				Intent intent = new Intent(v.getContext(), TargetBG_detail.class);
 				Bundle args = new Bundle();
-				args.putInt("Id", ((ViewHolder) v.getTag()).id); //Your id
+				args.putString("Id", String.valueOf(((InsulinTarget) v.getTag()).getId()));
+				args.putParcelable(TargetBG_detail.BUNDLE_DATA, ((InsulinTarget) v.getTag()));
+
 				intent.putExtras(args);
 				v.getContext().startActivity(intent);
 			}
-
 		});
 
-
 		return v;
-	}
-
-	private class GlycemiaItem {
-		int id;
-		int value;
-		Calendar dateTime;
-		String tag;
-
-		public GlycemiaItem(int id, String dateTime, int value, String tag) {
-			this.id = id;
-			try {
-				this.dateTime = DateUtils.parseDateTime(dateTime);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			this.value = value;
-			this.tag = tag;
-		}
-
-		public String getFormattedDate() {
-			return DateUtils.getFormattedDate(dateTime);
-		}
-
-		public String getFormattedTime() {
-			return DateUtils.getFormattedTime(dateTime);
-		}
-	}
-
-	private class ViewHolder {
-		TextView date;
-		TextView time;
-		TextView value;
-		TextView tag;
-		int id;
-
-		public ViewHolder(View view) {
-			date = (TextView) view.findViewById(R.id.tv_list_glicemia_data);
-			time = (TextView) view.findViewById(R.id.tv_list_glicemia_hora);
-			value = (TextView) view.findViewById(R.id.tv_list_glicemia_value);
-			tag = (TextView) view.findViewById(R.id.tv_list_glicemia_tag);
-		}
-
-
 	}
 
 }

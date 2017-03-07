@@ -13,17 +13,17 @@ import java.util.ArrayList;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.data.InsulinTarget;
-import pt.it.porto.mydiabetes.ui.listAdapters.TargetAdapter;
+import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaAdapter;
 
 
-public class SettingsInsulinTargets extends BaseActivity {
+public class SettingsGlycemia extends BaseActivity {
 
     private ListView targetList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_target_bg);
+        setContentView(R.layout.fragment_glycemia);
         // Show the Up button in the action bar.
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         ActionBar actionBar=getSupportActionBar();
@@ -67,6 +67,6 @@ public class SettingsInsulinTargets extends BaseActivity {
 
         rdb.close();
 
-        lv.setAdapter(new TargetAdapter(allTags, this));
+        lv.setAdapter(new GlycemiaAdapter(allTags, this));
     }
 }

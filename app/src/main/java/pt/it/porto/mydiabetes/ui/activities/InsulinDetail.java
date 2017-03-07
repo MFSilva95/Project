@@ -416,7 +416,7 @@ public class InsulinDetail extends BaseActivity implements InsulinCalcFragment.C
 					public void onClick(DialogInterface dialog, int whichButton) {
 						//Falta verificar se não está associada a nenhuma entrada da DB
 						//Rever porque não elimina o registo de glicemia
-						Intent intent = new Intent(c, Insulins.class);
+						Intent intent = new Intent(c, SettingsInsulins.class);
 						startActivity(intent);
 						end();
 					}
@@ -432,7 +432,7 @@ public class InsulinDetail extends BaseActivity implements InsulinCalcFragment.C
 					public void onClick(DialogInterface dialog, int whichButton) {
 						//Falta verificar se não está associada a nenhuma entrada da DB
 						//Rever porque não elimina o registo de glicemia
-						Intent intent = new Intent(c, SettingsInsulinTargets.class);
+						Intent intent = new Intent(c, SettingsGlycemia.class);
 						intent.putExtra("tabPosition", 1);
 						startActivity(intent);
 						finish();

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -177,15 +176,11 @@ public class Home extends BaseActivity {
 						startActivity(intent);
 						return true;
 					case R.id.diabetesData:
-						intent = new Intent(getApplicationContext(), SettingsInsulin.class);
+						intent = new Intent(getApplicationContext(), Settings.class);
 						startActivity(intent);
 						return true;
 					case R.id.importAndExport:
 						intent = new Intent(getApplicationContext(), ImportExport.class);
-						startActivity(intent);
-						return true;
-					case R.id.preferences:
-						intent = new Intent(getApplicationContext(), Preferences.class);
 						startActivity(intent);
 						return true;
 					case R.id.pdf:

@@ -59,12 +59,8 @@ import pt.it.porto.mydiabetes.ui.activities.Disease;
 import pt.it.porto.mydiabetes.ui.activities.DiseaseDetail;
 import pt.it.porto.mydiabetes.ui.activities.Exercise;
 import pt.it.porto.mydiabetes.ui.activities.ExerciseDetail;
-import pt.it.porto.mydiabetes.ui.activities.ExercisesDetail;
-import pt.it.porto.mydiabetes.ui.activities.GlycemiaDetail;
 import pt.it.porto.mydiabetes.ui.activities.HbA1c;
 import pt.it.porto.mydiabetes.ui.activities.HbA1cDetail;
-import pt.it.porto.mydiabetes.ui.activities.InsulinDetail;
-import pt.it.porto.mydiabetes.ui.activities.MealActivity;
 import pt.it.porto.mydiabetes.ui.activities.WeightChartList;
 import pt.it.porto.mydiabetes.ui.activities.WeightDetail;
 

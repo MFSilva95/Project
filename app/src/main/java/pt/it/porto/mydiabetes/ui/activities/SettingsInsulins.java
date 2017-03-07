@@ -23,7 +23,7 @@ import pt.it.porto.mydiabetes.data.Insulin;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinAdapter;
 
 
-public class Insulins extends BaseActivity {
+public class SettingsInsulins extends BaseActivity {
 
 	private ListView insulinList;
 

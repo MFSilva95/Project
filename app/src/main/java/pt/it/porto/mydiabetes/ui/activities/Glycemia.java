@@ -20,7 +20,7 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.ListsDataDb;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaAdapter;
+import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaRegAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -102,7 +102,7 @@ public class Glycemia extends Activity {
 		ListsDataDb listData = new ListsDataDb(MyDiabetesStorage.getInstance(this));
 		Cursor cursor = listData.getGlycemiaList(dateFrom.getText().toString(), dateTo.getText().toString());
 
-		lv.setAdapter(new GlycemiaAdapter(cursor, this));
+		lv.setAdapter(new GlycemiaRegAdapter(cursor, this));
 	}
 
 	public void showDatePickerDialogFrom(View v) {

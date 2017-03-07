@@ -39,7 +39,6 @@ public class CholesterolDetail extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_cholesterol_detail);
 		// Show the Up button in the action bar.
-		// Show the Up button in the action bar.
 		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 		ActionBar actionBar=getSupportActionBar();
 		if (actionBar != null) {

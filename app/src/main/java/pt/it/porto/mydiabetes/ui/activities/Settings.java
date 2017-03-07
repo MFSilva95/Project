@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.ActionBar;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,7 +28,7 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
-public class SettingsInsulin extends BaseActivity {
+public class Settings extends BaseActivity {
 
 	private CheckBox useActiveInsulin;
 	private UserInfo myData;
@@ -37,7 +36,7 @@ public class SettingsInsulin extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_settings_insulin_calc);
+		setContentView(R.layout.activity_settings);
 		// Show the Up button in the action bar.
 		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 		android.support.v7.app.ActionBar actionBar=getSupportActionBar();
@@ -191,12 +190,17 @@ public class SettingsInsulin extends BaseActivity {
 	}
 
 	public void editInsulins(View v) {
-		Intent intent = new Intent(this, Insulins.class);
+		Intent intent = new Intent(this, SettingsInsulins.class);
 		startActivity(intent);
 	}
 
-	public void insulinTargets(View view) {
-		Intent intent = new Intent(this, SettingsInsulinTargets.class);
+	public void editGlycemia(View view) {
+		Intent intent = new Intent(this, SettingsGlycemia.class);
+		startActivity(intent);
+	}
+
+	public void editDayFases(View view) {
+		Intent intent = new Intent(this, SettingsDayFases.class);
 		startActivity(intent);
 	}
 }

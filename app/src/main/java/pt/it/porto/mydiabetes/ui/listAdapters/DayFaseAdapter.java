@@ -3,7 +3,6 @@ package pt.it.porto.mydiabetes.ui.listAdapters;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,16 +13,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.ui.activities.DiseasesDetail;
-import pt.it.porto.mydiabetes.data.Disease;
+import pt.it.porto.mydiabetes.ui.activities.DayFaseDetail;
+import pt.it.porto.mydiabetes.data.Tag;
 
 
-public class DiseaseAdapter extends BaseAdapter {
+public class DayFaseAdapter extends BaseAdapter {
 
 	Context _c;
-	private ArrayList<Disease> _data;
+	private ArrayList<Tag> _data;
 
-	public DiseaseAdapter(ArrayList<Disease> data, Context c) {
+	public DayFaseAdapter(ArrayList<Tag> data, Context c) {
 		_data = data;
 		_c = c;
 	}
@@ -49,30 +48,39 @@ public class DiseaseAdapter extends BaseAdapter {
 		View v = convertView;
 		if (v == null) {
 			LayoutInflater vi = (LayoutInflater) _c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.list_disease_row, parent, false);
+			v = vi.inflate(R.layout.list_tag_row, parent, false);
 		}
 
-		LinearLayout lLayout = (LinearLayout) v.findViewById(R.id.DiseasesRow);
 
-		TextView tagName = (TextView) v.findViewById(R.id.list_diseaseName);
-
-		Disease disease = _data.get(position);
-		lLayout.setTag(disease);
-		tagName.setText(disease.getName());
+		LinearLayout rLayout = (LinearLayout) v.findViewById(R.id.FaseDiaRow);
 
 
-		lLayout.setOnClickListener(new View.OnClickListener() {
+		TextView tagName = (TextView) v.findViewById(R.id.list_tagName);
+		TextView tagStart = (TextView) v.findViewById(R.id.list_tagStart);
+		TextView tagEnd = (TextView) v.findViewById(R.id.list_tagEnd);
+
+
+		Tag tag = _data.get(position);
+		rLayout.setTag(tag);
+		tagName.setText(tag.getName());
+		tagStart.setText(tag.getStart());
+		tagEnd.setText(tag.getEnd());
+
+
+		rLayout.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(final View v) {
-				Intent intent = new Intent(v.getContext(), DiseasesDetail.class);
+				Intent intent = new Intent(v.getContext(), DayFaseDetail.class);
 				Bundle args = new Bundle();
-				args.putParcelable(DiseasesDetail.BUNDLE_DATA, (Parcelable) v.getTag());
+				args.putString("Id", String.valueOf(((Tag) v.getTag()).getId()));
+				args.putParcelable(DayFaseDetail.DATA, ((Tag) v.getTag()));
 
 				intent.putExtras(args);
 				v.getContext().startActivity(intent);
 			}
 		});
+
 
 		return v;
 	}

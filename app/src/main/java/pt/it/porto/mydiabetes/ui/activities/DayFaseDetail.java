@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,7 +25,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
-public class TagDetail extends Activity {
+public class DayFaseDetail extends BaseActivity {
 
 	public static final String DATA = "data";
 	int idTag = 0;
@@ -35,7 +37,11 @@ public class TagDetail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tag_detail);
 		// Show the Up button in the action bar.
-		getActionBar();
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {

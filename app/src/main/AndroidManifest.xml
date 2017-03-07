@@ -43,54 +43,53 @@
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.DataTools"/>
+                android:value=".ui.activities.Home"/>
         </activity>
 
 
-
-
-        <activity
-            android:name=".ui.activities.Preferences"
-            android:label="@string/title_activity_preferences"
-            android:parentActivityName=".ui.activities.Home">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.DataTools"/>
-        </activity>
         <activity
             android:name=".ui.activities.SettingsReport"
             android:label="@string/report"
-            android:parentActivityName=".ui.activities.DataTools">
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.DataTools"/>
+                android:value=".ui.activities.Home"/>
         </activity>
         <activity
-            android:name=".ui.activities.SettingsInsulin"
-            android:label="@string/insulin_calc"
+            android:name=".ui.activities.Settings"
+            android:label="Definições"
             android:theme="@style/NewHomeTheme"
-            android:parentActivityName=".ui.activities.DataTools">
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.DataTools"/>
+                android:value=".ui.activities.Home"/>
         </activity>
         <activity
-            android:name=".ui.activities.Insulins"
+            android:name=".ui.activities.SettingsInsulins"
             android:label="@string/preferences_insulins"
             android:theme="@style/NewHomeTheme"
-            android:parentActivityName=".ui.activities.SettingsInsulin">
+            android:parentActivityName=".ui.activities.Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.SettingsInsulin"/>
+                android:value=".ui.activities.Settings"/>
         </activity>
         <activity
-            android:name=".ui.activities.SettingsInsulinTargets"
+            android:name=".ui.activities.SettingsGlycemia"
             android:label="@string/preferences_target"
-            android:parentActivityName=".ui.activities.SettingsInsulin"
+            android:parentActivityName=".ui.activities.Settings"
             android:theme="@style/NewHomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.SettingsInsulin"/>
+                android:value=".ui.activities.Settings"/>
+        </activity>
+        <activity
+            android:name=".ui.activities.SettingsDayFases"
+            android:label="Fases do dia"
+            android:parentActivityName=".ui.activities.Settings"
+            android:theme="@style/NewHomeTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.Settings"/>
         </activity>
         <activity
             android:name=".ui.activities.Exercise"
@@ -169,14 +168,6 @@
             android:label="@string/title_activity_weight"
             android:parentActivityName=".ui.activities.Home"
             android:theme="@style/NewHomeTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Home"/>
-        </activity>
-        <activity
-            android:name=".ui.activities.DataTools"
-            android:label="@string/title_activity_data_tools"
-            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -278,42 +269,43 @@
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.DataTools"/>
+                android:value=".ui.activities.Home"/>
         </activity>
         <activity
-            android:name=".ui.activities.TagDetail"
+            android:name=".ui.activities.DayFaseDetail"
             android:label="@string/title_activity_tag_detail"
-            android:parentActivityName=".ui.activities.Preferences">
+            android:theme="@style/NewHomeTheme"
+            android:parentActivityName=".ui.activities.Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Preferences"/>
+                android:value=".ui.activities.Settings"/>
         </activity>
         <activity
             android:name=".ui.activities.TargetBG_detail"
             android:theme="@style/NewHomeTheme"
             android:label="@string/title_activity_target_bg_detail"
-            android:parentActivityName=".ui.activities.SettingsInsulinTargets">
+            android:parentActivityName=".ui.activities.SettingsGlycemia">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.SettingsInsulinTargets"/>
+                android:value=".ui.activities.SettingsGlycemia"/>
         </activity>
         <activity
             android:name=".ui.activities.InsulinsDetail"
             android:label="@string/title_activity_insulins_detail"
             android:theme="@style/NewHomeTheme"
-            android:parentActivityName=".ui.activities.Preferences">
+            android:parentActivityName=".ui.activities.Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Preferences"/>
+                android:value=".ui.activities.Settings"/>
         </activity>
         <activity
             android:name=".ui.activities.Info"
             android:label="@string/title_activity_info"
             android:theme="@style/NewHomeTheme"
-            android:parentActivityName=".ui.activities.DataTools">
+            android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.DataTools"/>
+                android:value=".ui.activities.Home"/>
         </activity>
         <activity
             android:name=".ui.activities.ViewPhoto"
@@ -364,22 +356,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.LogbookChartList"/>
         </activity>
-        <activity
-            android:name=".ui.activities.DiseasesDetail"
-            android:label="@string/add_DiseasesFragment"
-            android:parentActivityName=".ui.activities.Preferences">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Preferences"/>
-        </activity>
-        <activity
-            android:name=".ui.activities.ExercisesDetail"
-            android:label="@string/add_ExercisesFragment"
-            android:parentActivityName=".ui.activities.Preferences">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Preferences"/>
-        </activity>
 
         <activity
             android:name=".ui.activities.TaskListActivity"
@@ -387,7 +363,7 @@
             android:theme="@style/NewHomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Preferences"/>
+                android:value=".ui.activities.Home"/>
         </activity>
     <!---->
 
