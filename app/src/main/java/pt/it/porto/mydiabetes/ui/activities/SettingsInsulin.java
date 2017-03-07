@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,7 +29,7 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
-public class SettingsInsulin extends BaseOldActivity {
+public class SettingsInsulin extends BaseActivity {
 
 	private CheckBox useActiveInsulin;
 	private UserInfo myData;
@@ -38,11 +39,11 @@ public class SettingsInsulin extends BaseOldActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_settings_insulin_calc);
 		// Show the Up button in the action bar.
-		ActionBar actionbar = getActionBar();
-		if (actionbar != null) {
-			actionbar.setDisplayHomeAsUpEnabled(true);
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		android.support.v7.app.ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
-
 		Spinner sp_MyData_DiabetesType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
 		ArrayAdapter<CharSequence> adapter_sp_MyData_DiabetesType = ArrayAdapter.createFromResource(this, R.array.diabetes_Type, android.R.layout.simple_spinner_item);
 		adapter_sp_MyData_DiabetesType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -14,7 +14,6 @@ import android.support.design.widget.FloatingActionButton;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,7 +86,7 @@ public class NewHomeRegistry extends AppCompatActivity {
         });
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.registry_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -97,7 +96,7 @@ public class NewHomeRegistry extends AppCompatActivity {
                 save();
             }
         });
-       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         (findViewById(R.id.bt_add_more_content)).setOnClickListener(new View.OnClickListener() {
             @Override

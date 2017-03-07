@@ -39,7 +39,8 @@
         <activity
             android:name=".ui.activities.MyData"
             android:label="@string/title_activity_my_data"
-            android:parentActivityName=".ui.activities.Home">
+            android:parentActivityName=".ui.activities.Home"
+            android:theme="@style/NewHomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.DataTools"/>
@@ -67,6 +68,7 @@
         <activity
             android:name=".ui.activities.SettingsInsulin"
             android:label="@string/insulin_calc"
+            android:theme="@style/NewHomeTheme"
             android:parentActivityName=".ui.activities.DataTools">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

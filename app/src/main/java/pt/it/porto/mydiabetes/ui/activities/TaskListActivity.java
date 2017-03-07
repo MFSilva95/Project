@@ -2,8 +2,10 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +36,12 @@ public class TaskListActivity extends BaseActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_tasklist);
 		fillTaskList();
+		// Show the Up button in the action bar.
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 		//setFab();
 	}
 

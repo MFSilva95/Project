@@ -10,7 +10,7 @@
 
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/registry_toolbar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
@@ -87,7 +87,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_save_black_24dp"
         android:tint="@android:color/white"
-        app:layout_anchor="@id/registry_toolbar"
+        app:layout_anchor="@id/toolbar"
         app:layout_anchorGravity="bottom|end"
         tools:layout_editor_absoluteX="312dp"
         tools:layout_editor_absoluteY="116dp"/>

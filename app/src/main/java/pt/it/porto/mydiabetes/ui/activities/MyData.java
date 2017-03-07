@@ -3,6 +3,8 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,7 +24,7 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
-public class MyData extends BaseOldActivity {
+public class MyData extends BaseActivity {
 
 	private UserInfo myData;
 
@@ -31,7 +33,12 @@ public class MyData extends BaseOldActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_my_data);
 		// Show the Up button in the action bar.
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
+
 
 		Spinner sp_MyData_Sex = (Spinner) findViewById(R.id.sp_MyData_Sex);
 		ArrayAdapter<CharSequence> adapter_sp_MyData_Sex = ArrayAdapter.createFromResource(this, R.array.Sex, android.R.layout.simple_spinner_item);

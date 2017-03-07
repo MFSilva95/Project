@@ -28,15 +28,8 @@
     </style>
 
     <!-- ToolBar -->
-    <style name="MyToolbar" parent="NewHomeTheme">
-        <item name="navigationIcon">@drawable/abc_ic_ab_back_material</item>
+    <style name="MyToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">?colorPrimary</item>
-        <item name="android:color">@color/primary_text</item>
-        <item name="android:textColorPrimary">@color/primary_text</item>
-        <item name="android:textColor">@color/primary_text</item>
-        <item name="actionMenuTextColor">@color/primary_text</item>
-        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
-        <item name="colorControlNormal">@color/primary_text</item>
     </style>
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
