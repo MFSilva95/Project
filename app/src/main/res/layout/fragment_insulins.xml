@@ -1,17 +1,34 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Insulins" >
+    android:layout_height="wrap_content"
+    tools:context=".ui.activities.Insulins">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <ListView
-        android:id="@+id/insulinsFragmentList"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
-    </ListView>
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/MyToolbar" />
 
-</LinearLayout>
+
+        <LinearLayout
+            android:layout_below="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- TODO: Update blank fragment layout -->
+
+            <ListView
+                android:id="@+id/insulinsFragmentList"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"></ListView>
+
+        </LinearLayout>
+</RelativeLayout>

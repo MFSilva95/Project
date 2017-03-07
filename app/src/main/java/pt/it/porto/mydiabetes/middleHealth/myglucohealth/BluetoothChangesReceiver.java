@@ -78,7 +78,7 @@ public class BluetoothChangesReceiver extends BroadcastReceiver {
 
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                     .setSmallIcon(R.drawable.gota_white)
-                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher))
+                    .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.logo_v2))
                     .setContentTitle(context.getString(R.string.app_name))
                     .setContentText(text)
                     .setPriority(NotificationCompat.PRIORITY_LOW)

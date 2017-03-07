@@ -188,6 +188,14 @@ public class Home extends BaseActivity {
 						intent = new Intent(getApplicationContext(), Preferences.class);
 						startActivity(intent);
 						return true;
+					case R.id.pdf:
+						intent = new Intent(getApplicationContext(), SettingsReport.class);
+						startActivity(intent);
+						return true;
+					case R.id.info:
+						intent = new Intent(getApplicationContext(), Info.class);
+						startActivity(intent);
+						return true;
 					default:
 						Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
 						return true;

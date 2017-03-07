@@ -2,6 +2,8 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -22,7 +24,7 @@ import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.data.Insulin;
 
 
-public class InsulinsDetail extends Activity {
+public class InsulinsDetail extends BaseActivity {
 
 	int idInsulin = 0;
 	String originalName;
@@ -33,7 +35,13 @@ public class InsulinsDetail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_insulins_detail);
 		// Show the Up button in the action bar.
-		getActionBar();
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
+
+
 
 		Bundle args = getIntent().getExtras();
 		if(args!=null){

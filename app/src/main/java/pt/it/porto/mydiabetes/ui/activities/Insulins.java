@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +23,7 @@ import pt.it.porto.mydiabetes.data.Insulin;
 import pt.it.porto.mydiabetes.ui.listAdapters.InsulinAdapter;
 
 
-public class Insulins extends BaseOldActivity {
+public class Insulins extends BaseActivity {
 
 	private ListView insulinList;
 
@@ -29,6 +31,14 @@ public class Insulins extends BaseOldActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.fragment_insulins);
+
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
+
+
 
 		insulinList = (ListView) findViewById(R.id.insulinsFragmentList);
 		fillListView(insulinList);

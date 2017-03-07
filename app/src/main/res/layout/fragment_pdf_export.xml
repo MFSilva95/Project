@@ -282,7 +282,6 @@
         <EditText
 
             android:id="@+id/et_pdfexport_DataFrom"
-            style="@style/Holo.Spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
@@ -297,7 +296,6 @@
 
         <EditText
             android:id="@+id/et_pdfexport_DataTo"
-            style="@style/Holo.Spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"

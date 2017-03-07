@@ -36,6 +36,18 @@
             android:checked="false"
             android:title="@string/title_activity_import_export" />
 
+        <item
+            android:id="@+id/pdf"
+            android:checked="false"
+            android:title="pdf" />
+
+
+        <item
+            android:id="@+id/info"
+            android:checked="false"
+            android:icon="@drawable/ic_info_outline_black_24dp"
+            android:title="@string/title_activity_info" />
+
 
 >>>>>>> newLook_v2
     </group>

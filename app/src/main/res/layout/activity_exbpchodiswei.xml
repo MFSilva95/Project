@@ -6,8 +6,7 @@
             android:layout_height="match_parent"
             android:fillViewport="true"
             android:orientation="vertical"
-            android:scrollbars="vertical"
-            tools:context=".ui.activities.ExBPChoDisWei">
+            android:scrollbars="vertical">
 
     <LinearLayout
         android:layout_width="fill_parent"

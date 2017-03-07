@@ -67,7 +67,6 @@
 
                 <EditText
                     android:id="@+id/et_CholesterolDetail_Data"
-                    style="@style/Holo.Spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"
@@ -81,7 +80,6 @@
 
                 <EditText
                     android:id="@+id/et_CholesterolDetail_Hora"
-                    style="@style/Holo.Spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="16dp"

@@ -63,7 +63,7 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="@android:style/Theme.Holo">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-        <item name="android:logo">@drawable/ic_launcher</item>
+        <item name="android:logo">@drawable/logo_v2</item>
     </style>
 
     <style name="Holo.Spinner" parent="AppTheme">
@@ -182,9 +182,9 @@
 
 
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="MyToolbar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="MyToolbar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 
 </resources>

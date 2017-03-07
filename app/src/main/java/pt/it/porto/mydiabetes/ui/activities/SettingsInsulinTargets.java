@@ -2,6 +2,8 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -14,7 +16,7 @@ import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.ui.listAdapters.TargetAdapter;
 
 
-public class SettingsInsulinTargets extends BaseOldActivity {
+public class SettingsInsulinTargets extends BaseActivity {
 
     private ListView targetList;
 
@@ -22,6 +24,13 @@ public class SettingsInsulinTargets extends BaseOldActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_target_bg);
+        // Show the Up button in the action bar.
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        ActionBar actionBar=getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+
 
         targetList = (ListView) findViewById(R.id.targetsFragmentList);
         fillListView(targetList);
