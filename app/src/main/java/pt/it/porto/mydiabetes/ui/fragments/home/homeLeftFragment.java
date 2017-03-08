@@ -81,14 +81,6 @@ public class homeLeftFragment extends Fragment  {
     private BloodPressureRec bloodPressureRec;
     private HbA1cRec hbA1cRec;
 
-
-    private ImageButton button1;
-    private ImageButton button2;
-    private ImageButton button3;
-    private ImageButton button4;
-    private ImageButton button5;
-    private ImageButton button6;
-
     private LinearLayout layout1;
     private LinearLayout layout2;
     private LinearLayout layout3;
@@ -127,13 +119,6 @@ public class homeLeftFragment extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_home_left, container, false);
-
-        button1 = (ImageButton) layout.findViewById(R.id.button1);
-        button2 = (ImageButton) layout.findViewById(R.id.button2);
-        button3 = (ImageButton) layout.findViewById(R.id.button3);
-        button4 = (ImageButton) layout.findViewById(R.id.button4);
-        button5 = (ImageButton) layout.findViewById(R.id.button5);
-        button6 = (ImageButton) layout.findViewById(R.id.button6);
 
         layout1 = (LinearLayout) layout.findViewById(R.id.layout1);
         layout2 = (LinearLayout) layout.findViewById(R.id.layout2);
@@ -249,57 +234,6 @@ public class homeLeftFragment extends Fragment  {
             public void onClick(View view) {
                 //addExercice.show();
                 Intent intent = new Intent(view.getContext(), HbA1c.class);
-                startActivity(intent);
-            }
-        });
-
-
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //addExercice.show();
-                Intent intent = new Intent(view.getContext(), ExerciseDetail.class);
-                startActivity(intent);
-            }
-        });
-
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //addExercice.show();
-                Intent intent = new Intent(view.getContext(), DiseaseDetail.class);
-                startActivity(intent);
-            }
-        });
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //addExercice.show();
-                Intent intent = new Intent(view.getContext(), WeightDetail.class);
-                startActivity(intent);
-            }
-        });
-        button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //addExercice.show();
-                Intent intent = new Intent(view.getContext(), BloodPressureDetail.class);
-                startActivity(intent);
-            }
-        });
-        button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //addExercice.show();
-                Intent intent = new Intent(view.getContext(), CholesterolDetail.class);
-                startActivity(intent);
-            }
-        });
-        button6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //addExercice.show();
-                Intent intent = new Intent(view.getContext(), HbA1cDetail.class);
                 startActivity(intent);
             }
         });
