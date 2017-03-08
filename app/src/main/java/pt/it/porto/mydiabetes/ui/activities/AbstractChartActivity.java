@@ -170,4 +170,9 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 			return numberOfValues - positionInLine - 1;
 		}
 	}
+	@Override
+	public void onResume() {
+		super.onResume();
+		setupContent();
+	}
 }

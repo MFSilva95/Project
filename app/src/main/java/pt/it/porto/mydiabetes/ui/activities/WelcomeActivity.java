@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.ui.fragments.DB_BackupRestoreFragment;
 
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
 import pt.it.porto.mydiabetes.ui.listAdapters.welcomePageAdapter;
@@ -91,13 +90,13 @@ public class WelcomeActivity extends BaseActivity {
 			}
 		});
 
-		if (DB_BackupRestoreFragment.hasBackup()) {
+		if (SettingsImportExport.hasBackup()) {
 			Button button = (Button) findViewById(R.id.restoreDb);
 			button.setVisibility(View.VISIBLE);
 			button.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if (DB_BackupRestoreFragment.restoreBackup(getApplicationContext())) {
+					if (SettingsImportExport.restoreBackup(getApplicationContext())) {
 						// jump to home
 						Intent intent = new Intent(getBaseContext(), Home.class);
 						intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

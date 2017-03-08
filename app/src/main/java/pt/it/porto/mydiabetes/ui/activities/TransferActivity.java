@@ -15,6 +15,8 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CheckBox;
@@ -33,7 +35,7 @@ import pt.it.porto.mydiabetes.sync.transfer.Stream;
 import pt.it.porto.mydiabetes.sync.transfer.Stream.StreamBinder;
 import pt.it.porto.mydiabetes.sync.transfer.Transmission;
 
-public class TransferActivity extends Activity {
+public class TransferActivity extends BaseActivity {
 	private String host = "";
 	private int port = 5444;
 	private byte[] key;
@@ -86,6 +88,12 @@ public class TransferActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_transfer);
+		// Show the Up button in the action bar.
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 		findViewById(R.id.checkedTextView1).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -389,7 +397,7 @@ public class TransferActivity extends Activity {
 					+ getString(R.string.transfer_correct_network));
 			builder.setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
-					Intent intent = new Intent(TransferActivity.this, ImportExport.class);
+					Intent intent = new Intent(TransferActivity.this, SettingsImportExport.class);
 					startActivity(intent);
 				}
 			}).show();
@@ -420,7 +428,7 @@ public class TransferActivity extends Activity {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
-				Intent intent = new Intent(c, ImportExport.class);
+				Intent intent = new Intent(c, SettingsImportExport.class);
 				NavUtils.navigateUpTo(TransferActivity.this, intent);
 				finish();
 			}
@@ -435,7 +443,7 @@ public class TransferActivity extends Activity {
 				@Override
 				public void onClick(DialogInterface dialog, int whichButton) {
 					// TODO Auto-generated method stub
-					Intent intent = new Intent(c, ImportExport.class);
+					Intent intent = new Intent(c, SettingsImportExport.class);
 					startActivity(intent);
 					
 				}

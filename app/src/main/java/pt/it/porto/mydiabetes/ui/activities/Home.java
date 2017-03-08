@@ -180,11 +180,7 @@ public class Home extends BaseActivity {
 						startActivity(intent);
 						return true;
 					case R.id.importAndExport:
-						intent = new Intent(getApplicationContext(), ImportExport.class);
-						startActivity(intent);
-						return true;
-					case R.id.pdf:
-						intent = new Intent(getApplicationContext(), SettingsReport.class);
+						intent = new Intent(getApplicationContext(), SettingsImportExport.class);
 						startActivity(intent);
 						return true;
 					case R.id.info:

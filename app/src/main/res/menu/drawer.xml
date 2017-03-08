@@ -30,13 +30,8 @@
         <item
             android:id="@+id/importAndExport"
             android:checked="false"
-            android:title="@string/title_activity_import_export" />
-
-        <item
-            android:id="@+id/pdf"
-            android:checked="false"
-            android:title="pdf" />
-
+            android:title="@string/title_activity_import_export"
+            android:icon="@drawable/ic_import_export"/>
 
         <item
             android:id="@+id/info"
@@ -44,8 +39,6 @@
             android:icon="@drawable/ic_info_outline_black_24dp"
             android:title="@string/title_activity_info" />
 
-
->>>>>>> newLook_v2
     </group>
 
 </menu>

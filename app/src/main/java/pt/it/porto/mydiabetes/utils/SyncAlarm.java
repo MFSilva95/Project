@@ -12,7 +12,7 @@ import android.support.v4.app.TaskStackBuilder;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.Preferences;
-import pt.it.porto.mydiabetes.ui.activities.ImportExport;
+import pt.it.porto.mydiabetes.ui.activities.SettingsImportExport;
 
 public class SyncAlarm extends BroadcastReceiver {
 
@@ -41,13 +41,13 @@ public class SyncAlarm extends BroadcastReceiver {
 		builder.setStyle(bigTextStyle);
 		builder.setAutoCancel(true);
 
-		Intent resultIntent = new Intent(context, ImportExport.class);
+		Intent resultIntent = new Intent(context, SettingsImportExport.class);
 		Bundle extras = new Bundle();
-		extras.putInt(ImportExport.EXTRAS_TAB, ImportExport.EXTRAS_TAB_IMPORT_EXPORT);
+		//extras.putInt(ImportExport.EXTRAS_TAB, ImportExport.EXTRAS_TAB_IMPORT_EXPORT);
 		resultIntent.putExtras(extras);
 
 		TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
-		taskStackBuilder.addParentStack(ImportExport.class);
+		taskStackBuilder.addParentStack(SettingsImportExport.class);
 		taskStackBuilder.addNextIntent(resultIntent);
 		builder.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
 
