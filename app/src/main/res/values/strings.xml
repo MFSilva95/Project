@@ -233,6 +233,9 @@
     <string name="weight">Peso</string>
     <string name="export_data">Dados a exportar:</string>
     <string name="select_all">Selecionar Tudo</string>
+    <string name="select_time">Selecione a Hora</string>
+    <string name="select_date">Selecione a Data</string>
+    <string name="add_more_registers">Adicionar mais registos</string>
     <string name="transfer_db">Transferir Base de Dados</string>
     <string name="transfer">Transferir</string>
     <string name="hint_weight">80 (em kg)</string>

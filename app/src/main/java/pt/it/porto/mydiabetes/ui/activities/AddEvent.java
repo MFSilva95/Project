@@ -63,7 +63,7 @@ public class AddEvent extends AppCompatActivity {
 				addContent(R.layout.glycemia_content_edit);
 				isShowing[0] = true;
 				requestKeyboard(findViewById(R.id.glycemia_txt));
-				((TextInputLayout) findViewById(R.id.insulin_obj)).getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
+				((TextInputLayout) findViewById(R.id.glycemia_obj)).getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
 					@Override
 					public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
 						if (actionId == EditorInfo.IME_ACTION_DONE) {

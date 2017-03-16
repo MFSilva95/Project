@@ -566,7 +566,6 @@ public class InsulinDetail extends BaseActivity implements InsulinCalcFragment.C
 		int idGlycemia = 0;
 		boolean hasGlycemia = false;
 		DB_Write reg = new DB_Write(this);
-
 		InsulinRec ins = new InsulinRec();
 
 		int idnote = 0;

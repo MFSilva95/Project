@@ -5,9 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.net.Uri;
+import android.util.Log;
+import android.widget.Spinner;
 
 import java.util.Calendar;
 
+import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class MyDiabetesStorage {
@@ -74,7 +80,6 @@ public class MyDiabetesStorage {
 		Cursor cursor = db.query(MyDiabetesContract.Insulin.TABLE_NAME, new String[]{MyDiabetesContract.Insulin.COLUMN_NAME_NAME}, MyDiabetesContract.Insulin.COLUMN_NAME_NAME + "==?", new String[]{name}, null, null, null, null);
 		return cursor.getCount() != 0;
 	}
-
 	public boolean addGlycemiaObjective(String description, String timeStart, String timeEnd, int objective) {
 		if (glycemiaObjectiveExists(description)) {
 			return false;
@@ -89,6 +94,18 @@ public class MyDiabetesStorage {
 		return db.insert(MyDiabetesContract.BG_Target.TABLE_NAME, null, toInsert) != -1;
 	}
 
+	public int getGlycemiaObjectives(String time) throws Exception{
+		//TODO pm am ou normal <- ver isto
+		SQLiteDatabase db = mHandler.getReadableDatabase();
+		Cursor cursor = db.query(
+		        MyDiabetesContract.BG_Target.TABLE_NAME,
+                new String[]{MyDiabetesContract.BG_Target.COLUMN_NAME_VALUE},
+                MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_START + ">=? and "+MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_END + "<= ?",
+                new String[]{time,time}, null, null, null, null);
+
+		cursor.moveToFirst();
+		return (int) cursor.getDouble(0);
+	}
 	public boolean glycemiaObjectiveExists(String description) {
 		SQLiteDatabase db = mHandler.getReadableDatabase();
 		Cursor cursor = db.query(MyDiabetesContract.BG_Target.TABLE_NAME, new String[]{MyDiabetesContract.BG_Target.COLUMN_NAME_NAME}, MyDiabetesContract.BG_Target.COLUMN_NAME_NAME + "==?", new String[]{description}, null, null, null, null);
@@ -109,19 +126,15 @@ public class MyDiabetesStorage {
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_LAST_UPDATE, DateUtils.formatToDb(Calendar.getInstance()));
 		return insertNewData(MyDiabetesContract.UserInfo.TABLE_NAME, toInsert) != -1;
 	}
-
 	public boolean editUserData(int id, ContentValues newData) {
 		SQLiteDatabase db = mHandler.getWritableDatabase();
 		return db.update(MyDiabetesContract.UserInfo.TABLE_NAME, newData, MyDiabetesContract.UserInfo.COLUMN_NAME_ID + " = ?", new String[]{String.valueOf(id)}) == 1;
 	}
-
 	public boolean addNote(String note) {
 		ContentValues values = new ContentValues();
 		values.put(MyDiabetesContract.Note.COLUMN_NAME_Note, note);
 		return insertNewData(MyDiabetesContract.Note.TABLE_NAME, values) != -1;
 	}
-
-
 	public Cursor getAllInsulins(QueryOptions options) {
 		SQLiteDatabase db = mHandler.getReadableDatabase();
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();

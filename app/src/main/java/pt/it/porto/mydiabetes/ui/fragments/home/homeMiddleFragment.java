@@ -3,14 +3,19 @@ package pt.it.porto.mydiabetes.ui.fragments.home;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +23,11 @@ import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.esafirm.imagepicker.features.ImagePicker;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -42,19 +52,23 @@ import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.ui.usability.HomeTouchHelper;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by parra on 21/02/2017.
  */
 
 public class homeMiddleFragment extends Fragment {
 	private YapDroid yapDroid;
+	final int WAIT_REGISTER = 123;
+	final String TAG = "homeFrag";
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == 4 && resultCode == Home.CHANGES_OCCURRED) {
+		if (requestCode == WAIT_REGISTER && resultCode == Home.CHANGES_OCCURRED) {
 			fillHomeList();
 		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private FloatingActionButton fab;
@@ -134,12 +148,12 @@ public class homeMiddleFragment extends Fragment {
 			@Override
 			public void onClick(View view) {
 				Intent intent = new Intent(fab.getContext(), NewHomeRegistry.class);
-				startActivity(intent);
+				//startActivity(intent);
+				startActivityForResult(intent, WAIT_REGISTER);
 			}
 		});
 
 	}
-
 
 	private void fillTaskList() {
 		//taskListFromYap = yapDroid.getYapMultipleTasks();

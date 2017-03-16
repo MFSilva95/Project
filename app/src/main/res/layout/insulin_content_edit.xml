@@ -11,7 +11,8 @@
         android:layout_width="0dp"
         android:focusable="true"
         android:layout_height="0dp"
-        tools:text="150"/>
+        tools:text="150"
+        android:id="@+id/editText" />
 
     <ImageView
         android:id="@+id/img"
@@ -22,50 +23,92 @@
         android:padding="24dp"
         android:src="@drawable/ic_syringe"/>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/insulin_txt"
+    <RelativeLayout
+        android:id="@+id/section_insulin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="0dp"
-        android:layout_marginEnd="12dp"
-        android:layout_marginStart="@dimen/height_2x"
-        app:hintEnabled="true"
-        android:layout_marginTop="0dp"
-        android:paddingStart="12dp"
-        android:paddingTop="2dp">
+        android:layout_toEndOf="@+id/editText">
 
-        <EditText
-            android:id="@+id/insulin"
+
+        <Spinner
+            android:id="@+id/sp_MealDetail_Insulin"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_2x"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="@dimen/height_2x"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="@dimen/height_2x"
+            android:layout_marginTop="0dp"
+            android:paddingTop="0dp"/>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/insulin_admin"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginEnd="8dp"
+            android:layout_below="@+id/sp_MealDetail_Insulin"
+            android:layout_marginLeft="@dimen/height_2x"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="@dimen/height_2x"
+            android:layout_marginTop="0dp"
+            android:paddingLeft="4dp"
+            android:paddingStart="4dp"
+            app:errorEnabled="false">
+
+            <pt.it.porto.mydiabetes.ui.views.ExtendedEditText
+                android:id="@+id/insulin_intake"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/insulin_intake"
+                android:imeOptions="actionDone"
+                android:inputType="numberDecimal"
+                android:maxLength="3"
+                android:maxLines="1"
+                app:suffix="@string/units"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/revert_admin"
+            android:layout_width="@dimen/height_2x"
+            android:layout_height="@dimen/height_2x"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="48dp"
+            android:layout_marginRight="48dp"
+            android:alpha="0"
+            android:background="?selectableItemBackground"
+            android:src="@drawable/ic_history_grey_700_24dp"
+            android:visibility="gone"/>
+
+        <FrameLayout
+            android:id="@+id/fragment_calcs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:hint="@string/insulin"
-            android:imeOptions="actionGo"
-            android:inputType="numberDecimal"
-            android:maxLines="1"
-            tools:text="50"/>
-    </android.support.design.widget.TextInputLayout>
+            android:layout_below="@id/insulin_admin"
+            android:background="@color/lineguide"
+            tools:layout="@layout/fragment_insulin_meal_calc"
+            tools:layout_height="200dp"/>
 
-    <ImageButton
-        android:id="@+id/revert_glycemia"
-        android:layout_width="@dimen/height_2x"
-        android:layout_height="@dimen/height_2x"
-        android:layout_alignParentEnd="true"
-        android:alpha="0"
-        android:background="?selectableItemBackground"
-        android:src="@drawable/ic_history_grey_700_24dp"
-        android:visibility="gone"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/divider"
+            />
 
-
-    <ImageButton
-        android:id="@+id/revert_glycemia_objective"
-        android:layout_width="@dimen/height_2x"
-        android:layout_height="@dimen/height_2x"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:alpha="0"
-        android:background="?selectableItemBackground"
-        android:src="@drawable/ic_history_grey_700_24dp"
-        android:visibility="gone"/>
+        <ImageButton
+            android:id="@+id/bt_insulin_calc_info"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignEnd="@+id/insulin_admin"
+            android:layout_alignRight="@+id/insulin_admin"
+            android:layout_alignTop="@+id/insulin_admin"
+            android:background="?selectableItemBackground"
+            android:padding="12dp"
+            android:src="@drawable/ic_information_outline_grey600_24dp"/>
+    </RelativeLayout>
 </RelativeLayout>

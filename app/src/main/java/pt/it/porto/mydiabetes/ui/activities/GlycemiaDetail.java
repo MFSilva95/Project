@@ -169,7 +169,6 @@ public class GlycemiaDetail extends FormActivity {
 		reg.Glycemia_Save(gly);
 		reg.close();
 		goUp();
-
 	}
 
 	public void UpdateGlycemiaRead(int id) {

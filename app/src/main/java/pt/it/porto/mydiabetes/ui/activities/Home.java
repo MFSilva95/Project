@@ -225,6 +225,7 @@ public class Home extends BaseActivity {
 			}
 			userImg.setImageBitmap(bmp);
 		}
+        super.onActivityResult(requestCode, resultCode, data);
 	}
 
 
