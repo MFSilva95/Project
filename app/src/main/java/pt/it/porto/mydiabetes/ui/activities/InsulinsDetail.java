@@ -1,10 +1,11 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -80,9 +81,22 @@ public class InsulinsDetail extends BaseActivity {
 
 		Bundle args = getIntent().getExtras();
 		if(args!=null){
-			inflater.inflate(R.menu.insulins_detail_edit, menu);
+			inflater.inflate(R.menu.insulins_detail_delete, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					UpdateInsulin();
+				}
+			});
 		}else{
-			inflater.inflate(R.menu.insulins_detail, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					AddNewInsulin();
+				}
+			});
 		}
 
 		//getSupportMenuInflater().inflate(R.menu.tag_detail, menu);
@@ -93,18 +107,7 @@ public class InsulinsDetail extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
-				return true;
-			case R.id.menuItem_InsulinsDetail_Save:
-				AddNewInsulin();
-				//Intent data = new Intent();
-				//data.putExtra("tabPosition", 2);
-				//setResult(RESULT_OK, data);
-				//NavUtils.navigateUpFromSameTask(this);
-
-				return true;
-			case R.id.menuItem_InsulinsDetail_EditSave:
-				UpdateInsulin();
+				finish();
 				return true;
 			case R.id.menuItem_InsulinsDetail_Delete:
 				DeleteInsulin();

@@ -2,8 +2,11 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListAdapter;
 
 import java.util.Calendar;
@@ -22,21 +25,17 @@ public class Disease extends BaseListRangeActivity {
 	public String getRegType(){return "Disease";}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.disease, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menuItem_Disease:
-				Intent intent = new Intent(this, DiseaseDetail.class);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(getBaseContext(), DiseaseDetail.class);
 				startActivity(intent);
-				return true;
-		}
-		return super.onOptionsItemSelected(item);
+			}
+		});
+
 	}
 
 	@Override

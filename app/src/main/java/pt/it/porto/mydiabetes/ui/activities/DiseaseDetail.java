@@ -5,7 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -89,9 +89,22 @@ public class DiseaseDetail extends BaseActivity {
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
-			inflater.inflate(R.menu.disease_detail_edit, menu);
+			inflater.inflate(R.menu.disease_detail_delete, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					UpdateDiseaseRead();
+				}
+			});
 		} else {
-			inflater.inflate(R.menu.disease_detail, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					AddDiseaseRead();
+				}
+			});
 		}
 
 		return super.onCreateOptionsMenu(menu);
@@ -103,14 +116,8 @@ public class DiseaseDetail extends BaseActivity {
 			case android.R.id.home:
 				finish();
 				return true;
-			case R.id.menuItem_DiseaseRegDetail_Save:
-				AddDiseaseRead();
-				return true;
 			case R.id.menuItem_DiseaseRegDetail_Delete:
 				DeleteDiseaseRead();
-				return true;
-			case R.id.menuItem_DiseaseRegDetail_EditSave:
-				UpdateDiseaseRead();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

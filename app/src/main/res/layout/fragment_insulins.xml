@@ -3,32 +3,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".ui.activities.SettingsInsulins">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/toolbarbig"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
-        app:theme="@style/MyToolbar" />
+        android:orientation="vertical"
+        app:elevation="4dp"
+        app:theme="@style/MyToolbar">
 
-
-        <LinearLayout
-            android:layout_below="@+id/toolbar"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content" />
 
-            <!-- TODO: Update blank fragment layout -->
+    </android.support.design.widget.AppBarLayout>
 
-            <ListView
-                android:id="@+id/insulinsFragmentList"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"></ListView>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/plus_btn"
+        app:elevation="6dp"
+        tools:layout_editor_absoluteX="312dp"
+        tools:layout_editor_absoluteY="116dp" />
 
-        </LinearLayout>
+    <ListView
+        android:id="@+id/insulinsFragmentList"
+        android:layout_below="@+id/toolbarbig"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"></ListView>
+
 </RelativeLayout>
