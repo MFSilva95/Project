@@ -383,7 +383,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     public void AddInsulinRead() {
 
         Spinner insulinSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
-        EditText insulinunits = (EditText) findViewById(R.id.insulin_intake);
+        EditText insulinUnits = (EditText) findViewById(R.id.insulin_intake);
 
         Spinner tagSpinner = (Spinner) findViewById(R.id.tag_spinner);
         //tem de ter um target inserido
@@ -393,10 +393,10 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             //TODO ShowDialogAddTarget();
             return;
         }
-        if (insulinunits.getText().toString().equals("")) {
-            insulinunits.requestFocus();
+        if (insulinUnits.getText().toString().equals("")) {
+            insulinUnits.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(insulinunits, InputMethodManager.SHOW_IMPLICIT);
+            imm.showSoftInput(insulinUnits, InputMethodManager.SHOW_IMPLICIT);
             return;
         }
 
@@ -417,13 +417,13 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         DB_Write reg = new DB_Write(this);
         InsulinRec ins = new InsulinRec();
 
-
+        ins.setIdTag(idTag);
         ins.setIdUser(idUser);
         ins.setIdInsulin(idInsulin);
         ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
         ins.setDateTime(registerDate);
         //ins.setTargetGlycemia(insulinCalculator.getInsulinTarget());
-        ins.setInsulinUnits(Float.parseFloat(insulinunits.getText().toString()));
+        ins.setInsulinUnits(Float.parseFloat(insulinUnits.getText().toString()));
 
         reg.Insulin_Save(ins);
 

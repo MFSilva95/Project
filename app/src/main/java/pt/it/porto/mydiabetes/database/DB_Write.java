@@ -200,18 +200,20 @@ public class DB_Write {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", obj.getIdUser());
 		toInsert.put("Id_Insulin", obj.getIdInsulin());
-		if (obj.getIdBloodGlucose() > 0) {
-			toInsert.put("Id_BloodGlucose", obj.getIdBloodGlucose());
-		}
 		String datetime = DateUtils.formatToDb(obj.getDateTime());
 		toInsert.put("DateTime", datetime);
-		toInsert.put("Target_BG", obj.getTargetGlycemia());
 		toInsert.put("Value", obj.getInsulinUnits());
 		toInsert.put("Id_Tag", obj.getIdTag());
+
 		if (obj.getIdNote() > 0) {
 			toInsert.put("Id_Note", obj.getIdNote());
 		}
-
+		if(obj.getTargetGlycemia()>0){
+			toInsert.put("Target_BG", obj.getTargetGlycemia());
+		}
+		if (obj.getIdBloodGlucose() > 0) {
+			toInsert.put("Id_BloodGlucose", obj.getIdBloodGlucose());
+		}
 		return (int) myDB.insert("Reg_Insulin", null, toInsert);
 	}
 
