@@ -84,6 +84,26 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         }
     }
 
+    public void updateList(ArrayList<Advice> adviceList, ArrayList<Task> taskList, Cursor cursor){
+        this.cursor = cursor;
+        this.homeList = new LinkedList<>();
+
+        if(adviceList.size()>0){
+            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.advices)));
+            this.homeList.addAll(adviceList);
+        }
+        if(taskList.size()>0){
+            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.tasks)));
+            this.homeList.addAll(taskList);
+        }
+        if(cursor.getCount()>0){
+            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "RECENT REGISTRIES"));
+            this.homeList.addAll(cursorToList(cursor));
+        }
+        this.homeList.add(new HomeElement(HomeElement.Type.SPACE,""));
+        this.homeList.add(new HomeElement(HomeElement.Type.SPACE,""));
+    }
+
     public HomeAdapter(ArrayList<Advice> adviceList, ArrayList<Task> taskList,Context c) {
         this.homeList = new LinkedList<>();
         if(adviceList.size()>0){

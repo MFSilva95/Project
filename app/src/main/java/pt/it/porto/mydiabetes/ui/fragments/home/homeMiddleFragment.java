@@ -62,11 +62,12 @@ public class homeMiddleFragment extends Fragment {
 	private YapDroid yapDroid;
 	final int WAIT_REGISTER = 123;
 	final String TAG = "homeFrag";
+	private ItemTouchHelper helper = null;
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == WAIT_REGISTER && resultCode == Home.CHANGES_OCCURRED) {
-			fillHomeList();
+			updateHomeList();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -126,6 +127,15 @@ public class homeMiddleFragment extends Fragment {
 		return layout;
 	}
 
+	private void updateHomeList(){
+		fillTaskList();
+		fillAdviceList();
+		ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(getContext()));
+		Cursor cursor = db.getAllLogbookListWithin(10);
+		((HomeAdapter)homeList.getAdapter()).updateList(receiverAdviceList, taskListFromYap, cursor);
+		homeList.getAdapter().notifyDataSetChanged();
+	}
+
 	private void fillHomeList() {
 
 		fillTaskList();
@@ -136,9 +146,11 @@ public class homeMiddleFragment extends Fragment {
 		//HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor,this, yapDroid);
 		HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor, getContext());
 
-		ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
-		ItemTouchHelper helper = new ItemTouchHelper(callback);
-		helper.attachToRecyclerView(homeList);
+		if(helper==null){
+			ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
+			helper= new ItemTouchHelper(callback);
+			helper.attachToRecyclerView(homeList);
+		}
 		homeList.setAdapter(homeAdapter);
 		homeList.setLayoutManager(new LinearLayoutManager(getContext()));
 	}
@@ -187,6 +199,8 @@ public class homeMiddleFragment extends Fragment {
 		ArrayList<Advice> adviceList = new ArrayList<>();
 		adviceList.add(task1);
 		adviceList.add(task2);
+
+		receiverAdviceList = new ArrayList<>();
 		receiverAdviceList.addAll(adviceList);
 		Collections.sort(receiverAdviceList);
 
