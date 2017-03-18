@@ -32,7 +32,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    app:elevation="2dp">
+                    app:cardElevation="2dp">
 
                     <LinearLayout
                         android:id="@+id/layout1"
@@ -121,7 +121,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_weight="1"
-                    app:elevation="2dp">
+                    app:cardElevation="2dp">
 
                     <LinearLayout
                         android:id="@+id/layout2"
@@ -218,7 +218,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    app:elevation="2dp">
+                    app:cardElevation="2dp">
 
                     <LinearLayout
                         android:id="@+id/layout3"
@@ -307,7 +307,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_weight="1"
-                    app:elevation="2dp">
+                    app:cardElevation="2dp">
 
                     <LinearLayout
                         android:id="@+id/layout4"
@@ -406,7 +406,7 @@
                     android:layout_marginEnd="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_weight="1"
-                    app:elevation="2dp">
+                    app:cardElevation="2dp">
 
                     <LinearLayout
                         android:id="@+id/layout5"
@@ -495,7 +495,7 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_weight="1"
-                    app:elevation="2dp">
+                    app:cardElevation="2dp">
 
                     <LinearLayout
                         android:id="@+id/layout6"

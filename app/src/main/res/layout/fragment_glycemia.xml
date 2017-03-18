@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".ui.activities.SettingsGlycemia">
 
     <android.support.design.widget.AppBarLayout
@@ -39,6 +40,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbarbig"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         android:layout_weight="1"
         tools:listitem="@layout/list_target_row" />
 

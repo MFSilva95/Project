@@ -58,12 +58,9 @@ public class DiseaseRegAdapter extends BaseAdapter {
 		viewHolder.timeStart.setText(dis.timeStart);
 		if (dis.timeEnd == null) {
 			viewHolder.timeEnd.setVisibility(View.INVISIBLE);
-			viewHolder.divider.setVisibility(View.INVISIBLE);
-			viewHolder.divider.setVisibility(View.INVISIBLE);
 		} else {
 			viewHolder.timeEnd.setText(dis.timeEnd);
 			viewHolder.timeEnd.setVisibility(View.VISIBLE);
-			viewHolder.divider.setVisibility(View.VISIBLE);
 		}
 
 		v.setOnClickListener(new View.OnClickListener() {
@@ -100,14 +97,12 @@ public class DiseaseRegAdapter extends BaseAdapter {
 		TextView diseaseName;
 		TextView timeStart;
 		TextView timeEnd;
-		TextView divider;
 		DiseaseReg item;
 
 		public ViewHolder(View view) {
 			diseaseName = (TextView) view.findViewById(R.id.tv_list_diseasereg_disease);
 			timeStart = (TextView) view.findViewById(R.id.tv_list_diseasereg_startdate);
 			timeEnd = (TextView) view.findViewById(R.id.tv_list_diseasereg_enddate);
-			divider = (TextView) view.findViewById(R.id.divider);
 		}
 	}
 }

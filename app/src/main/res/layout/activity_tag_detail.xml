@@ -141,7 +141,7 @@
                         android:focusableInTouchMode="false"
                         android:hint="Até"
                         android:inputType="date"
-                        android:onClick="showTimePickerDialogFrom"
+                        android:onClick="showTimePickerDialogTo"
                         android:textSize="18sp" />
 
                 </LinearLayout>

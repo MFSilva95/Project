@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -53,7 +54,7 @@ public class InsulinAdapter extends BaseAdapter {
         }
 
 
-        RelativeLayout rLayout = (RelativeLayout) v.findViewById(R.id.InsulinsRow);
+        LinearLayout rLayout = (LinearLayout) v.findViewById(R.id.InsulinsRow);
 
 
         TextView iname = (TextView) v.findViewById(R.id.list_insulinName);

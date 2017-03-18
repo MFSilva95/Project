@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     tools:context=".ui.activities.SettingsInsulins">
 
 
@@ -41,6 +42,8 @@
         android:layout_below="@+id/toolbarbig"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         android:layout_weight="1"></ListView>
 
 </RelativeLayout>

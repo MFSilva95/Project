@@ -64,45 +64,51 @@
 
                     <Button
                         android:id="@+id/syncPC"
+                        style="@style/Widget.AppCompat.Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/textView5"
-                        style="@style/Widget.AppCompat.Button.Colored"
                         android:layout_centerHorizontal="true"
                         android:layout_marginLeft="50dp"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
+                        android:backgroundTint="@android:color/white"
+                        android:elevation="2dp"
                         android:onClick="syncPC"
-                        android:text="@string/sync_with_pc" />
+                        android:text="@string/sync_with_pc"
+                        android:textColor="@color/primary_dark" />
 
                     <Button
                         android:id="@+id/syncCloud"
+                        style="@style/Widget.AppCompat.Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/syncPC"
-                        style="@style/Widget.AppCompat.Button.Colored"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="50dp"
                         android:layout_weight="1"
+                        android:backgroundTint="@android:color/white"
+                        android:elevation="2dp"
                         android:onClick="syncCloud"
-                        android:text="@string/send_to_cloud" />
+                        android:text="@string/send_to_cloud"
+                        android:textColor="@color/primary_dark" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="15dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/editAccount"
+                        style="@style/Widget.AppCompat.Button.Borderless"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_weight="1"
-                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
                         android:onClick="editAccount"
                         android:text="@string/cloudSync_edit_account" />
                 </LinearLayout>
@@ -153,27 +159,33 @@
 
                     <Button
                         android:id="@+id/bt_Backup"
+                        style="@style/Widget.AppCompat.Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical|center_horizontal"
                         android:layout_marginLeft="50dp"
-                        style="@style/Widget.AppCompat.Button.Colored"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
+                        android:backgroundTint="@android:color/white"
+                        android:elevation="2dp"
                         android:onClick="backupButton"
-                        android:text="@string/do_back" />
+                        android:text="@string/do_back"
+                        android:textColor="@color/primary_dark" />
 
                     <Button
                         android:id="@+id/bt_Restore"
+                        style="@style/Widget.AppCompat.Button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        style="@style/Widget.AppCompat.Button.Colored"
                         android:layout_gravity="center_vertical|center_horizontal"
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="50dp"
                         android:layout_weight="1"
+                        android:backgroundTint="@android:color/white"
+                        android:elevation="2dp"
                         android:onClick="restore"
-                        android:text="@string/restore_backup_button" />
+                        android:text="@string/restore_backup_button"
+                        android:textColor="@color/primary_dark" />
 
                 </LinearLayout>
 
@@ -214,13 +226,16 @@
 
                         <Button
                             android:id="@+id/share"
+                            style="@style/Widget.AppCompat.Button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical|center_horizontal"
-                            style="@style/Widget.AppCompat.Button.Colored"
+                            android:backgroundTint="@android:color/white"
+                            android:elevation="2dp"
                             android:enabled="true"
                             android:onClick="share"
-                            android:text="@string/backup_share" />
+                            android:text="@string/backup_share"
+                            android:textColor="@color/primary_dark" />
 
                     </LinearLayout>
 

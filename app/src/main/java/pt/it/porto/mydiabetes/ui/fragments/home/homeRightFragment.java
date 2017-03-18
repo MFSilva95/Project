@@ -42,18 +42,6 @@ public class homeRightFragment extends Fragment  {
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_home_right, container, false);
 
-        fab = (FloatingActionButton) layout.findViewById(R.id.fab);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), AddEvent.class);
-                startActivity(intent,
-                        ActivityOptions.makeSceneTransitionAnimation(getActivity(), fab, "fab").toBundle());
-            }
-        });
-
         return layout;
     }
 
