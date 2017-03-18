@@ -1,8 +1,11 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -20,6 +23,7 @@ public class WeightChartList extends SingleDataChartActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		if (savedInstanceState == null) {
 			Bundle extras = getIntent().getExtras();
 			if (extras == null) {
@@ -34,28 +38,21 @@ public class WeightChartList extends SingleDataChartActivity {
 			getIntent().putExtras(extras);
 
 		}
-		super.onCreate(savedInstanceState);
+
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.plus_btn));
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(getBaseContext(), WeightDetail.class);
+				startActivity(intent);
+			}
+		});
 	}
 
 	@Override
 	public String getName() {
 		return getString(R.string.title_activity_weight);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.weight, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.menuItem_Weight) {
-			Intent intent = new Intent(this, WeightDetail.class);
-			startActivity(intent);
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

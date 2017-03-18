@@ -134,7 +134,7 @@
                     android:text="@string/time_separator_preposition"/>
 
                 <EditText
-                    android:id="@id/time_end"
+                    android:id="@+id/time_end"
                     style="@style/welcomeEditText"
                     android:layout_width="0dp"
                     android:layout_marginBottom="0dp"

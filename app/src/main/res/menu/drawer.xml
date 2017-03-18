@@ -8,7 +8,8 @@
             android:id="@+id/userTasks"
             android:checked="false"
             android:title="@string/navTask"
-            android:icon="@drawable/ic_flag"/>
+            android:icon="@drawable/ic_flag"
+            />
 
         <item
             android:id="@+id/userLogbook"
@@ -17,16 +18,17 @@
             android:icon="@drawable/ic_book"/>
 
         <item
+            android:id="@+id/diabetesData"
+            android:checked="false"
+            android:title="@string/navDiabetesTools"
+            android:icon="@drawable/ic_opacity"/>
+
+        <item
             android:id="@+id/personalData"
             android:checked="false"
             android:title="@string/navPersonalTools"
             android:icon="@drawable/ic_fingerprint"/>
 
-        <item
-            android:id="@+id/diabetesData"
-            android:checked="false"
-            android:title="@string/navDiabetesTools" 
-            android:icon="@drawable/ic_opacity"/>
         <item
             android:id="@+id/importAndExport"
             android:checked="false"
@@ -36,7 +38,7 @@
         <item
             android:id="@+id/info"
             android:checked="false"
-            android:icon="@drawable/ic_info_outline_black_24dp"
+            android:icon="@drawable/ic_info_outline_24dp"
             android:title="@string/title_activity_info" />
 
     </group>

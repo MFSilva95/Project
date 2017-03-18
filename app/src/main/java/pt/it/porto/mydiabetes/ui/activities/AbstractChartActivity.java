@@ -1,14 +1,19 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
+import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -17,11 +22,10 @@ import lecho.lib.hellocharts.model.ValueShape;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.charts.data.ChartData;
 import pt.it.porto.mydiabetes.ui.charts.data.Weight;
-import pt.it.porto.mydiabetes.ui.dialogs.DateRangeDialog;
 import pt.it.porto.mydiabetes.ui.fragments.ChartFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
-public abstract class AbstractChartActivity extends BaseActivity implements ChartFragment.OnFragmentInteractionListener, DateRangeDialog.TimeUpdate {
+public abstract class AbstractChartActivity extends BaseActivity implements ChartFragment.OnFragmentInteractionListener {
 	private ActionBar actionBar;
 
 	public static final int MAX_VALUES_IN_GRAPH = 100;
@@ -35,6 +39,11 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 	private Calendar timeEnd;
 	private ChartData chartData;
 
+	private EditText dateFrom;
+	private EditText dateTo;
+
+	public FloatingActionButton fab;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -45,10 +54,27 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
 
-
 		timeStart = Calendar.getInstance();
 		timeStart.roll(Calendar.WEEK_OF_YEAR, false);
 		timeEnd = Calendar.getInstance();
+
+		dateFrom = (EditText) findViewById(R.id.et_DataFrom);
+		dateFrom.setText(DateUtils.getFormattedDate(timeStart));
+		dateFrom.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setStart();
+			}
+		});
+		dateTo = (EditText) findViewById(R.id.et_DataTo);
+		dateTo.setText(DateUtils.getFormattedDate(timeEnd));
+		dateTo.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setEnd();
+			}
+		});
+
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
@@ -94,18 +120,7 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.chart_activity_menu, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.select_dates) {
-			DateRangeDialog dialog = DateRangeDialog.newInstance(timeStart, timeEnd, chartData);
-			dialog.show(getSupportFragmentManager(), null);
-			return true;
-		}
 		if (item.getItemId() == android.R.id.home) {
 			finish();
 			return true;
@@ -170,9 +185,39 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 			return numberOfValues - positionInLine - 1;
 		}
 	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		setupContent();
+		updateTimeRange();
+	}
+
+	private void setEnd() {
+		DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+				if (timeEnd.get(Calendar.YEAR) != year || timeEnd.get(Calendar.MONTH) != monthOfYear || timeEnd.get(Calendar.DAY_OF_MONTH) != dayOfMonth) {
+					timeEnd.set(year, monthOfYear, dayOfMonth);
+					dateTo.setText(DateUtils.getFormattedDate(timeEnd));
+					setTimes(timeStart, timeEnd);
+				}
+			}
+		}, timeEnd.get(Calendar.YEAR), timeEnd.get(Calendar.MONTH), timeEnd.get(Calendar.DAY_OF_MONTH));
+		dialog.show();
+	}
+
+	public void setStart() {
+		DatePickerDialog dialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+			@Override
+			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+				if (timeStart.get(Calendar.YEAR) != year || timeStart.get(Calendar.MONTH) != monthOfYear || timeStart.get(Calendar.DAY_OF_MONTH) != dayOfMonth) {
+					timeStart.set(year, monthOfYear, dayOfMonth);
+					dateFrom.setText(DateUtils.getFormattedDate(timeStart));
+					setTimes(timeStart, timeEnd);
+				}
+			}
+		}, timeStart.get(Calendar.YEAR), timeStart.get(Calendar.MONTH), timeStart.get(Calendar.DAY_OF_MONTH));
+		dialog.show();
 	}
 }
