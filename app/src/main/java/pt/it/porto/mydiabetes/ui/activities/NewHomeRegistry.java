@@ -72,6 +72,7 @@ import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.StringSpinnerAdapter;
+import pt.it.porto.mydiabetes.ui.views.ExtendedEditText;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
@@ -85,21 +86,19 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         showCalcs();
     }
 
-    private enum RegistryFields{MEAL,INSULIN,GLICEMIA,PLUS};
+    private enum RegistryFields{CARBS,INSULIN,GLICEMIA,PLUS};
     private boolean usetIOB;
 
     private LinearLayout bottomSheetViewgroup;
     private BottomSheetBehavior bottomSheetBehavior;
     private LinearLayout contentLayout;
     private ArrayList<RegistryFields> buttons;
+    private Boolean insulinManualRegister = false;
 
     private Calendar registerDate;
 
     private TextView registerDateTextV;
     private TextView registerTime;
-    private int carbValue = 0;
-    private int glicValue = 0;
-    private int glicObjectiveValue = 0;
 
     protected InsulinCalcFragment fragmentInsulinCalcsFragment;
     protected InsulinCalculator insulinCalculator = null;
@@ -331,20 +330,20 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         }
         for(RegistryFields field:buttons){
             switch (field){
-                case MEAL:
-                    AddMealRead();
+                case CARBS:
+                    addMealRead();
                     break;
                 case GLICEMIA:
-                    AddGlycemiaRead();
+                    addGlycemiaRead();
                     break;
                 case INSULIN:
-                    AddInsulinRead();
+                    addInsulinRead();
                     break;
             }
         }
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
     }
-    public void AddGlycemiaRead() {
+    public void addGlycemiaRead() {
 
         Spinner tagSpinner = (Spinner) findViewById(R.id.tag_spinner);
         EditText glycemia = (EditText) findViewById(R.id.glycemia);
@@ -380,10 +379,10 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         reg.Glycemia_Save(gly);
         reg.close();
     }
-    public void AddInsulinRead() {
+    public void addInsulinRead() {
 
         Spinner insulinSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
-        EditText insulinUnits = (EditText) findViewById(R.id.insulin_intake);
+        ExtendedEditText insulinUnits = (ExtendedEditText) findViewById(R.id.insulin_intake);
 
         Spinner tagSpinner = (Spinner) findViewById(R.id.tag_spinner);
         //tem de ter um target inserido
@@ -430,7 +429,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         reg.close();
         rdb.close();
     }
-    public void AddMealRead() {
+    public void addMealRead() {
         Spinner tagSpinner = (Spinner) findViewById(R.id.tag_spinner);
         if ((insulinCalculator.getCarbsRatio() == 0) && imgUri == null) {
             // nothing to save
@@ -443,7 +442,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         String tag = null;
         if (tagSpinner != null) {
             tag = tagSpinner.getSelectedItem().toString();
-            //Log.d("selected Spinner", tag);
         }
         int idTag = rdb.Tag_GetIdByName(tag);
         rdb.close();
@@ -487,8 +485,8 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(false);
                 } else {
                     addContent(R.layout.glycemia_content_edit);
+                    findViewById(R.id.glycemia_txt).requestFocus();
                     buttons.add(0, RegistryFields.GLICEMIA);
-                    if(buttons.contains(RegistryFields.MEAL)){insertInsulinSuggestion();}
                     setGlycemiaListeners();
                     v.getAnimation();
                     v.postDelayed(new Runnable() {
@@ -498,6 +496,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                         }
                     }, 100L);
                     hideBottomSheet();
+                    if(buttons.contains(RegistryFields.CARBS)){insertInsulinSuggestion(RegistryFields.GLICEMIA);}
                 }
             }
         });
@@ -505,14 +504,14 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         bottomSheetViewgroup.findViewById(R.id.bs_meal).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (buttons.contains(RegistryFields.MEAL)) {
-                    removeContent(buttons.indexOf(RegistryFields.MEAL));
-                    buttons.remove(RegistryFields.MEAL);
+                if (buttons.contains(RegistryFields.CARBS)) {
+                    removeContent(buttons.indexOf(RegistryFields.CARBS));
+                    buttons.remove(RegistryFields.CARBS);
                     bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(false);
                 } else {
                     addContent(R.layout.meal_content_edit);
-                    buttons.add(0, RegistryFields.MEAL);
-                    if(buttons.contains(RegistryFields.GLICEMIA)){insertInsulinSuggestion();}
+                    findViewById(R.id.meal_txt).requestFocus();
+                    buttons.add(0, RegistryFields.CARBS);
                     setMealListeners();
                     v.getAnimation();
                     v.postDelayed(new Runnable() {
@@ -522,6 +521,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                         }
                     }, 100L);
                     hideBottomSheet();
+                    if(buttons.contains(RegistryFields.GLICEMIA)){insertInsulinSuggestion(RegistryFields.CARBS);}
                 }
             }
         });
@@ -535,6 +535,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(false);
                 } else {
                     addContent(R.layout.insulin_content_edit);
+                    findViewById(R.id.insulin_admin).requestFocus();
                     buttons.add(0, RegistryFields.INSULIN);
                     fillInsulinSpinner();
                     setInsulinListeners();
@@ -550,26 +551,42 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             }
         });
     }
-    private void insertInsulinSuggestion(){
-        Boolean cons = ((!buttons.contains(RegistryFields.INSULIN)) && buttons.contains(RegistryFields.MEAL) && buttons.contains(RegistryFields.GLICEMIA));
+    private void insertInsulinSuggestion(RegistryFields activator){
+        Boolean cons = ((!buttons.contains(RegistryFields.INSULIN)) && buttons.contains(RegistryFields.CARBS) && buttons.contains(RegistryFields.GLICEMIA));
         if (cons) {
+            float insulinUnits = 0;
+
             addContentAt(R.layout.insulin_content_edit, buttons.size()-1);
-            View v = bottomSheetViewgroup.findViewById(R.id.bs_insulin);
             buttons.add(buttons.size()-1, RegistryFields.INSULIN);
+            View v = bottomSheetViewgroup.findViewById(R.id.bs_insulin);
             fillInsulinSpinner();
             setInsulinListeners();
-            float insulinUnits = 0;
-            if(carbValue!=0){
-                if(glicValue!=0){
+            Boolean carbReadExists = insulinCalculator.getCarbs()>0;
+            Boolean glycReadExists = insulinCalculator.getGlycemia()>0;
+
+            if(carbReadExists){
+                if(glycReadExists){
                     insulinUnits = insulinCalculator.getInsulinTotal(useIOB);
                 }else{
                     insulinUnits = insulinCalculator.getInsulinCarbs();
                 }
             }else{
-                insulinUnits = insulinCalculator.getInsulinGlycemia();
+                if(glycReadExists){
+                    insulinUnits = insulinCalculator.getInsulinGlycemia();
+                }
             }
-            if(insulinUnits!=0){
-                ((TextView) findViewById(R.id.insulin_intake)).setText(insulinUnits+"");
+
+            if((insulinUnits>0) && (!insulinManualRegister)){
+                TextInputLayout insulinInput = ((TextInputLayout) findViewById(R.id.insulin_admin));
+                //insulinInput.setHintEnabled(false);
+                Log.i(TAG, "insertInsulinSuggestion: -------------------------------------------------------------------------->2");
+                insulinInput.getEditText().requestFocus();
+                insulinInput.getEditText().setText(insulinUnits+"");
+                if(activator.equals(RegistryFields.CARBS)){
+                    findViewById(R.id.meal_txt).requestFocus();
+                }else{
+                    findViewById(R.id.glycemia_txt).requestFocus();
+                }
                 showCalcs();
             }
             v.getAnimation();
@@ -616,13 +633,11 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     try{
                         int carbs = Integer.parseInt(carbsS);
                         insulinCalculator.setCarbs(carbs);
-                        carbValue = carbs;
-                        refreshCalcs();
+                        Log.i(TAG, "afterTextChanged: carbs<------------");
                     }catch (NumberFormatException e){
                         insulinCalculator.setCarbs(0);
-                        carbValue = 0;
                     }
-
+                    refreshCalcs();
                 }
             }
         });
@@ -655,6 +670,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
 
         TextInputLayout glycValueT = (TextInputLayout) findViewById(R.id.glycemia_txt);
         glycValueT.getEditText().addTextChangedListener(new TextWatcher() {
+
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -672,21 +688,18 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     try{
                         int glycValue = Integer.parseInt(glycString);
                         insulinCalculator.setGlycemia(glycValue);
-                        glicValue = glycValue;
-                        refreshCalcs();
+                        Log.i(TAG, "afterTextChanged: glic<-");
                     }catch (NumberFormatException e){
                         insulinCalculator.setGlycemia(0);
-                        glicValue = 0;
                     }
-
+                    refreshCalcs();
                 }
             }
         });
 
         int objective = 0;
-        TextInputLayout view = (TextInputLayout) findViewById(R.id.glycemia_obj);
-
-        view.getEditText().addTextChangedListener(new TextWatcher() {
+        TextInputLayout glycObjT = (TextInputLayout) findViewById(R.id.glycemia_obj);
+        glycObjT.getEditText().addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -704,26 +717,22 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     try{
                         int glycObjValue = Integer.parseInt(glycObjString);
                         insulinCalculator.setGlycemiaTarget(glycObjValue);
-                        glicObjectiveValue = glycObjValue;
-                        refreshCalcs();
+                        Log.i(TAG, "afterTextChanged: setTarget<-");
                     }catch (NumberFormatException e){
                         insulinCalculator.setGlycemiaTarget(0);
-                        glicObjectiveValue = 0;
                     }
-
+                    refreshCalcs();
                 }
             }
         });
 
         try {
             objective = storage.getGlycemiaObjectives(time);
-            view.getEditText().setText(objective+"");
+            glycObjT.getEditText().setText(objective+"");
             insulinCalculator.setGlycemiaTarget(objective);
-            glicObjectiveValue =  objective;
         } catch (Exception e) {
             ImageButton plusButton = (ImageButton) findViewById(R.id.insert_new_glic_objective);
             plusButton.setVisibility(View.VISIBLE);
-            glicObjectiveValue =  0;
             plusButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -733,15 +742,23 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         }
     }
     private void setInsulinListeners(){
-        View view = findViewById(R.id.bt_insulin_calc_info);
-        if (view != null) {
-            view.setOnClickListener(new View.OnClickListener() {
+        View insuInfo = findViewById(R.id.bt_insulin_calc_info);
+        if (insuInfo != null) {
+            insuInfo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     toggleInsulinCalcDetails(v);
                 }
             });
         }
+        TextInputLayout insulinDose = (TextInputLayout) findViewById(R.id.insulin_admin);
+        TextView insuTxt = insulinDose.getEditText();
+        insuTxt.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insulinManualRegister = true;
+            }
+        });
     }
     private void toggleInsulinCalcDetails(View view) {
         expandInsulinCalcsAuto = false;
@@ -755,17 +772,31 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         return fragmentInsulinCalcsFragment != null;
     }
     private void refreshCalcs(){
-        if(isFragmentShowing()){
-            fragmentInsulinCalcsFragment.setCorrectionGlycemia(insulinCalculator.getInsulinGlycemia());
-            fragmentInsulinCalcsFragment.setCorrectionCarbs(insulinCalculator.getInsulinCarbs());
-            fragmentInsulinCalcsFragment.setResult(insulinCalculator.getInsulinTotal(useIOB), insulinCalculator.getInsulinTotal(useIOB, true));
-            fragmentInsulinCalcsFragment.setInsulinOnBoard(insulinCalculator.getInsulinOnBoard());
+        if(buttons.contains(RegistryFields.INSULIN)){
+            showCalcs();
+            if(isFragmentShowing()) {
+                if(!insulinManualRegister){
+                    float insulinUnits = 0;
+                    if(insulinCalculator.getCarbs()>0) {
+                        insulinUnits += insulinCalculator.getInsulinCarbs();
+                    }
+                    if(insulinCalculator.getGlycemia()>0){
+                        insulinUnits += insulinCalculator.getInsulinGlycemia();
+                    }
+                    if(insulinUnits>0){
+                        TextInputLayout insulinInput = ((TextInputLayout) findViewById(R.id.insulin_admin));
+                        Log.i(TAG, "refreshCalcs: -------------------------------------------------------------------------->3");
+                        insulinInput.getEditText().setText(insulinUnits+"");
+                    }
+                }
+            }
         }
+
     }
     private void showCalcs() {
 
         hideBottomSheet();
-        hideKeyboard();
+        //hideKeyboard();
 
         if (fragmentInsulinCalcsFragment == null) {
             FragmentManager fragmentManager = getFragmentManager();
@@ -880,7 +911,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     private void imageRemoved() {
         setImgURI(null);
     }
-
     private void addGlycemiaObjective() {
         Intent intent = new Intent(this, TargetBG_detail.class);
         EditText targetGlycemia = ((TextInputLayout) findViewById(R.id.glycemia_obj)).getEditText();

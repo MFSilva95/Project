@@ -227,17 +227,12 @@ public class Home extends BaseActivity {
 		}
         super.onActivityResult(requestCode, resultCode, data);
 	}
-
-
 	public void ShowDialogAddData() {
 		Intent intent = new Intent(this, WelcomeActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		startActivity(intent);
 		finish();
 	}
-
-
-
 	private void setupBottomNavigationView() {
 		// Get the menu from our navigationBottomView.
 		Menu bottomNavigationViewMenu = bottomNavigationView.getMenu();
