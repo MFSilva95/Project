@@ -44,6 +44,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     private Cursor cursor;
     private List<HomeElement> homeList;
     private YapDroid myYapInstance;
+    private int nAdvices;
+    private int nTasks;
 
     public HomeElement getFromHomeList(int index){
         return homeList.get(index);
@@ -91,10 +93,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         if(adviceList.size()>0){
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.advices)));
             this.homeList.addAll(adviceList);
+            nAdvices = adviceList.size();
         }
         if(taskList.size()>0){
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.tasks)));
             this.homeList.addAll(taskList);
+            nTasks = taskList.size();
         }
         if(cursor.getCount()>0){
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "RECENT REGISTRIES"));
@@ -125,10 +129,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         if(adviceList.size()>0){
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.advices)));
             this.homeList.addAll(adviceList);
+            nAdvices = adviceList.size();
         }
         if(taskList.size()>0){
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.tasks)));
             this.homeList.addAll(taskList);
+            nTasks = taskList.size();
         }
         if(cursor.getCount()>0){
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, "RECENT REGISTRIES"));
@@ -168,6 +174,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                 vh = new ViewHolder((LinearLayout) v, true);
                 v.setTag(vh);
                 return vh;
+            case 4:
+                // Log.i("________POSITION_____", "TASK");
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_task_row, parent, false);
+                vh = new ViewHolder((LinearLayout) v, true);
+                v.setTag(vh);
+                return vh;
         }
         return null;
     }
@@ -184,7 +196,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             case SPACE:
                 return 2;
             case TASK:
-                return 0;
+                return 4;
         }
         return 2;
     }
@@ -197,32 +209,36 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         LinearLayout textHolder = null;
         TextView rowText = null;
         TextView myText = null;
-        View v = null;
+        View v = holder.view;
         //Log.i("Home", "onBindViewHolder: "+currentView.getDisplayType()+" Pos:"+position);
         switch (currentView.getDisplayType()) {
             case HEADER:
                 //its an header
-                textHolder = (LinearLayout) holder.view.getChildAt(0);
-                textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
+                textHolder = (LinearLayout) v.findViewById(R.id.headerRowBackground);
+                //textHolder = (LinearLayout) holder.view.getChildAt(0);
+                //textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
                 rowText = (TextView) textHolder.getChildAt(0);
-                rowText.setTextColor(ContextCompat.getColor(c, R.color.cardview_light_background));
-                rowText.setTypeface(Typeface.MONOSPACE);
+                //rowText.setTextColor(ContextCompat.getColor(c, R.color.cardview_light_background));
                 rowText.setText(currentView.getName());
                 break;
+
             case ADVICE:
                 //its an advice
                 final Advice currentAdvice = (Advice) currentView;
-
-                textHolder = (LinearLayout) holder.view.getChildAt(0);
-                textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
-                myText= (TextView) textHolder.getChildAt(0);
+                textHolder = (LinearLayout) v.findViewById(R.id.adviceRowBackground);
+                myText = (TextView) v.findViewById(R.id.content);
+                //textHolder = (LinearLayout) holder.view.getChildAt(0);
+                //textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
+                textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
+                //myText= (TextView) textHolder.getChildAt(1);
 
                 if (currentAdvice.getUrgency() > 7) {
                     myText.setTextColor(Color.RED);
                 }
-                textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
-                rowText = (TextView) textHolder.getChildAt(0);
-                rowText.setText(currentAdvice.getSummaryText());
+                //textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
+//                rowText = (TextView) textHolder.getChildAt(0);
+//                rowText.setText(currentAdvice.getSummaryText());
+                myText.setText(currentAdvice.getSummaryText());
 
                 holder.view.setOnClickListener(new View.OnClickListener() {
 
@@ -351,17 +367,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             case TASK:
                 //its a task
                 final Task currentTask = (Task) currentView;
-                textHolder = (LinearLayout) holder.view.getChildAt(0);
-                textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
-                myText = (TextView) textHolder.getChildAt(0);
-
+                textHolder = (LinearLayout) v.findViewById(R.id.taskRowBackground);
+                //textHolder = (LinearLayout) holder.view.getChildAt(0);
+                //textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
+                textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
+                myText = (TextView) v.findViewById(R.id.content);
+                //myText = (TextView) textHolder.getChildAt(1);
                 if (currentTask.getUrgency() > 7) {
                     myText.setTextColor(Color.RED);
                 }
-
-                textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
-                rowText = (TextView) textHolder.getChildAt(0);
-                rowText.setText(". " + currentTask.getSummaryText());
+                //textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
+                myText.setText(currentTask.getSummaryText());
+//                rowText = (TextView) textHolder.getChildAt(1);
+//                rowText.setText(currentTask.getSummaryText());
                 holder.view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -386,10 +404,36 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
     public void remove(int position) {
         //Log.i("HOME", "remove: POS:"+position);
+        int headerPos = -1;
+        HomeElement toBeRemoved = homeList.get(position);
         homeList.remove(position);
         notifyItemRemoved(position);
-    }
 
+        if(toBeRemoved.getDisplayType().equals(HomeElement.Type.ADVICE)){
+            nAdvices--;
+            if(nAdvices==0){
+                headerPos = homeList.indexOf(getHeader(c.getString(R.string.advices)));
+                homeList.remove(headerPos);
+                notifyItemRemoved(headerPos);
+            }
+        }
+        if(toBeRemoved.getDisplayType().equals(HomeElement.Type.TASK)){
+            nTasks--;
+            if(nTasks==0){
+                headerPos = homeList.indexOf(getHeader(c.getString(R.string.tasks)));
+                homeList.remove(headerPos);
+                notifyItemRemoved(headerPos);
+            }
+        }
+    }
+    public HomeElement getHeader(String title){
+        for(HomeElement elem:homeList){
+            if(elem.getDisplayType().equals(HomeElement.Type.HEADER) && elem.getName().equals(title)){
+                return elem;
+            }
+        }
+        return null;
+    }
 
     @Override
     public int getItemCount() {

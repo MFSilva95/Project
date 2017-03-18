@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
     android:layout_margin="1dp"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/md_material_blue_800">
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        android:id="@+id/headerRowBackground"
+        android:id="@+id/taskRowBackground"
         android:layout_margin = "2dp"
         android:layout_marginLeft="2.5dp"
         android:layout_marginRight="2.5dp"
         xmlns:android="http://schemas.android.com/apk/res/android">
-
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_target"/>
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/content"
-            android:textColor="@color/background"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:lineSpacingMultiplier="1.2"
-            android:padding="8dp"/>
-
+            android:padding="8dp"
+            tools:text="cenas"/>
     </LinearLayout>
 </LinearLayout>
 

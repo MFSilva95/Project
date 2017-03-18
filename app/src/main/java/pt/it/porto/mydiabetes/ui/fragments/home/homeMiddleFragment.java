@@ -113,11 +113,7 @@ public class homeMiddleFragment extends Fragment {
 		}
 		read.close();
 		homeList = (RecyclerView) layout.findViewById(R.id.HomeListDisplay);
-
-
 		fab = (FloatingActionButton) layout.findViewById(R.id.fab);
-
-
 		logbookList = (ListView) layout.findViewById(R.id.LogbookActivityList);
 
 		setFabClickListeners();
