@@ -62,6 +62,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
+import pt.it.porto.mydiabetes.data.Advice;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
@@ -485,6 +487,13 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(false);
                 } else {
                     addContent(R.layout.glycemia_content_edit);
+
+                    /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
+                    if(newAdvice!=null){
+                        addContent(R.layout.dialog_exp_advice);
+                        setAdviceText();
+                    }*/
+
                     findViewById(R.id.glycemia_txt).requestFocus();
                     buttons.add(0, RegistryFields.GLICEMIA);
                     setGlycemiaListeners();
@@ -510,6 +519,13 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(false);
                 } else {
                     addContent(R.layout.meal_content_edit);
+
+                    /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
+                    if(newAdvice!=null){
+                        addContent(R.layout.dialog_exp_advice);
+                        setAdviceText();
+                    }*/
+
                     findViewById(R.id.meal_txt).requestFocus();
                     buttons.add(0, RegistryFields.CARBS);
                     setMealListeners();
@@ -535,6 +551,13 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(false);
                 } else {
                     addContent(R.layout.insulin_content_edit);
+
+                    /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
+                    if(newAdvice!=null){
+                        addContent(R.layout.dialog_exp_advice);
+                        setAdviceText();
+                    }*/
+
                     findViewById(R.id.insulin_admin).requestFocus();
                     buttons.add(0, RegistryFields.INSULIN);
                     fillInsulinSpinner();
@@ -557,6 +580,13 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             float insulinUnits = 0;
 
             addContentAt(R.layout.insulin_content_edit, buttons.size()-1);
+
+            /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
+                    if(newAdvice!=null){
+                        addContent(R.layout.dialog_exp_advice);
+                        setAdviceText();
+                    }*/
+
             buttons.add(buttons.size()-1, RegistryFields.INSULIN);
             View v = bottomSheetViewgroup.findViewById(R.id.bs_insulin);
             fillInsulinSpinner();
