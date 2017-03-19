@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -35,7 +36,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.FilterDialog;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
-public class LogbookChartList extends MultiDataChartActivity {
+public class LogbookChartList extends MultiDataChartActivity implements FilterDialog.NoticeDialogListener{
 
 	public static final int DETAILS = 1;
 	protected float firstDate;
@@ -85,6 +86,10 @@ public class LogbookChartList extends MultiDataChartActivity {
 		});
 	}
 
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog) {
+		setupContent();
+	}
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -355,4 +360,6 @@ public class LogbookChartList extends MultiDataChartActivity {
 			}
 		}
 	}
+
+
 }
