@@ -251,7 +251,8 @@ public class BloodPressureDetail extends BaseActivity {
 		bp.setIdUser(idUser);
 		bp.setSystolic(Integer.parseInt(systolic.getText().toString()));
 		bp.setDiastolic(Integer.parseInt(diastolic.getText().toString()));
-		bp.setDateTime(data.getText().toString(), hora.getText().toString());
+		// Add the current seconds to differentiate (and correctly order) entries on the same minute
+		bp.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 		bp.setIdTag(idTag);
 
 		wdb.BloodPressure_Save(bp);
