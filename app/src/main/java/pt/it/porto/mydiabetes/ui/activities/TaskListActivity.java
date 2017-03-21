@@ -34,7 +34,7 @@ public class TaskListActivity extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_tasklist);
+		setContentView(R.layout.activity_tasks);
 		fillTaskList();
 		// Show the Up button in the action bar.
 		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
@@ -94,7 +94,7 @@ public class TaskListActivity extends BaseActivity {
 
 		Collections.sort(receiverTaskList);
 
-		taskList = (RecyclerView) findViewById(R.id.taskListDisplay);
+		taskList = (RecyclerView) findViewById(R.id.TasksHomeList);
 		TaskListAdapter taskAdapter = new TaskListAdapter(receiverTaskList,this);
 
 		ItemTouchHelper.Callback callback = new TaskTouchHelper(taskAdapter);
