@@ -48,6 +48,10 @@
         <item name="background">@color/background</item>
     </style>
 
+    <style name="HomeTheme2" parent="HomeTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
     <!-- ToolBar -->
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">?colorPrimary</item>
