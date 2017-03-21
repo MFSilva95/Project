@@ -47,7 +47,6 @@
 
         <EditText
             android:id="@+id/sensibility_factor"
-            android:theme="@style/welcomeEditText"
             android:hint="@string/hint_value3"
             android:inputType="number"
             android:textColorHint="@color/hint_grey"
@@ -63,7 +62,6 @@
 
         <EditText
             android:id="@+id/carbs_ratio"
-            android:theme="@style/welcomeEditText"
             android:hint="@string/hint_value4"
             android:inputType="number"
             android:textColorHint="@color/hint_grey"
@@ -81,7 +79,6 @@
 
         <EditText
             android:id="@+id/hypoglycemia_limit"
-            android:theme="@style/welcomeEditText"
             android:hint="@string/hint_value5"
             android:inputType="number"
             android:textColorHint="@color/hint_grey"
@@ -99,7 +96,6 @@
 
         <EditText
             android:id="@+id/hyperglycemia_limit"
-            android:theme="@style/welcomeEditText"
             android:hint="@string/hint_value6"
             android:imeOptions="actionDone"
             android:inputType="number"

@@ -25,13 +25,13 @@
         <!--</activity>-->
         <activity
             android:name="pt.it.porto.mydiabetes.ui.activities.MultiDataChartActivity"
-            android:theme="@style/AppNewThemeCompat" />
+            android:theme="@style/HomeTheme" />
         <activity
             android:name="pt.it.porto.mydiabetes.ui.activities.SingleDataChartActivity"
-            android:theme="@style/AppNewThemeCompat" />
+            android:theme="@style/HomeTheme" />
         <activity
             android:name="pt.it.porto.mydiabetes.ui.activities.ListTestActivity"
-            android:theme="@style/AppNewThemeCompat" />
+            android:theme="@style/HomeTheme" />
 
         <service
             android:name="pt.it.porto.mydiabetes.middleHealth.es.libresoft.openhealth.android.MiddleHealth"

@@ -96,7 +96,6 @@
 
             <EditText
                 android:id="@id/description"
-                style="@style/welcomeEditText"
                 android:layout_marginBottom="0dp"
                 android:inputType="textPersonName|textCapSentences"
                 tools:text="Manhã"
@@ -115,7 +114,6 @@
 
                 <EditText
                     android:id="@+id/time_start"
-                    style="@style/welcomeEditText"
                     android:layout_width="0dp"
                     android:layout_marginBottom="0dp"
                     android:layout_weight="1"
@@ -135,7 +133,6 @@
 
                 <EditText
                     android:id="@+id/time_end"
-                    style="@style/welcomeEditText"
                     android:layout_width="0dp"
                     android:layout_marginBottom="0dp"
                     android:layout_weight="1"
@@ -158,7 +155,6 @@
 
                 <EditText
                     android:id="@id/glycemia_objective"
-                    style="@style/welcomeEditText"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_marginBottom="0dp"

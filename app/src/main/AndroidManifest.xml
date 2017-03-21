@@ -15,7 +15,7 @@
         android:allowBackup="true"
         android:icon="@drawable/logo_v2"
         android:label="@string/app_name"
-        android:theme="@style/NewHomeTheme">
+        android:theme="@style/HomeTheme">
 
         <activity
             android:name=".ui.activities.WelcomeActivity"
@@ -112,7 +112,7 @@
             android:name=".ui.activities.GlycemiaChartList"
             android:label="@string/title_activity_glycemia"
             android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/AppNewThemeCompat">
+            android:theme="@style/HomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -121,7 +121,7 @@
             android:name=".ui.activities.InsulinChartList"
             android:label="@string/title_activity_insulin"
             android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/AppNewThemeCompat">
+            android:theme="@style/HomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -138,7 +138,7 @@
             android:name=".ui.activities.CarbsChartList"
             android:label="@string/title_activity_carbo_hydrate"
             android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/AppNewThemeCompat">
+            android:theme="@style/HomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
@@ -178,7 +178,7 @@
         <activity
             android:name=".ui.activities.GlycemiaDetail"
             android:label="@string/title_activity_glycemia_detail"
-            android:theme="@style/AppNewThemeCompat"
+            android:theme="@style/HomeTheme"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -203,7 +203,7 @@
         <activity
             android:name=".ui.activities.MealActivity"
             android:label="@string/title_activity_meal"
-            android:theme="@style/AppNewThemeCompat"
+            android:theme="@style/HomeTheme"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -212,7 +212,7 @@
         <activity
             android:name=".ui.activities.CarboHydrateDetail"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/AppNewThemeCompat"
+            android:theme="@style/HomeTheme"
             android:label="@string/title_activity_carbo_hydrate_detail"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
@@ -334,7 +334,7 @@
             android:name=".ui.activities.DetailLogbookActivity"
             android:label="@string/title_activity_logbook_detail"
             android:parentActivityName=".ui.activities.LogbookChartList"
-            android:theme="@style/AppNewThemeCompat">
+            android:theme="@style/HomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.LogbookChartList"/>
@@ -369,7 +369,7 @@
             android:name=".ui.activities.AddEvent"
             android:label="Test"
             android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/NewHomeTheme">
+            android:theme="@style/HomeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="pt.it.porto.mydiabetes.ui.activities.Home"/>

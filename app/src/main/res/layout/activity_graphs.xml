@@ -15,7 +15,7 @@
         android:minHeight="?attr/actionBarSize"
         android:orientation="vertical"
         app:elevation="4dp"
-        app:theme="@style/MyToolbar">
+        app:theme="@style/ToolbarTheme">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"

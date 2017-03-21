@@ -46,7 +46,6 @@
 
         <EditText
             android:id="@+id/name"
-            android:theme="@style/welcomeEditText"
             android:hint="@string/name_hint"
             android:inputType="textPersonName"
             android:layout_width="match_parent"
@@ -75,8 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/gender_female"
-                android:textColor="@android:color/white"
-                android:theme="@style/welcomeRadioButton"/>
+                android:textColor="@android:color/white"/>
 
 
             <RadioButton
@@ -85,8 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:text="@string/gender_male"
-                android:textColor="@android:color/white"
-                android:theme="@style/welcomeRadioButton"/>
+                android:textColor="@android:color/white"/>
         </RadioGroup>
 
         <TextView
@@ -97,7 +94,6 @@
 
         <EditText
             android:id="@+id/height"
-            android:theme="@style/welcomeEditText"
             android:hint="@string/height_hint"
             android:inputType="numberDecimal"
 
@@ -116,7 +112,6 @@
         <EditText
             android:id="@+id/birthdate"
             android:inputType="date"
-            android:theme="@style/welcomeEditText"
             android:focusable="false"
             tools:hint="@string/hint_birth_date"
             android:focusableInTouchMode="false"

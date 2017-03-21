@@ -1,89 +1,22 @@
 <resources>
 
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-
-    <style name="Widget.MyApp.HeaderBar.Spinner" parent="Widget.AppCompat.Light.Spinner.DropDown.ActionBar">
-        <item name="android:background">?android:selectableItemBackground</item>
-        <item name="android:dropDownSelector">?android:selectableItemBackground</item>
-        <item name="android:divider">@null</item>
-    </style>
-
-
     <!--
         Base application theme, dependent on API level. This theme is replaced
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
+    <!-- New Theme -->
 
-
-    <style name="NewHomeTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorAccent">@color/accent</item>
-        <item name="colorPrimaryDark">@color/primary_dark</item>
-        <item name="colorPrimary">@color/primary</item>
-        <item name="background">@color/background</item>
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
-    <!-- ToolBar -->
-    <style name="MyToolbar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
-        <item name="android:background">?colorPrimary</item>
-    </style>
-
-    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="spinBars">true</item>
-        <item name="color">@android:color/white</item>
-    </style>
-
-    <style name="AddRegisterTheme" parent="NewHomeTheme">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:textColor">#424342</item>
-    </style>
-
-
-
-
-    <style name="AppNewThemeCompat" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!--<item name="background">@color/background_holo_dark</item>-->
-        <item name="background">@android:color/white</item>
-        <!--<item name="android:windowBackground">@android:color/white</item>-->
-        <!--<item name="colorPrimary">@color/background_holo_dark</item>-->
+    <style name="welcomeTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowBackground">@color/primary</item>
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorAccent">@color/accent</item>
-        <!--<item name="android:colorBackground">@color/background_material_dark</item>-->
-        <!--<item name="android:textColorPrimary">@color/abc_primary_text_material_dark</item>-->
-        <!-- enable window content transitions -->
-        <!--<item name="android:windowActivityTransitions">true</item>-->
     </style>
 
-    <!-- Application theme. -->
-    <style name="AppTheme" parent="@android:style/Theme.Holo">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
-        <item name="android:logo">@drawable/logo_v2</item>
-    </style>
-
-    <style name="Holo.Spinner" parent="AppTheme">
-
-    </style>
-
-    <style name="Regist">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="Regist.EditText">
-        <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:paddingLeft">@dimen/abc_edit_text_inset_horizontal_material</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">@dimen/abc_edit_text_inset_horizontal_material</item>
-        <item name="android:singleLine">true</item>
-    </style>
 
     <style name="Regist.TextView" parent="TextAppearance.AppCompat.Body2">
         <item name="android:layout_marginLeft">@dimen/abc_edit_text_inset_horizontal_material</item>
@@ -91,17 +24,6 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:maxLines">1</item>
         <item name="android:singleLine">true</item>
-    </style>
-
-    <style name="Regist.Spinner" parent="Base.Widget.AppCompat.EditText">
-        <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
-        <item name="android:maxLines">1</item>
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">@dimen/abc_edit_text_inset_horizontal_material</item>
-        <item name="android:singleLine">true</item>
-        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Regist.Button" parent="Widget.AppCompat.Button.Borderless.Colored">
@@ -119,6 +41,28 @@
         <item name="android:textColor">?android:attr/textColorTertiary</item>
     </style>
 
+    <style name="HomeTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorAccent">@color/accent</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="background">@color/background</item>
+    </style>
+
+    <!-- ToolBar -->
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:background">?colorPrimary</item>
+    </style>
+
+    <style name="ToolbarTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <style name="ToolbarTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
+    </style>
+
+    <!-- Application theme. -->
 
     <style name="SectionHeader" parent="TextAppearance.AppCompat">
         <item name="android:fontFamily">sans-serif-medium</item>
@@ -138,53 +82,6 @@
     </style>
 
 
-    <!-- New Theme -->
-    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash</item>
-    </style>
-
-    <style name="HomeButtonStyle" parent="Widget.AppCompat.Button">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_height">85dp</item>
-        <item name="android:layout_marginBottom">8dp</item>
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:paddingBottom">8dp</item>
-        <item name="android:paddingTop">8dp</item>
-        <item name="android:textColor">@color/primary_text_holo_dark</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-    <style name="welcomeTheme" parent="Theme.Design.Light.NoActionBar">
-        <item name="android:windowBackground">@color/green_background</item>
-        <item name="android:colorPrimary">@color/green_bar</item>
-        <item name="android:colorPrimaryDark">@color/green_bar</item>
-        <item name="android:navigationBarColor">@color/green_bar</item>
-        <item name="android:colorAccent">@color/green_bar</item>
-    </style>
-
-    <style name="HomeButtonTheme" parent="AppNewThemeCompat">
-        <item name="colorButtonNormal">?colorPrimary</item>
-        <item name="colorControlHighlight">?colorAccent</item>
-    </style>
-
-    <style name="welcomeEditText" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/hint_grey</item>
-        <item name="colorControlActivated">@color/green_selected</item>
-    </style>
-
-    <style name="welcomeRadioButton" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/hint_grey</item>
-        <item name="colorControlActivated">@color/green_selected</item>
-    </style>
-
-
-
-
-    <style name="MyToolbar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
-    <style name="MyToolbar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
 
 
 </resources>
