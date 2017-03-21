@@ -14,34 +14,27 @@
         android:id="@+id/chart"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/chart_drawable"
-        android:paddingBottom="10dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="5dp" />
+        android:padding="1dp" />
 
-    <com.simplecityapps.recyclerview_fastscroll.views.FastScrollRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/list_vals"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
-        android:background="@drawable/divider_shadow"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="100dp"
+        android:background="@android:color/white"
         android:choiceMode="singleChoice"
         android:clipToPadding="false"
         android:elevation="2dp"
-        android:paddingBottom="140dp"
+        android:paddingBottom="120dp"
         android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="none"
-        app:fastScrollAutoHide="false"
-        app:fastScrollAutoHideDelay="1500"
-        app:fastScrollPopupBgColor="@color/accent"
-        app:fastScrollPopupTextColor="@android:color/primary_text_dark"
-        app:fastScrollThumbColor="@color/accent"
-        tools:listitem="@layout/list_weight_row"/>
+        android:scrollbars="vertical"
+        tools:listitem="@layout/list_weight_row" />
 
     <include
         android:id="@+id/list_empty"
