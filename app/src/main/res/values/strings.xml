@@ -260,7 +260,7 @@
     <string name="breakfast">Pequeno almoço</string>
     <string name="disease_period">Período de doença</string>
     <string name="exercise_duration">Exercício e Duração</string>
-    <string name="hint_exercise1">corrida</string>
+    <string name="hint_exercise1">Corrida</string>
     <string name="schedule">Horário</string>
     <string name="send_to_cloud">Enviar para Cloud</string>
     <string name="description">Descrição</string>
@@ -311,7 +311,7 @@
         <item>@string/insulin_action_long</item>
     </string-array>
 
-    <string name="insulin_message_action">Escolha um tipo de ação.</string>
+    <string name="insulin_message_action">Escolha um modo de administração.</string>
 
     <string name="insulin_message_name_exists">Já existe uma insulina com esse nome, escolha outro por favor.</string>
     <string name="meal_insulin_calc">Seleccionou uma insulina </string>
@@ -430,4 +430,12 @@
     navigation_drawer_open
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
+
+
+    <string name="insulin_type_pen">Caneta</string>
+    <string name="insulin_type_pump">Bomba</string>
+    <string-array name="insulin_type">
+        <item>@string/insulin_type_pen</item>
+        <item>@string/insulin_type_pump</item>
+    </string-array>
 </resources>

@@ -1,73 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="?android:selectableItemBackground"
-              android:minHeight="@dimen/list_row_default_height"
-              android:orientation="horizontal">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="0dp"
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="3dp"
-        android:layout_marginStart="3dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        app:cardElevation="2dp">
 
-        <TextView
-            android:id="@+id/tv_list_glicemia_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            tools:text="2016-01-27"/>
+        <LinearLayout
+            android:id="@+id/TargetBGRow"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:padding="3dp"
+            android:weightSum="1">
 
-        <TextView
-            android:id="@+id/tv_list_glicemia_hora"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textStyle="bold"
-            tools:text="11:50"/>
+            <LinearLayout
+                android:id="@+id/list_targettimes"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_list_glicemia_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:ellipsize="end"
-            android:gravity="left"
-            android:lines="1"
-            android:textSize="@dimen/list_text_small"
-            tools:text="Antes almoço"/>
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/list_targetStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/background_dark"
+                    tools:text="10:00" />
 
-    <TextView
-        android:id="@+id/tv_list_glicemia_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:textSize="@dimen/list_text_huge"
-        android:textStyle="bold"
-        tools:text="@string/hint_value1"/>
+                <TextView
+                    android:id="@+id/list_targetEnd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/background_dark"
+                    tools:text="11:00" />
 
-    <TextView
-        android:id="@+id/tv_list_glicemia_unit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="@string/mg_dl"
-        android:textSize="@dimen/list_text_big"/>
+            </LinearLayout>
 
-    <ImageView
-        android:id="@+id/ib_list_glicemia_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:background="@color/transparent"
-        android:src="@drawable/viewdetail"/>
+            <LinearLayout
+                android:id="@+id/ll_list_exercisereg_middleright"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="25dp"
+                android:layout_marginRight="15dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/list_targetValue"
+                    style="@android:style/TextAppearance.Large"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="18sp"
+                    tools:text="30" />
+
+                <TextView
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mg_dl"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/list_targetName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="18sp"
+                    tools:text="@string/time_of_day" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>

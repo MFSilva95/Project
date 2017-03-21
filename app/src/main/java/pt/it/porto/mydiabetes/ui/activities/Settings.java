@@ -3,16 +3,20 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import pt.it.porto.mydiabetes.BuildConfig;
@@ -32,6 +36,7 @@ public class Settings extends BaseActivity {
 
 	private CheckBox useActiveInsulin;
 	private UserInfo myData;
+	private FloatingActionButton fab;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +48,28 @@ public class Settings extends BaseActivity {
 		if (actionBar != null) {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
+
+		fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (inputIsValid()) {
+
+					DB_Write rdb = new DB_Write(getBaseContext());
+					rdb.MyData_Save(getMyDataFromActivity());
+					rdb.close();
+					FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
+					db.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, useActiveInsulin.isChecked());
+					Toast.makeText(getBaseContext(), getString(R.string.mydata_saved), Toast.LENGTH_LONG).show();
+					finish();
+				} else {
+					//toast message
+					Toast.makeText(getBaseContext(), getString(R.string.mydata_before_saving), Toast.LENGTH_LONG).show();
+				}
+
+			}
+		});
+
 		Spinner sp_MyData_DiabetesType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
 		ArrayAdapter<CharSequence> adapter_sp_MyData_DiabetesType = ArrayAdapter.createFromResource(this, R.array.diabetes_Type, android.R.layout.simple_spinner_item);
 		adapter_sp_MyData_DiabetesType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -64,43 +91,11 @@ public class Settings extends BaseActivity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.my_data, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				// This ID represents the Home or Up button. In the case of this
-				// activity, the Up button is shown. Use NavUtils to allow users
-				// to navigate up one level in the application structure. For
-				// more details, see the Navigation pattern on Android Design:
-				//
-				// http://developer.android.com/design/patterns/navigation.html#up-vs-back
-				//
-				NavUtils.navigateUpFromSameTask(this);
+				finish();
 				return true;
-			case R.id.menuItem_MyData_Save:
-
-				if (inputIsValid()) {
-
-					DB_Write rdb = new DB_Write(this);
-					rdb.MyData_Save(getMyDataFromActivity());
-					rdb.close();
-					FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(this));
-					db.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, useActiveInsulin.isChecked());
-					Toast.makeText(this, getString(R.string.mydata_saved), Toast.LENGTH_LONG).show();
-					NavUtils.navigateUpFromSameTask(this);
-
-					return true;
-				} else {
-					//toast message
-					Toast.makeText(this, getString(R.string.mydata_before_saving), Toast.LENGTH_LONG).show();
-				}
-
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -2,8 +2,11 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListAdapter;
 
 import java.util.ArrayList;
@@ -25,22 +28,19 @@ public class HbA1c extends BaseListRangeActivity {
 	public String getRegType(){return "HbA1c";}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.hba1c, menu);
-		return true;
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(getBaseContext(), HbA1cDetail.class);
+				startActivity(intent);
+			}
+		});
+
 	}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menuItem_HbA1c:
-				Intent intent = new Intent(this, HbA1cDetail.class);
-				startActivity(intent);
-				return true;
-		}
-		return super.onOptionsItemSelected(item);
-	}
 
 
 	@Override

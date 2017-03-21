@@ -2,7 +2,7 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import pt.it.porto.mydiabetes.R;
@@ -39,6 +40,22 @@ public class MyData extends BaseActivity {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
 
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				if (inputIsValid()) {
+					DB_Write rdb = new DB_Write(getBaseContext());
+					rdb.MyData_Save(getMyDataFromActivity());
+					rdb.close();
+					Toast.makeText(getBaseContext(), getString(R.string.mydata_saved), Toast.LENGTH_LONG).show();
+					finish();
+				} else {
+					//toast message
+					Toast.makeText(getBaseContext(), getString(R.string.mydata_before_saving), Toast.LENGTH_LONG).show();
+				}
+			}
+		});
 
 		Spinner sp_MyData_Sex = (Spinner) findViewById(R.id.sp_MyData_Sex);
 		ArrayAdapter<CharSequence> adapter_sp_MyData_Sex = ArrayAdapter.createFromResource(this, R.array.Sex, android.R.layout.simple_spinner_item);
@@ -54,34 +71,11 @@ public class MyData extends BaseActivity {
 	}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.my_data, menu);
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
+				finish();
 				return true;
-			case R.id.menuItem_MyData_Save:
-
-				if (inputIsValid()) {
-
-					DB_Write rdb = new DB_Write(this);
-					rdb.MyData_Save(getMyDataFromActivity());
-					rdb.close();
-					Toast.makeText(this, getString(R.string.mydata_saved), Toast.LENGTH_LONG).show();
-					NavUtils.navigateUpFromSameTask(this);
-
-					return true;
-				} else {
-					//toast message
-					Toast.makeText(this, getString(R.string.mydata_before_saving), Toast.LENGTH_LONG).show();
-				}
-
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -46,6 +47,7 @@ public class ExerciseDetail extends BaseActivity {
 		// Show the Up button in the action bar.
 		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 		ActionBar actionBar=getSupportActionBar();
+
 		if (actionBar != null) {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
@@ -93,9 +95,22 @@ public class ExerciseDetail extends BaseActivity {
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
-			inflater.inflate(R.menu.exercise_detail_edit, menu);
+			inflater.inflate(R.menu.exercise_detail_delete, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					UpdateExerciseRead(idExercise);
+				}
+			});
 		} else {
-			inflater.inflate(R.menu.exercise_detail, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					AddExerciseRead();
+				}
+			});
 		}
 
 		return super.onCreateOptionsMenu(menu);
@@ -107,14 +122,8 @@ public class ExerciseDetail extends BaseActivity {
 			case android.R.id.home:
 				finish();
 				return true;
-			case R.id.menuItem_ExerciseDetail_Save:
-				AddExerciseRead();
-				return true;
 			case R.id.menuItem_ExerciseDetail_Delete:
 				DeleteExerciseRead(idExercise);
-				return true;
-			case R.id.menuItem_ExerciseDetail_EditSave:
-				UpdateExerciseRead(idExercise);
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -161,7 +170,7 @@ public class ExerciseDetail extends BaseActivity {
 
 	public void FillEffortSpinner() {
 		Spinner sp_Exercise_Detail = (Spinner) findViewById(R.id.sp_ExerciseDetail_Effort);
-		ArrayAdapter<CharSequence> adapter_sp_Exercise_Detail = ArrayAdapter.createFromResource(this, R.array.Effort, android.R.layout.simple_spinner_item);
+		ArrayAdapter<CharSequence> adapter_sp_Exercise_Detail = ArrayAdapter.createFromResource(this, R.array.Effort, R.layout.spinner_text_layout);
 		adapter_sp_Exercise_Detail.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sp_Exercise_Detail.setAdapter(adapter_sp_Exercise_Detail);
 	}

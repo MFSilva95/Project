@@ -1,11 +1,11 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -82,14 +82,27 @@ public class DayFaseDetail extends BaseActivity {
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
-			inflater.inflate(R.menu.tag_detail_edit, menu);
+			inflater.inflate(R.menu.tag_detail_delete, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					UpdateTag();
+				}
+			});
 			if (Integer.parseInt(args.getString("Id")) <= 9) {
 				MenuItem m = menu.findItem(R.id.menuItem_FaseDiaDetail_Delete);
 				m.setVisible(false);
 			}
 
 		} else {
-			inflater.inflate(R.menu.tag_detail, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					AddNewTag();
+				}
+			});
 		}
 
 		//getSupportMenuInflater().inflate(R.menu.tag_detail, menu);
@@ -100,13 +113,7 @@ public class DayFaseDetail extends BaseActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
-				return true;
-			case R.id.menuItem_FaseDiaDetail_Save:
-				AddNewTag();
-				return true;
-			case R.id.menuItem_FaseDiaDetail_EditSave:
-				UpdateTag();
+				finish();
 				return true;
 			case R.id.menuItem_FaseDiaDetail_Delete:
 				DeleteTag();
@@ -169,7 +176,7 @@ public class DayFaseDetail extends BaseActivity {
 
 		wdb.Tag_Add(tag);
 		wdb.close();
-		NavUtils.navigateUpFromSameTask(this);
+		finish();
 	}
 
 	public void UpdateTag() {
@@ -212,7 +219,7 @@ public class DayFaseDetail extends BaseActivity {
 
 		wdb.Tag_Update(tag);
 		wdb.close();
-		NavUtils.navigateUpFromSameTask(this);
+		finish();
 	}
 
 	public void DeleteTag() {
@@ -226,7 +233,7 @@ public class DayFaseDetail extends BaseActivity {
 						DB_Write wdb = new DB_Write(c);
 						try {
 							wdb.Tag_Remove(idTag);
-							goUp();
+							finish();
 						} catch (Exception e) {
 							Toast.makeText(c, getString(R.string.tag_info_delete_exception), Toast.LENGTH_LONG).show();
 						}
@@ -241,7 +248,4 @@ public class DayFaseDetail extends BaseActivity {
 				}).show();
 	}
 
-	public void goUp() {
-		NavUtils.navigateUpFromSameTask(this);
-	}
 }

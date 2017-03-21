@@ -35,7 +35,7 @@
 
             <android.support.design.widget.BottomNavigationView
                 android:id="@+id/bottom_navigation"
-                app:itemBackground="@color/green_background"
+                app:itemBackground="@color/primary"
                 app:itemIconTint="@drawable/nav_item_color_state"
                 app:itemTextColor="@drawable/nav_item_color_state"
                 app:menu="@menu/bottom_navigation_main"

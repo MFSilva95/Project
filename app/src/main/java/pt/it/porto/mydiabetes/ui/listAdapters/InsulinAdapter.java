@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -53,7 +54,7 @@ public class InsulinAdapter extends BaseAdapter {
         }
 
 
-        RelativeLayout rLayout = (RelativeLayout) v.findViewById(R.id.InsulinsRow);
+        LinearLayout rLayout = (LinearLayout) v.findViewById(R.id.InsulinsRow);
 
 
         TextView iname = (TextView) v.findViewById(R.id.list_insulinName);
@@ -66,11 +67,11 @@ public class InsulinAdapter extends BaseAdapter {
         final String _id = "" + insulin.getId();
         iname.setText(insulin.getName());
         iname.setTag(_id);
-        itype.setText(insulin.getType());
 
-        int index = 0; //note that below can give and error and we'll get position 0 (-1) could throw error
+
+        int indexAction = 0; //note that below can give and error and we'll get position 0 (-1) could throw error
         try {
-			index = Integer.parseInt(insulin.getAction());
+			indexAction = Integer.parseInt(insulin.getAction());
 		} catch (NumberFormatException nfe) {
 			// index will get 0
 			Log.e ("getView", "Read a text that was not a number from action"+ nfe);
@@ -78,9 +79,18 @@ public class InsulinAdapter extends BaseAdapter {
         Resources res = v.getContext().getResources();
         String[] actions = res.getStringArray(R.array.insulin_action);
 
-        iaction.setText(actions[index]);
+        iaction.setText(actions[indexAction]);
         //iduration.setText(insulin.getDuration().toString());
 
+        int indexType = 0; //note that below can give and error and we'll get position 0 (-1) could throw error
+        try {
+            indexType = Integer.parseInt(insulin.getType());
+        } catch (NumberFormatException nfe) {
+            // index will get 0
+            Log.e ("getView", "Read a text that was not a number from action"+ nfe);
+        }
+        String[] types = res.getStringArray(R.array.insulin_type);
+        itype.setText(types[indexType]);
 
         rLayout.setOnClickListener(new View.OnClickListener() {
 

@@ -18,15 +18,17 @@
     <color name="background">#eeeeee</color>
     <color name="activity_blue">#bbccff</color>
     <color name="secondEtal">#2962ff</color>
-    <color name="primaryDark">#1a237e</color>
-    <color name="primary">#3F51B5</color>
-    <color name="primary_dark">#303F9F</color>
-    <color name="primary_light">#c5cae9</color>
-    <color name="accent">#607D8B</color>
-    <color name="primary_text">#ffffff</color>
-    <color name="secondary_text">#727272</color>
+
+
+    <color name="primary">#4CAF50</color>
+    <color name="primary_dark">#388e3c</color>
+    <color name="primary_light">#C8E6C9</color>
+    <color name="accent">#ffc107</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
     <color name="icons">#FFFFFF</color>
-    <color name="divider">#b6b6b6</color>
+    <color name="divider">#BDBDBD</color>
+
     <color name="text_units">#5b5b5b</color>
 
     <color name="divider_grey">#ef636363</color>

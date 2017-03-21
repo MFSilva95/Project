@@ -2,22 +2,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     tools:context=".ui.activities.Settings">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/toolbarbig"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
-        app:theme="@style/MyToolbar" />
+        android:orientation="vertical"
+        app:elevation="4dp"
+        app:theme="@style/MyToolbar">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </android.support.design.widget.AppBarLayout>
 
     <ScrollView
+        android:id="@+id/scroll_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/toolbarbig"
         android:orientation="vertical"
         android:scrollbarStyle="outsideInset"
         android:scrollbars="vertical">
@@ -34,6 +43,7 @@
 
             <!--android:paddingLeft="@dimen/activity_horizontal_margin"-->
             <!--android:paddingRight="@dimen/activity_horizontal_margin"-->
+
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -163,6 +173,14 @@
             </LinearLayout>
 
 
+            <View
+                android:id="@+id/view"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:layout_marginLeft="@dimen/activity_horizontal_margin"
+                android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:background="?android:attr/dividerVertical" />
+
             <LinearLayout
                 android:id="@+id/block_iob"
                 android:layout_width="fill_parent"
@@ -219,11 +237,11 @@
                     android:layout_weight="1"
                     android:checked="true"
                     android:gravity="center_vertical"
+                    android:onClick="editInsulins"
                     android:paddingBottom="4dp"
                     android:paddingLeft="@dimen/activity_horizontal_margin"
                     android:paddingRight="@dimen/activity_horizontal_margin"
                     android:paddingTop="4dp"
-                    android:onClick="editInsulins"
                     android:text="@string/settings_edit_insulins"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -241,7 +259,6 @@
                     android:id="@+id/textView2"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
                     android:layout_weight="1"
                     android:background="?android:selectableItemBackground"
                     android:checked="true"
@@ -266,7 +283,6 @@
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:layout_marginBottom="@dimen/activity_horizontal_margin"
                     android:layout_weight="1"
                     android:background="?android:selectableItemBackground"
                     android:checked="true"
@@ -282,4 +298,17 @@
         </LinearLayout>
 
     </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_action_save"
+        app:elevation="6dp"
+        tools:layout_editor_absoluteX="312dp"
+        tools:layout_editor_absoluteY="116dp" />
+
 </RelativeLayout>

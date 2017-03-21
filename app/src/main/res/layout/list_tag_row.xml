@@ -1,55 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/FaseDiaRow"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:selectableItemBackground"
-    android:gravity="center_vertical"
-    android:minHeight="@dimen/list_row_default_height"
-    android:orientation="horizontal">
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/list_tagName"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:paddingLeft="8dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textIsSelectable="false"
-        tools:text="Acordar" />
-
-    <LinearLayout
-        android:id="@+id/list_tagtimes"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="8dp"
-        android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
+        app:cardElevation="2dp">
 
-        <TextView
-            android:id="@+id/list_tagStart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:paddingLeft="8dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textIsSelectable="false"
-            tools:text="09:10" />
+        <LinearLayout
+            android:id="@+id/FaseDiaRow"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center_vertical|center_horizontal"
+            android:orientation="horizontal"
+            android:padding="3dp"
+            android:weightSum="1">
 
-        <TextView
-            android:id="@+id/list_tagEnd"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:paddingLeft="8dp"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textIsSelectable="false"
-            tools:text="19:10" />
+            <LinearLayout
+                android:id="@+id/list_tagtimes"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/list_tagStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/background_dark"
+                    tools:text="09:10" />
+
+                <TextView
+                    android:id="@+id/list_tagEnd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/background_dark"
+                    tools:text="19:10" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/list_tagName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:maxLines="1"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="18sp"
+                    tools:text="Acordar" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
     </LinearLayout>
-</LinearLayout>

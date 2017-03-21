@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.database;
 
 import android.database.Cursor;
 import android.text.TextUtils;
+import android.util.Log;
 
 public class ListDataSource {
 	public static final String ROW_VALUE = "Value";
@@ -84,7 +85,7 @@ public class ListDataSource {
 					query.append(ROW_DATETIME);
 					query.append(">='");
 					query.append(dateStart);
-					query.append("'");
+					query.append(" 00:00:00'");
 				}
 				if (!TextUtils.isEmpty(dateStart) && !TextUtils.isEmpty(dateEnd)) {
 					query.append(" AND ");
@@ -93,7 +94,7 @@ public class ListDataSource {
 					query.append(ROW_DATETIME);
 					query.append("<='");
 					query.append(dateEnd);
-					query.append("'");
+					query.append(" 23:59:59'");
 				}
 			}
 			if (i != tables.length - 1) {

@@ -4,9 +4,8 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -77,9 +76,22 @@ public class HbA1cDetail extends BaseActivity {
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
-			inflater.inflate(R.menu.hba1c_detail_edit, menu);
+			inflater.inflate(R.menu.hba1c_detail_delete, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					UpdateHbA1cRead();
+				}
+			});
 		} else {
-			inflater.inflate(R.menu.hba1c_detail, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					AddHbA1cRead();
+				}
+			});
 		}
 
 		return super.onCreateOptionsMenu(menu);
@@ -92,14 +104,8 @@ public class HbA1cDetail extends BaseActivity {
 				//NavUtils.navigateUpFromSameTask(this);
 				finish();
 				return true;
-			case R.id.menuItem_HbA1cDetail_Save:
-				AddHbA1cRead();
-				return true;
 			case R.id.menuItem_HbA1cDetail_Delete:
 				DeleteHbA1cRead();
-				return true;
-			case R.id.menuItem_HbA1cDetail_EditSave:
-				UpdateHbA1cRead();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

@@ -5,7 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -113,9 +113,22 @@ public class BloodPressureDetail extends BaseActivity {
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
-			inflater.inflate(R.menu.blood_pressure_detail_edit, menu);
+			inflater.inflate(R.menu.blood_pressure_detail_delete, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					UpdateBloodPressureRead();
+				}
+			});
 		} else {
-			inflater.inflate(R.menu.blood_pressure_detail, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					AddBloodPressureRead();
+				}
+			});
 		}
 
 		return super.onCreateOptionsMenu(menu);
@@ -127,14 +140,8 @@ public class BloodPressureDetail extends BaseActivity {
 			case android.R.id.home:
 				finish();
 				return true;
-			case R.id.menuItem_BloodPressureDetail_Save:
-				AddBloodPressureRead();
-				return true;
 			case R.id.menuItem_BloodPressureDetail_Delete:
 				DeleteBloodPressureRead();
-				return true;
-			case R.id.menuItem_BloodPressureDetail_EditSave:
-				UpdateBloodPressureRead();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -175,7 +182,7 @@ public class BloodPressureDetail extends BaseActivity {
 			}
 		}
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, allTags);
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_text_layout, allTags);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 	}

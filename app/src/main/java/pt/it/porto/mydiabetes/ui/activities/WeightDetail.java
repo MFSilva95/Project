@@ -5,7 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -14,8 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -77,9 +75,22 @@ public class WeightDetail extends BaseActivity {
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
-			inflater.inflate(R.menu.weight_detail_edit, menu);
+			inflater.inflate(R.menu.weight_detail_delete, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					UpdateWeightRead();
+				}
+			});
 		} else {
-			inflater.inflate(R.menu.weight_detail, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					AddWeightRead();
+				}
+			});
 		}
 
 		return super.onCreateOptionsMenu(menu);
@@ -91,14 +102,8 @@ public class WeightDetail extends BaseActivity {
 			case android.R.id.home:
 				finish();
 				return true;
-			case R.id.menuItem_WeightDetail_Save:
-				AddWeightRead();
-				return true;
 			case R.id.menuItem_WeightDetail_Delete:
 				DeleteWeightRead();
-				return true;
-			case R.id.menuItem_WeightDetail_EditSave:
-				UpdateWeightRead();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);

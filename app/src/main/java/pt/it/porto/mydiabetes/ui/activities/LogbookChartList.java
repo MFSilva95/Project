@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,10 +32,11 @@ import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.charts.data.ChartData;
+import pt.it.porto.mydiabetes.ui.dialogs.FilterDialog;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
-public class LogbookChartList extends MultiDataChartActivity {
+public class LogbookChartList extends MultiDataChartActivity implements FilterDialog.NoticeDialogListener{
 
 	public static final int DETAILS = 1;
 	protected float firstDate;
@@ -71,6 +75,20 @@ public class LogbookChartList extends MultiDataChartActivity {
 		hiperGlicemia = myData.getHigherRange();
 
 		super.onCreate(savedInstanceState);
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.setImageDrawable(ContextCompat.getDrawable(getBaseContext(), R.drawable.ic_filter_list_24dp));
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				FilterDialog dialog = FilterDialog.newInstance(getChartData());
+				dialog.show(getSupportFragmentManager(), null);
+			}
+		});
+	}
+
+	@Override
+	public void onDialogPositiveClick(DialogFragment dialog) {
+		setupContent();
 	}
 
 	@Override
@@ -342,4 +360,6 @@ public class LogbookChartList extends MultiDataChartActivity {
 			}
 		}
 	}
+
+
 }

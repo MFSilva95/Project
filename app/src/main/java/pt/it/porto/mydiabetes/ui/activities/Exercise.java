@@ -2,8 +2,9 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.content.Intent;
 import android.database.Cursor;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.view.View;
 import android.widget.ListAdapter;
 
 import java.util.Calendar;
@@ -11,7 +12,7 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.ListsDataDb;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
-import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegAdapter;
+import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -22,22 +23,17 @@ public class Exercise extends BaseListRangeActivity {
 	public String getRegType(){return "Exercise";}
 
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.exercise, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menuItem_Exercise_Add:
-				Intent intent = new Intent(this, ExerciseDetail.class);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(getBaseContext(), ExerciseDetail.class);
 				startActivity(intent);
-				return true;
+			}
+		});
 
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
@@ -57,6 +53,6 @@ public class Exercise extends BaseListRangeActivity {
 	ListAdapter getListAdapter() {
 		ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
 		Cursor cursor = db.getExerciseRegList(getStartDate(), getEndDate());
-		return new ExerciseRegAdapter(cursor, this);
+		return new ExerciseAdapter(cursor, this);
 	}
 }
