@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListAdapter;
 
@@ -14,7 +12,7 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.ListsDataDb;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
-import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseRegAdapter;
+import pt.it.porto.mydiabetes.ui.listAdapters.ExerciseAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -55,6 +53,6 @@ public class Exercise extends BaseListRangeActivity {
 	ListAdapter getListAdapter() {
 		ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(this));
 		Cursor cursor = db.getExerciseRegList(getStartDate(), getEndDate());
-		return new ExerciseRegAdapter(cursor, this);
+		return new ExerciseAdapter(cursor, this);
 	}
 }

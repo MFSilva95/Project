@@ -86,11 +86,12 @@
             <EditText
                 android:id="@id/name"
                 style="@style/welcomeEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="0dp"
                 android:hint="@string/insulin"
                 android:inputType="textPersonName|textCapSentences"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:maxLength="18" />
 
             <TextView
                 style="@style/Regist.TextView"
@@ -127,10 +128,10 @@
 
             <Spinner
                 android:id="@id/insulin_type"
-                android:layout_marginBottom="0dp"
-                android:entries="@array/insulin_action"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="0dp"
+                android:entries="@array/insulin_action" />
 
             <LinearLayout
                 android:id="@+id/buttons_edit"

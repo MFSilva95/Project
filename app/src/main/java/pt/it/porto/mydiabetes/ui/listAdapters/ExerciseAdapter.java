@@ -18,12 +18,12 @@ import pt.it.porto.mydiabetes.ui.activities.ExerciseDetail;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
-public class ExerciseRegAdapter extends BaseAdapter {
+public class ExerciseAdapter extends BaseAdapter {
 
 	Context _c;
 	private Cursor cursor;
 
-	public ExerciseRegAdapter(Cursor cursor, Context c) {
+	public ExerciseAdapter(Cursor cursor, Context c) {
 		this.cursor = cursor;
 		_c = c;
 	}

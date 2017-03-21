@@ -13,20 +13,19 @@
         android:layout_marginTop="5dp"
         app:cardElevation="2dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:background="?attr/selectableItemBackground"
-            android:gravity="center_vertical|center_horizontal"
             android:orientation="horizontal"
-            android:padding="3dp"
-            android:weightSum="2">
+            android:padding="3dp">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="30dp"
+                android:gravity="center_vertical"
                 android:orientation="vertical">
 
                 <TextView
@@ -52,18 +51,18 @@
 
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_vertical|center_horizontal"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="30dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_list_hba1c_value"
                     style="@android:style/TextAppearance.Large"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:paddingLeft="8dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
                     android:paddingRight="8dp"
                     android:textColor="@android:color/background_dark"
                     tools:text="@string/hint_value1" />
@@ -71,15 +70,15 @@
                 <TextView
                     android:id="@+id/tv_list_hba1c_unit"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
                     android:fontFamily="sans-serif-light"
-                    android:gravity="center_horizontal"
+                    android:gravity="center_vertical"
                     android:text="@string/percent"
                     android:textColor="@android:color/background_dark"
                     android:textSize="@dimen/list_text_small" />
             </LinearLayout>
 
-        </LinearLayout>
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

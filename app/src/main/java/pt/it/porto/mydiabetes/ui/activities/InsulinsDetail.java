@@ -7,9 +7,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -54,18 +56,20 @@ public class InsulinsDetail extends BaseActivity {
 			EditText name = (EditText)findViewById(R.id.et_Insulins_Nome);
 			name.setText(toFill.getName());
 			originalName = toFill.getName();
-			EditText type = (EditText)findViewById(R.id.et_Insulins_Tipo);
-			type.setText(toFill.getType());
 
-			RadioGroup myRadioGroup = (RadioGroup)findViewById(R.id.et_insulin_action);
+			Spinner spinnerAction = (Spinner)findViewById(R.id.insulin_type);
+			spinnerAction.setSelection(Integer.parseInt(toFill.getAction()));
+
+			RadioGroup adminMethod = (RadioGroup) findViewById(R.id.admininistration_method_insert);
 			int index = 0;
 			try {
-				index = Integer.parseInt(toFill.getAction());
+				index = Integer.parseInt(toFill.getType());
 			} catch (NumberFormatException nfe) {
 				// index will get 0
 				Log.e ("onCreate", "Read a text that was not a number from action"+ nfe);
 			}
-			((RadioButton)myRadioGroup.getChildAt(index)).setChecked(true);
+			((RadioButton)adminMethod.getChildAt(index)).setChecked(true);
+
 
 
 			rdb.close();
@@ -118,29 +122,17 @@ public class InsulinsDetail extends BaseActivity {
 
 	public void AddNewInsulin(){
 		EditText name = (EditText)findViewById(R.id.et_Insulins_Nome);
-		EditText type = (EditText)findViewById(R.id.et_Insulins_Tipo);
-		RadioGroup myRadioGroup = (RadioGroup)findViewById(R.id.et_insulin_action);
-		int index = myRadioGroup.indexOfChild(findViewById(myRadioGroup.getCheckedRadioButtonId()));
+		RadioGroup adminMethod = (RadioGroup) findViewById(R.id.admininistration_method_insert);
+		int index = adminMethod.indexOfChild(findViewById(adminMethod.getCheckedRadioButtonId()));
 
-
-		//EditText value = (EditText)findViewById(R.id.et_TargetBG_Glycemia);
-
-		//adicionado por zeornelas
-		//para obrigar a colocar o valor dos hidratos e nao crashar
 		if(name.getText().toString().equals("")){
 			name.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(name, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if(type.getText().toString().equals("")){
-			type.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(type, InputMethodManager.SHOW_IMPLICIT);
-			return;
-		}
 		if(index==-1){
-			myRadioGroup.requestFocus();
+			adminMethod.requestFocus();
 			Toast.makeText(this, getString(R.string.insulin_message_action), Toast.LENGTH_SHORT).show();
 			return;
 		}
@@ -159,17 +151,13 @@ public class InsulinsDetail extends BaseActivity {
 
 
 
-
 		DB_Write wdb = new DB_Write(this);
 
 		Insulin insulin = new Insulin();
-
-
 		insulin.setName(name.getText().toString());
 
-		insulin.setType(type.getText().toString());
-		insulin.setAction(String.valueOf(index));
-
+		insulin.setType(String.valueOf(index));
+		insulin.setAction(String.valueOf(((Spinner)findViewById(R.id.insulin_type)).getSelectedItemPosition()));
 
 		wdb.Insulin_Add(insulin);
 		wdb.close();
@@ -180,33 +168,21 @@ public class InsulinsDetail extends BaseActivity {
 
 	public void UpdateInsulin(){
 		EditText name = (EditText)findViewById(R.id.et_Insulins_Nome);
-		EditText type = (EditText)findViewById(R.id.et_Insulins_Tipo);
+		RadioGroup adminMethod = (RadioGroup) findViewById(R.id.admininistration_method_insert);
+		int index = adminMethod.indexOfChild(findViewById(adminMethod.getCheckedRadioButtonId()));
 
-		RadioGroup myRadioGroup = (RadioGroup)findViewById(R.id.et_insulin_action);
-		int index = myRadioGroup.indexOfChild(findViewById(myRadioGroup.getCheckedRadioButtonId()));
-
-		//EditText value = (EditText)findViewById(R.id.et_TargetBG_Glycemia);
-
-		//adicionado por zeornelas
-		//para obrigar a colocar o valor dos hidratos e nao crashar
 		if(name.getText().toString().equals("")){
 			name.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(name, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if(type.getText().toString().equals("")){
-			type.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(type, InputMethodManager.SHOW_IMPLICIT);
-			return;
-		}
 		if(index==-1){
-			myRadioGroup.requestFocus();
+			adminMethod.requestFocus();
 			Toast.makeText(this,getString(R.string.insulin_message_action),Toast.LENGTH_SHORT).show();
-
 			return;
 		}
+
 
 
 		DB_Read read = new DB_Read(this);
@@ -228,8 +204,8 @@ public class InsulinsDetail extends BaseActivity {
 		insulin.setId(idInsulin);
 		insulin.setName(name.getText().toString());
 
-		insulin.setType(type.getText().toString());
-		insulin.setAction(String.valueOf(index));
+		insulin.setType(String.valueOf(index));
+		insulin.setAction(String.valueOf(((Spinner)findViewById(R.id.insulin_type)).getSelectedItemPosition()));
 
 
 		wdb.Insulin_Update(insulin);

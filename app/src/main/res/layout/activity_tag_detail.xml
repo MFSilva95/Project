@@ -77,8 +77,9 @@
                     android:background="@android:color/transparent"
                     android:gravity="top|left"
                     android:hint="Nome"
-                    android:inputType="text"
                     android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLength="18"
                     android:textSize="18sp" />
 
             </LinearLayout>

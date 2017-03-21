@@ -14,12 +14,12 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.DiseaseDetail;
 
 
-public class DiseaseRegAdapter extends BaseAdapter {
+public class DiseaseAdapter extends BaseAdapter {
 
 	Context _c;
 	private Cursor cursor;
 
-	public DiseaseRegAdapter(Cursor cursor, Context c) {
+	public DiseaseAdapter(Cursor cursor, Context c) {
 		this.cursor = cursor;
 		_c = c;
 	}

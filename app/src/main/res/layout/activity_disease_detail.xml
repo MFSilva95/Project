@@ -123,9 +123,10 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:hint="Gripe"
-                    android:textSize="18sp"
+                    android:imeOptions="actionNext"
                     android:inputType="text"
-                    android:imeOptions="actionNext"/>
+                    android:maxLength="15"
+                    android:textSize="18sp" />
 
             </LinearLayout>
 

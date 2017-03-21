@@ -16,33 +16,35 @@
         <LinearLayout
             android:id="@+id/InsulinsRow"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:background="?attr/selectableItemBackground"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
             android:padding="3dp"
-            android:weightSum="3">
+            android:weightSum="1">
 
             <LinearLayout
                 android:id="@+id/list_insulin_Name"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center_vertical"
+                android:gravity="center_vertical|center_horizontal"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/list_insulinName"
-                    android:layout_width="match_parent"
+                    style="@android:style/TextAppearance.Large"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:paddingLeft="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textIsSelectable="false"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="18sp"
                     tools:text="humalog" />
+
+                <TextView
+                    android:id="@+id/list_insulinAction"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="12sp"
+                    tools:text="@string/insulin_action_rapid" />
 
             </LinearLayout>
 
@@ -51,48 +53,19 @@
                 android:id="@+id/list_insulin_Action"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/list_insulinAction"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:paddingLeft="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textIsSelectable="false"
-                    android:textSize="14sp"
-                    tools:text="@string/insulin_action_rapid" />
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/list_insulin_Type"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/list_insulin_Action"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
+                android:layout_marginRight="30dp"
+                android:gravity="center_vertical|center_horizontal"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/list_insulinType"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:paddingLeft="8dp"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textIsSelectable="false"
-                    android:textSize="14sp"
+                    android:textColor="@android:color/background_dark"
+                    android:textSize="16sp"
                     tools:text="injecção" />
+
+
             </LinearLayout>
 
 

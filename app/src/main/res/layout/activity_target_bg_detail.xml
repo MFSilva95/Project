@@ -78,8 +78,9 @@
 					android:background="@android:color/transparent"
 					android:gravity="top|left"
 					android:hint="Nome"
-					android:inputType="text"
 					android:imeOptions="actionNext"
+					android:inputType="text"
+					android:maxLength="18"
 					android:textSize="18sp" />
 
 			</LinearLayout>
@@ -185,6 +186,7 @@
 					android:background="@android:color/transparent"
 					android:hint="mg/dl"
 					android:inputType="number"
+					android:maxLength="3"
 					android:textSize="18sp" />
 
 			</LinearLayout>

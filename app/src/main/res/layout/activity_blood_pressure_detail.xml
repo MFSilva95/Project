@@ -154,20 +154,22 @@
                         android:layout_height="match_parent"
                         android:layout_marginBottom="20dp"
                         android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
                         android:background="@null"
                         android:hint="Sistólica"
-                        android:layout_marginRight="20dp"
-                        android:inputType="numberDecimal" />
+                        android:inputType="numberDecimal"
+                        android:maxLength="3" />
 
                     <EditText
                         android:id="@+id/et_BloodPressureDetail_Diastolic"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@null"
-                        android:hint="Distólica"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-                        android:inputType="numberDecimal" />
+                        android:background="@null"
+                        android:hint="Distólica"
+                        android:inputType="numberDecimal"
+                        android:maxLength="3" />
                 </LinearLayout>
 
             </LinearLayout>

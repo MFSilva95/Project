@@ -64,8 +64,9 @@
                     android:background="@android:color/transparent"
                     android:gravity="top|left"
                     android:hint="Nome"
-                    android:inputType="text"
                     android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLength="18"
                     android:textSize="18sp" />
 
             </LinearLayout>
@@ -93,20 +94,30 @@
                     android:tint="@android:color/darker_gray"
                     app:srcCompat="@drawable/ic_edit_black_24dp" />
 
-                <EditText
-                    android:id="@+id/et_Insulins_Tipo"
+                <RadioGroup
+                    android:id="@+id/admininistration_method_insert"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:gravity="top|left"
-                    android:inputType="text"
-                    android:imeOptions="actionNext"
-                    android:hint="@string/hint_insulin_type"
-                    android:textSize="18sp" />
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/caneta"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Caneta"
+                        android:theme="@style/welcomeRadioButton" />
+
+
+                    <RadioButton
+                        android:id="@+id/bomba"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:text="Bomba"
+                        android:theme="@style/welcomeRadioButton" />
+                </RadioGroup>
 
             </LinearLayout>
 
@@ -135,49 +146,15 @@
                     android:tint="@android:color/darker_gray"
                     app:srcCompat="@drawable/ic_access_time" />
 
-                <RadioGroup
-                    android:id="@+id/et_insulin_action"
+                <Spinner
+                    android:id="@+id/insulin_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_marginBottom="0dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
-                    android:gravity="center">
-
-                    <RadioButton
-                        android:id="@+id/radioButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:checked="false"
-                        android:gravity="center"
-                        android:text="@string/insulin_action_rapid" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center"
-                        android:text="@string/insulin_action_short" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center"
-                        android:text="@string/insulin_action_intermediate" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center"
-                        android:text="@string/insulin_action_long" />
-                </RadioGroup>
+                    android:entries="@array/insulin_action" />
 
             </LinearLayout>
 

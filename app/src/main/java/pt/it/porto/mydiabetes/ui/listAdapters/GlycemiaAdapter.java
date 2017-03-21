@@ -48,7 +48,7 @@ public class GlycemiaAdapter extends BaseAdapter {
 		View v = convertView;
 		if (v == null) {
 			LayoutInflater vi = (LayoutInflater) _c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.list_target_row, parent, false);
+			v = vi.inflate(R.layout.list_glycemia_row, parent, false);
 		}
 
 		LinearLayout rLayout = (LinearLayout) v.findViewById(R.id.TargetBGRow);

@@ -160,12 +160,13 @@
                     android:id="@id/glycemia_objective"
                     style="@style/welcomeEditText"
                     android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_marginBottom="0dp"
                     android:layout_weight="1"
                     android:imeOptions="actionDone"
                     android:inputType="number"
-                    tools:text="15"
-                    android:layout_height="match_parent" />
+                    android:maxLength="3"
+                    tools:text="15" />
 
                 <TextView
                     android:layout_width="wrap_content"

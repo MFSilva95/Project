@@ -141,10 +141,11 @@
                         android:layout_weight="1"
                         android:background="@android:color/transparent"
                         android:hint="@string/hint_exercise1"
-                        android:textSize="18sp"
-                        android:maxLines="1"
+                        android:imeOptions="actionNext"
                         android:inputType="text"
-                        android:imeOptions="actionNext"/>
+                        android:maxLength="15"
+                        android:maxLines="1"
+                        android:textSize="18sp" />
 
                     <EditText
                         android:id="@+id/et_ExerciseDetail_Duration"
@@ -158,6 +159,7 @@
                         android:background="@android:color/transparent"
                         android:hint="@string/minutes"
                         android:inputType="number"
+                        android:maxLength="3"
                         android:textSize="18sp" />
 
                     <Spinner

@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -35,6 +36,7 @@ public class Settings extends BaseActivity {
 
 	private CheckBox useActiveInsulin;
 	private UserInfo myData;
+	private FloatingActionButton fab;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class Settings extends BaseActivity {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
 
-		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+		fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -67,8 +69,6 @@ public class Settings extends BaseActivity {
 
 			}
 		});
-
-
 
 		Spinner sp_MyData_DiabetesType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
 		ArrayAdapter<CharSequence> adapter_sp_MyData_DiabetesType = ArrayAdapter.createFromResource(this, R.array.diabetes_Type, android.R.layout.simple_spinner_item);

@@ -51,7 +51,7 @@ public class GlycemiaRegAdapter extends BaseAdapter {
 		View v = convertView;
 		if (v == null) {
 			LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.list_glycemia_row, parent, false);
+			v = vi.inflate(R.layout.list_glycemiareg_row, parent, false);
 			v.setTag(new ViewHolder(v));
 		}
 
