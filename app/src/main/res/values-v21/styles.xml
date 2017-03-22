@@ -17,5 +17,9 @@
         <item name="android:datePickerMode">spinner</item>
     </style>
 
+    <style name="HomeTheme2" parent="HomeTheme">
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
 
 </resources>
