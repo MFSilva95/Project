@@ -63,7 +63,7 @@
                                 android:layout_below="@+id/image"
                                 android:layout_centerHorizontal="true"
                                 android:maxLines="1"
-                                android:text="Exercício"
+                                android:text="@string/Exercise"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
@@ -152,7 +152,7 @@
                                 android:layout_below="@+id/image"
                                 android:layout_centerHorizontal="true"
                                 android:maxLines="1"
-                                android:text="Doença"
+                                android:text="@string/disease"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
@@ -249,7 +249,7 @@
                                 android:layout_below="@+id/image"
                                 android:layout_centerHorizontal="true"
                                 android:maxLines="1"
-                                android:text="Peso"
+                                android:text="@string/weight"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
@@ -338,7 +338,7 @@
                                 android:layout_below="@+id/image"
                                 android:layout_centerHorizontal="true"
                                 android:maxLines="1"
-                                android:text="Batimento"
+                                android:text="@string/bloodpressure"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
@@ -437,7 +437,7 @@
                                 android:layout_below="@+id/image"
                                 android:layout_centerHorizontal="true"
                                 android:maxLines="1"
-                                android:text="Colesterol"
+                                android:text="@string/cholesterol"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
@@ -523,12 +523,12 @@
                                 android:id="@+id/title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/image"
-                                android:layout_centerHorizontal="true"
                                 android:maxLines="1"
-                                android:text="HbA1c"
+                                android:text="@string/HbA1c"
                                 android:textSize="18sp"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                android:layout_below="@+id/image"
+                                android:layout_centerHorizontal="true" />
 
 
                             <LinearLayout

@@ -156,7 +156,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:background="@null"
-                        android:hint="Sistólica"
+                        android:hint="@string/systolic"
                         android:inputType="numberDecimal"
                         android:maxLength="3" />
 
@@ -167,7 +167,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:background="@null"
-                        android:hint="Distólica"
+                        android:hint="@string/diastolic"
                         android:inputType="numberDecimal"
                         android:maxLength="3" />
                 </LinearLayout>
@@ -206,7 +206,7 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:gravity="top|left"
-                    android:hint="Notas"
+                    android:hint="@string/notes"
                     android:inputType="textMultiLine"
                     android:textSize="18sp" />
 
