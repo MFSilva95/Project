@@ -227,7 +227,8 @@ public class ExerciseDetail extends BaseActivity {
 		ex.setExercise(exerciseSpinner.getText().toString());
 		ex.setDuration(Integer.parseInt(duration.getText().toString()));
 		ex.setEffort(effort);
-		ex.setDateTime(data.getText().toString(), hora.getText().toString());
+		// Add the current seconds to differentiate (and correctly order) entries on the same minute
+		ex.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 
 
 		reg.Exercise_Save(ex);
@@ -322,7 +323,8 @@ public class ExerciseDetail extends BaseActivity {
 		toUpdate.setId(id);
 		toUpdate.setIdUser(idUser);
 		toUpdate.setDuration(Integer.parseInt(duration.getText().toString()));
-		toUpdate.setDateTime(data.getText().toString(), hora.getText().toString());
+		// Add the current seconds to differentiate (and correctly order) entries on the same minute
+		toUpdate.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 		toUpdate.setEffort(effortSpinner.getSelectedItem().toString());
 		toUpdate.setExercise(exerciseSpinner.getText().toString());
 

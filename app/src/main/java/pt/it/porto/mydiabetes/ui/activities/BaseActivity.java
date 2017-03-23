@@ -1,12 +1,16 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
 

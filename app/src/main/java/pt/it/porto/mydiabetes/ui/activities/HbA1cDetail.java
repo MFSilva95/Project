@@ -163,7 +163,7 @@ public class HbA1cDetail extends BaseActivity {
 
 		hba1c.setIdUser(idUser);
 		hba1c.setValue(Double.parseDouble(value.getText().toString()));
-		hba1c.setDateTime(data.getText().toString(), hora.getText().toString());
+		hba1c.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 
 		wdb.HbA1c_Save(hba1c);
 
@@ -209,7 +209,7 @@ public class HbA1cDetail extends BaseActivity {
 		hba1c.setId(idHbA1c);
 		hba1c.setIdUser(idUser);
 		hba1c.setValue(Double.parseDouble(value.getText().toString()));
-		hba1c.setDateTime(data.getText().toString(), hora.getText().toString());
+		hba1c.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 
 		wdb.HbA1c_Update(hba1c);
 

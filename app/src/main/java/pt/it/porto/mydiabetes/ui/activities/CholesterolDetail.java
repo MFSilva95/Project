@@ -164,7 +164,7 @@ public class CholesterolDetail extends BaseActivity {
 
 		cho.setIdUser(idUser);
 		cho.setValue(Double.parseDouble(value.getText().toString()));
-		cho.setDateTime(data.getText().toString(), hora.getText().toString());
+		cho.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 
 		wdb.Cholesterol_Save(cho);
 
@@ -211,7 +211,7 @@ public class CholesterolDetail extends BaseActivity {
 		cho.setId(idCho);
 		cho.setIdUser(idUser);
 		cho.setValue(Double.parseDouble(value.getText().toString()));
-		cho.setDateTime(data.getText().toString(), hora.getText().toString());
+		cho.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 
 		wdb.Cholesterol_Update(cho);
 

@@ -161,8 +161,7 @@ public class WeightDetail extends BaseActivity {
 
 		weight.setIdUser(idUser);
 		weight.setValue(Double.parseDouble(value.getText().toString()));
-		weight.setDateTime(data.getText().toString(), hora.getText().toString());
-
+		weight.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 		wdb.Weight_Save(weight);
 
 		wdb.close();
@@ -207,8 +206,7 @@ public class WeightDetail extends BaseActivity {
 		cho.setId(idWeight);
 		cho.setIdUser(idUser);
 		cho.setValue(Double.parseDouble(value.getText().toString()));
-		cho.setDateTime(data.getText().toString(), hora.getText().toString());
-
+		cho.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 		wdb.Weight_Update(cho);
 
 		wdb.close();
