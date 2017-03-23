@@ -44,7 +44,7 @@
     <string name="grams">grams</string>
     <string name="hint_value3">e.g.: 45</string>
     <string name="add_H1A1c">Add HbA1C</string>
-    <string name="add_InsulinsFragment"></string>
+    <string name="add_InsulinsFragment">Add Insulin</string>
     <string name="app_name">myDiabetes</string>
     <string name="hint_value4">e.g.: 10</string>
     <string name="hint_value5">e.g.: 70</string>
@@ -182,7 +182,31 @@
     <string name="glycemia_objective">Glycemia Objective</string>
     <string name="glycemia_measure">Glycemia Read</string>
     <string name="insulin_intake">Insulin to Administrate</string>
-    <string name="carbs_intake">Carbohidrates Consumption</string>
+    <string name="carbs_intake">Carbohydrates Consumption</string>
+    <string name="active_insulin">Insulin on Board</string>
+    <string name="backup">Backup</string>
+    <string name="information_about">Application developed in the Instituto de Telecomunicações\'s interim project  \"S-Dia-SelMan - Smart Diabetes Self Management System\". Development in the School of Sciences and Medicine of the Univ. of Porto in cooperation with S. João\'s Hospital.</string>
+    <string name="information_about_using">The application is under development and for its use you should have signed the informed consent and have been informed about the methodology of the study.</string>
+    <string name="bloodglucose">Glycaemia</string>
+    <string name="bloodpressure">Blood pressure</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="carbs_extended">Carbohydrates</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="before_lunch">Before Lunch</string>
+    <string name="chart_activity_label">Weight</string>
+    <string name="cancel_read">Reading Cancelled</string>
+    <string name="delete">Delete</string>
+    <string name="diastolic">Diastolic</string>
+    <string name="disease">Disease</string>
+    <string name="duration">Duration</string>
+    <string name="effort"></string>
+    <string name="systolic">Systolic</string>
+    <string name="sync">Synchronization</string>
+    <string name="start">Start</string>
+    <string name="type">Type</string>
+    <string name="uni">Unit</string>
+    <string name="units">Units</string>
+    <string name="use">Use</string>
 
 
 </resources>
