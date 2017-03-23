@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.database.DB_Read;
@@ -154,6 +155,11 @@ public class Home extends BaseActivity {
 
 		drawerLayout.addDrawerListener(Dlistener);
 		navigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+        if(!BuildConfig.TASKS_AVAILABLE){
+			navigationView.getMenu().findItem(R.id.userTasks).setVisible(false);
+        }
+
 		navigationView.setItemIconTintList(null);
 		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 			// This method will trigger on item Click of navigation menu

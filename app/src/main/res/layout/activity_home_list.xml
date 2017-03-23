@@ -10,6 +10,5 @@
         android:id="@+id/HomeListDisplay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:smoothScrollbar="true"
         tools:context=".ui.activities.Home" />
 </LinearLayout>

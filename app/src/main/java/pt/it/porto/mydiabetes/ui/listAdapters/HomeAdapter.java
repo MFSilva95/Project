@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.data.Advice;
@@ -126,12 +127,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         this.c = c;
         this.homeList = new LinkedList<>();
 
-        if(adviceList.size()>0){
+        if(adviceList.size()>0 && BuildConfig.ADVICES_AVAILABLE){
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.advices)));
             this.homeList.addAll(adviceList);
             nAdvices = adviceList.size();
         }
-        if(taskList.size()>0){
+        if(taskList.size()>0 && BuildConfig.TASKS_AVAILABLE){
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.tasks)));
             this.homeList.addAll(taskList);
             nTasks = taskList.size();
