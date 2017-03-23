@@ -26,7 +26,7 @@
         android:layout_marginLeft="@dimen/activity_horizontal_margin"
         android:shadowColor="@color/black"
         android:shadowRadius="2"
-        android:text="MyDiabetes"
+        android:text="@string/app_name"
         android:textColor="#FFF"
         android:textSize="18sp"
         android:textStyle="bold" />

@@ -61,8 +61,7 @@ public class SettingsImportExport extends BaseActivity {
 		}
 
 		if(!BuildConfig.SYNC_AVAILABLE){
-			findViewById(R.id.syncCloud).setVisibility(View.GONE);
-			findViewById(R.id.editAccount).setVisibility(View.GONE);
+			findViewById(R.id.sync).setVisibility(View.GONE);
 		}
 
 		if(isSDWriteable()){
