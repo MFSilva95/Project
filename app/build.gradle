@@ -10,7 +10,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 25
         // vars to enable new features
-        buildConfigField "boolean", "IOB_AVAILABLE", "true"
+        buildConfigField "boolean", "IOB_AVAILABLE", "false"
         buildConfigField "boolean", "SYNC_AVAILABLE", "false"
         buildConfigField "boolean", "GLUCOMETER_AVAILABLE", "true"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
