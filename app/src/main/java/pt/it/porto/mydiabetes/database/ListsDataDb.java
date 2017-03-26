@@ -3,6 +3,9 @@ package pt.it.porto.mydiabetes.database;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.util.LinkedList;
+
+import pt.it.porto.mydiabetes.data.LogBookEntry;
 import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.utils.DbUtils;
 
@@ -66,12 +69,10 @@ public class ListsDataDb {
 				")" +
 				"WHERE datetime > '" + startDate + " 00:00:00' AND datetime < '" + endDate + " 23:59:59'" +
 				"ORDER BY datetime DESC");
-
-
 		return cursor;
 	}
 
-	public Cursor getAllLogbookListWithin(int limit) {
+	public LinkedList<LogBookEntry> getLogBookByDate(String date) {
 		Cursor cursor = storage.rawQuery("SELECT DISTINCT datetime, tag, carbs, insulinVal, insulinName, glycemia, carbsId, insulinId, glycemiaId" +
 				" FROM " +
 				"(" +
@@ -119,10 +120,35 @@ public class ListsDataDb {
 				" AND Reg_Insulin.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
 				" AND Tag.Id = Reg_Insulin.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
 				")" +
-				"ORDER BY datetime DESC limit "+limit);
+				"WHERE datetime LIKE '%" + date + "%'" +
+				"ORDER BY datetime DESC");
 
+		LinkedList<LogBookEntry> logBookEntries = new LinkedList<LogBookEntry>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			LogBookEntry tmp;
+			int pox = 0;
+			do {
+				tmp = new LogBookEntry(
+						cursor.getString(pox++),
+						cursor.getString(pox++),
+						cursor.getInt(pox++),
+						cursor.getFloat(pox++),
+						cursor.getString(pox++),
+						cursor.getInt(pox++),
+						cursor.getInt(pox++),
+						cursor.getInt(pox++),
+						cursor.getInt(pox));
+				logBookEntries.add(tmp);
 
-		return cursor;
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return logBookEntries;
+		} else {
+			cursor.close();
+			return logBookEntries;
+		}
 	}
 
 

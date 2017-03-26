@@ -6,19 +6,18 @@
              android:layout_height="match_parent"
              android:clipChildren="false"
              android:gravity="bottom|end">
-
-
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/plus_btn"
-        app:backgroundTint="?colorAccent"
-        app:borderWidth="1dp"
         app:elevation="6dp"
-        app:fabSize="normal"
-        app:rippleColor="?colorPrimaryDark"/>
+        app:layout_anchor="@id/toolbarbig"
+        app:layout_anchorGravity="bottom|end"
+        tools:layout_editor_absoluteX="312dp"
+        tools:layout_editor_absoluteY="116dp"
+        android:layout_gravity="bottom|end"/>
+
 
 </FrameLayout>

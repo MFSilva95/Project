@@ -1,12 +1,11 @@
 package pt.it.porto.mydiabetes.data;
 
 
-public class DiseaseRec {
+public class DiseaseRec extends DateTime {
 
 	private int id;
 	private int idUser;
 	private String disease;
-	private String startdate;
 	private String enddate;
 	private int idNote = -1;
 
@@ -32,14 +31,6 @@ public class DiseaseRec {
 
 	public void setDisease(String disease) {
 		this.disease = disease;
-	}
-
-	public String getStartDate() {
-		return startdate;
-	}
-
-	public void setStartDate(String startdate) {
-		this.startdate = startdate;
 	}
 
 	public String getEndDate() {
@@ -69,7 +60,6 @@ public class DiseaseRec {
 		if (idUser != that.idUser) return false;
 		if (idNote != that.idNote) return false;
 		if (disease != null ? !disease.equals(that.disease) : that.disease != null) return false;
-		if (startdate != null ? !startdate.equals(that.startdate) : that.startdate != null) return false;
 		return enddate != null ? enddate.equals(that.enddate) : that.enddate == null;
 
 	}
@@ -80,7 +70,6 @@ public class DiseaseRec {
 				"id=" + id +
 				", idUser=" + idUser +
 				", disease='" + disease + '\'' +
-				", startdate='" + startdate + '\'' +
 				", enddate='" + enddate + '\'' +
 				", idNote=" + idNote +
 				'}';

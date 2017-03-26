@@ -1007,7 +1007,7 @@ public class DB_WriteTest {
 		disease.setIdUser(1);
 		disease.setId(1);
 		disease.setDisease("gripe");
-		disease.setStartDate(DateUtils.formatToDb(Calendar.getInstance()));
+		disease.setDateTime(DateUtils.formatToDb(Calendar.getInstance()));
 		dbWrite.DiseaseReg_Save(disease);
 
 		DiseaseRec returnedDisease = dbRead.DiseaseReg_GetById(1);
@@ -1030,7 +1030,7 @@ public class DB_WriteTest {
 		disease.setIdUser(1);
 		disease.setId(1);
 		disease.setDisease("gripe");
-		disease.setStartDate(DateUtils.formatToDb(Calendar.getInstance()));
+		disease.setDateTime(DateUtils.formatToDb(Calendar.getInstance()));
 		dbWrite.DiseaseReg_Save(disease);
 		disease.setDisease("gripe1");
 		dbWrite.DiseaseReg_Update(disease);
@@ -1055,7 +1055,7 @@ public class DB_WriteTest {
 		disease.setIdUser(1);
 		disease.setId(1);
 		disease.setDisease("gripe");
-		disease.setStartDate(DateUtils.formatToDb(Calendar.getInstance()));
+		disease.setDateTime(DateUtils.formatToDb(Calendar.getInstance()));
 		dbWrite.DiseaseReg_Save(disease);
 		dbWrite.DiseaseReg_Delete(1);
 

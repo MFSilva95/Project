@@ -31,11 +31,20 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.LinkedList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.data.Advice;
+import pt.it.porto.mydiabetes.data.BloodPressureRec;
+import pt.it.porto.mydiabetes.data.CholesterolRec;
+import pt.it.porto.mydiabetes.data.Day;
+import pt.it.porto.mydiabetes.data.DiseaseRec;
+import pt.it.porto.mydiabetes.data.ExerciseRec;
+import pt.it.porto.mydiabetes.data.HbA1cRec;
+import pt.it.porto.mydiabetes.data.LogBookEntry;
 import pt.it.porto.mydiabetes.data.Task;
+import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.ListsDataDb;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
@@ -51,6 +60,7 @@ import pt.it.porto.mydiabetes.ui.activities.WeightDetail;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.ui.usability.HomeTouchHelper;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -61,8 +71,12 @@ import static android.app.Activity.RESULT_OK;
 public class homeMiddleFragment extends Fragment {
 	private YapDroid yapDroid;
 	final int WAIT_REGISTER = 123;
+    //Number of last days shown
+    final int NUMBER_OF_DAYS = 7;
+    //Number of records shown in (exercice, cholesterol, ..). if changed need ui modifications
+    final int NUMBER_OF_RECORDS = 3;
 	final String TAG = "homeFrag";
-	private ItemTouchHelper helper = null;
+	//private ItemTouchHelper helper = null;
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -78,6 +92,17 @@ public class homeMiddleFragment extends Fragment {
 	ArrayList<Task> taskListFromYap = new ArrayList<>();
 	//ArrayList<Task> receiverTaskList = new ArrayList<>();
 	ArrayList<Advice> receiverAdviceList = new ArrayList<>();
+
+    LinkedList<Day> daysList = new LinkedList<>();
+
+    private LinkedList<WeightRec> weightList;
+    private LinkedList<ExerciseRec> exerciseList;
+    private LinkedList<DiseaseRec> diseaseList;
+    private LinkedList<BloodPressureRec> bloodPressureList;
+    private LinkedList<HbA1cRec> hbA1cList;
+    private LinkedList<CholesterolRec> cholesterolList;
+    private LinkedList<LogBookEntry> logBookEntries;
+
 
 	private ListView logbookList;
 	private RecyclerView homeList;
@@ -102,22 +127,12 @@ public class homeMiddleFragment extends Fragment {
 		// Inflate the layout for this fragment
 		View layout = inflater.inflate(R.layout.fragment_home_middle, container, false);
 
-
 		//yapDroid = YapDroid.newInstance(this);
 
-		DB_Read read = new DB_Read(getContext());
-		if (!read.MyData_HasData()) {
-			ShowDialogAddData();
-			read.close();
-			//return;
-		}
-		read.close();
 		homeList = (RecyclerView) layout.findViewById(R.id.HomeListDisplay);
 		fab = (FloatingActionButton) layout.findViewById(R.id.fab);
-		logbookList = (ListView) layout.findViewById(R.id.LogbookActivityList);
 
 		setFabClickListeners();
-		fillDates();
 		fillHomeList();
 
 		return layout;
@@ -126,9 +141,8 @@ public class homeMiddleFragment extends Fragment {
 	private void updateHomeList(){
 		fillTaskList();
 		fillAdviceList();
-		ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(getContext()));
-		Cursor cursor = db.getAllLogbookListWithin(10);
-		((HomeAdapter)homeList.getAdapter()).updateList(receiverAdviceList, taskListFromYap, cursor);
+		fillDays();
+		((HomeAdapter)homeList.getAdapter()).updateList(receiverAdviceList, taskListFromYap, daysList);
 		homeList.getAdapter().notifyDataSetChanged();
 	}
 
@@ -136,17 +150,15 @@ public class homeMiddleFragment extends Fragment {
 
 		fillTaskList();
 		fillAdviceList();
+        fillDays();
 
-		ListsDataDb db = new ListsDataDb(MyDiabetesStorage.getInstance(getContext()));
-		Cursor cursor = db.getAllLogbookListWithin(10);
-		//HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor,this, yapDroid);
-		HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, cursor, getContext());
+		HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, daysList);
 
-		if(helper==null){
+		/*if(helper==null){
 			ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
 			helper= new ItemTouchHelper(callback);
 			helper.attachToRecyclerView(homeList);
-		}
+		}*/
 		homeList.setAdapter(homeAdapter);
 		homeList.setLayoutManager(new LinearLayoutManager(getContext()));
 	}
@@ -202,18 +214,40 @@ public class homeMiddleFragment extends Fragment {
 
 	}
 
-	public void fillDates() {
-		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_YEAR, -3);
-		calendar = Calendar.getInstance();
+	public void fillDays(){
+		Calendar calendar = Calendar.getInstance(); // this would default to now
+		int index = 0;
+		while(index!=NUMBER_OF_DAYS){
+			dbRead(calendar);
+			Day day = new Day(DateUtils.getFormattedDate(calendar),logBookEntries,exerciseList,weightList,diseaseList,bloodPressureList,hbA1cList,cholesterolList);
+			if(!day.isEmpty()){
+				daysList.add(day);
+			}
+
+			calendar.add(Calendar.DAY_OF_MONTH, -1);
+			index++;
+		}
+    }
+
+    private void dbRead(Calendar calendar) {
+        DB_Read db = new DB_Read(getContext());
+        String date = DateUtils.getFormattedDate(calendar);
+        exerciseList = db.getExerciceByDate(date,NUMBER_OF_RECORDS);
+		weightList = db.getWeightByDate(date,NUMBER_OF_RECORDS);
+		diseaseList = db.getDiseaseByDate(date,NUMBER_OF_RECORDS);
+		bloodPressureList = db.getBloodPressureByDate(date,NUMBER_OF_RECORDS);
+		hbA1cList = db.getHbA1cByDate(date,NUMBER_OF_RECORDS);
+		cholesterolList = db.getCholesterolByDate(date,NUMBER_OF_RECORDS);
+		db.close();
+        ListsDataDb db2 = new ListsDataDb(MyDiabetesStorage.getInstance(getContext()));
+        logBookEntries = db2.getLogBookByDate(date);
+    }
+
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		daysList = new LinkedList<Day>();
+		updateHomeList();
 	}
-
-	public void ShowDialogAddData() {
-		Intent intent = new Intent(getContext(), WelcomeActivity.class);
-		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		startActivity(intent);
-		getActivity().finish();
-	}
-
-
 }

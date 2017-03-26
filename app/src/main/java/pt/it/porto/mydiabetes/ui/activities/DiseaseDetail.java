@@ -66,7 +66,7 @@ public class DiseaseDetail extends BaseActivity {
 			EditText dataTo = (EditText) findViewById(R.id.et_DiseaseRegDetail_DataTo);
 			EditText note = (EditText) findViewById(R.id.et_DiseaseRegDetail_Notes);
 			diseaseSpinner.setText(toFill.getDisease());
-			dataFrom.setText(toFill.getStartDate());
+			dataFrom.setText(toFill.getFormattedDate());
 			dataTo.setText((toFill.getEndDate() != null) ? toFill.getEndDate() : "");
 			if (toFill.getIdNote() != -1) {
 				Note n = new Note();
@@ -193,7 +193,8 @@ public class DiseaseDetail extends BaseActivity {
 
 		dis.setIdUser(idUser);
 		dis.setDisease(disease);
-		dis.setStartDate(dataFrom.getText().toString());
+		Calendar calendar = Calendar.getInstance();
+		dis.setDateTime(dataFrom.getText().toString(), DateUtils.getFormattedTime(calendar)+":" + Calendar.getInstance().get(Calendar.SECOND));
 		dis.setEndDate((!dataTo.getText().toString().equals("")) ? dataTo.getText().toString() : null);
 
 
@@ -266,7 +267,6 @@ public class DiseaseDetail extends BaseActivity {
 
 		//Get id of selected exercise
 		String disease = diseaseSpinner.getText().toString();
-		Log.d("selected disease", disease);
 		if (!rdb.Disease_ExistName(diseaseSpinner.getText().toString())) {
 			wdb.Disease_Add(diseaseSpinner.getText().toString());
 		}
@@ -275,7 +275,8 @@ public class DiseaseDetail extends BaseActivity {
 		dis.setId(idDisease);
 		dis.setIdUser(idUser);
 		dis.setDisease(disease);
-		dis.setStartDate(dataFrom.getText().toString());
+		Calendar calendar = Calendar.getInstance();
+		dis.setDateTime(dataFrom.getText().toString(), DateUtils.getFormattedTime(calendar)+":" + Calendar.getInstance().get(Calendar.SECOND));
 		dis.setEndDate((!dataTo.getText().toString().equals("")) ? dataTo.getText().toString() : null);
 
 		wdb.DiseaseReg_Update(dis);
