@@ -67,7 +67,7 @@ public class Day extends HomeElement {
     }
 
     public boolean isEmpty(){
-        if(exerciseList.size() == 0 && weightList.size() == 0 && diseaseList.size() == 0 && bloodPressureList.size() == 0 &&
+        if(logBookEntries.size() == 0 && exerciseList.size() == 0 && weightList.size() == 0 && diseaseList.size() == 0 && bloodPressureList.size() == 0 &&
                 hbA1cList.size() == 0 && cholesterolList.size() == 0){
             return true;
         }

@@ -21,7 +21,9 @@
                 android:id="@+id/logbookRecords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:divider="@null"
+                android:dividerHeight="0dp"/>
 
             <RelativeLayout
                 android:id="@+id/exerciceRecords"
