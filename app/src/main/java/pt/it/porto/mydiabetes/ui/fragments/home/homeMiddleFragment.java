@@ -232,6 +232,7 @@ public class homeMiddleFragment extends Fragment {
     private void dbRead(Calendar calendar) {
         DB_Read db = new DB_Read(getContext());
         String date = DateUtils.getFormattedDate(calendar);
+        logBookEntries = db.getLogBookByDate(date);
         exerciseList = db.getExerciceByDate(date,NUMBER_OF_RECORDS);
 		weightList = db.getWeightByDate(date,NUMBER_OF_RECORDS);
 		diseaseList = db.getDiseaseByDate(date,NUMBER_OF_RECORDS);
@@ -239,8 +240,6 @@ public class homeMiddleFragment extends Fragment {
 		hbA1cList = db.getHbA1cByDate(date,NUMBER_OF_RECORDS);
 		cholesterolList = db.getCholesterolByDate(date,NUMBER_OF_RECORDS);
 		db.close();
-        ListsDataDb db2 = new ListsDataDb(MyDiabetesStorage.getInstance(getContext()));
-        logBookEntries = db2.getLogBookByDate(date);
     }
 
 

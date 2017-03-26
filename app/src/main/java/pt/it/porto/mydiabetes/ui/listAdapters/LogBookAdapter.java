@@ -61,11 +61,9 @@ public class LogBookAdapter extends BaseAdapter {
             convertView  = LayoutInflater.from(_c).inflate(R.layout.list_logbook_row, parent, false);
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
-        }else {
-            viewHolder = (ViewHolder) convertView.getTag();
         }
 
-
+        viewHolder = (ViewHolder) convertView.getTag();
         LogBookEntry current = getItem(position);
         viewHolder.item = current;
         viewHolder.data.setText(current.getFormattedDate());

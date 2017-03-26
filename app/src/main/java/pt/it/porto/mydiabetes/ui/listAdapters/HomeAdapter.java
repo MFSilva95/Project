@@ -86,7 +86,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
         for (Day day: daysList) {
             String time = day.getDay();
-            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime, DateUtils.MINUTE_IN_MILLIS);
+            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime, DateUtils.DAY_IN_MILLIS);
             this.homeList.add(new HomeElement(HomeElement.Type.HEADER, dateText.toString()));
             this.homeList.add(day);
         }
@@ -113,7 +113,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
         for (Day day: daysList) {
                 String time = day.getDay();
-                CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime, DateUtils.MINUTE_IN_MILLIS);
+                CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime, DateUtils.DAY_IN_MILLIS);
                 this.homeList.add(new HomeElement(HomeElement.Type.HEADER, dateText.toString()));
                 this.homeList.add(day);
         }
@@ -395,7 +395,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             LogBookAdapter logBookAdapter = new LogBookAdapter(currentDay.getLogBookEntries(), v.getContext());
             logbookRecords.setAdapter(logBookAdapter);
         }
-
 
     }
 
