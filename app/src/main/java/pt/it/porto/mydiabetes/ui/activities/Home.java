@@ -240,23 +240,13 @@ public class Home extends BaseActivity {
 		finish();
 	}
 	private void setupBottomNavigationView() {
-		// Get the menu from our navigationBottomView.
 		Menu bottomNavigationViewMenu = bottomNavigationView.getMenu();
-		// Uncheck the first menu item (the default item which is always checked by the support library is at position 0).
-		bottomNavigationViewMenu.findItem(R.id.action_health).setChecked(false);
-		// Check the wished first menu item to be shown to the user.
 		bottomNavigationViewMenu.findItem(R.id.action_register).setChecked(true);
 
 		bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 			@Override
 			public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-				Menu bottomNavigationMenu = bottomNavigationView.getMenu();
-				for (int i = 0; i < bottomNavigationMenu.size(); i++) {
-					if (item.getItemId() != bottomNavigationMenu.getItem(i).getItemId()) {
-						bottomNavigationMenu.getItem(i).setChecked(false);
-					}
-				}
 
 				switch (item.getItemId()) {
 					case R.id.action_health:

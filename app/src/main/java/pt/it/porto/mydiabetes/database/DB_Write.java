@@ -544,7 +544,8 @@ public class DB_Write {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", disease.getIdUser());
 		toInsert.put("Disease", disease.getDisease());
-		toInsert.put("StartDate", disease.getStartDate());
+		String datetime = DateUtils.formatToDb(disease.getDateTime());
+		toInsert.put("StartDate", datetime);
 		if (disease.getEndDate() != null) {
 			toInsert.put("EndDate", disease.getEndDate());
 		}
@@ -559,7 +560,8 @@ public class DB_Write {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", disease.getIdUser());
 		toInsert.put("Disease", disease.getDisease());
-		toInsert.put("StartDate", disease.getStartDate());
+		String datetime = DateUtils.formatToDb(disease.getDateTime());
+		toInsert.put("StartDate", datetime);
 		if (disease.getEndDate() != null) {
 			toInsert.put("EndDate", disease.getEndDate());
 		}

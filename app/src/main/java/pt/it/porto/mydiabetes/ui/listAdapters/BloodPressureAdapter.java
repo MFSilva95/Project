@@ -61,8 +61,6 @@ public class BloodPressureAdapter extends BaseAdapter {
 		BloodPressureReg bp = getItem(position);
 		viewHolder.item=bp;
 
-		DB_Read rdb = new DB_Read(_c);
-
 		viewHolder.date.setText(bp.getFormattedDate());
 		viewHolder.time.setText(bp.getFormattedTime());
 		viewHolder.systolic.setText(String.valueOf(bp.systolic));
@@ -82,7 +80,6 @@ public class BloodPressureAdapter extends BaseAdapter {
 			}
 		});
 
-		rdb.close();
 		return v;
 	}
 

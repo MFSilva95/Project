@@ -159,10 +159,4 @@
          -->
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/ib_list_logbookreg_detail"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:background="@color/transparent"
-        android:src="@drawable/viewdetail"/>
 </LinearLayout>

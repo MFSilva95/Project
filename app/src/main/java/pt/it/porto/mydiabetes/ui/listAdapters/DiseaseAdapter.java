@@ -10,8 +10,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.util.Calendar;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.DiseaseDetail;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class DiseaseAdapter extends BaseAdapter {
@@ -55,7 +59,7 @@ public class DiseaseAdapter extends BaseAdapter {
 		viewHolder.item = dis;
 
 		viewHolder.diseaseName.setText(dis.diseaseName);
-		viewHolder.timeStart.setText(dis.timeStart);
+		viewHolder.timeStart.setText(dis.getFormattedDate());
 		if (dis.timeEnd == null) {
 			viewHolder.timeEnd.setVisibility(View.INVISIBLE);
 		} else {
@@ -82,14 +86,26 @@ public class DiseaseAdapter extends BaseAdapter {
 	private class DiseaseReg {
 		int id;
 		String diseaseName;
-		String timeStart;
+		Calendar timeStart;
 		String timeEnd;
 
 		public DiseaseReg(int id, String diseaseName, String timeStart, String timeEnd) {
 			this.id = id;
 			this.diseaseName = diseaseName;
-			this.timeStart = timeStart;
+			try {
+				this.timeStart = DateUtils.parseDateTime(timeStart);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 			this.timeEnd = timeEnd;
+		}
+
+		public String getFormattedDate() {
+			return DateUtils.getFormattedDate(timeStart);
+		}
+
+		public String getFormattedTime() {
+			return DateUtils.getFormattedTime(timeStart);
 		}
 	}
 

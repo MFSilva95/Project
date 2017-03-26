@@ -258,12 +258,16 @@ public class homeLeftFragment extends Fragment  {
             CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
             exerciseDate.setText(dateText+"");
         }
+        else{
+            exerciseText.setText("N/a");
+            exerciseDate.setText("");
+        }
 
         if(diseaseRec!= null){
             SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
 
             try {
-                Date date1 = myFormat.parse(diseaseRec.getStartDate());
+                Date date1 = myFormat.parse(diseaseRec.getFormattedDate());
                 Date date2;
                 long diff;
                 if(diseaseRec.getEndDate() == null){
@@ -277,16 +281,25 @@ public class homeLeftFragment extends Fragment  {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            String time = diseaseRec.getStartDate()+" 00:00";
+            String time = diseaseRec.getFormattedDate()+" "+diseaseRec.getFormattedTime();
             CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.DAY_IN_MILLIS);
             diseaseDate.setText(dateText+"");
         }
+        else{
+            diseaseText.setText("N/a");
+            diseaseDate.setText("");
+        }
+
 
         if(bloodPressureRec != null){
             bloodPressureText.setText(bloodPressureRec.getSystolic()+"/"+bloodPressureRec.getDiastolic());
             String time = bloodPressureRec.getFormattedDate()+" "+bloodPressureRec.getFormattedTime();
             CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
             bloodPressureDate.setText(dateText+"");
+        }
+        else{
+            bloodPressureText.setText("N/a");
+            bloodPressureDate.setText("");
         }
 
         if(cholesterolRec != null){
@@ -295,7 +308,10 @@ public class homeLeftFragment extends Fragment  {
             CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
             cholesterolDate.setText(dateText+"");
         }
-
+        else{
+            cholesterolText.setText("N/a");
+            cholesterolDate.setText("");
+        }
 
         if(hbA1cRec != null){
             hba1cText.setText(hbA1cRec.getValue()+"");
@@ -303,12 +319,20 @@ public class homeLeftFragment extends Fragment  {
             CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
             hba1cDate.setText(dateText+"");
         }
+        else{
+            hba1cText.setText("N/a");
+            hba1cDate.setText("");
+        }
 
         if(weightRec != null) {
             weightText.setText(weightRec.getValue() + "");
             String time = weightRec.getFormattedDate()+" "+weightRec.getFormattedTime();
             CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime,DateUtils.MINUTE_IN_MILLIS);
             weightDate.setText(dateText+"");
+        }
+        else{
+            weightText.setText("N/a");
+            weightDate.setText("");
         }
 
     }
