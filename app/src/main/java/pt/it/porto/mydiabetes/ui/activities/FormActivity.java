@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -75,6 +76,13 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_form);
+
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
+
 		LinearLayout adviceFrame = (LinearLayout) findViewById(R.id.adviceFrame);
 		adviceFrame.setVisibility(View.GONE);
 		/*if(activityAdvice==null){
@@ -97,10 +105,6 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 		setupMealImage();
 		setupClickListeners();
 
-		ActionBar actionBar = getSupportActionBar();
-		if (actionBar != null) {
-			actionBar.setDisplayHomeAsUpEnabled(true);
-		}
 	}
 
 	@Override
