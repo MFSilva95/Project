@@ -591,6 +591,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             View v = bottomSheetViewgroup.findViewById(R.id.bs_insulin);
             fillInsulinSpinner();
             setInsulinListeners();
+
             Boolean carbReadExists = insulinCalculator.getCarbs()>0;
             Boolean glycReadExists = insulinCalculator.getGlycemia()>0;
 
@@ -608,10 +609,16 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
 
             if((insulinUnits>0) && (!insulinManualRegister)){
                 TextInputLayout insulinInput = ((TextInputLayout) findViewById(R.id.insulin_admin));
+
+                TextView insuTxt = insulinInput.getEditText();
+                insuTxt.removeTextChangedListener(getinsulinTW());
                 //insulinInput.setHintEnabled(false);
-                Log.i(TAG, "insertInsulinSuggestion: -------------------------------------------------------------------------->2");
-                insulinInput.getEditText().requestFocus();
-                insulinInput.getEditText().setText(insulinUnits+"");
+
+                insuTxt.requestFocus();
+                insuTxt.setText(insulinUnits+"");
+
+                insuTxt.addTextChangedListener(getinsulinTW());
+
                 if(activator.equals(RegistryFields.CARBS)){
                     findViewById(R.id.meal_txt).requestFocus();
                 }else{
@@ -783,12 +790,8 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         }
         TextInputLayout insulinDose = (TextInputLayout) findViewById(R.id.insulin_admin);
         TextView insuTxt = insulinDose.getEditText();
-        insuTxt.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                insulinManualRegister = true;
-            }
-        });
+        insuTxt.addTextChangedListener(getinsulinTW());
+
     }
     private void toggleInsulinCalcDetails(View view) {
         expandInsulinCalcsAuto = false;
@@ -957,6 +960,25 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         startActivity(intent);
     }
 
+    TextWatcher getinsulinTW(){
+        TextWatcher ins = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                insulinManualRegister = true;
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        };
+        return ins;
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode != Activity.RESULT_CANCELED && requestCode == IMAGE_CAPTURE) {
