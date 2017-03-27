@@ -434,6 +434,7 @@
 
     <string name="insulin_type_pen">Caneta</string>
     <string name="insulin_type_pump">Bomba</string>
+    <string name="glicInputError">Número Invalido</string>
     <string-array name="insulin_type">
         <item>@string/insulin_type_pen</item>
         <item>@string/insulin_type_pump</item>

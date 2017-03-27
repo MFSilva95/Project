@@ -207,6 +207,7 @@
     <string name="uni">Unit</string>
     <string name="units">Units</string>
     <string name="use">Use</string>
+    <string name="glicInputError">Not a valid Number</string>
 
 
 </resources>
