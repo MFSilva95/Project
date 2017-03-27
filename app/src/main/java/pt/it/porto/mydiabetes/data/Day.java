@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.data;
 
 
 import android.annotation.SuppressLint;
+import android.support.annotation.NonNull;
 
 import java.util.Calendar;
 import java.util.LinkedList;
@@ -9,10 +10,39 @@ import java.util.LinkedList;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 
 @SuppressLint("ParcelCreator")
-public class Day extends HomeElement {
+public class Day extends HomeElement{
 
     private LinkedList<LogBookEntry> logBookEntries;
     private LinkedList<WeightRec> weightList;
+
+    public void setLogBookEntries(LinkedList<LogBookEntry> logBookEntries) {
+        this.logBookEntries = logBookEntries;
+    }
+
+    public void setWeightList(LinkedList<WeightRec> weightList) {
+        this.weightList = weightList;
+    }
+
+    public void setExerciseList(LinkedList<ExerciseRec> exerciseList) {
+        this.exerciseList = exerciseList;
+    }
+
+    public void setDiseaseList(LinkedList<DiseaseRec> diseaseList) {
+        this.diseaseList = diseaseList;
+    }
+
+    public void setBloodPressureList(LinkedList<BloodPressureRec> bloodPressureList) {
+        this.bloodPressureList = bloodPressureList;
+    }
+
+    public void setHbA1cList(LinkedList<HbA1cRec> hbA1cList) {
+        this.hbA1cList = hbA1cList;
+    }
+
+    public void setCholesterolList(LinkedList<CholesterolRec> cholesterolList) {
+        this.cholesterolList = cholesterolList;
+    }
+
     private LinkedList<ExerciseRec> exerciseList;
     private LinkedList<DiseaseRec> diseaseList;
     private LinkedList<BloodPressureRec> bloodPressureList;
@@ -87,4 +117,5 @@ public class Day extends HomeElement {
                 ", colesterol="  + cholesterolList.size() +
                 '}';
     }
+
 }

@@ -52,10 +52,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
     Context c;
     private List<HomeElement> homeList;
-    private YapDroid myYapInstance;
-    private int nAdvices;
-    private int nTasks;
-    private int nDays;
+
 
     public HomeElement getFromHomeList(int index){
         return homeList.get(index);
@@ -69,58 +66,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         }
     }
 
-    public void updateList(ArrayList<Advice> adviceList, ArrayList<Task> taskList, LinkedList<Day> daysList){
+    public HomeAdapter(LinkedList<HomeElement> homeList) {
         this.homeList = new LinkedList<>();
-        long currentTime= System.currentTimeMillis();
-
-        if(adviceList.size()>0 && BuildConfig.ADVICES_AVAILABLE){
-            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.advices)));
-            this.homeList.addAll(adviceList);
-            nAdvices = adviceList.size();
-        }
-        if(taskList.size()>0 && BuildConfig.TASKS_AVAILABLE){
-            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.tasks)));
-            this.homeList.addAll(taskList);
-            nTasks = taskList.size();
-        }
-
-        for (Day day: daysList) {
-            String time = day.getDay();
-            CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime, DateUtils.DAY_IN_MILLIS);
-            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, dateText.toString()));
-            this.homeList.add(day);
-        }
-
-        nDays = daysList.size();
-        this.homeList.add(new HomeElement(HomeElement.Type.SPACE,""));
-        this.homeList.add(new HomeElement(HomeElement.Type.SPACE,""));
+        this.homeList.addAll(homeList);
     }
 
-    public HomeAdapter(ArrayList<Advice> adviceList, ArrayList<Task> taskList, LinkedList<Day> daysList) {
+    public void updateList(LinkedList<HomeElement> homeList) {
         this.homeList = new LinkedList<>();
-        long currentTime= System.currentTimeMillis();
-
-        if(adviceList.size()>0 && BuildConfig.ADVICES_AVAILABLE){
-            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.advices)));
-            this.homeList.addAll(adviceList);
-            nAdvices = adviceList.size();
-        }
-        if(taskList.size()>0 && BuildConfig.TASKS_AVAILABLE){
-            this.homeList.add(new HomeElement(HomeElement.Type.HEADER, c.getString(R.string.tasks)));
-            this.homeList.addAll(taskList);
-            nTasks = taskList.size();
-        }
-
-        for (Day day: daysList) {
-                String time = day.getDay();
-                CharSequence dateText = DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime, DateUtils.DAY_IN_MILLIS);
-                this.homeList.add(new HomeElement(HomeElement.Type.HEADER, dateText.toString()));
-                this.homeList.add(day);
-        }
-
-        nDays = daysList.size();
-        this.homeList.add(new HomeElement(HomeElement.Type.SPACE,""));
-        this.homeList.add(new HomeElement(HomeElement.Type.SPACE,""));
+        this.homeList.addAll(homeList);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -128,16 +82,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
         View v = null;
         ViewHolder vh;
-
         switch (viewType) {
             case 0:
 //                Log.i("________POSITION_____", ADVICE");
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_advice_row, parent, false);
                 vh = new ViewHolder((LinearLayout) v);
                 return vh;
+
             case 1:
-                //Log.i("________POSITION_____", "EMPTY");
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_home_row, parent, false);
+                // Log.i("________POSITION_____", "TASK");
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_task_row, parent, false);
                 vh = new ViewHolder((LinearLayout) v);
                 v.setTag(vh);
                 return vh;
@@ -147,9 +101,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                 vh = new ViewHolder((LinearLayout) v);
                 v.setTag(vh);
                 return vh;
+
             case 3:
-                // Log.i("________POSITION_____", "TASK");
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_task_row, parent, false);
+                //Log.i("________POSITION_____", "EMPTY");
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_home_row, parent, false);
                 vh = new ViewHolder((LinearLayout) v);
                 v.setTag(vh);
                 return vh;
@@ -168,16 +123,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         switch (homeList.get(position).getDisplayType()){
             case ADVICE:
                 return 0;
+            case TASK:
+                return 1;
             case HEADER:
                 return 2;
             case SPACE:
-                return 1;
-            case TASK:
                 return 3;
             case DAY:
                 return 4;
         }
-        return 2;
+        return 4;
     }
 
 
@@ -369,22 +324,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         return homeList.size();
     }
 
-    public static long getDateInMillis(String srcDate) {
-        SimpleDateFormat desiredFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        long dateInMillis = 0;
-        try {
-            Date date = desiredFormat.parse(srcDate);
-            dateInMillis = date.getTime();
-            return dateInMillis;
-        } catch (ParseException e) {
-            Log.d("Exception date.",e.getMessage());
-            e.printStackTrace();
-        }
-
-        return 0;
-    }
-
     private void showLogBook(Day currentDay, ViewHolder holder) {
         View v = holder.view;
         final ListView logbookRecords = (ListView) v.findViewById(R.id.logbookRecords);
@@ -392,6 +331,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             logbookRecords.setVisibility(View.GONE);
         }
         else{
+            logbookRecords.setVisibility(View.VISIBLE);
             LogBookAdapter logBookAdapter = new LogBookAdapter(currentDay.getLogBookEntries(), v.getContext());
             logbookRecords.setAdapter(logBookAdapter);
             justifyListViewHeightBasedOnChildren(logbookRecords);
@@ -446,6 +386,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             exerciceRecords.setVisibility(View.GONE);
         }
         else{
+            exerciceRecords.setVisibility(View.VISIBLE);
             switch(currentDay.getExerciseList().size()){
                 case 1:
                     exercice_rec_one.setVisibility(View.VISIBLE);
@@ -499,6 +440,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             diseaseRecords.setVisibility(View.GONE);
         }
         else{
+            diseaseRecords.setVisibility(View.VISIBLE);
             switch(currentDay.getDiseaseList().size()){
                 case 1:
                     disease_rec_one.setVisibility(View.VISIBLE);
@@ -546,6 +488,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             weightRecords.setVisibility(View.GONE);
         }
         else{
+            weightRecords.setVisibility(View.VISIBLE);
             switch(currentDay.getWeightList().size()){
                 case 1:
                     weight_rec_one.setVisibility(View.VISIBLE);
@@ -575,7 +518,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     private void showBloodPressure(Day currentDay, ViewHolder holder) {
             View v = holder.view;
             final RelativeLayout bloodPressureRecords = (RelativeLayout) v.findViewById(R.id.bloodPressureRecords);
-        bloodPressureRecords.setOnClickListener(new View.OnClickListener() {
+            bloodPressureRecords.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(view.getContext(), BloodPressure.class);
@@ -593,6 +536,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                 bloodPressureRecords.setVisibility(View.GONE);
             }
             else{
+                bloodPressureRecords.setVisibility(View.VISIBLE);
                 switch(currentDay.getBloodPressureList().size()){
                     case 1:
                         bloodPressure_rec_one.setVisibility(View.VISIBLE);
@@ -640,6 +584,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             cholesterolRecords.setVisibility(View.GONE);
         }
         else{
+            cholesterolRecords.setVisibility(View.VISIBLE);
             switch(currentDay.getCholesterolList().size()){
                 case 1:
                     cholesterol_rec_one.setVisibility(View.VISIBLE);
@@ -687,6 +632,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             hbA1cRecords.setVisibility(View.GONE);
         }
         else{
+            hbA1cRecords.setVisibility(View.VISIBLE);
             switch(currentDay.getHbA1cList().size()){
                 case 1:
                     hbA1c_rec_one.setVisibility(View.VISIBLE);

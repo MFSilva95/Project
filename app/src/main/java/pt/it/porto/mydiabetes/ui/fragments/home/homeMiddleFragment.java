@@ -28,11 +28,16 @@ import com.esafirm.imagepicker.features.ImagePicker;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.data.Advice;
@@ -61,6 +66,7 @@ import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.ui.usability.HomeTouchHelper;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.HomeElement;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -76,12 +82,13 @@ public class homeMiddleFragment extends Fragment {
     //Number of records shown in (exercice, cholesterol, ..). if changed need ui modifications
     final int NUMBER_OF_RECORDS = 3;
 	final String TAG = "homeFrag";
+
 	//private ItemTouchHelper helper = null;
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == WAIT_REGISTER && resultCode == Home.CHANGES_OCCURRED) {
-			updateHomeList();
+			//updateHomeList();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -89,6 +96,8 @@ public class homeMiddleFragment extends Fragment {
 	private FloatingActionButton fab;
 
 
+
+	private LinkedList<HomeElement> homeList = new LinkedList<>();
 	ArrayList<Task> taskListFromYap = new ArrayList<>();
 	//ArrayList<Task> receiverTaskList = new ArrayList<>();
 	ArrayList<Advice> receiverAdviceList = new ArrayList<>();
@@ -103,9 +112,7 @@ public class homeMiddleFragment extends Fragment {
     private LinkedList<CholesterolRec> cholesterolList;
     private LinkedList<LogBookEntry> logBookEntries;
 
-
-	private ListView logbookList;
-	private RecyclerView homeList;
+	private RecyclerView listView;
 
 	public static homeMiddleFragment newInstance() {
 		homeMiddleFragment fragment = new homeMiddleFragment();
@@ -129,7 +136,7 @@ public class homeMiddleFragment extends Fragment {
 
 		//yapDroid = YapDroid.newInstance(this);
 
-		homeList = (RecyclerView) layout.findViewById(R.id.HomeListDisplay);
+		listView = (RecyclerView) layout.findViewById(R.id.HomeListDisplay);
 		fab = (FloatingActionButton) layout.findViewById(R.id.fab);
 
 		setFabClickListeners();
@@ -138,29 +145,66 @@ public class homeMiddleFragment extends Fragment {
 		return layout;
 	}
 
-	private void updateHomeList(){
-		fillTaskList();
-		fillAdviceList();
-		fillDays();
-		((HomeAdapter)homeList.getAdapter()).updateList(receiverAdviceList, taskListFromYap, daysList);
-		homeList.getAdapter().notifyDataSetChanged();
-	}
-
 	private void fillHomeList() {
 
 		fillTaskList();
 		fillAdviceList();
         fillDays();
 
-		HomeAdapter homeAdapter = new HomeAdapter(receiverAdviceList, taskListFromYap, daysList);
+		long currentTime= System.currentTimeMillis();
+
+		for (Day day: daysList) {
+			String time = day.getDay();
+			CharSequence dateText = android.text.format.DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime, android.text.format.DateUtils.DAY_IN_MILLIS);
+			this.homeList.add(new HomeElement(HomeElement.Type.HEADER, dateText.toString()));
+			this.homeList.add(day);
+		}
+
+		this.homeList.add(new HomeElement(HomeElement.Type.SPACE,""));
+		this.homeList.add(new HomeElement(HomeElement.Type.SPACE,""));
+
+		HomeAdapter homeAdapter = new HomeAdapter(homeList);
 
 		/*if(helper==null){
 			ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
 			helper= new ItemTouchHelper(callback);
 			helper.attachToRecyclerView(homeList);
 		}*/
-		homeList.setAdapter(homeAdapter);
-		homeList.setLayoutManager(new LinearLayoutManager(getContext()));
+		listView.setAdapter(homeAdapter);
+		listView.setLayoutManager(new LinearLayoutManager(getContext()));
+	}
+
+
+	private void updateHomeList(){
+		clearLists();
+		fillTaskList();
+		fillAdviceList();
+		fillDays();
+
+		long currentTime= System.currentTimeMillis();
+
+		for (Day day: daysList) {
+			String time = day.getDay();
+			CharSequence dateText = android.text.format.DateUtils.getRelativeTimeSpanString(getDateInMillis(time), currentTime, android.text.format.DateUtils.DAY_IN_MILLIS);
+			this.homeList.add(new HomeElement(HomeElement.Type.HEADER, dateText.toString()));
+			this.homeList.add(day);
+		}
+
+		this.homeList.add(new HomeElement(HomeElement.Type.SPACE,""));
+		this.homeList.add(new HomeElement(HomeElement.Type.SPACE,""));
+		((HomeAdapter) listView.getAdapter()).updateList(homeList);
+	}
+
+	private void clearLists(){
+		homeList.clear();
+		daysList.clear();
+		exerciseList.clear();
+		bloodPressureList.clear();
+		diseaseList.clear();
+		weightList.clear();
+		hbA1cList.clear();
+		cholesterolList.clear();
+		logBookEntries.clear();
 	}
 
 	private void setFabClickListeners() {
@@ -173,6 +217,33 @@ public class homeMiddleFragment extends Fragment {
 			}
 		});
 
+	}
+
+	public void fillDays(){
+		Calendar calendar = Calendar.getInstance(); // this would default to now
+		int index = 0;
+		while(index!=NUMBER_OF_DAYS){
+			dbRead(calendar);
+			Day day = new Day(DateUtils.getFormattedDate(calendar),logBookEntries,exerciseList,weightList,diseaseList,bloodPressureList,hbA1cList,cholesterolList);
+			if(!day.isEmpty()){
+				daysList.add(day);
+			}
+			calendar.add(Calendar.DAY_OF_MONTH, -1);
+			index++;
+		}
+	}
+
+	private void dbRead(Calendar calendar) {
+		DB_Read db = new DB_Read(getContext());
+		String date = DateUtils.getFormattedDate(calendar);
+		logBookEntries = db.getLogBookByDate(date);
+		exerciseList = db.getExerciceByDate(date,NUMBER_OF_RECORDS);
+		weightList = db.getWeightByDate(date,NUMBER_OF_RECORDS);
+		diseaseList = db.getDiseaseByDate(date,NUMBER_OF_RECORDS);
+		bloodPressureList = db.getBloodPressureByDate(date,NUMBER_OF_RECORDS);
+		hbA1cList = db.getHbA1cByDate(date,NUMBER_OF_RECORDS);
+		cholesterolList = db.getCholesterolByDate(date,NUMBER_OF_RECORDS);
+		db.close();
 	}
 
 	private void fillTaskList() {
@@ -190,6 +261,12 @@ public class homeMiddleFragment extends Fragment {
 		taskListFromYap = new ArrayList<>();
 		taskListFromYap.add(task1);
 		taskListFromYap.add(task2);
+
+		if(taskListFromYap.size()>0 && BuildConfig.TASKS_AVAILABLE){
+			homeList.add(new HomeElement(HomeElement.Type.HEADER, getContext().getString(R.string.tasks)));
+			homeList.addAll(taskListFromYap);
+		}
+
 	}
 
 	public void fillAdviceList() {
@@ -212,41 +289,33 @@ public class homeMiddleFragment extends Fragment {
 		receiverAdviceList.addAll(adviceList);
 		Collections.sort(receiverAdviceList);
 
+		if(receiverAdviceList.size()>0 && BuildConfig.ADVICES_AVAILABLE){
+			homeList.add(new HomeElement(HomeElement.Type.HEADER, getContext().getString(R.string.advices)));
+			homeList.addAll(receiverAdviceList);
+		}
 	}
 
-	public void fillDays(){
-		Calendar calendar = Calendar.getInstance(); // this would default to now
-		int index = 0;
-		while(index!=NUMBER_OF_DAYS){
-			dbRead(calendar);
-			Day day = new Day(DateUtils.getFormattedDate(calendar),logBookEntries,exerciseList,weightList,diseaseList,bloodPressureList,hbA1cList,cholesterolList);
-			if(!day.isEmpty()){
-				daysList.add(day);
-			}
-
-			calendar.add(Calendar.DAY_OF_MONTH, -1);
-			index++;
-		}
-    }
-
-    private void dbRead(Calendar calendar) {
-        DB_Read db = new DB_Read(getContext());
-        String date = DateUtils.getFormattedDate(calendar);
-        logBookEntries = db.getLogBookByDate(date);
-        exerciseList = db.getExerciceByDate(date,NUMBER_OF_RECORDS);
-		weightList = db.getWeightByDate(date,NUMBER_OF_RECORDS);
-		diseaseList = db.getDiseaseByDate(date,NUMBER_OF_RECORDS);
-		bloodPressureList = db.getBloodPressureByDate(date,NUMBER_OF_RECORDS);
-		hbA1cList = db.getHbA1cByDate(date,NUMBER_OF_RECORDS);
-		cholesterolList = db.getCholesterolByDate(date,NUMBER_OF_RECORDS);
-		db.close();
-    }
 
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		daysList = new LinkedList<Day>();
 		updateHomeList();
+	}
+
+	public static long getDateInMillis(String srcDate) {
+		SimpleDateFormat desiredFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		long dateInMillis = 0;
+		try {
+			Date date = desiredFormat.parse(srcDate);
+			dateInMillis = date.getTime();
+			return dateInMillis;
+		} catch (ParseException e) {
+			Log.d("Exception date.",e.getMessage());
+			e.printStackTrace();
+		}
+
+		return 0;
 	}
 }

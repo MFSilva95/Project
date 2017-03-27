@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
+5
             <ListView
                 android:id="@+id/logbookRecords"
                 android:layout_width="match_parent"
