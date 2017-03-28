@@ -30,7 +30,7 @@ public class HomeTouchHelper extends ItemTouchHelper.SimpleCallback {
         HomeAdapter.ViewHolder thisHolder = (HomeAdapter.ViewHolder) viewHolder;
         switch (homeAdapter.getFromHomeList(thisHolder.getAdapterPosition()).getDisplayType()){
             case HEADER:
-            case DAY:
+            case LOGITEM:
             case SPACE:
                 return 0;
         }

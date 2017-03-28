@@ -5,7 +5,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,46 +19,76 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.Advice;
-import pt.it.porto.mydiabetes.data.Day;
+import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Task;
-import pt.it.porto.mydiabetes.ui.activities.BloodPressure;
-import pt.it.porto.mydiabetes.ui.activities.Cholesterol;
-import pt.it.porto.mydiabetes.ui.activities.Disease;
-import pt.it.porto.mydiabetes.ui.activities.Exercise;
-import pt.it.porto.mydiabetes.ui.activities.HbA1c;
-import pt.it.porto.mydiabetes.ui.activities.WeightChartList;
+import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
+import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.utils.HomeElement;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
+public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     Context c;
+    private Cursor cursor;
     private List<HomeElement> homeList;
+    private int nAdvices;
+    private int nTasks;
 
 
-    public HomeElement getFromHomeList(int index){
+    public HomeElement getFromHomeList(int index) {
         return homeList.get(index);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+
+        TextView data;
+        TextView hora;
+        TextView insulinValue;
+        TextView insulinName;
+        TextView gvalue;
+        TextView cvalue;
+        TextView ctag;
+        TextView tag;
+        TextView gtag;
+        HomeElement item;
+
         public LinearLayout view;
-        public ViewHolder(LinearLayout v) {
+
+        public ViewHolder(LinearLayout v, Boolean isLog) {
             super(v);
             view = v;
+            if (isLog) {
+                //if (view.getTag().equals("logbookItem")) {
+                //data = (TextView) view.findViewById(R.id.tv_list_logbookreg_data);
+                hora = (TextView) view.findViewById(R.id.tv_list_logbookreg_hora);
+                insulinValue = (TextView) view.findViewById(R.id.tv_list_logbookreg_insulin_value);
+                insulinName = (TextView) view.findViewById(R.id.tv_list_logbookreg_insulin);
+                gvalue = (TextView) view.findViewById(R.id.tv_list_logbookreg_glycemia_value);
+                gtag = (TextView) view.findViewById(R.id.tv_list_logbookreg_glycemia);
+                cvalue = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_value);
+                ctag = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_title);
+                tag = (TextView) view.findViewById(R.id.tv_list_logbookreg_tag);
+                //}
+            }
         }
     }
 
-    public HomeAdapter(LinkedList<HomeElement> homeList) {
+
+    public HomeAdapter(List<HomeElement> homeList) {
         this.homeList = new LinkedList<>();
         this.homeList.addAll(homeList);
     }
 
-    public void updateList(LinkedList<HomeElement> homeList) {
+    public void updateList(List<HomeElement> homeList) {
         this.homeList = new LinkedList<>();
         this.homeList.addAll(homeList);
         notifyDataSetChanged();
@@ -67,36 +99,35 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
         View v = null;
         ViewHolder vh;
+
         switch (viewType) {
             case 0:
 //                Log.i("________POSITION_____", ADVICE");
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_advice_row, parent, false);
-                vh = new ViewHolder((LinearLayout) v);
+                vh = new ViewHolder((LinearLayout) v, false);
                 return vh;
-
             case 1:
-                // Log.i("________POSITION_____", "TASK");
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_task_row, parent, false);
-                vh = new ViewHolder((LinearLayout) v);
+//                Log.i("________POSITION_____", "LOGBOOK!");
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_logbook_row, parent, false);
+                vh = new ViewHolder((LinearLayout) v, true);
                 v.setTag(vh);
                 return vh;
             case 2:
-                // Log.i("________POSITION_____", "HEADER");
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_home_row, parent, false);
-                vh = new ViewHolder((LinearLayout) v);
-                v.setTag(vh);
-                return vh;
-
-            case 3:
                 //Log.i("________POSITION_____", "EMPTY");
                 v = LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_home_row, parent, false);
-                vh = new ViewHolder((LinearLayout) v);
+                vh = new ViewHolder((LinearLayout) v, true);
+                v.setTag(vh);
+                return vh;
+            case 3:
+                // Log.i("________POSITION_____", "HEADER");
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_home_row, parent, false);
+                vh = new ViewHolder((LinearLayout) v, true);
                 v.setTag(vh);
                 return vh;
             case 4:
-                // Log.i("________POSITION_____", "DAY");
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_day_row, parent, false);
-                vh = new ViewHolder((LinearLayout) v);
+                // Log.i("________POSITION_____", "TASK");
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_task_row, parent, false);
+                vh = new ViewHolder((LinearLayout) v, true);
                 v.setTag(vh);
                 return vh;
         }
@@ -105,21 +136,20 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
     @Override
     public int getItemViewType(int position) {
-        switch (homeList.get(position).getDisplayType()){
+        switch (homeList.get(position).getDisplayType()) {
             case ADVICE:
                 return 0;
-            case TASK:
-                return 1;
             case HEADER:
-                return 2;
-            case SPACE:
                 return 3;
-            case DAY:
+            case LOGITEM:
+                return 1;
+            case SPACE:
+                return 2;
+            case TASK:
                 return 4;
         }
-        return 4;
+        return 2;
     }
-
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -131,6 +161,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         View v = holder.view;
         //Log.i("Home", "onBindViewHolder: "+currentView.getDisplayType()+" Pos:"+position);
         switch (currentView.getDisplayType()) {
+
             case HEADER:
                 //its an header
                 textHolder = (LinearLayout) v.findViewById(R.id.headerRowBackground);
@@ -140,6 +171,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                 //rowText.setTextColor(ContextCompat.getColor(c, R.color.cardview_light_background));
                 rowText.setText(currentView.getName());
                 break;
+
 
             case ADVICE:
                 //its an advice
@@ -214,9 +246,89 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                 });
 
                 break;
+            case LOGITEM:
 
+                //its a logbookItem
+                v = holder.view;
+
+                holder.item = currentView;
+                // holder.data.setText(currentView.getFormattedDate());
+                holder.hora.setText(currentView.getFormattedTime());
+                holder.tag.setText(currentView.getTag());
+
+                LinearLayout imageTitleHolder = (LinearLayout) holder.view.findViewById(R.id.imageTitleHolder);
+                View sep = (View) holder.view.findViewById(R.id.sep);
+                if(homeList.get(position-1).getDisplayType() == HomeElement.Type.HEADER && (position - 1) > -1){
+                    imageTitleHolder.setVisibility(View.VISIBLE);
+                }
+                else{
+                    imageTitleHolder.setVisibility(View.INVISIBLE);
+                }
+
+                if(homeList.get(position+1).getDisplayType() == HomeElement.Type.SPACE || homeList.get(position+1).getDisplayType() == HomeElement.Type.HEADER){
+                    sep.setVisibility(View.GONE);
+                }
+                else{
+                    sep.setVisibility(View.VISIBLE);
+                }
+
+
+                if (currentView.getInsulinId() != -1) {
+                    holder.insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", currentView.getInsulinVal()));
+                    holder.insulinName.setText(currentView.getInsulinName());
+                    holder.insulinValue.setVisibility(View.VISIBLE);
+                    holder.insulinName.setVisibility(View.VISIBLE);
+                } else {
+                    holder.insulinValue.setVisibility(View.INVISIBLE);
+                    holder.insulinName.setVisibility(View.INVISIBLE);
+                }
+                if (currentView.getGlycemiaId() != -1) {
+                    holder.gvalue.setText(String.valueOf(currentView.getGlycemia()));
+                    holder.gvalue.setVisibility(View.VISIBLE);
+                    holder.gtag.setVisibility(View.VISIBLE);
+                } else {
+                    holder.gvalue.setVisibility(View.INVISIBLE);
+                    holder.gtag.setVisibility(View.INVISIBLE);
+                }
+                if (currentView.getCarbsId() != -1) {
+                    holder.cvalue.setText(String.valueOf(currentView.getCarbs()));
+                    holder.cvalue.setVisibility(View.VISIBLE);
+                    holder.ctag.setVisibility(View.VISIBLE);
+                } else {
+                    holder.cvalue.setVisibility(View.INVISIBLE);
+                    holder.ctag.setVisibility(View.INVISIBLE);
+                }
+                v.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(v.getContext(), DetailLogbookActivity.class);
+                        Bundle args = new Bundle();
+                        HomeElement logbookDataBinding = ((ViewHolder) v.getTag()).item;
+                        if (logbookDataBinding.getGlycemiaId() != -1) {
+                            GlycemiaRec glycemiaRec = new GlycemiaRec();
+                            glycemiaRec.setId(logbookDataBinding.getGlycemiaId());
+                            args.putString("bg", String.valueOf(glycemiaRec.getId())); //bg id
+                            args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, glycemiaRec);
+                        }
+                        if (logbookDataBinding.getCarbsId() != -1) {
+                            CarbsRec carbs = new CarbsRec();
+                            carbs.setId(logbookDataBinding.getCarbsId());
+                            args.putString("ch", String.valueOf(carbs.getId())); //ch id
+                            args.putParcelable(DetailLogbookActivity.ARG_CARBS, carbs);
+                        }
+                        if (logbookDataBinding.getInsulinId() != -1) {
+                            InsulinRec insulin = new InsulinRec();
+                            insulin.setId(logbookDataBinding.getInsulinId());
+                            args.putString("ins", String.valueOf(insulin.getId())); //ins id
+                            args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);
+                        }
+                        intent.putExtras(args);
+                        v.getContext().startActivity(intent);
+                    }
+                });
+                break;
             case SPACE:
-
 
 
                 break;
@@ -254,19 +366,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
                         textView.setText(currentTask.getExpandedText());
                     }
                 });
-                break;
-
-            case DAY:
-                final Day currentDay = (Day) currentView;
-                Log.e("DAY", currentDay.toString());
-                showLogBook(currentDay, holder);
-                showExercice(currentDay, holder);
-                showDisease(currentDay, holder);
-                showWeight(currentDay, holder);
-                showBloodPressure(currentDay, holder);
-                showCholesterol(currentDay, holder);
-                showHbA1c(currentDay, holder);
-
                 break;
         }
     }
@@ -308,340 +407,4 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     public int getItemCount() {
         return homeList.size();
     }
-
-    private void showLogBook(Day currentDay, ViewHolder holder) {
-        View v = holder.view;
-        final ListView logbookRecords = (ListView) v.findViewById(R.id.logbookRecords);
-        if(currentDay.getLogBookEntries().size() == 0 ){
-            logbookRecords.setVisibility(View.GONE);
-        }
-        else{
-            logbookRecords.setVisibility(View.VISIBLE);
-            LogBookAdapter logBookAdapter = new LogBookAdapter(currentDay.getLogBookEntries(), v.getContext());
-            logbookRecords.setAdapter(logBookAdapter);
-            justifyListViewHeightBasedOnChildren(logbookRecords);
-        }
-
-    }
-
-   public void justifyListViewHeightBasedOnChildren(ListView listView) {
-
-        ListAdapter adapter = listView.getAdapter();
-
-        if (adapter == null) {
-            return;
-        }
-        ViewGroup vg = listView;
-        int totalHeight = 0;
-        for (int i = 0; i < adapter.getCount(); i++) {
-            View listItem = adapter.getView(i, null, vg);
-            listItem.measure(0, 0);
-            totalHeight += listItem.getMeasuredHeight();
-        }
-
-        ViewGroup.LayoutParams par = listView.getLayoutParams();
-        par.height = totalHeight + (listView.getDividerHeight() * (adapter.getCount() - 1));
-        listView.setLayoutParams(par);
-        listView.requestLayout();
-    }
-
-
-
-    private void showExercice(Day currentDay, ViewHolder holder) {
-        View v = holder.view;
-        final RelativeLayout exerciceRecords = (RelativeLayout) v.findViewById(R.id.exerciceRecords);
-        exerciceRecords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), Exercise.class);
-                exerciceRecords.getContext().startActivity(intent);
-            }
-        });
-
-        LinearLayout exercice_rec_one = (LinearLayout) exerciceRecords.findViewById(R.id.exercice_rec_one);
-        LinearLayout exercice_rec_two = (LinearLayout) exerciceRecords.findViewById(R.id.exercice_rec_two);
-        LinearLayout exercice_rec_three = (LinearLayout) exerciceRecords.findViewById(R.id.exercice_rec_three);
-        TextView value1 = (TextView) exerciceRecords.findViewById(R.id.value1);
-        TextView type1 = (TextView) exerciceRecords.findViewById(R.id.type1);
-        TextView value2 = (TextView) exerciceRecords.findViewById(R.id.value2);
-        TextView type2 = (TextView) exerciceRecords.findViewById(R.id.type2);
-        TextView value3 = (TextView) exerciceRecords.findViewById(R.id.value3);
-        TextView type3 = (TextView) exerciceRecords.findViewById(R.id.type3);
-        if(currentDay.getExerciseList().size() == 0 ){
-            exerciceRecords.setVisibility(View.GONE);
-        }
-        else{
-            exerciceRecords.setVisibility(View.VISIBLE);
-            switch(currentDay.getExerciseList().size()){
-                case 1:
-                    exercice_rec_one.setVisibility(View.VISIBLE);
-                    exercice_rec_two.setVisibility(View.GONE);
-                    exercice_rec_three.setVisibility(View.GONE);
-                    value1.setText(currentDay.getExerciseList().get(0).getDuration()+"");
-                    type1.setText(currentDay.getExerciseList().get(0).getExercise());
-                    break;
-                case 2:
-                    exercice_rec_one.setVisibility(View.VISIBLE);
-                    exercice_rec_two.setVisibility(View.VISIBLE);
-                    exercice_rec_three.setVisibility(View.GONE);
-                    value1.setText(currentDay.getExerciseList().get(0).getDuration()+"");
-                    type1.setText(currentDay.getExerciseList().get(0).getExercise());
-                    value2.setText(currentDay.getExerciseList().get(1).getDuration()+"");
-                    type2.setText(currentDay.getExerciseList().get(1).getExercise());
-                    break;
-                case 3:
-                    exercice_rec_one.setVisibility(View.VISIBLE);
-                    exercice_rec_two.setVisibility(View.VISIBLE);
-                    exercice_rec_three.setVisibility(View.VISIBLE);
-                    value1.setText(currentDay.getExerciseList().get(0).getDuration()+"");
-                    type1.setText(currentDay.getExerciseList().get(0).getExercise());
-                    value2.setText(currentDay.getExerciseList().get(1).getDuration()+"");
-                    type2.setText(currentDay.getExerciseList().get(1).getExercise());
-                    value3.setText(currentDay.getExerciseList().get(2).getDuration()+"");
-                    type3.setText(currentDay.getExerciseList().get(2).getExercise());
-                    break;
-            }
-        }
-    }
-
-    private void showDisease(Day currentDay, ViewHolder holder) {
-        View v = holder.view;
-        final RelativeLayout diseaseRecords = (RelativeLayout) v.findViewById(R.id.diseaseRecords);
-        diseaseRecords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), Disease.class);
-                diseaseRecords.getContext().startActivity(intent);
-            }
-        });
-
-        LinearLayout disease_rec_one = (LinearLayout) diseaseRecords.findViewById(R.id.disease_rec_one);
-        LinearLayout disease_rec_two = (LinearLayout) diseaseRecords.findViewById(R.id.disease_rec_two);
-        LinearLayout disease_rec_three = (LinearLayout) diseaseRecords.findViewById(R.id.disease_rec_three);
-        TextView value1 = (TextView) diseaseRecords.findViewById(R.id.value1);
-        TextView value2 = (TextView) diseaseRecords.findViewById(R.id.value2);
-        TextView value3 = (TextView) diseaseRecords.findViewById(R.id.value3);
-        if(currentDay.getDiseaseList().size() == 0 ){
-            diseaseRecords.setVisibility(View.GONE);
-        }
-        else{
-            diseaseRecords.setVisibility(View.VISIBLE);
-            switch(currentDay.getDiseaseList().size()){
-                case 1:
-                    disease_rec_one.setVisibility(View.VISIBLE);
-                    disease_rec_two.setVisibility(View.GONE);
-                    disease_rec_three.setVisibility(View.GONE);
-                    value1.setText(currentDay.getDiseaseList().get(0).getDisease());
-                    break;
-                case 2:
-                    disease_rec_one.setVisibility(View.VISIBLE);
-                    disease_rec_two.setVisibility(View.VISIBLE);
-                    disease_rec_three.setVisibility(View.GONE);
-                    value1.setText(currentDay.getDiseaseList().get(0).getDisease());
-                    value2.setText(currentDay.getDiseaseList().get(1).getDisease());
-                    break;
-                case 3:
-                    disease_rec_one.setVisibility(View.VISIBLE);
-                    disease_rec_two.setVisibility(View.VISIBLE);
-                    disease_rec_three.setVisibility(View.VISIBLE);
-                    value1.setText(currentDay.getDiseaseList().get(0).getDisease());
-                    value2.setText(currentDay.getDiseaseList().get(1).getDisease());
-                    value3.setText(currentDay.getDiseaseList().get(2).getDisease());
-                    break;
-            }
-        }
-    }
-
-    private void showWeight(Day currentDay, ViewHolder holder) {
-        View v = holder.view;
-        final RelativeLayout weightRecords = (RelativeLayout) v.findViewById(R.id.weightRecords);
-        weightRecords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), WeightChartList.class);
-                weightRecords.getContext().startActivity(intent);
-            }
-        });
-
-        LinearLayout weight_rec_one = (LinearLayout) weightRecords.findViewById(R.id.weight_rec_one);
-        LinearLayout weight_rec_two = (LinearLayout) weightRecords.findViewById(R.id.weight_rec_two);
-        LinearLayout weight_rec_three = (LinearLayout) weightRecords.findViewById(R.id.weight_rec_three);
-        TextView value1 = (TextView) weightRecords.findViewById(R.id.value1);
-        TextView value2 = (TextView) weightRecords.findViewById(R.id.value2);
-        TextView value3 = (TextView) weightRecords.findViewById(R.id.value3);
-        if(currentDay.getWeightList().size() == 0 ){
-            weightRecords.setVisibility(View.GONE);
-        }
-        else{
-            weightRecords.setVisibility(View.VISIBLE);
-            switch(currentDay.getWeightList().size()){
-                case 1:
-                    weight_rec_one.setVisibility(View.VISIBLE);
-                    weight_rec_two.setVisibility(View.GONE);
-                    weight_rec_three.setVisibility(View.GONE);
-                    value1.setText(currentDay.getWeightList().get(0).getValue()+"");
-                    break;
-                case 2:
-                    weight_rec_one.setVisibility(View.VISIBLE);
-                    weight_rec_two.setVisibility(View.VISIBLE);
-                    weight_rec_three.setVisibility(View.GONE);
-                    value1.setText(currentDay.getWeightList().get(0).getValue()+"");
-                    value2.setText(currentDay.getWeightList().get(1).getValue()+"");
-                    break;
-                case 3:
-                    weight_rec_one.setVisibility(View.VISIBLE);
-                    weight_rec_two.setVisibility(View.VISIBLE);
-                    weight_rec_three.setVisibility(View.VISIBLE);
-                    value1.setText(currentDay.getWeightList().get(0).getValue()+"");
-                    value2.setText(currentDay.getWeightList().get(1).getValue()+"");
-                    value3.setText(currentDay.getWeightList().get(2).getValue()+"");
-                    break;
-            }
-        }
-    }
-
-    private void showBloodPressure(Day currentDay, ViewHolder holder) {
-            View v = holder.view;
-            final RelativeLayout bloodPressureRecords = (RelativeLayout) v.findViewById(R.id.bloodPressureRecords);
-            bloodPressureRecords.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(view.getContext(), BloodPressure.class);
-                    bloodPressureRecords.getContext().startActivity(intent);
-                }
-            });
-
-            LinearLayout bloodPressure_rec_one = (LinearLayout) bloodPressureRecords.findViewById(R.id.bloodPressure_rec_one);
-            LinearLayout bloodPressure_rec_two = (LinearLayout) bloodPressureRecords.findViewById(R.id.bloodPressure_rec_two);
-            LinearLayout bloodPressure_rec_three = (LinearLayout) bloodPressureRecords.findViewById(R.id.bloodPressure_rec_three);
-            TextView value1 = (TextView) bloodPressureRecords.findViewById(R.id.value1);
-            TextView value2 = (TextView) bloodPressureRecords.findViewById(R.id.value2);
-            TextView value3 = (TextView) bloodPressureRecords.findViewById(R.id.value3);
-            if(currentDay.getBloodPressureList().size() == 0 ){
-                bloodPressureRecords.setVisibility(View.GONE);
-            }
-            else{
-                bloodPressureRecords.setVisibility(View.VISIBLE);
-                switch(currentDay.getBloodPressureList().size()){
-                    case 1:
-                        bloodPressure_rec_one.setVisibility(View.VISIBLE);
-                        bloodPressure_rec_two.setVisibility(View.GONE);
-                        bloodPressure_rec_three.setVisibility(View.GONE);
-                        value1.setText(currentDay.getBloodPressureList().get(0).getSystolic()+" / "+currentDay.getBloodPressureList().get(0).getDiastolic());
-                        break;
-                    case 2:
-                        bloodPressure_rec_one.setVisibility(View.VISIBLE);
-                        bloodPressure_rec_two.setVisibility(View.VISIBLE);
-                        bloodPressure_rec_three.setVisibility(View.GONE);
-                        value1.setText(currentDay.getBloodPressureList().get(0).getSystolic()+" / "+currentDay.getBloodPressureList().get(0).getDiastolic());
-                        value2.setText(currentDay.getBloodPressureList().get(1).getSystolic()+" / "+currentDay.getBloodPressureList().get(1).getDiastolic());
-                        break;
-                    case 3:
-                        bloodPressure_rec_one.setVisibility(View.VISIBLE);
-                        bloodPressure_rec_two.setVisibility(View.VISIBLE);
-                        bloodPressure_rec_three.setVisibility(View.VISIBLE);
-                        value1.setText(currentDay.getBloodPressureList().get(0).getSystolic()+" / "+currentDay.getBloodPressureList().get(0).getDiastolic());
-                        value2.setText(currentDay.getBloodPressureList().get(1).getSystolic()+" / "+currentDay.getBloodPressureList().get(1).getDiastolic());
-                        value3.setText(currentDay.getBloodPressureList().get(2).getSystolic()+" / "+currentDay.getBloodPressureList().get(2).getDiastolic());
-                        break;
-                }
-            }
-    }
-
-    private void showCholesterol(Day currentDay, ViewHolder holder) {
-        View v = holder.view;
-        final RelativeLayout cholesterolRecords = (RelativeLayout) v.findViewById(R.id.cholesterolRecords);
-        cholesterolRecords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), Cholesterol.class);
-                cholesterolRecords.getContext().startActivity(intent);
-            }
-        });
-
-        LinearLayout cholesterol_rec_one = (LinearLayout) cholesterolRecords.findViewById(R.id.logbook_rec_one);
-        LinearLayout cholesterol_rec_two = (LinearLayout) cholesterolRecords.findViewById(R.id.logbook_rec_two);
-        LinearLayout cholesterol_rec_three = (LinearLayout) cholesterolRecords.findViewById(R.id.cholesterol_rec_three);
-        TextView value1 = (TextView) cholesterolRecords.findViewById(R.id.value1);
-        TextView value2 = (TextView) cholesterolRecords.findViewById(R.id.value2);
-        TextView value3 = (TextView) cholesterolRecords.findViewById(R.id.value3);
-        if(currentDay.getCholesterolList().size() == 0 ){
-            cholesterolRecords.setVisibility(View.GONE);
-        }
-        else{
-            cholesterolRecords.setVisibility(View.VISIBLE);
-            switch(currentDay.getCholesterolList().size()){
-                case 1:
-                    cholesterol_rec_one.setVisibility(View.VISIBLE);
-                    cholesterol_rec_two.setVisibility(View.GONE);
-                    cholesterol_rec_three.setVisibility(View.GONE);
-                    value1.setText(currentDay.getCholesterolList().get(0).getValue().toString());
-                    break;
-                case 2:
-                    cholesterol_rec_one.setVisibility(View.VISIBLE);
-                    cholesterol_rec_two.setVisibility(View.VISIBLE);
-                    cholesterol_rec_three.setVisibility(View.GONE);
-                    value1.setText(currentDay.getCholesterolList().get(0).getValue().toString());
-                    value2.setText(currentDay.getCholesterolList().get(1).getValue().toString());
-                    break;
-                case 3:
-                    cholesterol_rec_one.setVisibility(View.VISIBLE);
-                    cholesterol_rec_two.setVisibility(View.VISIBLE);
-                    cholesterol_rec_three.setVisibility(View.VISIBLE);
-                    value1.setText(currentDay.getCholesterolList().get(0).getValue().toString());
-                    value2.setText(currentDay.getCholesterolList().get(1).getValue().toString());
-                    value3.setText(currentDay.getCholesterolList().get(2).getValue().toString());
-                    break;
-            }
-        }
-    }
-
-    private void showHbA1c(Day currentDay, ViewHolder holder) {
-        View v = holder.view;
-        final RelativeLayout hbA1cRecords = (RelativeLayout) v.findViewById(R.id.hbA1cRecords);
-        hbA1cRecords.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(view.getContext(), HbA1c.class);
-                hbA1cRecords.getContext().startActivity(intent);
-            }
-        });
-
-        LinearLayout hbA1c_rec_one = (LinearLayout) hbA1cRecords.findViewById(R.id.hbA1c_rec_one);
-        LinearLayout hbA1c_rec_two = (LinearLayout) hbA1cRecords.findViewById(R.id.hbA1c_rec_two);
-        LinearLayout hbA1c_rec_three = (LinearLayout) hbA1cRecords.findViewById(R.id.hbA1c_rec_three);
-        TextView value1 = (TextView) hbA1cRecords.findViewById(R.id.value1);
-        TextView value2 = (TextView) hbA1cRecords.findViewById(R.id.value2);
-        TextView value3 = (TextView) hbA1cRecords.findViewById(R.id.value3);
-        if(currentDay.getHbA1cList().size() == 0 ){
-            hbA1cRecords.setVisibility(View.GONE);
-        }
-        else{
-            hbA1cRecords.setVisibility(View.VISIBLE);
-            switch(currentDay.getHbA1cList().size()){
-                case 1:
-                    hbA1c_rec_one.setVisibility(View.VISIBLE);
-                    hbA1c_rec_two.setVisibility(View.GONE);
-                    hbA1c_rec_three.setVisibility(View.GONE);
-                    value1.setText(currentDay.getHbA1cList().get(0).getValue()+"");
-                    break;
-                case 2:
-                    hbA1c_rec_one.setVisibility(View.VISIBLE);
-                    hbA1c_rec_two.setVisibility(View.VISIBLE);
-                    hbA1c_rec_three.setVisibility(View.GONE);
-                    value1.setText(currentDay.getHbA1cList().get(0).getValue()+"");
-                    value2.setText(currentDay.getHbA1cList().get(1).getValue()+"");
-                    break;
-                case 3:
-                    hbA1c_rec_one.setVisibility(View.VISIBLE);
-                    hbA1c_rec_two.setVisibility(View.VISIBLE);
-                    hbA1c_rec_three.setVisibility(View.VISIBLE);
-                    value1.setText(currentDay.getHbA1cList().get(0).getValue()+"");
-                    value2.setText(currentDay.getHbA1cList().get(1).getValue()+"");
-                    value3.setText(currentDay.getHbA1cList().get(2).getValue()+"");
-                    break;
-            }
-        }
-    }
-
 }
