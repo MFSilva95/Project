@@ -99,7 +99,6 @@
                 android:layout_marginBottom="0dp"
                 android:inputType="textPersonName|textCapSentences"
                 tools:text="Manhã"
-                android:nextFocusDown="@id/time_start"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
