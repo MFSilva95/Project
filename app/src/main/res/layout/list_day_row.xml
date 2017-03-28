@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-5
+
             <ListView
                 android:id="@+id/logbookRecords"
                 android:layout_width="match_parent"
@@ -25,11 +25,11 @@
                 android:divider="@null"
                 android:dividerHeight="0dp"/>
 
+
             <RelativeLayout
                 android:id="@+id/exerciceRecords"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
+                android:layout_height="65dp"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackground"
                 android:paddingLeft="5dp"
@@ -37,15 +37,15 @@
 
                 <LinearLayout
                     android:id="@+id/imageTitleHolder"
-                    android:layout_width="60dp"
+                    android:layout_width="70dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|center_horizontal"
                     android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/image"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:padding="5dp"
                         app:srcCompat="@drawable/ic_weight" />
@@ -68,8 +68,9 @@
                 <RelativeLayout
                     android:id="@+id/exercice_recs"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="60dp"
                     android:layout_toRightOf="@id/imageTitleHolder"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -132,6 +133,7 @@
                         android:layout_width="95dp"
                         android:layout_height="match_parent"
                         android:layout_toRightOf="@id/exercice_rec_one"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <View
@@ -143,7 +145,7 @@
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/ef_grey" />
+                            android:background="@color/divider" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -196,8 +198,9 @@
                     <LinearLayout
                         android:id="@+id/exercice_rec_three"
                         android:layout_width="95dp"
-                        android:layout_height="65dp"
+                        android:layout_height="match_parent"
                         android:layout_toRightOf="@id/exercice_rec_two"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <View
@@ -209,7 +212,7 @@
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/ef_grey" />
+                            android:background="@color/divider" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -258,13 +261,22 @@
                         </LinearLayout>
                     </LinearLayout>
                 </RelativeLayout>
+
+                <View
+                    android:id="@+id/view26"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/exercice_recs"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/divider" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/diseaseRecords"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
+                android:layout_height="65dp"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackground"
                 android:paddingLeft="5dp"
@@ -272,15 +284,15 @@
 
                 <LinearLayout
                     android:id="@+id/imageTitleHolder"
-                    android:layout_width="60dp"
+                    android:layout_width="70dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|center_horizontal"
                     android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/image"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:padding="5dp"
                         app:srcCompat="@drawable/ic_bed" />
@@ -303,7 +315,7 @@
                 <RelativeLayout
                     android:id="@+id/disease_recs"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="60dp"
                     android:layout_toRightOf="@id/imageTitleHolder"
                     android:orientation="horizontal">
 
@@ -318,10 +330,10 @@
                         <LinearLayout
                             android:id="@+id/values"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@+id/title"
                             android:layout_centerHorizontal="true"
-                            android:gravity="center_horizontal"
+                            android:gravity="center_vertical|center_horizontal"
                             android:orientation="horizontal">
 
                             <TextView
@@ -344,7 +356,7 @@
                         android:gravity="center_vertical|center_horizontal">
 
                         <View
-                            android:id="@+id/view31"
+                            android:id="@+id/view37"
                             android:layout_width="1dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="center_vertical"
@@ -352,15 +364,15 @@
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/ef_grey" />
+                            android:background="@color/divider" />
 
                         <LinearLayout
                             android:id="@+id/values"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@+id/title"
                             android:layout_centerHorizontal="true"
-                            android:gravity="center_horizontal"
+                            android:gravity="center_vertical|center_horizontal"
                             android:orientation="horizontal">
 
                             <TextView
@@ -392,12 +404,12 @@
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/ef_grey" />
+                            android:background="@color/divider" />
 
                         <LinearLayout
                             android:id="@+id/values"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@+id/title"
                             android:layout_centerHorizontal="true"
                             android:gravity="center_vertical|center_horizontal"
@@ -417,14 +429,23 @@
 
                 </RelativeLayout>
 
+                <View
+                    android:id="@+id/view29"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/disease_recs"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/divider" />
+
 
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/weightRecords"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
+                android:layout_height="65dp"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackground"
                 android:paddingLeft="5dp"
@@ -432,15 +453,15 @@
 
                 <LinearLayout
                     android:id="@+id/imageTitleHolder"
-                    android:layout_width="60dp"
+                    android:layout_width="70dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|center_horizontal"
                     android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/image"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:padding="5dp"
                         app:srcCompat="@drawable/ic_scale" />
@@ -463,7 +484,7 @@
                 <RelativeLayout
                     android:id="@+id/weight_recs"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="60dp"
                     android:layout_toRightOf="@id/imageTitleHolder"
                     android:orientation="horizontal">
 
@@ -478,10 +499,10 @@
                         <LinearLayout
                             android:id="@+id/values"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@+id/title"
                             android:layout_centerHorizontal="true"
-                            android:gravity="center_horizontal"
+                            android:gravity="center_vertical|center_horizontal"
                             android:orientation="horizontal">
 
                             <TextView
@@ -521,15 +542,15 @@
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/ef_grey" />
+                            android:background="@color/divider" />
 
                         <LinearLayout
                             android:id="@+id/values"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@+id/title"
                             android:layout_centerHorizontal="true"
-                            android:gravity="center_horizontal"
+                            android:gravity="center_vertical|center_horizontal"
                             android:orientation="horizontal">
 
                             <TextView
@@ -570,15 +591,15 @@
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/ef_grey" />
+                            android:background="@color/divider" />
 
                         <LinearLayout
                             android:id="@+id/values"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@+id/title"
                             android:layout_centerHorizontal="true"
-                            android:gravity="center_horizontal"
+                            android:gravity="center_vertical|center_horizontal"
                             android:orientation="horizontal">
 
                             <TextView
@@ -603,13 +624,23 @@
                     </LinearLayout>
 
                 </RelativeLayout>
+
+                <View
+                    android:id="@+id/view30"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/weight_recs"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="15dp"
+                    android:layout_weight="1"
+                    android:background="@color/divider" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/bloodPressureRecords"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
+                android:layout_height="65dp"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackground"
                 android:paddingLeft="5dp"
@@ -617,15 +648,15 @@
 
                 <LinearLayout
                     android:id="@+id/imageTitleHolder"
-                    android:layout_width="60dp"
+                    android:layout_width="70dp"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical|center_horizontal"
                     android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/image"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:padding="5dp"
                         app:srcCompat="@drawable/ic_cardiogram" />
@@ -648,7 +679,7 @@
                 <RelativeLayout
                     android:id="@+id/bloodPressure_recs"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="60dp"
                     android:layout_toRightOf="@id/imageTitleHolder"
                     android:orientation="horizontal">
 
@@ -663,10 +694,10 @@
                         <LinearLayout
                             android:id="@+id/values"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@+id/title"
                             android:layout_centerHorizontal="true"
-                            android:gravity="center_horizontal"
+                            android:gravity="center_vertical|center_horizontal"
                             android:orientation="horizontal">
 
                             <TextView
@@ -697,15 +728,15 @@
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/ef_grey" />
+                            android:background="@color/divider" />
 
                         <LinearLayout
                             android:id="@+id/values"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@+id/title"
                             android:layout_centerHorizontal="true"
-                            android:gravity="center_horizontal"
+                            android:gravity="center_vertical|center_horizontal"
                             android:orientation="horizontal">
 
                             <TextView
@@ -737,12 +768,12 @@
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/ef_grey" />
+                            android:background="@color/divider" />
 
                         <LinearLayout
                             android:id="@+id/values"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@+id/title"
                             android:layout_centerHorizontal="true"
                             android:gravity="center_vertical|center_horizontal"
@@ -762,6 +793,16 @@
 
                 </RelativeLayout>
 
+                <View
+                    android:id="@+id/view33"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/bloodPressure_recs"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/divider" />
+
 
             </RelativeLayout>
 
@@ -769,8 +810,7 @@
             <RelativeLayout
                 android:id="@+id/cholesterolRecords"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
+                android:layout_height="65dp"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackground"
                 android:paddingLeft="5dp"
@@ -778,15 +818,15 @@
 
                 <LinearLayout
                     android:id="@+id/imageTitleHolder"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical|center_horizontal"
                     android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/image"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:padding="5dp"
                         app:srcCompat="@drawable/ic_blood" />
@@ -809,12 +849,12 @@
                 <RelativeLayout
                     android:id="@+id/cholesterol_recs"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="60dp"
                     android:layout_toRightOf="@id/imageTitleHolder"
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:id="@+id/cholesterol_rec_one"
+                        android:id="@+id/logbook_rec_one"
                         android:layout_width="65dp"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="30dp"
@@ -848,10 +888,10 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/cholesterol_rec_two"
+                        android:id="@+id/logbook_rec_two"
                         android:layout_width="95dp"
                         android:layout_height="match_parent"
-                        android:layout_toRightOf="@id/cholesterol_rec_one">
+                        android:layout_toRightOf="@id/logbook_rec_one">
 
                         <View
                             android:id="@+id/view31"
@@ -862,7 +902,7 @@
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/ef_grey" />
+                            android:background="@color/divider" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -895,7 +935,7 @@
                         android:id="@+id/cholesterol_rec_three"
                         android:layout_width="95dp"
                         android:layout_height="match_parent"
-                        android:layout_toRightOf="@id/cholesterol_rec_two"
+                        android:layout_toRightOf="@id/logbook_rec_two"
                         android:orientation="horizontal">
 
                         <View
@@ -907,7 +947,7 @@
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/ef_grey" />
+                            android:background="@color/divider" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -936,13 +976,22 @@
                     </LinearLayout>
 
                 </RelativeLayout>
+
+                <View
+                    android:id="@+id/view34"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/cholesterol_recs"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/divider" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/hbA1cRecords"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:layout_margin="5dp"
+                android:layout_height="65dp"
                 android:layout_weight="1"
                 android:background="?attr/selectableItemBackground"
                 android:paddingLeft="5dp"
@@ -950,15 +999,15 @@
 
                 <LinearLayout
                     android:id="@+id/imageTitleHolder"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical|center_horizontal"
                     android:orientation="vertical">
 
                     <ImageView
                         android:id="@+id/image"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_weight="1"
                         android:padding="5dp"
                         app:srcCompat="@drawable/ic_test_tube" />
@@ -978,10 +1027,11 @@
                         android:textStyle="bold" />
                 </LinearLayout>
 
+
                 <RelativeLayout
                     android:id="@+id/hbA1c_recs"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="60dp"
                     android:layout_toRightOf="@id/imageTitleHolder"
                     android:orientation="horizontal">
 
@@ -996,10 +1046,10 @@
                         <LinearLayout
                             android:id="@+id/values"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@+id/title"
                             android:layout_centerHorizontal="true"
-                            android:gravity="center_horizontal"
+                            android:gravity="center_vertical|center_horizontal"
                             android:orientation="horizontal">
 
                             <TextView
@@ -1039,15 +1089,15 @@
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/ef_grey" />
+                            android:background="@color/divider" />
 
                         <LinearLayout
                             android:id="@+id/values"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@+id/title"
                             android:layout_centerHorizontal="true"
-                            android:gravity="center_horizontal"
+                            android:gravity="center_vertical|center_horizontal"
                             android:orientation="horizontal">
 
                             <TextView
@@ -1088,15 +1138,15 @@
                             android:layout_marginLeft="15dp"
                             android:layout_marginRight="15dp"
                             android:layout_marginTop="5dp"
-                            android:background="@color/ef_grey" />
+                            android:background="@color/divider" />
 
                         <LinearLayout
                             android:id="@+id/values"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_below="@+id/title"
                             android:layout_centerHorizontal="true"
-                            android:gravity="center_horizontal"
+                            android:gravity="center_vertical|center_horizontal"
                             android:orientation="horizontal">
 
                             <TextView
@@ -1118,9 +1168,21 @@
 
                         </LinearLayout>
 
+
                     </LinearLayout>
 
                 </RelativeLayout>
+
+                <View
+                    android:id="@+id/view35"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/hbA1c_recs"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="100dp"
+                    android:layout_marginRight="15dp"
+                    android:background="@color/divider" />
+
             </RelativeLayout>
         </LinearLayout>
 

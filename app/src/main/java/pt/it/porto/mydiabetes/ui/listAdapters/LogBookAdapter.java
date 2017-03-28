@@ -66,7 +66,6 @@ public class LogBookAdapter extends BaseAdapter {
         viewHolder = (ViewHolder) convertView.getTag();
         LogBookEntry current = getItem(position);
         viewHolder.item = current;
-        viewHolder.data.setText(current.getFormattedDate());
         viewHolder.hora.setText(current.getFormattedTime());
         viewHolder.tag.setText(current.getTag());
         if (current.getInsulinId() != -1) {
@@ -143,7 +142,6 @@ public class LogBookAdapter extends BaseAdapter {
         LogBookEntry item;
 
         public ViewHolder(View view) {
-            data = (TextView) view.findViewById(R.id.tv_list_logbookreg_data);
             hora = (TextView) view.findViewById(R.id.tv_list_logbookreg_hora);
             insulinValue = (TextView) view.findViewById(R.id.tv_list_logbookreg_insulin_value);
             insulinName = (TextView) view.findViewById(R.id.tv_list_logbookreg_insulin);

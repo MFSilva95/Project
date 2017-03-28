@@ -6,46 +6,31 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.data.Advice;
-import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.Day;
-import pt.it.porto.mydiabetes.data.GlycemiaRec;
-import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Task;
 import pt.it.porto.mydiabetes.ui.activities.BloodPressure;
 import pt.it.porto.mydiabetes.ui.activities.Cholesterol;
-import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.activities.Disease;
 import pt.it.porto.mydiabetes.ui.activities.Exercise;
 import pt.it.porto.mydiabetes.ui.activities.HbA1c;
 import pt.it.porto.mydiabetes.ui.activities.WeightChartList;
-import pt.it.porto.mydiabetes.ui.charts.data.Weight;
 import pt.it.porto.mydiabetes.utils.HomeElement;
-import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
@@ -339,7 +324,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
     }
 
-    public void justifyListViewHeightBasedOnChildren(ListView listView) {
+   public void justifyListViewHeightBasedOnChildren(ListView listView) {
 
         ListAdapter adapter = listView.getAdapter();
 
@@ -574,8 +559,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             }
         });
 
-        LinearLayout cholesterol_rec_one = (LinearLayout) cholesterolRecords.findViewById(R.id.cholesterol_rec_one);
-        LinearLayout cholesterol_rec_two = (LinearLayout) cholesterolRecords.findViewById(R.id.cholesterol_rec_two);
+        LinearLayout cholesterol_rec_one = (LinearLayout) cholesterolRecords.findViewById(R.id.logbook_rec_one);
+        LinearLayout cholesterol_rec_two = (LinearLayout) cholesterolRecords.findViewById(R.id.logbook_rec_two);
         LinearLayout cholesterol_rec_three = (LinearLayout) cholesterolRecords.findViewById(R.id.cholesterol_rec_three);
         TextView value1 = (TextView) cholesterolRecords.findViewById(R.id.value1);
         TextView value2 = (TextView) cholesterolRecords.findViewById(R.id.value2);
