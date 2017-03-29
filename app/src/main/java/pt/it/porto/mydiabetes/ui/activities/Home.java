@@ -19,16 +19,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.esafirm.imagepicker.features.ImagePicker;
-import com.esafirm.imagepicker.features.ImagePickerActivity;
-import com.esafirm.imagepicker.model.Image;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
@@ -40,23 +32,11 @@ import pt.it.porto.mydiabetes.utils.CustomViewPager;
 public class Home extends BaseActivity {
 
 	public static final int CHANGES_OCCURRED = 1;
-	public static final int NO_CHANGES_OCCURRED = 0;
-	private static final String SELECTED_ITEM = "arg_selected_item";
-	private static final String TAG = "Home";
-
-
-	private static final int RC_CODE_PICKER = 2000;
-	private Bitmap bmp;
-	private ArrayList<Image> images = new ArrayList<>();
-	private CircleImageView userImg;
-	private String userImgFileName = "profilePhoto.png";
-
 
 	private NavigationView navigationView;
 	private DrawerLayout drawerLayout;
 
-	SharedPreferences mPrefs;
-	String imgUriString;
+
 
 	private YapDroid yapDroid;
 
@@ -68,10 +48,6 @@ public class Home extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-
-
-		mPrefs = getSharedPreferences("label", 0);
-		imgUriString = mPrefs.getString("userImgUri", null);
 
 		DB_Read read = new DB_Read(this);
 		if (!read.MyData_HasData()) {
@@ -107,53 +83,6 @@ public class Home extends BaseActivity {
 		bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
 		//----------------------nav
-
-		DrawerLayout.DrawerListener Dlistener = new DrawerLayout.DrawerListener() {
-			@Override
-			public void onDrawerSlide(View view, float v) {
-			}
-
-			@Override
-			public void onDrawerOpened(View view) {
-				userImg = (CircleImageView) findViewById(R.id.profile_image);
-
-				ContextWrapper cw = new ContextWrapper(getBaseContext());
-				File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-				// Create imageDir
-				File mypath = new File(directory, userImgFileName);
-				if (mypath.exists()) {
-					Bitmap bmp = BitmapFactory.decodeFile(mypath.getPath());
-					userImg.setImageBitmap(bmp);
-				}
-
-				userImg.setOnClickListener(new View.OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Intent intent = new Intent(getBaseContext(), ImagePickerActivity.class);
-
-						intent.putExtra(ImagePicker.EXTRA_FOLDER_MODE, true);
-						intent.putExtra(ImagePicker.EXTRA_MODE, ImagePicker.MODE_SINGLE);
-						intent.putExtra(ImagePicker.EXTRA_SHOW_CAMERA, false);
-						intent.putExtra(ImagePicker.EXTRA_SELECTED_IMAGES, images);
-						intent.putExtra(ImagePicker.EXTRA_FOLDER_TITLE, "Album");
-						intent.putExtra(ImagePicker.EXTRA_IMAGE_TITLE, "Tap to select images");
-						intent.putExtra(ImagePicker.EXTRA_IMAGE_DIRECTORY, "Camera");
-
-						startActivityForResult(intent, RC_CODE_PICKER);
-					}
-				});
-			}
-
-			@Override
-			public void onDrawerClosed(View view) {
-			}
-
-			@Override
-			public void onDrawerStateChanged(int i) {
-			}
-		};
-
-		drawerLayout.addDrawerListener(Dlistener);
 		navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
         if(!BuildConfig.TASKS_AVAILABLE){
@@ -203,36 +132,6 @@ public class Home extends BaseActivity {
 		setupBottomNavigationView();
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
-			images = data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
-			bmp = BitmapFactory.decodeFile(images.get(0).getPath());
-
-			ContextWrapper cw = new ContextWrapper(this);
-			// path to /data/data/yourapp/app_data/imageDir
-			File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-			// Create imageDir
-			File mypath = new File(directory, userImgFileName);
-			FileOutputStream fos = null;
-
-			try {
-				fos = new FileOutputStream(mypath);
-				// Use the compress method on the BitMap object to write image to the OutputStream
-				bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					fos.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			userImg.setImageBitmap(bmp);
-		}
-        super.onActivityResult(requestCode, resultCode, data);
-	}
 	public void ShowDialogAddData() {
 		Intent intent = new Intent(this, WelcomeActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
