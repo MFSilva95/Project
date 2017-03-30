@@ -41,20 +41,16 @@ public class DB_Read {
 		this.myContext = context;
 		this.myDB = db.getReadableDatabase();
 	}
-
 	public void close() {
 		myDB.close();
 		Log.d("Close", "DB_Read");
 	}
-
-
 	public boolean MyData_HasData() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM UserInfo", null);
 		boolean result = cursor.getCount() > 0;
 		cursor.close();
 		return result;
 	}
-
 	public UserInfo MyData_Read() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM UserInfo", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));

@@ -11,7 +11,6 @@ public class GlycemiaRec extends DateTime implements Parcelable {
 		public GlycemiaRec createFromParcel(Parcel in) {
 			return new GlycemiaRec(in);
 		}
-
 		@Override
 		public GlycemiaRec[] newArray(int size) {
 			return new GlycemiaRec[size];

@@ -30,6 +30,7 @@ import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Task;
 import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.activities.Home;
+import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
@@ -48,8 +49,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        // each data item is just a string in this case
-
         TextView data;
         TextView hora;
         TextView insulinValue;
@@ -67,7 +66,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             super(v);
             view = v;
             if (isLog) {
-                //if (view.getTag().equals("logbookItem")) {
                 //data = (TextView) view.findViewById(R.id.tv_list_logbookreg_data);
                 hora = (TextView) view.findViewById(R.id.tv_list_logbookreg_hora);
                 insulinValue = (TextView) view.findViewById(R.id.tv_list_logbookreg_insulin_value);
@@ -77,7 +75,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 cvalue = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_value);
                 ctag = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_title);
                 tag = (TextView) view.findViewById(R.id.tv_list_logbookreg_tag);
-                //}
             }
         }
     }
@@ -102,9 +99,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         switch (viewType) {
             case 0:
-//                Log.i("________POSITION_____", ADVICE");
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_advice_row, parent, false);
-                vh = new ViewHolder((LinearLayout) v, false);
+                // Log.i("________POSITION_____", "HEADER");
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_home_row, parent, false);
+                vh = new ViewHolder((LinearLayout) v, true);
+                v.setTag(vh);
                 return vh;
             case 1:
 //                Log.i("________POSITION_____", "LOGBOOK!");
@@ -113,20 +111,19 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 v.setTag(vh);
                 return vh;
             case 2:
-                //Log.i("________POSITION_____", "EMPTY");
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_home_row, parent, false);
-                vh = new ViewHolder((LinearLayout) v, true);
-                v.setTag(vh);
+//                Log.i("________POSITION_____", ADVICE");
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_advice_row, parent, false);
+                vh = new ViewHolder((LinearLayout) v, false);
                 return vh;
             case 3:
-                // Log.i("________POSITION_____", "HEADER");
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.header_home_row, parent, false);
+                // Log.i("________POSITION_____", "TASK");
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_task_row, parent, false);
                 vh = new ViewHolder((LinearLayout) v, true);
                 v.setTag(vh);
                 return vh;
             case 4:
-                // Log.i("________POSITION_____", "TASK");
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_task_row, parent, false);
+                //Log.i("________POSITION_____", "EMPTY");
+                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.empty_home_row, parent, false);
                 vh = new ViewHolder((LinearLayout) v, true);
                 v.setTag(vh);
                 return vh;
@@ -137,18 +134,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     @Override
     public int getItemViewType(int position) {
         switch (homeList.get(position).getDisplayType()) {
-            case ADVICE:
-                return 0;
             case HEADER:
-                return 3;
+                return 0;
             case LOGITEM:
                 return 1;
-            case SPACE:
+            case ADVICE:
                 return 2;
             case TASK:
+                return 3;
+            case SPACE:
                 return 4;
         }
-        return 2;
+        return -1;
     }
 
     @Override
@@ -163,212 +160,43 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         switch (currentView.getDisplayType()) {
 
             case HEADER:
-                //its an header
                 textHolder = (LinearLayout) v.findViewById(R.id.headerRowBackground);
-                //textHolder = (LinearLayout) holder.view.getChildAt(0);
-                //textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
                 rowText = (TextView) textHolder.getChildAt(0);
-                //rowText.setTextColor(ContextCompat.getColor(c, R.color.cardview_light_background));
                 rowText.setText(currentView.getName());
                 break;
-
-
             case ADVICE:
-                //its an advice
-                final Advice currentAdvice = (Advice) currentView;
+                Advice currentAdvice = (Advice) currentView;
                 textHolder = (LinearLayout) v.findViewById(R.id.adviceRowBackground);
                 myText = (TextView) v.findViewById(R.id.content);
-                //textHolder = (LinearLayout) holder.view.getChildAt(0);
-                //textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
                 textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
-                //myText= (TextView) textHolder.getChildAt(1);
-
                 if (currentAdvice.getUrgency() > 7) {
                     myText.setTextColor(Color.RED);
                 }
-                //textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
-//                rowText = (TextView) textHolder.getChildAt(0);
-//                rowText.setText(currentAdvice.getSummaryText());
                 myText.setText(currentAdvice.getSummaryText());
-
-                holder.view.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                        // Get the layout inflater
-                        LayoutInflater inflater = LayoutInflater.from(v.getContext());
-                        // Inflate and set the layout for the dialog
-                        // Pass null as the parent view because its going in the dialog layout
-                        builder.setView(inflater.inflate(R.layout.dialog_exp_advice, null));
-
-                        if (!currentAdvice.getAdviceType().equals("ALERT") && !currentAdvice.getAdviceType().equals("NORMAL")) {
-                            builder.setNegativeButton(v.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    if (currentAdvice.getAdviceType().equals("QUESTION")) {
-                                        //myYapInstance.insertRule("has("+currentAdvice.getRegistryType()+")");
-                                    }
-                                    if (currentAdvice.getAdviceType().equals("SUGGESTION")) {
-                                        Class<?> wantedAct = null;
-                                        String classPath = "";
-                                        try {
-                                            classPath = "pt.it.porto.mydiabetes.ui.activities." + currentAdvice.getRegistryType();
-                                            wantedAct = Class.forName(classPath);
-
-                                        } catch (ClassNotFoundException e) {
-                                            // TODO Auto-generated catch block
-                                            e.printStackTrace();
-                                        }
-
-                                        Intent intent = new Intent(c, wantedAct);
-                                        c.startActivity(intent);
-                                    }
-                                    dialog.dismiss();
-                                }
-                            });
-                        }
-
-                        Dialog dialog = builder.create();
-                        dialog.show();
-
-                        TextView textView = (TextView) dialog.findViewById(R.id.popup_text);
-                        textView.setText(currentAdvice.getExpandedText());
-
-                    }
-                });
-
+                holder.view.setOnClickListener(getAdviceClickListener(currentAdvice));
                 break;
             case LOGITEM:
-
-                //its a logbookItem
                 v = holder.view;
-
-                holder.item = currentView;
-                // holder.data.setText(currentView.getFormattedDate());
-                holder.hora.setText(currentView.getFormattedTime());
-                holder.tag.setText(currentView.getTag());
-
-                LinearLayout imageTitleHolder = (LinearLayout) holder.view.findViewById(R.id.imageTitleHolder);
-                View sep = (View) holder.view.findViewById(R.id.sep);
-                if(homeList.get(position-1).getDisplayType() == HomeElement.Type.HEADER && (position - 1) > -1){
-                    imageTitleHolder.setVisibility(View.VISIBLE);
-                }
-                else{
-                    imageTitleHolder.setVisibility(View.INVISIBLE);
-                }
-
-                if(homeList.get(position+1).getDisplayType() == HomeElement.Type.SPACE || homeList.get(position+1).getDisplayType() == HomeElement.Type.HEADER){
-                    sep.setVisibility(View.GONE);
-                }
-                else{
-                    sep.setVisibility(View.VISIBLE);
-                }
-
-
-                if (currentView.getInsulinId() != -1) {
-                    holder.insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", currentView.getInsulinVal()));
-                    holder.insulinName.setText(currentView.getInsulinName());
-                    holder.insulinValue.setVisibility(View.VISIBLE);
-                    holder.insulinName.setVisibility(View.VISIBLE);
-                } else {
-                    holder.insulinValue.setVisibility(View.INVISIBLE);
-                    holder.insulinName.setVisibility(View.INVISIBLE);
-                }
-                if (currentView.getGlycemiaId() != -1) {
-                    holder.gvalue.setText(String.valueOf(currentView.getGlycemia()));
-                    holder.gvalue.setVisibility(View.VISIBLE);
-                    holder.gtag.setVisibility(View.VISIBLE);
-                } else {
-                    holder.gvalue.setVisibility(View.INVISIBLE);
-                    holder.gtag.setVisibility(View.INVISIBLE);
-                }
-                if (currentView.getCarbsId() != -1) {
-                    holder.cvalue.setText(String.valueOf(currentView.getCarbs()));
-                    holder.cvalue.setVisibility(View.VISIBLE);
-                    holder.ctag.setVisibility(View.VISIBLE);
-                } else {
-                    holder.cvalue.setVisibility(View.INVISIBLE);
-                    holder.ctag.setVisibility(View.INVISIBLE);
-                }
-                v.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(v.getContext(), DetailLogbookActivity.class);
-                        Bundle args = new Bundle();
-                        HomeElement logbookDataBinding = ((ViewHolder) v.getTag()).item;
-                        if (logbookDataBinding.getGlycemiaId() != -1) {
-                            GlycemiaRec glycemiaRec = new GlycemiaRec();
-                            glycemiaRec.setId(logbookDataBinding.getGlycemiaId());
-                            args.putString("bg", String.valueOf(glycemiaRec.getId())); //bg id
-                            args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, glycemiaRec);
-                        }
-                        if (logbookDataBinding.getCarbsId() != -1) {
-                            CarbsRec carbs = new CarbsRec();
-                            carbs.setId(logbookDataBinding.getCarbsId());
-                            args.putString("ch", String.valueOf(carbs.getId())); //ch id
-                            args.putParcelable(DetailLogbookActivity.ARG_CARBS, carbs);
-                        }
-                        if (logbookDataBinding.getInsulinId() != -1) {
-                            InsulinRec insulin = new InsulinRec();
-                            insulin.setId(logbookDataBinding.getInsulinId());
-                            args.putString("ins", String.valueOf(insulin.getId())); //ins id
-                            args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);
-                        }
-                        intent.putExtras(args);
-                        v.getContext().startActivity(intent);
-                    }
-                });
+                setLogItemAppearence(holder, position);
+                v.setOnClickListener(getLogItemClickListener());
                 break;
             case SPACE:
-
-
                 break;
             case TASK:
-                //its a task
                 final Task currentTask = (Task) currentView;
                 textHolder = (LinearLayout) v.findViewById(R.id.taskRowBackground);
-                //textHolder = (LinearLayout) holder.view.getChildAt(0);
-                //textHolder.setBackgroundColor(Color.parseColor("#abbbcb"));
                 textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
                 myText = (TextView) v.findViewById(R.id.content);
-                //myText = (TextView) textHolder.getChildAt(1);
                 if (currentTask.getUrgency() > 7) {
                     myText.setTextColor(Color.RED);
                 }
-                //textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
                 myText.setText(currentTask.getSummaryText());
-//                rowText = (TextView) textHolder.getChildAt(1);
-//                rowText.setText(currentTask.getSummaryText());
-                holder.view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                        // Get the layout inflater
-                        LayoutInflater inflater = LayoutInflater.from(v.getContext());
-                        // Inflate and set the layout for the dialog
-                        // Pass null as the parent view because its going in the dialog layout
-                        builder.setView(inflater.inflate(R.layout.dialog_exp_task, null));
-
-                        Dialog dialog = builder.create();
-                        dialog.show();
-
-                        TextView textView = (TextView) dialog.findViewById(R.id.popup_task_text);
-                        textView.setText(currentTask.getExpandedText());
-                    }
-                });
+                holder.view.setOnClickListener(getTaskClickListener(currentTask));
                 break;
         }
     }
+
+
 
     /*public void remove(int position) {
         //Log.i("HOME", "remove: POS:"+position);
@@ -402,6 +230,162 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         }
         return null;
     }*/
+
+    private View.OnClickListener getAdviceClickListener(final Advice currentAdvice){
+
+
+        View.OnClickListener onclick = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                LayoutInflater inflater = LayoutInflater.from(v.getContext());
+                builder.setView(inflater.inflate(R.layout.dialog_exp_advice, null));
+                if (!currentAdvice.getAdviceType().equals("ALERT") && !currentAdvice.getAdviceType().equals("NORMAL")) {
+                    builder.setNegativeButton(v.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (currentAdvice.getAdviceType().equals("QUESTION")) {
+                                //myYapInstance.insertRule("has("+currentAdvice.getRegistryType()+")");
+                            }
+                            if (currentAdvice.getAdviceType().equals("SUGGESTION")) {
+                                Class<?> wantedAct = null;
+                                String classPath = "";
+                                try {
+                                    classPath = "pt.it.porto.mydiabetes.ui.activities." + currentAdvice.getRegistryType();
+                                    wantedAct = Class.forName(classPath);
+
+                                } catch (ClassNotFoundException e) {
+                                    // TODO Auto-generated catch block
+                                    e.printStackTrace();
+                                }
+
+                                Intent intent = new Intent(c, wantedAct);
+                                c.startActivity(intent);
+                            }
+                            dialog.dismiss();
+                        }
+                    });
+                }
+
+                Dialog dialog = builder.create();
+                dialog.show();
+
+                TextView textView = (TextView) dialog.findViewById(R.id.popup_text);
+                textView.setText(currentAdvice.getExpandedText());
+
+            }
+        };
+        return onclick;
+    }
+    private View.OnClickListener getTaskClickListener(final Task currentTask){
+
+
+        View.OnClickListener onclick = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                LayoutInflater inflater = LayoutInflater.from(v.getContext());
+                builder.setView(inflater.inflate(R.layout.dialog_exp_task, null));
+                Dialog dialog = builder.create();
+                dialog.show();
+                TextView textView = (TextView) dialog.findViewById(R.id.popup_task_text);
+                textView.setText(currentTask.getExpandedText());
+            }
+        };
+        return onclick;
+
+    }
+    private View.OnClickListener getLogItemClickListener(){
+        View.OnClickListener onclick = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //Intent intent = new Intent(v.getContext(), DetailLogbookActivity.class);
+                Intent intent = new Intent(v.getContext(), NewHomeRegistry.class);
+                Bundle args = new Bundle();
+                HomeElement logbookDataBinding = ((ViewHolder) v.getTag()).item;
+                if (logbookDataBinding.getGlycemiaId() != -1) {
+                    GlycemiaRec glycemiaRec = new GlycemiaRec();
+                    glycemiaRec.setId(logbookDataBinding.getGlycemiaId());
+                    args.putString("bg", String.valueOf(glycemiaRec.getId())); //bg id
+                    args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, glycemiaRec);
+                }
+                if (logbookDataBinding.getCarbsId() != -1) {
+                    CarbsRec carbs = new CarbsRec();
+                    carbs.setId(logbookDataBinding.getCarbsId());
+                    args.putString("ch", String.valueOf(carbs.getId())); //ch id
+                    args.putParcelable(DetailLogbookActivity.ARG_CARBS, carbs);
+                }
+                if (logbookDataBinding.getInsulinId() != -1) {
+                    InsulinRec insulin = new InsulinRec();
+                    insulin.setId(logbookDataBinding.getInsulinId());
+                    args.putString("ins", String.valueOf(insulin.getId())); //ins id
+                    args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);
+                }
+                intent.putExtras(args);
+                v.getContext().startActivity(intent);
+            }
+        };
+        return onclick;
+
+    }
+    private void setLogItemAppearence(ViewHolder holder, int position){
+
+        HomeElement currentView = homeList.get(position);
+
+        holder.item = currentView;
+        holder.hora.setText(currentView.getFormattedTime());
+        holder.tag.setText(currentView.getTag());
+        LinearLayout imageTitleHolder = (LinearLayout) holder.view.findViewById(R.id.imageTitleHolder);
+        //View sep = holder.view.findViewById(R.id.sep);
+        if(homeList.get(position-1).getDisplayType() == HomeElement.Type.HEADER && (position - 1) > -1){
+            imageTitleHolder.setVisibility(View.VISIBLE);
+        }
+        else{
+            imageTitleHolder.setVisibility(View.INVISIBLE);
+        }
+        /*if(homeList.get(position+1).getDisplayType() == HomeElement.Type.SPACE || homeList.get(position+1).getDisplayType() == HomeElement.Type.HEADER){
+            sep.setVisibility(View.GONE);
+        }
+        else{
+            sep.setVisibility(View.VISIBLE);
+        }*/
+        if (currentView.getInsulinId() != -1) {
+            holder.insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", currentView.getInsulinVal()));
+            holder.insulinName.setText(currentView.getInsulinName());
+            holder.insulinValue.setVisibility(View.VISIBLE);
+            holder.insulinName.setVisibility(View.VISIBLE);
+        } else {
+            holder.insulinValue.setVisibility(View.INVISIBLE);
+            holder.insulinName.setVisibility(View.INVISIBLE);
+        }
+        if (currentView.getGlycemiaId() != -1) {
+            holder.gvalue.setText(String.valueOf(currentView.getGlycemia()));
+            holder.gvalue.setVisibility(View.VISIBLE);
+            holder.gtag.setVisibility(View.VISIBLE);
+        } else {
+            holder.gvalue.setVisibility(View.INVISIBLE);
+            holder.gtag.setVisibility(View.INVISIBLE);
+        }
+        if (currentView.getCarbsId() != -1) {
+            holder.cvalue.setText(String.valueOf(currentView.getCarbs()));
+            holder.cvalue.setVisibility(View.VISIBLE);
+            holder.ctag.setVisibility(View.VISIBLE);
+        } else {
+            holder.cvalue.setVisibility(View.INVISIBLE);
+            holder.ctag.setVisibility(View.INVISIBLE);
+        }
+    }
+
 
     @Override
     public int getItemCount() {

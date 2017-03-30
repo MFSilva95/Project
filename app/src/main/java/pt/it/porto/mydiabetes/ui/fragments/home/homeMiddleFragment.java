@@ -1,33 +1,15 @@
 package pt.it.porto.mydiabetes.ui.fragments.home;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-
-import com.esafirm.imagepicker.features.ImagePicker;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,7 +18,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
@@ -59,9 +40,25 @@ public class homeMiddleFragment extends Fragment {
     //Number of last days shown
     final int NUMBER_OF_DAYS = 7;
     final String TAG = "homeFrag";
-
 	//private ItemTouchHelper helper = null;
+	private FloatingActionButton fab;
+	ArrayList<Task> taskListFromYap = new ArrayList<>();
+	ArrayList<Advice> receiverAdviceList = new ArrayList<>();
 
+
+
+	private RecyclerView homeRecyclerView;
+	private List<HomeElement> logBookList;
+	public static homeMiddleFragment newInstance() {
+		homeMiddleFragment fragment = new homeMiddleFragment();
+		return fragment;
+	}
+	public homeMiddleFragment() {}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == WAIT_REGISTER && resultCode == Home.CHANGES_OCCURRED) {
@@ -69,83 +66,45 @@ public class homeMiddleFragment extends Fragment {
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
-
-	private FloatingActionButton fab;
-
-	ArrayList<Task> taskListFromYap = new ArrayList<>();
-	//ArrayList<Task> receiverTaskList = new ArrayList<>();
-	ArrayList<Advice> receiverAdviceList = new ArrayList<>();
-
-
-	private List<HomeElement> logBookList;
-
-	private RecyclerView homeList;
-
-
-	public static homeMiddleFragment newInstance() {
-		homeMiddleFragment fragment = new homeMiddleFragment();
-		return fragment;
-	}
-
-	public homeMiddleFragment() {
-
-	}
-
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
-
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-							 Bundle savedInstanceState) {
-		// Inflate the layout for this fragment
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View layout = inflater.inflate(R.layout.fragment_home_middle, container, false);
-
 		//yapDroid = YapDroid.newInstance(this);
-
-		homeList = (RecyclerView) layout.findViewById(R.id.HomeListDisplay);
+		homeRecyclerView = (RecyclerView) layout.findViewById(R.id.HomeListDisplay);
 		fab = (FloatingActionButton) layout.findViewById(R.id.fab);
-
 		setFabClickListeners();
 		fillHomeList();
-
 		return layout;
 	}
-
 	private void updateHomeList(){
 		logBookList = new LinkedList<>();
-
-		fillTaskList();
-		fillAdviceList();
+		//fillTaskList();
+		//fillAdviceList();
 		fillDays();
-		logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
-		logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
-		((HomeAdapter)homeList.getAdapter()).updateList(logBookList);
-		homeList.getAdapter().notifyDataSetChanged();
-	}
 
+		logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
+		logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
+		((HomeAdapter) homeRecyclerView.getAdapter()).updateList(logBookList);
+		homeRecyclerView.getAdapter().notifyDataSetChanged();
+	}
 	private void fillHomeList() {
 		logBookList = new LinkedList<>();
-
-		fillTaskList();
-		fillAdviceList();
+		//fillTaskList();
+		//fillAdviceList();
 		fillDays();
+
 		logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
 		logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
 
 		HomeAdapter homeAdapter = new HomeAdapter(logBookList);
-
 		/*if(helper==null){
 			ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
 			helper= new ItemTouchHelper(callback);
 			helper.attachToRecyclerView(homeList);
 		}*/
-
-		homeList.setAdapter(homeAdapter);
-		homeList.setLayoutManager(new LinearLayoutManager(getContext()));
+		homeRecyclerView.setAdapter(homeAdapter);
+		homeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 	}
-
 	private void dbRead(Calendar calendar) {
 		DB_Read db = new DB_Read(getContext());
 		String date = DateUtils.getFormattedDate(calendar);

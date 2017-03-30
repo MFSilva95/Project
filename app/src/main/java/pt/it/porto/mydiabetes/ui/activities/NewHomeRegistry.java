@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 
@@ -90,33 +91,73 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     }
 
     private enum RegistryFields{CARBS,INSULIN,GLICEMIA,PLUS};
-
     private LinearLayout bottomSheetViewgroup;
     private BottomSheetBehavior bottomSheetBehavior;
     private LinearLayout contentLayout;
     private ArrayList<RegistryFields> buttons;
     private Boolean insulinManualRegister = false;
-
     private Calendar registerDate;
-
     private TextView registerDateTextV;
     private TextView registerTime;
-
     protected InsulinCalcFragment fragmentInsulinCalcsFragment;
     protected InsulinCalculator insulinCalculator = null;
     private boolean useIOB = true;
     private boolean expandInsulinCalcsAuto = false;
-    String TAG = "newREG";
-
+    private String TAG = "newREG";
     public final static int IMAGE_CAPTURE = 2;
     public final static int IMAGE_VIEW = 3;
-
     private static final String CALCS_OPEN = "calcs open";
     private static final String GENERATED_IMAGE_URI = "generated_image_uri";
     private Uri generatedImageUri;
     private Uri imgUri;
     private Bitmap b;
+    private int noteId;
 
+    private String date = "";
+    private String time = "";
+
+    @Nullable
+    private GlycemiaRec glycemiaData;
+    @Nullable
+    private CarbsRec carbsData;
+    @Nullable
+    private InsulinRec insulinData;
+
+    public static final String ARG_CARBS = "ARG_CARBS";
+    public static final String ARG_INSULIN = "ARG_INSULIN";
+    public static final String ARG_BLOOD_GLUCOSE = "ARG_BLOOD_GLUCOSE";
+
+
+    @Override
+    public void finishAfterTransition() {
+        contentLayout.setAlpha(0);
+        super.finishAfterTransition();
+    }
+    @Override
+    public void supportFinishAfterTransition() {
+        super.supportFinishAfterTransition();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_CANCELED && requestCode == IMAGE_CAPTURE) {
+            setImgURI(generatedImageUri);
+        } else if (requestCode == IMAGE_VIEW) {
+            //se tivermos apagado a foto dá result code -1
+            //se voltarmos por um return por exemplo o resultcode é 0
+            if (resultCode == -1) {
+                imageRemoved();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+    @Override
+    public void onBackPressed() {
+        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+            hideBottomSheet();
+        } else {
+            super.onBackPressed();
+        }
+    }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -129,7 +170,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         if (savedInstanceState != null && savedInstanceState.containsKey(GENERATED_IMAGE_URI)) {
             generatedImageUri = savedInstanceState.getParcelable(GENERATED_IMAGE_URI);
         }
-
         if (savedInstanceState != null && savedInstanceState.getBoolean(CALCS_OPEN, false)) {
             ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
             if (calcInsulinInfo != null) {
@@ -144,48 +184,43 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_event);
+        contentLayout = (LinearLayout) findViewById(R.id.content_panel);
+        insulinCalculator = new InsulinCalculator(this);
         FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(this));
         useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
-        setContentView(R.layout.activity_add_event);
         imgUri = null;
+        buttons = new ArrayList<>();
+
+        insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
+        String currentTime = android.text.format.DateFormat.getTimeFormat(this.getApplicationContext()).format(new java.util.Date());
 
         bottomSheetViewgroup = (LinearLayout) findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetViewgroup);
-        contentLayout = (LinearLayout) findViewById(R.id.content_panel);
+
         registerDateTextV = (TextView) findViewById(R.id.registryDate);
         registerTime = (TextView) findViewById(R.id.registerTime);
-
-        bottomSheetViewgroup.setVisibility(View.INVISIBLE);
-        buttons = new ArrayList<>();
         buttons.add(RegistryFields.PLUS);
         bottomSheetViewgroup.setVisibility(View.VISIBLE);
 
-        insulinCalculator = new InsulinCalculator(this);
-
         registerDateTextV.setOnClickListener(new OnClickListener() {
-
 			@Override
 			public void onClick(View view) {
 				showDatePickerDialog(view);
             }
 		});
-        String currentTime = android.text.format.DateFormat.getTimeFormat(this.getApplicationContext()).format(new java.util.Date());
-
-        registerTime.setText( currentTime);
+        registerTime.setText(currentTime);
         registerTime.setOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 showTimePickerDialog(view);
             }
         });
 
-
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -194,8 +229,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                 save();
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         (findViewById(R.id.bt_add_more_content)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,34 +240,28 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         setupBottomSheet();
         Calendar time = Calendar.getInstance();
         setDate(time.get(Calendar.YEAR), time.get(Calendar.MONTH), time.get(Calendar.DAY_OF_MONTH));
-        registerDate.set(Calendar.HOUR_OF_DAY, time.get(Calendar.HOUR_OF_DAY));
-        registerDate.set(Calendar.MINUTE, time.get(Calendar.MINUTE));
+        setTime(time.get(Calendar.HOUR_OF_DAY),time.get(Calendar.MINUTE),time.get(Calendar.SECOND));
+
+        Bundle args = getIntent().getExtras();
+        fillParameters(args);
     }
     private void showTimePickerDialog(View v) {
-        Calendar mcurrentTime = Calendar.getInstance();
-        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-        int minute = mcurrentTime.get(Calendar.MINUTE);
         TimePickerDialog mTimePicker;
-
-        mTimePicker = new TimePickerDialog(v.getContext(), new TimePickerDialog.OnTimeSetListener() {
+        mTimePicker = new TimePickerDialog(
+                v.getContext(),
+                R.style.style_time_picker_dialog,
+                new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-
-                registerDate.set(Calendar.HOUR_OF_DAY,selectedHour);
-                registerDate.set(Calendar.MINUTE,selectedMinute);
-
-                final Calendar c = Calendar.getInstance();
-                c.set(Calendar.HOUR_OF_DAY, selectedHour);
-                c.set(Calendar.MINUTE, selectedMinute);
-                String timeString = DateUtils.getFormattedTime(c);
-                registerTime.setText( timeString);
+                setTime(selectedHour,selectedMinute,registerDate.get(Calendar.SECOND));
+                String timeString = DateUtils.getFormattedTime(registerDate);
+                registerTime.setText(timeString);
             }
-        }, hour, minute, true);//Yes 24 hour time
+        }, registerDate.get(Calendar.HOUR_OF_DAY), registerDate.get(Calendar.MINUTE), true);//Yes 24 hour time
         mTimePicker.setTitle(getString(R.string.select_time));
         mTimePicker.show();
     }
     private void showDatePickerDialog(View v) {
-
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 v.getContext(),
                 R.style.style_date_picker_dialog,
@@ -247,39 +274,21 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                 registerDate.get(Calendar.YEAR),
                 registerDate.get(Calendar.MONTH),
                 registerDate.get(Calendar.DAY_OF_MONTH)){
-
-//                @Override
-//                protected void onCreate(Bundle savedInstanceState)
-//                {
-//                    super.onCreate(savedInstanceState);
-//                    int year = getContext().getResources()
-//                        .getIdentifier("android:id/year", null, null);
-//                    if(year != 0){  View yearPicker = findViewById(year);
-//                        if(yearPicker != null){
-//                            yearPicker.setVisibility(View.GONE);
-//                        }
-//                    }
-//                }
             };
         datePickerDialog.show();
     }
     private void setDate(int year, int month, int day) {
         registerDate = new GregorianCalendar(year, month, day);
-
         StringBuilder displayDate = new StringBuilder(18);
         displayDate.append(registerDate.get(Calendar.DAY_OF_MONTH));
         displayDate.append(" ");
         displayDate.append(registerDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
         registerDateTextV.setText(displayDate.toString());
     }
-    @Override
-    public void finishAfterTransition() {
-        contentLayout.setAlpha(0);
-        super.finishAfterTransition();
-    }
-    @Override
-    public void supportFinishAfterTransition() {
-        super.supportFinishAfterTransition();
+    private void setTime(int hour, int minute, int second){
+        registerDate.set(Calendar.HOUR_OF_DAY, hour);
+        registerDate.set(Calendar.MINUTE, minute);
+        registerDate.set(Calendar.SECOND, second);
     }
     private void addContent(int layout) {
         contentLayout.addView(LayoutInflater.from(this).inflate(layout, contentLayout, false), 0);//contentLayout.getChildCount() - 1);
@@ -302,14 +311,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
 
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
-    }
-    @Override
-    public void onBackPressed() {
-        if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
-            hideBottomSheet();
-        } else {
-            super.onBackPressed();
-        }
     }
     private void showBottomSheet() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
@@ -365,7 +366,8 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             glycemia.requestFocus();
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(glycemia, InputMethodManager.SHOW_IMPLICIT);
-            return;
+            gliInput.setError(getString(R.string.glicInputError));
+            throw new Exception("wrong parameter");
         }
 
         //Get id of user
@@ -387,9 +389,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         int glicValue;
         try{
             glicValue = Integer.parseInt(glycemia.getText().toString());
-
             }catch (Exception e){
-            Log.i(TAG, "addGlycemiaRead: CENAS");
                 gliInput.setError(getString(R.string.glicInputError));
                 glycemia.requestFocus();
                 throw new Exception("wrong parameter");
@@ -400,7 +400,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         reg.Glycemia_Save(gly);
         reg.close();
     }
-
     public void addInsulinRead() throws Exception{
 
         Spinner insulinSpinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
@@ -433,19 +432,16 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         //Get id of selected insulin
         String insulin = insulinSpinner.getSelectedItem().toString();
         int idInsulin = rdb.Insulin_GetByName(insulin).getId();
-
         int idGlycemia = 0;
         boolean hasGlycemia = false;
         DB_Write reg = new DB_Write(this);
         InsulinRec ins = new InsulinRec();
-
         ins.setIdTag(idTag);
         ins.setIdUser(idUser);
         ins.setIdInsulin(idInsulin);
         ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
         ins.setDateTime(registerDate);
         //ins.setTargetGlycemia(insulinCalculator.getInsulinTarget());
-
         float insulinDose =  -1;
         try{
             insulinDose = Float.parseFloat(insulinUnits.getText().toString());
@@ -455,13 +451,10 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             throw new Exception("wrong parameter");
             }
         ins.setInsulinUnits(insulinDose);
-
         reg.Insulin_Save(ins);
-
         reg.close();
         rdb.close();
     }
-
     public void addMealRead()throws Exception{
         Spinner tagSpinner = (Spinner) findViewById(R.id.tag_spinner);
         if ((insulinCalculator.getCarbsRatio() == 0) && imgUri == null) {
@@ -500,7 +493,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         reg.Carbs_Save(carb);
         reg.close();
     }
-
     private void fillInsulinSpinner() {
         Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
         ArrayList<String> allInsulins = new ArrayList<>();
@@ -519,6 +511,41 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             }
         }
     }
+    private void insertGlicMenu(){
+        /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
+                    if(newAdvice!=null){
+                        addContent(R.layout.dialog_exp_advice);
+                        setAdviceText();
+                    }*/
+        addContent(R.layout.glycemia_content_edit);
+        findViewById(R.id.glycemia_txt).requestFocus();
+        buttons.add(0, RegistryFields.GLICEMIA);
+        setGlycemiaListeners();
+    }
+    private void insertCarbsMenu(){
+        /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
+                    if(newAdvice!=null){
+                        addContent(R.layout.dialog_exp_advice);
+                        setAdviceText();
+                    }*/
+        addContent(R.layout.meal_content_edit);
+        findViewById(R.id.meal_txt).requestFocus();
+        buttons.add(0, RegistryFields.CARBS);
+        setMealListeners();
+    }
+    private void insertInsulinMenu(){
+        /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
+                    if(newAdvice!=null){
+                        addContent(R.layout.dialog_exp_advice);
+                        setAdviceText();
+                    }*/
+        addContent(R.layout.insulin_content_edit);
+        findViewById(R.id.insulin_admin).requestFocus();
+        buttons.add(0, RegistryFields.INSULIN);
+        fillInsulinSpinner();
+        setInsulinListeners();
+    }
+
     private void setupBottomSheet() {
         //
         bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setOnClickListener(new View.OnClickListener() {
@@ -529,17 +556,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     buttons.remove(RegistryFields.GLICEMIA);
                     bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(false);
                 } else {
-                    addContent(R.layout.glycemia_content_edit);
-
-                    /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
-                    if(newAdvice!=null){
-                        addContent(R.layout.dialog_exp_advice);
-                        setAdviceText();
-                    }*/
-
-                    findViewById(R.id.glycemia_txt).requestFocus();
-                    buttons.add(0, RegistryFields.GLICEMIA);
-                    setGlycemiaListeners();
+                    insertGlicMenu();
                     v.getAnimation();
                     v.postDelayed(new Runnable() {
                         @Override
@@ -561,17 +578,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     buttons.remove(RegistryFields.CARBS);
                     bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(false);
                 } else {
-                    addContent(R.layout.meal_content_edit);
-
-                    /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
-                    if(newAdvice!=null){
-                        addContent(R.layout.dialog_exp_advice);
-                        setAdviceText();
-                    }*/
-
-                    findViewById(R.id.meal_txt).requestFocus();
-                    buttons.add(0, RegistryFields.CARBS);
-                    setMealListeners();
+                    insertCarbsMenu();
                     v.getAnimation();
                     v.postDelayed(new Runnable() {
                         @Override
@@ -593,18 +600,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     buttons.remove(RegistryFields.INSULIN);
                     bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(false);
                 } else {
-                    addContent(R.layout.insulin_content_edit);
-
-                    /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
-                    if(newAdvice!=null){
-                        addContent(R.layout.dialog_exp_advice);
-                        setAdviceText();
-                    }*/
-
-                    findViewById(R.id.insulin_admin).requestFocus();
-                    buttons.add(0, RegistryFields.INSULIN);
-                    fillInsulinSpinner();
-                    setInsulinListeners();
+                    insertInsulinMenu();
                     v.getAnimation();
                     v.postDelayed(new Runnable() {
                         @Override
@@ -654,13 +650,13 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                 TextInputLayout insulinInput = ((TextInputLayout) findViewById(R.id.insulin_admin));
 
                 TextView insuTxt = insulinInput.getEditText();
-                insuTxt.removeTextChangedListener(getinsulinTW());
+                insuTxt.removeTextChangedListener(getInsulinTW());
                 //insulinInput.setHintEnabled(false);
 
                 insuTxt.requestFocus();
                 insuTxt.setText(insulinUnits+"");
 
-                insuTxt.addTextChangedListener(getinsulinTW());
+                insuTxt.addTextChangedListener(getInsulinTW());
 
                 if(activator.equals(RegistryFields.CARBS)){
                     findViewById(R.id.meal_txt).requestFocus();
@@ -678,164 +674,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             }, 100L);
             hideBottomSheet();
         }
-    }
-    private void setMealListeners(){
-        ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
-        if (imageView == null) {
-            return;
-        }
-        if (imgUri == null) {
-            imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
-        } else {
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-            int height = (int) (displaymetrics.heightPixels * 0.1);
-            int width = (int) (displaymetrics.widthPixels * 0.1);
-            b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
-            imageView.setImageBitmap(b);
-        }
-        TextView carbsTextView = (TextView) findViewById(R.id. meal);
-        carbsTextView.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String carbsS = editable.toString();
-                if(carbsS != null){
-                    try{
-                        int carbs = Integer.parseInt(carbsS);
-                        insulinCalculator.setCarbs(carbs);
-                        Log.i(TAG, "afterTextChanged: carbs<------------");
-                    }catch (NumberFormatException e){
-                        insulinCalculator.setCarbs(0);
-                    }
-                    refreshCalcs();
-                }
-            }
-        });
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (imgUri != null) {
-                    final Intent intent = new Intent(getBaseContext(), ViewPhoto.class);
-                    Bundle argsToPhoto = new Bundle();
-                    argsToPhoto.putString("Path", imgUri.getPath());
-                    argsToPhoto.putInt("Id", -1);
-                    intent.putExtras(argsToPhoto);
-                    startActivityForResult(intent, IMAGE_VIEW);
-                } else {
-                    try{
-                        final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, getImgURI());
-                        startActivityForResult(intent, IMAGE_CAPTURE);
-                    }catch (Exception e){
-                        //error label -> permition denied
-                    }
-                }
-            }
-        });
-    }
-    public void setGlycemiaListeners(){
-
-        String time = registerTime.getText().toString();
-        MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
-
-        TextInputLayout glycValueT = (TextInputLayout) findViewById(R.id.glycemia_txt);
-        glycValueT.getEditText().addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String glycString = editable.toString();
-                if(glycString != null){
-                    try{
-                        int glycValue = Integer.parseInt(glycString);
-                        insulinCalculator.setGlycemia(glycValue);
-                        Log.i(TAG, "afterTextChanged: glic<-");
-                    }catch (NumberFormatException e){
-                       // glycValueT.setError(R.string.glicInputError);
-                        insulinCalculator.setGlycemia(0);
-                    }
-                    refreshCalcs();
-                }
-            }
-        });
-
-        int objective = 0;
-        TextInputLayout glycObjT = (TextInputLayout) findViewById(R.id.glycemia_obj);
-        glycObjT.getEditText().addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String glycObjString = editable.toString();
-                if(glycObjString != null){
-                    try{
-                        int glycObjValue = Integer.parseInt(glycObjString);
-                        insulinCalculator.setGlycemiaTarget(glycObjValue);
-                        Log.i(TAG, "afterTextChanged: setTarget<-");
-                    }catch (NumberFormatException e){
-                        insulinCalculator.setGlycemiaTarget(0);
-                    }
-                    refreshCalcs();
-                }
-            }
-        });
-
-        try {
-            objective = storage.getGlycemiaObjectives(time);
-            glycObjT.getEditText().setText(objective+"");
-            insulinCalculator.setGlycemiaTarget(objective);
-        } catch (Exception e) {
-            ImageButton plusButton = (ImageButton) findViewById(R.id.insert_new_glic_objective);
-            plusButton.setVisibility(View.VISIBLE);
-            plusButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    addGlycemiaObjective();
-                }
-            });
-        }
-    }
-    private void setInsulinListeners(){
-        View insuInfo = findViewById(R.id.bt_insulin_calc_info);
-        if (insuInfo != null) {
-            insuInfo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toggleInsulinCalcDetails(v);
-                }
-            });
-        }
-        TextInputLayout insulinDose = (TextInputLayout) findViewById(R.id.insulin_admin);
-        TextView insuTxt = insulinDose.getEditText();
-        insuTxt.addTextChangedListener(getinsulinTW());
-
     }
     private void toggleInsulinCalcDetails(View view) {
         expandInsulinCalcsAuto = false;
@@ -965,25 +803,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     public String getTime() {
         return registerTime.getText().toString();
     }
-
-   /* public void setupInsulinCalculator() {
-        this.insulinCalculator = getInsulinCalculator();
-        if (insulinCalculator.getCarbs() > 0) {
-            carbs.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getCarbs()));
-        }
-        if (insulinCalculator.getGlycemia() > 0) {
-            glycemia.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getGlycemia()));
-        }
-        if (insulinCalculator.getInsulinTarget() > 0) {
-            target.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getInsulinTarget()));
-        }
-        setGlycemiaTarget(insulinCalculator.getInsulinTarget());
-        float insulinTotal = insulinCalculator.getInsulinTotal(useIOB, true);
-        if (insulinTotal > 0) {
-            insulinIntake.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinTotal));
-        }
-    }*/
-
     private void setImgURI(Uri newUri){imgUri=newUri;}
     private void imageRemoved() {
         setImgURI(null);
@@ -1004,8 +823,23 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         startActivity(intent);
     }
 
-    TextWatcher getinsulinTW(){
+    private TextWatcher getInsulinTW(){
         TextWatcher ins = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                insulinManualRegister = true;
+                TextInputLayout insulinInputLayout = (TextInputLayout) findViewById(R.id.insulin_admin);
+                insulinInputLayout.setError("");
+            }
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        };
+        return ins;
+    }
+    private TextWatcher getCarbsTW(){
+        TextWatcher carbsTW = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -1013,27 +847,325 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                insulinManualRegister = true;
+
             }
 
             @Override
             public void afterTextChanged(Editable editable) {
-
+                String carbsS = editable.toString();
+                if(carbsS != null){
+                    try{
+                        int carbs = Integer.parseInt(carbsS);
+                        insulinCalculator.setCarbs(carbs);
+                        Log.i(TAG, "afterTextChanged: carbs<------------");
+                    }catch (NumberFormatException e){
+                        insulinCalculator.setCarbs(0);
+                    }
+                    refreshCalcs();
+                }
             }
         };
-        return ins;
+        return carbsTW;
     }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_CANCELED && requestCode == IMAGE_CAPTURE) {
-            setImgURI(generatedImageUri);
-        } else if (requestCode == IMAGE_VIEW) {
-            //se tivermos apagado a foto dá result code -1
-            //se voltarmos por um return por exemplo o resultcode é 0
-            if (resultCode == -1) {
-                imageRemoved();
+    private TextWatcher getGlicTW(){
+        TextWatcher glicTW = new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                TextInputLayout glycValueT = (TextInputLayout) findViewById(R.id.glycemia_txt);
+                glycValueT.setError("");
+                String glycString = editable.toString();
+                if(glycString != null){
+                    try{
+                        int glycValue = Integer.parseInt(glycString);
+                        insulinCalculator.setGlycemia(glycValue);
+                        Log.i(TAG, "afterTextChanged: glic<-");
+                    }catch (NumberFormatException e){
+                        // glycValueT.setError(R.string.glicInputError);
+                        insulinCalculator.setGlycemia(0);
+                    }
+                    refreshCalcs();
+                }
+            }
+        };
+        return glicTW;
     }
+    private TextWatcher getGlicObjTW(){
+        TextWatcher objTW = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                String glycObjString = editable.toString();
+                TextInputLayout glycObjT = (TextInputLayout) findViewById(R.id.glycemia_obj);
+                glycObjT.setError("");
+                if(glycObjString != null){
+                    try{
+                        int glycObjValue = Integer.parseInt(glycObjString);
+                        insulinCalculator.setGlycemiaTarget(glycObjValue);
+                        Log.i(TAG, "afterTextChanged: setTarget<-");
+                    }catch (NumberFormatException e){
+                        insulinCalculator.setGlycemiaTarget(0);
+                    }
+                    refreshCalcs();
+                }
+            }
+        };
+        return objTW;
+    }
+
+    private void setMealListeners(){
+        ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
+        if (imageView == null) {
+            return;
+        }
+        if (imgUri == null) {
+            imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
+        } else {
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int height = (int) (displaymetrics.heightPixels * 0.1);
+            int width = (int) (displaymetrics.widthPixels * 0.1);
+            b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+            imageView.setImageBitmap(b);
+        }
+        TextView carbsTextView = (TextView) findViewById(R.id. meal);
+        carbsTextView.addTextChangedListener(getCarbsTW());
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imgUri != null) {
+                    final Intent intent = new Intent(getBaseContext(), ViewPhoto.class);
+                    Bundle argsToPhoto = new Bundle();
+                    argsToPhoto.putString("Path", imgUri.getPath());
+                    argsToPhoto.putInt("Id", -1);
+                    intent.putExtras(argsToPhoto);
+                    startActivityForResult(intent, IMAGE_VIEW);
+                } else {
+                    try{
+                        final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, getImgURI());
+                        startActivityForResult(intent, IMAGE_CAPTURE);
+                    }catch (Exception e){
+                        //error label -> permition denied
+                    }
+                }
+            }
+        });
+    }
+    public void setGlycemiaListeners(){
+
+        String time = registerTime.getText().toString();
+        MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
+
+        TextInputLayout glycValueT = (TextInputLayout) findViewById(R.id.glycemia_txt);
+        glycValueT.getEditText().addTextChangedListener(getGlicTW());
+
+        int objective = 0;
+        TextInputLayout glycObjT = (TextInputLayout) findViewById(R.id.glycemia_obj);
+        glycObjT.getEditText().addTextChangedListener(getGlicObjTW());
+
+        try {
+            objective = storage.getGlycemiaObjectives(time);
+            glycObjT.getEditText().setText(objective+"");
+            insulinCalculator.setGlycemiaTarget(objective);
+        } catch (Exception e) {
+            ImageButton plusButton = (ImageButton) findViewById(R.id.insert_new_glic_objective);
+            plusButton.setVisibility(View.VISIBLE);
+            plusButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addGlycemiaObjective();
+                }
+            });
+        }
+    }
+    private void setInsulinListeners(){
+        View insuInfo = findViewById(R.id.bt_insulin_calc_info);
+        if (insuInfo != null) {
+            insuInfo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    toggleInsulinCalcDetails(v);
+                }
+            });
+        }
+        TextInputLayout insulinDose = (TextInputLayout) findViewById(R.id.insulin_admin);
+        TextView insuTxt = insulinDose.getEditText();
+        insuTxt.addTextChangedListener(getInsulinTW());
+
+    }
+
+    private void insertInsulinData(float insulinUnits){
+        TextInputLayout insulinInput = ((TextInputLayout) findViewById(R.id.insulin_admin));
+        TextView insuTxt = insulinInput.getEditText();
+        insuTxt.removeTextChangedListener(getInsulinTW());
+        insuTxt.requestFocus();
+        insuTxt.setText(insulinUnits+"");
+        insuTxt.addTextChangedListener(getInsulinTW());
+//        showCalcs();
+    }
+    private void insertGlicData(int glicValue, int glicObjValue){
+        TextInputLayout glicInput = ((TextInputLayout) findViewById(R.id.glycemia_txt));
+        TextView glicTxt = glicInput.getEditText();
+        glicTxt.requestFocus();
+        glicTxt.setText(glicValue+"");
+        glicTxt.addTextChangedListener(getGlicTW());
+
+        TextInputLayout glicObjInput = ((TextInputLayout) findViewById(R.id.glycemia_obj));
+        TextView glicObjTxt = glicObjInput.getEditText();
+        glicObjTxt.requestFocus();
+        glicObjTxt.setText(glicObjValue+"");
+        glicObjTxt.addTextChangedListener(getGlicObjTW());
+    }
+    private void insertGlicData(int glicValue){
+        TextInputLayout glicInput = ((TextInputLayout) findViewById(R.id.glycemia_txt));
+        TextView glicTxt = glicInput.getEditText();
+        glicTxt.requestFocus();
+        glicTxt.setText(glicValue+"");
+        glicTxt.addTextChangedListener(getGlicTW());
+    }
+
+    private void insertCarbsData(int carbValue){
+        final ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
+        if (imageView == null) {
+            return;
+        }
+        if (imgUri != null) {
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int height = (int) (displaymetrics.heightPixels * 0.1);
+            int width = (int) (displaymetrics.widthPixels * 0.1);
+            b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+            imageView.setImageBitmap(b);
+        }
+        TextInputLayout carbsInput = (TextInputLayout) findViewById(R.id.meal_txt);
+        TextView carbsTextView = carbsInput.getEditText();
+        carbsTextView.requestFocus();
+        carbsTextView.setText(carbValue+"");
+        carbsTextView.addTextChangedListener(getCarbsTW());
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imgUri != null) {
+                    final Intent intent = new Intent(getBaseContext(), ViewPhoto.class);
+                    Bundle argsToPhoto = new Bundle();
+                    argsToPhoto.putString("Path", imgUri.getPath());
+                    argsToPhoto.putInt("Id", -1);
+                    intent.putExtras(argsToPhoto);
+                    startActivityForResult(intent, IMAGE_VIEW);
+                } else {
+                    try{
+                        final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, getImgURI());
+                        startActivityForResult(intent, IMAGE_CAPTURE);
+                    }catch (Exception e){
+                        //error label -> permition denied
+                    }
+                }
+            }
+        });
+    }
+
+    private void fillParameters(Bundle args){
+        if (args != null) {
+            if (args.containsKey(ARG_CARBS)) {
+                carbsData = args.getParcelable(ARG_CARBS);
+            }
+            if (args.containsKey(ARG_BLOOD_GLUCOSE)) {
+                glycemiaData = args.getParcelable(ARG_BLOOD_GLUCOSE);
+            }
+
+            if (args.containsKey(ARG_INSULIN)) {
+                insulinData = args.getParcelable(ARG_INSULIN);
+            }
+            noteId = -1;
+            DB_Read db_read = new DB_Read(this);
+            if (carbsData != null) {
+                carbsData = db_read.CarboHydrate_GetById(carbsData.getId());
+                if (carbsData != null) {
+                    Log.i(TAG, "fillParameters: carbs:"+carbsData.getCarbsValue());
+                    String imgPath = carbsData.getPhotoPath();
+                    if(imgPath!=null){imgUri = Uri.parse(imgPath);}
+                    insertCarbsMenu();
+                    insertCarbsData(carbsData.getCarbsValue());
+                    noteId = carbsData.getIdNote();
+                    date = carbsData.getFormattedDate();
+                    time = carbsData.getFormattedTime();
+                }
+            }
+            if (glycemiaData != null) {
+                glycemiaData = db_read.Glycemia_GetById(glycemiaData.getId());
+                if (glycemiaData != null) {
+                    Log.i(TAG, "fillParameters: glic:"+glycemiaData.getValue());
+                    insertGlicMenu();
+                    insertGlicData(glycemiaData.getValue());
+                    noteId = glycemiaData.getIdNote();
+                    date = glycemiaData.getFormattedDate();
+                    time = glycemiaData.getFormattedTime();
+                }
+            }
+            if (insulinData != null) {
+                insulinData = db_read.InsulinReg_GetById(insulinData.getId());
+                if (insulinData != null) {
+                    Log.i(TAG, "fillParameters: insulin:"+insulinData.getInsulinUnits());
+                    insertInsulinMenu();
+                    insertInsulinData(insulinData.getInsulinUnits());
+                    noteId = insulinData.getIdNote();
+                    date = insulinData.getFormattedDate();
+                    time = insulinData.getFormattedTime();
+                }
+            }
+            db_read.close();
+            insulinCalculator = new InsulinCalculator(this);
+            insulinCalculator.setCarbs(carbsData != null ? carbsData.getCarbsValue() : 0);
+            insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);
+            insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
+            Calendar timeCalendar = DateUtils.getTimeCalendar(time);
+            if (timeCalendar != null) {
+                insulinCalculator.setTime(this, timeCalendar.get(Calendar.HOUR_OF_DAY), timeCalendar.get(Calendar.MINUTE), date);
+            }
+            hideBottomSheet();
+            hideKeyboard();
+        }
+    }
+
+
 }
+
+/* public void setupInsulinCalculator() {
+        this.insulinCalculator = getInsulinCalculator();
+        if (insulinCalculator.getCarbs() > 0) {
+            carbs.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getCarbs()));
+        }
+        if (insulinCalculator.getGlycemia() > 0) {
+            glycemia.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getGlycemia()));
+        }
+        if (insulinCalculator.getInsulinTarget() > 0) {
+            target.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getInsulinTarget()));
+        }
+        setGlycemiaTarget(insulinCalculator.getInsulinTarget());
+        float insulinTotal = insulinCalculator.getInsulinTotal(useIOB, true);
+        if (insulinTotal > 0) {
+            insulinIntake.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinTotal));
+        }
+    }*/
