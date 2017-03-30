@@ -426,8 +426,6 @@
         <item>Colesterol</item>
     </string-array>
 
-
-    navigation_drawer_open
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
 
@@ -439,4 +437,6 @@
         <item>@string/insulin_type_pen</item>
         <item>@string/insulin_type_pump</item>
     </string-array>
+
+    <string name="years">Anos</string>
 </resources>

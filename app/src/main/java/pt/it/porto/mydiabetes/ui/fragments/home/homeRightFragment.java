@@ -12,9 +12,14 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.features.ImagePickerActivity;
@@ -24,11 +29,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.UserInfo;
+import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.AddEvent;
+import pt.it.porto.mydiabetes.ui.activities.MyData;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
+import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -38,6 +50,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class homeRightFragment extends Fragment  {
 
+    private UserInfo myData;
     private CircleImageView userImg;
     private String userImgFileName = "profilePhoto.png";
     SharedPreferences mPrefs;
@@ -68,12 +81,26 @@ public class homeRightFragment extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.fragment_home_right, container, false);
-
-
         mPrefs = getContext().getSharedPreferences("label", 0);
         imgUriString = mPrefs.getString("userImgUri", null);
 
         setImage();
+
+        //Read MyData From DB
+        DB_Read db_read = new DB_Read(getContext());
+        myData = db_read.MyData_Read();
+        setMyDataFromDB(myData);
+        db_read.close();
+
+        CardView personalInfo = (CardView) layout.findViewById(R.id.personalInfo);
+
+        personalInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), MyData.class);
+                startActivity(intent);
+            }
+        });
 
         return layout;
     }
@@ -109,6 +136,17 @@ public class homeRightFragment extends Fragment  {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Read MyData From DB
+        DB_Read db_read = new DB_Read(getContext());
+        myData = db_read.MyData_Read();
+        setMyDataFromDB(myData);
+        db_read.close();
+    }
+
     private void setImage() {
         userImg = (CircleImageView) layout.findViewById(R.id.profile_image);
 
@@ -137,6 +175,20 @@ public class homeRightFragment extends Fragment  {
                 startActivityForResult(intent, RC_CODE_PICKER);
             }
         });
+    }
+
+    public void setMyDataFromDB(UserInfo obj) {
+        if (obj != null) {
+            TextView name = (TextView) layout.findViewById(R.id.name);
+            TextView bDate = (TextView) layout.findViewById(R.id.age);
+
+            name.setTag(obj.getId());
+            name.setText(obj.getUsername());
+            Calendar bday = DateUtils.getDateCalendar(obj.getBirthday());
+            int age = DateUtils.getAge(bday);
+            bDate.setText(age+" "+getString(R.string.years));
+            Log.e("BDAY", obj.getBirthday());
+        }
     }
 
 }
