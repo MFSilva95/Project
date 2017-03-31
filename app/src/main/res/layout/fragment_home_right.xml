@@ -36,9 +36,9 @@ android:layout_height="match_parent">
                 android:layout_marginTop="60dp"
                 android:orientation="vertical">
 
-                <include layout="@layout/profile_card_view" />
+                <include layout="@layout/card_profile" />
 
-                <include layout="@layout/card_view" />
+                <include layout="@layout/card_badges" />
 
                 <include layout="@layout/card_view" />
 

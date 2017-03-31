@@ -210,5 +210,6 @@
     <string name="glicInputError">Not a valid Number</string>
 
     <string name="years">Years Old</string>
+    <string name="badges">Badges</string>
 
 </resources>
