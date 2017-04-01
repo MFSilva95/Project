@@ -253,7 +253,8 @@
                     android:paddingTop="4dp"
                     android:text="@string/settings_edit_insulins"
                     android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:background="?attr/selectableItemBackground"/>
 
                 <View
                     android:id="@+id/view"

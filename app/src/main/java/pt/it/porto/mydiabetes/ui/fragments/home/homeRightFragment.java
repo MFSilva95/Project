@@ -37,6 +37,7 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.AddEvent;
+import pt.it.porto.mydiabetes.ui.activities.Badges;
 import pt.it.porto.mydiabetes.ui.activities.MyData;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -53,9 +54,9 @@ public class homeRightFragment extends Fragment  {
     private UserInfo myData;
     private CircleImageView userImg;
     private String userImgFileName = "profilePhoto.png";
-    SharedPreferences mPrefs;
-    String imgUriString;
-    View layout;
+    private SharedPreferences mPrefs;
+    private String imgUriString;
+    private View layout;
 
 
     private static final int RC_CODE_PICKER = 2000;
@@ -93,11 +94,20 @@ public class homeRightFragment extends Fragment  {
         db_read.close();
 
         CardView personalInfo = (CardView) layout.findViewById(R.id.personalInfo);
+        CardView badgesInfo = (CardView) layout.findViewById(R.id.badgesInfo);
 
         personalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), MyData.class);
+                startActivity(intent);
+            }
+        });
+
+        badgesInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), Badges.class);
                 startActivity(intent);
             }
         });
@@ -187,7 +197,6 @@ public class homeRightFragment extends Fragment  {
             Calendar bday = DateUtils.getDateCalendar(obj.getBirthday());
             int age = DateUtils.getAge(bday);
             bDate.setText(age+" "+getString(R.string.years));
-            Log.e("BDAY", obj.getBirthday());
         }
     }
 
