@@ -4,23 +4,31 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
+import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
+import pt.it.porto.mydiabetes.utils.ArraysUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
@@ -43,7 +51,6 @@ public class TargetBG_detail extends BaseActivity {
 		if (actionBar != null) {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
-
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
@@ -129,12 +136,18 @@ public class TargetBG_detail extends BaseActivity {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourFrom,
 				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
+		TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
+		errorLabel.setText("");
+		errorLabel.setVisibility(View.GONE);
 	}
 
 	public void showTimePickerDialogTo(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourTo,
 				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
+		TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
+		errorLabel.setText("");
+		errorLabel.setVisibility(View.GONE);
 	}
 
 	public void AddNewTarget() {
@@ -168,24 +181,78 @@ public class TargetBG_detail extends BaseActivity {
 			return;
 		}
 
+		if(GlicObjTimesOverlap(hourFrom.getText().toString(), hourTo.getText().toString())){
+
+			TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
+			errorLabel.setVisibility(View.VISIBLE);
+			errorLabel.setText(R.string.targetOverlapError);
+			return;}
+
 		DB_Write wdb = new DB_Write(this);
-
 		InsulinTarget target = new InsulinTarget();
-
-
 		target.setName(name.getText().toString());
-
 		if (!hourFrom.getText().toString().equals("") && !hourTo.getText().toString().equals("")) {
 			target.setStart(hourFrom.getText().toString());
 			target.setEnd(hourTo.getText().toString());
 		}
 
 		target.setTarget(Double.valueOf(value.getText().toString()));
-
 		wdb.Target_Add(target);
 		wdb.close();
 		finish();
 	}
+
+	public boolean GlicObjTimesOverlap(String st,String et){
+
+		DB_Read read = new DB_Read(this);
+		Cursor cursor = read.getGlicObj();
+		// validate time intervals
+		ArrayList<Point> times = new ArrayList<>(cursor.getCount());
+		String[] temp;
+		cursor.moveToFirst();
+
+		temp = st.split(":");
+		int startTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+		temp = et.split(":");
+		int endTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+
+		for(int y=0;y<cursor.getCount();y++){
+			cursor.moveToPosition(y);
+			temp = cursor.getString(0).split(":");
+			int startTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+			temp = cursor.getString(1).split(":");
+			int endTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+			if(CheckOverlap(startTime, startTime2, endTime, endTime2)){return true;}
+
+		}
+		return false;
+	}
+
+	public int getDuration(int start, int end){
+		if (start>end){return start-end;}
+		return end-start;
+	}
+
+	public boolean CheckOverlap(int s0, int s1, int e0, int e1){
+		int d0 = getDuration(s0,e0);
+		int d1 = getDuration(s1,e1);
+
+		if (s0 <= s1 && s0 + d0 >= s1) {
+			// startTime inside a previews interval
+			return true;
+		} else if (s0 <= e1 && s0 + d0 >= e1) {
+			// endTime inside a interval
+			return true;
+		} else if (d1 <= 0 && s0 < e1) {
+			// endTime in the next day
+			// compares if endTime will be after a startTime of other interval
+			// if true than it should fail
+			return true;
+		}
+		return false;
+	}
+
+
 
 	public void UpdateTarget() {
 		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
@@ -217,6 +284,13 @@ public class TargetBG_detail extends BaseActivity {
 			imm.showSoftInput(value, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
+
+		if(GlicObjTimesOverlap(hourFrom.getText().toString(), hourTo.getText().toString())){
+
+			TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
+			errorLabel.setVisibility(View.VISIBLE);
+			errorLabel.setText(R.string.targetOverlapError);
+			return;}
 
 		DB_Write wdb = new DB_Write(this);
 

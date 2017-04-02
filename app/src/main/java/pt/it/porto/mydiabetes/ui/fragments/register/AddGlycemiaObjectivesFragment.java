@@ -1,6 +1,7 @@
 package pt.it.porto.mydiabetes.ui.fragments.register;
 
 import android.content.Context;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -121,54 +122,15 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 			return false;
 		}
 
-		// validate time intervals
-		ArrayList<Integer> startTimes = new ArrayList<>(items.size());
-		ArrayList<Integer> intervalDuration = new ArrayList<>(items.size());
-		String[] temp;
-		for (int i = 0; i < items.size(); i++) {
-			temp = items.get(i).getStartTime().split(":");
-			int startTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-
-			temp = items.get(i).getEndTime().split(":");
-			int endTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-			int duration = endTime - startTime;
-			boolean shouldCancel = true;
-			for (int p = 0; p < startTimes.size(); p++) {
-				if (startTimes.get(p) <= startTime && startTimes.get(p) + intervalDuration.get(p) >= startTime) {
-					// startTime inside a previews interval
-					items.get(i).setInvalid(GlycemiaObjectivesData.ERROR_START_TIME_OVERLAPS);
-				} else if (startTimes.get(p) <= endTime && startTimes.get(p) + intervalDuration.get(p) >= endTime) {
-					// endTime inside a interval
-					items.get(i).setInvalid(GlycemiaObjectivesData.ERROR_END_TIME_OVERLAPS);
-				} else if (duration <= 0 && ArraysUtils.min(startTimes) < endTime) {
-					// endTime in the next day
-					// compares if endTime will be after a startTime of other interval
-					// if true than it should fail
-					items.get(i).setInvalid(GlycemiaObjectivesData.ERROR_END_TIME_OVERLAPS);
-				} else {
-					shouldCancel = false;
-				}
-				if (shouldCancel) {
-					cancel = true;
-					list.getAdapter().notifyItemChanged(i);
-					list.scrollToPosition(i);
-					break;
-				}
-			}
-			if (duration < 0) {
-				// endTime in the next day
-				// adds interval from 0 to endTime
-				startTimes.add(0);
-				intervalDuration.add(endTime);
-				duration += 24 * 60;
-				// to add interval from startTime to 24+
-			}
-			startTimes.add(startTime);
-			intervalDuration.add(duration);
-		}
+		cancel = validateGlicObjTimes();
 
 		return !cancel;
 	}
+
+	public boolean validateGlicObjTimes(){
+		return false;
+	}
+
 
 	@Override
 	public void saveData(Bundle container) {

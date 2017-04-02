@@ -6,6 +6,8 @@
     <string name="tasks">Tarefas</string>
     <string name="recentReg">Registos Recentes</string>
 
+    <string name="targetOverlapError">Já existe um objectivo definido para o tempo escolhido</string>
+
     <string name="navTask">As minhas tarefas</string>
     <string name="navLog">O meu Logbook</string>
     <string name="navPersonalTools">Definições Pessoais</string>

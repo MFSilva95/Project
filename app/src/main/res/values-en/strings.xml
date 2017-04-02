@@ -5,6 +5,8 @@
     <string name="tasks">Tasks</string>
     <string name="recentReg">Recent Registries</string>
 
+    <string name="targetOverlapError">A glicemic target is already defined at this time period</string>
+
     <string name="navTask">My Tasks</string>
     <string name="navLog">My Logbook</string>
     <string name="navPersonalTools">Personal options</string>

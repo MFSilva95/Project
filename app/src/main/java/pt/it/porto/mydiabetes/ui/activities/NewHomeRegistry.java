@@ -331,12 +331,12 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
 
     }
     private void validateInfo_Save()throws Exception{
-        TextView time = (TextView) findViewById(R.id.registerTime);
+        /*TextView time = (TextView) findViewById(R.id.registerTime);
         if (registerDate != null && time != null) {
 
             //SimpleDateFormat sdf = new SimpleDateFormat(DateUtils.iso8601Format.toPattern());//yyyy-MM-dd HH:mm
             //String currDate = registerDate.get(Calendar.YEAR)+"-"+registerDate.get(Calendar.MONTH)+"-"+registerDate.get(Calendar.DAY_OF_MONTH)+" "+time.getText();
-        }
+        }*/
         for(RegistryFields field:buttons){
             try {
             switch (field){
