@@ -29,6 +29,7 @@ import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
+import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -197,6 +198,7 @@ public class DiseaseDetail extends BaseActivity {
 		dis.setDateTime(dataFrom.getText().toString(), DateUtils.getFormattedTime(calendar)+":" + Calendar.getInstance().get(Calendar.SECOND));
 		dis.setEndDate((!dataTo.getText().toString().equals("")) ? dataTo.getText().toString() : null);
 
+		BadgeUtils.addDiseaseBadge(getBaseContext());
 
 		reg.DiseaseReg_Save(dis);
 		reg.close();

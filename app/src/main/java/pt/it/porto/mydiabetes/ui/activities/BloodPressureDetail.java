@@ -33,6 +33,7 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
+import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -257,6 +258,7 @@ public class BloodPressureDetail extends BaseActivity {
 		bp.setIdTag(idTag);
 
 		wdb.BloodPressure_Save(bp);
+		BadgeUtils.addBpBadge(getBaseContext());
 
 		wdb.close();
 		rdb.close();

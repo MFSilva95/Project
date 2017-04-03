@@ -25,6 +25,7 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
+import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
@@ -167,6 +168,7 @@ public class CholesterolDetail extends BaseActivity {
 		cho.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 
 		wdb.Cholesterol_Save(cho);
+		BadgeUtils.addCholesterolBadge(getBaseContext());
 
 		wdb.close();
 		rdb.close();

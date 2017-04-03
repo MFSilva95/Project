@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -31,15 +32,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.AddEvent;
 import pt.it.porto.mydiabetes.ui.activities.Badges;
 import pt.it.porto.mydiabetes.ui.activities.MyData;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
+import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
@@ -57,7 +61,7 @@ public class homeRightFragment extends Fragment  {
     private SharedPreferences mPrefs;
     private String imgUriString;
     private View layout;
-
+    private TextView beginnerBadges;
 
     private static final int RC_CODE_PICKER = 2000;
     private Bitmap bmp;
@@ -85,13 +89,18 @@ public class homeRightFragment extends Fragment  {
         mPrefs = getContext().getSharedPreferences("label", 0);
         imgUriString = mPrefs.getString("userImgUri", null);
 
+        beginnerBadges = (TextView) layout.findViewById(R.id.beginnerBadges);
+
         setImage();
 
         //Read MyData From DB
         DB_Read db_read = new DB_Read(getContext());
         myData = db_read.MyData_Read();
-        setMyDataFromDB(myData);
+        LinkedList<BadgeRec> list = db_read.Badges_GetAll();
         db_read.close();
+
+        setMyDataFromDB(myData);
+        updateMedals(list);
 
         CardView personalInfo = (CardView) layout.findViewById(R.id.personalInfo);
         CardView badgesInfo = (CardView) layout.findViewById(R.id.badgesInfo);
@@ -142,6 +151,7 @@ public class homeRightFragment extends Fragment  {
                 }
             }
             userImg.setImageBitmap(bmp);
+            BadgeUtils.addPhotoBadge(getContext());
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -153,8 +163,20 @@ public class homeRightFragment extends Fragment  {
         //Read MyData From DB
         DB_Read db_read = new DB_Read(getContext());
         myData = db_read.MyData_Read();
-        setMyDataFromDB(myData);
+        LinkedList<BadgeRec> list = db_read.Badges_GetAll();
         db_read.close();
+
+        setMyDataFromDB(myData);
+        updateMedals(list);
+    }
+
+    private void updateMedals(LinkedList<BadgeRec> list) {
+        int count = 0;
+        for (BadgeRec badge : list) {
+            if(badge.getType().equals("beginner"))
+                count++;
+        }
+        beginnerBadges.setText(count+"/23");
     }
 
     private void setImage() {

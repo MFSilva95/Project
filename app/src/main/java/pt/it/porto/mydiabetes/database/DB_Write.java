@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.format.Time;
 import android.util.Log;
 
+import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.BloodPressureRec;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.CholesterolRec;
@@ -687,6 +688,16 @@ public class DB_Write {
 			myDB.delete("Reg_BloodGlucose", "Id=" + bg_id, null);
 			Log.d("Delete", "Reg_BloodGlucose");
 		}
+	}
+
+	public void Badge_Save(BadgeRec badge) {
+		ContentValues toInsert = new ContentValues();
+		String datetime = DateUtils.formatToDb(badge.getDateTime());
+		toInsert.put("DateTime", datetime);
+		toInsert.put("Type", badge.getType());
+		toInsert.put("Name", badge.getName());
+		toInsert.put("Medal", badge.getMedal());
+		myDB.insert("Badges", null, toInsert);
 	}
 
 }
