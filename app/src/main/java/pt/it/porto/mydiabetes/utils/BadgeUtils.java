@@ -52,6 +52,9 @@ public class BadgeUtils {
     static final private int HBA1C_SILVER_RECORDS = 2;
     static final private int HBA1C_GOLD_RECORDS = 3;
 
+    static final private int DAILY_BRONZE_RECORDS = 2;
+    static final private int DAILY_SILVER_RECORDS = 4;
+    static final private int DAILY_GOLD_RECORDS = 6;
 
 
     public static void addPhotoBadge(Context context) {
@@ -460,6 +463,73 @@ public class BadgeUtils {
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("hba1c");
+            badge.setMedal("gold");
+            dbwrite.Badge_Save(badge);
+            dbwrite.close();
+        }
+    }
+
+    public static void addDailyBadge(Context context) {
+        DB_Read db = new DB_Read(context);
+        LinkedList<BadgeRec> list = db.getBadgesByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        boolean flagBronze = false;
+        boolean flagSilver = false;
+        boolean flagGold = false;
+        for (BadgeRec rec : list) {
+            if (rec.getName().equals("all")) {
+                if(rec.getMedal().equals("bronze"))
+                    flagBronze = true;
+                if(rec.getMedal().equals("silver"))
+                    flagSilver = true;
+                if(rec.getMedal().equals("gold"))
+                    flagGold = true;
+            }
+        }
+        LinkedList<ExerciseRec> exerciseList = db.getExerciceByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        LinkedList<BloodPressureRec> bpList = db.getBloodPressureByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        LinkedList<CholesterolRec> cholesterolList = db.getCholesterolByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        LinkedList<WeightRec> weightList = db.getWeightByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        LinkedList<HbA1cRec> hbA1cList = db.getHbA1cByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        LinkedList<DiseaseRec> diseaseList = db.getDiseaseByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        LinkedList<HomeElement> logList = db.getLogBookByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        db.close();
+
+        int size = exerciseList.size() + bpList.size() + cholesterolList.size() + weightList.size() + hbA1cList.size() + diseaseList.size() + logList.size();
+        Log.e("EXERCICE", exerciseList.size()+"");
+        Log.e("DISEASE", diseaseList.size()+"");
+        Log.e("WEIGHT", weightList.size()+"");
+        Log.e("BP", bpList.size()+"");
+        Log.e("HBA1C", hbA1cList.size()+"");
+        Log.e("CHOLESTEROL", cholesterolList.size()+"");
+        Log.e("LOG", logList.size()+"");
+        Log.e("SIZE", size+"");
+
+        if(size >= DAILY_BRONZE_RECORDS && !flagBronze){
+            DB_Write dbwrite = new DB_Write(context);
+            BadgeRec badge = new BadgeRec();
+            badge.setDateTime(Calendar.getInstance());
+            badge.setType("daily");
+            badge.setName("all");
+            badge.setMedal("bronze");
+            dbwrite.Badge_Save(badge);
+            dbwrite.close();
+        }
+        if(size >= DAILY_SILVER_RECORDS && !flagSilver){
+            DB_Write dbwrite = new DB_Write(context);
+            BadgeRec badge = new BadgeRec();
+            badge.setDateTime(Calendar.getInstance());
+            badge.setType("daily");
+            badge.setName("all");
+            badge.setMedal("silver");
+            dbwrite.Badge_Save(badge);
+            dbwrite.close();
+        }
+        if(size >= DAILY_GOLD_RECORDS && !flagGold){
+            DB_Write dbwrite = new DB_Write(context);
+            BadgeRec badge = new BadgeRec();
+            badge.setDateTime(Calendar.getInstance());
+            badge.setType("daily");
+            badge.setName("all");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
             dbwrite.close();

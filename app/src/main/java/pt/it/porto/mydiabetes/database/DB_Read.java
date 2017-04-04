@@ -612,6 +612,35 @@ public class DB_Read {
 
 	}
 
+	@Nullable
+	public LinkedList<ExerciseRec> getExerciceByDate(String day) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Exercise WHERE StartDateTime LIKE '%" + day + "%' ORDER BY StartDateTime DESC;", null);
+		LinkedList<ExerciseRec> exs = new LinkedList<ExerciseRec>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			ExerciseRec tmp;
+			do {
+
+				tmp = new ExerciseRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setExercise(cursor.getString(2));
+				tmp.setDuration(cursor.getInt(3));
+				tmp.setEffort(cursor.getString(4));
+				tmp.setDateTime(cursor.getString(5));
+				tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
+				exs.add(tmp);
+
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return exs;
+		} else {
+			cursor.close();
+			return exs;
+		}
+	}
+
 
 	//------------------- MEDICINE ------------------------------
 	public HashMap<Integer, String[]> Medicine_GetAll() {
@@ -808,6 +837,34 @@ public class DB_Read {
 		}
 	}
 
+	@Nullable
+	public LinkedList<BloodPressureRec> getBloodPressureByDate(String day) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
+		LinkedList<BloodPressureRec> bloodPressureRecs = new LinkedList<BloodPressureRec>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			BloodPressureRec tmp;
+			do {
+				tmp = new BloodPressureRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setSystolic(cursor.getInt(2));
+				tmp.setDiastolic(cursor.getInt(3));
+				tmp.setDateTime(cursor.getString(4));
+				tmp.setIdTag(cursor.getInt(5));
+				tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
+				bloodPressureRecs.add(tmp);
+
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return bloodPressureRecs;
+		} else {
+			cursor.close();
+			return bloodPressureRecs;
+		}
+	}
+
 	//----------- CHOLESTEROL ---------------
 	public ArrayList<CholesterolRec> Cholesterol_GetBtDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE  DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
@@ -900,6 +957,31 @@ public class DB_Read {
 		}
 	}
 
+	@Nullable
+	public LinkedList<CholesterolRec> getCholesterolByDate(String day) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
+		LinkedList<CholesterolRec> cholesterolRecs = new LinkedList<CholesterolRec>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			CholesterolRec tmp;
+			do {
+				tmp = new CholesterolRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setValue(cursor.getDouble(2));
+				tmp.setDateTime(cursor.getString(3));
+				tmp.setIdNote((!cursor.isNull(4)) ? cursor.getInt(4) : -1);
+				cholesterolRecs.add(tmp);
+
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return cholesterolRecs;
+		} else {
+			cursor.close();
+			return cholesterolRecs;
+		}
+	}
 
 
 	//--------------- WEIGHT -----------------
@@ -990,6 +1072,32 @@ public class DB_Read {
 		} else {
 			cursor.close();
 			return AllReads;
+		}
+	}
+
+	@Nullable
+	public LinkedList<WeightRec> getWeightByDate(String day) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Weight WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
+		LinkedList<WeightRec> weightRecs = new LinkedList<WeightRec>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			WeightRec tmp;
+			do {
+				tmp = new WeightRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setValue(cursor.getDouble(2));
+				tmp.setDateTime(cursor.getString(3));
+				tmp.setIdNote((!cursor.isNull(4)) ? cursor.getInt(4) : -1);
+				weightRecs.add(tmp);
+
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return weightRecs;
+		} else {
+			cursor.close();
+			return weightRecs;
 		}
 	}
 
@@ -1084,6 +1192,32 @@ public class DB_Read {
 		}
 	}
 
+	@Nullable
+	public LinkedList<HbA1cRec> getHbA1cByDate(String day) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_A1c WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
+		LinkedList<HbA1cRec> hbA1cRecs = new LinkedList<HbA1cRec>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			HbA1cRec tmp;
+			do {
+				tmp = new HbA1cRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setValue(cursor.getDouble(2));
+				tmp.setDateTime(cursor.getString(3));
+				tmp.setIdNote((!cursor.isNull(4)) ? cursor.getInt(4) : -1);
+				hbA1cRecs.add(tmp);
+
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return hbA1cRecs;
+		} else {
+			cursor.close();
+			return hbA1cRecs;
+		}
+	}
+
 	//----------------------- DISEASE REG
 	@Nullable
 	public DiseaseRec DiseaseReg_GetById(int id) {
@@ -1125,6 +1259,33 @@ public class DB_Read {
 		cursor.close();
 		return tmp;
 
+	}
+
+	@Nullable
+	public LinkedList<DiseaseRec> getDiseaseByDate(String day) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Disease WHERE StartDate LIKE '%" + day + "%' ORDER BY StartDate DESC;", null);
+		LinkedList<DiseaseRec> diseaseRecs = new LinkedList<DiseaseRec>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			DiseaseRec tmp;
+			do {
+				tmp = new DiseaseRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setDisease(cursor.getString(2));
+				tmp.setDateTime(cursor.getString(3));
+				tmp.setEndDate(cursor.getString(4));
+				tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
+				diseaseRecs.add(tmp);
+
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return diseaseRecs;
+		} else {
+			cursor.close();
+			return diseaseRecs;
+		}
 	}
 
 	//-------------- TARGETS GLYCEMIA -----------------
@@ -1365,6 +1526,31 @@ public class DB_Read {
 	public LinkedList<BadgeRec> Badges_GetAll() {
 		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			BadgeRec tmp;
+			do {
+				tmp = new BadgeRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setDateTime(cursor.getString(1));
+				tmp.setType(cursor.getString(2));
+				tmp.setName(cursor.getString(3));
+				tmp.setMedal(cursor.getString(4));
+				AllReads.add(tmp);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return AllReads;
+		} else {
+			cursor.close();
+			return AllReads;
+		}
+	}
+
+	@Nullable
+	public LinkedList<BadgeRec> getBadgesByDate(String day) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
+		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			BadgeRec tmp;

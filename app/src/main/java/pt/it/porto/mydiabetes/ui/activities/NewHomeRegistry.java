@@ -357,6 +357,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         }
 
         BadgeUtils.addLogBadge(getBaseContext());
+        BadgeUtils.addDailyBadge(getBaseContext());
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
     }
     public void addGlycemiaRead() throws Exception{

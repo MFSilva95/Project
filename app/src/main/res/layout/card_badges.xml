@@ -77,10 +77,12 @@
                         app:srcCompat="@drawable/medal_bronze_daily" />
 
                     <TextView
+                        android:id="@+id/bronzeDailyBadges"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="N/a" />
+                        android:text="N/a"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -99,10 +101,12 @@
                         app:srcCompat="@drawable/medal_silver_daily" />
 
                     <TextView
+                        android:id="@+id/silverDailyBadges"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="N/a" />
+                        android:text="N/a"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -121,10 +125,12 @@
                         app:srcCompat="@drawable/medal_gold_daily" />
 
                     <TextView
+                        android:id="@+id/goldDailyBadges"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="N/a" />
+                        android:text="N/a"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 

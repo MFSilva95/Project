@@ -62,6 +62,9 @@ public class homeRightFragment extends Fragment  {
     private String imgUriString;
     private View layout;
     private TextView beginnerBadges;
+    private TextView bronzeDailyBadges;
+    private TextView silverDailyBadges;
+    private TextView goldDailyBadges;
 
     private static final int RC_CODE_PICKER = 2000;
     private Bitmap bmp;
@@ -90,6 +93,10 @@ public class homeRightFragment extends Fragment  {
         imgUriString = mPrefs.getString("userImgUri", null);
 
         beginnerBadges = (TextView) layout.findViewById(R.id.beginnerBadges);
+        bronzeDailyBadges = (TextView) layout.findViewById(R.id.bronzeDailyBadges);
+        silverDailyBadges = (TextView) layout.findViewById(R.id.silverDailyBadges);
+        goldDailyBadges = (TextView) layout.findViewById(R.id.goldDailyBadges);
+
 
         setImage();
 
@@ -171,12 +178,26 @@ public class homeRightFragment extends Fragment  {
     }
 
     private void updateMedals(LinkedList<BadgeRec> list) {
-        int count = 0;
+        int countBeginner = 0;
+        int countBronzeDaily = 0;
+        int countSilverDaily = 0;
+        int countGoldDaily = 0;
         for (BadgeRec badge : list) {
             if(badge.getType().equals("beginner"))
-                count++;
+                countBeginner++;
+            if(badge.getType().equals("daily")){
+                if(badge.getMedal().equals("bronze"))
+                    countBronzeDaily++;
+                if(badge.getMedal().equals("silver"))
+                    countSilverDaily++;
+                if(badge.getMedal().equals("gold"))
+                    countGoldDaily++;
+            }
         }
-        beginnerBadges.setText(count+"/23");
+        beginnerBadges.setText(countBeginner+"/23");
+        bronzeDailyBadges.setText(countBronzeDaily+" medalhas");
+        silverDailyBadges.setText(countSilverDaily+" medalhas");
+        goldDailyBadges.setText(countGoldDaily+" medalhas");
     }
 
     private void setImage() {

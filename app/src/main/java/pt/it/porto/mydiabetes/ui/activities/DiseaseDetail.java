@@ -197,10 +197,11 @@ public class DiseaseDetail extends BaseActivity {
 		Calendar calendar = Calendar.getInstance();
 		dis.setDateTime(dataFrom.getText().toString(), DateUtils.getFormattedTime(calendar)+":" + Calendar.getInstance().get(Calendar.SECOND));
 		dis.setEndDate((!dataTo.getText().toString().equals("")) ? dataTo.getText().toString() : null);
+		reg.DiseaseReg_Save(dis);
 
 		BadgeUtils.addDiseaseBadge(getBaseContext());
+		BadgeUtils.addDailyBadge(getBaseContext());
 
-		reg.DiseaseReg_Save(dis);
 		reg.close();
 		rdb.close();
 

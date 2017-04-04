@@ -85,7 +85,7 @@
     <string name="title_activity_carbo_hydrate">Carbohydrates Register</string>
     <string name="title_activity_cholesterol">Cholesterol Register</string>
     <string name="title_activity_disease">Disease Register</string>
-    <string name="title_activity_h1_a1c">A1c Register</string>
+    <string name="title_activity_h1_a1c">HbA1c Register</string>
     <string name="title_activity_weight">Weight Register</string>
     <string name="add_Weight">Add Weight</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -147,7 +147,7 @@
     <string name="title_activity_carbo_hydrate_detail">Carbohydrates Register</string>
     <string name="title_activity_cholesterol_detail">Cholesterol Register</string>
     <string name="title_activity_weight_detail">Weight Register</string>
-    <string name="title_activity_hb_a1c_detail">A1c Register</string>
+    <string name="title_activity_hb_a1c_detail">HbA1c Register</string>
     <string name="title_activity_disease_detail">Disease Register</string>
     <string name="title_activity_import_export">Import &amp; Export</string>
     <string name="title_activity_tag_detail">Day Time</string>

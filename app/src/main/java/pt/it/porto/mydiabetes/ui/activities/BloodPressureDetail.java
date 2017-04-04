@@ -259,6 +259,7 @@ public class BloodPressureDetail extends BaseActivity {
 
 		wdb.BloodPressure_Save(bp);
 		BadgeUtils.addBpBadge(getBaseContext());
+		BadgeUtils.addDailyBadge(getBaseContext());
 
 		wdb.close();
 		rdb.close();

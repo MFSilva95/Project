@@ -8,6 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.LinkedList;
 
@@ -44,6 +47,13 @@ public class badgesGrid extends Fragment  {
     private ImageView bronzeHba1cBadge;
     private ImageView silverHba1cBadge;
     private ImageView goldHba1cBadge;
+    private ImageView bronzeDailyBadge;
+    private ImageView silverDailyBadge;
+    private ImageView goldDailyBadge;
+
+    private TextView bronzeDailyCount;
+    private TextView silverDailyCount;
+    private TextView goldDailyCount;
 
     public static pt.it.porto.mydiabetes.ui.fragments.badges.badgesGrid newInstance() {
         pt.it.porto.mydiabetes.ui.fragments.badges.badgesGrid fragment = new pt.it.porto.mydiabetes.ui.fragments.badges.badgesGrid();
@@ -88,6 +98,13 @@ public class badgesGrid extends Fragment  {
         bronzeHba1cBadge = (ImageView) layout.findViewById(R.id.bronzeHba1cBadge);
         silverHba1cBadge = (ImageView) layout.findViewById(R.id.silverHba1cBadge);
         goldHba1cBadge = (ImageView) layout.findViewById(R.id.goldHba1cBadge);
+        bronzeDailyBadge = (ImageView) layout.findViewById(R.id.bronzeDailyBadge);
+        silverDailyBadge = (ImageView) layout.findViewById(R.id.silverDailyBadge);
+        goldDailyBadge = (ImageView) layout.findViewById(R.id.goldDailyBadge);
+
+        bronzeDailyCount = (TextView) layout.findViewById(R.id.bronzeDailyCount);
+        silverDailyCount = (TextView) layout.findViewById(R.id.silverDailyCount);
+        goldDailyCount = (TextView) layout.findViewById(R.id.goldDailyCount);
 
         photoBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
         exportBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
@@ -112,7 +129,9 @@ public class badgesGrid extends Fragment  {
         bronzeHba1cBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
         silverHba1cBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
         goldHba1cBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-
+        bronzeDailyBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+        silverDailyBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+        goldDailyBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
 
         checkBadges();
 
@@ -123,6 +142,10 @@ public class badgesGrid extends Fragment  {
         DB_Read db = new DB_Read(getContext());
         LinkedList<BadgeRec> list = db.Badges_GetAll();
         db.close();
+        int bronzeDailyFlag = 0;
+        int silverDailyFlag = 0;
+        int goldDailyFlag = 0;
+
         for (BadgeRec rec: list) {
             if(rec.getName().equals("photo")){
                 photoBadge.clearColorFilter();
@@ -195,8 +218,25 @@ public class badgesGrid extends Fragment  {
                     goldHba1cBadge.clearColorFilter();
             }
 
-        }
+            if(rec.getName().equals("all")){
+                if(rec.getMedal().equals("bronze")) {
+                    bronzeDailyBadge.clearColorFilter();
+                    bronzeDailyFlag++;
+                }
+                if(rec.getMedal().equals("silver")) {
+                    silverDailyBadge.clearColorFilter();
+                    silverDailyFlag++;
+                }
+                if(rec.getMedal().equals("gold")) {
+                    goldDailyBadge.clearColorFilter();
+                    goldDailyFlag++;
+                }
+            }
 
+        }
+        bronzeDailyCount.setText("("+bronzeDailyFlag+" medalhas)");
+        silverDailyCount.setText("("+silverDailyFlag+" medalhas)");
+        goldDailyCount.setText("("+goldDailyFlag+" medalhas)");
 
     }
 }
