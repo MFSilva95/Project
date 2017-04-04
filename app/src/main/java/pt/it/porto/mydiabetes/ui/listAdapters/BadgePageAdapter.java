@@ -12,12 +12,12 @@ import pt.it.porto.mydiabetes.ui.fragments.home.homeMiddleFragment;
 import pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment;
 import pt.it.porto.mydiabetes.ui.fragments.register.welcomeFragment;
 
-public class badgePageAdapter extends FragmentPagerAdapter {
+public class BadgePageAdapter extends FragmentPagerAdapter {
     private static final int FRAGMENT_ONE_POSITION = 0;
     private static final int FRAGMENT_TWO_POSITION = 1;
     private static final int COUNT = 2;
 
-    public badgePageAdapter(FragmentManager fm) {
+    public BadgePageAdapter(FragmentManager fm) {
         super(fm);
     }
 

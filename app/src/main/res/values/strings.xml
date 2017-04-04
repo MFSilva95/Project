@@ -439,5 +439,8 @@
     </string-array>
 
     <string name="years">Anos</string>
-    <string name="badges">Crachás</string>
+    <string name="badges">Medalhas</string>
+    <string name="beginner">Principiante</string>
+    <string name="daily">Diárias</string>
+
 </resources>

@@ -31,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Principiante"
+                    android:text="@string/beginner"
                     android:textSize="16sp" />
             </LinearLayout>
 
@@ -653,7 +653,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="1"
-                    android:text="Diárias"
+                    android:text="@string/daily"
                     android:textSize="16sp" />
             </LinearLayout>
 

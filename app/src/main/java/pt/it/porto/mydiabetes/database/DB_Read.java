@@ -1525,7 +1525,7 @@ public class DB_Read {
 
 	public LinkedList<BadgeRec> Badges_GetAll() {
 		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
-		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges", null);
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges ORDER BY DateTime DESC;", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			BadgeRec tmp;

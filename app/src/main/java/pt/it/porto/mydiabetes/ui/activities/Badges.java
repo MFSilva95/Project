@@ -1,30 +1,17 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 
-
-import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
-import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.listAdapters.badgePageAdapter;
-import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
+import pt.it.porto.mydiabetes.ui.listAdapters.BadgePageAdapter;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
 
 
@@ -46,7 +33,7 @@ public class Badges extends BaseActivity {
         }
 
         mViewPager = (CustomViewPager) super.findViewById(R.id.content_fragment);
-        adapter = new badgePageAdapter(super.getSupportFragmentManager());
+        adapter = new BadgePageAdapter(super.getSupportFragmentManager());
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(1);
         mViewPager.blockSwipeRight(true);

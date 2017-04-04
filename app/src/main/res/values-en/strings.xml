@@ -211,5 +211,7 @@
 
     <string name="years">Years Old</string>
     <string name="badges">Badges</string>
+    <string name="beginner">Beginner</string>
+    <string name="daily">Daily</string>
 
 </resources>
