@@ -34,20 +34,6 @@ public class Info extends BaseActivity {
 
 
     /**
-     * If set to true will build the webview. Default is false as it takes longer to load the activity.
-     * TODO: check about the possibility of using the UPorto logo
-     */
-
-    public static long getInstallDate(Context context) throws NameNotFoundException {
-        long time = 0;
-        PackageManager pm = context.getPackageManager();
-        PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
-        time = packageInfo.lastUpdateTime;
-
-        return time;
-    }
-
-    /**
      * Used to get the current date. Recipe from SO http://stackoverflow.com/questions/7607165/how-to-write-build-time-stamp-into-apk
      * Need android.keepTimestampsInApk = true see: https://code.google.com/p/android/issues/detail?id=220039
      * @param context the context to extract AI and Package Name
@@ -102,15 +88,6 @@ public class Info extends BaseActivity {
         // 	Show the Up button in the action bar.
         getActionBar();
     }
-
-    private String auxAddParagrah(String st) {
-        return "<p>" + st + "</p>";
-    }
-
-    /**
-     * Create a WebView for the About dialog to enable a better look
-     */
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
