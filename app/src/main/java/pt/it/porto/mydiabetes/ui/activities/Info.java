@@ -20,32 +20,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 
 
 public class Info extends BaseActivity {
 
-
-    /**
-     * Used to get the current date. Recipe from SO http://stackoverflow.com/questions/7607165/how-to-write-build-time-stamp-into-apk
-     * Need android.keepTimestampsInApk = true see: https://code.google.com/p/android/issues/detail?id=220039
-     * @param context the context to extract AI and Package Name
-     * @return the time in millisecs
-     * @throws NameNotFoundException from getting the Application info
-     * @throws IOException if an error getting the zipfile for the apk
-     */
-    public static long getBuildDate(Context context) throws NameNotFoundException, IOException {
-        long time;
-
-        ApplicationInfo ai = context.getPackageManager()
-                .getApplicationInfo(context.getPackageName(), 0);
-        ZipFile zf = new ZipFile(ai.sourceDir);
-        ZipEntry ze = zf.getEntry("classes.dex");
-        time = ze.getTime();
-        zf.close();
-
-        return time;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,16 +46,10 @@ public class Info extends BaseActivity {
             Log.e("GETTING VERSION NAME: ", e1.getMessage());
         }
 
-        try {
-            long time;
-            time = getBuildDate(this);
-            String date = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(time);
-            version += " (" + date + ")";
-        } catch (NameNotFoundException e) {
-            Log.d("Info", "NameNotFoundException on getting build date");
-        } catch (IOException e) {
-            Log.d("Info", "IOException on getting build date");
-        }
+        long time;
+        time = BuildConfig.BUILDDATE;
+        String date = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(time);
+        version += " (" + date + ")";
         versionTextView.setText(version);
 
         // 	Show the Up button in the action bar.
