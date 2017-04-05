@@ -49,7 +49,7 @@ public class Info extends BaseActivity {
 
     /**
      * Used to get the current date. Recipe from SO http://stackoverflow.com/questions/7607165/how-to-write-build-time-stamp-into-apk
-     *
+     * Need android.keepTimestampsInApk = true see: https://code.google.com/p/android/issues/detail?id=220039
      * @param context the context to extract AI and Package Name
      * @return the time in millisecs
      * @throws NameNotFoundException
