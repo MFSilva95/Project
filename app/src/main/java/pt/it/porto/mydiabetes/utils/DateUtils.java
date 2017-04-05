@@ -124,4 +124,19 @@ public class DateUtils {
         result.setTime(dateFormat.parse(string));
         return result;
     }
+
+    public static int getAge(Calendar dob){
+        Calendar today = Calendar.getInstance();
+
+
+        int age = today.get(Calendar.YEAR) - dob.get(Calendar.YEAR);
+
+        if (today.get(Calendar.DAY_OF_YEAR) < dob.get(Calendar.DAY_OF_YEAR)){
+            age--;
+        }
+
+        Integer ageInt = new Integer(age);
+
+        return ageInt;
+    }
 }

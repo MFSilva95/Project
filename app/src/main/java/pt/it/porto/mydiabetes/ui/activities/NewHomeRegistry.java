@@ -71,6 +71,7 @@ import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.StringSpinnerAdapter;
 import pt.it.porto.mydiabetes.ui.views.ExtendedEditText;
+import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
@@ -382,6 +383,9 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                throw e;
             }
         }
+
+        BadgeUtils.addLogBadge(getBaseContext());
+        BadgeUtils.addDailyBadge(getBaseContext());
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
     }
     public void addGlycemiaRead() throws Exception{

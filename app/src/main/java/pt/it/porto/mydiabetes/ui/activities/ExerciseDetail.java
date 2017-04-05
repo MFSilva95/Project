@@ -32,6 +32,7 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
+import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
@@ -229,9 +230,11 @@ public class ExerciseDetail extends BaseActivity {
 		ex.setEffort(effort);
 		// Add the current seconds to differentiate (and correctly order) entries on the same minute
 		ex.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
-
-
 		reg.Exercise_Save(ex);
+
+		BadgeUtils.addExerciseBadge(getBaseContext());
+		BadgeUtils.addDailyBadge(getBaseContext());
+
 		reg.close();
 		rdb.close();
 

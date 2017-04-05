@@ -33,7 +33,7 @@
     <string name="add_Cholesterol">Adicionar Colesterol</string>
     <string name="title_activity_disease">Registos de Doenças</string>
     <string name="add_Disease">Adicionar Doença</string>
-    <string name="title_activity_h1_a1c">Registos de A1c</string>
+    <string name="title_activity_h1_a1c">Registos de HbA1c</string>
     <string name="add_H1A1c">Adicionar HbA1c</string>
     <string name="title_activity_weight">Registos de Peso</string>
     <string name="add_Weight">Adicionar Peso</string>
@@ -120,7 +120,7 @@
     <string name="title_activity_blood_pressure_detail">Registo de P. Arterial</string>
     <string name="title_activity_cholesterol_detail">Registo de Colesterol</string>
     <string name="title_activity_weight_detail">Registo de Peso</string>
-    <string name="title_activity_hb_a1c_detail">Registo de A1c</string>
+    <string name="title_activity_hb_a1c_detail">Registo de HbA1c</string>
     <string name="title_activity_disease_detail">Registo de Doença</string>
     <string name="title_activity_import_export">Importar &amp; Exportar</string>
     <string name="title_activity_tag_detail">Fase do Dia</string>
@@ -428,8 +428,6 @@
         <item>Colesterol</item>
     </string-array>
 
-
-    navigation_drawer_open
     <string name="navigation_drawer_open">open</string>
     <string name="navigation_drawer_close">close</string>
 
@@ -441,4 +439,10 @@
         <item>@string/insulin_type_pen</item>
         <item>@string/insulin_type_pump</item>
     </string-array>
+
+    <string name="years">Anos</string>
+    <string name="badges">Medalhas</string>
+    <string name="beginner">Principiante</string>
+    <string name="daily">Diárias</string>
+
 </resources>

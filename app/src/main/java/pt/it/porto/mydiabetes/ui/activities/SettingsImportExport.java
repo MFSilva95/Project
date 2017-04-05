@@ -39,6 +39,7 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
+import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DbUtils;
 
 public class SettingsImportExport extends BaseActivity {
@@ -186,6 +187,7 @@ public class SettingsImportExport extends BaseActivity {
 	public void backupButton(View v) {
 		if (backup(getApplicationContext())) {
 			ShowDialogMsg(getString(R.string.dbcopy_success));
+			BadgeUtils.addExportBadge(getBaseContext());
 		} else {
 			ShowDialogMsg(getString(R.string.dbcopy_error));
 		}

@@ -164,26 +164,6 @@ public class homeLeftFragment extends Fragment  {
     }
 
     private void setButtonListeners() {
-
-        /*LayoutInflater inflater = (getActivity()).getLayoutInflater();
-        final View customView1 = inflater.inflate(R.layout.activity_exercise_detail,null);
-
-        final MaterialStyledDialog addExercice = new MaterialStyledDialog.Builder(getContext())
-                .setIcon(R.drawable.ic_weight)
-                .withDialogAnimation(true)
-                .setTitle("Adicionar Exercício")
-                .setHeaderColor(R.color.green_background)
-                .setCustomView(customView1)
-                .setPositiveText("Adicionar")
-                .setNegativeText("Cancelar")
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/javiersantos/MaterialStyledDialogs/issues")));
-                    }
-                }).build();
-        */
-
         layout1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,6 +1,7 @@
 package pt.it.porto.mydiabetes.ui.fragments.register;
 
 import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -34,6 +35,9 @@ import com.esafirm.imagepicker.model.Image;
 import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
+import pt.it.porto.mydiabetes.utils.BadgeUtils;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -148,9 +152,6 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 		if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
 			images = data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
 			bmp = BitmapFactory.decodeFile(images.get(0).getPath());
-
-
-
 			ContextWrapper cw = new ContextWrapper(getContext());
 			// path to /data/data/yourapp/app_data/imageDir
 			File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
@@ -171,6 +172,7 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 				}
 			}
 			profileImage.setImageURI(Uri.parse(mypath.getAbsolutePath()));
+			BadgeUtils.addPhotoBadge(getContext());
 		}
 
 	}
@@ -250,7 +252,7 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 
 	public void showDatePickerDialog() {
 
-		final DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), R.style.style_date_picker_dialog, new DatePickerDialog.OnDateSetListener() {
+		final DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
 			@Override
 			public void onDateSet(DatePicker datePicker, int year, int month, int day) {
 				setDate(year, month, day);
