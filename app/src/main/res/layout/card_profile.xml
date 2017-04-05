@@ -32,8 +32,8 @@
                 <ImageView
                     android:id="@+id/currentBadge"
 
-                    android:layout_width="70dp"
-                    android:layout_height="80dp"
+                    android:layout_width="60dp"
+                    android:layout_height="70dp"
                     android:layout_marginTop="5dp"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
@@ -47,7 +47,7 @@
                     android:gravity="center_vertical|center_horizontal"
                     android:lines="2"
                     android:text="Medalha de Hoje"
-                    android:textSize="12sp" />
+                    android:textSize="10sp" />
             </LinearLayout>
 
             <LinearLayout
