@@ -6,7 +6,6 @@ import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -16,57 +15,17 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.TextView;
 
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 
 
 public class Info extends BaseActivity {
 
-
-    /**
-     * If set to true will build the webview. Default is false as it takes longer to load the activity.
-     * TODO: check about the possibility of using the UPorto logo
-     */
-
-    public static long getInstallDate(Context context) throws NameNotFoundException {
-        long time = 0;
-        PackageManager pm = context.getPackageManager();
-        PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
-        time = packageInfo.lastUpdateTime;
-
-        return time;
-    }
-
-    /**
-     * Used to get the current date. Recipe from SO http://stackoverflow.com/questions/7607165/how-to-write-build-time-stamp-into-apk
-     *
-     * @param context the context to extract AI and Package Name
-     * @return the time in millisecs
-     * @throws NameNotFoundException
-     * @throws IOException
-     */
-    public static long getBuildDate(Context context) throws NameNotFoundException, IOException {
-        long time = 0;
-
-        ApplicationInfo ai = context.getPackageManager()
-                .getApplicationInfo(context.getPackageName(), 0);
-        ZipFile zf = new ZipFile(ai.sourceDir);
-        ZipEntry ze = zf.getEntry("classes.dex");
-        time = ze.getTime();
-        zf.close();
-
-        return time;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,35 +41,20 @@ public class Info extends BaseActivity {
         TextView versionTextView = (TextView) findViewById(R.id.infoVersionView);
         String version = getString(R.string.information_about_version);
         try {
-            version += getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+            version += " " + getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
         } catch (NameNotFoundException e1) {
-            Log.e("ERROR GETTING VERSION NAME: ", e1.getMessage());
+            Log.e("GETTING VERSION NAME: ", e1.getMessage());
         }
 
-        try {
-            long time;
-            time = getBuildDate(this);
-            String date = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(time);
-            version += " (" + date + ")";
-        } catch (NameNotFoundException e) {
-            Log.d("Info", "NameNotFoundException on getting build date");
-        } catch (IOException e) {
-            Log.d("Info", "IOException on getting build date");
-        }
+        long time;
+        time = BuildConfig.BUILDDATE;
+        String date = new SimpleDateFormat("yyyy/MM/dd", Locale.getDefault()).format(time);
+        version += " (" + date + ")";
         versionTextView.setText(version);
 
         // 	Show the Up button in the action bar.
         getActionBar();
     }
-
-    private String auxAddParagrah(String st) {
-        return "<p>" + st + "</p>";
-    }
-
-    /**
-     * Create a WebView for the About dialog to enable a better look
-     */
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
