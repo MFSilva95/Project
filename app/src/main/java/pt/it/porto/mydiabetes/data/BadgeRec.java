@@ -45,5 +45,14 @@ public class BadgeRec extends DateTime {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "BloodPressureRec{" +
+                "id=" + id +
+                ", type=" + type +
+                ", name=" + name +
+                ", medal=" + medal +
+                '}';
+    }
 
 }

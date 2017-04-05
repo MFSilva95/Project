@@ -473,16 +473,23 @@ public class BadgeUtils {
         DB_Read db = new DB_Read(context);
         LinkedList<BadgeRec> list = db.getBadgesByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
         boolean flagBronze = false;
+        int idBronze = 0;
         boolean flagSilver = false;
+        int idSilver = 0;
         boolean flagGold = false;
         for (BadgeRec rec : list) {
-            if (rec.getName().equals("all")) {
-                if(rec.getMedal().equals("bronze"))
+            if (rec.getType().equals("daily")) {
+                if(rec.getMedal().equals("bronze")){
                     flagBronze = true;
-                if(rec.getMedal().equals("silver"))
+                    idBronze = rec.getId();
+                }
+                if(rec.getMedal().equals("silver")){
                     flagSilver = true;
-                if(rec.getMedal().equals("gold"))
+                    idSilver = rec.getId();
+                }
+                if(rec.getMedal().equals("gold")){
                     flagGold = true;
+                }
             }
         }
         LinkedList<ExerciseRec> exerciseList = db.getExerciceByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
@@ -504,7 +511,7 @@ public class BadgeUtils {
         Log.e("LOG", logList.size()+"");
         Log.e("SIZE", size+"");
 
-        if(size >= DAILY_BRONZE_RECORDS && !flagBronze){
+        if(size >= DAILY_BRONZE_RECORDS && !flagBronze && !flagSilver && !flagGold){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
             badge.setDateTime(Calendar.getInstance());
@@ -514,7 +521,7 @@ public class BadgeUtils {
             dbwrite.Badge_Save(badge);
             dbwrite.close();
         }
-        if(size >= DAILY_SILVER_RECORDS && !flagSilver){
+        if(size >= DAILY_SILVER_RECORDS && !flagSilver && !flagGold){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
             badge.setDateTime(Calendar.getInstance());
@@ -522,6 +529,7 @@ public class BadgeUtils {
             badge.setName("all");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
+            dbwrite.Badge_Remove(idBronze);
             dbwrite.close();
         }
         if(size >= DAILY_GOLD_RECORDS && !flagGold){
@@ -532,7 +540,9 @@ public class BadgeUtils {
             badge.setName("all");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
+            dbwrite.Badge_Remove(idSilver);
             dbwrite.close();
+
         }
     }
 

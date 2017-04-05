@@ -700,4 +700,9 @@ public class DB_Write {
 		myDB.insert("Badges", null, toInsert);
 	}
 
+	public void Badge_Remove(int id) {
+		myDB.delete("Badges", "id=" + id, null);
+	}
+
+
 }

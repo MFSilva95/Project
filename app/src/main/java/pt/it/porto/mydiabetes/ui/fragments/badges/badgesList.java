@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import java.util.Calendar;
 import java.util.LinkedList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.listAdapters.BadgeListAdapter;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 /**
  * Created by parra on 21/02/2017.
@@ -46,6 +48,15 @@ public class badgesList extends Fragment  {
         DB_Read db = new DB_Read(getContext());
         LinkedList<BadgeRec> badgeList = db.Badges_GetAll();
         db.close();
+        Log.e("BADGE SIZE", badgeList.size()+"");
+        for (int i=0; i<badgeList.size();i++){
+            Log.e("BADGE", badgeList.get(i).toString());
+            Log.e("DATE",badgeList.get(i).getFormattedDate());
+            if(badgeList.get(i).getType().equals("daily") && badgeList.get(i).getFormattedDate().equals(DateUtils.getFormattedDate(Calendar.getInstance()))){
+                Log.e("ENTRA","ENTRA");
+                badgeList.remove(i);
+            }
+        }
         Log.e("BADGE SIZE", badgeList.size()+"");
         list.setAdapter(new BadgeListAdapter(badgeList, getContext()));
         list.setEmptyView(layout.findViewById(R.id.list_empty));

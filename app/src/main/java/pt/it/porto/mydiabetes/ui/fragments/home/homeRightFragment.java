@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -65,6 +66,7 @@ public class homeRightFragment extends Fragment  {
     private TextView bronzeDailyBadges;
     private TextView silverDailyBadges;
     private TextView goldDailyBadges;
+    private ImageView currentBadge;
 
     private static final int RC_CODE_PICKER = 2000;
     private Bitmap bmp;
@@ -97,6 +99,9 @@ public class homeRightFragment extends Fragment  {
         silverDailyBadges = (TextView) layout.findViewById(R.id.silverDailyBadges);
         goldDailyBadges = (TextView) layout.findViewById(R.id.goldDailyBadges);
 
+        currentBadge = (ImageView) layout.findViewById(R.id.currentBadge);
+
+        currentBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
 
         setImage();
 
@@ -182,10 +187,14 @@ public class homeRightFragment extends Fragment  {
         int countBronzeDaily = 0;
         int countSilverDaily = 0;
         int countGoldDaily = 0;
+        int daily =0;
         for (BadgeRec badge : list) {
             if(badge.getType().equals("beginner"))
                 countBeginner++;
             if(badge.getType().equals("daily")){
+                daily++;
+            }
+            if(badge.getType().equals("daily") && !badge.getFormattedDate().equals(DateUtils.getFormattedDate(Calendar.getInstance()))){
                 if(badge.getMedal().equals("bronze"))
                     countBronzeDaily++;
                 if(badge.getMedal().equals("silver"))
@@ -193,7 +202,19 @@ public class homeRightFragment extends Fragment  {
                 if(badge.getMedal().equals("gold"))
                     countGoldDaily++;
             }
+            if(badge.getType().equals("daily") && badge.getFormattedDate().equals(DateUtils.getFormattedDate(Calendar.getInstance()))){
+                if(badge.getMedal().equals("bronze")){
+                    currentBadge.clearColorFilter();
+                }
+                if(badge.getMedal().equals("silver")){
+                    currentBadge.clearColorFilter();
+                    currentBadge.setImageResource(R.drawable.medal_silver_daily);}
+                if(badge.getMedal().equals("gold")){
+                    currentBadge.clearColorFilter();
+                    currentBadge.setImageResource(R.drawable.medal_gold_daily);}
+            }
         }
+        Log.e("daily size", daily+"");
         beginnerBadges.setText(countBeginner+"/23");
         bronzeDailyBadges.setText(countBronzeDaily+" medalhas");
         silverDailyBadges.setText(countSilverDaily+" medalhas");

@@ -12,11 +12,13 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.util.Calendar;
 import java.util.LinkedList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 /**
  * Created by parra on 21/02/2017.
@@ -218,7 +220,7 @@ public class badgesGrid extends Fragment  {
                     goldHba1cBadge.clearColorFilter();
             }
 
-            if(rec.getName().equals("all")){
+            if(rec.getType().equals("daily") && !rec.getFormattedDate().equals(DateUtils.getFormattedDate(Calendar.getInstance()))){
                 if(rec.getMedal().equals("bronze")) {
                     bronzeDailyBadge.clearColorFilter();
                     bronzeDailyFlag++;
