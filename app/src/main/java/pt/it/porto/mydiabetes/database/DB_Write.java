@@ -365,9 +365,13 @@ public class DB_Write {
 		toInsert.put("Id_User", obj.getIdUser());
 		toInsert.put("Value", obj.getCarbsValue());
 		toInsert.put("PhotoPath", obj.getPhotoPath());
+		Log.i("update", "Carbs_Update: "+obj.getId());
 
 		DB_Read read = new DB_Read(myContext);
 		CarbsRec old = read.CarboHydrate_GetById(obj.getId());
+
+		Log.i("update", "Carbs_Update_new: "+ obj.toString());
+		Log.i("update", "Carbs_Update_old: "+ old.toString());
 
 		PhotoSyncDb photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(myContext));
 		if (obj.getPhotoPath() != null && old.getPhotoPath() == null) { // if was added
