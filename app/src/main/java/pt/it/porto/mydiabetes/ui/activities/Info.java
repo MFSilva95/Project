@@ -6,7 +6,6 @@ import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
@@ -16,15 +15,9 @@ import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
 import android.widget.TextView;
 
 import pt.it.porto.mydiabetes.R;
@@ -38,11 +31,11 @@ public class Info extends BaseActivity {
      * Need android.keepTimestampsInApk = true see: https://code.google.com/p/android/issues/detail?id=220039
      * @param context the context to extract AI and Package Name
      * @return the time in millisecs
-     * @throws NameNotFoundException
-     * @throws IOException
+     * @throws NameNotFoundException from getting the Application info
+     * @throws IOException if an error getting the zipfile for the apk
      */
     public static long getBuildDate(Context context) throws NameNotFoundException, IOException {
-        long time = 0;
+        long time;
 
         ApplicationInfo ai = context.getPackageManager()
                 .getApplicationInfo(context.getPackageName(), 0);
@@ -70,7 +63,7 @@ public class Info extends BaseActivity {
         try {
             version += getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
         } catch (NameNotFoundException e1) {
-            Log.e("ERROR GETTING VERSION NAME: ", e1.getMessage());
+            Log.e("GETTING VERSION NAME: ", e1.getMessage());
         }
 
         try {
