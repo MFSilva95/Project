@@ -19,13 +19,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -34,6 +38,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -232,6 +237,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetViewgroup);
         bottomSheetBehavior.setHideable(true);
 
+
         registerDateTextV = (TextView) findViewById(R.id.registryDate);
         registerTimeTextV = (TextView) findViewById(R.id.registerTime);
         buttons.add(RegistryFields.PLUS);
@@ -399,8 +405,14 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     }
+
     private void showBottomSheet() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+        lp.setAnchorId(R.id.bottom_sheet);
+        lp.anchorGravity = Gravity.TOP | GravityCompat.END;
+        fab.setLayoutParams(lp);*/
 
 //        for(RegistryFields reg:buttons){
 //            switch (reg){
