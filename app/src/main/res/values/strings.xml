@@ -139,7 +139,7 @@
     <string name="photoSaved">Guardada em: </string>
     <string name="information_about">Aplicação desenvolvida no âmbito do projeto interno do Instituto de Telecomunicações \"S-Dia-SelMan - Smart Diabetes Self Management System\" na Fac. de Ciências e Fac. de Medicina da Universidade do Porto. Trabalho realizado em colaboração com o Hospital de S. João,  Serviço de Endocrinologia.</string>
     <string name="information_about_using">Esta aplicação está em desenvolvimento e para a usar deve ter assinado o Consentimento Informado e ter sido informado sobre a metodologia do estudo.</string>
-    <string name="information_about_libraries">Esta aplicação utiliza a biblioteca DroidText.</string>
+    <string name="information_about_libraries">Esta aplicação utiliza a biblioteca AAkira/ExpandableLayout\n, Pierry/SimpleToast.</string>
     <string name="information_about_version">Versão </string>
 
     <string name="diseaseInputAlert">Insira o nome de doença antes de gravar!</string>
