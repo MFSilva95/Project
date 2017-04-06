@@ -6,11 +6,13 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -33,6 +35,9 @@ import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -51,6 +56,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -133,6 +140,25 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
 
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+
+        Bundle args = getIntent().getExtras();
+        if (args != null) {
+            inflater.inflate(R.menu.weight_detail_delete, menu);
+        }
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuItem_WeightDetail_Delete:
+                deleteRegister();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+    @Override
     public void finishAfterTransition() {
         contentLayout.setAlpha(0);
         super.finishAfterTransition();
@@ -156,6 +182,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     }
     @Override
     public void onBackPressed() {
+
         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             hideBottomSheet();
         } else {
@@ -203,11 +230,12 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
 
         bottomSheetViewgroup = (LinearLayout) findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetViewgroup);
+        bottomSheetBehavior.setHideable(true);
 
         registerDateTextV = (TextView) findViewById(R.id.registryDate);
         registerTimeTextV = (TextView) findViewById(R.id.registerTime);
         buttons.add(RegistryFields.PLUS);
-        bottomSheetViewgroup.setVisibility(View.VISIBLE);
+        showBottomSheet();
 
         registerDateTextV.setOnClickListener(new OnClickListener() {
 			@Override
@@ -250,6 +278,34 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             setDate(time);
             setTime(time);
         }
+    }
+    private void deleteRegister(){
+        final Context c = this;
+        new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.deleteReading))
+                .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //Falta verificar se não está associada a nenhuma entrada da DB
+                        //Rever porque não elimina o registo de glicemia
+                        DB_Write reg = new DB_Write(c);
+                        try {
+                            //Weight_Delete();
+                            if(glycemiaData!=null){reg.Glycemia_Delete(glycemiaData.getId());}
+                            if(carbsData!=null){reg.Carbs_Delete(carbsData.getId());}
+                            if(insulinData!=null){reg.Insulin_Delete(insulinData.getId());}
+                            finish();
+                        } catch (Exception e) {
+                            Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
+                        }
+                        reg.close();
+
+                    }
+                })
+                .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Do nothing.
+                    }
+                }).show();
     }
     private void showTimePickerDialog(View v) {
         TimePickerDialog mTimePicker;
@@ -345,11 +401,18 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     }
     private void showBottomSheet() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        bottomSheetViewgroup.setVisibility(View.VISIBLE);
+
+//        for(RegistryFields reg:buttons){
+//            switch (reg){
+//                case CARBS:bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(true);continue;
+//                case GLICEMIA:bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(true);continue;
+//                case INSULIN:bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(true);continue;
+//            }
+//            Log.i(TAG, "showBottomSheet: cenas");
+//        }
     }
     private void hideBottomSheet() {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-        bottomSheetViewgroup.setVisibility(View.GONE);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
     private void save() {
         try{
@@ -619,7 +682,41 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         fillInsulinSpinner();
         setInsulinListeners();
     }
-
+    private void setCarbsPressed(View v){
+        insertCarbsMenu();
+        v.getAnimation();
+        v.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(true);
+            }
+        }, 100L);
+        hideBottomSheet();
+        if(buttons.contains(RegistryFields.GLICEMIA)){insertInsulinSuggestion(RegistryFields.CARBS);}
+    }
+    private void setGlicPressed(View v){
+        insertGlicMenu();
+        v.getAnimation();
+        v.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(true);
+            }
+        }, 100L);
+        hideBottomSheet();
+        if(buttons.contains(RegistryFields.CARBS)){insertInsulinSuggestion(RegistryFields.GLICEMIA);}
+    }
+    private void setInsuPressed(View v){
+        insertInsulinMenu();
+        v.getAnimation();
+        v.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(true);
+            }
+        }, 100L);
+        hideBottomSheet();
+    }
     private void setupBottomSheet() {
         //
         bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setOnClickListener(new View.OnClickListener() {
@@ -630,16 +727,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     buttons.remove(RegistryFields.GLICEMIA);
                     bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(false);
                 } else {
-                    insertGlicMenu();
-                    v.getAnimation();
-                    v.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(true);
-                        }
-                    }, 100L);
-                    hideBottomSheet();
-                    if(buttons.contains(RegistryFields.CARBS)){insertInsulinSuggestion(RegistryFields.GLICEMIA);}
+                    setGlicPressed(v);
                 }
             }
         });
@@ -652,16 +740,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     buttons.remove(RegistryFields.CARBS);
                     bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(false);
                 } else {
-                    insertCarbsMenu();
-                    v.getAnimation();
-                    v.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(true);
-                        }
-                    }, 100L);
-                    hideBottomSheet();
-                    if(buttons.contains(RegistryFields.GLICEMIA)){insertInsulinSuggestion(RegistryFields.CARBS);}
+                    setCarbsPressed(v);
                 }
             }
         });
@@ -674,24 +753,16 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     buttons.remove(RegistryFields.INSULIN);
                     bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(false);
                 } else {
-                    insertInsulinMenu();
-                    v.getAnimation();
-                    v.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(true);
-                        }
-                    }, 100L);
-                    hideBottomSheet();
+                    setInsuPressed(v);
                 }
             }
         });
     }
+
     private void insertInsulinSuggestion(RegistryFields activator){
         Boolean cons = ((!buttons.contains(RegistryFields.INSULIN)) && buttons.contains(RegistryFields.CARBS) && buttons.contains(RegistryFields.GLICEMIA));
         if (cons) {
             float insulinUnits = 0;
-
             addContentAt(R.layout.insulin_content_edit, buttons.size()-1);
 
             /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());

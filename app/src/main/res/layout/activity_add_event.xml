@@ -87,7 +87,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_save_black_24dp"
         android:tint="@android:color/white"
-        app:layout_anchor="@id/toolbar"
+        android:layout_gravity="bottom|end"
         app:layout_anchorGravity="bottom|end"
         tools:layout_editor_absoluteX="312dp"
         tools:layout_editor_absoluteY="116dp"/>
