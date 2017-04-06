@@ -48,16 +48,11 @@ public class badgesList extends Fragment  {
         DB_Read db = new DB_Read(getContext());
         LinkedList<BadgeRec> badgeList = db.Badges_GetAll();
         db.close();
-        Log.e("BADGE SIZE", badgeList.size()+"");
         for (int i=0; i<badgeList.size();i++){
-            Log.e("BADGE", badgeList.get(i).toString());
-            Log.e("DATE",badgeList.get(i).getFormattedDate());
             if(badgeList.get(i).getType().equals("daily") && badgeList.get(i).getFormattedDate().equals(DateUtils.getFormattedDate(Calendar.getInstance()))){
-                Log.e("ENTRA","ENTRA");
                 badgeList.remove(i);
             }
         }
-        Log.e("BADGE SIZE", badgeList.size()+"");
         list.setAdapter(new BadgeListAdapter(badgeList, getContext()));
         list.setEmptyView(layout.findViewById(R.id.list_empty));
 

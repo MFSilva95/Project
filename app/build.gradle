@@ -108,7 +108,7 @@ dependencies {
     compile 'com.github.javiersantos:MaterialStyledDialogs:2.1'
 
     compile 'com.github.Pierry:SimpleToast:v1.7'
-
+    compile 'com.github.aakira:expandable-layout:1.6.0@aar'
 
     compile ('com.github.florent37:androidparallax:1.0.1@aar'){
         transitive=true

@@ -3,12 +3,17 @@ package pt.it.porto.mydiabetes.ui.fragments.badges;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
 
 import org.w3c.dom.Text;
 
@@ -76,6 +81,25 @@ public class badgesGrid extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.fragment_badges_grid, container, false);
+        RelativeLayout beginnerBadges = (RelativeLayout) layout.findViewById(R.id.beginnerBadges);
+        final ExpandableRelativeLayout expandableLayout1 = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableLayout1);
+        expandableLayout1.collapse();
+        beginnerBadges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                expandableLayout1.toggle();
+            }
+        });
+
+        RelativeLayout dailyBadges = (RelativeLayout) layout.findViewById(R.id.dailyBadges);
+        final ExpandableRelativeLayout expandableLayout2 = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableLayout2);
+        expandableLayout2.collapse();
+        dailyBadges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                expandableLayout2.toggle();
+            }
+        });
 
         photoBadge = (ImageView) layout.findViewById(R.id.photoBadge);
         exportBadge = (ImageView) layout.findViewById(R.id.exportBadge);
@@ -139,6 +163,7 @@ public class badgesGrid extends Fragment  {
 
         return layout;
     }
+
 
     public void checkBadges(){
         DB_Read db = new DB_Read(getContext());
