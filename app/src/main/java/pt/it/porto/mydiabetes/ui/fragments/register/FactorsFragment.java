@@ -1,6 +1,9 @@
 package pt.it.porto.mydiabetes.ui.fragments.register;
 
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,9 +18,12 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.File;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
+import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
 
@@ -31,6 +37,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 	private EditText hypoglycemiaLimit;
 	private EditText hyperglycemiaLimit;
 	private View layout = null;
+	private String userImgFileName = "profilePhoto.png";
 
 	/**
 	 * Use this factory method to create a new instance of
@@ -143,6 +150,13 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 				Float.parseFloat(container.getString(WelcomeActivity.USER_DATA_HEIGHT)));
 		if(!success){
 			Log.w(TAG, "Failed to save user data!");
+		}
+		ContextWrapper cw = new ContextWrapper(getContext());
+		File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+		// Create imageDir
+		File mypath = new File(directory, userImgFileName);
+		if (mypath.exists()) {
+			BadgeUtils.addPhotoBadge(getContext());
 		}
 	}
 

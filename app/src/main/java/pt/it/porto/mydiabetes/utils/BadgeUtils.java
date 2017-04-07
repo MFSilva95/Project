@@ -61,6 +61,7 @@ public class BadgeUtils {
 
     public static void addPhotoBadge(Context context) {
         DB_Read db = new DB_Read(context);
+        int idUser = db.getId();
         LinkedList<BadgeRec> list = db.Badges_GetAll();
         db.close();
         boolean flag = false;
@@ -72,6 +73,7 @@ public class BadgeUtils {
         if (!flag) {
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("photo");
@@ -84,6 +86,7 @@ public class BadgeUtils {
 
     public static void addExportBadge(Context context) {
         DB_Read db = new DB_Read(context);
+        int idUser = db.getId();
         LinkedList<BadgeRec> list = db.Badges_GetAll();
         db.close();
         boolean flag = false;
@@ -95,6 +98,7 @@ public class BadgeUtils {
         if (!flag) {
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("export");
@@ -107,6 +111,7 @@ public class BadgeUtils {
 
     public static void addLogBadge(Context context) {
         DB_Read db = new DB_Read(context);
+        int idUser = db.getId();
         LinkedList<BadgeRec> list = db.Badges_GetAll();
 
         boolean flagBronze = false;
@@ -128,6 +133,7 @@ public class BadgeUtils {
         if(logBookEntries.size()>=LOG_BRONZE_RECORDS && !flagBronze){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("log");
@@ -139,6 +145,7 @@ public class BadgeUtils {
         if(logBookEntries.size()>=LOG_SILVER_RECORDS && !flagSilver){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("log");
@@ -150,6 +157,7 @@ public class BadgeUtils {
         if(logBookEntries.size()>=LOG_GOLD_RECORDS && !flagGold){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("log");
@@ -164,6 +172,7 @@ public class BadgeUtils {
     public static void addExerciseBadge(Context context) {
         DB_Read db = new DB_Read(context);
         LinkedList<BadgeRec> list = db.Badges_GetAll();
+        int idUser = db.getId();
 
         boolean flagBronze = false;
         boolean flagSilver = false;
@@ -184,6 +193,7 @@ public class BadgeUtils {
         if(exerciseEntries.size()>=EXERCISE_BRONZE_RECORDS && !flagBronze){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("exercise");
@@ -195,6 +205,7 @@ public class BadgeUtils {
         if(exerciseEntries.size()>=EXERCISE_SILVER_RECORDS && !flagSilver){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("exercise");
@@ -206,6 +217,7 @@ public class BadgeUtils {
         if(exerciseEntries.size()>=EXERCISE_GOLD_RECORDS && !flagGold){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("exercise");
@@ -219,6 +231,7 @@ public class BadgeUtils {
 
     public static void addDiseaseBadge(Context context) {
         DB_Read db = new DB_Read(context);
+        int idUser = db.getId();
         LinkedList<BadgeRec> list = db.Badges_GetAll();
 
         boolean flagBronze = false;
@@ -240,6 +253,7 @@ public class BadgeUtils {
         if(diseaseEntries.size()>=DISEASE_BRONZE_RECORDS && !flagBronze){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("disease");
@@ -251,6 +265,7 @@ public class BadgeUtils {
         if(diseaseEntries.size()>=DISEASE_SILVER_RECORDS && !flagSilver){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("disease");
@@ -262,6 +277,7 @@ public class BadgeUtils {
         if(diseaseEntries.size()>=DISEASE_GOLD_RECORDS && !flagGold){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("disease");
@@ -276,7 +292,7 @@ public class BadgeUtils {
     public static void addWeightBadge(Context context) {
         DB_Read db = new DB_Read(context);
         LinkedList<BadgeRec> list = db.Badges_GetAll();
-
+        int idUser = db.getId();
         boolean flagBronze = false;
         boolean flagSilver = false;
         boolean flagGold = false;
@@ -296,6 +312,7 @@ public class BadgeUtils {
         if(weightEntries.size()>=WEIGHT_BRONZE_RECORDS && !flagBronze){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("weight");
@@ -307,6 +324,7 @@ public class BadgeUtils {
         if(weightEntries.size()>=WEIGHT_SILVER_RECORDS && !flagSilver){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("weight");
@@ -318,6 +336,7 @@ public class BadgeUtils {
         if(weightEntries.size()>=WEIGHT_GOLD_RECORDS && !flagGold){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("weight");
@@ -332,7 +351,7 @@ public class BadgeUtils {
     public static void addBpBadge(Context context) {
         DB_Read db = new DB_Read(context);
         LinkedList<BadgeRec> list = db.Badges_GetAll();
-
+        int idUser = db.getId();
         boolean flagBronze = false;
         boolean flagSilver = false;
         boolean flagGold = false;
@@ -352,6 +371,7 @@ public class BadgeUtils {
         if(bpEntries.size()>=BP_BRONZE_RECORDS && !flagBronze){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("bp");
@@ -363,6 +383,7 @@ public class BadgeUtils {
         if(bpEntries.size()>=BP_SILVER_RECORDS && !flagSilver){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("bp");
@@ -374,6 +395,7 @@ public class BadgeUtils {
         if(bpEntries.size()>=BP_GOLD_RECORDS && !flagGold){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("bp");
@@ -387,7 +409,7 @@ public class BadgeUtils {
     public static void addCholesterolBadge(Context context) {
         DB_Read db = new DB_Read(context);
         LinkedList<BadgeRec> list = db.Badges_GetAll();
-
+        int idUser = db.getId();
         boolean flagBronze = false;
         boolean flagSilver = false;
         boolean flagGold = false;
@@ -407,6 +429,7 @@ public class BadgeUtils {
         if(cholesterolEntries.size()>=CHOLESTEROL_BRONZE_RECORDS && !flagBronze){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("cholesterol");
@@ -418,6 +441,7 @@ public class BadgeUtils {
         if(cholesterolEntries.size()>=CHOLESTEROL_SILVER_RECORDS && !flagSilver){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("cholesterol");
@@ -429,6 +453,7 @@ public class BadgeUtils {
         if(cholesterolEntries.size()>=CHOLESTEROL_GOLD_RECORDS && !flagGold){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("cholesterol");
@@ -442,7 +467,7 @@ public class BadgeUtils {
     public static void addHba1cBadge(Context context) {
         DB_Read db = new DB_Read(context);
         LinkedList<BadgeRec> list = db.Badges_GetAll();
-
+        int idUser = db.getId();
         boolean flagBronze = false;
         boolean flagSilver = false;
         boolean flagGold = false;
@@ -462,6 +487,7 @@ public class BadgeUtils {
         if(hba1cEntries.size()>=HBA1C_BRONZE_RECORDS && !flagBronze){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("hba1c");
@@ -473,6 +499,7 @@ public class BadgeUtils {
         if(hba1cEntries.size()>=HBA1C_SILVER_RECORDS && !flagSilver){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("hba1c");
@@ -484,6 +511,7 @@ public class BadgeUtils {
         if(hba1cEntries.size()>=HBA1C_GOLD_RECORDS && !flagGold){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("hba1c");
@@ -497,6 +525,7 @@ public class BadgeUtils {
     public static void addDailyBadge(Context context) {
         DB_Read db = new DB_Read(context);
         LinkedList<BadgeRec> list = db.getBadgesByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        int idUser = db.getId();
         boolean flagBronze = false;
         int idBronze = 0;
         boolean flagSilver = false;
@@ -539,6 +568,7 @@ public class BadgeUtils {
         if(size >= DAILY_BRONZE_RECORDS && !flagBronze && !flagSilver && !flagGold){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("daily");
             badge.setName("all");
@@ -550,6 +580,7 @@ public class BadgeUtils {
         if(size >= DAILY_SILVER_RECORDS && !flagSilver && !flagGold){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("daily");
             badge.setName("all");
@@ -562,6 +593,7 @@ public class BadgeUtils {
         if(size >= DAILY_GOLD_RECORDS && !flagGold){
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
+            badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("daily");
             badge.setName("all");

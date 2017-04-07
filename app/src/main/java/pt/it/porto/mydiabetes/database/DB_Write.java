@@ -697,6 +697,7 @@ public class DB_Write {
 	public void Badge_Save(BadgeRec badge) {
 		ContentValues toInsert = new ContentValues();
 		String datetime = DateUtils.formatToDb(badge.getDateTime());
+		toInsert.put("Id_User", badge.getIdUser());
 		toInsert.put("DateTime", datetime);
 		toInsert.put("Type", badge.getType());
 		toInsert.put("Name", badge.getName());

@@ -1537,10 +1537,11 @@ public class DB_Read {
 			do {
 				tmp = new BadgeRec();
 				tmp.setId(cursor.getInt(0));
-				tmp.setDateTime(cursor.getString(1));
-				tmp.setType(cursor.getString(2));
-				tmp.setName(cursor.getString(3));
-				tmp.setMedal(cursor.getString(4));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setDateTime(cursor.getString(2));
+				tmp.setType(cursor.getString(3));
+				tmp.setName(cursor.getString(4));
+				tmp.setMedal(cursor.getString(5));
 				AllReads.add(tmp);
 				cursor.moveToNext();
 			} while (!cursor.isAfterLast());
@@ -1562,10 +1563,11 @@ public class DB_Read {
 			do {
 				tmp = new BadgeRec();
 				tmp.setId(cursor.getInt(0));
-				tmp.setDateTime(cursor.getString(1));
-				tmp.setType(cursor.getString(2));
-				tmp.setName(cursor.getString(3));
-				tmp.setMedal(cursor.getString(4));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setDateTime(cursor.getString(2));
+				tmp.setType(cursor.getString(3));
+				tmp.setName(cursor.getString(4));
+				tmp.setMedal(cursor.getString(5));
 				AllReads.add(tmp);
 				cursor.moveToNext();
 			} while (!cursor.isAfterLast());

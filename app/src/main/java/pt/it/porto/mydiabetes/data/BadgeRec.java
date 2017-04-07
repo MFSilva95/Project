@@ -6,12 +6,19 @@ import android.annotation.SuppressLint;
 @SuppressLint("ParcelCreator")
 public class BadgeRec extends DateTime {
 
-
-
     private int id;
+    private int idUser;
     private String type;
     private String name;
     private String medal;
+
+    public int getIdUser() {
+        return idUser;
+    }
+
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
 
     public String getType() {
         return type;
@@ -49,6 +56,7 @@ public class BadgeRec extends DateTime {
     public String toString() {
         return "BloodPressureRec{" +
                 "id=" + id +
+                ", idUser=" + idUser +
                 ", type=" + type +
                 ", name=" + name +
                 ", medal=" + medal +

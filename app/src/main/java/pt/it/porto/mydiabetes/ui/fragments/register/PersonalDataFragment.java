@@ -172,7 +172,6 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 				}
 			}
 			profileImage.setImageURI(Uri.parse(mypath.getAbsolutePath()));
-			BadgeUtils.addPhotoBadge(getContext());
 		}
 
 	}
