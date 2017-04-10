@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import at.grabner.circleprogress.CircleProgressView;
+import info.abdolahi.CircularMusicProgressBar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
@@ -31,9 +32,6 @@ import pt.it.porto.mydiabetes.utils.LocaleUtils;
 public class MyData extends BaseActivity {
 
 	private UserInfo myData;
-	private TextView levelText;
-	private TextView pointsText;
-	private CircleProgressView mCircleView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +44,6 @@ public class MyData extends BaseActivity {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
 
-		mCircleView = (CircleProgressView) findViewById(R.id.circleView);
-		mCircleView.setMaxValue(100);
-		mCircleView.setValue(LevelsPointsUtils.getPercentageLevels(getBaseContext()));
-		mCircleView.setBarColor(ContextCompat.getColor(getBaseContext(), R.color.primary), ContextCompat.getColor(getBaseContext(), R.color.accent));
-
-		levelText = (TextView) findViewById(R.id.numberLevel);
-		levelText.setText(LevelsPointsUtils.getLevel(getBaseContext())+"");
-		pointsText = (TextView) findViewById(R.id.numberPoints);
-		pointsText.setText(LevelsPointsUtils.getTotalPoints(getBaseContext())+" / "+LevelsPointsUtils.getPointsNextLevel(   getBaseContext()));
 
 		FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 		fab.setOnClickListener(new View.OnClickListener() {

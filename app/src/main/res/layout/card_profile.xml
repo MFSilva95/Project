@@ -10,11 +10,11 @@
     <android.support.v7.widget.CardView
         android:id="@+id/personalInfo"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         app:cardElevation="2dp">
 
         <LinearLayout
@@ -55,14 +55,6 @@
 
                 </RelativeLayout>
 
-                <TextView
-                    android:id="@+id/age"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:text="Age"
-                    android:textSize="16sp" />
-
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -91,21 +83,53 @@
 
                 </RelativeLayout>
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textPoints"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center_horizontal"
+                        android:text="Pontos"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/numberPoints"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toRightOf="@+id/textPoints"
+                        android:gravity="center_horizontal"
+                        android:text=""
+                        android:textSize="16sp" />
+
+                </RelativeLayout>
+
             </LinearLayout>
         </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+    <info.abdolahi.CircularMusicProgressBar
+        android:id="@+id/circleView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
         android:elevation="3dp"
         android:src="@drawable/add_photo"
-        app:civ_border_color="@android:color/black"
-        app:civ_border_width="2dp"
+        app:border_color="@color/primary_light"
+        app:border_width="8dp"
+        app:centercircle_diammterer="1"
         app:layout_anchor="@id/personalInfo"
-        app:layout_anchorGravity="top|center_horizontal" />
+        app:layout_anchorGravity="top|center_horizontal"
+        app:progress_color="@color/primary"
+        app:progress_startAngle="270" />
+
 
 </android.support.design.widget.CoordinatorLayout>

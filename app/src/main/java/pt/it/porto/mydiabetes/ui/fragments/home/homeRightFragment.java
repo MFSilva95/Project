@@ -38,6 +38,7 @@ import java.util.Date;
 import java.util.LinkedList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import info.abdolahi.CircularMusicProgressBar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
@@ -60,7 +61,7 @@ import static android.app.Activity.RESULT_OK;
 public class homeRightFragment extends Fragment  {
 
     private UserInfo myData;
-    private CircleImageView userImg;
+    //private CircleImageView userImg;
     private String userImgFileName = "profilePhoto.png";
     private SharedPreferences mPrefs;
     private String imgUriString;
@@ -68,6 +69,8 @@ public class homeRightFragment extends Fragment  {
     private TextView beginnerBadges;
     private ImageView currentBadge;
     private TextView levelText;
+    private TextView pointsText;
+    private CircularMusicProgressBar mCircleView;
 
     private static final int RC_CODE_PICKER = 2000;
     private Bitmap bmp;
@@ -95,8 +98,15 @@ public class homeRightFragment extends Fragment  {
         mPrefs = getContext().getSharedPreferences("label", 0);
         imgUriString = mPrefs.getString("userImgUri", null);
 
+        mCircleView = (CircularMusicProgressBar) layout.findViewById(R.id.circleView);
+        mCircleView.setValue(LevelsPointsUtils.getPercentageLevels(getContext()));
+
+
         levelText = (TextView) layout.findViewById(R.id.numberLevel);
         levelText.setText(LevelsPointsUtils.getLevel(getContext())+"");
+        pointsText = (TextView) layout.findViewById(R.id.numberPoints);
+        pointsText.setText(LevelsPointsUtils.getTotalPoints(getContext())+" / "+LevelsPointsUtils.getPointsNextLevel(getContext()));
+
 
         beginnerBadges = (TextView) layout.findViewById(R.id.beginnerBadges);
 
@@ -185,7 +195,7 @@ public class homeRightFragment extends Fragment  {
                     e.printStackTrace();
                 }
             }
-            userImg.setImageBitmap(bmp);
+            mCircleView.setImageBitmap(bmp);
             BadgeUtils.addPhotoBadge(getContext());
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -202,6 +212,9 @@ public class homeRightFragment extends Fragment  {
         db_read.close();
 
         levelText.setText(LevelsPointsUtils.getLevel(getContext())+"");
+        mCircleView.setValue(LevelsPointsUtils.getPercentageLevels(getContext()));
+        pointsText.setText(LevelsPointsUtils.getTotalPoints(getContext())+" / "+LevelsPointsUtils.getPointsNextLevel(getContext()));
+
         setMyDataFromDB(myData);
         updateMedals(list);
     }
@@ -227,7 +240,7 @@ public class homeRightFragment extends Fragment  {
     }
 
     private void setImage() {
-        userImg = (CircleImageView) layout.findViewById(R.id.profile_image);
+        mCircleView = (CircularMusicProgressBar) layout.findViewById(R.id.circleView);
 
         ContextWrapper cw = new ContextWrapper(getContext());
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
@@ -235,10 +248,10 @@ public class homeRightFragment extends Fragment  {
         File mypath = new File(directory, userImgFileName);
         if (mypath.exists()) {
             Bitmap bmp = BitmapFactory.decodeFile(mypath.getPath());
-            userImg.setImageBitmap(bmp);
+            mCircleView.setImageBitmap(bmp);
         }
 
-        userImg.setOnClickListener(new View.OnClickListener() {
+        mCircleView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ImagePickerActivity.class);
@@ -259,13 +272,10 @@ public class homeRightFragment extends Fragment  {
     public void setMyDataFromDB(UserInfo obj) {
         if (obj != null) {
             TextView name = (TextView) layout.findViewById(R.id.name);
-            TextView bDate = (TextView) layout.findViewById(R.id.age);
-
-            name.setTag(obj.getId());
-            name.setText(obj.getUsername());
             Calendar bday = DateUtils.getDateCalendar(obj.getBirthday());
             int age = DateUtils.getAge(bday);
-            bDate.setText(age+" "+getString(R.string.years));
+            name.setTag(obj.getId());
+            name.setText(obj.getUsername()+", "+age);
         }
     }
 
