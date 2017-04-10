@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -18,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -46,6 +48,7 @@ import pt.it.porto.mydiabetes.ui.activities.MyData;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 import static android.app.Activity.RESULT_OK;
@@ -64,6 +67,7 @@ public class homeRightFragment extends Fragment  {
     private View layout;
     private TextView beginnerBadges;
     private ImageView currentBadge;
+    private TextView levelText;
 
     private static final int RC_CODE_PICKER = 2000;
     private Bitmap bmp;
@@ -90,6 +94,9 @@ public class homeRightFragment extends Fragment  {
         layout = inflater.inflate(R.layout.fragment_home_right, container, false);
         mPrefs = getContext().getSharedPreferences("label", 0);
         imgUriString = mPrefs.getString("userImgUri", null);
+
+        levelText = (TextView) layout.findViewById(R.id.numberLevel);
+        levelText.setText(LevelsPointsUtils.getLevel(getContext())+"");
 
         beginnerBadges = (TextView) layout.findViewById(R.id.beginnerBadges);
 
@@ -127,15 +134,37 @@ public class homeRightFragment extends Fragment  {
             }
         });
 
+
+        Button buttonadd = (Button) layout.findViewById(R.id.buttonadd);
+        Button buttonremove = (Button) layout.findViewById(R.id.buttonremove);
+
+        buttonadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LevelsPointsUtils.addPoints(getContext(), LevelsPointsUtils.ADD_POINTS, "test");
+                Log.e("TOTAL POINTS", LevelsPointsUtils.getTotalPoints(getContext())+"");
+                Log.e("LEVEL", LevelsPointsUtils.getLevel(getContext())+"");
+            }
+        });
+
+        buttonremove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                LevelsPointsUtils.addPoints(getContext(), LevelsPointsUtils.REMOVE_POINTS, "test");
+                Log.e("TOTAL POINTS", LevelsPointsUtils.getTotalPoints(getContext())+"");
+                Log.e("LEVEL", LevelsPointsUtils.getLevel(getContext())+"");
+            }
+        });
+
         return layout;
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        final int THUMBSIZE = 250;
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             images = data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
-            bmp = BitmapFactory.decodeFile(images.get(0).getPath());
-
+            bmp = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(images.get(0).getPath()), THUMBSIZE, THUMBSIZE);
             ContextWrapper cw = new ContextWrapper(getContext());
             // path to /data/data/yourapp/app_data/imageDir
             File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
@@ -172,6 +201,7 @@ public class homeRightFragment extends Fragment  {
         LinkedList<BadgeRec> list = db_read.Badges_GetAll();
         db_read.close();
 
+        levelText.setText(LevelsPointsUtils.getLevel(getContext())+"");
         setMyDataFromDB(myData);
         updateMedals(list);
     }

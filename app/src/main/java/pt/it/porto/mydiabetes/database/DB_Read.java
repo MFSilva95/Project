@@ -25,6 +25,7 @@ import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.data.LogBookEntry;
 import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.data.PointsRec;
 import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.data.WeightRec;
@@ -1577,6 +1578,17 @@ public class DB_Read {
 			cursor.close();
 			return AllReads;
 		}
+	}
+
+	public int getTotalPoints() {
+		Cursor cursor = myDB.rawQuery("SELECT SUM(Value) FROM Points;", null);
+		cursor.moveToLast();
+		if (cursor.getCount() == 0) {
+			return 0;
+		}
+		int points = cursor.getInt(0);
+		cursor.close();
+		return points;
 	}
 
 }
