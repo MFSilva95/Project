@@ -150,7 +150,7 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		final int THUMBSIZE = 250;
+		final int THUMBSIZE = 350;
 		if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
 			images = data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
 			bmp = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(images.get(0).getPath()), THUMBSIZE, THUMBSIZE);

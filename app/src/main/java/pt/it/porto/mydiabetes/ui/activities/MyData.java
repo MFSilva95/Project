@@ -15,8 +15,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import at.grabner.circleprogress.CircleProgressView;
 import info.abdolahi.CircularMusicProgressBar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.UserInfo;

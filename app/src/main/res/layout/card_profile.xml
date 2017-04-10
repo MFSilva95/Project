@@ -14,7 +14,7 @@
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="60dp"
         app:cardElevation="2dp">
 
         <LinearLayout
@@ -26,7 +26,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="55dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="65dp"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
@@ -68,7 +69,7 @@
                         android:layout_centerInParent="true"
                         android:gravity="center_horizontal"
                         android:text="Nível"
-                        android:textSize="16sp" />
+                        android:textSize="18sp" />
 
                     <TextView
                         android:id="@+id/numberLevel"
@@ -79,7 +80,7 @@
                         android:layout_toRightOf="@+id/textlevel"
                         android:gravity="center_horizontal"
                         android:text=""
-                        android:textSize="16sp" />
+                        android:textSize="18sp" />
 
                 </RelativeLayout>
 
@@ -96,7 +97,7 @@
                         android:layout_centerInParent="true"
                         android:gravity="center_horizontal"
                         android:text="Pontos"
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/numberPoints"
@@ -107,7 +108,7 @@
                         android:layout_toRightOf="@+id/textPoints"
                         android:gravity="center_horizontal"
                         android:text=""
-                        android:textSize="16sp" />
+                        android:textSize="14sp" />
 
                 </RelativeLayout>
 
@@ -118,8 +119,8 @@
 
     <info.abdolahi.CircularMusicProgressBar
         android:id="@+id/circleView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_gravity="center"
         android:elevation="3dp"
         android:src="@drawable/add_photo"

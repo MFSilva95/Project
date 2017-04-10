@@ -106,7 +106,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.0'
     compile 'com.github.javiersantos:MaterialStyledDialogs:2.1'
-    compile 'com.github.jakob-grabner:Circle-Progress-View:v1.3'
     compile 'com.github.aliab:circular-music-progressbar:v1.2.0'
     compile 'com.github.Pierry:SimpleToast:v1.7'
     compile 'com.github.aakira:expandable-layout:1.6.0@aar'
