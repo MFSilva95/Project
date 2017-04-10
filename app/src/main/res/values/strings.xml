@@ -444,5 +444,6 @@
     <string name="badges">Medalhas</string>
     <string name="beginner">Principiante</string>
     <string name="daily">Diárias</string>
+    <string name="list_badge_empty_message">Ainda não recebeu nenhuma medalha</string>
 
 </resources>
