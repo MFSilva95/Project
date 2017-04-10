@@ -60,11 +60,10 @@ public class LevelsPointsUtils {
 
     //Points
 
-    public static final int ADD_POINTS = 100;
     public static final int RECORD_POINTS = 50;
     public static final int BADGE_POINTS = 100;
     //public static int STREAK_NUMBER = 1;
-    public static final int REMOVE_POINTS = -50;
+    //public static final int REMOVE_POINTS = -50;
 
     public static void addPoints(Context context, int points, String origin) {
         DB_Read db = new DB_Read(context);

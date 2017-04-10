@@ -144,28 +144,6 @@ public class homeRightFragment extends Fragment  {
             }
         });
 
-
-        Button buttonadd = (Button) layout.findViewById(R.id.buttonadd);
-        Button buttonremove = (Button) layout.findViewById(R.id.buttonremove);
-
-        buttonadd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LevelsPointsUtils.addPoints(getContext(), LevelsPointsUtils.ADD_POINTS, "test");
-                Log.e("TOTAL POINTS", LevelsPointsUtils.getTotalPoints(getContext())+"");
-                Log.e("LEVEL", LevelsPointsUtils.getLevel(getContext())+"");
-            }
-        });
-
-        buttonremove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LevelsPointsUtils.addPoints(getContext(), LevelsPointsUtils.REMOVE_POINTS, "test");
-                Log.e("TOTAL POINTS", LevelsPointsUtils.getTotalPoints(getContext())+"");
-                Log.e("LEVEL", LevelsPointsUtils.getLevel(getContext())+"");
-            }
-        });
-
         return layout;
     }
 

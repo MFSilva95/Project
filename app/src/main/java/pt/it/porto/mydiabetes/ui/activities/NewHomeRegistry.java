@@ -87,6 +87,7 @@ import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
+import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 
 public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFragment.CalcListener {
@@ -461,6 +462,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
 
         BadgeUtils.addLogBadge(getBaseContext());
         BadgeUtils.addDailyBadge(getBaseContext());
+        LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log");
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
     }
     public void addGlycemiaRead() throws Exception{
