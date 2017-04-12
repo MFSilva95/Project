@@ -42,8 +42,9 @@ public class homeMiddleFragment extends Fragment {
     final String TAG = "homeFrag";
 	//private ItemTouchHelper helper = null;
 	private FloatingActionButton fab;
-	ArrayList<Task> taskListFromYap = new ArrayList<>();
-	ArrayList<Advice> receiverAdviceList = new ArrayList<>();
+    private View listEmpty;
+    private ArrayList<Task> taskListFromYap = new ArrayList<>();
+    private ArrayList<Advice> receiverAdviceList = new ArrayList<>();
 
 
 
@@ -72,6 +73,8 @@ public class homeMiddleFragment extends Fragment {
 		//yapDroid = YapDroid.newInstance(this);
 		homeRecyclerView = (RecyclerView) layout.findViewById(R.id.HomeListDisplay);
 		fab = (FloatingActionButton) layout.findViewById(R.id.fab);
+        listEmpty = layout.findViewById(R.id.home_empty);
+
 		setFabClickListeners();
 		fillHomeList();
 		return layout;
@@ -81,17 +84,30 @@ public class homeMiddleFragment extends Fragment {
 		//fillTaskList();
 		//fillAdviceList();
 		fillDays();
+        if (logBookList.size() == 0) {
+            listEmpty.setVisibility(View.VISIBLE);
+            listEmpty.bringToFront();
+        } else {
+            listEmpty.setVisibility(View.GONE);
+        }
 
 		logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
 		logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
 		((HomeAdapter) homeRecyclerView.getAdapter()).updateList(logBookList);
 		homeRecyclerView.getAdapter().notifyDataSetChanged();
 	}
+
 	private void fillHomeList() {
 		logBookList = new LinkedList<>();
 		//fillTaskList();
 		//fillAdviceList();
 		fillDays();
+		if (logBookList.size() == 0) {
+			listEmpty.setVisibility(View.VISIBLE);
+			listEmpty.bringToFront();
+		} else {
+			listEmpty.setVisibility(View.GONE);
+		}
 
 		logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
 		logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
@@ -102,6 +118,9 @@ public class homeMiddleFragment extends Fragment {
 			helper= new ItemTouchHelper(callback);
 			helper.attachToRecyclerView(homeList);
 		}*/
+
+
+
 		homeRecyclerView.setAdapter(homeAdapter);
 		homeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 	}
