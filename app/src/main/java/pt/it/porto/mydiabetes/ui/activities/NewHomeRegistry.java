@@ -8,6 +8,7 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.TimePickerDialog;
@@ -63,6 +64,8 @@ import android.view.View.OnClickListener;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -80,6 +83,8 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
+import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
+import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment;
 import pt.it.porto.mydiabetes.ui.listAdapters.StringSpinnerAdapter;
 import pt.it.porto.mydiabetes.ui.views.ExtendedEditText;
@@ -131,6 +136,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
 
     private String date = "";
     private String time = "";
+
 
     @Nullable
     private GlycemiaRec glycemiaData;
@@ -314,63 +320,51 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                 }).show();
     }
     private void showTimePickerDialog(View v) {
-        TimePickerDialog mTimePicker;
-        mTimePicker = new TimePickerDialog(
-                v.getContext(),
-                R.style.style_time_picker_dialog,
-                new TimePickerDialog.OnTimeSetListener() {
+
+        DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.registerTime,
+                DateUtils.getTimeCalendar(((TextView) v).getText().toString()));
+        ((TimePickerFragment) newFragment).setListener(new TimePickerFragment.TimePickerChangeListener() {
             @Override
-            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                setTime(selectedHour,selectedMinute,registerDate.get(Calendar.SECOND));
-                String timeString = DateUtils.getFormattedTime(registerDate);
-                registerTimeTextV.setText(timeString);
+            public void onTimeSet(String time) {
+                Calendar calendar = DateUtils.getTimeCalendar(time);
+                if (calendar != null) {
+                    setTime(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),calendar.get(Calendar.MINUTE));
+                    String timeString = DateUtils.getFormattedTime(registerDate);
+                    registerTimeTextV.setText(timeString);
+                }
             }
-        }, registerDate.get(Calendar.HOUR_OF_DAY), registerDate.get(Calendar.MINUTE), true);//Yes 24 hour time
-        mTimePicker.setTitle(getString(R.string.select_time));
-        mTimePicker.show();
+        });
+        newFragment.show(getFragmentManager(), "timePicker");
     }
     private void showDatePickerDialog(View v) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                v.getContext(),
-                R.style.style_date_picker_dialog,
-                new DatePickerDialog.OnDateSetListener() {
+        DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(
+                R.id.registryDate,
+                new DatePickerDialog.OnDateSetListener(){
+
                     @Override
                     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                         setDate(year, month, day);
                     }
-                },
-                registerDate.get(Calendar.YEAR),
-                registerDate.get(Calendar.MONTH),
-                registerDate.get(Calendar.DAY_OF_MONTH)){
-            };
-        datePickerDialog.show();
+                }, DateUtils.getDateCalendar(((TextView) v).getText().toString()));
+        newFragment.show(getFragmentManager(), "DatePicker");
     }
     private void setDate(Calendar c) {
-        //registerDate = new GregorianCalendar(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
-        StringBuilder displayDate = new StringBuilder(18);
-        displayDate.append(registerDate.get(Calendar.DAY_OF_MONTH));
-        displayDate.append(" ");
-        displayDate.append(registerDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
-        registerDateTextV.setText(displayDate.toString());
+        registerDate.set(Calendar.YEAR,c.get(Calendar.YEAR));
+        registerDate.set(Calendar.MONTH,c.get(Calendar.MONTH));
+        registerDate.set(Calendar.DAY_OF_MONTH,c.get(Calendar.DAY_OF_MONTH));
+        registerDateTextV.setText(DateUtils.getFormattedDate(registerDate));
     }
     private void setTime(Calendar c){
         registerDate.set(Calendar.HOUR_OF_DAY, c.get(Calendar.HOUR_OF_DAY));
         registerDate.set(Calendar.MINUTE, c.get(Calendar.MINUTE));
         registerDate.set(Calendar.SECOND, c.get(Calendar.SECOND));
-
-        StringBuilder displayTime = new StringBuilder(18);
-        displayTime.append(registerDate.get(Calendar.HOUR_OF_DAY));
-        displayTime.append(":");
-        displayTime.append(registerDate.get(Calendar.MINUTE));
-        registerTimeTextV.setText(displayTime);
+        registerTimeTextV.setText(DateUtils.getFormattedTime(registerDate));
     }
     private void setDate(int year, int month, int day) {
-        registerDate = new GregorianCalendar(year, month, day);
-        StringBuilder displayDate = new StringBuilder(18);
-        displayDate.append(registerDate.get(Calendar.DAY_OF_MONTH));
-        displayDate.append(" ");
-        displayDate.append(registerDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
-        registerDateTextV.setText(displayDate.toString());
+        registerDate.set(Calendar.YEAR,year);
+        registerDate.set(Calendar.MONTH,month);
+        registerDate.set(Calendar.DAY_OF_MONTH,day);
+        registerDateTextV.setText(DateUtils.getFormattedDate(registerDate));
     }
     private void setTime(int hour, int minute, int second){
         registerDate.set(Calendar.HOUR_OF_DAY, hour);

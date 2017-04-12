@@ -17,6 +17,7 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 	public static final String ARG_DATE = "date";
 	public static final String ARG_TEXT_BOX = "textbox";
+	private static DatePickerDialog.OnDateSetListener listener;
 
 	TextView item;
 
@@ -38,19 +39,36 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		int year = calendar.get(Calendar.YEAR);
 		int month = calendar.get(Calendar.MONTH);
 		int day = calendar.get(Calendar.DAY_OF_MONTH);
+		DatePickerDialog dpdialog;
 
-		// Create a new instance of DatePickerDialog and return it
-		DatePickerDialog dpdialog = new DatePickerDialog(getActivity(), this, year, month, day);
-		dpdialog.setButton(DialogInterface.BUTTON_NEGATIVE,
-				getString(android.R.string.cancel),
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int which) {
-						if (which == DialogInterface.BUTTON_NEGATIVE) {
-							dismiss();
+		if(listener==null){
+			// Create a new instance of DatePickerDialog and return it
+			dpdialog = new DatePickerDialog(getActivity(), this, year, month, day);
+			dpdialog.setButton(DialogInterface.BUTTON_NEGATIVE,
+					getString(android.R.string.cancel),
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							if (which == DialogInterface.BUTTON_NEGATIVE) {
+								dismiss();
+							}
 						}
 					}
-				}
-		);
+			);
+		}else{
+			// Create a new instance of DatePickerDialog and return it
+			dpdialog = new DatePickerDialog(getActivity(), listener, year, month, day);
+			dpdialog.setButton(DialogInterface.BUTTON_NEGATIVE,
+					getString(android.R.string.cancel),
+					new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int which) {
+							if (which == DialogInterface.BUTTON_NEGATIVE) {
+								dismiss();
+							}
+						}
+					}
+			);
+		}
+
 
 		return dpdialog;
 	}
@@ -74,6 +92,17 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		if (date != null) {
 			args.putSerializable(ARG_DATE, date);
 		}
+		newFragment.setArguments(args);
+		return newFragment;
+	}
+	public static DialogFragment getDatePickerFragment(int textbox, DatePickerDialog.OnDateSetListener lis, @Nullable Calendar date) {
+		DialogFragment newFragment = new DatePickerFragment();
+		Bundle args = new Bundle();
+		args.putInt(ARG_TEXT_BOX, textbox);
+		if (date != null) {
+			args.putSerializable(ARG_DATE, date);
+		}
+		listener = lis;
 		newFragment.setArguments(args);
 		return newFragment;
 	}

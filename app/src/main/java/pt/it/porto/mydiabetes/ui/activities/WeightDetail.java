@@ -129,7 +129,6 @@ public class WeightDetail extends BaseActivity {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_WeightDetail_Hora,
 				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
-
 	}
 
 	public void AddWeightRead() {
