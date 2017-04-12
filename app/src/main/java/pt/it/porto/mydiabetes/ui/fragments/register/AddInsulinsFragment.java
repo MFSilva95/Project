@@ -72,7 +72,7 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 		layout = inflater.inflate(R.layout.fragment_register_insulins, container, false);
 		list = (RecyclerView) layout.findViewById(R.id.insulin_list);
 		title = (TextView) layout.findViewById(R.id.title);
-		title.setText("Novo Registo de Insulina");
+		title.setText(getString(R.string.new_insulin_record));
 
 		InsulinAdapter adapter = new InsulinAdapter();
 		list.setAdapter(adapter);

@@ -236,7 +236,7 @@ public class homeRightFragment extends Fragment  {
 
                 intent.putExtra(ImagePicker.EXTRA_FOLDER_MODE, true);
                 intent.putExtra(ImagePicker.EXTRA_MODE, ImagePicker.MODE_SINGLE);
-                intent.putExtra(ImagePicker.EXTRA_SHOW_CAMERA, false);
+                intent.putExtra(ImagePicker.EXTRA_SHOW_CAMERA, true);
                 intent.putExtra(ImagePicker.EXTRA_SELECTED_IMAGES, images);
                 intent.putExtra(ImagePicker.EXTRA_FOLDER_TITLE, "Album");
                 intent.putExtra(ImagePicker.EXTRA_IMAGE_TITLE, "Tap to select images");

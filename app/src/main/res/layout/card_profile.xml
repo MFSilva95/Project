@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:gravity="center_horizontal"
-                        android:text="Name"
+                        android:text="@string/name"
                         android:textSize="22sp" />
 
                     <ImageView
@@ -68,7 +68,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:gravity="center_horizontal"
-                        android:text="Nível"
+                        android:text="@string/level"
                         android:textSize="18sp" />
 
                     <TextView
@@ -96,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:gravity="center_horizontal"
-                        android:text="Pontos"
+                        android:text="@string/points"
                         android:textSize="14sp" />
 
                     <TextView

@@ -4,13 +4,13 @@
     <item
         android:id="@+id/action_health"
         android:icon="@drawable/ic_favorite"
-        android:title="Saúde" />
+        android:title="@string/health" />
     <item
         android:id="@+id/action_register"
         android:icon="@drawable/ic_event_note"
-        android:title="Registos" />
+        android:title="@string/records" />
     <item
         android:id="@+id/action_person"
         android:icon="@drawable/ic_person"
-        android:title="Pessoal" />
+        android:title="@string/personal" />
 </menu>

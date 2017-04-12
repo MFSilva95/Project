@@ -60,7 +60,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="N/a"
+                        android:text="@string/n_a"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -87,7 +87,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical|center_horizontal"
-                        android:text="Medalha de Hoje"
+                        android:text="@string/today_medal"
                         android:textSize="12sp" />
                 </LinearLayout>
 

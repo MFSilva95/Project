@@ -57,7 +57,7 @@
                             android:layout_marginLeft="20dp"
                             android:layout_marginRight="20dp"
                             android:layout_weight="1"
-                            android:text="Sincronização"
+                            android:text="@string/sync"
                             android:textSize="18sp" />
 
                     </LinearLayout>
@@ -158,7 +158,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:layout_weight="1"
-                        android:text="Copia de Segurança"
+                        android:text="@string/backup"
                         android:textSize="18sp" />
 
                 </LinearLayout>

@@ -53,7 +53,7 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 	private static final String GENERATED_IMAGE_URI = "generated_image_uri";
 	private static final String CALCS_OPEN = "calcs open";
 	// sections of UI list
-	public static int SECTION_DATETIME = R.id.section_dateTime;
+	//public static int SECTION_DATETIME = R.id.section_dateTime;
 	public static int SECTION_GLICEMIA = R.id.section_glicemia;
 	public static int[] SECTION_TARGET_GLICEMIA = new int[]{R.id.glycemia_obj, R.id.addTargetObjective};
 	public static int SECTION_CARBS = R.id.section_carbs;

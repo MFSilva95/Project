@@ -239,7 +239,7 @@ public class homeLeftFragment extends Fragment  {
             exerciseDate.setText(dateText+"");
         }
         else{
-            exerciseText.setText("N/a");
+            exerciseText.setText(getString(R.string.n_a));
             exerciseDate.setText("");
         }
 
@@ -266,7 +266,7 @@ public class homeLeftFragment extends Fragment  {
             diseaseDate.setText(dateText+"");
         }
         else{
-            diseaseText.setText("N/a");
+            diseaseText.setText(getString(R.string.n_a));
             diseaseDate.setText("");
         }
 
@@ -278,7 +278,7 @@ public class homeLeftFragment extends Fragment  {
             bloodPressureDate.setText(dateText+"");
         }
         else{
-            bloodPressureText.setText("N/a");
+            bloodPressureText.setText(getString(R.string.n_a));
             bloodPressureDate.setText("");
         }
 
@@ -289,7 +289,7 @@ public class homeLeftFragment extends Fragment  {
             cholesterolDate.setText(dateText+"");
         }
         else{
-            cholesterolText.setText("N/a");
+            cholesterolText.setText(getString(R.string.n_a));
             cholesterolDate.setText("");
         }
 
@@ -300,7 +300,7 @@ public class homeLeftFragment extends Fragment  {
             hba1cDate.setText(dateText+"");
         }
         else{
-            hba1cText.setText("N/a");
+            hba1cText.setText(getString(R.string.n_a));
             hba1cDate.setText("");
         }
 
@@ -311,7 +311,7 @@ public class homeLeftFragment extends Fragment  {
             weightDate.setText(dateText+"");
         }
         else{
-            weightText.setText("N/a");
+            weightText.setText(getString(R.string.n_a));
             weightDate.setText("");
         }
 

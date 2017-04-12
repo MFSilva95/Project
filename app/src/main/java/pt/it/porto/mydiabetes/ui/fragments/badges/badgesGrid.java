@@ -1,5 +1,7 @@
 package pt.it.porto.mydiabetes.ui.fragments.badges;
 
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -24,6 +26,7 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 /**
  * Created by parra on 21/02/2017.
@@ -81,25 +84,50 @@ public class badgesGrid extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.fragment_badges_grid, container, false);
+
         RelativeLayout beginnerBadges = (RelativeLayout) layout.findViewById(R.id.beginnerBadges);
-        final ExpandableRelativeLayout expandableLayout1 = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableLayout1);
-        expandableLayout1.collapse();
+        final ExpandableRelativeLayout expandableBegginerBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableBegginerBadges);
+        expandableBegginerBadges.collapse();
         beginnerBadges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                expandableLayout1.toggle();
+                expandableBegginerBadges.toggle();
             }
         });
 
+        TextView textAdvanced = (TextView) layout.findViewById(R.id.textAdvanced);
+        RelativeLayout advancedBadges = (RelativeLayout) layout.findViewById(R.id.advancedBadges);
+        final ExpandableRelativeLayout expandableAdvancedBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableAdvancedBadges);
+        expandableBegginerBadges.collapse();
+        if(LevelsPointsUtils.getLevel(getContext()) >= 5) {
+            int[] attrs = new int[] { android.R.attr.selectableItemBackground /* index 0 */};
+            TypedArray ta = getContext().obtainStyledAttributes(attrs);
+            Drawable drawableFromTheme = ta.getDrawable(0);
+            ta.recycle();
+            advancedBadges.setBackground(drawableFromTheme);
+            textAdvanced.setText(getString(R.string.advanced));
+            advancedBadges.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    expandableAdvancedBadges.toggle();
+                }
+            });
+        }
+        else{
+            advancedBadges.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.divider));
+            textAdvanced.setText(getString(R.string.advanced_unlock_lvl5));
+        }
+
         RelativeLayout dailyBadges = (RelativeLayout) layout.findViewById(R.id.dailyBadges);
-        final ExpandableRelativeLayout expandableLayout2 = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableLayout2);
-        expandableLayout2.collapse();
+        final ExpandableRelativeLayout expandableDailyBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableDailyBadges);
+        expandableDailyBadges.collapse();
         dailyBadges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                expandableLayout2.toggle();
+                expandableDailyBadges.toggle();
             }
         });
+
 
         photoBadge = (ImageView) layout.findViewById(R.id.photoBadge);
         exportBadge = (ImageView) layout.findViewById(R.id.exportBadge);
@@ -261,9 +289,9 @@ public class badgesGrid extends Fragment  {
             }
 
         }
-        bronzeDailyCount.setText("("+bronzeDailyFlag+" medalhas)");
-        silverDailyCount.setText("("+silverDailyFlag+" medalhas)");
-        goldDailyCount.setText("("+goldDailyFlag+" medalhas)");
+        bronzeDailyCount.setText("("+bronzeDailyFlag+" "+getString(R.string.badges)+")");
+        silverDailyCount.setText("("+silverDailyFlag+" "+getString(R.string.badges)+")");
+        goldDailyCount.setText("("+goldDailyFlag+" "+getString(R.string.badges)+")");
 
     }
 }
