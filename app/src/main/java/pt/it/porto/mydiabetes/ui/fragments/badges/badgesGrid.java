@@ -95,11 +95,35 @@ public class badgesGrid extends Fragment  {
             }
         });
 
+        TextView textMedium = (TextView) layout.findViewById(R.id.textMedium);
+        RelativeLayout mediumBadges = (RelativeLayout) layout.findViewById(R.id.mediumBadges);
+        final ExpandableRelativeLayout expandableMediumBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableMediumBadges);
+        expandableMediumBadges.collapse();
+        if(LevelsPointsUtils.getLevel(getContext()) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL ) {
+            int[] attrs = new int[] { android.R.attr.selectableItemBackground /* index 0 */};
+            TypedArray ta = getContext().obtainStyledAttributes(attrs);
+            Drawable drawableFromTheme = ta.getDrawable(0);
+            ta.recycle();
+            mediumBadges.setBackground(drawableFromTheme);
+            textMedium.setText(getString(R.string.medium));
+            mediumBadges.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    expandableMediumBadges.toggle();
+                }
+            });
+        }
+        else{
+            mediumBadges.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.divider));
+            textMedium.setText(getString(R.string.medium_unlock_lvl10));
+        }
+
+
         TextView textAdvanced = (TextView) layout.findViewById(R.id.textAdvanced);
         RelativeLayout advancedBadges = (RelativeLayout) layout.findViewById(R.id.advancedBadges);
         final ExpandableRelativeLayout expandableAdvancedBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableAdvancedBadges);
-        expandableBegginerBadges.collapse();
-        if(LevelsPointsUtils.getLevel(getContext()) >= 5) {
+        expandableAdvancedBadges.collapse();
+        if(LevelsPointsUtils.getLevel(getContext()) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL ) {
             int[] attrs = new int[] { android.R.attr.selectableItemBackground /* index 0 */};
             TypedArray ta = getContext().obtainStyledAttributes(attrs);
             Drawable drawableFromTheme = ta.getDrawable(0);
@@ -115,7 +139,7 @@ public class badgesGrid extends Fragment  {
         }
         else{
             advancedBadges.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.divider));
-            textAdvanced.setText(getString(R.string.advanced_unlock_lvl5));
+            textAdvanced.setText(getString(R.string.advanced_unlock_lvl30));
         }
 
         RelativeLayout dailyBadges = (RelativeLayout) layout.findViewById(R.id.dailyBadges);

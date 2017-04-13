@@ -61,7 +61,7 @@
                     <ImageView
                         android:id="@+id/bronzeDailyBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -71,7 +71,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_2_daily_record" />
+                        android:text="@string/add_2_daily_record"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/bronzeDailyCount"
@@ -92,7 +93,7 @@
                     <ImageView
                         android:id="@+id/silverDailyBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -102,7 +103,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_4_daily_record" />
+                        android:text="@string/add_4_daily_record"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/silverDailyCount"
@@ -124,7 +126,7 @@
                     <ImageView
                         android:id="@+id/goldDailyBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -134,7 +136,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_6_daily_record" />
+                        android:text="@string/add_6_daily_record"
+                        android:textSize="12sp" />
 
                     <TextView
                         android:id="@+id/goldDailyCount"

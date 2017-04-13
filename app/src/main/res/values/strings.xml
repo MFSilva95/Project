@@ -455,6 +455,7 @@
     <string name="today_medal">Medalha de Hoje</string>
     <string name="level">Nível</string>
     <string name="points">Pontos</string>
+    <string name="medium">Médio</string>
     <string name="advanced">Avançado</string>
 
     <string name="add_photo">Adicionar Foto</string>
@@ -490,7 +491,8 @@
     <string name="welcome_text">Bem-Vindo à myDiabetes</string>
 
     <string name="new_insulin_record">Novo Registo de Insulina</string>
-    <string name="advanced_unlock_lvl5">Avançado (Desbloqueável a nível 5)</string>
+    <string name="medium_unlock_lvl10">Médio (Desbloqueável a nível 10)</string>
+    <string name="advanced_unlock_lvl30">Avançado (Desbloqueável a nível 30)</string>
     <string name="received_a_medal">Recebeu uma Medalha</string>
     <string name="received_a_daily_medal">Recebeu uma Medalha Diária</string>
 

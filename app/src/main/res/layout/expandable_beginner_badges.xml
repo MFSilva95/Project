@@ -53,7 +53,6 @@
                 android:id="@+id/profileBeginner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
@@ -66,7 +65,7 @@
                     <ImageView
                         android:id="@+id/photoBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -76,9 +75,11 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_photo" />
+                        android:text="@string/add_photo"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -89,7 +90,7 @@
                     <ImageView
                         android:id="@+id/exportBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -99,7 +100,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/create_backup" />
+                        android:text="@string/create_backup"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -112,12 +114,21 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <View
+                android:id="@+id/view11"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/ef_grey" />
+
             <LinearLayout
                 android:id="@+id/logBeginner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/profileBeginner"
-                android:layout_marginBottom="10dp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
@@ -130,7 +141,7 @@
                     <ImageView
                         android:id="@+id/bronzeLogBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -140,7 +151,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_log" />
+                        android:text="@string/add_3_records_log"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -153,7 +165,7 @@
                     <ImageView
                         android:id="@+id/silverLogBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -163,7 +175,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_10_records_log" />
+                        android:text="@string/add_10_records_log"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -176,7 +189,7 @@
                     <ImageView
                         android:id="@+id/goldLogBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -186,17 +199,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_20_records_log" />
+                        android:text="@string/add_20_records_log"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:id="@+id/view11"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/ef_grey" />
 
             <LinearLayout
                 android:id="@+id/exerciseBeginner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/logBeginner"
-                android:layout_marginBottom="10dp"
                 android:orientation="horizontal"
                 android:weightSum="3">
 
@@ -209,7 +232,7 @@
                     <ImageView
                         android:id="@+id/bronzeExerciseBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -219,7 +242,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_exercise" />
+                        android:text="@string/add_3_records_exercise"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -232,7 +256,7 @@
                     <ImageView
                         android:id="@+id/silverExerciseBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -242,7 +266,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_10_records_exercise" />
+                        android:text="@string/add_10_records_exercise"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -255,7 +280,7 @@
                     <ImageView
                         android:id="@+id/goldExerciseBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -265,17 +290,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_20_records_exercise" />
+                        android:text="@string/add_20_records_exercise"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:id="@+id/view11"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/ef_grey" />
 
             <LinearLayout
                 android:id="@+id/diseaseBeginner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/exerciseBeginner"
-                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:weightSum="3">
@@ -289,7 +324,7 @@
                     <ImageView
                         android:id="@+id/bronzeDiseaseBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -299,7 +334,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_1_records_disease" />
+                        android:text="@string/add_1_records_disease"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -312,7 +348,7 @@
                     <ImageView
                         android:id="@+id/silverDiseaseBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -322,7 +358,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_2_records_disease" />
+                        android:text="@string/add_2_records_disease"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -335,7 +372,7 @@
                     <ImageView
                         android:id="@+id/goldDiseaseBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -345,17 +382,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_disease" />
+                        android:text="@string/add_3_records_disease"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:id="@+id/view11"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/ef_grey" />
 
             <LinearLayout
                 android:id="@+id/weightBeginner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/diseaseBeginner"
-                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:weightSum="3">
@@ -369,7 +416,7 @@
                     <ImageView
                         android:id="@+id/bronzeWeightBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -380,7 +427,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_weight" />
+                        android:text="@string/add_3_records_weight"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -393,7 +441,7 @@
                     <ImageView
                         android:id="@+id/silverWeightBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -403,7 +451,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_10_records_weight" />
+                        android:text="@string/add_10_records_weight"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -416,7 +465,7 @@
                     <ImageView
                         android:id="@+id/goldWeightBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -426,17 +475,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_20_records_weight" />
+                        android:text="@string/add_20_records_weight"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:id="@+id/view11"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/ef_grey" />
 
             <LinearLayout
                 android:id="@+id/bpBeginner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/weightBeginner"
-                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:weightSum="3">
@@ -450,7 +509,7 @@
                     <ImageView
                         android:id="@+id/bronzeBpBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -460,7 +519,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_1_records_bp" />
+                        android:text="@string/add_1_records_bp"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -473,7 +533,7 @@
                     <ImageView
                         android:id="@+id/silverBpBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -483,7 +543,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_bp" />
+                        android:text="@string/add_3_records_bp"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -496,7 +557,7 @@
                     <ImageView
                         android:id="@+id/goldBpBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -506,17 +567,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_5_records_bp" />
+                        android:text="@string/add_5_records_bp"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:id="@+id/view11"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/ef_grey" />
 
             <LinearLayout
                 android:id="@+id/cholesterolBeginner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/bpBeginner"
-                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:weightSum="3">
@@ -530,7 +601,7 @@
                     <ImageView
                         android:id="@+id/bronzeCholesterolBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -540,7 +611,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_1_records_cholesterol" />
+                        android:text="@string/add_1_records_cholesterol"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -553,7 +625,7 @@
                     <ImageView
                         android:id="@+id/silverCholesterolBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -563,7 +635,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_2_records_cholesterol" />
+                        android:text="@string/add_2_records_cholesterol"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -576,7 +649,7 @@
                     <ImageView
                         android:id="@+id/goldCholesterolBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -586,17 +659,27 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_cholesterol" />
+                        android:text="@string/add_3_records_cholesterol"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
             </LinearLayout>
+
+            <View
+                android:id="@+id/view11"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/ef_grey" />
 
             <LinearLayout
                 android:id="@+id/hba1cBeginner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cholesterolBeginner"
-                android:layout_marginBottom="10dp"
                 android:layout_weight="1"
                 android:orientation="horizontal"
                 android:weightSum="3">
@@ -610,7 +693,7 @@
                     <ImageView
                         android:id="@+id/bronzeHba1cBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -620,7 +703,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_1_records_hba1c" />
+                        android:text="@string/add_1_records_hba1c"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -633,7 +717,7 @@
                     <ImageView
                         android:id="@+id/silverHba1cBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -643,7 +727,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_2_records_hba1c" />
+                        android:text="@string/add_2_records_hba1c"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
 
@@ -656,7 +741,7 @@
                     <ImageView
                         android:id="@+id/goldHba1cBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="80dp"
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
@@ -666,7 +751,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_hba1c" />
+                        android:text="@string/add_3_records_hba1c"
+                        android:textSize="12sp" />
 
                 </LinearLayout>
             </LinearLayout>
