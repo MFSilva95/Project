@@ -54,12 +54,9 @@ public class BadgeListAdapter extends BaseAdapter {
         BadgeRec badge = _data.get(position);
         date.setText(badge.getFormattedDate());
 
-        if(badge.getType().equals("beginner"))
-            type.setText(R.string.beginner);
-        if(badge.getType().equals("daily"))
-            type.setText(R.string.daily);
 
         if(badge.getType().equals("daily")){
+            type.setText(R.string.daily);
             if(badge.getMedal().equals("bronze")){
                 image.setImageResource(R.drawable.medal_bronze_daily);
             }
@@ -72,6 +69,7 @@ public class BadgeListAdapter extends BaseAdapter {
         }
 
         if(badge.getType().equals("beginner")){
+            type.setText(R.string.beginner);
             if(badge.getName().equals("photo")){
                 image.setImageResource(R.drawable.medal_gold_profile);
             }
@@ -139,6 +137,138 @@ public class BadgeListAdapter extends BaseAdapter {
                     image.setImageResource(R.drawable.medal_silver_hba1c);
                 if(badge.getMedal().equals("gold"))
                     image.setImageResource(R.drawable.medal_gold_hba1c);
+            }
+        }
+
+        if(badge.getType().equals("medium")){
+            type.setText(R.string.medium);
+            if(badge.getName().equals("log")){
+                if(badge.getMedal().equals("bronze"))
+                    image.setImageResource(R.drawable.medal_bronze_log_m);
+                if(badge.getMedal().equals("silver"))
+                    image.setImageResource(R.drawable.medal_silver_log_m);
+                if(badge.getMedal().equals("gold"))
+                    image.setImageResource(R.drawable.medal_gold_log_m);
+            }
+
+            if(badge.getName().equals("exercise")){
+                if(badge.getMedal().equals("bronze"))
+                    image.setImageResource(R.drawable.medal_bronze_exercise_m);
+                if(badge.getMedal().equals("silver"))
+                    image.setImageResource(R.drawable.medal_silver_exercise_m);
+                if(badge.getMedal().equals("gold"))
+                    image.setImageResource(R.drawable.medal_gold_exercise_m);
+            }
+
+            if(badge.getName().equals("disease")){
+                if(badge.getMedal().equals("bronze"))
+                    image.setImageResource(R.drawable.medal_bronze_disease_m);
+                if(badge.getMedal().equals("silver"))
+                    image.setImageResource(R.drawable.medal_silver_disease_m);
+                if(badge.getMedal().equals("gold"))
+                    image.setImageResource(R.drawable.medal_gold_disease_m);
+            }
+
+            if(badge.getName().equals("weight")){
+                if(badge.getMedal().equals("bronze"))
+                    image.setImageResource(R.drawable.medal_bronze_weight_m);
+                if(badge.getMedal().equals("silver"))
+                    image.setImageResource(R.drawable.medal_silver_weight_m);
+                if(badge.getMedal().equals("gold"))
+                    image.setImageResource(R.drawable.medal_gold_weight_m);
+            }
+
+            if(badge.getName().equals("bp")){
+                if(badge.getMedal().equals("bronze"))
+                    image.setImageResource(R.drawable.medal_bronze_bp_m);
+                if(badge.getMedal().equals("silver"))
+                    image.setImageResource(R.drawable.medal_silver_bp_m);
+                if(badge.getMedal().equals("gold"))
+                    image.setImageResource(R.drawable.medal_gold_bp_m);
+            }
+
+            if(badge.getName().equals("cholesterol")){
+                if(badge.getMedal().equals("bronze"))
+                    image.setImageResource(R.drawable.medal_bronze_cholesterol_m);
+                if(badge.getMedal().equals("silver"))
+                    image.setImageResource(R.drawable.medal_silver_cholesterol_m);
+                if(badge.getMedal().equals("gold"))
+                    image.setImageResource(R.drawable.medal_gold_cholesterol_m);
+            }
+
+            if(badge.getName().equals("hba1c")){
+                if(badge.getMedal().equals("bronze"))
+                    image.setImageResource(R.drawable.medal_bronze_hba1c_m);
+                if(badge.getMedal().equals("silver"))
+                    image.setImageResource(R.drawable.medal_silver_hba1c_m);
+                if(badge.getMedal().equals("gold"))
+                    image.setImageResource(R.drawable.medal_gold_hba1c_m);
+            }
+        }
+
+        if(badge.getType().equals("advanced")){
+            type.setText(R.string.advanced);
+            if(badge.getName().equals("log")){
+                if(badge.getMedal().equals("bronze"))
+                    image.setImageResource(R.drawable.medal_bronze_log_a);
+                if(badge.getMedal().equals("silver"))
+                    image.setImageResource(R.drawable.medal_silver_log_a);
+                if(badge.getMedal().equals("gold"))
+                    image.setImageResource(R.drawable.medal_gold_log_a);
+            }
+
+            if(badge.getName().equals("exercise")){
+                if(badge.getMedal().equals("bronze"))
+                    image.setImageResource(R.drawable.medal_bronze_exercise_a);
+                if(badge.getMedal().equals("silver"))
+                    image.setImageResource(R.drawable.medal_silver_exercise_a);
+                if(badge.getMedal().equals("gold"))
+                    image.setImageResource(R.drawable.medal_gold_exercise_a);
+            }
+
+            if(badge.getName().equals("disease")){
+                if(badge.getMedal().equals("bronze"))
+                    image.setImageResource(R.drawable.medal_bronze_disease_a);
+                if(badge.getMedal().equals("silver"))
+                    image.setImageResource(R.drawable.medal_silver_disease_a);
+                if(badge.getMedal().equals("gold"))
+                    image.setImageResource(R.drawable.medal_gold_disease_a);
+            }
+
+            if(badge.getName().equals("weight")){
+                if(badge.getMedal().equals("bronze"))
+                    image.setImageResource(R.drawable.medal_bronze_weight_a);
+                if(badge.getMedal().equals("silver"))
+                    image.setImageResource(R.drawable.medal_silver_weight_a);
+                if(badge.getMedal().equals("gold"))
+                    image.setImageResource(R.drawable.medal_gold_weight_a);
+            }
+
+            if(badge.getName().equals("bp")){
+                if(badge.getMedal().equals("bronze"))
+                    image.setImageResource(R.drawable.medal_bronze_bp_a);
+                if(badge.getMedal().equals("silver"))
+                    image.setImageResource(R.drawable.medal_silver_bp_a);
+                if(badge.getMedal().equals("gold"))
+                    image.setImageResource(R.drawable.medal_gold_bp_a);
+            }
+
+            if(badge.getName().equals("cholesterol")){
+                if(badge.getMedal().equals("bronze"))
+                    image.setImageResource(R.drawable.medal_bronze_cholesterol_a);
+                if(badge.getMedal().equals("silver"))
+                    image.setImageResource(R.drawable.medal_silver_cholesterol_a);
+                if(badge.getMedal().equals("gold"))
+                    image.setImageResource(R.drawable.medal_gold_cholesterol_a);
+            }
+
+            if(badge.getName().equals("hba1c")){
+                if(badge.getMedal().equals("bronze"))
+                    image.setImageResource(R.drawable.medal_bronze_hba1c_a);
+                if(badge.getMedal().equals("silver"))
+                    image.setImageResource(R.drawable.medal_silver_hba1c_a);
+                if(badge.getMedal().equals("gold"))
+                    image.setImageResource(R.drawable.medal_gold_hba1c_a);
             }
         }
 

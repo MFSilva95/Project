@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:id="@+id/beginnerBadges"
+        android:id="@+id/beginnerBadgesText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/selectableItemBackground"
@@ -34,7 +34,7 @@
         android:id="@+id/expandableBegginerBadges"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/beginnerBadges"
+        android:layout_below="@+id/beginnerBadgesText"
         app:ael_duration="500"
         app:ael_expanded="false"
         app:ael_orientation="vertical">

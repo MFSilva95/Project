@@ -244,7 +244,7 @@
     <string name="backup">Cópia de Segurança</string>
     <string name="do_back">Efectuar Cópia de Segurança</string>
     <string name="restore_backup">Restaurar Cópia</string>
-    <string name="restore_backup_button">Restaurar\nCópia de Segurança</string>
+    <string name="restore_backup_button">Restaurar Cópia\nde Segurança</string>
     <string name="restore_backup_success">Restauro efectuado com sucesso!</string>
     <string name="restore_backup_error">Ocurreu um erro durante o restauro, verifique se a memória externa está disponivel!</string>
     <string name="last_backup">Última Cópia de Segurança</string>

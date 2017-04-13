@@ -19,7 +19,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:orientation="vertical">
 
@@ -33,30 +32,86 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
+                android:gravity="center_horizontal"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:weightSum="4">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="50dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/beginnerBadge"
                         android:layout_width="match_parent"
-                        android:layout_height="70dp"
 
+                        android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
                         app:srcCompat="@drawable/medal_gold_record" />
 
                     <TextView
-                        android:id="@+id/beginnerBadges"
+                        android:id="@+id/beginnerBadgesText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/n_a"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/mediumLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/mediumBadge"
+                        android:layout_width="match_parent"
+
+                        android:layout_height="70dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"
+                        app:srcCompat="@drawable/medal_gold_record_m" />
+
+                    <TextView
+                        android:id="@+id/mediumBadgesText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="@string/n_a"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/advancedLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/advancedBadge"
+                        android:layout_width="match_parent"
+
+                        android:layout_height="70dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="5dp"
+                        app:srcCompat="@drawable/medal_gold_record_a" />
+
+                    <TextView
+                        android:id="@+id/advancedBadgesText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -68,7 +123,6 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="50dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
