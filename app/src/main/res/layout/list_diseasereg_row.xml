@@ -39,7 +39,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="2015-02-01"
                     android:textColor="@android:color/background_dark" />
 
                 <TextView
@@ -48,7 +47,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="2015-02-07"
                     android:textColor="@android:color/background_dark" />
             </LinearLayout>
 
@@ -65,8 +63,7 @@
                 android:maxLines="1"
                 android:textAppearance="@android:style/TextAppearance.Medium"
                 android:textColor="@android:color/background_dark"
-                android:textSize="18sp"
-                tools:text="gripe" />
+                android:textSize="18sp" />
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

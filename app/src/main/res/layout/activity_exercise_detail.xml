@@ -207,7 +207,7 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:gravity="top|left"
-                    android:hint="Notas"
+                    android:hint="@string/notes"
                     android:inputType="textMultiLine"
                     android:textSize="18sp" />
 

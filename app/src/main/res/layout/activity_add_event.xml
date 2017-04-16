@@ -35,11 +35,9 @@
                 android:background="?selectableItemBackground"
                 android:clickable="true"
                 android:gravity="center_vertical"
-                android:text="Today"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="0dp"
                 android:padding="5dp"
-                tools:text="Today"/>
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_editor_absoluteY="0dp" />
 
             <TextView
                 android:id="@+id/registerTime"

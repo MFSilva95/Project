@@ -42,6 +42,7 @@
     <string name="Logbook">Logbook</string>
     <string name="cholesterol">Cholesterol</string>
     <string name="from">From</string>
+    <string name="to">To</string>
     <string name="export">Export</string>
     <string name="grams">grams</string>
     <string name="hint_value3">e.g.: 45</string>
@@ -215,6 +216,134 @@
     <string name="badges">Badges</string>
     <string name="beginner">Beginner</string>
     <string name="daily">Daily</string>
+    <string name="list_badge_empty_message">Has not received any medals yet</string>
     <string name="ainda_n_o_tem_registos_precione_o_simbolo_para_fazer_novo_registo">No recent registers. Press \'+\' to do a new register.</string>
+
+    <string name="notes">Notes</string>
+
+    <string name="insulin_type_pen">Pen</string>
+    <string name="insulin_type_pump">Pump</string>
+
+    <string name="edit_day_phases">Edit Phases of the Day</string>
+    <string name="restore_backup_button">Restore Backup</string>
+
+    <string name="health">Health</string>
+    <string name="record">Record</string>
+    <string name="records">Records</string>
+    <string name="personal">Personal</string>
+    <string name="today_medal">Today\'s Medal</string>
+    <string name="level">Level</string>
+    <string name="points">Points</string>
+    <string name="medium">Medium</string>
+    <string name="advanced">Advanced</string>
+
+    <string name="add_photo">Add Photo</string>
+    <string name="create_backup">Create Backup</string>
+
+    <string name="add_3_records_log">Add 3 Logbook Entries</string>
+    <string name="add_10_records_log">Add 10 Logbook Entries</string>
+    <string name="add_20_records_log">Add 20 Logbook Entries</string>
+    <string name="add_40_records_log">Add 40 Logbook Entries</string>
+    <string name="add_60_records_log">Add 60 Logbook Entries</string>
+    <string name="add_80_records_log">Add 80 Logbook Entries</string>
+    <string name="add_150_records_log">Add 150 Logbook Entries</string>
+    <string name="add_200_records_log">Add 200 Logbook Entries</string>
+    <string name="add_250_records_log">Add 250 Logbook Entries</string>
+
+    <string name="add_3_records_exercise">Add 3 Exercise Records</string>
+    <string name="add_10_records_exercise">Add 10 Exercise Records</string>
+    <string name="add_20_records_exercise">Add 20 Exercise Records</string>
+    <string name="add_30_records_exercise">Add 30 Exercise Records</string>
+    <string name="add_50_records_exercise">Add 50 Exercise Records</string>
+    <string name="add_70_records_exercise">Add 70 Exercise Records</string>
+    <string name="add_90_records_exercise">Add 90 Exercise Records</string>
+    <string name="add_120_records_exercise">Add 120 Exercise Records</string>
+    <string name="add_150_records_exercise">Add 150 Exercise Records</string>
+
+    <string name="add_1_records_disease">Add 1 Disease Record</string>
+    <string name="add_2_records_disease">Add 2 Disease Records</string>
+    <string name="add_3_records_disease">Add 3 Disease Records</string>
+    <string name="add_4_records_disease">Add 4 Disease Records</string>
+    <string name="add_5_records_disease">Add 5 Disease Records</string>
+    <string name="add_6_records_disease">Add 6 Disease Records</string>
+    <string name="add_7_records_disease">Add 7 Disease Records</string>
+    <string name="add_8_records_disease">Add 8 Disease Records</string>
+    <string name="add_9_records_disease">Add 9 Disease Records</string>
+
+    <string name="add_3_records_weight">Add 3 Weight Records</string>
+    <string name="add_10_records_weight">Add 10 Weight Records</string>
+    <string name="add_20_records_weight">Add 20 Weight Records</string>
+    <string name="add_40_records_weight">Add 40 Weight Records</string>
+    <string name="add_60_records_weight">Add 60 Weight Records</string>
+    <string name="add_80_records_weight">Add 80 Weight Records</string>
+    <string name="add_100_records_weight">Add 100 Weight Records</string>
+    <string name="add_120_records_weight">Add 120 Weight Records</string>
+    <string name="add_150_records_weight">Add 150 Weight Records</string>
+
+    <string name="add_1_records_bp">Add 1 B. Pressure Record</string>
+    <string name="add_3_records_bp">Add 3 B. Pressure Records</string>
+    <string name="add_5_records_bp">Add 5 B. Pressure Records</string>
+    <string name="add_10_records_bp">Add 10 B. Pressure Records</string>
+    <string name="add_20_records_bp">Add 20 B. Pressure Records</string>
+    <string name="add_30_records_bp">Add 30 B. Pressure Records</string>
+    <string name="add_40_records_bp">Add 40 B. Pressure Records</string>
+    <string name="add_50_records_bp">Add 50 B. Pressure Records</string>
+    <string name="add_60_records_bp">Add 60 B. Pressure Records</string>
+
+    <string name="add_1_records_cholesterol">Add 1 Cholesterol Record</string>
+    <string name="add_2_records_cholesterol">Add 2 Cholesterol Records</string>
+    <string name="add_3_records_cholesterol">Add 3 Cholesterol Records</string>
+    <string name="add_4_records_cholesterol">Add 4 Cholesterol Records</string>
+    <string name="add_5_records_cholesterol">Add 5 Cholesterol Records</string>
+    <string name="add_6_records_cholesterol">Add 6 Cholesterol Records</string>
+    <string name="add_7_records_cholesterol">Add 7 Cholesterol Records</string>
+    <string name="add_8_records_cholesterol">Add 8 Cholesterol Records</string>
+    <string name="add_9_records_cholesterol">Add 9 Cholesterol Records</string>
+
+    <string name="add_1_records_hba1c">Add 1 Hba1c Record</string>
+    <string name="add_2_records_hba1c">Add 2 Hba1c Records</string>
+    <string name="add_3_records_hba1c">Add 3 Hba1c Records</string>
+    <string name="add_4_records_hba1c">Add 4 Hba1c Records</string>
+    <string name="add_5_records_hba1c">Add 5 Hba1c Records</string>
+    <string name="add_6_records_hba1c">Add 6 Hba1c Records</string>
+    <string name="add_7_records_hba1c">Add 7 Hba1c Records</string>
+    <string name="add_8_records_hba1c">Add 8 Hba1c Records</string>
+    <string name="add_9_records_hba1c">Add 9 Hba1c Records</string>
+
+
+    <string name="add_2_daily_record">Add 2 Daily Records</string>
+    <string name="add_4_daily_record">Add 4 Daily Records</string>
+    <string name="add_6_daily_record">Add 6 Daily Records</string>
+
+    <string name="sick_days">Sick Days</string>
+    <string name="subtitle_diabetes_factors">Details and Factors</string>
+    <string name="subtitle_personal_data">Personal Data</string>
+    <string name="welcome_text">Welcome to myDiabetes</string>
+
+    <string name="new_insulin_record">New Insulin Record</string>
+    <string name="new_glycemia_objective">New Glucose Target</string>
+    <string name="medium_unlock_lvl10">Medium (Unlockable at level 10)</string>
+    <string name="advanced_unlock_lvl30">Advanced (Unlockable at level 30)</string>
+    <string name="received_a_medal">Received a Medal</string>
+    <string name="received_a_daily_medal">Received a Daily Medal</string>
+    <string name="minutes">Minutes</string>
+
+    <string name="next_button">Next</string>
+    <string name="name">Name</string>
+
+    <string name="diabetes_type">Type of Diabetes</string>
+    <string name="sensivity_factor">Sensitivity factor</string>
+    <string name="carbs_racio">Carbohydrate Ratio</string>
+    <string name="hypoglycemia_limit">Limit to Hypoglycaemia</string>
+    <string name="hyperglycemia_limit">Limit for Hyperglycemia</string>
+
+    <string name="insulin_name">Name for Insulin</string>
+    <string name="insulin_method">Type of Administration</string>
+    <string name="description">Description</string>
+    <string name="schedule">Schedule</string>
+
+    <string name="use_iob">Use Insulin On Board</string>
+    <string name="settings_edit_insulins">Edit Insulin\'s</string>
+    <string name="settings_edit_glicemia_targets">Edit Glucose Goals</string>
 
 </resources>

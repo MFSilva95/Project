@@ -1,26 +1,21 @@
 package pt.it.porto.mydiabetes.ui.fragments.home;
 
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.Build;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.esafirm.imagepicker.features.ImagePicker;
@@ -32,21 +27,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.LinkedList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+import info.abdolahi.CircularMusicProgressBar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.activities.AddEvent;
 import pt.it.porto.mydiabetes.ui.activities.Badges;
 import pt.it.porto.mydiabetes.ui.activities.MyData;
-import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
-import pt.it.porto.mydiabetes.utils.LocaleUtils;
+import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -57,13 +49,26 @@ import static android.app.Activity.RESULT_OK;
 public class homeRightFragment extends Fragment  {
 
     private UserInfo myData;
-    private CircleImageView userImg;
+    //private CircleImageView userImg;
     private String userImgFileName = "profilePhoto.png";
     private SharedPreferences mPrefs;
     private String imgUriString;
     private View layout;
-    private TextView beginnerBadges;
+
+    private LinearLayout mediumLayout;
+    private LinearLayout advancedLayout;
+
+    private ImageView beginnerBadge;
+    private TextView beginnerBadgesText;
+    private ImageView mediumBadge;
+    private TextView mediumBadgesText;
+    private ImageView advancedBadge;
+    private TextView advancedBadgesText;
     private ImageView currentBadge;
+
+    private TextView levelText;
+    private TextView pointsText;
+    private CircularMusicProgressBar mCircleView;
 
     private static final int RC_CODE_PICKER = 2000;
     private Bitmap bmp;
@@ -91,10 +96,41 @@ public class homeRightFragment extends Fragment  {
         mPrefs = getContext().getSharedPreferences("label", 0);
         imgUriString = mPrefs.getString("userImgUri", null);
 
-        beginnerBadges = (TextView) layout.findViewById(R.id.beginnerBadges);
+        mCircleView = (CircularMusicProgressBar) layout.findViewById(R.id.circleView);
+        mCircleView.setValue(LevelsPointsUtils.getPercentageLevels(getContext()));
+
+        levelText = (TextView) layout.findViewById(R.id.numberLevel);
+        levelText.setText(LevelsPointsUtils.getLevel(getContext())+"");
+        pointsText = (TextView) layout.findViewById(R.id.numberPoints);
+        pointsText.setText(LevelsPointsUtils.getTotalPoints(getContext())+" / "+LevelsPointsUtils.getPointsNextLevel(getContext()));
+
+        mediumLayout = (LinearLayout) layout.findViewById(R.id.mediumLayout);
+        advancedLayout = (LinearLayout) layout.findViewById(R.id.advancedLayout);
+
+        if(LevelsPointsUtils.getLevel(getContext()) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
+            mediumLayout.setVisibility(View.VISIBLE);
+        }
+        else{
+            mediumLayout.setVisibility(View.GONE);
+        }
+        if(LevelsPointsUtils.getLevel(getContext()) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
+            advancedLayout.setVisibility(View.VISIBLE);
+        }
+        else{
+            advancedLayout.setVisibility(View.GONE);
+        }
+
+        beginnerBadge = (ImageView) layout.findViewById(R.id.beginnerBadge);
+        beginnerBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+        beginnerBadgesText = (TextView) layout.findViewById(R.id.beginnerBadgesText);
+        mediumBadge = (ImageView) layout.findViewById(R.id.mediumBadge);
+        mediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+        mediumBadgesText = (TextView) layout.findViewById(R.id.mediumBadgesText);
+        advancedBadge = (ImageView) layout.findViewById(R.id.advancedBadge);
+        advancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+        advancedBadgesText = (TextView) layout.findViewById(R.id.advancedBadgesText);
 
         currentBadge = (ImageView) layout.findViewById(R.id.currentBadge);
-
         currentBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
 
         setImage();
@@ -132,10 +168,10 @@ public class homeRightFragment extends Fragment  {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        final int THUMBSIZE = 350;
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
             images = data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
-            bmp = BitmapFactory.decodeFile(images.get(0).getPath());
-
+            bmp = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(images.get(0).getPath()), THUMBSIZE, THUMBSIZE);
             ContextWrapper cw = new ContextWrapper(getContext());
             // path to /data/data/yourapp/app_data/imageDir
             File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
@@ -156,7 +192,7 @@ public class homeRightFragment extends Fragment  {
                     e.printStackTrace();
                 }
             }
-            userImg.setImageBitmap(bmp);
+            mCircleView.setImageBitmap(bmp);
             BadgeUtils.addPhotoBadge(getContext());
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -172,15 +208,38 @@ public class homeRightFragment extends Fragment  {
         LinkedList<BadgeRec> list = db_read.Badges_GetAll();
         db_read.close();
 
+        if(LevelsPointsUtils.getLevel(getContext()) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
+            mediumLayout.setVisibility(View.VISIBLE);
+        }
+        else{
+            mediumLayout.setVisibility(View.GONE);
+        }
+        if(LevelsPointsUtils.getLevel(getContext()) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
+            advancedLayout.setVisibility(View.VISIBLE);
+        }
+        else{
+            advancedLayout.setVisibility(View.GONE);
+        }
+
+        levelText.setText(LevelsPointsUtils.getLevel(getContext())+"");
+        mCircleView.setValue(LevelsPointsUtils.getPercentageLevels(getContext()));
+        pointsText.setText(LevelsPointsUtils.getTotalPoints(getContext())+" / "+LevelsPointsUtils.getPointsNextLevel(getContext()));
+
         setMyDataFromDB(myData);
         updateMedals(list);
     }
 
     private void updateMedals(LinkedList<BadgeRec> list) {
         int countBeginner = 0;
+        int countMedium = 0;
+        int countAdvanced = 0;
         for (BadgeRec badge : list) {
             if(badge.getType().equals("beginner"))
                 countBeginner++;
+            if(badge.getType().equals("medium"))
+                countMedium++;
+            if(badge.getType().equals("advanced"))
+                countAdvanced++;
             if(badge.getType().equals("daily") && badge.getFormattedDate().equals(DateUtils.getFormattedDate(Calendar.getInstance()))){
                 if(badge.getMedal().equals("bronze")){
                     currentBadge.clearColorFilter();
@@ -193,11 +252,21 @@ public class homeRightFragment extends Fragment  {
                     currentBadge.setImageResource(R.drawable.medal_gold_daily);}
             }
         }
-        beginnerBadges.setText(countBeginner+"/23");
+
+        if(countBeginner > 0)
+            beginnerBadge.clearColorFilter();
+        if(countMedium > 0)
+            mediumBadge.clearColorFilter();
+        if(countAdvanced > 0)
+            advancedBadge.clearColorFilter();
+
+        beginnerBadgesText.setText(countBeginner+"/23");
+        mediumBadgesText.setText(countMedium+"/21");
+        advancedBadgesText.setText(countAdvanced+"/21");
     }
 
     private void setImage() {
-        userImg = (CircleImageView) layout.findViewById(R.id.profile_image);
+        mCircleView = (CircularMusicProgressBar) layout.findViewById(R.id.circleView);
 
         ContextWrapper cw = new ContextWrapper(getContext());
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
@@ -205,17 +274,17 @@ public class homeRightFragment extends Fragment  {
         File mypath = new File(directory, userImgFileName);
         if (mypath.exists()) {
             Bitmap bmp = BitmapFactory.decodeFile(mypath.getPath());
-            userImg.setImageBitmap(bmp);
+            mCircleView.setImageBitmap(bmp);
         }
 
-        userImg.setOnClickListener(new View.OnClickListener() {
+        mCircleView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ImagePickerActivity.class);
 
                 intent.putExtra(ImagePicker.EXTRA_FOLDER_MODE, true);
                 intent.putExtra(ImagePicker.EXTRA_MODE, ImagePicker.MODE_SINGLE);
-                intent.putExtra(ImagePicker.EXTRA_SHOW_CAMERA, false);
+                intent.putExtra(ImagePicker.EXTRA_SHOW_CAMERA, true);
                 intent.putExtra(ImagePicker.EXTRA_SELECTED_IMAGES, images);
                 intent.putExtra(ImagePicker.EXTRA_FOLDER_TITLE, "Album");
                 intent.putExtra(ImagePicker.EXTRA_IMAGE_TITLE, "Tap to select images");
@@ -229,13 +298,10 @@ public class homeRightFragment extends Fragment  {
     public void setMyDataFromDB(UserInfo obj) {
         if (obj != null) {
             TextView name = (TextView) layout.findViewById(R.id.name);
-            TextView bDate = (TextView) layout.findViewById(R.id.age);
-
-            name.setTag(obj.getId());
-            name.setText(obj.getUsername());
             Calendar bday = DateUtils.getDateCalendar(obj.getBirthday());
             int age = DateUtils.getAge(bday);
-            bDate.setText(age+" "+getString(R.string.years));
+            name.setTag(obj.getId());
+            name.setText(obj.getUsername()+", "+age);
         }
     }
 

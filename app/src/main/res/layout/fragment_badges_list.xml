@@ -9,7 +9,7 @@
 
         <include
             android:id="@+id/list_empty"
-            layout="@layout/list_empty"
+            layout="@layout/badge_list_empty"
             android:visibility="gone" />
 
         <ListView

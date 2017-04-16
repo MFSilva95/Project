@@ -15,7 +15,7 @@
         android:layout_weight="0.27" />
 
     <TextView
-        android:text="Bem-Vindo à myDiabetes"
+        android:text="@string/welcome_text"
         android:layout_width="match_parent"
         android:layout_height="328dp"
         android:gravity="center"

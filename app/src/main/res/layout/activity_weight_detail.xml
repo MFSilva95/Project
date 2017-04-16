@@ -146,7 +146,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_weight="1"
                     android:background="@null"
-                    android:hint="Kg"
+                    android:hint="@string/weight_unit"
                     android:inputType="numberDecimal"
                     android:maxLength="5"
                     android:textSize="18sp" />
@@ -185,7 +185,7 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:gravity="top|left"
-                    android:hint="Notas"
+                    android:hint="@string/notes"
                     android:inputType="textMultiLine"
                     android:textSize="18sp" />
 
