@@ -647,6 +647,34 @@ public class DB_Read {
 		}
 	}
 
+    @Nullable
+    public LinkedList<ExerciseRec> getExerciseFromStartDate(String startDate, int limit) {
+        Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Exercise WHERE StartDateTime >='" + startDate + "' ORDER BY StartDateTime DESC LIMIT "+limit+";", null);
+        LinkedList<ExerciseRec> exs = new LinkedList<ExerciseRec>();
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            ExerciseRec tmp;
+            do {
+
+                tmp = new ExerciseRec();
+                tmp.setId(cursor.getInt(0));
+                tmp.setIdUser(cursor.getInt(1));
+                tmp.setExercise(cursor.getString(2));
+                tmp.setDuration(cursor.getInt(3));
+                tmp.setEffort(cursor.getString(4));
+                tmp.setDateTime(cursor.getString(5));
+                tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
+                exs.add(tmp);
+
+                cursor.moveToNext();
+            } while (!cursor.isAfterLast());
+            cursor.close();
+            return exs;
+        } else {
+            cursor.close();
+            return exs;
+        }
+    }
 
 	//------------------- MEDICINE ------------------------------
 	public HashMap<Integer, String[]> Medicine_GetAll() {
@@ -871,6 +899,35 @@ public class DB_Read {
 		}
 	}
 
+	@Nullable
+	public LinkedList<BloodPressureRec> getBpFromStartDate(String startDate, int limit) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure WHERE DateTime >='" + startDate + "' ORDER BY DateTime DESC LIMIT "+limit+";", null);
+		LinkedList<BloodPressureRec> bloodPressureRecs = new LinkedList<BloodPressureRec>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			BloodPressureRec tmp;
+			do {
+				tmp = new BloodPressureRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setSystolic(cursor.getInt(2));
+				tmp.setDiastolic(cursor.getInt(3));
+				tmp.setDateTime(cursor.getString(4));
+				tmp.setIdTag(cursor.getInt(5));
+				tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
+				bloodPressureRecs.add(tmp);
+
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return bloodPressureRecs;
+		} else {
+			cursor.close();
+			return bloodPressureRecs;
+		}
+	}
+
+
 	//----------- CHOLESTEROL ---------------
 	public ArrayList<CholesterolRec> Cholesterol_GetBtDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE  DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
@@ -989,6 +1046,31 @@ public class DB_Read {
 		}
 	}
 
+	@Nullable
+	public LinkedList<CholesterolRec> getCholesterolFromStartDate(String startDate, int limit) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE DateTime >='" + startDate + "' ORDER BY DateTime DESC LIMIT "+limit+";", null);
+		LinkedList<CholesterolRec> cholesterolRecs = new LinkedList<CholesterolRec>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			CholesterolRec tmp;
+			do {
+				tmp = new CholesterolRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setValue(cursor.getDouble(2));
+				tmp.setDateTime(cursor.getString(3));
+				tmp.setIdNote((!cursor.isNull(4)) ? cursor.getInt(4) : -1);
+				cholesterolRecs.add(tmp);
+
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return cholesterolRecs;
+		} else {
+			cursor.close();
+			return cholesterolRecs;
+		}
+	}
 
 	//--------------- WEIGHT -----------------
 	public ArrayList<WeightRec> Weight_GetBtDate(String from, String to) {
@@ -1084,6 +1166,32 @@ public class DB_Read {
 	@Nullable
 	public LinkedList<WeightRec> getWeightByDate(String day) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Weight WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
+		LinkedList<WeightRec> weightRecs = new LinkedList<WeightRec>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			WeightRec tmp;
+			do {
+				tmp = new WeightRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setValue(cursor.getDouble(2));
+				tmp.setDateTime(cursor.getString(3));
+				tmp.setIdNote((!cursor.isNull(4)) ? cursor.getInt(4) : -1);
+				weightRecs.add(tmp);
+
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return weightRecs;
+		} else {
+			cursor.close();
+			return weightRecs;
+		}
+	}
+
+	@Nullable
+	public LinkedList<WeightRec> getWeightFromStartDate(String startDate, int limit) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Weight WHERE DateTime >='" + startDate + "' ORDER BY DateTime DESC LIMIT "+limit+";", null);
 		LinkedList<WeightRec> weightRecs = new LinkedList<WeightRec>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -1224,6 +1332,32 @@ public class DB_Read {
 		}
 	}
 
+	@Nullable
+	public LinkedList<HbA1cRec> getHbA1cFromStartDate(String startDate, int limit) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_A1c WHERE DateTime >='" + startDate + "' ORDER BY DateTime DESC LIMIT "+limit+";", null);
+		LinkedList<HbA1cRec> hbA1cRecs = new LinkedList<HbA1cRec>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			HbA1cRec tmp;
+			do {
+				tmp = new HbA1cRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setValue(cursor.getDouble(2));
+				tmp.setDateTime(cursor.getString(3));
+				tmp.setIdNote((!cursor.isNull(4)) ? cursor.getInt(4) : -1);
+				hbA1cRecs.add(tmp);
+
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return hbA1cRecs;
+		} else {
+			cursor.close();
+			return hbA1cRecs;
+		}
+	}
+
 	//----------------------- DISEASE REG
 	@Nullable
 	public DiseaseRec DiseaseReg_GetById(int id) {
@@ -1270,6 +1404,33 @@ public class DB_Read {
 	@Nullable
 	public LinkedList<DiseaseRec> getDiseaseByDate(String day) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Disease WHERE StartDate LIKE '%" + day + "%' ORDER BY StartDate DESC;", null);
+		LinkedList<DiseaseRec> diseaseRecs = new LinkedList<DiseaseRec>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			DiseaseRec tmp;
+			do {
+				tmp = new DiseaseRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setDisease(cursor.getString(2));
+				tmp.setDateTime(cursor.getString(3));
+				tmp.setEndDate(cursor.getString(4));
+				tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
+				diseaseRecs.add(tmp);
+
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return diseaseRecs;
+		} else {
+			cursor.close();
+			return diseaseRecs;
+		}
+	}
+
+	@Nullable
+	public LinkedList<DiseaseRec> getDiseaseFromStartDate(String startDate, int limit) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Disease WHERE StartDate >='" + startDate + "' ORDER BY StartDate DESC LIMIT "+limit+";", null);
 		LinkedList<DiseaseRec> diseaseRecs = new LinkedList<DiseaseRec>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -1451,6 +1612,83 @@ public class DB_Read {
 		}
 	}
 
+	public LinkedList<HomeElement> getLogBookFromStartDate(String startDate, int limit) {
+		Cursor cursor = myDB.rawQuery("SELECT DISTINCT datetime, tag, carbs, insulinVal, insulinName, glycemia, carbsId, insulinId, glycemiaId" +
+				" FROM " +
+				"(" +
+				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
+				" FROM Reg_CarboHydrate, Tag, Reg_Insulin, Reg_BloodGlucose, Insulin" +
+				" WHERE Reg_CarboHydrate.DateTime = Reg_Insulin.DateTime" +
+				" AND Reg_CarboHydrate.DateTime = Reg_BloodGlucose.DateTime" +
+				" AND Tag.Id = Reg_CarboHydrate.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
+				" UNION " +
+				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, -1 AS glycemia, -1 as glycemiaId" +
+				" FROM Reg_CarboHydrate, Tag, Reg_Insulin, Insulin" +
+				" WHERE Reg_CarboHydrate.DateTime = Reg_Insulin.DateTime" +
+				" AND Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
+				" AND Tag.Id = Reg_CarboHydrate.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
+				" UNION " +
+				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, -1 AS insulinVal, '' AS insulinName, -1 as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
+				" FROM Reg_CarboHydrate, Tag, Reg_BloodGlucose" +
+				" WHERE Reg_CarboHydrate.DateTime = Reg_BloodGlucose.DateTime " +
+				" AND Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_Insulin.DateTime FROM Reg_Insulin)" +
+				" AND Tag.Id = Reg_CarboHydrate.Id_Tag" +
+				" UNION " +
+				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, -1 AS insulinVal, '' AS insulinName, -1 as insulinId, -1 AS glycemia, -1 as glycemiaId" +
+				" FROM Reg_CarboHydrate, Tag" +
+				" WHERE Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_Insulin.DateTime FROM Reg_Insulin)" +
+				" AND Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
+				" AND Tag.Id = Reg_CarboHydrate.Id_Tag" +
+				" UNION " +
+				"SELECT Reg_BloodGlucose.DateTime as datetime, Tag.Name as tag, -1 as carbs, -1 as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
+				" FROM Tag, Reg_Insulin, Reg_BloodGlucose, Insulin" +
+				" WHERE Reg_BloodGlucose.DateTime = Reg_Insulin.DateTime " +
+				" AND Reg_BloodGlucose.DateTime NOT IN (SELECT Reg_CarboHydrate.DateTime FROM Reg_CarboHydrate)" +
+				" AND Tag.Id = Reg_BloodGlucose.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
+				" UNION " +
+				"SELECT Reg_BloodGlucose.DateTime as datetime, Tag.Name as tag, -1 as carbs, -1 as carbsId, -1 AS insulinVal, '' AS insulinName, -1 as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
+				" FROM Tag, Reg_BloodGlucose" +
+				" WHERE " +
+				"Reg_BloodGlucose.DateTime NOT IN (SELECT Reg_CarboHydrate.DateTime FROM Reg_CarboHydrate)" +
+				" AND Reg_BloodGlucose.DateTime NOT IN (SELECT Reg_Insulin.DateTime FROM Reg_Insulin)" +
+				" AND Tag.Id = Reg_BloodGlucose.Id_Tag" +
+				" UNION " +
+				"SELECT Reg_Insulin.DateTime as datetime, Tag.Name as tag, -1 as carbs, -1 as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, -1 AS glycemia, -1 as glycemiaId" +
+				" FROM  Tag, Reg_Insulin, Reg_BloodGlucose, Insulin" +
+				" WHERE " +
+				"Reg_Insulin.DateTime NOT IN (SELECT Reg_CarboHydrate.DateTime FROM Reg_CarboHydrate)" +
+				" AND Reg_Insulin.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
+				" AND Tag.Id = Reg_Insulin.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
+				")" +
+				"WHERE datetime >='" + startDate + "'" +
+				"ORDER BY datetime DESC LIMIT "+limit+";",null);
+
+		LinkedList<HomeElement> logBookEntries = new LinkedList<HomeElement>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			HomeElement tmp;
+			do {
+				tmp = new HomeElement(
+						cursor.getString(0),
+						cursor.getString(1),
+						cursor.getInt(2),
+						cursor.getFloat(3),
+						cursor.getString(4),
+						cursor.getInt(5),
+						cursor.getInt(6),
+						cursor.getInt(7),
+						cursor.getInt(8));
+				logBookEntries.add(tmp);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return logBookEntries;
+		} else {
+			cursor.close();
+			return logBookEntries;
+		}
+	}
+
 
 	public LinkedList<HomeElement> getLogBookByLimit(int limit) {
 		Cursor cursor = myDB.rawQuery("SELECT DISTINCT datetime, tag, carbs, insulinVal, insulinName, glycemia, carbsId, insulinId, glycemiaId" +
@@ -1504,7 +1742,6 @@ public class DB_Read {
 
 		LinkedList<HomeElement> logBookEntries = new LinkedList<HomeElement>();
 		if (cursor.getCount() > 0) {
-			Log.e("CURSOR COUNT",cursor.getCount()+"");
 			cursor.moveToFirst();
 			HomeElement tmp;
 			do {
@@ -1590,5 +1827,30 @@ public class DB_Read {
 		cursor.close();
 		return points;
 	}
+
+
+    @Nullable
+    public PointsRec getFirstPointToReachLevel(int points) {
+        Cursor cursor = myDB.rawQuery("SELECT Points1.Id, Points1.Id_User, Points1.DateTime, Points1.Value, Points1.Origin, SUM(Points2.Value) AS SUM " +
+                "FROM Points as Points1 " +
+                "INNER JOIN Points as Points2 ON Points1.id >= Points2.id GROUP BY Points1.id, Points1.Value " +
+                "HAVING SUM >= "+points+" "+
+                "ORDER BY Points1.id " +
+                "LIMIT 1;", null);
+        cursor.moveToLast();
+        if (cursor.getCount() == 0) {
+            return null;
+        }
+        PointsRec tmp = new PointsRec();
+        tmp.setId(cursor.getInt(0));
+        tmp.setIdUser(cursor.getInt(1));
+        tmp.setDateTime(cursor.getString(2));
+        tmp.setValue(cursor.getInt(3));
+        tmp.setOrigin(cursor.getString(4));
+
+        cursor.close();
+        return tmp;
+
+    }
 
 }

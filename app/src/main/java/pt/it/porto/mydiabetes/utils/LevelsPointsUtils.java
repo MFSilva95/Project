@@ -47,6 +47,10 @@ public class LevelsPointsUtils {
         return levels.length;
     }
 
+    public static int getPointsInLevel(int level){
+        return levels[level-1];
+    }
+
     public static int getPercentageLevels(Context context){
         DB_Read db = new DB_Read(context);
         int userPoints = db.getTotalPoints();
@@ -57,8 +61,6 @@ public class LevelsPointsUtils {
             int max = levels[index] - levels[index-1];
             userPoints = userPoints - levels[index-1];
             percent = (userPoints * 100) / max;
-            Log.e("USERPOINTS", userPoints+"");
-            Log.e("max", max+"");
         }
         else{
             percent = 100;
@@ -81,8 +83,8 @@ public class LevelsPointsUtils {
 
     //Points
 
-    public static final int RECORD_POINTS = 50;
-    public static final int BADGE_POINTS = 100;
+    public static final int RECORD_POINTS = 100;
+    public static final int BADGE_POINTS = 200;
     //public static int STREAK_NUMBER = 1;
     //public static final int REMOVE_POINTS = -50;
 

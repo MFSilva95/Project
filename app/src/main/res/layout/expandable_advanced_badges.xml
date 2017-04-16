@@ -76,7 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_log"
+                        android:text="@string/add_150_records_log"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -100,7 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_10_records_log"
+                        android:text="@string/add_200_records_log"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -124,7 +124,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_20_records_log"
+                        android:text="@string/add_250_records_log"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -167,7 +167,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_exercise"
+                        android:text="@string/add_90_records_exercise"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -191,7 +191,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_10_records_exercise"
+                        android:text="@string/add_120_records_exercise"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -215,7 +215,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_20_records_exercise"
+                        android:text="@string/add_150_records_exercise"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -259,7 +259,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_1_records_disease"
+                        android:text="@string/add_7_records_disease"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -283,7 +283,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_2_records_disease"
+                        android:text="@string/add_8_records_disease"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -307,7 +307,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_disease"
+                        android:text="@string/add_9_records_disease"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -352,7 +352,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_weight"
+                        android:text="@string/add_100_records_weight"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -373,10 +373,11 @@
                         app:srcCompat="@drawable/medal_silver_weight_a" />
 
                     <TextView
+                        android:id="@+id/textView11"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_10_records_weight"
+                        android:text="@string/add_120_records_weight"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -400,7 +401,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_20_records_weight"
+                        android:text="@string/add_150_records_weight"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -444,7 +445,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_1_records_bp"
+                        android:text="@string/add_40_records_bp"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -468,7 +469,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_bp"
+                        android:text="@string/add_50_records_bp"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -492,7 +493,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_5_records_bp"
+                        android:text="@string/add_60_records_bp"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -536,7 +537,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_1_records_cholesterol"
+                        android:text="@string/add_7_records_cholesterol"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -560,7 +561,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_2_records_cholesterol"
+                        android:text="@string/add_8_records_cholesterol"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -584,7 +585,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_cholesterol"
+                        android:text="@string/add_9_records_cholesterol"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -628,7 +629,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_1_records_hba1c"
+                        android:text="@string/add_7_records_hba1c"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -652,7 +653,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_2_records_hba1c"
+                        android:text="@string/add_8_records_hba1c"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -676,7 +677,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_hba1c"
+                        android:text="@string/add_9_records_hba1c"
                         android:textSize="12sp" />
 
                 </LinearLayout>
