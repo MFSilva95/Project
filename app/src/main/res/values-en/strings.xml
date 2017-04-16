@@ -217,7 +217,7 @@
     <string name="beginner">Beginner</string>
     <string name="daily">Daily</string>
     <string name="list_badge_empty_message">Has not received any medals yet</string>
-    <string name="ainda_n_o_tem_registos_precione_o_simbolo_para_fazer_novo_registo">No recent registers. Press \'+\' to do a new register.</string>
+    <string name="ainda_n_o_tem_registos_precione_o_simbolo_para_fazer_novo_registo">No registers this week\n Press \'+\' to do a new register.</string>
 
     <string name="notes">Notes</string>
 
