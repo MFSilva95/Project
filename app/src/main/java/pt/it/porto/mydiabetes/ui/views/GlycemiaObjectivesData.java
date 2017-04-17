@@ -136,10 +136,12 @@ public class GlycemiaObjectivesData implements Serializable, Parcelable {
 			error = ERROR_EMPTY_END_TIME;
 			errors[ERROR_EMPTY_END_TIME] = true;
 		}
-		int Oerror = GlicObjTimesOverlap(startTime,endTime);
-		if(Oerror != NO_ERROR){
-			error = Oerror;
-			errors[Oerror] = true;
+		if(errors[ERROR_EMPTY_START_TIME] == false && errors[ERROR_EMPTY_END_TIME] == false){
+			int Oerror = GlicObjTimesOverlap(startTime,endTime);
+			if(Oerror != NO_ERROR){
+				error = Oerror;
+				errors[Oerror] = true;
+			}
 		}
 		if (objective == -1) {
 			error = ERROR_EMPTY_OBJECTIVE;
