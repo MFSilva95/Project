@@ -226,6 +226,8 @@
 
     <string name="edit_day_phases">Edit Phases of the Day</string>
     <string name="restore_backup_button">Restore Backup</string>
+    <string name="restore_backup_button_welcome">Restore\nBackup</string>
+    <string name="do_back">Create Backup</string>
 
     <string name="health">Health</string>
     <string name="record">Record</string>
