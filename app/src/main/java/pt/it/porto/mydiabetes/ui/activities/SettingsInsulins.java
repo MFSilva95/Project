@@ -63,38 +63,6 @@ public class SettingsInsulins extends BaseActivity {
 		fillListView(insulinList);
 	}
 
-	public void showInsulinDialog() {
-		LayoutInflater inflater = getLayoutInflater();
-		final View v = inflater.inflate(R.layout.dialog_new_insulin, null);
-
-		new AlertDialog.Builder(this)
-				.setView(v)
-				.setPositiveButton(getString(R.string.saveButton), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						// deal with the editable
-						EditText iname = (EditText) v.findViewById(R.id.et_dialog_new_insulin_name);
-						EditText itype = (EditText) v.findViewById(R.id.et_dialog_new_insulin_type);
-						EditText iaction = (EditText) v.findViewById(R.id.et_dialog_new_insulin_action);
-						EditText iduration = (EditText) v.findViewById(R.id.et_dialog_new_insulin_duration);
-
-						String[] insulin = new String[4];
-						insulin[0] = iname.getText().toString();
-						insulin[1] = itype.getText().toString();
-						insulin[2] = iaction.getText().toString();
-						insulin[3] = iduration.getText().toString();
-
-						DB_Write wdb = new DB_Write(getApplicationContext());
-						wdb.Insulin_Add(insulin);
-						wdb.close();
-						fillListView(insulinList);
-					}
-				})
-				.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						// Do nothing.
-					}
-				}).show();
-	}
 
 	public void fillListView(ListView lv) {
 

@@ -48,7 +48,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:background="@color/primary_dark"
-                    android:text="de"
+                    android:text="@string/from"
                     android:textSize="14sp" />
 
                 <EditText
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
                     android:background="@color/primary_dark"
-                    android:text="a"
+                    android:text="@string/to"
                     android:textSize="14sp" />
 
                 <EditText

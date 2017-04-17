@@ -31,6 +31,7 @@ import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 
 public class DiseaseDetail extends BaseActivity {
@@ -201,6 +202,7 @@ public class DiseaseDetail extends BaseActivity {
 
 		BadgeUtils.addDiseaseBadge(getBaseContext());
 		BadgeUtils.addDailyBadge(getBaseContext());
+		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "disease");
 
 		reg.close();
 		rdb.close();

@@ -24,6 +24,7 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
+import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
 
@@ -158,6 +159,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		if (mypath.exists()) {
 			BadgeUtils.addPhotoBadge(getContext());
 		}
+		LevelsPointsUtils.addPoints(getContext(),0,"first");
 	}
 
 	private float getNumber(String val) {

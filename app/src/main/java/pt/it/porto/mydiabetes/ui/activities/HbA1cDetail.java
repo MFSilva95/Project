@@ -27,6 +27,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
@@ -169,6 +170,7 @@ public class HbA1cDetail extends BaseActivity {
 
 		BadgeUtils.addHba1cBadge(getBaseContext());
         BadgeUtils.addDailyBadge(getBaseContext());
+		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "hba1c");
 
 		wdb.close();
 		rdb.close();

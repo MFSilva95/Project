@@ -7,6 +7,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -131,7 +132,7 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 
 				intent.putExtra(ImagePicker.EXTRA_FOLDER_MODE, true);
 				intent.putExtra(ImagePicker.EXTRA_MODE, ImagePicker.MODE_SINGLE);
-				intent.putExtra(ImagePicker.EXTRA_SHOW_CAMERA, false);
+				intent.putExtra(ImagePicker.EXTRA_SHOW_CAMERA, true);
 				intent.putExtra(ImagePicker.EXTRA_SELECTED_IMAGES, images);
 				intent.putExtra(ImagePicker.EXTRA_FOLDER_TITLE, "Album");
 				intent.putExtra(ImagePicker.EXTRA_IMAGE_TITLE, "Tap to select images");
@@ -149,9 +150,10 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		final int THUMBSIZE = 350;
 		if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
 			images = data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
-			bmp = BitmapFactory.decodeFile(images.get(0).getPath());
+			bmp = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(images.get(0).getPath()), THUMBSIZE, THUMBSIZE);
 			ContextWrapper cw = new ContextWrapper(getContext());
 			// path to /data/data/yourapp/app_data/imageDir
 			File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);

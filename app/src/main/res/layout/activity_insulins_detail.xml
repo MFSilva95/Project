@@ -63,7 +63,7 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:gravity="top|left"
-                    android:hint="Nome"
+                    android:hint="@string/name"
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLength="18"
@@ -106,7 +106,7 @@
                         android:id="@+id/caneta"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Caneta" />
+                        android:text="@string/insulin_type_pen" />
 
 
                     <RadioButton
@@ -114,7 +114,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
-                        android:text="Bomba" />
+                        android:text="@string/insulin_type_pump" />
                 </RadioGroup>
 
             </LinearLayout>

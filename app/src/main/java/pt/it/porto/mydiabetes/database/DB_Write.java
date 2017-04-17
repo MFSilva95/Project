@@ -21,6 +21,7 @@ import pt.it.porto.mydiabetes.data.Insulin;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.data.PointsRec;
 import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.data.WeightRec;
@@ -709,5 +710,15 @@ public class DB_Write {
 		myDB.delete("Badges", "id=" + id, null);
 	}
 
+
+	public void Point_Save(PointsRec pointRec) {
+		ContentValues toInsert = new ContentValues();
+		String datetime = DateUtils.formatToDb(pointRec.getDateTime());
+		toInsert.put("Id_User", pointRec.getIdUser());
+		toInsert.put("DateTime", datetime);
+		toInsert.put("Value", pointRec.getValue());
+		toInsert.put("Origin", pointRec.getOrigin());
+		myDB.insert("Points", null, toInsert);
+	}
 
 }

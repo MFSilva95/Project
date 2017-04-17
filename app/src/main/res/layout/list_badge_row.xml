@@ -48,8 +48,7 @@
                     android:id="@+id/date"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="xxxx-xx-xx" />
+                    android:gravity="center_vertical|center_horizontal" />
             </LinearLayout>
 
             <LinearLayout
@@ -62,8 +61,7 @@
                     android:id="@+id/type"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center_vertical|center_horizontal"
-                    android:text="beginner" />
+                    android:gravity="center_vertical|center_horizontal" />
             </LinearLayout>
 
         </LinearLayout>

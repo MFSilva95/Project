@@ -27,6 +27,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
@@ -166,6 +167,7 @@ public class WeightDetail extends BaseActivity {
 
 		BadgeUtils.addWeightBadge(getBaseContext());
 		BadgeUtils.addDailyBadge(getBaseContext());
+		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "weight");
 
 		wdb.close();
 		rdb.close();

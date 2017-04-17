@@ -38,7 +38,7 @@
             android:textStyle="italic"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="Restaurar\nCópia Segurança"
+            android:text="@string/restore_backup_button"
             android:visibility="gone"
             tools:visibility="visible"
             android:textColor="@android:color/white" />

@@ -34,6 +34,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 
 public class ExerciseDetail extends BaseActivity {
@@ -54,7 +55,6 @@ public class ExerciseDetail extends BaseActivity {
 		}
 		FillExerciseSpinner();
 		FillEffortSpinner();
-		Log.e("ENTRA","ENTRA");
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
@@ -234,6 +234,7 @@ public class ExerciseDetail extends BaseActivity {
 
 		BadgeUtils.addExerciseBadge(getBaseContext());
 		BadgeUtils.addDailyBadge(getBaseContext());
+		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "exercise");
 
 		reg.close();
 		rdb.close();

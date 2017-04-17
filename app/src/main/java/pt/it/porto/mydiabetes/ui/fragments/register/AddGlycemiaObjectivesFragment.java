@@ -74,7 +74,7 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		list = (RecyclerView) layout.findViewById(R.id.insulin_list);
 
 		title = (TextView) layout.findViewById(R.id.title);
-		title.setText("Novo Objetivo de Glicemia");
+		title.setText(getString(R.string.new_glycemia_objective));
 
 		list.setAdapter(new InsulinAdapter());
 		list.setLayoutManager(new LinearLayoutManager(getContext()));

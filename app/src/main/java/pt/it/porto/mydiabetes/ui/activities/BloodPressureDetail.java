@@ -35,6 +35,7 @@ import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 
 public class BloodPressureDetail extends BaseActivity {
@@ -260,6 +261,8 @@ public class BloodPressureDetail extends BaseActivity {
 		wdb.BloodPressure_Save(bp);
 		BadgeUtils.addBpBadge(getBaseContext());
 		BadgeUtils.addDailyBadge(getBaseContext());
+
+		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "bp");
 
 		wdb.close();
 		rdb.close();

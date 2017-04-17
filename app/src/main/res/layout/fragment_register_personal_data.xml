@@ -18,7 +18,7 @@
 
 
         <TextView
-            android:text="Informações Pessoais"
+            android:text="@string/subtitle_personal_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/textView6"

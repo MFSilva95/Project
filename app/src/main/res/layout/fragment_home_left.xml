@@ -80,7 +80,7 @@
                                     android:id="@+id/value1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="N/a"
+                                    android:text="@string/n_a"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:textSize="20sp" />
 
@@ -89,7 +89,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignBaseline="@id/value1"
                                     android:paddingLeft="5dp"
-                                    android:text="Min"
+                                    android:text="@string/minutes"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:textColor="@color/black" />
 
@@ -169,7 +169,7 @@
                                     android:id="@+id/value2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="N/a"
+                                    android:text="@string/n_a"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:textSize="20sp" />
 
@@ -178,7 +178,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignBaseline="@id/value2"
                                     android:paddingLeft="5dp"
-                                    android:text="Dias Doente"
+                                    android:text="@string/sick_days"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:textColor="@color/black" />
 
@@ -266,7 +266,7 @@
                                     android:id="@+id/value3"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="N/a"
+                                    android:text="@string/n_a"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:textSize="20sp" />
 
@@ -275,7 +275,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignBaseline="@id/value3"
                                     android:paddingLeft="5dp"
-                                    android:text="Kg"
+                                    android:text="@string/weight_unit"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:textColor="@color/black" />
 
@@ -356,7 +356,7 @@
                                     android:id="@+id/value4"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="N/a"
+                                    android:text="@string/n_a"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:textSize="20sp" />
 
@@ -365,7 +365,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignBaseline="@id/value4"
                                     android:paddingLeft="5dp"
-                                    android:text="mmHg"
+                                    android:text="@string/bp_unit"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:textColor="@color/black" />
 
@@ -455,7 +455,7 @@
                                     android:id="@+id/value5"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="N/a"
+                                    android:text="@string/n_a"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:textSize="20sp" />
 
@@ -464,7 +464,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignBaseline="@id/value5"
                                     android:paddingLeft="5dp"
-                                    android:text="mg/dl"
+                                    android:text="@string/mg_dl"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:textColor="@color/black" />
 
@@ -544,7 +544,7 @@
                                     android:id="@+id/value6"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:text="N/a"
+                                    android:text="@string/n_a"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:textSize="20sp" />
 
@@ -553,7 +553,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_alignBaseline="@id/value2"
                                     android:paddingLeft="5dp"
-                                    android:text="%"
+                                    android:text="@string/percent"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
                                     android:textColor="@color/black" />
 
