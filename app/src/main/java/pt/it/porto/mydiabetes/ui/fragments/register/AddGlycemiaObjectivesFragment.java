@@ -1,6 +1,7 @@
 package pt.it.porto.mydiabetes.ui.fragments.register;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
@@ -93,7 +95,8 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 	}
 
 	private void addGlycemiaObjective() {
-		items.add(new GlycemiaObjectivesData(items.size()));
+		//items.add(new GlycemiaObjectivesData(items.size(), this.getContext()));
+		items.add(new GlycemiaObjectivesData(items.size(), items));
 		list.getAdapter().notifyItemInserted(items.size());
 	}
 
@@ -102,12 +105,14 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 	public boolean allFieldsAreValid() {
 		boolean cancel = false;
 		if (items.size() == 0) {
-			items.add(new GlycemiaObjectivesData(0));
+			//items.add(new GlycemiaObjectivesData(0, this.getContext()));
+			items.add(new GlycemiaObjectivesData(0, items));
 			list.getAdapter().notifyItemInserted(0);
 			return false;
 		}
 		ArrayList<String> names = new ArrayList<>(items.size());
 		for (int i = 0; i < items.size(); i++) {
+
 			if (!items.get(i).isValid() || names.contains(items.get(i).getDescription())) {
 				items.get(i).setInvalid(GlycemiaObjectivesData.ERROR_REPEATED_DESCRIPTION);
 				list.getAdapter().notifyItemChanged(i);
@@ -121,9 +126,6 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		if (cancel) {
 			return false;
 		}
-
-		cancel = validateGlicObjTimes();
-
 		return !cancel;
 	}
 
