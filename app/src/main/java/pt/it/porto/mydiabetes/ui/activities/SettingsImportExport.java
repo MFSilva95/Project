@@ -90,20 +90,6 @@ public class SettingsImportExport extends BaseActivity {
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	public static boolean isSDWriteable(){
 		boolean rc = false;
 

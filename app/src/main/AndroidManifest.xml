@@ -15,13 +15,24 @@
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.MANAGE_DOCUMENTS"/>
 
-
     <application
         tools:replace="android:theme"
         android:allowBackup="true"
         android:icon="@drawable/logo_v2"
         android:label="@string/app_name"
         android:theme="@style/HomeTheme">
+
+        <provider
+            tools:replace="android:authorities"
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
 
         <activity
             android:name=".ui.activities.WelcomeActivity"

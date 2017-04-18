@@ -5,54 +5,48 @@ package pt.it.porto.mydiabetes.ui.activities;
  */
 
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
-
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -60,21 +54,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.view.View.OnClickListener;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
-import java.text.ParseException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Locale;
+
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
@@ -94,7 +87,12 @@ import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFragment.CalcListener {
 
     @Override
@@ -117,6 +115,8 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         Log.i(TAG, "setIsManual: ->"+b);
     }
 
+    private static final int REQUEST_TAKE_PHOTO = 1;
+
     private Calendar registerDate;
     private TextView registerDateTextV;
     private TextView registerTimeTextV;
@@ -137,6 +137,8 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
 
     private String date = "";
     private String time = "";
+
+    private String mCurrentPhotoPath;
 
 
     @Nullable
@@ -935,7 +937,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             }
         }
     }
-    private Uri getImgURI(){
+    /*private Uri getImgURI(){
         File file = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes", new Date().getTime() + ".jpg");
         File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
         if (!dir.exists()) {
@@ -946,7 +948,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         }
         this.generatedImageUri = Uri.fromFile(file);
         return generatedImageUri;
-    }
+    }*/
     public String getDate() {
         return registerDateTextV.getText().toString();
     }
@@ -1082,6 +1084,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         return objTW;
     }
 
+
     private void setMealListeners(){
         ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
         if (imageView == null) {
@@ -1110,13 +1113,14 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     intent.putExtras(argsToPhoto);
                     startActivityForResult(intent, IMAGE_VIEW);
                 } else {
-                    try{
+                    /*try{
                         final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         intent.putExtra(MediaStore.EXTRA_OUTPUT, getImgURI());
                         startActivityForResult(intent, IMAGE_CAPTURE);
                     }catch (Exception e){
                         //error label -> permition denied
-                    }
+                    }*/
+                    NewHomeRegistryPermissionsDispatcher.startCameraWithCheck(NewHomeRegistry.this);
                 }
             }
         });
@@ -1195,6 +1199,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         glicTxt.addTextChangedListener(getGlicTW());
     }
 
+
     private void insertCarbsData(int carbValue){
         final ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
         if (imageView == null) {
@@ -1225,13 +1230,15 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     intent.putExtras(argsToPhoto);
                     startActivityForResult(intent, IMAGE_VIEW);
                 } else {
-                    try{
-                        final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, getImgURI());
-                        startActivityForResult(intent, IMAGE_CAPTURE);
+                    NewHomeRegistryPermissionsDispatcher.startCameraWithCheck(NewHomeRegistry.this);
+                   /* try{
+                        //final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        //intent.putExtra(MediaStore.EXTRA_OUTPUT, getImgURI());
+                        //startActivityForResult(intent, IMAGE_CAPTURE);
                     }catch (Exception e){
                         //error label -> permition denied
-                    }
+                    }*/
+
                 }
             }
         });
@@ -1302,6 +1309,88 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             hideBottomSheet();
             hideKeyboard();
         }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        NewHomeRegistryPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void startCamera() {
+        try {
+            dispatchTakePictureIntent();
+        } catch (IOException e) {
+        }
+    }
+
+    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showRationaleForCamera(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setMessage("Access to External Storage is required")
+                .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        request.cancel();
+                    }
+                })
+                .show();
+    }
+
+    private void dispatchTakePictureIntent() throws IOException {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                return;
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = null;
+                try {
+                    photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,
+                            BuildConfig.APPLICATION_ID + ".provider",
+                            createImageFile());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                setImgURI(Uri.parse(mCurrentPhotoPath));
+            }
+        }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
+        if (!dir.exists()) {
+            if (dir.mkdir()) {
+                // unable to create directory
+                // todo report and recover
+            }
+        }
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                dir      /* directory */
+        );
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
     }
 }
 

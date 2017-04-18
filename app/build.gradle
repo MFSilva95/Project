@@ -112,4 +112,6 @@ dependencies {
     compile ('com.github.florent37:androidparallax:1.0.1@aar'){
         transitive=true
     }
+    compile 'com.github.hotchemi:permissionsdispatcher:2.3.2'
+    annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:2.3.2'
 }
