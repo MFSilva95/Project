@@ -14,6 +14,8 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
@@ -28,7 +30,7 @@ import pt.it.porto.mydiabetes.database.DB_Write;
 
 
 
-public class ViewPhoto extends Activity {
+public class ViewPhoto extends BaseActivity {
 	ImageView img;
 
 	@Override
@@ -36,7 +38,11 @@ public class ViewPhoto extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_viewphoto);
 		// Show the Up button in the action bar.
-		getActionBar();
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 		
 		Bundle args = getIntent().getExtras();
 		if(args!=null){

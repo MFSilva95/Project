@@ -183,8 +183,15 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_CANCELED && requestCode == IMAGE_CAPTURE) {
-            setImgURI(generatedImageUri);
+        ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
+        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+            setImgURI(Uri.parse(mCurrentPhotoPath));
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int height = (int) (displaymetrics.heightPixels * 0.1);
+            int width = (int) (displaymetrics.widthPixels * 0.1);
+            b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+            imageView.setImageBitmap(b);
         } else if (requestCode == IMAGE_VIEW) {
             //se tivermos apagado a foto dá result code -1
             //se voltarmos por um return por exemplo o resultcode é 0
@@ -1317,7 +1324,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         NewHomeRegistryPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA})
     void startCamera() {
         try {
             dispatchTakePictureIntent();
@@ -1325,7 +1332,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         }
     }
 
-    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    /*@OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
     void showRationaleForCamera(final PermissionRequest request) {
         new AlertDialog.Builder(this)
                 .setMessage("Access to External Storage is required")
@@ -1342,7 +1349,8 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     }
                 })
                 .show();
-    }
+    }*/
+
 
     private void dispatchTakePictureIntent() throws IOException {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -1368,7 +1376,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                 }
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-                setImgURI(Uri.parse(mCurrentPhotoPath));
             }
         }
     }
