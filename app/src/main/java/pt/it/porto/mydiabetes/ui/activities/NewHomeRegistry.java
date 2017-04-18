@@ -1366,14 +1366,9 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                Uri photoURI = null;
-                try {
-                    photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,
+                Uri photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,
                             BuildConfig.APPLICATION_ID + ".provider",
-                            createImageFile());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                            photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
