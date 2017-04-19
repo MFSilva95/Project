@@ -140,49 +140,13 @@ public class Home extends BaseActivity {
 	public void checkPermissions(){
 		if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 			if (ActivityCompat.shouldShowRequestPermissionRationale(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-				//Show Information about why you need the permission
-				AlertDialog.Builder builder = new AlertDialog.Builder(Home.this);
-				builder.setTitle("Need Storage Permission");
-				builder.setMessage("This app needs storage permission.");
-				builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.cancel();
-						ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
-					}
-				});
-				builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.cancel();
-					}
-				});
-				builder.show();
+				ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
 			} else if (permissionStatus.getBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,false)) {
-				//Previously Permission Request was cancelled with 'Dont Ask Again',
-				// Redirect to Settings after showing Information about why you need the permission
-				AlertDialog.Builder builder = new AlertDialog.Builder(Home.this);
-				builder.setTitle("Need Storage Permission");
-				builder.setMessage("This app needs storage permission.");
-				builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.cancel();
 						sentToSettings = true;
 						Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
 						Uri uri = Uri.fromParts("package", getPackageName(), null);
 						intent.setData(uri);
 						startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-						Toast.makeText(getBaseContext(), "Go to Permissions to Grant Storage", Toast.LENGTH_LONG).show();
-					}
-				});
-				builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.cancel();
-					}
-				});
-				builder.show();
 			} else {
 				//just request the permission
 				ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
@@ -214,28 +178,7 @@ public class Home extends BaseActivity {
 				proceedAfterPermission();
 			} else {
 				if (ActivityCompat.shouldShowRequestPermissionRationale(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-					//Show Information about why you need the permission
-					AlertDialog.Builder builder = new AlertDialog.Builder(Home.this);
-					builder.setTitle("Need Storage Permission");
-					builder.setMessage("This app needs storage permission");
-					builder.setPositiveButton("Grant", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.cancel();
-
-
-							ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
-
-
-						}
-					});
-					builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-						@Override
-						public void onClick(DialogInterface dialog, int which) {
-							dialog.cancel();
-						}
-					});
-					builder.show();
+					ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
 				} else {
 					Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
 				}

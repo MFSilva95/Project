@@ -15,6 +15,8 @@ import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -25,6 +27,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
@@ -87,12 +90,6 @@ import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.OnShowRationale;
-import permissions.dispatcher.PermissionRequest;
-import permissions.dispatcher.RuntimePermissions;
-
-@RuntimePermissions
 public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFragment.CalcListener {
 
     @Override
@@ -153,6 +150,12 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     public static final String ARG_BLOOD_GLUCOSE = "ARG_BLOOD_GLUCOSE";
 
 
+    private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
+    private static final int REQUEST_PERMISSION_SETTING = 101;
+    private boolean sentToSettings = false;
+    private SharedPreferences permissionStatus;
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -183,6 +186,15 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_PERMISSION_SETTING) {
+            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                try {
+                    dispatchTakePictureIntent();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             setImgURI(Uri.parse(mCurrentPhotoPath));
@@ -238,6 +250,9 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
+
+        permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
+
         contentLayout = (LinearLayout) findViewById(R.id.content_panel);
         insulinCalculator = new InsulinCalculator(this);
         FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(this));
@@ -1127,7 +1142,11 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     }catch (Exception e){
                         //error label -> permition denied
                     }*/
-                    NewHomeRegistryPermissionsDispatcher.startCameraWithCheck(NewHomeRegistry.this);
+                    try {
+                        checkPermissions();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
@@ -1237,7 +1256,11 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     intent.putExtras(argsToPhoto);
                     startActivityForResult(intent, IMAGE_VIEW);
                 } else {
-                    NewHomeRegistryPermissionsDispatcher.startCameraWithCheck(NewHomeRegistry.this);
+                    try {
+                        checkPermissions();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                    /* try{
                         //final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         //intent.putExtra(MediaStore.EXTRA_OUTPUT, getImgURI());
@@ -1318,38 +1341,68 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        NewHomeRegistryPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-    }
+    public void checkPermissions() throws IOException {
+        if (ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.CAMERA)) {
+                ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+            } else if (permissionStatus.getBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,false) || (permissionStatus.getBoolean(Manifest.permission.CAMERA,false))) {
+                sentToSettings = true;
+                Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                intent.setData(uri);
+                startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+            } else {
+                //just request the permission
+                ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+            }
 
-    @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA})
-    void startCamera() {
-        try {
+            SharedPreferences.Editor editor = permissionStatus.edit();
+            editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,true);
+            editor.putBoolean(Manifest.permission.CAMERA,true);
+            editor.commit();
+
+
+        } else {
+            //You already have the permission, just go ahead.
             dispatchTakePictureIntent();
-        } catch (IOException e) {
         }
     }
 
-    /*@OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void showRationaleForCamera(final PermissionRequest request) {
-        new AlertDialog.Builder(this)
-                .setMessage("Access to External Storage is required")
-                .setPositiveButton("Allow", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        request.proceed();
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        if (sentToSettings) {
+            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    //Got Permission
+                    try {
+                        dispatchTakePictureIntent();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                })
-                .setNegativeButton("Deny", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        request.cancel();
-                    }
-                })
-                .show();
-    }*/
+                }
+            }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                try {
+                    dispatchTakePictureIntent();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.CAMERA)) {
+                    ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+                } else {
+                    Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
 
 
     private void dispatchTakePictureIntent() throws IOException {
