@@ -353,12 +353,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         else{
             imageTitleHolder.setVisibility(View.INVISIBLE);
         }
-        /*if(homeList.get(position+1).getDisplayType() == HomeElement.Type.SPACE || homeList.get(position+1).getDisplayType() == HomeElement.Type.HEADER){
-            sep.setVisibility(View.GONE);
-        }
-        else{
-            sep.setVisibility(View.VISIBLE);
-        }*/
         if (currentView.getInsulinId() != -1) {
             holder.insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", currentView.getInsulinVal()));
             holder.insulinName.setText(currentView.getInsulinName());

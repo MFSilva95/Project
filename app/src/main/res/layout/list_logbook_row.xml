@@ -58,7 +58,7 @@
             <LinearLayout
                 android:id="@+id/logbook_recs"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:layout_toRightOf="@+id/imageTitleHolder"
                 android:orientation="horizontal"
                 android:weightSum="5">
