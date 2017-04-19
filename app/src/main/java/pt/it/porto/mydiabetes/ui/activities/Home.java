@@ -16,6 +16,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -84,7 +85,14 @@ public class Home extends BaseActivity {
 		mViewPager.setOffscreenPageLimit(1);
 		mViewPager.blockSwipeRight(true);
 		mViewPager.blockSwipeLeft(true);
-		mViewPager.setCurrentItem(1);
+		if (savedInstanceState == null) {
+			mViewPager.setCurrentItem(1);
+			Log.e("ENTRA","ENTRA");
+		}
+		else{
+			mViewPager.setCurrentItem(savedInstanceState.getInt("viewpager", 0));
+		}
+
 
 		bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
 
@@ -133,7 +141,8 @@ public class Home extends BaseActivity {
 				}
 			}
 		});
-
+		Log.e("VIEW PAGER", mViewPager.getCurrentItem()+"");
+		bottomNavigationView.getMenu().getItem(mViewPager.getCurrentItem()).setChecked(true);
 		setupBottomNavigationView();
 	}
 
@@ -218,14 +227,9 @@ public class Home extends BaseActivity {
 		finish();
 	}
 	private void setupBottomNavigationView() {
-		Menu bottomNavigationViewMenu = bottomNavigationView.getMenu();
-		bottomNavigationViewMenu.findItem(R.id.action_register).setChecked(true);
-
 		bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 			@Override
 			public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
-
 				switch (item.getItemId()) {
 					case R.id.action_health:
 						mViewPager.setCurrentItem(0);
@@ -237,9 +241,26 @@ public class Home extends BaseActivity {
 						mViewPager.setCurrentItem(2);
 						break;
 				}
+				updateNavigationBarState(item.getItemId());
 				return true;
 			}
 		});
+	}
+
+	private void updateNavigationBarState(int actionId){
+		Menu menu = bottomNavigationView.getMenu();
+		for (int i = 0, size = menu.size(); i < size; i++) {
+			MenuItem item = menu.getItem(i);
+			item.setChecked(item.getItemId() == actionId);
+		}
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt("viewpager", mViewPager.getCurrentItem());
+		// do this for each or your Spinner
+		// You might consider using Bundle.putStringArray() instead
 	}
 
 
