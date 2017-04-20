@@ -87,7 +87,6 @@ public class Home extends BaseActivity {
 		mViewPager.blockSwipeLeft(true);
 		if (savedInstanceState == null) {
 			mViewPager.setCurrentItem(1);
-			Log.e("ENTRA","ENTRA");
 		}
 		else{
 			mViewPager.setCurrentItem(savedInstanceState.getInt("viewpager", 0));
@@ -141,7 +140,6 @@ public class Home extends BaseActivity {
 				}
 			}
 		});
-		Log.e("VIEW PAGER", mViewPager.getCurrentItem()+"");
 		bottomNavigationView.getMenu().getItem(mViewPager.getCurrentItem()).setChecked(true);
 		setupBottomNavigationView();
 	}

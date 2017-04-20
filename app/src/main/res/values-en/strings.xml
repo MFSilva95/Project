@@ -349,4 +349,8 @@
     <string name="settings_edit_glicemia_targets">Edit Glucose Goals</string>
     <string name="new_note">New Note</string>
 
+    <string name="badge_help_dialog_title">How to win Badges?</string>
+    <string name="badge_help_dialog_desc">To win Badges you must complete the required records for each. The intermediate and advanced levels are unlockable at levels 10 and 30 respectively.
+        For each record inserted gain 100 points and 200 per medal. Collect points to level up.</string>
+
 </resources>

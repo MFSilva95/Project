@@ -6,21 +6,29 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.features.ImagePickerActivity;
 import com.esafirm.imagepicker.model.Image;
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
+import com.github.javiersantos.materialstyleddialogs.enums.Style;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -58,6 +66,7 @@ public class homeRightFragment extends Fragment  {
     private LinearLayout mediumLayout;
     private LinearLayout advancedLayout;
 
+    private ImageButton helpButton;
     private ImageView beginnerBadge;
     private TextView beginnerBadgesText;
     private ImageView mediumBadge;
@@ -120,6 +129,7 @@ public class homeRightFragment extends Fragment  {
             advancedLayout.setVisibility(View.GONE);
         }
 
+        helpButton = (ImageButton) layout.findViewById(R.id.helpButton);
         beginnerBadge = (ImageView) layout.findViewById(R.id.beginnerBadge);
         beginnerBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
         beginnerBadgesText = (TextView) layout.findViewById(R.id.beginnerBadgesText);
@@ -160,6 +170,23 @@ public class homeRightFragment extends Fragment  {
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), Badges.class);
                 startActivity(intent);
+            }
+        });
+
+        helpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new MaterialStyledDialog.Builder(getContext())
+                        .setTitle(getString(R.string.badge_help_dialog_title))
+                        .setDescription(getString(R.string.badge_help_dialog_desc))
+                        .setStyle(Style.HEADER_WITH_ICON)
+                        .setIcon(R.drawable.medal_gold_record_a)
+                        .withDialogAnimation(true)
+                        .withDarkerOverlay(true)
+                        .withIconAnimation(false)
+                        .setCancelable(true)
+                        .setPositiveText(R.string.okButton)
+                        .show();
             }
         });
 
