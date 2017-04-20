@@ -347,5 +347,6 @@
     <string name="use_iob">Use Insulin On Board</string>
     <string name="settings_edit_insulins">Edit Insulin\'s</string>
     <string name="settings_edit_glicemia_targets">Edit Glucose Goals</string>
+    <string name="new_note">New Note</string>
 
 </resources>

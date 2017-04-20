@@ -200,7 +200,7 @@
     <string name="bloodpressure">Pressão Arterial</string>
     <string name="systolic">Sistólica</string>
     <string name="diastolic">Diastólica</string>
-    <string name="notes">Notas</string>
+    <string name="notes">Anotações</string>
 
     <string name="delete">Eliminar</string>
     <string name="name">Nome</string>
@@ -547,5 +547,6 @@
     <string name="advanced_unlock_lvl30">Avançado (Desbloqueável a nível 30)</string>
     <string name="received_a_medal">Recebeu uma Medalha</string>
     <string name="received_a_daily_medal">Recebeu uma Medalha Diária</string>
+    <string name="new_note">Nova anotação</string>
 
 </resources>

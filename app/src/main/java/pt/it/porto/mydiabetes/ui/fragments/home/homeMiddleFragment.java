@@ -44,13 +44,13 @@ public class homeMiddleFragment extends Fragment {
 	//private ItemTouchHelper helper = null;
 	private FloatingActionButton fab;
     private View listEmpty;
+
     private ArrayList<Task> taskListFromYap = new ArrayList<>();
     private ArrayList<Advice> receiverAdviceList = new ArrayList<>();
 
-
-
 	private RecyclerView homeRecyclerView;
 	private List<HomeElement> logBookList;
+
 	public static homeMiddleFragment newInstance() {
 		homeMiddleFragment fragment = new homeMiddleFragment();
 		return fragment;
@@ -148,8 +148,6 @@ public class homeMiddleFragment extends Fragment {
 		}
 	}
 
-
-
 	private void setFabClickListeners() {
 		fab.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -161,9 +159,6 @@ public class homeMiddleFragment extends Fragment {
 		});
 
 	}
-
-
-
 
 	private void fillTaskList() {
 		//taskListFromYap = yapDroid.getYapMultipleTasks();

@@ -122,6 +122,9 @@ public class DB_Write {
 		if (obj.getIdNote() > 0) {
 			toInsert.put("Id_Note", obj.getIdNote());
 		}
+		if(obj.getBG_target()!=-1){
+			toInsert.put("Target_BG", obj.getBG_target());
+		}
 
 		Log.d("Guardou", "Reg_BloodGlucose");
 		return (int) myDB.insert("Reg_BloodGlucose", null, toInsert);
@@ -137,6 +140,9 @@ public class DB_Write {
 		if (obj.getIdNote() > 0) {
 			toUpdate.put("Id_Note", obj.getIdNote());
 		}
+        if(obj.getBG_target()!=-1){
+            toUpdate.put("Target_BG", obj.getBG_target());
+        }
 
 		myDB.update("Reg_BloodGlucose", toUpdate, "Id=" + obj.getId(), null);
 

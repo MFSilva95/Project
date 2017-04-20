@@ -49,6 +49,7 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -75,6 +76,7 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
+import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
@@ -98,18 +100,18 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         showCalcs();
     }
 
-    private enum RegistryFields{CARBS,INSULIN,GLICEMIA,PLUS};
+    private enum RegistryFields{CARBS,INSULIN,GLICEMIA,NOTE,PLUS};
     private LinearLayout bottomSheetViewgroup;
     private BottomSheetBehavior bottomSheetBehavior;
     private LinearLayout contentLayout;
     private ArrayList<RegistryFields> buttons;
+    private ArrayList<RegistryFields> buttonsUpdate;
     private Boolean insulinManual = false;
     private Boolean getIsManual(){
         return insulinManual;
     }
     private void setIsManual(boolean b){
         insulinManual = b;
-        Log.i(TAG, "setIsManual: ->"+b);
     }
 
     private static final int REQUEST_TAKE_PHOTO = 1;
@@ -129,7 +131,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     private Uri generatedImageUri;
     private Uri imgUri;
     private Bitmap b;
-    private boolean isUpdate =false;
     private int noteId;
 
     private String date = "";
@@ -159,7 +160,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-
         Bundle args = getIntent().getExtras();
         if (args != null) {
             inflater.inflate(R.menu.weight_detail_delete, menu);
@@ -250,7 +250,8 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
-
+        buttons = new ArrayList<>();
+        buttonsUpdate = new ArrayList<>();
         permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
 
         contentLayout = (LinearLayout) findViewById(R.id.content_panel);
@@ -258,7 +259,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(this));
         useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
         imgUri = null;
-        buttons = new ArrayList<>();
+
         registerDate = Calendar.getInstance();
 
         insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
@@ -404,12 +405,18 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     }
     private void addContent(int layout) {
         contentLayout.addView(LayoutInflater.from(this).inflate(layout, contentLayout, false), 0);//contentLayout.getChildCount() - 1);
+        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
+        button.setEnabled(true);
     }
     private void addContentAt(int layout, int pos) {
         contentLayout.addView(LayoutInflater.from(this).inflate(layout, contentLayout, false), pos);//contentLayout.getChildCount() - 1);
     }
     private void removeContent(int child) {
         contentLayout.removeViewAt(child);
+        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
+        if(buttonsUpdate.size()==0 && buttons.size()==0){
+            button.setEnabled(false);
+        }
     }
     private void hideKeyboard() {
         if (getCurrentFocus() != null) {
@@ -424,7 +431,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     }
-
     private void showBottomSheet() {
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -450,16 +456,14 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             validateInfo_Save();
             finish();
         }catch (Exception e){
+            e.printStackTrace();
             return;
         }
     }
     private void validateInfo_Save()throws Exception{
-        /*TextView time = (TextView) findViewById(R.id.registerTimeTextV);
-        if (registerDate != null && time != null) {
-
-            //SimpleDateFormat sdf = new SimpleDateFormat(DateUtils.iso8601Format.toPattern());//yyyy-MM-dd HH:mm
-            //String currDate = registerDate.get(Calendar.YEAR)+"-"+registerDate.get(Calendar.MONTH)+"-"+registerDate.get(Calendar.DAY_OF_MONTH)+" "+time.getText();
-        }*/
+        if(buttons.contains(RegistryFields.NOTE)){
+            addNoteRead();
+        }
         for(RegistryFields field:buttons){
             try {
             switch (field){
@@ -467,6 +471,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                         addMealRead();
                         break;
                     case GLICEMIA:
+                        Log.i(TAG, "addGlycemiaRead: addREG");
                         addGlycemiaRead();
                         break;
                     case INSULIN:
@@ -487,7 +492,10 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
 
         Spinner tagSpinner = (Spinner) findViewById(R.id.tag_spinner);
         TextInputLayout gliInput = (TextInputLayout) findViewById(R.id.glycemia_txt);
+        TextInputLayout gliObjInput = (TextInputLayout) findViewById(R.id.glycemia_obj);
+
         EditText glycemia = gliInput.getEditText();
+        EditText objectiveG = gliObjInput.getEditText();
 
         if (glycemia != null && glycemia.getText().toString().equals("")) {
             glycemia.requestFocus();
@@ -508,12 +516,13 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         }
         int idTag = rdb.Tag_GetIdByName(tag);
         rdb.close();
-
         DB_Write reg = new DB_Write(this);
 
-
-        if(isUpdate){
+        if(buttonsUpdate.contains(RegistryFields.GLICEMIA)){
             int glicValue;
+            int objValue;
+
+            Log.i(TAG, "addGlycemiaRead: start");
             try{
                 glicValue = Integer.parseInt(glycemia.getText().toString());
             }catch (Exception e){
@@ -521,26 +530,81 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                 glycemia.requestFocus();
                 throw new Exception("wrong parameter");
             }
+            try{
+                objValue = Integer.parseInt(objectiveG.getText().toString());
+                Log.i(TAG, "addGlycemiaRead: "+objValue);
+
+            }catch (Exception e){
+                gliObjInput.setError(getString(R.string.glicInputError));
+                objectiveG.requestFocus();
+                throw new Exception("wrong parameter");
+            }
+            Log.i(TAG, "addGlycemiaRead: end");
+            if(noteId!=-1){
+                glycemiaData.setIdNote(noteId);
+            }
+            glycemiaData.setObjective(objValue);
             glycemiaData.setValue(glicValue);
             glycemiaData.setDateTime(registerDate);
             glycemiaData.setIdTag(idTag);
             reg.Glycemia_Update(glycemiaData);
         }else{
+            Log.i(TAG, "addGlycemiaRead: ELSE ELSE");
             GlycemiaRec gly = new GlycemiaRec();
 
             gly.setIdUser(idUser);
             int glicValue;
+            int objValue;
             try{
                 glicValue = Integer.parseInt(glycemia.getText().toString());
+
             }catch (Exception e){
                 gliInput.setError(getString(R.string.glicInputError));
                 glycemia.requestFocus();
                 throw new Exception("wrong parameter");
             }
+
+            try{
+                objValue = Integer.parseInt(objectiveG.getText().toString());
+
+            }catch (Exception e){
+                gliObjInput.setError(getString(R.string.glicInputError));
+                objectiveG.requestFocus();
+                throw new Exception("wrong parameter");
+            }
+
             gly.setValue(glicValue);
+            gly.setObjective(objValue);
+
             gly.setDateTime(registerDate);
+            if(noteId!=-1){
+                gly.setIdNote(noteId);
+            }
+            /**if(noteId!=-1){
+                gly.setIdNote(noteId);
+            }*/
             gly.setIdTag(idTag);
             reg.Glycemia_Save(gly);
+        }
+        reg.close();
+    }
+    public void addNoteRead() throws Exception {
+
+        EditText myNoteEditT = (EditText) findViewById(R.id.note_editText);
+        DB_Write reg = new DB_Write(this);
+
+        Note note = new Note();
+        if(myNoteEditT != null){
+            String noteValue = myNoteEditT.getText().toString();
+            if(!noteValue.equals("")){
+                note.setNote(noteValue);
+                if (buttonsUpdate.contains(RegistryFields.NOTE)) {
+                    note.setId(noteId);
+                    reg.Note_Update(note);
+                }else{
+                    noteId = reg.Note_Add(note);
+                }
+            }
         }
         reg.close();
     }
@@ -581,10 +645,13 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         boolean hasGlycemia = false;
         DB_Write reg = new DB_Write(this);
 
-        if(isUpdate){
+        if(buttonsUpdate.contains(RegistryFields.INSULIN)){
             insulinData.setIdInsulin(idInsulin);
             insulinData.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
             insulinData.setDateTime(registerDate);
+            if(noteId!=-1){
+                insulinData.setIdNote(noteId);
+            }
             float insulinDose;
             try{
                 insulinDose = Float.parseFloat(insulinUnits.getText().toString());
@@ -602,6 +669,9 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             ins.setIdInsulin(idInsulin);
             ins.setIdBloodGlucose(hasGlycemia ? idGlycemia : -1);
             ins.setDateTime(registerDate);
+            if(noteId!=-1){
+                ins.setIdNote(noteId);
+            }
             float insulinDose;
             try{
                 insulinDose = Float.parseFloat(insulinUnits.getText().toString());
@@ -632,6 +702,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         }
         int idTag = rdb.Tag_GetIdByName(tag);
         rdb.close();
+        String carbsNote;
 
         TextInputLayout mealInputLayout = (TextInputLayout) findViewById(R.id.meal_txt);
         int hcValue;
@@ -643,19 +714,24 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             throw new Exception("wrong parameter");
         }
 
-
         DB_Write reg = new DB_Write(this);
-        if(isUpdate){
+        if(buttonsUpdate.contains(RegistryFields.CARBS)){
             carbsData.setCarbsValue(hcValue);
             carbsData.setIdTag(idTag);
             carbsData.setPhotoPath(imgUri != null ? imgUri.getPath() : null);
             carbsData.setDateTime(registerDate);
+            if(noteId!=-1){
+                carbsData.setIdNote(noteId);
+            }
             reg.Carbs_Update(carbsData);
         }else{
             CarbsRec carb = new CarbsRec();
             carb.setIdUser(idUser);
             carb.setCarbsValue(hcValue);
             carb.setIdTag(idTag);
+            if(noteId!=-1){
+                carb.setIdNote(noteId);
+            }
             carb.setPhotoPath(imgUri != null ? imgUri.getPath() : null); // /data/MyDiabetes/yyyy-MM-dd HH.mm.ss.jpg
             carb.setDateTime(registerDate);
             reg.Carbs_Save(carb);
@@ -679,6 +755,11 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                 spinner.setAdapter(adapter);
             }
         }
+    }
+    private void insertNoteMenu(){
+        addContent(R.layout.note_content_edit);
+        findViewById(R.id.note_editText).requestFocus();
+        buttons.add(0, RegistryFields.NOTE);
     }
     private void insertGlicMenu(){
         /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
@@ -726,6 +807,17 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         hideBottomSheet();
         if(buttons.contains(RegistryFields.GLICEMIA)){insertInsulinSuggestion(RegistryFields.CARBS);}
     }
+    private void setNotePressed(View v){
+        insertNoteMenu();
+        v.getAnimation();
+        v.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                bottomSheetViewgroup.findViewById(R.id.bs_notes).setPressed(true);
+            }
+        }, 100L);
+        hideBottomSheet();
+    }
     private void setGlicPressed(View v){
         insertGlicMenu();
         v.getAnimation();
@@ -763,6 +855,22 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                 }
             }
         });
+        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
+        if(buttonsUpdate.size()==0 && buttons.size()==0){
+            button.setEnabled(false);
+        }
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (buttons.contains(RegistryFields.NOTE)) {
+                    removeContent(buttons.indexOf(RegistryFields.NOTE));
+                    buttons.remove(RegistryFields.NOTE);
+                    bottomSheetViewgroup.findViewById(R.id.bs_notes).setPressed(false);
+                } else {
+                    setNotePressed(v);
+                }
+            }
+        });
 
         bottomSheetViewgroup.findViewById(R.id.bs_meal).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -790,7 +898,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             }
         });
     }
-
     private void insertInsulinSuggestion(RegistryFields activator){
         Boolean cons = ((!buttons.contains(RegistryFields.INSULIN)) && buttons.contains(RegistryFields.CARBS) && buttons.contains(RegistryFields.GLICEMIA));
         if (cons) {
@@ -959,28 +1066,19 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             }
         }
     }
-    /*private Uri getImgURI(){
-        File file = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes", new Date().getTime() + ".jpg");
-        File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
-        if (!dir.exists()) {
-            if (dir.mkdir()) {
-                // unable to create directory
-                // todo report and recover
-            }
-        }
-        this.generatedImageUri = Uri.fromFile(file);
-        return generatedImageUri;
-    }*/
+
     public String getDate() {
         return registerDateTextV.getText().toString();
     }
     public String getTime() {
         return registerTimeTextV.getText().toString();
     }
+
     private void setImgURI(Uri newUri){imgUri=newUri;}
     private void imageRemoved() {
         setImgURI(null);
     }
+
     private void addGlycemiaObjective() {
         Intent intent = new Intent(this, TargetBG_detail.class);
         EditText targetGlycemia = ((TextInputLayout) findViewById(R.id.glycemia_obj)).getEditText();
@@ -1031,7 +1129,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     try{
                         int carbs = Integer.parseInt(carbsS);
                         insulinCalculator.setCarbs(carbs);
-                        Log.i(TAG, "afterTextChanged: carbs<------------");
                     }catch (NumberFormatException e){
                         insulinCalculator.setCarbs(0);
                     }
@@ -1063,7 +1160,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     try{
                         int glycValue = Integer.parseInt(glycString);
                         insulinCalculator.setGlycemia(glycValue);
-                        Log.i(TAG, "afterTextChanged: glic<-");
                     }catch (NumberFormatException e){
                         // glycValueT.setError(R.string.glicInputError);
                         insulinCalculator.setGlycemia(0);
@@ -1095,7 +1191,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                     try{
                         int glycObjValue = Integer.parseInt(glycObjString);
                         insulinCalculator.setGlycemiaTarget(glycObjValue);
-                        Log.i(TAG, "afterTextChanged: setTarget<-");
                     }catch (NumberFormatException e){
                         insulinCalculator.setGlycemiaTarget(0);
                     }
@@ -1105,7 +1200,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         };
         return objTW;
     }
-
 
     private void setMealListeners(){
         ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
@@ -1217,12 +1311,24 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         glicObjTxt.setText(glicObjValue+"");
         glicObjTxt.addTextChangedListener(getGlicObjTW());
     }
-    private void insertGlicData(int glicValue){
+    private void insertGlicValue(int glicValue){
         TextInputLayout glicInput = ((TextInputLayout) findViewById(R.id.glycemia_txt));
         TextView glicTxt = glicInput.getEditText();
         glicTxt.requestFocus();
         glicTxt.setText(glicValue+"");
         glicTxt.addTextChangedListener(getGlicTW());
+    }
+
+    private void insertGlicObj(int value){
+        try{
+            TextInputLayout glicObjInput = ((TextInputLayout) findViewById(R.id.glycemia_obj));
+            TextView glicObjTxt = glicObjInput.getEditText();
+            glicObjTxt.requestFocus();
+            glicObjTxt.setText(value+"");
+            glicObjTxt.addTextChangedListener(getGlicObjTW());
+        }catch (Exception e){
+         //there is no glicemia read
+        }
     }
 
 
@@ -1275,7 +1381,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     }
     private void fillParameters(Bundle args){
         if (args != null) {
-            isUpdate = true;
+            buttonsUpdate = new ArrayList<>();
             if (args.containsKey(ARG_CARBS)) {
                 carbsData = args.getParcelable(ARG_CARBS);
             }
@@ -1288,11 +1394,12 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             }
 
             noteId = -1;
+
             DB_Read db_read = new DB_Read(this);
             if (carbsData != null) {
                 carbsData = db_read.CarboHydrate_GetById(carbsData.getId());
                 if (carbsData != null) {
-                    Log.i(TAG, "fillParameters: carbs:"+carbsData.getCarbsValue());
+                    buttonsUpdate.add(RegistryFields.CARBS);
                     String imgPath = carbsData.getPhotoPath();
                     if(imgPath!=null){imgUri = Uri.parse(imgPath);}
                     insertCarbsMenu();
@@ -1304,9 +1411,11 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             if (glycemiaData != null) {
                 glycemiaData = db_read.Glycemia_GetById(glycemiaData.getId());
                 if (glycemiaData != null) {
-                    Log.i(TAG, "fillParameters: glic:"+glycemiaData.getValue());
+                    buttonsUpdate.add(RegistryFields.GLICEMIA);
                     insertGlicMenu();
-                    insertGlicData(glycemiaData.getValue());
+
+                    insertGlicData(glycemiaData.getValue(), glycemiaData.getBG_target());
+                    //insertGlicData(glycemiaData.getValue());
                     noteId = glycemiaData.getIdNote();
                     registerDate = glycemiaData.getDateTime();
                 }
@@ -1314,27 +1423,38 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             if (insulinData != null) {
                 insulinData = db_read.InsulinReg_GetById(insulinData.getId());
                 if (insulinData != null) {
-                    Log.i(TAG, "fillParameters: insulin:"+insulinData.getInsulinUnits());
+                    buttonsUpdate.add(RegistryFields.INSULIN);
                     insertInsulinMenu();
                     insertInsulinData(insulinData.getInsulinUnits());
                     noteId = insulinData.getIdNote();
                     registerDate = insulinData.getDateTime();
-                    //TODO insulinData.getTargetGlycemia();
+                    int obj = insulinData.getTargetGlycemia();
+                    if(obj!=-1){
+                        insertGlicObj(obj);
+                    }
+                    //TODO  -1 passar a valor real
                 }
             }
+            if(noteId != -1){
+                buttonsUpdate.add(RegistryFields.NOTE);
+                insertNoteMenu();
+                EditText myNoteEditT = (EditText) findViewById(R.id.note_editText);
+                myNoteEditT.setText(db_read.Note_GetById(noteId).getNote());
+            }
             if(registerDate!=null){
-                Log.i(TAG, "fillParameters: Calendar day"+registerDate.get(Calendar.DAY_OF_MONTH)+" hour:"+registerDate.get(Calendar.HOUR_OF_DAY));
                 setDate(registerDate);
                 setTime(registerDate);
             }
             db_read.close();
+
+
             insulinCalculator = new InsulinCalculator(this);
             insulinCalculator.setCarbs(carbsData != null ? carbsData.getCarbsValue() : 0);
             insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);
             insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
-            Calendar timeCalendar = DateUtils.getTimeCalendar(time);
-            if (timeCalendar != null) {
-                insulinCalculator.setTime(this, timeCalendar.get(Calendar.HOUR_OF_DAY), timeCalendar.get(Calendar.MINUTE), date);
+
+            if (registerDate != null) {
+                insulinCalculator.setTime(this, registerDate.get(Calendar.HOUR_OF_DAY), registerDate.get(Calendar.MINUTE), date);
             }
             hideBottomSheet();
             hideKeyboard();

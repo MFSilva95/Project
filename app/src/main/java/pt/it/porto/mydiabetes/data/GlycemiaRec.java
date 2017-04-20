@@ -21,6 +21,7 @@ public class GlycemiaRec extends DateTime implements Parcelable {
 	private int value;
 	private int idTag;
 	private int idNote = -1;
+	private int bg_target = -1;
 
 	public GlycemiaRec() {
 	}
@@ -35,6 +36,7 @@ public class GlycemiaRec extends DateTime implements Parcelable {
 		value = oldGlicemia.getValue();
 		idTag = oldGlicemia.getIdTag();
 		idNote = oldGlicemia.getIdNote();
+		bg_target = oldGlicemia.getBG_target();
 	}
 
 	protected GlycemiaRec(Parcel in) {
@@ -44,7 +46,14 @@ public class GlycemiaRec extends DateTime implements Parcelable {
 		value = in.readInt();
 		idTag = in.readInt();
 		idNote = in.readInt();
+		bg_target = in.readInt();
 	}
+
+	public void setObjective(int value){
+		this.bg_target = value;
+	}
+
+	public int getBG_target(){return bg_target;}
 
 	public int getValue() {
 		return value;
@@ -99,6 +108,7 @@ public class GlycemiaRec extends DateTime implements Parcelable {
 		dest.writeInt(value);
 		dest.writeInt(idTag);
 		dest.writeInt(idNote);
+        dest.writeInt(bg_target);
 	}
 
 	@Override
@@ -115,6 +125,7 @@ public class GlycemiaRec extends DateTime implements Parcelable {
 			return value == otherGlicemia.getValue() && id == otherGlicemia.getId() &&
 					idTag == otherGlicemia.getIdTag() &&
 					idNote == otherGlicemia.getIdNote() &&
+                    bg_target == otherGlicemia.getBG_target() &&
 					super.equals(o);
 		}
 	}

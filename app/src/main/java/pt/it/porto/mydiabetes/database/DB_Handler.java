@@ -17,8 +17,9 @@ import pt.it.porto.mydiabetes.R;
 public class DB_Handler extends SQLiteOpenHelper {
 
 	// Database Version
-	private static final int DATABASE_VERSION = 10;
+	private static final int DATABASE_VERSION = 11;
     private static final int DATABASE_VERSION_USERID_BADGES = 8;
+	private static final int DATABASE_VERSION_TARGET_BG = 10;
 
 
     // Database Name
@@ -108,20 +109,28 @@ public class DB_Handler extends SQLiteOpenHelper {
 			initDatabaseTables(db); // creates new feature table and Db_Info and Badges and points
 			if(oldVersion==DB_Handler.DATABASE_VERSION_USERID_BADGES){ //need to update BADGES
                 Log.i("DB Upgrade","Altering DB");
-                String update = "ALTER TABLE Badges rename to badges_backup;\n" + //rename old table
+                String updateBadges = "ALTER TABLE Badges rename to badges_backup;\n" + //rename old table
                         "CREATE TABLE IF NOT EXISTS Badges (Id INTEGER PRIMARY KEY AUTOINCREMENT, Id_User INTEGER NOT NULL, DateTime DATETIME NOT NULL, Type TEXT NOT NULL, Name TEXT NOT NULL, Medal TEXT NOT NULL, FOREIGN KEY(Id_User) REFERENCES UserInfo(Id));\n" + //create new one
                         "INSERT INTO badges(id,datetime,type, name,medal,id_user) SELECT b.*,u.id FROM badges_backup as b, userinfo as u;\n" +//recover the old ones to the one table
                         "DROP TABLE badges_backup;";//drop backup
                 try {
-                    db.execSQL(update);
+                    db.execSQL(updateBadges);
                     Log.i("DB Upgrade","Finished altering DB");
                 }
                 catch(SQLException sqlE) {
                     Log.e("DB Update adding column",sqlE.getLocalizedMessage());
                 }
-
-
             }
+            if(oldVersion<DATABASE_VERSION_TARGET_BG){
+				String updateGlicemia = "ALTER TABLE Reg_BloodGlucose add collumn Target_BG REAL;";
+				try {
+					db.execSQL(updateGlicemia);
+					Log.i("DB Upgrade","Finished altering DB");
+				}
+				catch(SQLException sqlE) {
+					Log.e("DB Update adding column",sqlE.getLocalizedMessage());
+				}
+			}
 
 		}
 	}

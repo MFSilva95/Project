@@ -262,7 +262,7 @@ public class DB_Read {
 		g.setDateTime(t);
 		g.setIdTag(cursor.getInt(4));
 		g.setIdNote((!cursor.isNull(5)) ? cursor.getInt(5) : -1);
-
+		g.setObjective((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
 		cursor.close();
 
 		return g;
