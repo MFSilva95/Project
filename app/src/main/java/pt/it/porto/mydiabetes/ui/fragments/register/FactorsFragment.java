@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -39,6 +40,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 	private EditText hyperglycemiaLimit;
 	private View layout = null;
 	private String userImgFileName = "profilePhoto.png";
+	private ScrollView scrollView;
 
 	/**
 	 * Use this factory method to create a new instance of
@@ -64,6 +66,8 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		layout = inflater.inflate(R.layout.fragment_register_factors, container, false);
+		scrollView = (ScrollView) layout.findViewById(R.id.scrollview);
+
 		diabetesType = (Spinner) layout.findViewById(R.id.diabetes_type);
 
 		ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.diabetes_Type , R.layout.welcome_spinner_item);
@@ -74,6 +78,40 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		carbsRatio = (EditText) layout.findViewById(R.id.carbs_ratio);
 		hypoglycemiaLimit = (EditText) layout.findViewById(R.id.hypoglycemia_limit);
 		hyperglycemiaLimit = (EditText) layout.findViewById(R.id.hyperglycemia_limit);
+
+
+		sensibilityFactor.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					focusOnView(sensibilityFactor);
+				}
+			}
+		});
+		carbsRatio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					focusOnView(carbsRatio);
+				}
+			}
+		});
+		hypoglycemiaLimit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					focusOnView(hypoglycemiaLimit);
+				}
+			}
+		});
+		hyperglycemiaLimit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					focusOnView(hyperglycemiaLimit);
+				}
+			}
+		});
 
 
 		return layout;
@@ -174,5 +212,15 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 	public int getSubtitle() {
 		return R.string.subtitle_diabetes_factors;
 	}
+
+	private final void focusOnView(final View view){
+		scrollView.post(new Runnable() {
+			@Override
+			public void run() {
+				scrollView.scrollTo(0, view.getBottom());
+			}
+		});
+	}
+
 
 }

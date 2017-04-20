@@ -36,9 +36,10 @@
             android:layout_alignParentBottom="true"
             app:elevation="8dp"
             app:itemBackground="@color/primary"
+            android:background="@color/primary"
             app:itemIconTint="@drawable/nav_item_color_state"
             app:itemTextColor="@drawable/nav_item_color_state"
-            app:menu="@menu/bottom_navigation_main"/>
+            app:menu="@menu/bottom_navigation_main" />
     </RelativeLayout>
 
     <android.support.design.widget.NavigationView

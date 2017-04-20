@@ -24,6 +24,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -72,6 +73,8 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 	private RadioGroup mGenderGroup;
 	private Bitmap bmp;
 
+	private ScrollView scrollView;
+
 
 
 	/**
@@ -99,8 +102,9 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 
 		// Inflate the layout for this fragment
 		layout = inflater.inflate(R.layout.fragment_register_personal_data, container, false);
-		mNameView = (EditText) layout.findViewById(R.id.name);
+		scrollView = (ScrollView) layout.findViewById(R.id.scrollview);
 
+		mNameView = (EditText) layout.findViewById(R.id.name);
 		mHeightView = (EditText) layout.findViewById(R.id.height);
 		mDateView = (EditText) layout.findViewById(R.id.birthdate);
 		setDate(DEFAULT_BIRTHDAY_YEAR, DEFAULT_BIRTHDAY_MONTH, DEFAULT_BIRTHDAY_DAY);
@@ -144,6 +148,42 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 
 
 		});
+
+		mNameView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					focusOnView(mNameView);
+				}
+			}
+		});
+		mHeightView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					focusOnView(mHeightView);
+				}
+			}
+		});
+		mGenderGroup.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					focusOnView(mGenderGroup);
+				}
+			}
+		});
+		mNameView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					focusOnView(mNameView);
+				}
+			}
+		});
+
+
+
 
 		return layout;
 	}
@@ -278,6 +318,15 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 	@Override
 	public int getSubtitle() {
 		return R.string.subtitle_personal_data;
+	}
+
+	private final void focusOnView(final View view){
+		scrollView.post(new Runnable() {
+			@Override
+			public void run() {
+				scrollView.scrollTo(0, view.getBottom());
+			}
+		});
 	}
 
 
