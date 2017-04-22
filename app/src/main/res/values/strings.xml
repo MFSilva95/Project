@@ -553,4 +553,6 @@
     <string name="badge_help_dialog_desc">Para ganhar medalhas deve completar os registos necessários a cada. O nível intermédio e avançado são desbloqueáveis a níveis 10 e 30 respetivamente.
         Por cada registo inserido ganha 100 pontos e por medalha 200. Junte pontos para subir de nível.</string>
 
+
+    <string name="email_feedback_subject">Opinião e Comentários sobre a myDiabetes</string>
 </resources>

@@ -353,4 +353,5 @@
     <string name="badge_help_dialog_desc">To win Badges you must complete the required records for each. The intermediate and advanced levels are unlockable at levels 10 and 30 respectively.
         For each record inserted gain 100 points and 200 per medal. Collect points to level up.</string>
 
+    <string name="email_feedback_subject">Opinion and Comments about myDiabetes</string>
 </resources>

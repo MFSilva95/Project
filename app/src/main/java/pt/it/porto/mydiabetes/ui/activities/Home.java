@@ -1,16 +1,20 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
 import android.Manifest;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ShareCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,9 +23,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 
+import java.io.File;
+import java.util.List;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
@@ -29,6 +36,8 @@ import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
+
+import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.PROJECT_MANAGER_EMAIL;
 
 
 public class Home extends BaseActivity {
@@ -133,6 +142,9 @@ public class Home extends BaseActivity {
 					case R.id.info:
 						intent = new Intent(getApplicationContext(), Info.class);
 						startActivity(intent);
+						return true;
+					case R.id.feedback:
+						feedback();
 						return true;
 					default:
 						Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
@@ -259,6 +271,43 @@ public class Home extends BaseActivity {
 		outState.putInt("viewpager", mViewPager.getCurrentItem());
 		// do this for each or your Spinner
 		// You might consider using Bundle.putStringArray() instead
+	}
+
+	public void feedback() {
+		DB_Read read = new DB_Read(this);
+		Intent intent = ShareCompat.IntentBuilder.from(this)
+				.setType("message/rfc822")
+				.addEmailTo(PROJECT_MANAGER_EMAIL)
+				.setSubject(getResources().getString(R.string.email_feedback_subject))
+				.setText(getResources().getString(R.string.share_text))
+				.getIntent();
+
+		// get apps that resolve email
+		Intent justEmailAppsIntent = new Intent(Intent.ACTION_SENDTO);
+		justEmailAppsIntent.setType("text/plain");
+		justEmailAppsIntent.setData(Uri.parse("mailto:"));
+		List<ResolveInfo> activities = getPackageManager().queryIntentActivities(justEmailAppsIntent, 0);
+
+		Intent[] extraIntents = new Intent[activities.size() - 1];
+		for (int i = 0; i < activities.size() - 1; i++) {
+			extraIntents[i] = (Intent) intent.clone();
+			extraIntents[i].setClassName(activities.get(i).activityInfo.packageName, activities.get(i).activityInfo.name);
+		}
+		Intent one = (Intent) intent.clone();
+		one.setClassName(activities.get(activities.size() - 1).activityInfo.packageName, activities.get(activities.size() - 1).activityInfo.name);
+
+		Intent openInChooser = Intent.createChooser(one, null);
+		openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+
+		ComponentName activityResolved = openInChooser.resolveActivity(getPackageManager());
+		if (activityResolved != null) {
+			if (intent.resolveActivity(getPackageManager()) != null) {
+				startActivity(openInChooser);
+			}
+		} else {
+			Log.e("Share", "No email client found!");
+			//TODO do something to show the error
+		}
 	}
 
 

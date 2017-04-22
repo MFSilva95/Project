@@ -41,6 +41,12 @@
             android:icon="@drawable/ic_info_outline_24dp"
             android:title="@string/title_activity_info" />
 
+        <item
+            android:id="@+id/feedback"
+            android:checked="false"
+            android:icon="@drawable/ic_feedback"
+            android:title="Feedback" />
+
     </group>
 
 </menu>
