@@ -61,13 +61,13 @@
                 android:layout_height="match_parent"
                 android:layout_toRightOf="@+id/imageTitleHolder"
                 android:orientation="horizontal"
-                android:weightSum="5">
+                android:weightSum="4">
 
                 <LinearLayout
                     android:id="@+id/ll_list_logbookreg_time"
-                    android:layout_width="wrap_content"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -85,13 +85,13 @@
                             tools:text="11:50" />
 
                         <TextView
-
                             android:id="@+id/tv_list_logbookreg_tag"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:gravity="center_horizontal"
                             android:lines="1"
+                            android:scrollHorizontally="true"
                             android:textSize="12sp"
                             tools:text="Antes almoço" />
                     </LinearLayout>
@@ -160,6 +160,9 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
                             android:text="@string/n_a"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:scrollHorizontally="true"
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@color/black"
                             android:textSize="12sp" />
