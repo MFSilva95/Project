@@ -218,12 +218,13 @@ public class TargetBG_detail extends BaseActivity {
 
 		for(int y=0;y<cursor.getCount();y++){
 			cursor.moveToPosition(y);
-			temp = cursor.getString(0).split(":");
-			int startTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-			temp = cursor.getString(1).split(":");
-			int endTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-			if(CheckOverlap(startTime, startTime2, endTime, endTime2)){return true;}
-
+			if(!cursor.getString(0).equals(idTarget+"")){
+				temp = cursor.getString(1).split(":");
+				int startTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+				temp = cursor.getString(2).split(":");
+				int endTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+				if(CheckOverlap(startTime, startTime2, endTime, endTime2)){return true;}
+			}
 		}
 		return false;
 	}

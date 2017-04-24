@@ -79,7 +79,7 @@ public class DB_Read {
 	}
 
 	public Cursor getGlicObj() {
-		Cursor cursor = myDB.rawQuery("SELECT " + MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_START+","+MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_END + " FROM "+MyDiabetesContract.BG_Target.TABLE_NAME, null);
+		Cursor cursor = myDB.rawQuery("SELECT " + MyDiabetesContract.BG_Target.COLUMN_NAME_ID+","+ MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_START+","+MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_END + " FROM "+MyDiabetesContract.BG_Target.TABLE_NAME, null);
 		return cursor;
 	}
 
