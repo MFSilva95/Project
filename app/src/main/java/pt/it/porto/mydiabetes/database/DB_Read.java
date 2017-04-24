@@ -1831,10 +1831,10 @@ public class DB_Read {
 
     @Nullable
     public PointsRec getFirstPointToReachLevel(int points) {
-        Cursor cursor = myDB.rawQuery("SELECT Points1.Id, Points1.Id_User, Points1.DateTime, Points1.Value, Points1.Origin, SUM(Points2.Value) AS SUM " +
+        Cursor cursor = myDB.rawQuery("SELECT Points1.Id, Points1.Id_User, Points1.DateTime, Points1.Value, Points1.Origin, SUM(Points2.Value) AS SUMMATORY " +
                 "FROM Points as Points1 " +
                 "INNER JOIN Points as Points2 ON Points1.id >= Points2.id GROUP BY Points1.id, Points1.Value " +
-                "HAVING SUM >= "+points+" "+
+                "HAVING SUMMATORY >= "+points+" "+
                 "ORDER BY Points1.id " +
                 "LIMIT 1;", null);
         cursor.moveToLast();

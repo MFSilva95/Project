@@ -131,7 +131,6 @@ public class DB_Handler extends SQLiteOpenHelper {
 					Log.e("DB Update adding column",sqlE.getLocalizedMessage());
 				}
 			}
-
 		}
 	}
 

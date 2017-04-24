@@ -77,6 +77,7 @@ import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
@@ -306,7 +307,26 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                 showBottomSheet();
             }
         });
-        ((Spinner) findViewById(R.id.tag_spinner)).setAdapter(new StringSpinnerAdapter(this, getResources().getStringArray(R.array.daytimes)));
+
+        //((Spinner) findViewById(R.id.tag_spinner)).setAdapter(new StringSpinnerAdapter(this, getResources().getStringArray(R.array.daytimes)));
+        Spinner spinner = ((Spinner) findViewById(R.id.tag_spinner));
+        DB_Read rdb = new DB_Read(this);
+        ArrayList<Tag> t = rdb.Tag_GetAll();
+        String[] allTags = new String[t.size()];
+        rdb.close();
+
+
+        if (t != null) {
+            for (int x=0;x<t.size();x++) {
+                allTags[x] = t.get(x).getName();
+            }
+        }
+
+        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(new StringSpinnerAdapter(this, allTags));
+        rdb.close();
+
+
         setupBottomSheet();
         Bundle args = getIntent().getExtras();
         if(args != null){
