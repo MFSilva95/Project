@@ -242,7 +242,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         if (savedInstanceState != null && savedInstanceState.containsKey(GENERATED_IMAGE_URI)) {
             generatedImageUri = savedInstanceState.getParcelable(GENERATED_IMAGE_URI);
         }
-        if (savedInstanceState != null && savedInstanceState.getBoolean(CALCS_OPEN, false)) {
+        /*if (savedInstanceState != null && savedInstanceState.getBoolean(CALCS_OPEN, false)) {
             ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
             if (calcInsulinInfo != null) {
                 calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_info_outline_grey_900_24dp));
@@ -252,7 +252,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             getFragmentManager().executePendingTransactions();
             this.fragmentInsulinCalcsFragment = (InsulinCalcFragment) getFragmentManager().findFragmentById(R.id.fragment_calcs);
             showCalcs();
-        }
+        }*/
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -333,6 +333,9 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         spinner.setAdapter(new StringSpinnerAdapter(this, allTags));
         rdb.close();
 
+        carbsData = new CarbsRec();
+        glycemiaData = new GlycemiaRec();
+        insulinData = new InsulinRec();
 
         setupBottomSheet();
         Bundle args = getIntent().getExtras();
@@ -342,6 +345,10 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             Calendar time = Calendar.getInstance();
             setDate(time);
             setTime(time);
+        }
+        if(savedInstanceState!=null){
+            Log.i(TAG, "onCreate: Ayyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+            fillParameters(savedInstanceState);
         }
     }
 
