@@ -7,10 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.format.Time;
 import android.util.Log;
 
+import java.util.Calendar;
+
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.BloodPressureRec;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.CholesterolRec;
+import pt.it.porto.mydiabetes.data.DateTime;
 import pt.it.porto.mydiabetes.data.Disease;
 import pt.it.porto.mydiabetes.data.DiseaseRec;
 import pt.it.porto.mydiabetes.data.Exercise;
@@ -725,6 +728,15 @@ public class DB_Write {
 		toInsert.put("Value", pointRec.getValue());
 		toInsert.put("Origin", pointRec.getOrigin());
 		myDB.insert("Points", null, toInsert);
+	}
+
+	public void Log_Save(int id_user, String activity) {
+		ContentValues toInsert = new ContentValues();
+		String datetime = DateUtils.formatToDb(Calendar.getInstance());
+		toInsert.put("Id_User", id_user);
+		toInsert.put("DateTime", datetime);
+		toInsert.put("Activity", activity);
+		myDB.insert("Activity_Log", null, toInsert);
 	}
 
 }

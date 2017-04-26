@@ -17,7 +17,7 @@ import pt.it.porto.mydiabetes.R;
 public class DB_Handler extends SQLiteOpenHelper {
 
 	// Database Version
-	private static final int DATABASE_VERSION = 11;
+	private static final int DATABASE_VERSION = 12;
     private static final int DATABASE_VERSION_USERID_BADGES = 8;
 	private static final int DATABASE_VERSION_TARGET_BG = 10;
 
@@ -105,11 +105,11 @@ public class DB_Handler extends SQLiteOpenHelper {
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.i("DB Upgrade","Upgrading DB");
-		if(oldVersion<DB_Handler.DATABASE_VERSION){
-			initDatabaseTables(db); // creates new feature table and Db_Info and Badges and points
-			if(oldVersion==DB_Handler.DATABASE_VERSION_USERID_BADGES){ //need to update BADGES
-                Log.i("DB Upgrade","Altering DB");
-                String updateBadges = "ALTER TABLE Badges rename to badges_backup;\n" + //rename old table
+				if(oldVersion<DB_Handler.DATABASE_VERSION){
+					initDatabaseTables(db); // creates new feature table and Db_Info and Badges and points
+					if(oldVersion==DB_Handler.DATABASE_VERSION_USERID_BADGES){ //need to update BADGES
+						Log.i("DB Upgrade","Altering DB");
+						String updateBadges = "ALTER TABLE Badges rename to badges_backup;\n" + //rename old table
                         "CREATE TABLE IF NOT EXISTS Badges (Id INTEGER PRIMARY KEY AUTOINCREMENT, Id_User INTEGER NOT NULL, DateTime DATETIME NOT NULL, Type TEXT NOT NULL, Name TEXT NOT NULL, Medal TEXT NOT NULL, FOREIGN KEY(Id_User) REFERENCES UserInfo(Id));\n" + //create new one
                         "INSERT INTO badges(id,datetime,type, name,medal,id_user) SELECT b.*,u.id FROM badges_backup as b, userinfo as u;\n" +//recover the old ones to the one table
                         "DROP TABLE badges_backup;";//drop backup
