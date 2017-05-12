@@ -739,4 +739,14 @@ public class DB_Write {
 		myDB.insert("Activity_Log", null, toInsert);
 	}
 
+	public void Clicks_Save(int id_user, String activity, float xvalue, float yvalue) {
+		ContentValues toInsert = new ContentValues();
+		String datetime = DateUtils.formatToDb(Calendar.getInstance());
+		toInsert.put("Id_User", id_user);
+		toInsert.put("DateTime", datetime);
+		toInsert.put("Activity", activity);
+		toInsert.put("X_Value", xvalue);
+		toInsert.put("Y_Value", yvalue);
+		myDB.insert("Clicks_Log", null, toInsert);
+	}
 }

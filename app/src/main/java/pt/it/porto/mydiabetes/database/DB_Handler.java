@@ -17,7 +17,7 @@ import pt.it.porto.mydiabetes.R;
 public class DB_Handler extends SQLiteOpenHelper {
 
 	// Database Version
-	private static final int DATABASE_VERSION = 12;
+	private static final int DATABASE_VERSION = 13;
     private static final int DATABASE_VERSION_USERID_BADGES = 8;
 	private static final int DATABASE_VERSION_TARGET_BG = 10;
 
