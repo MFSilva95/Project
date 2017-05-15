@@ -6,7 +6,6 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
@@ -18,7 +17,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,8 +26,6 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentContainer;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
@@ -63,10 +59,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -87,6 +80,10 @@ import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment;
+import pt.it.porto.mydiabetes.ui.fragments.new_register.CarbsRegister;
+import pt.it.porto.mydiabetes.ui.fragments.new_register.GlycaemiaRegister;
+import pt.it.porto.mydiabetes.ui.fragments.new_register.InsuRegister;
+import pt.it.porto.mydiabetes.ui.fragments.new_register.NoteRegister;
 import pt.it.porto.mydiabetes.ui.listAdapters.StringSpinnerAdapter;
 import pt.it.porto.mydiabetes.ui.views.ExtendedEditText;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
@@ -95,13 +92,14 @@ import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
-public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFragment.CalcListener {
+public class NewHomeRegistry extends AppCompatActivity{
 
-    @Override
-    public void setup() {
-        fragmentInsulinCalcsFragment = (InsulinCalcFragment) getFragmentManager().findFragmentById(R.id.fragment_calcs);
-        showCalcs();
-    }
+    private String TAG = "newREG";
+
+    private CarbsRegister carbsRegister;
+    private InsuRegister insuRegister;
+    private GlycaemiaRegister glycaemiaRegister;
+    private NoteRegister noteRegister;
 
     private enum RegistryFields{CARBS,INSULIN,GLICEMIA,NOTE,PLUS};
     private LinearLayout bottomSheetViewgroup;
@@ -116,18 +114,14 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     private void setIsManual(boolean b){
         insulinManual = b;
     }
-
     private static final int REQUEST_TAKE_PHOTO = 1;
-
     private Calendar registerDate;
     private TextView registerDateTextV;
     private TextView registerTimeTextV;
     protected InsulinCalcFragment fragmentInsulinCalcsFragment;
     protected InsulinCalculator insulinCalculator = null;
     private boolean useIOB = true;
-    private boolean expandInsulinCalcsAuto = false;
-    private String TAG = "newREG";
-    public final static int IMAGE_CAPTURE = 2;
+
     public final static int IMAGE_VIEW = 3;
     private static final String CALCS_OPEN = "calcs open";
     private static final String GENERATED_IMAGE_URI = "generated_image_uri";
@@ -135,8 +129,10 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
     private Uri imgUri;
     private Bitmap b;
     private int noteId;
-
     private String mCurrentPhotoPath;
+    private Toolbar toolbar;
+    private FloatingActionButton fab;
+    private Spinner spinner;
 
 
     @Nullable
@@ -279,41 +275,66 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             showCalcs();
         }*/
     }
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+    private void init_vars(){
         setContentView(R.layout.activity_add_event);
-        buttons = new ArrayList<>();
-        buttonsUpdate = new ArrayList<>();
-        permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
-
         contentLayout = (LinearLayout) findViewById(R.id.content_panel);
-        insulinCalculator = new InsulinCalculator(this);
-        FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(this));
-        useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
-        imgUri = null;
-
+        permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
         registerDate = Calendar.getInstance();
 
-        insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
+        //insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
         //String currentTime = android.text.format.DateFormat.getTimeFormat(this.getApplicationContext()).format(new java.util.Date());
+
+        carbsRegister = new CarbsRegister(this);
+        insuRegister= new InsuRegister(this);
+        glycaemiaRegister = new GlycaemiaRegister(this);
+        noteRegister = new NoteRegister(this);
+
+        buttons = new ArrayList<>();
+        buttonsUpdate = new ArrayList<>();
+        insulinCalculator = new InsulinCalculator(this);
+        imgUri = null;
+
+        FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(this));
+        useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
 
         bottomSheetViewgroup = (LinearLayout) findViewById(R.id.bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetViewgroup);
         bottomSheetBehavior.setHideable(true);
 
-
         registerDateTextV = (TextView) findViewById(R.id.registryDate);
         registerTimeTextV = (TextView) findViewById(R.id.registerTime);
-        buttons.add(RegistryFields.PLUS);
-        showBottomSheet();
 
-        registerDateTextV.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				showDatePickerDialog(view);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        spinner = ((Spinner) findViewById(R.id.tag_spinner));
+
+        DB_Read rdb = new DB_Read(this);
+        ArrayList<Tag> t = rdb.Tag_GetAll();
+        String[] allTags = new String[t.size()];
+        rdb.close();
+
+        if (t != null) {
+            for (int x=0;x<t.size();x++) {
+                allTags[x] = t.get(x).getName();
             }
-		});
+        }
+        spinner.setAdapter(new StringSpinnerAdapter(this, allTags));
+
+        carbsData = new CarbsRec();
+        glycemiaData = new GlycemiaRec();
+        insulinData = new InsulinRec();
+    }
+    private void init_listeners(){
+        registerDateTextV.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog(view);
+            }
+        });
         registerTimeTextV.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -321,9 +342,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             }
         });
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -354,7 +372,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -368,29 +385,15 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                 showBottomSheet();
             }
         });
+    }
 
-        //((Spinner) findViewById(R.id.tag_spinner)).setAdapter(new StringSpinnerAdapter(this, getResources().getStringArray(R.array.daytimes)));
-        Spinner spinner = ((Spinner) findViewById(R.id.tag_spinner));
-        DB_Read rdb = new DB_Read(this);
-        ArrayList<Tag> t = rdb.Tag_GetAll();
-        String[] allTags = new String[t.size()];
-        rdb.close();
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-
-        if (t != null) {
-            for (int x=0;x<t.size();x++) {
-                allTags[x] = t.get(x).getName();
-            }
-        }
-
-        //adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(new StringSpinnerAdapter(this, allTags));
-        rdb.close();
-
-        carbsData = new CarbsRec();
-        glycemiaData = new GlycemiaRec();
-        insulinData = new InsulinRec();
-
+        init_vars();
+        init_listeners();
+        buttons.add(RegistryFields.PLUS);
         setupBottomSheet();
         Bundle args = getIntent().getExtras();
         if(args != null){
@@ -401,11 +404,9 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             setTime(time);
         }
         if(savedInstanceState!=null){
-            Log.i(TAG, "onCreate: Ayyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
             fillParameters(savedInstanceState);
         }
     }
-
 
     private void deleteRegister(){
         final Context c = this;
@@ -498,6 +499,11 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
         button.setEnabled(true);
     }
+    private void addContent(LinearLayout view) {
+        contentLayout.addView(view, 0);//contentLayout.getChildCount() - 1);
+        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
+        button.setEnabled(true);
+    }
     private void addContentAt(int layout, int pos) {
         contentLayout.addView(LayoutInflater.from(this).inflate(layout, contentLayout, false), pos);//contentLayout.getChildCount() - 1);
     }
@@ -561,7 +567,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                         addMealRead();
                         break;
                     case GLICEMIA:
-                        Log.i(TAG, "addGlycemiaRead: addREG");
                         addGlycemiaRead();
                         break;
                     case INSULIN:
@@ -578,6 +583,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log");
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
     }
+
     public void addGlycemiaRead() throws Exception{
 
         Spinner tagSpinner = (Spinner) findViewById(R.id.tag_spinner);
@@ -847,9 +853,8 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         }
     }
     private void insertNoteMenu(){
-        addContent(R.layout.note_content_edit);
-        findViewById(R.id.note_editText).requestFocus();
-        buttons.add(0, RegistryFields.NOTE);
+        addContent(noteRegister);
+        buttons.add(0,RegistryFields.NOTE);
     }
     private void insertGlicMenu(){
         /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
@@ -857,8 +862,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                         addContent(R.layout.dialog_exp_advice);
                         setAdviceText();
                     }*/
-        addContent(R.layout.glycemia_content_edit);
-        findViewById(R.id.glycemia_txt).requestFocus();
+        addContent(glycaemiaRegister);
         buttons.add(0, RegistryFields.GLICEMIA);
         setGlycemiaListeners();
     }
@@ -868,10 +872,9 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                         addContent(R.layout.dialog_exp_advice);
                         setAdviceText();
                     }*/
-        addContent(R.layout.meal_content_edit);
-        findViewById(R.id.meal_txt).requestFocus();
+
+        addContent(carbsRegister);
         buttons.add(0, RegistryFields.CARBS);
-        setMealListeners();
     }
     private void insertInsulinMenu(){
         /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
@@ -879,6 +882,10 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                         addContent(R.layout.dialog_exp_advice);
                         setAdviceText();
                     }*/
+
+        addContent(insuRegister);
+        buttons.add(0, RegistryFields.INSULIN);
+
         addContent(R.layout.insulin_content_edit);
         buttons.add(0, RegistryFields.INSULIN);
         findViewById(R.id.insulin_admin).requestFocus();
@@ -931,6 +938,15 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         }, 100L);
         hideBottomSheet();
     }
+
+
+
+
+
+
+
+
+
     private void setupBottomSheet() {
         //
         bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setOnClickListener(new View.OnClickListener() {
@@ -988,6 +1004,18 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             }
         });
     }
+
+
+
+
+
+
+
+
+
+
+
+
     private void insertInsulinSuggestion(RegistryFields activator){
         Boolean cons = ((!buttons.contains(RegistryFields.INSULIN)) && buttons.contains(RegistryFields.CARBS) && buttons.contains(RegistryFields.GLICEMIA));
         if (cons) {
@@ -1043,14 +1071,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             hideBottomSheet();
         }
     }
-    private void toggleInsulinCalcDetails(View view) {
-        expandInsulinCalcsAuto = false;
-        if (!isFragmentShowing()) {
-            showCalcs();
-        } else {
-            hideCalcs();
-        }
-    }
+
     private boolean isFragmentShowing() {
         return fragmentInsulinCalcsFragment != null;
     }
@@ -1079,83 +1100,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         }
 
     }
-    private void showCalcs() {
-
-        hideBottomSheet();
-        //hideKeyboard();
-
-        if (fragmentInsulinCalcsFragment == null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_calcs);
-            if (fragment != null) {
-                fragmentInsulinCalcsFragment = (InsulinCalcFragment) fragment;
-            } else {
-                fragmentInsulinCalcsFragment = InsulinCalcFragment.newInstance((int) insulinCalculator.getGlycemiaRatio(), (int) insulinCalculator.getCarbsRatio());
-                fragmentManager.beginTransaction()
-                        .add(R.id.fragment_calcs, fragmentInsulinCalcsFragment)
-                        .commit();
-                fragmentManager.executePendingTransactions();
-
-                ScaleAnimation animation = new ScaleAnimation(1, 1, 0, 1, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
-                animation.setDuration(700);
-                FrameLayout fragmentCalcs = (FrameLayout) findViewById(R.id.fragment_calcs);
-                if (fragmentCalcs != null) {
-                    fragmentCalcs.startAnimation(animation);
-                }
-                ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
-                if (calcInsulinInfo != null) {
-                    calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_info_outline_grey_900_24dp));
-                }
-            }
-        }
-
-        fragmentInsulinCalcsFragment.setCorrectionGlycemia(insulinCalculator.getInsulinGlycemia());
-        fragmentInsulinCalcsFragment.setCorrectionCarbs(insulinCalculator.getInsulinCarbs());
-        fragmentInsulinCalcsFragment.setResult(insulinCalculator.getInsulinTotal(useIOB), insulinCalculator.getInsulinTotal(useIOB, true));
-        fragmentInsulinCalcsFragment.setInsulinOnBoard(insulinCalculator.getInsulinOnBoard());
-        insulinCalculator.setListener(new InsulinCalculator.InsulinCalculatorListener() {
-            @Override
-            public void insulinOnBoardChanged(InsulinCalculator calculator) {
-                if (fragmentInsulinCalcsFragment != null) {
-                    showCalcs();
-                }
-            }
-        });
-    }
-    private void hideCalcs() {
-        if (fragmentInsulinCalcsFragment != null) {
-            ScaleAnimation animation = new ScaleAnimation(1, 1, 1, 0, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
-            animation.setDuration(700);
-            FrameLayout fragmentCalcs = (FrameLayout) findViewById(R.id.fragment_calcs);
-            if (fragmentCalcs != null) {
-                fragmentCalcs.startAnimation(animation);
-            }
-            animation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    getFragmentManager().beginTransaction()
-                            .remove(fragmentInsulinCalcsFragment)
-                            .commit();
-                    fragmentInsulinCalcsFragment = null;
-                }
-
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            insulinCalculator.setListener(null);
-            ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
-            if (calcInsulinInfo != null) {
-                calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_information_outline_grey600_24dp));
-            }
-        }
-    }
 
     public String getDate() {
         return registerDateTextV.getText().toString();
@@ -1164,234 +1108,11 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         return registerTimeTextV.getText().toString();
     }
 
-    private void setImgURI(Uri newUri){imgUri=newUri;}
+    private void setImgURI(Uri newUri){imgUri = newUri;}
     private void imageRemoved() {
         setImgURI(null);
     }
 
-    private void addGlycemiaObjective() {
-        Intent intent = new Intent(this, TargetBG_detail.class);
-        EditText targetGlycemia = ((TextInputLayout) findViewById(R.id.glycemia_obj)).getEditText();
-        String goal = null;
-        if (targetGlycemia != null) {
-            goal = targetGlycemia.getText().toString();
-        }
-        if (!TextUtils.isEmpty(goal)) {
-            float target = Float.parseFloat(goal);
-            Bundle bundle = new Bundle();
-            bundle.putFloat(TargetBG_detail.BUNDLE_GOAL, target);
-            intent.putExtras(bundle);
-        }
-        startActivity(intent);
-    }
-
-    private TextWatcher getInsulinTW(){
-        TextWatcher ins = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                setIsManual(true);
-                TextInputLayout insulinInputLayout = (TextInputLayout) findViewById(R.id.insulin_admin);
-                float insuValue;
-                try{
-                    String insuText = insulinInputLayout.getEditText().getText().toString();
-                     insuValue = Float.parseFloat(insuText);
-                }catch (Exception e){
-                    insulinInputLayout.setError("");
-                    return;
-                }
-                insulinData.setInsulinUnits(insuValue);
-            }
-            @Override
-            public void afterTextChanged(Editable editable) {}
-        };
-        return ins;
-    }
-    private TextWatcher getCarbsTW(){
-        TextWatcher carbsTW = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String carbsS = editable.toString();
-                if(carbsS != null){
-                    try{
-                        int carbs = Integer.parseInt(carbsS);
-                        insulinCalculator.setCarbs(carbs);
-                        carbsData.setCarbsValue(carbs);
-                    }catch (NumberFormatException e){
-                        insulinCalculator.setCarbs(0);
-                        carbsData.setCarbsValue(0);
-                    }
-                    refreshCalcs();
-                }
-            }
-        };
-        return carbsTW;
-    }
-    private TextWatcher getGlicTW(){
-        TextWatcher glicTW = new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                TextInputLayout glycValueT = (TextInputLayout) findViewById(R.id.glycemia_txt);
-                glycValueT.setError("");
-                String glycString = editable.toString();
-                if(glycString != null){
-                    try{
-                        int glycValue = Integer.parseInt(glycString);
-                        insulinCalculator.setGlycemia(glycValue);
-                        glycemiaData.setValue(glycValue);
-                    }catch (NumberFormatException e){
-                        // glycValueT.setError(R.string.glicInputError);
-                        insulinCalculator.setGlycemia(0);
-                        glycemiaData.setValue(0);
-                    }
-                    refreshCalcs();
-                }
-            }
-        };
-        return glicTW;
-    }
-    private TextWatcher getGlicObjTW(){
-        TextWatcher objTW = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String glycObjString = editable.toString();
-                TextInputLayout glycObjT = (TextInputLayout) findViewById(R.id.glycemia_obj);
-                glycObjT.setError("");
-                if(glycObjString != null){
-                    try{
-                        int glycObjValue = Integer.parseInt(glycObjString);
-                        insulinCalculator.setGlycemiaTarget(glycObjValue);
-                        glycemiaData.setObjective(glycObjValue);
-                    }catch (NumberFormatException e){
-                        insulinCalculator.setGlycemiaTarget(0);
-                        glycemiaData.setObjective(0);
-                    }
-                    refreshCalcs();
-                }
-            }
-        };
-        return objTW;
-    }
-
-    private void setMealListeners(){
-        ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
-        if (imageView == null) {
-            return;
-        }
-        if (imgUri == null) {
-            imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
-        } else {
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-            int height = (int) (displaymetrics.heightPixels * 0.1);
-            int width = (int) (displaymetrics.widthPixels * 0.1);
-            b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
-            imageView.setImageBitmap(b);
-        }
-        TextView carbsTextView = (TextView) findViewById(R.id. meal);
-        carbsTextView.addTextChangedListener(getCarbsTW());
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (imgUri != null) {
-                    final Intent intent = new Intent(getBaseContext(), ViewPhoto.class);
-                    Bundle argsToPhoto = new Bundle();
-                    argsToPhoto.putString("Path", imgUri.getPath());
-                    argsToPhoto.putInt("Id", -1);
-                    intent.putExtras(argsToPhoto);
-                    startActivityForResult(intent, IMAGE_VIEW);
-                } else {
-                    /*try{
-                        final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        intent.putExtra(MediaStore.EXTRA_OUTPUT, getImgURI());
-                        startActivityForResult(intent, IMAGE_CAPTURE);
-                    }catch (Exception e){
-                        //error label -> permition denied
-                    }*/
-                    try {
-                        checkPermissions();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-    }
-    public void setGlycemiaListeners(){
-
-        //String time = registerTimeTextV.getText().toString();
-        MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
-
-        TextInputLayout glycValueT = (TextInputLayout) findViewById(R.id.glycemia_txt);
-        glycValueT.getEditText().addTextChangedListener(getGlicTW());
-
-        int objective = 0;
-        TextInputLayout glycObjT = (TextInputLayout) findViewById(R.id.glycemia_obj);
-        glycObjT.getEditText().addTextChangedListener(getGlicObjTW());
-
-        try {
-            objective = storage.getGlycemiaObjectives(DateUtils.getFormattedTime(registerDate));
-            glycObjT.getEditText().setText(objective+"");
-            insulinCalculator.setGlycemiaTarget(objective);
-        } catch (Exception e) {
-            e.printStackTrace();
-            ImageButton plusButton = (ImageButton) findViewById(R.id.insert_new_glic_objective);
-            plusButton.setVisibility(View.VISIBLE);
-            plusButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    addGlycemiaObjective();
-                }
-            });
-        }
-    }
-    private void setInsulinListeners(){
-        View insuInfo = findViewById(R.id.bt_insulin_calc_info);
-        if (insuInfo != null) {
-            insuInfo.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    toggleInsulinCalcDetails(v);
-                }
-            });
-        }
-        TextInputLayout insulinDose = (TextInputLayout) findViewById(R.id.insulin_admin);
-        TextView insuTxt = insulinDose.getEditText();
-        insuTxt.addTextChangedListener(getInsulinTW());
-
-    }
 
     private void insertInsulinData(float insulinUnits){
 
@@ -1435,8 +1156,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
          //there is no glicemia read
         }
     }
-
-
     private void insertCarbsData(int carbValue){
         final ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
         if (imageView == null) {
@@ -1484,6 +1203,8 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             }
         });
     }
+
+
     private void fillParameters(Bundle args){
         if (args != null) {
             buttonsUpdate = new ArrayList<>();
@@ -1592,7 +1313,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             dispatchTakePictureIntent();
         }
     }
-
     @Override
     protected void onPostResume() {
         super.onPostResume();
@@ -1607,7 +1327,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                 }
             }
     }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -1627,9 +1346,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             }
         }
     }
-
-
-
     private void dispatchTakePictureIntent() throws IOException {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
@@ -1652,7 +1368,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             }
         }
     }
-
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -1673,21 +1388,3 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         return image;
     }
 }
-
-/* public void setupInsulinCalculator() {
-        this.insulinCalculator = getInsulinCalculator();
-        if (insulinCalculator.getCarbs() > 0) {
-            carbs.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getCarbs()));
-        }
-        if (insulinCalculator.getGlycemia() > 0) {
-            glycemia.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getGlycemia()));
-        }
-        if (insulinCalculator.getInsulinTarget() > 0) {
-            target.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinCalculator.getInsulinTarget()));
-        }
-        setGlycemiaTarget(insulinCalculator.getInsulinTarget());
-        float insulinTotal = insulinCalculator.getInsulinTotal(useIOB, true);
-        if (insulinTotal > 0) {
-            insulinIntake.setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) insulinTotal));
-        }
-    }*/
