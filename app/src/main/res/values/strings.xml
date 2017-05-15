@@ -555,4 +555,8 @@
 
 
     <string name="email_feedback_subject">Opinião e Comentários sobre a myDiabetes</string>
+
+    <string name="exit_dialog_title">Sair sem Salvar</string>
+    <string name="exit_dialog_description">Tem certeza de que deseja sair sem salvar?</string>
+
 </resources>

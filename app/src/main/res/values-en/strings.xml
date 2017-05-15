@@ -354,4 +354,7 @@
         For each record inserted gain 100 points and 200 per medal. Collect points to level up.</string>
 
     <string name="email_feedback_subject">Opinion and Comments about myDiabetes</string>
+
+    <string name="exit_dialog_title">Exit without saving</string>
+    <string name="exit_dialog_description">Are you sure you want to leave without saving?</string>
 </resources>

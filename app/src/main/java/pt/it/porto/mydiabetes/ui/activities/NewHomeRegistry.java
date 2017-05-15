@@ -28,6 +28,8 @@ import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentContainer;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.content.res.ResourcesCompat;
@@ -217,8 +219,31 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             hideBottomSheet();
         } else {
-            super.onBackPressed();
-        }
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(NewHomeRegistry.this);
+                builder1.setTitle(getString(R.string.exit_dialog_title));
+                builder1.setMessage(getString(R.string.exit_dialog_description));
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        getString(R.string.positiveButton),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                finish();
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        getString(R.string.negativeButton),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+            }
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -299,6 +324,35 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(NewHomeRegistry.this);
+                builder1.setTitle(getString(R.string.exit_dialog_title));
+                builder1.setMessage(getString(R.string.exit_dialog_description));
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        getString(R.string.positiveButton),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                finish();
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        getString(R.string.negativeButton),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+            }
+        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
