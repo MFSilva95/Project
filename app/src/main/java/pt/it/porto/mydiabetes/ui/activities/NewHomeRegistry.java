@@ -219,30 +219,35 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             hideBottomSheet();
         } else {
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(NewHomeRegistry.this);
-                builder1.setTitle(getString(R.string.exit_dialog_title));
-                builder1.setMessage(getString(R.string.exit_dialog_description));
-                builder1.setCancelable(true);
+                if(carbsData != null || insulinData != null || glycemiaData != null || glycemiaData != null) {
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(NewHomeRegistry.this);
+                        builder1.setTitle(getString(R.string.exit_dialog_title));
+                        builder1.setMessage(getString(R.string.exit_dialog_description));
+                        builder1.setCancelable(true);
 
-                builder1.setPositiveButton(
-                        getString(R.string.positiveButton),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                                finish();
-                            }
-                        });
+                        builder1.setPositiveButton(
+                                getString(R.string.positiveButton),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                        finish();
+                                    }
+                                });
 
-                builder1.setNegativeButton(
-                        getString(R.string.negativeButton),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
+                        builder1.setNegativeButton(
+                                getString(R.string.negativeButton),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
 
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
+                    }
+                else{
+                    finish();
+                }
             }
     }
     @Override
@@ -327,30 +332,36 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(NewHomeRegistry.this);
-                builder1.setTitle(getString(R.string.exit_dialog_title));
-                builder1.setMessage(getString(R.string.exit_dialog_description));
-                builder1.setCancelable(true);
+                if(carbsData != null || insulinData != null || glycemiaData !=null || glycemiaData != null) {
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(NewHomeRegistry.this);
+                        builder1.setTitle(getString(R.string.exit_dialog_title));
+                        builder1.setMessage(getString(R.string.exit_dialog_description));
+                        builder1.setCancelable(true);
 
-                builder1.setPositiveButton(
-                        getString(R.string.positiveButton),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                                finish();
-                            }
-                        });
+                        builder1.setPositiveButton(
+                                getString(R.string.positiveButton),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                        finish();
+                                    }
+                                });
 
-                builder1.setNegativeButton(
-                        getString(R.string.negativeButton),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                            }
-                        });
+                        builder1.setNegativeButton(
+                                getString(R.string.negativeButton),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
 
-                AlertDialog alert11 = builder1.create();
-                alert11.show();
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
+
+                }
+                else{
+                    finish();
+                }
             }
         });
 
@@ -579,7 +590,6 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
     }
     public void addGlycemiaRead() throws Exception{
-
         Spinner tagSpinner = (Spinner) findViewById(R.id.tag_spinner);
         TextInputLayout gliInput = (TextInputLayout) findViewById(R.id.glycemia_txt);
         TextInputLayout gliObjInput = (TextInputLayout) findViewById(R.id.glycemia_obj);
@@ -589,6 +599,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
 
         if (glycemia != null && glycemia.getText().toString().equals("")) {
             glycemia.requestFocus();
+
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.showSoftInput(glycemia, InputMethodManager.SHOW_IMPLICIT);
             gliInput.setError(getString(R.string.glicInputError));
@@ -1504,6 +1515,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             if (carbsData != null) {
                 carbsData = db_read.CarboHydrate_GetById(carbsData.getId());
                 if (carbsData != null) {
+                    bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(true);
                     buttonsUpdate.add(RegistryFields.CARBS);
                     String imgPath = carbsData.getPhotoPath();
                     if(imgPath!=null){imgUri = Uri.parse(imgPath);}
@@ -1514,8 +1526,10 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                 }
             }
             if (glycemiaData != null) {
+
                 glycemiaData = db_read.Glycemia_GetById(glycemiaData.getId());
                 if (glycemiaData != null) {
+                    bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(true);
                     buttonsUpdate.add(RegistryFields.GLICEMIA);
                     insertGlicMenu();
 
@@ -1528,6 +1542,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
             if (insulinData != null) {
                 insulinData = db_read.InsulinReg_GetById(insulinData.getId());
                 if (insulinData != null) {
+                    bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(true);
                     buttonsUpdate.add(RegistryFields.INSULIN);
                     insertInsulinMenu();
                     insertInsulinData(insulinData.getInsulinUnits());
@@ -1541,6 +1556,7 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
                 }
             }
             if(noteId != -1){
+                bottomSheetViewgroup.findViewById(R.id.bs_notes).setPressed(true);
                 buttonsUpdate.add(RegistryFields.NOTE);
                 insertNoteMenu();
                 EditText myNoteEditT = (EditText) findViewById(R.id.note_editText);
