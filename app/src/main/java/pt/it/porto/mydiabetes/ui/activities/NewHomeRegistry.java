@@ -219,7 +219,8 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             hideBottomSheet();
         } else {
-                if(carbsData != null || insulinData != null || glycemiaData != null || glycemiaData != null) {
+                if((carbsData != null && carbsData.getCarbsValue() != 0) || (insulinData != null && insulinData.getInsulinUnits() != 0)
+                        || (glycemiaData != null && glycemiaData.getBG_target() != -1) || (glycemiaData != null && glycemiaData.getValue() != 0)) {
                         AlertDialog.Builder builder1 = new AlertDialog.Builder(NewHomeRegistry.this);
                         builder1.setTitle(getString(R.string.exit_dialog_title));
                         builder1.setMessage(getString(R.string.exit_dialog_description));
@@ -332,7 +333,8 @@ public class NewHomeRegistry extends AppCompatActivity implements InsulinCalcFra
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(carbsData != null || insulinData != null || glycemiaData !=null || glycemiaData != null) {
+                if((carbsData != null && carbsData.getCarbsValue() != 0) || (insulinData != null && insulinData.getInsulinUnits() != 0)
+                        || (glycemiaData != null && glycemiaData.getBG_target() != -1) || (glycemiaData != null && glycemiaData.getValue() != 0)) {
                         AlertDialog.Builder builder1 = new AlertDialog.Builder(NewHomeRegistry.this);
                         builder1.setTitle(getString(R.string.exit_dialog_title));
                         builder1.setMessage(getString(R.string.exit_dialog_description));
