@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.ui.activities.ViewPhoto;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 
@@ -33,20 +34,24 @@ public class CarbsRegister extends LinearLayout {
     private Uri imgUri;
     private Bitmap b;
     private final static int IMAGE_VIEW = 3;
+    private NewHomeRegistry.NewHomeRegCallBack callBack;
 
-    public CarbsRegister(Context context) {
+    public CarbsRegister(Context context, NewHomeRegistry.NewHomeRegCallBack call) {
         super(context);
         init();
+        callBack = call;
     }
 
-    public CarbsRegister(Context context, AttributeSet attrs) {
+    public CarbsRegister(Context context, AttributeSet attrs, NewHomeRegistry.NewHomeRegCallBack call) {
         super(context, attrs);
         init();
+        callBack = call;
     }
 
-    public CarbsRegister(Context context, AttributeSet attrs, int defStyle) {
+    public CarbsRegister(Context context, AttributeSet attrs, int defStyle, NewHomeRegistry.NewHomeRegCallBack call) {
         super(context, attrs, defStyle);
         init();
+        callBack = call;
     }
 
     private void init() {
@@ -72,7 +77,7 @@ public class CarbsRegister extends LinearLayout {
         //image_button.
     }
     private void setMealListeners(){
-        ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
+        final ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
         if (imageView == null) {
             return;
         }
@@ -86,22 +91,20 @@ public class CarbsRegister extends LinearLayout {
             b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
             imageView.setImageBitmap(b);
         }
-        TextView carbsTextView = (TextView) findViewById(R.id. meal);
-        carbsTextView.addTextChangedListener(getCarbsTW());
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (imgUri != null) {
-                    final Intent intent = new Intent(getContext(), ViewPhoto.class);
-                    Bundle argsToPhoto = new Bundle();
-                    argsToPhoto.putString("Path", imgUri.getPath());
-                    argsToPhoto.putInt("Id", -1);
-                    intent.putExtras(argsToPhoto);
-                    //startActivityForResult(intent, IMAGE_VIEW);
-                }
+                callBack.addCarbsImage(getContext(), imgUri);
             }
         });
+
+
+        TextView carbsTextView = (TextView) findViewById(R.id.meal);
+        carbsTextView.addTextChangedListener(getCarbsTW());
     }
+
+
     private TextWatcher getCarbsTW(){
         TextWatcher carbsTW = new TextWatcher() {
             @Override

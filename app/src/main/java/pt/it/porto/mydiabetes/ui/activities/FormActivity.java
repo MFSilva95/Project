@@ -41,13 +41,13 @@ import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment;
+import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
-public abstract class FormActivity extends BaseActivity implements InsulinCalcFragment.CalcListener {
+public abstract class FormActivity extends BaseActivity implements InsulinCalcView.CalcListener {
 	public final static int IMAGE_CAPTURE = 2;
 	public final static int IMAGE_VIEW = 3;
 	private static final String GENERATED_IMAGE_URI = "generated_image_uri";
@@ -60,7 +60,7 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 	public static int SECTION_INSULIN = R.id.section_insulin;
 
 	// fragment with cacls of insulin
-	protected InsulinCalcFragment fragmentInsulinCalcsFragment;
+	protected InsulinCalcView fragmentInsulinCalcsFragment;
 	protected InsulinCalculator insulinCalculator = null;
 	boolean useIOB = true;
 	private TextView time;
@@ -126,10 +126,10 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 			if (calcInsulinInfo != null) {
 				calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_info_outline_grey_900_24dp));
 			}
-			fragmentInsulinCalcsFragment = new InsulinCalcFragment();
+			fragmentInsulinCalcsFragment = new InsulinCalcView();
 			getFragmentManager().beginTransaction().replace(R.id.fragment_calcs, fragmentInsulinCalcsFragment).commit();
 			getFragmentManager().executePendingTransactions();
-			this.fragmentInsulinCalcsFragment = (InsulinCalcFragment) getFragmentManager().findFragmentById(R.id.fragment_calcs);
+			this.fragmentInsulinCalcsFragment = (InsulinCalcView) getFragmentManager().findFragmentById(R.id.fragment_calcs);
 			showCalcs();
 		}
 	}
@@ -343,9 +343,9 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 			FragmentManager fragmentManager = getFragmentManager();
 			Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_calcs);
 			if (fragment != null) {
-				fragmentInsulinCalcsFragment = (InsulinCalcFragment) fragment;
+				fragmentInsulinCalcsFragment = (InsulinCalcView) fragment;
 			} else {
-				fragmentInsulinCalcsFragment = InsulinCalcFragment.newInstance((int) insulinCalculator.getGlycemiaRatio(), (int) insulinCalculator.getCarbsRatio());
+				fragmentInsulinCalcsFragment = InsulinCalcView.newInstance((int) insulinCalculator.getGlycemiaRatio(), (int) insulinCalculator.getCarbsRatio());
 				fragmentManager.beginTransaction()
 						.add(R.id.fragment_calcs, fragmentInsulinCalcsFragment)
 						.commit();
@@ -552,7 +552,7 @@ public abstract class FormActivity extends BaseActivity implements InsulinCalcFr
 
 	@Override
 	public void setup() {
-		fragmentInsulinCalcsFragment = (InsulinCalcFragment) getFragmentManager().findFragmentById(R.id.fragment_calcs);
+		fragmentInsulinCalcsFragment = (InsulinCalcView) getFragmentManager().findFragmentById(R.id.fragment_calcs);
 		showCalcs();
 	}
 

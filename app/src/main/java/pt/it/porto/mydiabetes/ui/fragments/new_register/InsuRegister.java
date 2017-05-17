@@ -1,27 +1,13 @@
 package pt.it.porto.mydiabetes.ui.fragments.new_register;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,36 +16,32 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
-import pt.it.porto.mydiabetes.ui.activities.ViewPhoto;
-import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment;
-import pt.it.porto.mydiabetes.utils.ImageUtils;
+import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 
-public class InsuRegister extends LinearLayout implements InsulinCalcFragment.CalcListener {
+public class InsuRegister extends LinearLayout {
     public static final String ARG_INSULIN = "ARG_INSULIN";
     private TextInputLayout insulin_input;
     private InsulinRec insuData;
     private boolean isManual;
     private InsulinCalculator insulinCalculator;
     private View insuInfo;
-    protected InsulinCalcFragment fragmentInsulinCalcsFragment;
+    protected InsulinCalcView fragmentInsulinCalcsFragment;
     private boolean useIOB;
+    private int iRatio;
+    private int cRatio;
 
 
-    @Override
-    public void setup() {
-        fragmentInsulinCalcsFragment = (InsulinCalcFragment) ((Activity) getContext()).getFragmentManager().findFragmentById(R.id.fragment_calcs);
-        showCalcs();
-    }
 
-    public InsuRegister(Context context) {
+    public InsuRegister(Context context, int iRatio, int cRatio) {
         super(context);
+        this.iRatio = iRatio;
+        this.cRatio = cRatio;
         init();
     }
 
@@ -75,11 +57,13 @@ public class InsuRegister extends LinearLayout implements InsulinCalcFragment.Ca
 
     private void init() {
         FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(getContext()));
+        inflate(getContext(), R.layout.insulin_content_edit, this);
+
+        fragmentInsulinCalcsFragment = new InsulinCalcView(getContext());
         useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
         insuData = new InsulinRec();
         isManual = false;
         insulinCalculator = new InsulinCalculator(getContext());
-        inflate(getContext(), R.layout.insulin_content_edit, this);
         insulin_input = (TextInputLayout) findViewById(R.id.insulin_admin);
         insuInfo = findViewById(R.id.bt_insulin_calc_info);
         fillInsulinSpinner();
@@ -95,9 +79,9 @@ public class InsuRegister extends LinearLayout implements InsulinCalcFragment.Ca
         }
         return true;
     }
-    public void fill_parameters(Bundle savedIns){
-
-        //image_button.
+    public void fill_parameters(InsulinRec rec){
+        this.insuData = rec;
+        insertInsulinData(rec.getInsulinUnits());
     }
     private TextWatcher getInsulinTW(){
         TextWatcher ins = new TextWatcher() {
@@ -206,7 +190,6 @@ public class InsuRegister extends LinearLayout implements InsulinCalcFragment.Ca
             }
         });*/
     }
-
     private void hideCalcs() {
         /*if (fragmentInsulinCalcsFragment != null) {
             ScaleAnimation animation = new ScaleAnimation(1, 1, 1, 0, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
@@ -240,6 +223,14 @@ public class InsuRegister extends LinearLayout implements InsulinCalcFragment.Ca
                 calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_information_outline_grey600_24dp));
             }
         }*/
+    }
+    private void insertInsulinData(float insulinUnits){
+
+        TextView insuTxt = insulin_input.getEditText();
+        insuTxt.removeTextChangedListener(getInsulinTW());
+        insuTxt.requestFocus();
+        insuTxt.setText(insulinUnits+"");
+        insuTxt.addTextChangedListener(getInsulinTW());
     }
 
 }

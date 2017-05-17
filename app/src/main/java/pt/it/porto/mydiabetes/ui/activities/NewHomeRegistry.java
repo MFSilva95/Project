@@ -9,8 +9,6 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -28,12 +26,9 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,15 +38,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -73,13 +64,14 @@ import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Tag;
+import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment;
+import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.CarbsRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.GlycaemiaRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.InsuRegister;
@@ -118,7 +110,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     private Calendar registerDate;
     private TextView registerDateTextV;
     private TextView registerTimeTextV;
-    protected InsulinCalcFragment fragmentInsulinCalcsFragment;
+    protected InsulinCalcView fragmentInsulinCalcsFragment;
     protected InsulinCalculator insulinCalculator = null;
     private boolean useIOB = true;
 
@@ -145,6 +137,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     public static final String ARG_CARBS = "ARG_CARBS";
     public static final String ARG_INSULIN = "ARG_INSULIN";
     public static final String ARG_BLOOD_GLUCOSE = "ARG_BLOOD_GLUCOSE";
+    public static final String ARG_NOTE = "ARG_NOTE";
 
 
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
@@ -285,9 +278,23 @@ public class NewHomeRegistry extends AppCompatActivity{
         //insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
         //String currentTime = android.text.format.DateFormat.getTimeFormat(this.getApplicationContext()).format(new java.util.Date());
 
-        carbsRegister = new CarbsRegister(this);
-        insuRegister= new InsuRegister(this);
-        glycaemiaRegister = new GlycaemiaRegister(this);
+        carbsRegister = new CarbsRegister(this, new NewHomeRegCallImpl());
+
+
+        /**
+         * Maybe change to when user presses new insulin?
+         */
+        DB_Read rdb = new DB_Read(this);
+        UserInfo obj = rdb.MyData_Read();
+        int iRatio = obj.getInsulinRatio();
+        int cRatio = obj.getCarbsRatio();
+        rdb.close();
+        /**
+         * Maybe change to when user presses new insulin?
+         */
+
+        insuRegister= new InsuRegister(this, iRatio, cRatio);
+        glycaemiaRegister = new GlycaemiaRegister(this, registerDate, new NewHomeRegCallImpl());
         noteRegister = new NoteRegister(this);
 
         buttons = new ArrayList<>();
@@ -864,7 +871,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                     }*/
         addContent(glycaemiaRegister);
         buttons.add(0, RegistryFields.GLICEMIA);
-        setGlycemiaListeners();
+        //setGlycemiaListeners();
     }
     private void insertCarbsMenu(){
         /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
@@ -883,14 +890,15 @@ public class NewHomeRegistry extends AppCompatActivity{
                         setAdviceText();
                     }*/
 
+
         addContent(insuRegister);
         buttons.add(0, RegistryFields.INSULIN);
 
-        addContent(R.layout.insulin_content_edit);
+        /*addContent(R.layout.insulin_content_edit);
         buttons.add(0, RegistryFields.INSULIN);
         findViewById(R.id.insulin_admin).requestFocus();
         fillInsulinSpinner();
-        setInsulinListeners();
+        //setInsulinListeners();*/
     }
     private void setCarbsPressed(View v){
         insertCarbsMenu();
@@ -1017,7 +1025,7 @@ public class NewHomeRegistry extends AppCompatActivity{
 
 
     private void insertInsulinSuggestion(RegistryFields activator){
-        Boolean cons = ((!buttons.contains(RegistryFields.INSULIN)) && buttons.contains(RegistryFields.CARBS) && buttons.contains(RegistryFields.GLICEMIA));
+        /*Boolean cons = ((!buttons.contains(RegistryFields.INSULIN)) && buttons.contains(RegistryFields.CARBS) && buttons.contains(RegistryFields.GLICEMIA));
         if (cons) {
             float insulinUnits = 0;
             addContentAt(R.layout.insulin_content_edit, buttons.size()-1);
@@ -1027,7 +1035,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                         addContent(R.layout.dialog_exp_advice);
                         setAdviceText();
                     }*/
-
+        /*
             buttons.add(buttons.size()-1, RegistryFields.INSULIN);
             View v = bottomSheetViewgroup.findViewById(R.id.bs_insulin);
             fillInsulinSpinner();
@@ -1069,7 +1077,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                 }
             }, 100L);
             hideBottomSheet();
-        }
+        }*/
     }
 
     private boolean isFragmentShowing() {
@@ -1077,7 +1085,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
     private void refreshCalcs(){
         if(buttons.contains(RegistryFields.INSULIN)){
-            showCalcs();
+            //showCalcs();
             if(isFragmentShowing()) {
                 if(!getIsManual()){
                     float insulinUnits = 0;
@@ -1091,9 +1099,9 @@ public class NewHomeRegistry extends AppCompatActivity{
                         TextInputLayout insulinInput = ((TextInputLayout) findViewById(R.id.insulin_admin));
                         insulinInput.setHintEnabled(true);
                         EditText insuET = insulinInput.getEditText();
-                        insuET.removeTextChangedListener(getInsulinTW());
+                        //insuET.removeTextChangedListener(getInsulinTW());
                         insulinInput.getEditText().setText(insulinUnits+"");
-                        insuET.addTextChangedListener(getInsulinTW());
+                        //insuET.addTextChangedListener(getInsulinTW());
                     }
                 }
             }
@@ -1114,39 +1122,18 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
 
 
-    private void insertInsulinData(float insulinUnits){
 
-        TextInputLayout insulinInput = ((TextInputLayout) findViewById(R.id.insulin_admin));
-        TextView insuTxt = insulinInput.getEditText();
-        insuTxt.removeTextChangedListener(getInsulinTW());
-        insuTxt.requestFocus();
-        insuTxt.setText(insulinUnits+"");
-        insuTxt.addTextChangedListener(getInsulinTW());
-//        showCalcs();
-    }
-    private void insertGlicData(int glicValue, int glicObjValue){
-        TextInputLayout glicInput = ((TextInputLayout) findViewById(R.id.glycemia_txt));
-        TextView glicTxt = glicInput.getEditText();
-        glicTxt.requestFocus();
-        glicTxt.setText(glicValue+"");
-        glicTxt.addTextChangedListener(getGlicTW());
 
-        TextInputLayout glicObjInput = ((TextInputLayout) findViewById(R.id.glycemia_obj));
-        TextView glicObjTxt = glicObjInput.getEditText();
-        glicObjTxt.requestFocus();
-        glicObjTxt.setText(glicObjValue+"");
-        glicObjTxt.addTextChangedListener(getGlicObjTW());
-    }
     private void insertGlicValue(int glicValue){
         TextInputLayout glicInput = ((TextInputLayout) findViewById(R.id.glycemia_txt));
         TextView glicTxt = glicInput.getEditText();
         glicTxt.requestFocus();
         glicTxt.setText(glicValue+"");
-        glicTxt.addTextChangedListener(getGlicTW());
+        //glicTxt.addTextChangedListener(getGlicTW());
     }
 
     private void insertGlicObj(int value){
-        try{
+        /*try{
             TextInputLayout glicObjInput = ((TextInputLayout) findViewById(R.id.glycemia_obj));
             TextView glicObjTxt = glicObjInput.getEditText();
             glicObjTxt.requestFocus();
@@ -1154,7 +1141,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             glicObjTxt.addTextChangedListener(getGlicObjTW());
         }catch (Exception e){
          //there is no glicemia read
-        }
+        }*/
     }
     private void insertCarbsData(int carbValue){
         final ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
@@ -1173,7 +1160,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         TextView carbsTextView = carbsInput.getEditText();
         carbsTextView.requestFocus();
         carbsTextView.setText(carbValue+"");
-        carbsTextView.addTextChangedListener(getCarbsTW());
+        //carbsTextView.addTextChangedListener(getCarbsTW());
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1240,7 +1227,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                     buttonsUpdate.add(RegistryFields.GLICEMIA);
                     insertGlicMenu();
 
-                    insertGlicData(glycemiaData.getValue(), glycemiaData.getBG_target());
+                    //insertGlicData(glycemiaData.getValue(), glycemiaData.getBG_target());
                     //insertGlicData(glycemiaData.getValue());
                     noteId = glycemiaData.getIdNote();
                     registerDate = glycemiaData.getDateTime();
@@ -1386,5 +1373,74 @@ public class NewHomeRegistry extends AppCompatActivity{
         );
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
+    }
+
+    public interface NewHomeRegCallBack{
+        void checkPermissions();
+        void addGlycaemiaObjective(Context c);
+        void addCarbsImage(Context context, Uri thisImgUri);
+    }
+    class NewHomeRegCallImpl implements NewHomeRegCallBack{
+
+        @Override
+        public void checkPermissions() {
+            if (ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.CAMERA)) {
+                    ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+                } else if (permissionStatus.getBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,false) || (permissionStatus.getBoolean(Manifest.permission.CAMERA,false))) {
+                    sentToSettings = true;
+                    Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+                    intent.setData(uri);
+                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+                } else {
+                    //just request the permission
+                    ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+                }
+
+                SharedPreferences.Editor editor = permissionStatus.edit();
+                editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,true);
+                editor.putBoolean(Manifest.permission.CAMERA,true);
+                editor.commit();
+
+
+            } else {
+                //You already have the permission, just go ahead.
+                try {
+                    dispatchTakePictureIntent();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        @Override
+        public void addGlycaemiaObjective(Context c) {
+            Intent intent = new Intent(c, TargetBG_detail.class);
+            EditText targetGlycemia = ((TextInputLayout) findViewById(R.id.glycemia_obj)).getEditText();
+            String goal = null;
+            if (targetGlycemia != null) {
+                goal = targetGlycemia.getText().toString();
+            }
+            if (!TextUtils.isEmpty(goal)) {
+                float target = Float.parseFloat(goal);
+                Bundle bundle = new Bundle();
+                bundle.putFloat(TargetBG_detail.BUNDLE_GOAL, target);
+                intent.putExtras(bundle);
+            }
+            startActivity(intent);
+        }
+
+        @Override
+        public void addCarbsImage(Context context, Uri thisImgUri) {
+            if (thisImgUri != null) {
+                final Intent intent = new Intent(context, ViewPhoto.class);
+                Bundle argsToPhoto = new Bundle();
+                argsToPhoto.putString("Path", thisImgUri.getPath());
+                argsToPhoto.putInt("Id", -1);
+                intent.putExtras(argsToPhoto);
+                startActivityForResult(intent, IMAGE_VIEW);
+            }
+        }
     }
 }

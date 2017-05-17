@@ -43,13 +43,13 @@ import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
-import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcFragment;
+import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 
-public class InsulinDetail extends BaseActivity implements InsulinCalcFragment.CalcListener {
+public class InsulinDetail extends BaseActivity implements InsulinCalcView.CalcListener {
 
 	int id_BG = 0;
 	int idNote = 0;
@@ -57,7 +57,7 @@ public class InsulinDetail extends BaseActivity implements InsulinCalcFragment.C
 	ArrayList<String> allInsulins;
 
 	private InsulinCalculator insulinCalculator = null;
-	private InsulinCalcFragment fragmentInsulinCalcsFragment;
+	private InsulinCalcView fragmentInsulinCalcsFragment;
 	private EditText insulinIntake;
 	private boolean useIOB;
 	private boolean changeCausedByOtherInput=false;
@@ -466,9 +466,9 @@ public class InsulinDetail extends BaseActivity implements InsulinCalcFragment.C
 			FragmentManager fragmentManager = getFragmentManager();
 			Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_calcs);
 			if (fragment != null) {
-				fragmentInsulinCalcsFragment = (InsulinCalcFragment) fragment;
+				fragmentInsulinCalcsFragment = (InsulinCalcView) fragment;
 			} else {
-				fragmentInsulinCalcsFragment = InsulinCalcFragment.newInstance((int) insulinCalculator.getGlycemiaRatio(), (int) insulinCalculator.getCarbsRatio());
+				fragmentInsulinCalcsFragment = InsulinCalcView.newInstance((int) insulinCalculator.getGlycemiaRatio(), (int) insulinCalculator.getCarbsRatio());
 				fragmentManager.beginTransaction()
 						.add(R.id.fragment_calcs, fragmentInsulinCalcsFragment)
 						.commit();
@@ -757,7 +757,7 @@ public class InsulinDetail extends BaseActivity implements InsulinCalcFragment.C
 
 	@Override
 	public void setup() {
-		fragmentInsulinCalcsFragment = (InsulinCalcFragment) getFragmentManager().findFragmentById(R.id.fragment_calcs);
+		fragmentInsulinCalcsFragment = (InsulinCalcView) getFragmentManager().findFragmentById(R.id.fragment_calcs);
 		showCalcs();
 	}
 }

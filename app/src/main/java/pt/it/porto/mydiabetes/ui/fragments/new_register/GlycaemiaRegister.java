@@ -12,76 +12,108 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
+import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.ui.activities.TargetBG_detail;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 
 public class GlycaemiaRegister extends LinearLayout {
-    public static final String ARG_INSULIN = "ARG_INSULIN";
-    private TextInputLayout insulin_input;
-    private InsulinRec insuData;
-    private boolean isManual;
-    private InsulinCalculator insulinCalculator;
+    public static final String ARG_BLOOD_GLUCOSE = "ARG_BLOOD_GLUCOSE";
+    private TextInputLayout glycaemia_input;
+    private GlycemiaRec glycaemiaData;
+    private TextInputLayout glycaemia_obj_input;
+    private Calendar registerDate;
+    private NewHomeRegistry.NewHomeRegCallBack callBack;
 
 
-    public GlycaemiaRegister(Context context) {
+    public GlycaemiaRegister(Context context, Calendar calendar, NewHomeRegistry.NewHomeRegCallBack call) {
         super(context);
         init();
+        registerDate = calendar;
+        callBack = call;
     }
 
-    public GlycaemiaRegister(Context context, AttributeSet attrs) {
+    public GlycaemiaRegister(Context context, AttributeSet attrs, Calendar calendar, NewHomeRegistry.NewHomeRegCallBack call) {
         super(context, attrs);
         init();
+        registerDate = calendar;
+        callBack = call;
     }
 
-    public GlycaemiaRegister(Context context, AttributeSet attrs, int defStyle) {
+    public GlycaemiaRegister(Context context, AttributeSet attrs, int defStyle, Calendar calendar, NewHomeRegistry.NewHomeRegCallBack call) {
         super(context, attrs, defStyle);
         init();
+        registerDate = calendar;
+        callBack = call;
     }
 
     private void init() {
-        insuData = new InsulinRec();
-        isManual = false;
-        insulinCalculator = new InsulinCalculator(getContext());
-        inflate(getContext(), R.layout.insulin_content_edit, this);
-        this.insulin_input = (TextInputLayout) findViewById(R.id.insulin_admin);
+        glycaemiaData = new GlycemiaRec();
+        inflate(getContext(), R.layout.glycemia_content_edit, this);
+        this.glycaemia_input = (TextInputLayout) findViewById(R.id.glycemia_txt);
+        this.glycaemia_obj_input = (TextInputLayout) findViewById(R.id.glycemia_obj);
     }
     public boolean canSave(){
         try{
-            Integer.parseInt(insulin_input.getEditText().getText().toString());
+            Integer.parseInt(glycaemia_input.getEditText().getText().toString());
         }catch (Exception e){
-            insulin_input.setError(getContext().getString(R.string.glicInputError));
-            insulin_input.requestFocus();
+            glycaemia_input.setError(getContext().getString(R.string.glicInputError));
+            glycaemia_input.requestFocus();
+            return false;
+        }
+        try{
+            Integer.parseInt(glycaemia_obj_input.getEditText().getText().toString());
+        }catch (Exception e){
+            glycaemia_obj_input.setError(getContext().getString(R.string.glicInputError));
+            glycaemia_obj_input.requestFocus();
             return false;
         }
         return true;
     }
-    public void fill_parameters(Bundle savedIns){
+    public void fill_parameters(GlycemiaRec glyrec){
 
-        //image_button.
+        this.glycaemiaData = glyrec;
+        insertGlicData(glyrec.getValue(),glyrec.getBG_target());
     }
 
+    private void insertGlicData(int glicValue, int glicObjValue){
+
+        TextView glicTxt = glycaemia_input.getEditText();
+        glicTxt.requestFocus();
+        glicTxt.setText(glicValue+"");
+        //glicTxt.addTextChangedListener(getGlicTW());
+
+        TextView glicObjTxt = glycaemia_obj_input.getEditText();
+        glicObjTxt.requestFocus();
+        glicObjTxt.setText(glicObjValue+"");
+        //glicObjTxt.addTextChangedListener(getGlicObjTW());
+    }
+    private void insertGlicObjData(int glicObjValue){
+        TextView glicObjTxt = glycaemia_obj_input.getEditText();
+        glicObjTxt.requestFocus();
+        glicObjTxt.setText(glicObjValue+"");
+        //glicObjTxt.addTextChangedListener(getGlicObjTW());
+    }
     public void setGlycemiaListeners(){
 
         //String time = registerTimeTextV.getText().toString();
-        MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
+        MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
 
-        TextInputLayout glycValueT = (TextInputLayout) findViewById(R.id.glycemia_txt);
-        glycValueT.getEditText().addTextChangedListener(getGlicTW());
-
-        int objective = 0;
-        TextInputLayout glycObjT = (TextInputLayout) findViewById(R.id.glycemia_obj);
-        glycObjT.getEditText().addTextChangedListener(getGlicObjTW());
-
+        glycaemia_input.getEditText().addTextChangedListener(getGlicTW());
+        glycaemia_obj_input.getEditText().addTextChangedListener(getGlicObjTW());
+        int objective;
         try {
             objective = storage.getGlycemiaObjectives(DateUtils.getFormattedTime(registerDate));
-            glycObjT.getEditText().setText(objective+"");
-            insulinCalculator.setGlycemiaTarget(objective);
+            insertGlicObjData(objective);
         } catch (Exception e) {
             e.printStackTrace();
             ImageButton plusButton = (ImageButton) findViewById(R.id.insert_new_glic_objective);
@@ -95,19 +127,7 @@ public class GlycaemiaRegister extends LinearLayout {
         }
     }
     private void addGlycemiaObjective() {
-        Intent intent = new Intent(this, TargetBG_detail.class);
-        EditText targetGlycemia = ((TextInputLayout) findViewById(R.id.glycemia_obj)).getEditText();
-        String goal = null;
-        if (targetGlycemia != null) {
-            goal = targetGlycemia.getText().toString();
-        }
-        if (!TextUtils.isEmpty(goal)) {
-            float target = Float.parseFloat(goal);
-            Bundle bundle = new Bundle();
-            bundle.putFloat(TargetBG_detail.BUNDLE_GOAL, target);
-            intent.putExtras(bundle);
-        }
-        startActivity(intent);
+        callBack.addGlycaemiaObjective(getContext());
     }
 
     private TextWatcher getGlicTW(){
@@ -131,14 +151,10 @@ public class GlycaemiaRegister extends LinearLayout {
                 if(glycString != null){
                     try{
                         int glycValue = Integer.parseInt(glycString);
-                        insulinCalculator.setGlycemia(glycValue);
-                        glycemiaData.setValue(glycValue);
+                        glycaemiaData.setValue(glycValue);
                     }catch (NumberFormatException e){
-                        // glycValueT.setError(R.string.glicInputError);
-                        insulinCalculator.setGlycemia(0);
-                        glycemiaData.setValue(0);
+                        glycaemiaData.setValue(0);
                     }
-                    refreshCalcs();
                 }
             }
         };
@@ -164,13 +180,11 @@ public class GlycaemiaRegister extends LinearLayout {
                 if(glycObjString != null){
                     try{
                         int glycObjValue = Integer.parseInt(glycObjString);
-                        insulinCalculator.setGlycemiaTarget(glycObjValue);
-                        glycemiaData.setObjective(glycObjValue);
+                        glycaemiaData.setObjective(glycObjValue);
                     }catch (NumberFormatException e){
-                        insulinCalculator.setGlycemiaTarget(0);
-                        glycemiaData.setObjective(0);
+                        glycaemiaData.setObjective(0);
                     }
-                    refreshCalcs();
+                    //refreshCalcs();
                 }
             }
         };
