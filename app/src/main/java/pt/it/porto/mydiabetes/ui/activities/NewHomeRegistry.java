@@ -238,7 +238,6 @@ public class NewHomeRegistry extends AppCompatActivity{
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(GENERATED_IMAGE_URI, generatedImageUri);
-        outState.putBoolean(CALCS_OPEN, isFragmentShowing());
 
        if (glycemiaData != null ) {
            outState.putParcelable(ARG_BLOOD_GLUCOSE, glycemiaData);
@@ -274,34 +273,23 @@ public class NewHomeRegistry extends AppCompatActivity{
         contentLayout = (LinearLayout) findViewById(R.id.content_panel);
         permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
         registerDate = Calendar.getInstance();
+        carbsRegister = new CarbsRegister(this, null, new NewHomeRegCallImpl());
 
-        //insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
-        //String currentTime = android.text.format.DateFormat.getTimeFormat(this.getApplicationContext()).format(new java.util.Date());
-
-        carbsRegister = new CarbsRegister(this, new NewHomeRegCallImpl());
-
-
-        /**
-         * Maybe change to when user presses new insulin?
-         */
         DB_Read rdb = new DB_Read(this);
-        UserInfo obj = rdb.MyData_Read();
-        int iRatio = obj.getInsulinRatio();
-        int cRatio = obj.getCarbsRatio();
+        ArrayList<Tag> t = rdb.Tag_GetAll();
+        String[] allTags = new String[t.size()];
         rdb.close();
-        /**
-         * Maybe change to when user presses new insulin?
-         */
 
-        insuRegister= new InsuRegister(this, iRatio, cRatio);
-        glycaemiaRegister = new GlycaemiaRegister(this, registerDate, new NewHomeRegCallImpl());
-        noteRegister = new NoteRegister(this);
+        if (t != null) {
+            for (int x=0;x<t.size();x++) {
+                allTags[x] = t.get(x).getName();
+            }
+        }
 
         buttons = new ArrayList<>();
         buttonsUpdate = new ArrayList<>();
         insulinCalculator = new InsulinCalculator(this);
         imgUri = null;
-
         FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(this));
         useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
 
@@ -318,17 +306,6 @@ public class NewHomeRegistry extends AppCompatActivity{
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
         spinner = ((Spinner) findViewById(R.id.tag_spinner));
-
-        DB_Read rdb = new DB_Read(this);
-        ArrayList<Tag> t = rdb.Tag_GetAll();
-        String[] allTags = new String[t.size()];
-        rdb.close();
-
-        if (t != null) {
-            for (int x=0;x<t.size();x++) {
-                allTags[x] = t.get(x).getName();
-            }
-        }
         spinner.setAdapter(new StringSpinnerAdapter(this, allTags));
 
         carbsData = new CarbsRec();
@@ -402,16 +379,31 @@ public class NewHomeRegistry extends AppCompatActivity{
         init_listeners();
         buttons.add(RegistryFields.PLUS);
         setupBottomSheet();
+        /*
+         If register from old reg
+         */
         Bundle args = getIntent().getExtras();
         if(args != null){
-            fillParameters(args);
+            fillParameters(args, true);
         }else{
-            Calendar time = Calendar.getInstance();
-            setDate(time);
-            setTime(time);
-        }
-        if(savedInstanceState!=null){
-            fillParameters(savedInstanceState);
+            if(savedInstanceState!=null){
+                fillParameters(savedInstanceState, false);
+            }else{
+                Calendar time = Calendar.getInstance();
+                setDate(time);
+                setTime(time);
+
+                DB_Read rdb = new DB_Read(this);
+                UserInfo obj = rdb.MyData_Read();
+                int iRatio = obj.getInsulinRatio();
+                int cRatio = obj.getCarbsRatio();
+                rdb.close();
+
+                insuRegister= new InsuRegister(this, iRatio, cRatio);
+                carbsRegister = new CarbsRegister(this, null, new NewHomeRegCallImpl());
+                glycaemiaRegister = new GlycaemiaRegister(this, registerDate, new NewHomeRegCallImpl());
+                noteRegister = new NoteRegister(this);
+            }
         }
     }
 
@@ -443,117 +435,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                     }
                 }).show();
     }
-    private void showTimePickerDialog(View v) {
 
-        DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.registerTime,
-                DateUtils.getTimeCalendar(((TextView) v).getText().toString()));
-        ((TimePickerFragment) newFragment).setListener(new TimePickerFragment.TimePickerChangeListener() {
-            @Override
-            public void onTimeSet(String time) {
-                Calendar calendar = DateUtils.getTimeCalendar(time);
-                if (calendar != null) {
-                    setTime(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),calendar.get(Calendar.MINUTE));
-                    String timeString = DateUtils.getFormattedTime(registerDate);
-                    registerTimeTextV.setText(timeString);
-                }
-            }
-        });
-        newFragment.show(getFragmentManager(), "timePicker");
-    }
-    private void showDatePickerDialog(View v) {
-        DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(
-                R.id.registryDate,
-                new DatePickerDialog.OnDateSetListener(){
-
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        setDate(year, month, day);
-                    }
-                }, DateUtils.getDateCalendar(((TextView) v).getText().toString()));
-        newFragment.show(getFragmentManager(), "DatePicker");
-    }
-    private void setDate(Calendar c) {
-        registerDate.set(Calendar.YEAR,c.get(Calendar.YEAR));
-        registerDate.set(Calendar.MONTH,c.get(Calendar.MONTH));
-        registerDate.set(Calendar.DAY_OF_MONTH,c.get(Calendar.DAY_OF_MONTH));
-        registerDateTextV.setText(DateUtils.getFormattedDate(registerDate));
-    }
-    private void setTime(Calendar c){
-        registerDate.set(Calendar.HOUR_OF_DAY, c.get(Calendar.HOUR_OF_DAY));
-        registerDate.set(Calendar.MINUTE, c.get(Calendar.MINUTE));
-        registerDate.set(Calendar.SECOND, c.get(Calendar.SECOND));
-        registerTimeTextV.setText(DateUtils.getFormattedTime(registerDate));
-    }
-    private void setDate(int year, int month, int day) {
-        registerDate.set(Calendar.YEAR,year);
-        registerDate.set(Calendar.MONTH,month);
-        registerDate.set(Calendar.DAY_OF_MONTH,day);
-        registerDateTextV.setText(DateUtils.getFormattedDate(registerDate));
-    }
-    private void setTime(int hour, int minute, int second){
-        registerDate.set(Calendar.HOUR_OF_DAY, hour);
-        registerDate.set(Calendar.MINUTE, minute);
-        registerDate.set(Calendar.SECOND, second);
-
-        StringBuilder displayTime = new StringBuilder(18);
-        displayTime.append(registerDate.get(Calendar.HOUR_OF_DAY));
-        displayTime.append(":");
-        displayTime.append(registerDate.get(Calendar.MINUTE));
-        registerTimeTextV.setText(displayTime);
-    }
-    private void addContent(int layout) {
-        contentLayout.addView(LayoutInflater.from(this).inflate(layout, contentLayout, false), 0);//contentLayout.getChildCount() - 1);
-        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
-        button.setEnabled(true);
-    }
-    private void addContent(LinearLayout view) {
-        contentLayout.addView(view, 0);//contentLayout.getChildCount() - 1);
-        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
-        button.setEnabled(true);
-    }
-    private void addContentAt(int layout, int pos) {
-        contentLayout.addView(LayoutInflater.from(this).inflate(layout, contentLayout, false), pos);//contentLayout.getChildCount() - 1);
-    }
-    private void removeContent(int child) {
-        contentLayout.removeViewAt(child);
-        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
-        if(buttonsUpdate.size()==0 && buttons.size()==0){
-            button.setEnabled(false);
-        }
-    }
-    private void hideKeyboard() {
-        if (getCurrentFocus() != null) {
-            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-        }
-    }
-    private void requestKeyboard(View view) {
-        view.requestFocus();
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
-    }
-    private void showBottomSheet() {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        /*CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
-        lp.setAnchorId(R.id.bottom_sheet);
-        lp.anchorGravity = Gravity.TOP | GravityCompat.END;
-        fab.setLayoutParams(lp);*/
-
-//        for(RegistryFields reg:buttons){
-//            switch (reg){
-//                case CARBS:bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(true);continue;
-//                case GLICEMIA:bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(true);continue;
-//                case INSULIN:bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(true);continue;
-//            }
-//            Log.i(TAG, "showBottomSheet: cenas");
-//        }
-    }
-    private void hideBottomSheet() {
-        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-    }
     private void save() {
         try{
             validateInfo_Save();
@@ -571,7 +453,17 @@ public class NewHomeRegistry extends AppCompatActivity{
             try {
             switch (field){
                     case CARBS:
-                        addMealRead();
+                        carbsData = carbsRegister.save_read(registerDate);
+
+                        DB_Write reg = new DB_Write(this);
+                        if(buttonsUpdate.contains(RegistryFields.CARBS)){
+                            reg.Carbs_Update(carbsData);
+                        }else{
+                            reg.Carbs_Save(carbsData);
+                        }
+                        reg.close();
+
+                        //addMealRead();
                         break;
                     case GLICEMIA:
                         addGlycemiaRead();
@@ -859,6 +751,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         }
     }
+
     private void insertNoteMenu(){
         addContent(noteRegister);
         buttons.add(0,RegistryFields.NOTE);
@@ -910,7 +803,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         }, 100L);
         hideBottomSheet();
-        if(buttons.contains(RegistryFields.GLICEMIA)){insertInsulinSuggestion(RegistryFields.CARBS);}
+        //if(buttons.contains(RegistryFields.GLICEMIA)){insertInsulinSuggestion(RegistryFields.CARBS);}
     }
     private void setNotePressed(View v){
         insertNoteMenu();
@@ -933,7 +826,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         }, 100L);
         hideBottomSheet();
-        if(buttons.contains(RegistryFields.CARBS)){insertInsulinSuggestion(RegistryFields.GLICEMIA);}
+        //if(buttons.contains(RegistryFields.CARBS)){insertInsulinSuggestion(RegistryFields.GLICEMIA);}
     }
     private void setInsuPressed(View v){
         insertInsulinMenu();
@@ -1013,186 +906,17 @@ public class NewHomeRegistry extends AppCompatActivity{
         });
     }
 
-
-
-
-
-
-
-
-
-
-
-
-    private void insertInsulinSuggestion(RegistryFields activator){
-        /*Boolean cons = ((!buttons.contains(RegistryFields.INSULIN)) && buttons.contains(RegistryFields.CARBS) && buttons.contains(RegistryFields.GLICEMIA));
-        if (cons) {
-            float insulinUnits = 0;
-            addContentAt(R.layout.insulin_content_edit, buttons.size()-1);
-
-            /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
-                    if(newAdvice!=null){
-                        addContent(R.layout.dialog_exp_advice);
-                        setAdviceText();
-                    }*/
-        /*
-            buttons.add(buttons.size()-1, RegistryFields.INSULIN);
-            View v = bottomSheetViewgroup.findViewById(R.id.bs_insulin);
-            fillInsulinSpinner();
-            Boolean carbReadExists = insulinCalculator.getCarbs()>0;
-            Boolean glycReadExists = insulinCalculator.getGlycemia()>0;
-
-            if(carbReadExists){
-                if(glycReadExists){
-                    insulinUnits = insulinCalculator.getInsulinTotal(useIOB);
-                }else{
-                    insulinUnits = insulinCalculator.getInsulinCarbs();
-                }
-            }else{
-                if(glycReadExists){
-                    insulinUnits = insulinCalculator.getInsulinGlycemia();
-                }
-            }
-
-            if((insulinUnits>0) && (!getIsManual())){
-                TextInputLayout insulinInput = ((TextInputLayout) findViewById(R.id.insulin_admin));
-                insulinInput.setHintEnabled(true);
-                TextView insuTxt = insulinInput.getEditText();
-                insuTxt.removeTextChangedListener(getInsulinTW());
-                insuTxt.requestFocus();
-                insuTxt.setText(insulinUnits+"");
-                if(activator.equals(RegistryFields.CARBS)){
-                    findViewById(R.id.meal_txt).requestFocus();
-                }else{
-                    findViewById(R.id.glycemia_txt).requestFocus();
-                }
-                showCalcs();
-            }
-            setInsulinListeners();
-            v.getAnimation();
-            v.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(true);
-                }
-            }, 100L);
-            hideBottomSheet();
-        }*/
-    }
-
-    private boolean isFragmentShowing() {
-        return fragmentInsulinCalcsFragment != null;
-    }
-    private void refreshCalcs(){
-        if(buttons.contains(RegistryFields.INSULIN)){
-            //showCalcs();
-            if(isFragmentShowing()) {
-                if(!getIsManual()){
-                    float insulinUnits = 0;
-                    if(insulinCalculator.getCarbs()>0) {
-                        insulinUnits += insulinCalculator.getInsulinCarbs();
-                    }
-                    if(insulinCalculator.getGlycemia()>0){
-                        insulinUnits += insulinCalculator.getInsulinGlycemia();
-                    }
-                    if(insulinUnits>0){
-                        TextInputLayout insulinInput = ((TextInputLayout) findViewById(R.id.insulin_admin));
-                        insulinInput.setHintEnabled(true);
-                        EditText insuET = insulinInput.getEditText();
-                        //insuET.removeTextChangedListener(getInsulinTW());
-                        insulinInput.getEditText().setText(insulinUnits+"");
-                        //insuET.addTextChangedListener(getInsulinTW());
-                    }
-                }
-            }
-        }
-
-    }
-
     public String getDate() {
         return registerDateTextV.getText().toString();
     }
     public String getTime() {
         return registerTimeTextV.getText().toString();
     }
-
     private void setImgURI(Uri newUri){imgUri = newUri;}
     private void imageRemoved() {
         setImgURI(null);
     }
-
-
-
-
-    private void insertGlicValue(int glicValue){
-        TextInputLayout glicInput = ((TextInputLayout) findViewById(R.id.glycemia_txt));
-        TextView glicTxt = glicInput.getEditText();
-        glicTxt.requestFocus();
-        glicTxt.setText(glicValue+"");
-        //glicTxt.addTextChangedListener(getGlicTW());
-    }
-
-    private void insertGlicObj(int value){
-        /*try{
-            TextInputLayout glicObjInput = ((TextInputLayout) findViewById(R.id.glycemia_obj));
-            TextView glicObjTxt = glicObjInput.getEditText();
-            glicObjTxt.requestFocus();
-            glicObjTxt.setText(value+"");
-            glicObjTxt.addTextChangedListener(getGlicObjTW());
-        }catch (Exception e){
-         //there is no glicemia read
-        }*/
-    }
-    private void insertCarbsData(int carbValue){
-        final ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
-        if (imageView == null) {
-            return;
-        }
-        if (imgUri != null) {
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-            int height = (int) (displaymetrics.heightPixels * 0.1);
-            int width = (int) (displaymetrics.widthPixels * 0.1);
-            b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
-            imageView.setImageBitmap(b);
-        }
-        TextInputLayout carbsInput = (TextInputLayout) findViewById(R.id.meal_txt);
-        TextView carbsTextView = carbsInput.getEditText();
-        carbsTextView.requestFocus();
-        carbsTextView.setText(carbValue+"");
-        //carbsTextView.addTextChangedListener(getCarbsTW());
-
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (imgUri != null) {
-                    final Intent intent = new Intent(getBaseContext(), ViewPhoto.class);
-                    Bundle argsToPhoto = new Bundle();
-                    argsToPhoto.putString("Path", imgUri.getPath());
-                    argsToPhoto.putInt("Id", -1);
-                    intent.putExtras(argsToPhoto);
-                    startActivityForResult(intent, IMAGE_VIEW);
-                } else {
-                    try {
-                        checkPermissions();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                   /* try{
-                        //final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        //intent.putExtra(MediaStore.EXTRA_OUTPUT, getImgURI());
-                        //startActivityForResult(intent, IMAGE_CAPTURE);
-                    }catch (Exception e){
-                        //error label -> permition denied
-                    }*/
-
-                }
-            }
-        });
-    }
-
-
-    private void fillParameters(Bundle args){
+    private void fillParameters(Bundle args, boolean isUpdate){/**TODO update */
         if (args != null) {
             buttonsUpdate = new ArrayList<>();
             if (args.containsKey(ARG_CARBS)) {
@@ -1216,7 +940,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                     String imgPath = carbsData.getPhotoPath();
                     if(imgPath!=null){imgUri = Uri.parse(imgPath);}
                     insertCarbsMenu();
-                    insertCarbsData(carbsData.getCarbsValue());
+                    //insertCarbsData(carbsData.getCarbsValue());
                     noteId = carbsData.getIdNote();
                     registerDate = carbsData.getDateTime();
                 }
@@ -1238,12 +962,12 @@ public class NewHomeRegistry extends AppCompatActivity{
                 if (insulinData != null) {
                     buttonsUpdate.add(RegistryFields.INSULIN);
                     insertInsulinMenu();
-                    insertInsulinData(insulinData.getInsulinUnits());
+                    //insertInsulinData(insulinData.getInsulinUnits());
                     noteId = insulinData.getIdNote();
                     registerDate = insulinData.getDateTime();
                     int obj = insulinData.getTargetGlycemia();
                     if(obj!=-1){
-                        insertGlicObj(obj);
+                        //insertGlicObj(obj);
                     }
                     //TODO  -1 passar a valor real
                 }
@@ -1271,33 +995,6 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
             hideBottomSheet();
             hideKeyboard();
-        }
-    }
-
-    public void checkPermissions() throws IOException {
-        if (ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.CAMERA)) {
-                ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
-            } else if (permissionStatus.getBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,false) || (permissionStatus.getBoolean(Manifest.permission.CAMERA,false))) {
-                sentToSettings = true;
-                Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri.fromParts("package", getPackageName(), null);
-                intent.setData(uri);
-                startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-            } else {
-                //just request the permission
-                ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
-            }
-
-            SharedPreferences.Editor editor = permissionStatus.edit();
-            editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,true);
-            editor.putBoolean(Manifest.permission.CAMERA,true);
-            editor.commit();
-
-
-        } else {
-            //You already have the permission, just go ahead.
-            dispatchTakePictureIntent();
         }
     }
     @Override
@@ -1443,4 +1140,102 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         }
     }
+    private void hideKeyboard() {
+        if (getCurrentFocus() != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+    }
+    private void requestKeyboard(View view) {
+        view.requestFocus();
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
+    }
+    private void showBottomSheet() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    }
+    private void hideBottomSheet() {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+    private void showTimePickerDialog(View v) {
+
+        DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.registerTime,
+                DateUtils.getTimeCalendar(((TextView) v).getText().toString()));
+        ((TimePickerFragment) newFragment).setListener(new TimePickerFragment.TimePickerChangeListener() {
+            @Override
+            public void onTimeSet(String time) {
+                Calendar calendar = DateUtils.getTimeCalendar(time);
+                if (calendar != null) {
+                    setTime(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),calendar.get(Calendar.MINUTE));
+                    String timeString = DateUtils.getFormattedTime(registerDate);
+                    registerTimeTextV.setText(timeString);
+                }
+            }
+        });
+        newFragment.show(getFragmentManager(), "timePicker");
+    }
+    private void showDatePickerDialog(View v) {
+        DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(
+                R.id.registryDate,
+                new DatePickerDialog.OnDateSetListener(){
+
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                        setDate(year, month, day);
+                    }
+                }, DateUtils.getDateCalendar(((TextView) v).getText().toString()));
+        newFragment.show(getFragmentManager(), "DatePicker");
+    }
+    private void setDate(Calendar c) {
+        registerDate.set(Calendar.YEAR,c.get(Calendar.YEAR));
+        registerDate.set(Calendar.MONTH,c.get(Calendar.MONTH));
+        registerDate.set(Calendar.DAY_OF_MONTH,c.get(Calendar.DAY_OF_MONTH));
+        registerDateTextV.setText(DateUtils.getFormattedDate(registerDate));
+    }
+    private void setTime(Calendar c){
+        registerDate.set(Calendar.HOUR_OF_DAY, c.get(Calendar.HOUR_OF_DAY));
+        registerDate.set(Calendar.MINUTE, c.get(Calendar.MINUTE));
+        registerDate.set(Calendar.SECOND, c.get(Calendar.SECOND));
+        registerTimeTextV.setText(DateUtils.getFormattedTime(registerDate));
+    }
+    private void setDate(int year, int month, int day) {
+        registerDate.set(Calendar.YEAR,year);
+        registerDate.set(Calendar.MONTH,month);
+        registerDate.set(Calendar.DAY_OF_MONTH,day);
+        registerDateTextV.setText(DateUtils.getFormattedDate(registerDate));
+    }
+    private void setTime(int hour, int minute, int second){
+        registerDate.set(Calendar.HOUR_OF_DAY, hour);
+        registerDate.set(Calendar.MINUTE, minute);
+        registerDate.set(Calendar.SECOND, second);
+
+        StringBuilder displayTime = new StringBuilder(18);
+        displayTime.append(registerDate.get(Calendar.HOUR_OF_DAY));
+        displayTime.append(":");
+        displayTime.append(registerDate.get(Calendar.MINUTE));
+        registerTimeTextV.setText(displayTime);
+    }
+    private void addContent(int layout) {
+        contentLayout.addView(LayoutInflater.from(this).inflate(layout, contentLayout, false), 0);//contentLayout.getChildCount() - 1);
+        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
+        button.setEnabled(true);
+    }
+    private void addContent(LinearLayout view) {
+        contentLayout.addView(view, 0);//contentLayout.getChildCount() - 1);
+        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
+        button.setEnabled(true);
+    }
+    private void addContentAt(int layout, int pos) {
+        contentLayout.addView(LayoutInflater.from(this).inflate(layout, contentLayout, false), pos);//contentLayout.getChildCount() - 1);
+    }
+    private void removeContent(int child) {
+        contentLayout.removeViewAt(child);
+        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
+        if(buttonsUpdate.size()==0 && buttons.size()==0){
+            button.setEnabled(false);
+        }
+    }
+
 }

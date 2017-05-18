@@ -97,10 +97,11 @@ public class MyDiabetesStorage {
 	public int getGlycemiaObjectives(String time) throws Exception{
 		//TODO pm am ou normal <- ver isto
 		SQLiteDatabase db = mHandler.getReadableDatabase();
+		Log.i("SQL", "getGlycemiaObjectives: "+time+"");
 		Cursor cursor = db.query(
 		        MyDiabetesContract.BG_Target.TABLE_NAME,
                 new String[]{MyDiabetesContract.BG_Target.COLUMN_NAME_VALUE},
-                MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_START + ">=? and "+MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_END + "<= ?",
+                MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_START + "<=? and "+MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_END + ">= ?",
                 new String[]{time,time}, null, null, null, null);
 
 		cursor.moveToFirst();

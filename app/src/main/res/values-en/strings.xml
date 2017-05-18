@@ -6,7 +6,7 @@
     <string name="recentReg">Recent Registries</string>
 
     <string name="targetOverlapError">A glicemic target is already defined at this time period</string>
-
+    <string name="glycemia_value">Glycaemia Value</string>
     <string name="navTask">My Tasks</string>
     <string name="navLog">My Logbook</string>
     <string name="navPersonalTools">Personal options</string>
@@ -14,7 +14,7 @@
 
     <string name="Carbs">Carbs</string>
     <string name="Exercise">Exercise</string>
-    <string name="Glycemia">Glycemia</string>
+    <string name="Glycemia">Glycaemia</string>
     <string name="Insulin">Insulin</string>
     <string name="Meal">Meal</string>
     <string name="action_settings">Settings</string>
@@ -80,8 +80,8 @@
     <string name="title_activity_preferences">Preferences</string>
     <string name="title_activity_exercise">Exercise Register</string>
     <string name="save_MyData">Save</string>
-    <string name="title_activity_glycemia">Glycemia Register</string>
-    <string name="add_Glycemia">Add Glycemia</string>
+    <string name="title_activity_glycemia">Glycaemia Register</string>
+    <string name="add_Glycemia">Add Glycaemia</string>
     <string name="title_activity_insulin">Insulin Register</string>
     <string name="title_activity_logbook">LogBook</string>
     <string name="add_Insulin">Add Insulin</string>
@@ -120,7 +120,7 @@
     <string name="diabetes_type_2">Type 2</string>
     <string name="diabetes_type_gestational">Gestational</string>
     <string name="title_activity_data_tools">Definitions &amp; Tools</string>
-    <string name="title_activity_glycemia_detail">Glycemia Register</string>
+    <string name="title_activity_glycemia_detail">Glycaemia Register</string>
     <string name="save_GlycemiaDetail">Save</string>
     <string name="title_activity_insulin_detail">Insulin Register</string>
     <string name="title_activity_exercise_detail">Exercise Register</string>
@@ -136,7 +136,7 @@
     <string name="deleteConfirmationSingular">The following item will be deleted:</string>
     <string name="deleteConfirmationPlural">The following items will be deleted:</string>
     <string name="deleteCarbsReg">Carbohydrates Register</string>
-    <string name="deleteGlycemiaReg">Glycemia Register</string>
+    <string name="deleteGlycemiaReg">Glycaemia Register</string>
     <string name="deleteInsulinReg">Insulin Register</string>
 
     <string-array name="Effort">
@@ -173,7 +173,7 @@
     </string-array>
 
     <string-array name="task_type_list">
-        <item>Glycemia</item>
+        <item>Glycaemia</item>
         <item>Insulin</item>
         <item>Meal</item>
         <item>Exercise</item>
@@ -182,8 +182,13 @@
     </string-array>
 
 
-    <string name="glycemia_objective">Glycemia Objective</string>
-    <string name="glycemia_measure">Glycemia Read</string>
+    <string name="correction_glycemia">Glycaemia Correction</string>
+    <string name="correction_hc">Carbohydrates Correction</string>
+    <string name="insulin_active">Insulin On Board</string>
+    <string name="insulin_total">Total Insulin</string>
+
+    <string name="glycemia_objective">Glycaemia Objective</string>
+    <string name="glycemia_measure">Glycaemia Read</string>
     <string name="insulin_intake">Insulin to Administrate</string>
     <string name="carbs_intake">Carbohydrates Consumption</string>
     <string name="active_insulin">Insulin on Board</string>
@@ -337,7 +342,7 @@
     <string name="sensivity_factor">Sensitivity factor</string>
     <string name="carbs_racio">Carbohydrate Ratio</string>
     <string name="hypoglycemia_limit">Limit to Hypoglycaemia</string>
-    <string name="hyperglycemia_limit">Limit for Hyperglycemia</string>
+    <string name="hyperglycemia_limit">Limit for Hyperglycaemia</string>
 
     <string name="insulin_name">Name for Insulin</string>
     <string name="insulin_method">Type of Administration</string>

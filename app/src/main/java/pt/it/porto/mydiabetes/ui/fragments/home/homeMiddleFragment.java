@@ -65,6 +65,7 @@ public class homeMiddleFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == WAIT_REGISTER && resultCode == Home.CHANGES_OCCURRED) {
 			updateHomeList();
+			//Log.i(TAG, "onActivityResult: RAWRDDSFGSDFGSDFGSDFGSDGSDFGSDFGSDGSDFGSDFG");
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
@@ -83,7 +84,7 @@ public class homeMiddleFragment extends Fragment {
 	private void updateHomeList(){
 		logBookList = new LinkedList<>();
 		//fillTaskList();
-		//fillAdviceList();
+		fillAdviceList();
 		fillDays();
         if (logBookList.size() == 0) {
             listEmpty.setVisibility(View.VISIBLE);
@@ -114,14 +115,6 @@ public class homeMiddleFragment extends Fragment {
 		logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
 
 		HomeAdapter homeAdapter = new HomeAdapter(logBookList);
-		/*if(helper==null){
-			ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
-			helper= new ItemTouchHelper(callback);
-			helper.attachToRecyclerView(homeList);
-		}*/
-
-
-
 		homeRecyclerView.setAdapter(homeAdapter);
 		homeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 	}
@@ -185,26 +178,27 @@ public class homeMiddleFragment extends Fragment {
 
 	public void fillAdviceList() {
 		//receiverAdviceList.addAll(yapDroid.getAllEndAdvices(getApplicationContext()));
-		Advice task1 = new Advice();
-		task1.setSummaryText("Fazer exercicio hoje!");
-		task1.setExpandedText("Hoje fiquei de fazer exercicio. O gim está à minha espera!");
-		task1.setUrgency(5);
+		Advice advice1 = new Advice();
+		advice1.setSummaryText("Low glycaemia value detected!");
+		advice1.setExpandedText("Your glycaemia values are low, you should ingest fast carbohydrates.");
+		advice1.setUrgency(5);
+		advice1.setType("NORMAL");
 
-		Advice task2 = new Advice();
-		task2.setSummaryText("Actualizar dados!");
-		task2.setExpandedText("Fazer a sincronização da bomba com a aplicação!");
-		task2.setUrgency(3);
+		/*Advice advice2 = new Advice();
+		advice2.setSummaryText("");
+		advice2.setExpandedText("Fazer a sincronização da bomba com a aplicação!");
+		advice2.setUrgency(3);*/
 
 		ArrayList<Advice> adviceList = new ArrayList<>();
-		adviceList.add(task1);
-		adviceList.add(task2);
+		adviceList.add(advice1);
+		//adviceList.add(advice2);
 
 		receiverAdviceList = new ArrayList<>();
 		receiverAdviceList.addAll(adviceList);
 		Collections.sort(receiverAdviceList);
 
-		if(receiverAdviceList.size()>0 && BuildConfig.ADVICES_AVAILABLE){
-			logBookList.add(new HomeElement(HomeElement.Type.HEADER, getContext().getString(R.string.advices)));
+		if(receiverAdviceList.size()>0 ){//&& BuildConfig.ADVICES_AVAILABLE){
+			//logBookList.add(new HomeElement(HomeElement.Type.HEADER, getContext().getString(R.string.advices)));
 			logBookList.addAll(receiverAdviceList);
 		}
 	}
@@ -213,7 +207,7 @@ public class homeMiddleFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		updateHomeList();
+		//updateHomeList();
 	}
 
 	public static long getDateInMillis(String srcDate) {

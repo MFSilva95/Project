@@ -1,5 +1,6 @@
 package pt.it.porto.mydiabetes.ui.fragments.new_register;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,18 +10,19 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
-
-import java.io.IOException;
-
+import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.ui.activities.ViewPhoto;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
@@ -36,48 +38,44 @@ public class CarbsRegister extends LinearLayout {
     private final static int IMAGE_VIEW = 3;
     private NewHomeRegistry.NewHomeRegCallBack callBack;
 
-    public CarbsRegister(Context context, NewHomeRegistry.NewHomeRegCallBack call) {
+    public CarbsRegister(Context context,CarbsRec carbs, NewHomeRegistry.NewHomeRegCallBack call) {
         super(context);
-        init();
+        init(carbs);
         callBack = call;
     }
 
-    public CarbsRegister(Context context, AttributeSet attrs, NewHomeRegistry.NewHomeRegCallBack call) {
-        super(context, attrs);
-        init();
-        callBack = call;
-    }
-
-    public CarbsRegister(Context context, AttributeSet attrs, int defStyle, NewHomeRegistry.NewHomeRegCallBack call) {
-        super(context, attrs, defStyle);
-        init();
-        callBack = call;
-    }
-
-    private void init() {
-
+    private void init(CarbsRec carbData) {
         carbsData = new CarbsRec();
         inflate(getContext(), R.layout.meal_content_edit, this);
         this.carbs_input = (TextInputLayout) findViewById(R.id.meal_txt);
         this.image_button = (ImageButton) findViewById(R.id.iv_MealDetail_Photo);
-    }
-    public boolean canSave(){
-        try{
-            Integer.parseInt(carbs_input.getEditText().getText().toString());
-        }catch (Exception e){
-            carbs_input.setError(getContext().getString(R.string.glicInputError));
-            carbs_input.requestFocus();
-            return false;
+        if(carbData!=null){
+            fill_parameters(carbData);
         }
-        return true;
+        setMealListeners();
     }
-    public void fill_parameters(Bundle savedIns){
-        carbsData = savedIns.getParcelable(ARG_CARBS);
+
+    public void fill_parameters(CarbsRec carbData){
+        carbsData = carbData;
         carbs_input.getEditText().setText(carbsData.getCarbsValue());
+        if(carbsData.getPhotoPath()!= null){
+            imgUri = Uri.parse(carbData.getPhotoPath());
+        }
+        ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
+        if (imgUri == null) {
+            imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
+        } else {
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            //getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int height = (int) (displaymetrics.heightPixels * 0.1);
+            int width = (int) (displaymetrics.widthPixels * 0.1);
+            b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+            imageView.setImageBitmap(b);
+        }
         //image_button.
     }
     private void setMealListeners(){
-        final ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
+        ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
         if (imageView == null) {
             return;
         }
@@ -98,7 +96,6 @@ public class CarbsRegister extends LinearLayout {
                 callBack.addCarbsImage(getContext(), imgUri);
             }
         });
-
 
         TextView carbsTextView = (TextView) findViewById(R.id.meal);
         carbsTextView.addTextChangedListener(getCarbsTW());
@@ -125,5 +122,102 @@ public class CarbsRegister extends LinearLayout {
             }
         };
         return carbsTW;
+    }
+
+    private void insertCarbsData(int carbValue){
+        final ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
+        if (imageView == null) {
+            return;
+        }
+        if (imgUri != null) {
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int height = (int) (displaymetrics.heightPixels * 0.1);
+            int width = (int) (displaymetrics.widthPixels * 0.1);
+            b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+            imageView.setImageBitmap(b);
+        }
+        TextInputLayout carbsInput = (TextInputLayout) findViewById(R.id.meal_txt);
+        TextView carbsTextView = carbsInput.getEditText();
+        carbsTextView.requestFocus();
+        carbsTextView.setText(carbValue+"");
+        carbsTextView.addTextChangedListener(getCarbsTW());
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imgUri != null) {
+                    final Intent intent = new Intent(getContext(), ViewPhoto.class);
+                    Bundle argsToPhoto = new Bundle();
+                    argsToPhoto.putString("Path", imgUri.getPath());
+                    argsToPhoto.putInt("Id", -1);
+                    intent.putExtras(argsToPhoto);
+                    ((Activity) getContext()).startActivityForResult(intent, IMAGE_VIEW);
+                } else {
+                    callBack.checkPermissions();
+                   /*try {
+                        //checkPermissions();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }*/
+                   /* try{
+                        //final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        //intent.putExtra(MediaStore.EXTRA_OUTPUT, getImgURI());
+                        //startActivityForResult(intent, IMAGE_CAPTURE);
+                    }catch (Exception e){
+                        //error label -> permition denied
+                    }*/
+
+                }
+            }
+        });
+    }
+
+    public CarbsRec save_read(Calendar regDate) throws Exception {
+
+        Spinner tagSpinner = (Spinner) findViewById(R.id.tag_spinner);
+        EditText carbsEditText = carbs_input.getEditText();
+
+        try{
+            Integer.parseInt(carbs_input.getEditText().getText().toString());
+        }catch (Exception e){
+            carbs_input.setError(getContext().getString(R.string.glicInputError));
+            carbs_input.requestFocus();
+            throw new Exception("wrong parameter");
+        }
+
+        if (carbsEditText.getText().toString().equals("")) {
+            carbsEditText.requestFocus();
+            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(carbsEditText, InputMethodManager.SHOW_IMPLICIT);
+            carbsEditText.setError(getContext().getString(R.string.glicInputError));
+            throw new Exception("wrong parameter");
+        }
+        //Get id of user
+        DB_Read rdb = new DB_Read(getContext());
+        int idUser = rdb.getId();
+        //Get id of selected tag
+        String tag = null;
+        if (tagSpinner != null) {
+            tag = tagSpinner.getSelectedItem().toString();
+        }
+        int idTag = rdb.Tag_GetIdByName(tag);
+        rdb.close();
+        int carbsValue;
+
+        carbsData.setIdUser(idUser);
+        try {
+            carbsValue = Integer.parseInt(carbsEditText.getText().toString());
+
+        } catch (Exception e) {
+            carbsEditText.setError(getContext().getString(R.string.glicInputError));
+            carbsEditText.requestFocus();
+            throw new Exception("wrong parameter");
+        }
+
+        carbsData.setCarbsValue(carbsValue);
+        carbsData.setDateTime(regDate);
+        carbsData.setIdTag(idTag);
+        return carbsData;
     }
 }

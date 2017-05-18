@@ -3,11 +3,16 @@ package pt.it.porto.mydiabetes.ui.fragments.new_register;
 import android.app.Activity;
 import android.content.Context;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,7 +36,9 @@ public class InsuRegister extends LinearLayout {
     private boolean isManual;
     private InsulinCalculator insulinCalculator;
     private View insuInfo;
+    private FrameLayout insuInfoContent;
     protected InsulinCalcView fragmentInsulinCalcsFragment;
+    private boolean calcShowing;
     private boolean useIOB;
     private int iRatio;
     private int cRatio;
@@ -55,17 +62,26 @@ public class InsuRegister extends LinearLayout {
         init();
     }
 
+    private void addContent(LinearLayout view) {
+        insuInfoContent.addView(view, 0);//contentLayout.getChildCount() - 1);
+    }
+    private void removeContent(LinearLayout view) {
+        insuInfoContent.removeView(view);//contentLayout.getChildCount() - 1);
+    }
+
     private void init() {
         FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(getContext()));
         inflate(getContext(), R.layout.insulin_content_edit, this);
 
-        fragmentInsulinCalcsFragment = new InsulinCalcView(getContext());
+        fragmentInsulinCalcsFragment = new InsulinCalcView(getContext(), iRatio, cRatio);
         useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
+        calcShowing = false;
         insuData = new InsulinRec();
         isManual = false;
         insulinCalculator = new InsulinCalculator(getContext());
         insulin_input = (TextInputLayout) findViewById(R.id.insulin_admin);
         insuInfo = findViewById(R.id.bt_insulin_calc_info);
+        insuInfoContent = (FrameLayout) findViewById(R.id.fragment_calcs);
         fillInsulinSpinner();
         setInsulinListeners();
     }
@@ -148,40 +164,22 @@ public class InsuRegister extends LinearLayout {
         }
     }
     private boolean isFragmentShowing() {
-        return fragmentInsulinCalcsFragment != null;
+        return calcShowing;
     }
     private void showCalcs() {
 
-        /*if (fragmentInsulinCalcsFragment == null) {
-            FragmentManager fragmentManager = getFragmentManager();
-            Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_calcs);
-            if (fragment != null) {
-                fragmentInsulinCalcsFragment = (InsulinCalcFragment) fragment;
-            } else {
-                fragmentInsulinCalcsFragment = InsulinCalcFragment.newInstance((int) insulinCalculator.getGlycemiaRatio(), (int) insulinCalculator.getCarbsRatio());
-                fragmentManager.beginTransaction()
-                        .add(R.id.fragment_calcs, fragmentInsulinCalcsFragment)
-                        .commit();
-                fragmentManager.executePendingTransactions();
-
-                ScaleAnimation animation = new ScaleAnimation(1, 1, 0, 1, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
-                animation.setDuration(700);
-                FrameLayout fragmentCalcs = (FrameLayout) findViewById(R.id.fragment_calcs);
-                if (fragmentCalcs != null) {
-                    fragmentCalcs.startAnimation(animation);
-                }
-                ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
-                if (calcInsulinInfo != null) {
-                    calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_info_outline_grey_900_24dp));
-                }
-            }
+        addContent(fragmentInsulinCalcsFragment);
+        calcShowing = true;
+        ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
+        if (calcInsulinInfo != null) {
+            calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_info_outline_grey_900_24dp));
         }
 
         fragmentInsulinCalcsFragment.setCorrectionGlycemia(insulinCalculator.getInsulinGlycemia());
         fragmentInsulinCalcsFragment.setCorrectionCarbs(insulinCalculator.getInsulinCarbs());
         fragmentInsulinCalcsFragment.setResult(insulinCalculator.getInsulinTotal(useIOB), insulinCalculator.getInsulinTotal(useIOB, true));
         fragmentInsulinCalcsFragment.setInsulinOnBoard(insulinCalculator.getInsulinOnBoard());
-        insulinCalculator.setListener(new InsulinCalculator.InsulinCalculatorListener() {
+        /*insulinCalculator.setListener(new InsulinCalculator.InsulinCalculatorListener() {
             @Override
             public void insulinOnBoardChanged(InsulinCalculator calculator) {
                 if (fragmentInsulinCalcsFragment != null) {
@@ -191,38 +189,15 @@ public class InsuRegister extends LinearLayout {
         });*/
     }
     private void hideCalcs() {
-        /*if (fragmentInsulinCalcsFragment != null) {
-            ScaleAnimation animation = new ScaleAnimation(1, 1, 1, 0, Animation.ABSOLUTE, Animation.ABSOLUTE, Animation.RELATIVE_TO_SELF, 0);
-            animation.setDuration(700);
-            FrameLayout fragmentCalcs = (FrameLayout) findViewById(R.id.fragment_calcs);
-            if (fragmentCalcs != null) {
-                fragmentCalcs.startAnimation(animation);
-            }
-            animation.setAnimationListener(new Animation.AnimationListener() {
-                @Override
-                public void onAnimationStart(Animation animation) {
 
-                }
+        removeContent(fragmentInsulinCalcsFragment);
+        calcShowing = false;
 
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    getFragmentManager().beginTransaction()
-                            .remove(fragmentInsulinCalcsFragment)
-                            .commit();
-                    fragmentInsulinCalcsFragment = null;
-                }
+        ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
+        if (calcInsulinInfo != null) {
+            calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_information_outline_grey600_24dp));
+        }
 
-                @Override
-                public void onAnimationRepeat(Animation animation) {
-
-                }
-            });
-            insulinCalculator.setListener(null);
-            ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
-            if (calcInsulinInfo != null) {
-                calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_information_outline_grey600_24dp));
-            }
-        }*/
     }
     private void insertInsulinData(float insulinUnits){
 
