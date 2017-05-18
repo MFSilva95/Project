@@ -1,13 +1,15 @@
 package pt.it.porto.mydiabetes.utils;
 
 import android.content.Context;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 
-public class InsulinCalculator implements Cloneable {
+public class InsulinCalculator  implements Cloneable {
 
 	/** Indicates the linear decline per half an hour of the insulin on board
 	 */
@@ -48,6 +50,11 @@ public class InsulinCalculator implements Cloneable {
 
 	public float getInsulinTotal(boolean withIOB) {
 		return getInsulinCarbs() + getInsulinGlycemia() - (withIOB ? insulinOnBoard : 0);
+	}
+
+
+	public String getInsulinTotal(){
+		return String.valueOf(getInsulinTotal(false, true));
 	}
 
 	public float getInsulinCarbs() {

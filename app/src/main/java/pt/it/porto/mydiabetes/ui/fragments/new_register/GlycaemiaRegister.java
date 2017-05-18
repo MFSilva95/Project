@@ -61,6 +61,7 @@ public class GlycaemiaRegister extends LinearLayout {
         inflate(getContext(), R.layout.glycemia_content_edit, this);
         this.glycaemia_input = (TextInputLayout) findViewById(R.id.glycemia_txt);
         this.glycaemia_obj_input = (TextInputLayout) findViewById(R.id.glycemia_obj);
+        setGlycemiaListeners();
     }
     public boolean canSave(){
         try{
@@ -155,6 +156,7 @@ public class GlycaemiaRegister extends LinearLayout {
                     }catch (NumberFormatException e){
                         glycaemiaData.setValue(0);
                     }
+                    callBack.updateInsulinCalc();
                 }
             }
         };
@@ -184,10 +186,19 @@ public class GlycaemiaRegister extends LinearLayout {
                     }catch (NumberFormatException e){
                         glycaemiaData.setObjective(0);
                     }
+                    callBack.updateInsulinCalc();
                     //refreshCalcs();
                 }
             }
         };
         return objTW;
+    }
+
+    public int getGlycemia() {
+        return glycaemiaData.getValue();
+    }
+
+    public int getGlycemiaTarget() {
+        return glycaemiaData.getBG_target();
     }
 }

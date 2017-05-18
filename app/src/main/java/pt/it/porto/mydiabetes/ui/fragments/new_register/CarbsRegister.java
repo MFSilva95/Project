@@ -37,21 +37,20 @@ public class CarbsRegister extends LinearLayout {
     private Bitmap b;
     private final static int IMAGE_VIEW = 3;
     private NewHomeRegistry.NewHomeRegCallBack callBack;
+    private int carbs;
 
-    public CarbsRegister(Context context,CarbsRec carbs, NewHomeRegistry.NewHomeRegCallBack call) {
+    public CarbsRegister(Context context, NewHomeRegistry.NewHomeRegCallBack call) {
         super(context);
-        init(carbs);
+        init();
         callBack = call;
     }
 
-    private void init(CarbsRec carbData) {
+    private void init() {
         carbsData = new CarbsRec();
         inflate(getContext(), R.layout.meal_content_edit, this);
         this.carbs_input = (TextInputLayout) findViewById(R.id.meal_txt);
         this.image_button = (ImageButton) findViewById(R.id.iv_MealDetail_Photo);
-        if(carbData!=null){
-            fill_parameters(carbData);
-        }
+
         setMealListeners();
     }
 
@@ -75,22 +74,21 @@ public class CarbsRegister extends LinearLayout {
         //image_button.
     }
     private void setMealListeners(){
-        ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
-        if (imageView == null) {
+        if (image_button == null) {
             return;
         }
         if (imgUri == null) {
-            imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
+            image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
         } else {
             DisplayMetrics displaymetrics = new DisplayMetrics();
             //getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
             int height = (int) (displaymetrics.heightPixels * 0.1);
             int width = (int) (displaymetrics.widthPixels * 0.1);
             b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
-            imageView.setImageBitmap(b);
+            image_button.setImageBitmap(b);
         }
 
-        imageView.setOnClickListener(new View.OnClickListener() {
+        image_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 callBack.addCarbsImage(getContext(), imgUri);
@@ -101,7 +99,12 @@ public class CarbsRegister extends LinearLayout {
         carbsTextView.addTextChangedListener(getCarbsTW());
     }
 
-
+    public void setUri(Uri u){
+        this.imgUri = u;
+        if(u==null) {
+            image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
+        }
+    }
     private TextWatcher getCarbsTW(){
         TextWatcher carbsTW = new TextWatcher() {
             @Override
@@ -118,6 +121,7 @@ public class CarbsRegister extends LinearLayout {
                     }catch (NumberFormatException e){
                         carbsData.setCarbsValue(0);
                     }
+                        callBack.updateInsulinCalc();
                 }
             }
         };
@@ -146,29 +150,7 @@ public class CarbsRegister extends LinearLayout {
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (imgUri != null) {
-                    final Intent intent = new Intent(getContext(), ViewPhoto.class);
-                    Bundle argsToPhoto = new Bundle();
-                    argsToPhoto.putString("Path", imgUri.getPath());
-                    argsToPhoto.putInt("Id", -1);
-                    intent.putExtras(argsToPhoto);
-                    ((Activity) getContext()).startActivityForResult(intent, IMAGE_VIEW);
-                } else {
-                    callBack.checkPermissions();
-                   /*try {
-                        //checkPermissions();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }*/
-                   /* try{
-                        //final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        //intent.putExtra(MediaStore.EXTRA_OUTPUT, getImgURI());
-                        //startActivityForResult(intent, IMAGE_CAPTURE);
-                    }catch (Exception e){
-                        //error label -> permition denied
-                    }*/
-
-                }
+                callBack.addCarbsImage(getContext(), imgUri);
             }
         });
     }
@@ -214,10 +196,13 @@ public class CarbsRegister extends LinearLayout {
             carbsEditText.requestFocus();
             throw new Exception("wrong parameter");
         }
-
         carbsData.setCarbsValue(carbsValue);
         carbsData.setDateTime(regDate);
         carbsData.setIdTag(idTag);
         return carbsData;
+    }
+
+    public int getCarbs() {
+        return carbsData.getCarbsValue();
     }
 }

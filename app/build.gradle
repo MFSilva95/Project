@@ -42,6 +42,10 @@ android {
             //buildConfigField "boolean", "ADVICES_AVAILABLE", "true"
         }
     }
+    dataBinding {
+        enabled = true
+    }
+
     //YAPDROID
 //    sourceSets {
 //        main {

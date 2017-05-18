@@ -1,16 +1,13 @@
 package pt.it.porto.mydiabetes.ui.fragments.new_register;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -34,7 +31,6 @@ public class InsuRegister extends LinearLayout {
     private TextInputLayout insulin_input;
     private InsulinRec insuData;
     private boolean isManual;
-    private InsulinCalculator insulinCalculator;
     private View insuInfo;
     private FrameLayout insuInfoContent;
     protected InsulinCalcView fragmentInsulinCalcsFragment;
@@ -73,12 +69,11 @@ public class InsuRegister extends LinearLayout {
         FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(getContext()));
         inflate(getContext(), R.layout.insulin_content_edit, this);
 
-        fragmentInsulinCalcsFragment = new InsulinCalcView(getContext(), iRatio, cRatio);
+        fragmentInsulinCalcsFragment = new InsulinCalcView(getContext());
         useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
         calcShowing = false;
         insuData = new InsulinRec();
         isManual = false;
-        insulinCalculator = new InsulinCalculator(getContext());
         insulin_input = (TextInputLayout) findViewById(R.id.insulin_admin);
         insuInfo = findViewById(R.id.bt_insulin_calc_info);
         insuInfoContent = (FrameLayout) findViewById(R.id.fragment_calcs);
@@ -94,6 +89,9 @@ public class InsuRegister extends LinearLayout {
             return false;
         }
         return true;
+    }
+    public void updateInsuCalc(InsulinCalculator calculator){
+        this.fragmentInsulinCalcsFragment.setInsulinCalculator(calculator);
     }
     public void fill_parameters(InsulinRec rec){
         this.insuData = rec;
@@ -174,19 +172,6 @@ public class InsuRegister extends LinearLayout {
         if (calcInsulinInfo != null) {
             calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_info_outline_grey_900_24dp));
         }
-
-        fragmentInsulinCalcsFragment.setCorrectionGlycemia(insulinCalculator.getInsulinGlycemia());
-        fragmentInsulinCalcsFragment.setCorrectionCarbs(insulinCalculator.getInsulinCarbs());
-        fragmentInsulinCalcsFragment.setResult(insulinCalculator.getInsulinTotal(useIOB), insulinCalculator.getInsulinTotal(useIOB, true));
-        fragmentInsulinCalcsFragment.setInsulinOnBoard(insulinCalculator.getInsulinOnBoard());
-        /*insulinCalculator.setListener(new InsulinCalculator.InsulinCalculatorListener() {
-            @Override
-            public void insulinOnBoardChanged(InsulinCalculator calculator) {
-                if (fragmentInsulinCalcsFragment != null) {
-                    showCalcs();
-                }
-            }
-        });*/
     }
     private void hideCalcs() {
 
