@@ -43,6 +43,11 @@ public class GlycaemiaRegister extends LinearLayout {
     private GlycemiaRec glycaemiaData;
     private TextInputLayout glycaemia_obj_input;
     private Calendar registerDate;
+
+    public NewHomeRegistry.NewHomeRegCallBack getCallBack() {
+        return callBack;
+    }
+
     private NewHomeRegistry.NewHomeRegCallBack callBack;
 
 

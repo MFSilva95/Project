@@ -1,6 +1,7 @@
 package pt.it.porto.mydiabetes.ui.fragments.new_register;
 
 import android.content.Context;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -42,7 +43,8 @@ public class InsuRegister extends LinearLayout {
     private boolean useIOB;
     private int iRatio;
     private int cRatio;
-    Spinner insu_spinner;
+    private Spinner insu_spinner;
+    private InsulinCalculator calc;
 
 
 
@@ -86,8 +88,9 @@ public class InsuRegister extends LinearLayout {
         return true;
     }
     public void updateInsuCalc(InsulinCalculator calculator){
-        if(!isManual){insertInsulinData(calculator.getInsulinTotal(false, true));}
+        this.calc = calculator;
         this.fragmentInsulinCalcsFragment.setInsulinCalculator(calculator);
+        if(!isManual){insertInsulinData(calculator.getInsulinTotal(false, true));}
     }
     public void fill_parameters(InsulinRec rec){
         this.insuData = rec;
@@ -167,6 +170,9 @@ public class InsuRegister extends LinearLayout {
         ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
         if (calcInsulinInfo != null) {
             calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_info_outline_grey_900_24dp));
+            if(calc != null){
+                updateInsuCalc(calc);
+            }
         }
     }
     private void hideCalcs() {
@@ -188,6 +194,7 @@ public class InsuRegister extends LinearLayout {
         //insuTxt.requestFocus();
         insuTxt.setText(insulinUnits+"");
         insuTxt.addTextChangedListener(getInsulinTW());
+        insuTxt.requestFocus();
     }
 
     public InsulinRec save_read(){

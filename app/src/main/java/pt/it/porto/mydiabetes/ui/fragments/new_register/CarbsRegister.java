@@ -35,6 +35,11 @@ public class CarbsRegister extends LinearLayout {
     private CarbsRec carbsData;
     private Uri imgUri;
     private Bitmap b;
+
+    public NewHomeRegistry.NewHomeRegCallBack getCallBack() {
+        return callBack;
+    }
+
     private NewHomeRegistry.NewHomeRegCallBack callBack;
 
     public CarbsRegister(Context context, NewHomeRegistry.NewHomeRegCallBack call) {

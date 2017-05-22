@@ -93,12 +93,12 @@ public class NewHomeRegistry extends AppCompatActivity{
     private GlycaemiaRegister glycaemiaRegister;
     private NoteRegister noteRegister;
 
-    private enum RegistryFields{CARBS,INSULIN,GLICEMIA,NOTE,PLUS};
+
     private LinearLayout bottomSheetViewgroup;
     private BottomSheetBehavior bottomSheetBehavior;
     private LinearLayout contentLayout;
-    private ArrayList<RegistryFields> buttons;
-    private ArrayList<RegistryFields> buttonsUpdate;
+    private ArrayList<String> buttons;
+    private ArrayList<String> buttonsUpdate;
     private Boolean insulinManual = false;
     private Boolean getIsManual(){
         return insulinManual;
@@ -127,6 +127,9 @@ public class NewHomeRegistry extends AppCompatActivity{
     private FloatingActionButton fab;
     private Spinner spinner;
 
+    int iRatio;
+    int cRatio;
+
     @Nullable
     private GlycemiaRec glycemiaData;
     @Nullable
@@ -136,10 +139,20 @@ public class NewHomeRegistry extends AppCompatActivity{
     @Nullable
     private Note noteData;
 
+    public static final String CARBS = "CARBS";
+    public static final String INSULIN = "INSULIN";
+    public static final String GLICAEMIA = "GLICAEMIA";
+    public static final String NOTE = "NOTE";
+    public static final String PLUS = "PLUS";
+
     public static final String ARG_CARBS = "ARG_CARBS";
     public static final String ARG_INSULIN = "ARG_INSULIN";
     public static final String ARG_BLOOD_GLUCOSE = "ARG_BLOOD_GLUCOSE";
     public static final String ARG_NOTE = "ARG_NOTE";
+
+    public static final String ARG_BUTTONS_LIST = "ARG_BUTTONS_LIST";
+    public static final String ARG_BUTTONS_UPDATE_LIST = "ARG_BUTTONS_UPDATE_LIST";
+
 
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
@@ -240,6 +253,9 @@ public class NewHomeRegistry extends AppCompatActivity{
         super.onSaveInstanceState(outState);
         outState.putParcelable(GENERATED_IMAGE_URI, generatedImageUri);
 
+        //outState.putStringArrayList(ARG_BUTTONS_LIST, buttons);
+        outState.putStringArrayList(ARG_BUTTONS_UPDATE_LIST, buttonsUpdate);
+
         spinner = (Spinner) findViewById(R.id.tag_spinner);
         String tag = null;
         if (spinner != null) {
@@ -305,7 +321,7 @@ public class NewHomeRegistry extends AppCompatActivity{
 
         init_vars();
         init_listeners();
-        buttons.add(RegistryFields.PLUS);
+        buttons.add(PLUS);
         setupBottomSheet();
         /*
          If register from old reg
@@ -348,8 +364,8 @@ public class NewHomeRegistry extends AppCompatActivity{
         String[] allTags = new String[t.size()];
 
         UserInfo obj = rdb.MyData_Read();
-        int iRatio = obj.getInsulinRatio();
-        int cRatio = obj.getCarbsRatio();
+        iRatio = obj.getInsulinRatio();
+        cRatio = obj.getCarbsRatio();
 
         rdb.close();
 
@@ -375,6 +391,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         noteData = new Note();
 
         insuRegister= new InsuRegister(this, iRatio, cRatio);
+        insuRegister.updateInsuCalc(insulinCalculator);
         carbsRegister = new CarbsRegister(this, new NewHomeRegCallImpl());
         glycaemiaRegister = new GlycaemiaRegister(this, registerDate, new NewHomeRegCallImpl());
         noteRegister = new NoteRegister(this);
@@ -497,10 +514,10 @@ public class NewHomeRegistry extends AppCompatActivity{
 
 
         DB_Write reg = new DB_Write(this);
-        if(buttons.contains(RegistryFields.NOTE)){
+        if(buttons.contains(NOTE)){
             noteData = noteRegister.save_read();
             if(!noteData.getNote().equals("")){
-                if(buttonsUpdate.contains(RegistryFields.NOTE)){
+                if(buttonsUpdate.contains(NOTE)){
                     reg.Note_Update(noteData);
                 }else{
                     noteData.setId(reg.Note_Add(noteData));
@@ -508,7 +525,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
 
         }
-        for(RegistryFields field:buttons){
+        for(String field:buttons){
             try {
             switch (field){
                     case CARBS:
@@ -521,13 +538,13 @@ public class NewHomeRegistry extends AppCompatActivity{
                                 carbsData.setIdNote(noteData.getId());
                             }
                         }
-                        if(buttonsUpdate.contains(RegistryFields.CARBS)){
+                        if(buttonsUpdate.contains(CARBS)){
                             reg.Carbs_Update(carbsData);
                         }else{
                             reg.Carbs_Save(carbsData);
                         }
                         break;
-                    case GLICEMIA:
+                    case GLICAEMIA:
                         glycemiaData = glycaemiaRegister.save_read();
                         glycemiaData.setIdTag(idTag);
                         glycemiaData.setIdUser(idUser);
@@ -537,7 +554,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                                 glycemiaData.setIdNote(noteData.getId());
                             }
                         }
-                        if(buttonsUpdate.contains(RegistryFields.GLICEMIA)){
+                        if(buttonsUpdate.contains(GLICAEMIA)){
                             reg.Glycemia_Update(glycemiaData);
                         }else{
                             reg.Glycemia_Save(glycemiaData);
@@ -548,12 +565,12 @@ public class NewHomeRegistry extends AppCompatActivity{
                         insulinData.setIdTag(idTag);
                         insulinData.setIdUser(idUser);
                         insulinData.setDateTime(registerDate);
-                        if(noteData != null){
+                        if(noteData != null && noteData.getNote() !=null){
                             if(!noteData.getNote().equals("")){
                                 insulinData.setIdNote(noteData.getId());
                             }
                         }
-                        if(buttonsUpdate.contains(RegistryFields.INSULIN)){
+                        if(buttonsUpdate.contains(INSULIN)){
                             reg.Insulin_Update(insulinData);
                         }else{
                             reg.Insulin_Save(insulinData);
@@ -572,8 +589,9 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
 
     private void insertNoteMenu(){
+        noteRegister = new NoteRegister(this);
         addContent(noteRegister);
-        buttons.add(0,RegistryFields.NOTE);
+        buttons.add(0,NOTE);
     }
     private void insertGlicMenu(){
         /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
@@ -581,8 +599,9 @@ public class NewHomeRegistry extends AppCompatActivity{
                         addContent(R.layout.dialog_exp_advice);
                         setAdviceText();
                     }*/
+        glycaemiaRegister = new GlycaemiaRegister(this,registerDate, glycaemiaRegister.getCallBack());
         addContent(glycaemiaRegister);
-        buttons.add(0, RegistryFields.GLICEMIA);
+        buttons.add(0, GLICAEMIA);
     }
     private void insertCarbsMenu(){
         /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
@@ -590,8 +609,9 @@ public class NewHomeRegistry extends AppCompatActivity{
                         addContent(R.layout.dialog_exp_advice);
                         setAdviceText();
                     }*/
+        carbsRegister = new CarbsRegister(this, carbsRegister.getCallBack());
         addContent(carbsRegister);
-        buttons.add(0, RegistryFields.CARBS);
+        buttons.add(0, CARBS);
     }
     private void insertInsulinMenu(){
         /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
@@ -599,8 +619,9 @@ public class NewHomeRegistry extends AppCompatActivity{
                         addContent(R.layout.dialog_exp_advice);
                         setAdviceText();
                     }*/
+        insuRegister = new InsuRegister(this, iRatio, cRatio);
         addContent(insuRegister);
-        buttons.add(0, RegistryFields.INSULIN);
+        buttons.add(0, INSULIN);
     }
 
     private void setCarbsPressed(View v){
@@ -613,7 +634,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         }, 100L);
         hideBottomSheet();
-        if(buttons.contains(RegistryFields.GLICEMIA)){insertInsulinSuggestion(RegistryFields.CARBS);}
+        if(buttons.contains(GLICAEMIA) && !buttons.contains(INSULIN)){insertInsulinSuggestion(CARBS);}
     }
     private void setNotePressed(View v){
         insertNoteMenu();
@@ -636,7 +657,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         }, 100L);
         hideBottomSheet();
-        if(buttons.contains(RegistryFields.CARBS)){insertInsulinSuggestion(RegistryFields.GLICEMIA);}
+        if(buttons.contains(CARBS) && !buttons.contains(INSULIN)){insertInsulinSuggestion(GLICAEMIA);}
     }
     private void setInsuPressed(View v){
         insertInsulinMenu();
@@ -650,30 +671,23 @@ public class NewHomeRegistry extends AppCompatActivity{
         hideBottomSheet();
     }
 
-    private void insertInsulinSuggestion(RegistryFields field){
+    private void insertInsulinSuggestion(String field){
         insertInsulinMenu();
-        insuRegister.fill_parameters(insulinData);
-        if(field.equals(RegistryFields.CARBS)){
+        insuRegister.updateInsuCalc(insulinCalculator);
+        //insuRegister.fill_parameters(insulinData);
+        if(field.equals(CARBS)){
             carbsRegister.requestCarbsFocus();
         }else{
             glycaemiaRegister.requestGlicFocus();
         }
+
+//        Log.i(TAG, "insertInsulinSuggestion: CALC_GLIC: "+insulinCalculator.getInsulinGlycemia());
+//        Log.i(TAG, "insertInsulinSuggestion: CALC_CARBS: "+insulinCalculator.getInsulinCarbs());
+//        Log.i(TAG, "insertInsulinSuggestion: CALC_TOTAL: "+insulinCalculator.getInsulinTotal());
     }
 
     private void setupBottomSheet() {
-        //
-        bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (buttons.contains(RegistryFields.GLICEMIA)) {
-                    removeContent(buttons.indexOf(RegistryFields.GLICEMIA));
-                    buttons.remove(RegistryFields.GLICEMIA);
-                    bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(false);
-                } else {
-                    setGlicPressed(v);
-                }
-            }
-        });
+
         Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
         if(buttonsUpdate.size()==0 && buttons.size()==0){
             button.setEnabled(false);
@@ -681,9 +695,9 @@ public class NewHomeRegistry extends AppCompatActivity{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (buttons.contains(RegistryFields.NOTE)) {
-                    removeContent(buttons.indexOf(RegistryFields.NOTE));
-                    buttons.remove(RegistryFields.NOTE);
+                if (buttons.contains(NOTE)) {
+                    removeContent(noteRegister);
+                    buttons.remove(NOTE);
                     bottomSheetViewgroup.findViewById(R.id.bs_notes).setPressed(false);
                 } else {
                     setNotePressed(v);
@@ -691,12 +705,25 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         });
 
+        //
+        bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (buttons.contains(GLICAEMIA)) {
+                    removeContent(glycaemiaRegister);
+                    buttons.remove(GLICAEMIA);
+                    bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(false);
+                } else {
+                    setGlicPressed(v);
+                }
+            }
+        });
         bottomSheetViewgroup.findViewById(R.id.bs_meal).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (buttons.contains(RegistryFields.CARBS)) {
-                    removeContent(buttons.indexOf(RegistryFields.CARBS));
-                    buttons.remove(RegistryFields.CARBS);
+                if (buttons.contains(CARBS)) {
+                    removeContent(carbsRegister);
+                    buttons.remove(CARBS);
                     bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(false);
                 } else {
                     setCarbsPressed(v);
@@ -707,9 +734,9 @@ public class NewHomeRegistry extends AppCompatActivity{
         bottomSheetViewgroup.findViewById(R.id.bs_insulin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (buttons.contains(RegistryFields.INSULIN)) {
-                    removeContent(buttons.indexOf(RegistryFields.INSULIN));
-                    buttons.remove(RegistryFields.INSULIN);
+                if (buttons.contains(INSULIN)) {
+                    removeContent(insuRegister);
+                    buttons.remove(INSULIN);
                     bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(false);
                 } else {
                     setInsuPressed(v);
@@ -731,6 +758,14 @@ public class NewHomeRegistry extends AppCompatActivity{
         setImgURI(null);
     }
     private void fillParameters(Bundle args, boolean isUpdate){
+
+        if (args.containsKey(ARG_BUTTONS_UPDATE_LIST)) {
+            this.buttonsUpdate = args.getStringArrayList(ARG_BUTTONS_UPDATE_LIST);
+        }
+//        if (args.containsKey(ARG_BUTTONS_LIST)) {
+//            this.buttons = args.getStringArrayList(ARG_BUTTONS_LIST);
+//        }
+
         DB_Read db_read = new DB_Read(this);
         if(isUpdate){
             if (args.containsKey(ARG_CARBS)) {
@@ -738,7 +773,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                 if (carbsData != null) {
                     carbsData = db_read.CarboHydrate_GetById(carbsData.getId());
                     if (carbsData != null) {
-                        buttonsUpdate.add(RegistryFields.CARBS);
+                        buttonsUpdate.add(CARBS);
                         insertCarbsMenu();
                         carbsRegister.fill_parameters(carbsData);
                         String imgPath = carbsData.getPhotoPath();
@@ -754,7 +789,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                 if (glycemiaData != null) {
                     glycemiaData = db_read.Glycemia_GetById(glycemiaData.getId());
                     if (glycemiaData != null) {
-                        buttonsUpdate.add(RegistryFields.GLICEMIA);
+                        buttonsUpdate.add(GLICAEMIA);
                         insertGlicMenu();
                         glycaemiaRegister.fill_parameters(glycemiaData);
 
@@ -768,7 +803,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                 if (insulinData != null) {
                     insulinData = db_read.InsulinReg_GetById(insulinData.getId());
                     if (insulinData != null) {
-                        buttonsUpdate.add(RegistryFields.INSULIN);
+                        buttonsUpdate.add(INSULIN);
                         insertInsulinMenu();
                         insuRegister.fill_parameters(insulinData);
 
@@ -781,7 +816,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                 noteData = db_read.Note_GetById(noteId);//args.getParcelable(ARG_NOTE);
                 Log.i(TAG, "fillParameters: UPDATE "+noteData.toString());
                 if(noteData!=null){
-                    buttonsUpdate.add(RegistryFields.NOTE);
+                    buttonsUpdate.add(NOTE);
                     insertNoteMenu();
                     noteRegister.fill_parameters(noteData.getNote());
                 }
@@ -803,7 +838,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             if (args.containsKey(ARG_CARBS)) {
                 carbsData = args.getParcelable(ARG_CARBS);
                 if (carbsData != null) {
-                    buttons.add(RegistryFields.CARBS);
+                    buttons.add(CARBS);
                     insertCarbsMenu();
 
                     carbsRegister.fill_parameters(carbsData);
@@ -817,7 +852,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             if (args.containsKey(ARG_BLOOD_GLUCOSE)) {
                 glycemiaData = args.getParcelable(ARG_BLOOD_GLUCOSE);
                 if (glycemiaData != null) {
-                    buttons.add(RegistryFields.GLICEMIA);
+                    buttons.add(GLICAEMIA);
                     insertGlicMenu();
                     glycaemiaRegister.fill_parameters(glycemiaData);
 
@@ -830,7 +865,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             if (args.containsKey(ARG_INSULIN)) {
                 insulinData = args.getParcelable(ARG_INSULIN);
                 if (insulinData != null) {
-                    buttons.add(RegistryFields.INSULIN);
+                    buttons.add(INSULIN);
                     insertInsulinMenu();
                     insuRegister.fill_parameters(insulinData);
 
@@ -843,7 +878,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             if (args.containsKey(ARG_NOTE)) {
                 noteData = args.getParcelable(ARG_NOTE);
                 if(noteData!=null){
-                    buttons.add(RegistryFields.NOTE);
+                    buttons.add(NOTE);
                     insertNoteMenu();
                     noteRegister.fill_parameters(noteData.getNote());
                 }
@@ -1121,8 +1156,15 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void addContentAt(int layout, int pos) {
         contentLayout.addView(LayoutInflater.from(this).inflate(layout, contentLayout, false), pos);//contentLayout.getChildCount() - 1);
     }
-    private void removeContent(int child) {
-        contentLayout.removeViewAt(child);
+//    private void removeContent(int child) {
+//        contentLayout.removeViewAt(child);
+//        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
+//        if(buttonsUpdate.size()==0 && buttons.size()==0){
+//            button.setEnabled(false);
+//        }
+//    }
+private void removeContent(LinearLayout view) {
+        contentLayout.removeView(view);
         Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
         if(buttonsUpdate.size()==0 && buttons.size()==0){
             button.setEnabled(false);
