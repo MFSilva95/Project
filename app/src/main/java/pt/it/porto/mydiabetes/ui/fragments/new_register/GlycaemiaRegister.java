@@ -2,32 +2,43 @@ package pt.it.porto.mydiabetes.ui.fragments.new_register;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.DateTime;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
+import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.ui.activities.TargetBG_detail;
+import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 
 public class GlycaemiaRegister extends LinearLayout {
-    public static final String ARG_BLOOD_GLUCOSE = "ARG_BLOOD_GLUCOSE";
     private TextInputLayout glycaemia_input;
     private GlycemiaRec glycaemiaData;
     private TextInputLayout glycaemia_obj_input;
@@ -37,23 +48,9 @@ public class GlycaemiaRegister extends LinearLayout {
 
     public GlycaemiaRegister(Context context, Calendar calendar, NewHomeRegistry.NewHomeRegCallBack call) {
         super(context);
-        init();
         registerDate = calendar;
         callBack = call;
-    }
-
-    public GlycaemiaRegister(Context context, AttributeSet attrs, Calendar calendar, NewHomeRegistry.NewHomeRegCallBack call) {
-        super(context, attrs);
         init();
-        registerDate = calendar;
-        callBack = call;
-    }
-
-    public GlycaemiaRegister(Context context, AttributeSet attrs, int defStyle, Calendar calendar, NewHomeRegistry.NewHomeRegCallBack call) {
-        super(context, attrs, defStyle);
-        init();
-        registerDate = calendar;
-        callBack = call;
     }
 
     private void init() {
@@ -93,10 +90,12 @@ public class GlycaemiaRegister extends LinearLayout {
         glicTxt.setText(glicValue+"");
         //glicTxt.addTextChangedListener(getGlicTW());
 
-        TextView glicObjTxt = glycaemia_obj_input.getEditText();
-        glicObjTxt.requestFocus();
-        glicObjTxt.setText(glicObjValue+"");
-        //glicObjTxt.addTextChangedListener(getGlicObjTW());
+        if(glicObjValue!=-1){
+            TextView glicObjTxt = glycaemia_obj_input.getEditText();
+            glicObjTxt.requestFocus();
+            glicObjTxt.setText(glicObjValue+"");
+            //glicObjTxt.addTextChangedListener(getGlicObjTW());
+        }
     }
     private void insertGlicObjData(int glicObjValue){
         TextView glicObjTxt = glycaemia_obj_input.getEditText();
@@ -104,16 +103,19 @@ public class GlycaemiaRegister extends LinearLayout {
         glicObjTxt.setText(glicObjValue+"");
         //glicObjTxt.addTextChangedListener(getGlicObjTW());
     }
+    public void requestGlicFocus(){
+        glycaemia_input.requestFocus();
+    }
     public void setGlycemiaListeners(){
-
-        //String time = registerTimeTextV.getText().toString();
         MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
 
         glycaemia_input.getEditText().addTextChangedListener(getGlicTW());
         glycaemia_obj_input.getEditText().addTextChangedListener(getGlicObjTW());
         int objective;
         try {
-            objective = storage.getGlycemiaObjectives(DateUtils.getFormattedTime(registerDate));
+            ArrayList<GlycemiaObjectivesData> objList = storage.getGlycemiaObjectives();
+            objective = GlicObjTimesOverlap(objList, DateUtils.getFormattedTime(registerDate));
+            //objective = storage.getGlycemiaObjectives(DateUtils.getFormattedTime(registerDate));
             insertGlicObjData(objective);
         } catch (Exception e) {
             e.printStackTrace();
@@ -127,6 +129,38 @@ public class GlycaemiaRegister extends LinearLayout {
             });
         }
     }
+
+    public int GlicObjTimesOverlap(ArrayList<GlycemiaObjectivesData> objs, String currentTime){
+
+        String[] temp;
+        temp = currentTime.split(":");
+        int startTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+
+        for(GlycemiaObjectivesData objData: objs){
+            temp = objData.getStartTime().split(":");
+            int startTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+            temp = objData.getEndTime().split(":");
+            int endTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+            if(CheckOverlap(startTime2, endTime2, startTime)){return objData.getObjective();}
+        }
+        return -1;
+    }
+
+    public boolean CheckOverlap(int s0, int e0, int t){
+        if ( e0 < s0){
+            if(t < s0){
+                t = t +1440;
+            }
+            e0 = e0 + 1440;
+        }
+
+        if(s0 < t && t < e0) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
     private void addGlycemiaObjective() {
         callBack.addGlycaemiaObjective(getContext());
     }
@@ -184,10 +218,9 @@ public class GlycaemiaRegister extends LinearLayout {
                         int glycObjValue = Integer.parseInt(glycObjString);
                         glycaemiaData.setObjective(glycObjValue);
                     }catch (NumberFormatException e){
-                        glycaemiaData.setObjective(0);
+                        glycaemiaData.setObjective(-1);
                     }
                     callBack.updateInsulinCalc();
-                    //refreshCalcs();
                 }
             }
         };
@@ -197,8 +230,11 @@ public class GlycaemiaRegister extends LinearLayout {
     public int getGlycemia() {
         return glycaemiaData.getValue();
     }
-
     public int getGlycemiaTarget() {
         return glycaemiaData.getBG_target();
+    }
+
+    public GlycemiaRec save_read(){
+        return glycaemiaData;
     }
 }

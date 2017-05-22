@@ -7,7 +7,9 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -15,9 +17,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
@@ -38,6 +42,7 @@ public class InsuRegister extends LinearLayout {
     private boolean useIOB;
     private int iRatio;
     private int cRatio;
+    Spinner insu_spinner;
 
 
 
@@ -45,16 +50,6 @@ public class InsuRegister extends LinearLayout {
         super(context);
         this.iRatio = iRatio;
         this.cRatio = cRatio;
-        init();
-    }
-
-    public InsuRegister(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public InsuRegister(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
         init();
     }
 
@@ -91,6 +86,7 @@ public class InsuRegister extends LinearLayout {
         return true;
     }
     public void updateInsuCalc(InsulinCalculator calculator){
+        if(!isManual){insertInsulinData(calculator.getInsulinTotal(false, true));}
         this.fragmentInsulinCalcsFragment.setInsulinCalculator(calculator);
     }
     public void fill_parameters(InsulinRec rec){
@@ -124,7 +120,7 @@ public class InsuRegister extends LinearLayout {
         this.isManual = bool;
     }
     private void fillInsulinSpinner() {
-        Spinner spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
+        insu_spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
         ArrayList<String> allInsulins = new ArrayList<>();
         DB_Read rdb = new DB_Read(getContext());
         HashMap<Integer, String> val = rdb.Insulin_GetAllNames();
@@ -136,8 +132,8 @@ public class InsuRegister extends LinearLayout {
             }
             ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, allInsulins);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            if (spinner != null) {
-                spinner.setAdapter(adapter);
+            if (insu_spinner != null) {
+                insu_spinner.setAdapter(adapter);
             }
         }
     }
@@ -186,11 +182,23 @@ public class InsuRegister extends LinearLayout {
     }
     private void insertInsulinData(float insulinUnits){
 
+        insulin_input.setHintEnabled(true);
         TextView insuTxt = insulin_input.getEditText();
         insuTxt.removeTextChangedListener(getInsulinTW());
-        insuTxt.requestFocus();
+        //insuTxt.requestFocus();
         insuTxt.setText(insulinUnits+"");
         insuTxt.addTextChangedListener(getInsulinTW());
     }
+
+    public InsulinRec save_read(){
+        String insulin = insu_spinner.getSelectedItem().toString();
+
+        DB_Read rdb = new DB_Read(getContext());
+        int idInsulin = rdb.Insulin_GetByName(insulin).getId();
+        rdb.close();
+        insuData.setIdInsulin(idInsulin);
+        return insuData;
+    }
+
 
 }

@@ -10,12 +10,13 @@ import android.widget.LinearLayout;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.InsulinRec;
+import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 
 public class NoteRegister extends LinearLayout {
-    public static final String ARG_NOTE = "ARG_NOTE";
     private TextInputLayout note_input;
+    private Note note;
 
 
     public NoteRegister(Context context) {
@@ -23,25 +24,37 @@ public class NoteRegister extends LinearLayout {
         init();
     }
 
-    public NoteRegister(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public NoteRegister(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
-        init();
-    }
-
     private void init() {
         inflate(getContext(), R.layout.note_content_edit, this);
+        this.note = new Note();
         this.note_input = (TextInputLayout) findViewById(R.id.note_input_txt);
+        note_input.getEditText().addTextChangedListener(getNoteTW());
     }
-    public boolean canSave(){
-        return true;
+    public Note save_read(){
+        return note;
     }
     public void fill_parameters(String text){
         note_input.getEditText().requestFocus();
         note_input.getEditText().setText(text);
+    }
+    private TextWatcher getNoteTW(){
+        TextWatcher noteTW = new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                note.setNote( editable.toString() );
+            }
+        };
+        return noteTW;
     }
 }

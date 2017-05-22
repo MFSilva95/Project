@@ -11,6 +11,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -29,20 +30,17 @@ import pt.it.porto.mydiabetes.utils.ImageUtils;
 
 
 public class CarbsRegister extends LinearLayout {
-    public static final String ARG_CARBS = "ARG_CARBS";
     private TextInputLayout carbs_input;
     private ImageButton image_button;
     private CarbsRec carbsData;
     private Uri imgUri;
     private Bitmap b;
-    private final static int IMAGE_VIEW = 3;
     private NewHomeRegistry.NewHomeRegCallBack callBack;
-    private int carbs;
 
     public CarbsRegister(Context context, NewHomeRegistry.NewHomeRegCallBack call) {
         super(context);
-        init();
         callBack = call;
+        init();
     }
 
     private void init() {
@@ -54,9 +52,13 @@ public class CarbsRegister extends LinearLayout {
         setMealListeners();
     }
 
+    public void requestCarbsFocus(){
+        carbs_input.requestFocus();
+    }
+
     public void fill_parameters(CarbsRec carbData){
         carbsData = carbData;
-        carbs_input.getEditText().setText(carbsData.getCarbsValue());
+        carbs_input.getEditText().setText(""+carbsData.getCarbsValue());
         if(carbsData.getPhotoPath()!= null){
             imgUri = Uri.parse(carbData.getPhotoPath());
         }
@@ -155,50 +157,7 @@ public class CarbsRegister extends LinearLayout {
         });
     }
 
-    public CarbsRec save_read(Calendar regDate) throws Exception {
-
-        Spinner tagSpinner = (Spinner) findViewById(R.id.tag_spinner);
-        EditText carbsEditText = carbs_input.getEditText();
-
-        try{
-            Integer.parseInt(carbs_input.getEditText().getText().toString());
-        }catch (Exception e){
-            carbs_input.setError(getContext().getString(R.string.glicInputError));
-            carbs_input.requestFocus();
-            throw new Exception("wrong parameter");
-        }
-
-        if (carbsEditText.getText().toString().equals("")) {
-            carbsEditText.requestFocus();
-            InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.showSoftInput(carbsEditText, InputMethodManager.SHOW_IMPLICIT);
-            carbsEditText.setError(getContext().getString(R.string.glicInputError));
-            throw new Exception("wrong parameter");
-        }
-        //Get id of user
-        DB_Read rdb = new DB_Read(getContext());
-        int idUser = rdb.getId();
-        //Get id of selected tag
-        String tag = null;
-        if (tagSpinner != null) {
-            tag = tagSpinner.getSelectedItem().toString();
-        }
-        int idTag = rdb.Tag_GetIdByName(tag);
-        rdb.close();
-        int carbsValue;
-
-        carbsData.setIdUser(idUser);
-        try {
-            carbsValue = Integer.parseInt(carbsEditText.getText().toString());
-
-        } catch (Exception e) {
-            carbsEditText.setError(getContext().getString(R.string.glicInputError));
-            carbsEditText.requestFocus();
-            throw new Exception("wrong parameter");
-        }
-        carbsData.setCarbsValue(carbsValue);
-        carbsData.setDateTime(regDate);
-        carbsData.setIdTag(idTag);
+    public CarbsRec save_read(){
         return carbsData;
     }
 

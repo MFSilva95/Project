@@ -50,6 +50,11 @@ public class GlycemiaObjectivesData implements Serializable, Parcelable {
 		otherObjs = otherObj;
 		this.pox = pox;
 	}
+	public GlycemiaObjectivesData(int objective, String startTime, String endTime) {
+		this.objective = objective;
+		this.startTime = startTime;
+		this.endTime = endTime;
+	}
 
 	protected GlycemiaObjectivesData(Parcel in) {
 		description = in.readString();

@@ -202,7 +202,7 @@ public class TargetBG_detail extends BaseActivity {
 		finish();
 	}
 
-	public boolean GlicObjTimesOverlap(String st,String et){
+	public boolean GlicObjTimesOverlap(String st, String et){
 
 		DB_Read read = new DB_Read(this);
 		Cursor cursor = read.getGlicObj();

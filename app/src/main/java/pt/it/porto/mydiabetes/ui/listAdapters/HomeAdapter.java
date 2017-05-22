@@ -30,8 +30,10 @@ import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Task;
 //import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
+import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
+import pt.it.porto.mydiabetes.ui.fragments.home.homeMiddleFragment;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
@@ -44,6 +46,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private int nAdvices;
     private int nTasks;
     private static int indexSelected;
+    private homeMiddleFragment.MiddleFragRegCallBackImpl callBack;
 
 
     public HomeElement getFromHomeList(int index) {
@@ -92,9 +95,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
 
-    public HomeAdapter(List<HomeElement> homeList) {
+    public HomeAdapter(List<HomeElement> homeList,homeMiddleFragment.MiddleFragRegCallBackImpl callBack) {
         this.homeList = new LinkedList<>();
         this.homeList.addAll(homeList);
+        this.callBack = callBack;
     }
 
     public void updateList(List<HomeElement> homeList) {
@@ -329,22 +333,23 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     GlycemiaRec glycemiaRec = new GlycemiaRec();
                     glycemiaRec.setId(logbookDataBinding.getGlycemiaId());
                     args.putString("bg", String.valueOf(glycemiaRec.getId())); //bg id
-                   // args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, glycemiaRec);
+                    args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, glycemiaRec);
                 }
                 if (logbookDataBinding.getCarbsId() != -1) {
                     CarbsRec carbs = new CarbsRec();
                     carbs.setId(logbookDataBinding.getCarbsId());
                     args.putString("ch", String.valueOf(carbs.getId())); //ch id
-                    //args.putParcelable(DetailLogbookActivity.ARG_CARBS, carbs);
+                    args.putParcelable(DetailLogbookActivity.ARG_CARBS, carbs);
                 }
                 if (logbookDataBinding.getInsulinId() != -1) {
                     InsulinRec insulin = new InsulinRec();
                     insulin.setId(logbookDataBinding.getInsulinId());
                     args.putString("ins", String.valueOf(insulin.getId())); //ins id
-                  //  args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);
+                    args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);
                 }
                 intent.putExtras(args);
-                v.getContext().startActivity(intent);
+                callBack.updateHomeList(intent);
+                //v.getContext().startActivity(intent);
             }
         };
         return onclick;
