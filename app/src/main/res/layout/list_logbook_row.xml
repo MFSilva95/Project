@@ -7,6 +7,7 @@
     android:background="?android:selectableItemBackground"
     android:minHeight="@dimen/list_row_default_height"
     android:orientation="vertical"
+    android:longClickable="true"
     android:tag="logbookItem">
 
     <android.support.v7.widget.CardView

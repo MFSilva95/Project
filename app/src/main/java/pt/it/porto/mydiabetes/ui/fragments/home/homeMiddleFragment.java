@@ -1,15 +1,27 @@
 package pt.it.porto.mydiabetes.ui.fragments.home;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,6 +38,8 @@ import pt.it.porto.mydiabetes.data.Task;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
+import pt.it.porto.mydiabetes.ui.activities.TargetBG_detail;
+import pt.it.porto.mydiabetes.ui.activities.ViewPhoto;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.HomeElement;
@@ -66,6 +80,7 @@ public class homeMiddleFragment extends Fragment {
 		if (requestCode == WAIT_REGISTER && resultCode == Home.CHANGES_OCCURRED) {
 			updateHomeList();
 		}
+		updateHomeList();
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 	@Override
@@ -113,15 +128,7 @@ public class homeMiddleFragment extends Fragment {
 		logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
 		logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
 
-		HomeAdapter homeAdapter = new HomeAdapter(logBookList);
-		/*if(helper==null){
-			ItemTouchHelper.Callback callback = new HomeTouchHelper(homeAdapter);
-			helper= new ItemTouchHelper(callback);
-			helper.attachToRecyclerView(homeList);
-		}*/
-
-
-
+		HomeAdapter homeAdapter = new HomeAdapter(logBookList,new MiddleFragRegCallBackImpl());
 		homeRecyclerView.setAdapter(homeAdapter);
 		homeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 	}
@@ -182,28 +189,28 @@ public class homeMiddleFragment extends Fragment {
 		}
 
 	}
-
 	public void fillAdviceList() {
 		//receiverAdviceList.addAll(yapDroid.getAllEndAdvices(getApplicationContext()));
-		Advice task1 = new Advice();
-		task1.setSummaryText("Fazer exercicio hoje!");
-		task1.setExpandedText("Hoje fiquei de fazer exercicio. O gim está à minha espera!");
-		task1.setUrgency(5);
+		Advice advice1 = new Advice();
+		advice1.setSummaryText("Low glycaemia value detected!");
+		advice1.setExpandedText("Your glycaemia values are low, you should ingest fast carbohydrates.");
+		advice1.setUrgency(5);
+		advice1.setType("NORMAL");
 
-		Advice task2 = new Advice();
-		task2.setSummaryText("Actualizar dados!");
-		task2.setExpandedText("Fazer a sincronização da bomba com a aplicação!");
-		task2.setUrgency(3);
+		Advice advice2 = new Advice();
+		advice2.setSummaryText("");
+		advice2.setExpandedText("Fazer a sincronização da bomba com a aplicação!");
+		advice2.setUrgency(3);
 
 		ArrayList<Advice> adviceList = new ArrayList<>();
-		adviceList.add(task1);
-		adviceList.add(task2);
+		adviceList.add(advice1);
+		adviceList.add(advice2);
 
 		receiverAdviceList = new ArrayList<>();
 		receiverAdviceList.addAll(adviceList);
 		Collections.sort(receiverAdviceList);
 
-		if(receiverAdviceList.size()>0 && BuildConfig.ADVICES_AVAILABLE){
+		if(receiverAdviceList.size()>0 ){//&& BuildConfig.ADVICES_AVAILABLE){
 			logBookList.add(new HomeElement(HomeElement.Type.HEADER, getContext().getString(R.string.advices)));
 			logBookList.addAll(receiverAdviceList);
 		}
@@ -213,7 +220,7 @@ public class homeMiddleFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		updateHomeList();
+		//updateHomeList();
 	}
 
 	public static long getDateInMillis(String srcDate) {
@@ -230,5 +237,16 @@ public class homeMiddleFragment extends Fragment {
 		}
 
 		return 0;
+	}
+	public interface MiddleFragRegCallBack{
+		void updateHomeList(Intent intent);
+	}
+	public class MiddleFragRegCallBackImpl implements MiddleFragRegCallBack {
+
+		@Override
+		public void updateHomeList(Intent intent) {
+			//startActivity(intent);
+			startActivityForResult(intent, WAIT_REGISTER);
+		}
 	}
 }

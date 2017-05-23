@@ -9,11 +9,13 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.Spinner;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 public class MyDiabetesStorage {
@@ -94,18 +96,47 @@ public class MyDiabetesStorage {
 		return db.insert(MyDiabetesContract.BG_Target.TABLE_NAME, null, toInsert) != -1;
 	}
 
-	public int getGlycemiaObjectives(String time) throws Exception{
+	/*public int getGlycemiaObjectives(String time) throws Exception{
 		//TODO pm am ou normal <- ver isto
 		SQLiteDatabase db = mHandler.getReadableDatabase();
+		Log.i("SQL", "getGlycemiaObjectives: "+time+"");
 		Cursor cursor = db.query(
 		        MyDiabetesContract.BG_Target.TABLE_NAME,
                 new String[]{MyDiabetesContract.BG_Target.COLUMN_NAME_VALUE},
-                MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_START + ">=? and "+MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_END + "<= ?",
-                new String[]{time,time}, null, null, null, null);
+                MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_START + "<=? and "+MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_END + ">= ?",
+                new String[]{time,time},
+                null,
+                null,
+                null,
+                null);
 
 		cursor.moveToFirst();
 		return (int) cursor.getDouble(0);
+	}*/
+	public ArrayList<GlycemiaObjectivesData> getGlycemiaObjectives() throws Exception{
+		SQLiteDatabase db = mHandler.getReadableDatabase();
+		Cursor cursor = db.query(
+				MyDiabetesContract.BG_Target.TABLE_NAME,
+				new String[]{MyDiabetesContract.BG_Target.COLUMN_NAME_VALUE, MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_START, MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_END},
+				null,
+                null,
+                null,
+                null,
+                null,
+                null
+		);
+		cursor.moveToFirst();
+        ArrayList<GlycemiaObjectivesData> objList = new ArrayList<>();
+        for(int result = 0; result<cursor.getCount(); result++){
+            Log.i("rawr", "getGlycemiaObjectives: V:"+cursor.getFloat(0)+" H:"+cursor.getString(1)+" M:"+cursor.getString(2));
+
+            GlycemiaObjectivesData gly = new GlycemiaObjectivesData((int) cursor.getFloat(0),cursor.getString(1),cursor.getString(2));
+            objList.add(gly);
+            cursor.moveToNext();
+        }
+		return objList;
 	}
+
 	public boolean glycemiaObjectiveExists(String description) {
 		SQLiteDatabase db = mHandler.getReadableDatabase();
 		Cursor cursor = db.query(MyDiabetesContract.BG_Target.TABLE_NAME, new String[]{MyDiabetesContract.BG_Target.COLUMN_NAME_NAME}, MyDiabetesContract.BG_Target.COLUMN_NAME_NAME + "==?", new String[]{description}, null, null, null, null);

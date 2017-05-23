@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,9 +29,11 @@ import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Task;
+//import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
+import pt.it.porto.mydiabetes.ui.fragments.home.homeMiddleFragment;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
@@ -42,6 +45,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private List<HomeElement> homeList;
     private int nAdvices;
     private int nTasks;
+    private static int indexSelected;
+    private homeMiddleFragment.MiddleFragRegCallBackImpl callBack;
 
 
     public HomeElement getFromHomeList(int index) {
@@ -75,14 +80,25 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 cvalue = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_value);
                 ctag = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_title);
                 tag = (TextView) view.findViewById(R.id.tv_list_logbookreg_tag);
+
+
+                view.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        indexSelected = getLayoutPosition();
+                        view.setSelected(true);
+                        return true;
+                    }
+                });
             }
         }
     }
 
 
-    public HomeAdapter(List<HomeElement> homeList) {
+    public HomeAdapter(List<HomeElement> homeList,homeMiddleFragment.MiddleFragRegCallBackImpl callBack) {
         this.homeList = new LinkedList<>();
         this.homeList.addAll(homeList);
+        this.callBack = callBack;
     }
 
     public void updateList(List<HomeElement> homeList) {
@@ -168,7 +184,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 Advice currentAdvice = (Advice) currentView;
                 textHolder = (LinearLayout) v.findViewById(R.id.adviceRowBackground);
                 myText = (TextView) v.findViewById(R.id.content);
-                textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
+                //textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
                 if (currentAdvice.getUrgency() > 7) {
                     myText.setTextColor(Color.RED);
                 }
@@ -332,7 +348,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);
                 }
                 intent.putExtras(args);
-                v.getContext().startActivity(intent);
+                callBack.updateHomeList(intent);
+                //v.getContext().startActivity(intent);
             }
         };
         return onclick;

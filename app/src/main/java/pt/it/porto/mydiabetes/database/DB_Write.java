@@ -154,11 +154,11 @@ public class DB_Write {
 
 	public void Glycemia_Delete(int id) {
 		DB_Read rdb = new DB_Read(myContext);
-		int idNote = rdb.Glycemia_GetById(id).getIdNote();
+//		int idNote = rdb.Glycemia_GetById(id).getIdNote();
 		rdb.close();
 		myDB.delete("Reg_BloodGlucose", "Id=" + id, null);
 		Log.d("Delete", "Reg_BloodGlucose");
-		Note_Delete(idNote);
+		//Note_Delete(idNote);
 	}
 
 	//------------------ INSULIN ----------------------
@@ -254,14 +254,14 @@ public class DB_Write {
 
 	public void Insulin_Delete(int id) {
 		DB_Read rdb = new DB_Read(myContext);
-		int idNote = rdb.InsulinReg_GetById(id).getIdNote();
+		//int idNote = rdb.InsulinReg_GetById(id).getIdNote();
 		int idGlycemia = rdb.InsulinReg_GetById(id).getIdBloodGlucose();
 		rdb.close();
 		myDB.delete("Reg_Insulin", "Id=" + id, null);
 		if (idGlycemia > 0) {
 			Glycemia_Delete(idGlycemia);
 		}
-		Note_Delete(idNote);
+		//Note_Delete(idNote);
 	}
 
 	//------------------- EXERCISE ---------------------------

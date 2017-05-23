@@ -729,6 +729,31 @@ public class DB_Read {
 		}
 	}
 
+	public HashMap<Integer, String[]> Carbs_GetAll() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_CarboHydrate", null);
+		Log.d("Cursor", String.valueOf(cursor.getCount()));
+		String[] row;
+		HashMap<Integer, String[]> glycemias = new HashMap<Integer, String[]>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+
+			do {
+				row = new String[3];
+				row[0] = cursor.getString(2); //Value
+				row[1] = cursor.getString(5); //DateTime
+				row[2] = cursor.getString(6); //Id_Tag
+				//row[3] = cursor.getString(5); //Id_Note
+				glycemias.put(cursor.getInt(0), row);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return glycemias;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
 	@Nullable
 	public CarbsRec CarboHydrate_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_CarboHydrate WHERE Id='" + id + "';", null);
