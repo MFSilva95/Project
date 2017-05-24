@@ -99,6 +99,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     private LinearLayout contentLayout;
     private ArrayList<String> buttons;
     private ArrayList<String> buttonsUpdate;
+    private ArrayList<String> delete_buttons;
     private Boolean insulinManual = false;
     private Boolean getIsManual(){
         return insulinManual;
@@ -150,7 +151,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     public static final String ARG_BLOOD_GLUCOSE = "ARG_BLOOD_GLUCOSE";
     public static final String ARG_NOTE = "ARG_NOTE";
 
-    public static final String ARG_BUTTONS_LIST = "ARG_BUTTONS_LIST";
+    public static final String ARG_BUTTONS_DELETE_LIST = "ARG_BUTTONS_DELETE_LIST";
     public static final String ARG_BUTTONS_UPDATE_LIST = "ARG_BUTTONS_UPDATE_LIST";
 
 
@@ -260,6 +261,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         outState.putParcelable(GENERATED_IMAGE_URI, generatedImageUri);
 
         //outState.putStringArrayList(ARG_BUTTONS_LIST, buttons);
+        outState.putStringArrayList(ARG_BUTTONS_DELETE_LIST, delete_buttons);
         outState.putStringArrayList(ARG_BUTTONS_UPDATE_LIST, buttonsUpdate);
 
         spinner = (Spinner) findViewById(R.id.tag_spinner);
@@ -350,6 +352,9 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void init_vars(){
         setContentView(R.layout.activity_add_event);
         FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(this));
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
         useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
         contentLayout = (LinearLayout) findViewById(R.id.content_panel);
         registerDateTextV = (TextView) findViewById(R.id.registryDate);
@@ -383,6 +388,8 @@ public class NewHomeRegistry extends AppCompatActivity{
 
         buttons = new ArrayList<>();
         buttonsUpdate = new ArrayList<>();
+        delete_buttons = new ArrayList<>();
+
         insulinCalculator = new InsulinCalculator(this);
         imgUri = null;
         noteId = -1;
@@ -527,16 +534,30 @@ public class NewHomeRegistry extends AppCompatActivity{
 
 
         DB_Write reg = new DB_Write(this);
+
         if(buttons.contains(NOTE)){
             noteData = noteRegister.save_read();
-            if(!noteData.getNote().equals("")){
-                if(buttonsUpdate.contains(NOTE)){
-                    reg.Note_Update(noteData);
-                }else{
-                    noteData.setId(reg.Note_Add(noteData));
+            if(noteData.getNote()!=null){
+                if(!noteData.getNote().equals("")){
+                    if (buttonsUpdate.contains(NOTE)) {
+                        reg.Note_Update(noteData);
+                    } else {
+                        noteData.setId(reg.Note_Add(noteData));
+                    }
                 }
             }
-
+        }
+        if(delete_buttons.contains(NOTE)){
+            reg.Note_Delete(noteData.getId());//TODO cannot delete note...
+        }
+        if(delete_buttons.contains(CARBS)){
+            reg.Carbs_Delete(carbsData.getId());
+        }
+        if(delete_buttons.contains(GLICAEMIA)){
+            reg.Glycemia_Delete(glycemiaData.getId());
+        }
+        if(delete_buttons.contains(INSULIN)){
+            reg.Insulin_Delete(insulinData.getId());
         }
         for(String field:buttons){
             try {
@@ -547,13 +568,15 @@ public class NewHomeRegistry extends AppCompatActivity{
                         carbsData.setIdUser(idUser);
                         carbsData.setDateTime(registerDate);
                         if(noteData != null) {
-                            if (!noteData.getNote().equals("")) {
-                                carbsData.setIdNote(noteData.getId());
+                            if(noteData.getNote()!=null){
+                                if (!noteData.getNote().equals("")) {
+                                    carbsData.setIdNote(noteData.getId());
+                                }
                             }
                         }
-                        if(buttonsUpdate.contains(CARBS)){
+                        if (buttonsUpdate.contains(CARBS) && !delete_buttons.contains(CARBS)) {
                             reg.Carbs_Update(carbsData);
-                        }else{
+                        } else {
                             reg.Carbs_Save(carbsData);
                         }
                         break;
@@ -563,13 +586,15 @@ public class NewHomeRegistry extends AppCompatActivity{
                         glycemiaData.setIdUser(idUser);
                         glycemiaData.setDateTime(registerDate);
                         if(noteData != null) {
-                            if (!noteData.getNote().equals("")) {
-                                glycemiaData.setIdNote(noteData.getId());
+                            if(noteData.getNote() != null){
+                                if (!noteData.getNote().equals("")) {
+                                    glycemiaData.setIdNote(noteData.getId());
+                                }
                             }
                         }
-                        if(buttonsUpdate.contains(GLICAEMIA)){
+                        if (buttonsUpdate.contains(GLICAEMIA)&& !delete_buttons.contains(GLICAEMIA)) {
                             reg.Glycemia_Update(glycemiaData);
-                        }else{
+                        } else {
                             reg.Glycemia_Save(glycemiaData);
                         }
                         break;
@@ -578,12 +603,14 @@ public class NewHomeRegistry extends AppCompatActivity{
                         insulinData.setIdTag(idTag);
                         insulinData.setIdUser(idUser);
                         insulinData.setDateTime(registerDate);
-                        if(noteData != null && noteData.getNote() !=null){
-                            if(!noteData.getNote().equals("")){
-                                insulinData.setIdNote(noteData.getId());
+                        if(noteData != null){
+                            if(noteData.getNote() != null) {
+                                if (!noteData.getNote().equals("")) {
+                                    insulinData.setIdNote(noteData.getId());
+                                }
                             }
                         }
-                        if(buttonsUpdate.contains(INSULIN)){
+                        if(buttonsUpdate.contains(INSULIN) && !delete_buttons.contains(INSULIN)){
                             reg.Insulin_Update(insulinData);
                         }else{
                             reg.Insulin_Save(insulinData);
@@ -593,6 +620,9 @@ public class NewHomeRegistry extends AppCompatActivity{
             }catch (Exception e){
                throw e;
             }
+        }
+        if(buttons.size()==1 && buttons.contains(NOTE)){
+            reg.Note_Delete(noteData.getId());
         }
         reg.close();
         BadgeUtils.addLogBadge(getBaseContext());
@@ -709,10 +739,16 @@ public class NewHomeRegistry extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (buttons.contains(NOTE)) {
+                    if(buttonsUpdate.contains(NOTE)){
+                        delete_buttons.add(NOTE);
+                    }
                     removeContent(noteRegister);
                     buttons.remove(NOTE);
                     bottomSheetViewgroup.findViewById(R.id.bs_notes).setPressed(false);
                 } else {
+                    if(buttonsUpdate.contains(NOTE)){
+                        delete_buttons.remove(NOTE);
+                    }
                     setNotePressed(v);
                 }
             }
@@ -723,10 +759,16 @@ public class NewHomeRegistry extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (buttons.contains(GLICAEMIA)) {
+                    if(buttonsUpdate.contains(GLICAEMIA)){
+                        delete_buttons.add(GLICAEMIA);
+                    }
                     removeContent(glycaemiaRegister);
                     buttons.remove(GLICAEMIA);
                     bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(false);
                 } else {
+                    if(buttonsUpdate.contains(GLICAEMIA)){
+                        delete_buttons.remove(GLICAEMIA);
+                    }
                     setGlicPressed(v);
                 }
             }
@@ -735,10 +777,16 @@ public class NewHomeRegistry extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (buttons.contains(CARBS)) {
+                    if(buttonsUpdate.contains(CARBS)){
+                        delete_buttons.add(CARBS);
+                    }
                     removeContent(carbsRegister);
                     buttons.remove(CARBS);
                     bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(false);
                 } else {
+                    if(buttonsUpdate.contains(CARBS)){
+                        delete_buttons.remove(CARBS);
+                    }
                     setCarbsPressed(v);
                 }
             }
@@ -748,10 +796,16 @@ public class NewHomeRegistry extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (buttons.contains(INSULIN)) {
+                    if(buttonsUpdate.contains(INSULIN)){
+                        delete_buttons.add(INSULIN);
+                    }
                     removeContent(insuRegister);
                     buttons.remove(INSULIN);
                     bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(false);
                 } else {
+                    if(buttonsUpdate.contains(INSULIN)){
+                        delete_buttons.remove(INSULIN);
+                    }
                     setInsuPressed(v);
                 }
             }
@@ -775,9 +829,9 @@ public class NewHomeRegistry extends AppCompatActivity{
         if (args.containsKey(ARG_BUTTONS_UPDATE_LIST)) {
             this.buttonsUpdate = args.getStringArrayList(ARG_BUTTONS_UPDATE_LIST);
         }
-//        if (args.containsKey(ARG_BUTTONS_LIST)) {
-//            this.buttons = args.getStringArrayList(ARG_BUTTONS_LIST);
-//        }
+        if (args.containsKey(ARG_BUTTONS_DELETE_LIST)) {
+            this.delete_buttons = args.getStringArrayList(ARG_BUTTONS_DELETE_LIST);
+        }
 
         DB_Read db_read = new DB_Read(this);
         if(isUpdate){
@@ -826,7 +880,8 @@ public class NewHomeRegistry extends AppCompatActivity{
                 }
             }
             if (noteId != -1) {
-                noteData = db_read.Note_GetById(noteId);//args.getParcelable(ARG_NOTE);
+                noteData = db_read.Note_GetById(noteId);
+                noteData.setId(noteId);//args.getParcelable(ARG_NOTE);
                 Log.i(TAG, "fillParameters: UPDATE "+noteData.toString());
                 if(noteData!=null){
                     buttonsUpdate.add(NOTE);
@@ -1087,12 +1142,14 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
     private void requestKeyboard(View view) {
         view.requestFocus();
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-
+//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     }
     private void showBottomSheet() {
+        hideKeyboard();
+        //TODO SOLVE THIS PLS...
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
     private void hideBottomSheet() {
