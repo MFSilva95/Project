@@ -12,6 +12,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -105,7 +106,9 @@ public class GlycaemiaRegister extends LinearLayout {
     private void insertGlicObjData(int glicObjValue){
         TextView glicObjTxt = glycaemia_obj_input.getEditText();
         glicObjTxt.requestFocus();
-        glicObjTxt.setText(glicObjValue+"");
+        if(glicObjValue!=-1) {
+            glicObjTxt.setText(glicObjValue + "");
+        }
         //glicObjTxt.addTextChangedListener(getGlicObjTW());
     }
     public void requestGlicFocus(){

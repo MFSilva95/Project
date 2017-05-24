@@ -194,7 +194,7 @@ public class InsuRegister extends LinearLayout {
         //insuTxt.requestFocus();
         insuTxt.setText(insulinUnits+"");
         insuTxt.addTextChangedListener(getInsulinTW());
-        insuTxt.requestFocus();
+        //insuTxt.requestFocus();
     }
 
     public InsulinRec save_read(){
