@@ -22,7 +22,7 @@ public class CarbsRec extends DateTime implements Parcelable {
 	private int value;
 	private String photopath;
 	private int idTag;
-	private int idNote;
+	private int idNote = -1;
 
 	public CarbsRec() {
 	}

@@ -469,8 +469,12 @@ public class NewHomeRegistry extends AppCompatActivity{
         (findViewById(R.id.bt_add_more_content)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                hideKeyboard();
-                showBottomSheet();
+                if(bottomSheetBehavior.getState()==BottomSheetBehavior.STATE_EXPANDED){
+                    hideBottomSheet();
+                }else{
+                    hideKeyboard();
+                    showBottomSheet();
+                }
             }
         });
     }
@@ -548,7 +552,8 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         }
         if(delete_buttons.contains(NOTE)){
-            reg.Note_Delete(noteData.getId());//TODO cannot delete note...
+            reg.Note_Delete(noteData.getId());
+            noteData = null;
         }
         if(delete_buttons.contains(CARBS)){
             reg.Carbs_Delete(carbsData.getId());
@@ -568,11 +573,13 @@ public class NewHomeRegistry extends AppCompatActivity{
                         carbsData.setIdUser(idUser);
                         carbsData.setDateTime(registerDate);
                         if(noteData != null) {
-                            if(noteData.getNote()!=null){
+                            if(noteData.getNote()!= null && noteData.getId()!= -1){
                                 if (!noteData.getNote().equals("")) {
                                     carbsData.setIdNote(noteData.getId());
                                 }
                             }
+                        }else{
+                            carbsData.setIdNote(-1);
                         }
                         if (buttonsUpdate.contains(CARBS) && !delete_buttons.contains(CARBS)) {
                             reg.Carbs_Update(carbsData);
@@ -586,11 +593,13 @@ public class NewHomeRegistry extends AppCompatActivity{
                         glycemiaData.setIdUser(idUser);
                         glycemiaData.setDateTime(registerDate);
                         if(noteData != null) {
-                            if(noteData.getNote() != null){
+                            if(noteData.getNote()!= null && noteData.getId()!= -1){
                                 if (!noteData.getNote().equals("")) {
                                     glycemiaData.setIdNote(noteData.getId());
                                 }
                             }
+                        }else{
+                            glycemiaData.setIdNote(-1);
                         }
                         if (buttonsUpdate.contains(GLICAEMIA)&& !delete_buttons.contains(GLICAEMIA)) {
                             reg.Glycemia_Update(glycemiaData);
@@ -603,12 +612,14 @@ public class NewHomeRegistry extends AppCompatActivity{
                         insulinData.setIdTag(idTag);
                         insulinData.setIdUser(idUser);
                         insulinData.setDateTime(registerDate);
-                        if(noteData != null){
-                            if(noteData.getNote() != null) {
+                        if(noteData != null) {
+                            if(noteData.getNote()!= null && noteData.getId()!= -1){
                                 if (!noteData.getNote().equals("")) {
                                     insulinData.setIdNote(noteData.getId());
                                 }
                             }
+                        }else{
+                            insulinData.setIdNote(-1);
                         }
                         if(buttonsUpdate.contains(INSULIN) && !delete_buttons.contains(INSULIN)){
                             reg.Insulin_Update(insulinData);

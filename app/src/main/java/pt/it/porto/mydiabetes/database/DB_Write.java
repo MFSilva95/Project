@@ -157,7 +157,7 @@ public class DB_Write {
 //		int idNote = rdb.Glycemia_GetById(id).getIdNote();
 		rdb.close();
 		myDB.delete("Reg_BloodGlucose", "Id=" + id, null);
-		Log.d("Delete", "Reg_BloodGlucose");
+		//Log.d("Delete", "Reg_BloodGlucose");
 		//Note_Delete(idNote);
 	}
 
@@ -253,10 +253,10 @@ public class DB_Write {
 	}
 
 	public void Insulin_Delete(int id) {
-		DB_Read rdb = new DB_Read(myContext);
+		//DB_Read rdb = new DB_Read(myContext);
 		//int idNote = rdb.InsulinReg_GetById(id).getIdNote();
 		//int idGlycemia = rdb.InsulinReg_GetById(id).getIdBloodGlucose();
-		rdb.close();
+		//rdb.close();
 		myDB.delete("Reg_Insulin", "Id=" + id, null);
 //		if (idGlycemia > 0) {
 //			Glycemia_Delete(idGlycemia);
@@ -376,13 +376,10 @@ public class DB_Write {
 		toInsert.put("Id_User", obj.getIdUser());
 		toInsert.put("Value", obj.getCarbsValue());
 		toInsert.put("PhotoPath", obj.getPhotoPath());
-		Log.i("update", "Carbs_Update: "+obj.getId());
+		//Log.i("update", "Carbs_Update: "+obj.getId());
 
 		DB_Read read = new DB_Read(myContext);
 		CarbsRec old = read.CarboHydrate_GetById(obj.getId());
-
-		Log.i("update", "Carbs_Update_new: "+ obj.toString());
-		Log.i("update", "Carbs_Update_old: "+ old.toString());
 
 		PhotoSyncDb photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(myContext));
 		if (obj.getPhotoPath() != null && old.getPhotoPath() == null) { // if was added
@@ -400,6 +397,10 @@ public class DB_Write {
 		if (obj.getIdNote() > 0) {
 			toInsert.put("Id_Note", obj.getIdNote());
 		}
+
+		Log.i("update", "Carbs_Update_obj: "+ obj.toString());
+		Log.i("update", "Carbs_Update_old: "+ old.toString());
+		Log.i("update", "Carbs_Update: to insert"+ toInsert.toString());
 
 		myDB.update("Reg_CarboHydrate", toInsert, "Id=" + obj.getId(), null);
 		Log.d("Reg_CarboHydrate", "actualizado");
