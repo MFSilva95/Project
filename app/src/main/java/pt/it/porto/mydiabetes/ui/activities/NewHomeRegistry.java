@@ -51,11 +51,13 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
@@ -83,6 +85,9 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
+
+import static pt.it.porto.mydiabetes.utils.DateUtils.ISO8601_FORMAT_SECONDS;
+import static pt.it.porto.mydiabetes.utils.DateUtils.dateFormat;
 
 public class NewHomeRegistry extends AppCompatActivity{
 
@@ -153,6 +158,8 @@ public class NewHomeRegistry extends AppCompatActivity{
 
     public static final String ARG_BUTTONS_DELETE_LIST = "ARG_BUTTONS_DELETE_LIST";
     public static final String ARG_BUTTONS_UPDATE_LIST = "ARG_BUTTONS_UPDATE_LIST";
+    public static final String ARG_CALENDAR = "ARG_CALENDAR";
+
 
 
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
@@ -263,6 +270,8 @@ public class NewHomeRegistry extends AppCompatActivity{
         //outState.putStringArrayList(ARG_BUTTONS_LIST, buttons);
         outState.putStringArrayList(ARG_BUTTONS_DELETE_LIST, delete_buttons);
         outState.putStringArrayList(ARG_BUTTONS_UPDATE_LIST, buttonsUpdate);
+        outState.putString(ARG_CALENDAR, registerDate.toString());
+
 
         spinner = (Spinner) findViewById(R.id.tag_spinner);
         String tag = null;
@@ -849,6 +858,7 @@ public class NewHomeRegistry extends AppCompatActivity{
 
         DB_Read db_read = new DB_Read(this);
         if(isUpdate){
+
             if (args.containsKey(ARG_CARBS)) {
                 carbsData = args.getParcelable(ARG_CARBS);
                 if (carbsData != null) {
@@ -904,7 +914,8 @@ public class NewHomeRegistry extends AppCompatActivity{
                 }
             }
             db_read.close();
-
+            setDate(registerDate);
+            setTime(registerDate);
 
             insulinCalculator = new InsulinCalculator(this);
             insulinCalculator.setCarbs(carbsData != null ? carbsData.getCarbsValue() : 0);
@@ -917,6 +928,21 @@ public class NewHomeRegistry extends AppCompatActivity{
             hideBottomSheet();
             hideKeyboard();
         }else{
+
+            if(args.containsKey(ARG_CALENDAR)){
+
+                Calendar cal = Calendar.getInstance();
+                SimpleDateFormat sdf = new SimpleDateFormat(ISO8601_FORMAT_SECONDS);
+                try {
+                    cal.setTime(sdf.parse(args.getString(ARG_CALENDAR)));// all done
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                registerDate = cal;
+                setDate(registerDate);
+                setTime(registerDate);
+            }
+
             if (args.containsKey(ARG_CARBS)) {
                 carbsData = args.getParcelable(ARG_CARBS);
                 if (carbsData != null) {
