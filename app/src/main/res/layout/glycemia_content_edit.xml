@@ -32,7 +32,7 @@
             android:layout_weight="1"
             app:hintEnabled="true">
 
-            <EditText
+            <pt.it.porto.mydiabetes.ui.views.ExtendedEditText
                 android:id="@+id/glycemia"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -41,7 +41,8 @@
                 android:imeOptions="actionGo"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
-                tools:text="150" />
+                tools:text="150"
+                app:suffix="@string/gli_units"/>
         </android.support.design.widget.TextInputLayout>
 
         <ImageButton
@@ -72,7 +73,7 @@
         android:layout_marginTop="0dp"
         android:paddingStart="12dp">
 
-        <EditText
+        <pt.it.porto.mydiabetes.ui.views.ExtendedEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="0dp"
@@ -80,7 +81,8 @@
             android:imeOptions="actionDone"
             android:inputType="numberDecimal"
             android:maxLines="1"
-            tools:text="82"/>
+            tools:text="82"
+            app:suffix="@string/gli_units"/>
     </android.support.design.widget.TextInputLayout>
 
         <ImageButton
@@ -92,7 +94,7 @@
             android:layout_height="@dimen/height_2x"
             android:layout_alignBottom="@+id/glycemia_obj"
             android:layout_alignParentEnd="true"
-            android:visibility="visible"/>
+            android:visibility="invisible"/>
 
         <ImageButton
             android:id="@+id/revert_glycemia_objective"

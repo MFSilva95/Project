@@ -115,14 +115,4 @@ public class ExtendedEditText extends TextInputEditText {
 			c.drawText(mSuffix, xSuffix, getBaseline(), mTextPaint);
 		}
 	}
-
-	@Override
-	public void addTextChangedListener(TextWatcher watcher) {
-		this.textWatcher = watcher;
-	}
-
-	@Override
-	public void removeTextChangedListener(TextWatcher watcher) {
-		this.textWatcher = null;
-	}
 }

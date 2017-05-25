@@ -86,6 +86,10 @@ public class DateUtils {
         return timeFormat.format(calendar.getTime());
     }
 
+    public static String getFormattedTimeSec(Calendar calendar) {
+        return timeFormatSeconds.format(calendar.getTime());
+    }
+
     public static Calendar getDateTime(String date, String time) throws ParseException {
         return parseDateTime(date + " " + time);
     }

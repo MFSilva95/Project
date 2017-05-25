@@ -61,6 +61,22 @@ public class CarbsRegister extends LinearLayout {
         carbs_input.requestFocus();
     }
 
+    public boolean validate(){
+        try{
+            carbsData.setCarbsValue( Integer.parseInt(carbs_input.getEditText().getText().toString()));
+        }catch (Exception e){
+            carbs_input.setError(getContext().getString(R.string.glicInputError));
+            carbs_input.requestFocus();
+            return false;
+        }
+        if(carbsData.getCarbsValue()>900 || carbsData.getCarbsValue()<=0){
+            carbs_input.setError(getContext().getString(R.string.glicInputError));
+            carbs_input.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
     public void fill_parameters(CarbsRec carbData){
         carbsData = carbData;
         carbs_input.getEditText().setText(""+carbsData.getCarbsValue());

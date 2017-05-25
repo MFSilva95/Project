@@ -77,16 +77,6 @@ public class InsuRegister extends LinearLayout {
         fillInsulinSpinner();
         setInsulinListeners();
     }
-    public boolean canSave(){
-        try{
-            Integer.parseInt(insulin_input.getEditText().getText().toString());
-        }catch (Exception e){
-            insulin_input.setError(getContext().getString(R.string.glicInputError));
-            insulin_input.requestFocus();
-            return false;
-        }
-        return true;
-    }
     public void updateInsuCalc(InsulinCalculator calculator){
         this.calc = calculator;
         this.fragmentInsulinCalcsFragment.setInsulinCalculator(calculator);
@@ -101,6 +91,21 @@ public class InsuRegister extends LinearLayout {
     public void fill_parameters(InsulinRec rec){
         this.insuData = rec;
         insertInsulinData(rec.getInsulinUnits());
+    }
+    public boolean validate(){
+        try{
+            insuData.setInsulinUnits( Integer.parseInt(insulin_input.getEditText().getText().toString()));
+        }catch (Exception e){
+            insulin_input.setError(getContext().getString(R.string.glicInputError));
+            insulin_input.requestFocus();
+            return false;
+        }
+        if(insuData.getInsulinUnits()>900 || insuData.getInsulinUnits()<=0){
+            insulin_input.setError(getContext().getString(R.string.glicInputError));
+            insulin_input.requestFocus();
+            return false;
+        }
+        return true;
     }
     private TextWatcher getInsulinTW(){
         TextWatcher ins = new TextWatcher() {

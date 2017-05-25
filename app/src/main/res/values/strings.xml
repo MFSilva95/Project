@@ -258,6 +258,8 @@
     <string name="new_medicine">Novo medicamento</string>
     <string name="hint_medicine">Ben u Ron 1000</string>
     <string name="units">unidades</string>
+    <string name="hc_units">kcal</string>
+    <string name="gli_units">mg/dl</string>
     <string name="pills">comprimidos</string>
     <string name="new_label">Nova etiqueta</string>
     <string name="breakfast">Pequeno almoço</string>

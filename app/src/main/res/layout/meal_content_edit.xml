@@ -27,7 +27,7 @@
         app:hintEnabled="true"
         android:layout_marginTop="0dp">
 
-        <EditText
+        <pt.it.porto.mydiabetes.ui.views.ExtendedEditText
             android:id="@+id/meal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +36,8 @@
             android:imeOptions="actionGo"
             android:inputType="numberDecimal"
             android:maxLines="1"
-            tools:text="50"/>
+            tools:text="50"
+            app:suffix="@string/hc_units" />
     </android.support.design.widget.TextInputLayout>
 
     <ImageButton

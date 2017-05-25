@@ -89,6 +89,34 @@ public class GlycaemiaRegister extends LinearLayout {
         insertGlicData(glyrec.getValue(),glyrec.getBG_target());
     }
 
+    public boolean validate(){
+        try{
+            glycaemiaData.setValue( Integer.parseInt(glycaemia_input.getEditText().getText().toString()));
+        }catch (Exception e){
+            glycaemia_input.setError(getContext().getString(R.string.glicInputError));
+            glycaemia_input.requestFocus();
+            return false;
+        }
+        try{
+            glycaemiaData.setObjective( Integer.parseInt(glycaemia_obj_input.getEditText().getText().toString()));
+        }catch (Exception e){
+            glycaemia_obj_input.setError(getContext().getString(R.string.glicInputError));
+            glycaemia_obj_input.requestFocus();
+            return false;
+        }
+        if(glycaemiaData.getValue()>900 || glycaemiaData.getValue()<30){
+            glycaemia_input.setError(getContext().getString(R.string.glicInputError));
+            glycaemia_input.requestFocus();
+            return false;
+        }
+        if(glycaemiaData.getBG_target()>900 || glycaemiaData.getBG_target()<30){
+            glycaemia_obj_input.setError(getContext().getString(R.string.glicInputError));
+            glycaemia_obj_input.requestFocus();
+            return false;
+        }
+        return true;
+    }
+
     private void insertGlicData(int glicValue, int glicObjValue){
 
         TextView glicTxt = glycaemia_input.getEditText();
@@ -120,14 +148,25 @@ public class GlycaemiaRegister extends LinearLayout {
         glycaemia_input.getEditText().addTextChangedListener(getGlicTW());
         glycaemia_obj_input.getEditText().addTextChangedListener(getGlicObjTW());
         int objective;
+        ImageButton plusButton = (ImageButton) findViewById(R.id.insert_new_glic_objective);
         try {
             ArrayList<GlycemiaObjectivesData> objList = storage.getGlycemiaObjectives();
             objective = GlicObjTimesOverlap(objList, DateUtils.getFormattedTime(registerDate));
             //objective = storage.getGlycemiaObjectives(DateUtils.getFormattedTime(registerDate));
-            insertGlicObjData(objective);
+            if(objective == -1){
+                plusButton.setVisibility(View.VISIBLE);
+                plusButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addGlycemiaObjective();
+                    }
+                });
+            }else{
+                insertGlicObjData(objective);
+                plusButton.setVisibility(View.INVISIBLE);
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            ImageButton plusButton = (ImageButton) findViewById(R.id.insert_new_glic_objective);
             plusButton.setVisibility(View.VISIBLE);
             plusButton.setOnClickListener(new View.OnClickListener() {
                 @Override

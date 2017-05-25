@@ -270,7 +270,8 @@ public class NewHomeRegistry extends AppCompatActivity{
         //outState.putStringArrayList(ARG_BUTTONS_LIST, buttons);
         outState.putStringArrayList(ARG_BUTTONS_DELETE_LIST, delete_buttons);
         outState.putStringArrayList(ARG_BUTTONS_UPDATE_LIST, buttonsUpdate);
-        outState.putString(ARG_CALENDAR, registerDate.toString());
+        String date = DateUtils.getFormattedDate(registerDate)+" "+DateUtils.getFormattedTimeSec(registerDate);
+        outState.putString(ARG_CALENDAR, date);
 
 
         spinner = (Spinner) findViewById(R.id.tag_spinner);
@@ -578,6 +579,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             switch (field){
                     case CARBS:
                         carbsData = carbsRegister.save_read();
+                        if(!carbsRegister.validate()){throw new Exception();}
                         carbsData.setIdTag(idTag);
                         carbsData.setIdUser(idUser);
                         carbsData.setDateTime(registerDate);
@@ -598,6 +600,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                         break;
                     case GLICAEMIA:
                         glycemiaData = glycaemiaRegister.save_read();
+                        if(!glycaemiaRegister.validate()){throw new Exception();}
                         glycemiaData.setIdTag(idTag);
                         glycemiaData.setIdUser(idUser);
                         glycemiaData.setDateTime(registerDate);
@@ -618,6 +621,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                         break;
                     case INSULIN:
                         insulinData = insuRegister.save_read();
+                        if(!insuRegister.validate()){throw new Exception();}
                         insulinData.setIdTag(idTag);
                         insulinData.setIdUser(idUser);
                         insulinData.setDateTime(registerDate);
@@ -954,7 +958,9 @@ public class NewHomeRegistry extends AppCompatActivity{
                     if(imgPath!=null){imgUri = Uri.parse(imgPath);}
 
                     setNoteId(carbsData.getIdNote());
-                    registerDate = carbsData.getDateTime();
+                    if(carbsData.getDateTime()!=null){
+                        registerDate = carbsData.getDateTime();
+                    }
                 }
             }
             if (args.containsKey(ARG_BLOOD_GLUCOSE)) {
@@ -965,9 +971,9 @@ public class NewHomeRegistry extends AppCompatActivity{
                     glycaemiaRegister.fill_parameters(glycemiaData);
 
                     setNoteId(glycemiaData.getIdNote());
-                    registerDate = glycemiaData.getDateTime();
-
-
+                    if(glycemiaData.getDateTime()!=null){
+                        registerDate = glycemiaData.getDateTime();
+                    }
                 }
             }
             if (args.containsKey(ARG_INSULIN)) {
@@ -976,9 +982,10 @@ public class NewHomeRegistry extends AppCompatActivity{
                     buttons.add(INSULIN);
                     insertInsulinMenu();
                     insuRegister.fill_parameters(insulinData);
-
                     setNoteId(insulinData.getIdNote());
-                    registerDate = insulinData.getDateTime();
+                    if(insulinData.getDateTime()!=null){
+                        registerDate = insulinData.getDateTime();
+                    }
                 }
             }
             db_read.close();
@@ -1236,6 +1243,8 @@ public class NewHomeRegistry extends AppCompatActivity{
         registerDate.set(Calendar.SECOND, c.get(Calendar.SECOND));
         registerTimeTextV.setText(DateUtils.getFormattedTime(registerDate));
     }
+
+
     private void setDate(int year, int month, int day) {
         registerDate.set(Calendar.YEAR,year);
         registerDate.set(Calendar.MONTH,month);
