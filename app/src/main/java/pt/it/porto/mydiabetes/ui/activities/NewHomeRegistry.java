@@ -353,7 +353,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         setContentView(R.layout.activity_add_event);
         FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(this));
 
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
         contentLayout = (LinearLayout) findViewById(R.id.content_panel);
@@ -726,18 +726,21 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
 
     private void insertInsulinSuggestion(String field){
-        insertInsulinMenu();
-        insuRegister.updateInsuCalc(insulinCalculator);
-        //insuRegister.fill_parameters(insulinData);
-        if(field.equals(CARBS)){
-            carbsRegister.requestCarbsFocus();
-        }else{
-            glycaemiaRegister.requestGlicFocus();
-        }
 
-//        Log.i(TAG, "insertInsulinSuggestion: CALC_GLIC: "+insulinCalculator.getInsulinGlycemia());
-//        Log.i(TAG, "insertInsulinSuggestion: CALC_CARBS: "+insulinCalculator.getInsulinCarbs());
-//        Log.i(TAG, "insertInsulinSuggestion: CALC_TOTAL: "+insulinCalculator.getInsulinTotal());
+        if(!buttons.contains(INSULIN)){
+            if(buttonsUpdate.contains(INSULIN)){
+                delete_buttons.remove(INSULIN);
+            }
+            insertInsulinMenu();
+            bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(true);
+            hideBottomSheet();
+            insuRegister.updateInsuCalc(insulinCalculator);
+            if(field.equals(CARBS)){
+                carbsRegister.requestCarbsFocus();
+            }else{
+                glycaemiaRegister.requestGlicFocus();
+            }
+        }
     }
 
     private void setupBottomSheet() {
@@ -1153,8 +1156,8 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
     private void requestKeyboard(View view) {
         view.requestFocus();
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
     }
@@ -1237,18 +1240,18 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void addContentAt(int layout, int pos) {
         contentLayout.addView(LayoutInflater.from(this).inflate(layout, contentLayout, false), pos);//contentLayout.getChildCount() - 1);
     }
-//    private void removeContent(int child) {
-//        contentLayout.removeViewAt(child);
-//        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
-//        if(buttonsUpdate.size()==0 && buttons.size()==0){
-//            button.setEnabled(false);
-//        }
-//    }
-private void removeContent(LinearLayout view) {
+    private void removeContent(LinearLayout view) {
         contentLayout.removeView(view);
         Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
         if(buttonsUpdate.size()==0 && buttons.size()==0){
             button.setEnabled(false);
         }
     }
+    //    private void removeContent(int child) {
+//        contentLayout.removeViewAt(child);
+//        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
+//        if(buttonsUpdate.size()==0 && buttons.size()==0){
+//            button.setEnabled(false);
+//        }
+//    }
 }
