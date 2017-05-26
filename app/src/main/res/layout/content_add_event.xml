@@ -18,5 +18,5 @@
         android:adjustViewBounds="false"
         android:cropToPadding="false"
         android:elevation="0dp"
-        android:src="@drawable/ic_add_black_24dp"/>
+        android:src="@drawable/ic_plus"/>
 </LinearLayout>
