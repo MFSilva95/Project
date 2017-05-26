@@ -230,36 +230,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             hideBottomSheet();
         } else {
-                if((carbsData != null && carbsData.getCarbsValue() != 0) || (insulinData != null && insulinData.getInsulinUnits() != 0)
-                        || (glycemiaData != null && glycemiaData.getBG_target() != -1) || (glycemiaData != null && glycemiaData.getValue() != 0)) {
-                        AlertDialog.Builder builder1 = new AlertDialog.Builder(NewHomeRegistry.this);
-                        builder1.setTitle(getString(R.string.exit_dialog_title));
-                        builder1.setMessage(getString(R.string.exit_dialog_description));
-                        builder1.setCancelable(true);
-
-                        builder1.setPositiveButton(
-                                getString(R.string.positiveButton),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                        finish();
-                                    }
-                                });
-
-                        builder1.setNegativeButton(
-                                getString(R.string.negativeButton),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-
-                        AlertDialog alert11 = builder1.create();
-                        alert11.show();
-                    }
-                else{
-                    finish();
-                }
+                goBack();
             }
     }
     @Override
@@ -419,6 +390,41 @@ public class NewHomeRegistry extends AppCompatActivity{
         glycaemiaRegister = new GlycaemiaRegister(this, registerDate, new NewHomeRegCallImpl());
         noteRegister = new NoteRegister(this);
     }
+    private void goBack(){
+        carbsData = carbsRegister.save_read();
+        insulinData = insuRegister.save_read();
+        glycemiaData = glycaemiaRegister.save_read();
+        if((carbsData != null && carbsData.getCarbsValue() > 0) || (insulinData != null && insulinData.getInsulinUnits() > 0) || (glycemiaData != null && glycemiaData.getValue() >  0)) {
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(NewHomeRegistry.this);
+            builder1.setTitle(getString(R.string.exit_dialog_title));
+            builder1.setMessage(getString(R.string.exit_dialog_description));
+            builder1.setCancelable(true);
+
+            builder1.setPositiveButton(
+                    getString(R.string.positiveButton),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            finish();
+                        }
+                    });
+
+            builder1.setNegativeButton(
+                    getString(R.string.negativeButton),
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+
+        }
+        else{
+            finish();
+        }
+    }
     private void init_listeners(){
         registerDateTextV.setOnClickListener(new OnClickListener() {
             @Override
@@ -436,37 +442,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if((carbsData != null && carbsData.getCarbsValue() != 0) || (insulinData != null && insulinData.getInsulinUnits() != 0)
-                        || (glycemiaData != null && glycemiaData.getBG_target() != -1) || (glycemiaData != null && glycemiaData.getValue() != 0)) {
-                        AlertDialog.Builder builder1 = new AlertDialog.Builder(NewHomeRegistry.this);
-                        builder1.setTitle(getString(R.string.exit_dialog_title));
-                        builder1.setMessage(getString(R.string.exit_dialog_description));
-                        builder1.setCancelable(true);
-
-                        builder1.setPositiveButton(
-                                getString(R.string.positiveButton),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                        finish();
-                                    }
-                                });
-
-                        builder1.setNegativeButton(
-                                getString(R.string.negativeButton),
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-
-                        AlertDialog alert11 = builder1.create();
-                        alert11.show();
-
-                }
-                else{
-                    finish();
-                }
+              goBack();
             }
         });
 

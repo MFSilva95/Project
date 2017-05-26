@@ -282,7 +282,7 @@ public class LogbookChartList extends MultiDataChartActivity implements FilterDi
 			holder.onClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(v.getContext(), DetailLogbookActivity.class);
+					Intent intent = new Intent(v.getContext(), NewHomeRegistry.class);
 					Bundle args = new Bundle();
 					Holder holder = (Holder) v.getTag();
 					if (holder.glycemiaId != -1) {
