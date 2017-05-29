@@ -1951,9 +1951,40 @@ public class DB_Read {
 		}
 	}
 
+	public LinkedList<BadgeRec> getAllMedals(String name) {
+		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
+		Cursor cursor = myDB.rawQuery("SELECT Type FROM Badges Where Name='"+name+"'ORDER BY DateTime DESC;", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			BadgeRec tmp;
+			do {
+				tmp = new BadgeRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setDateTime(cursor.getString(2));
+				tmp.setType(cursor.getString(3));
+				tmp.setName(cursor.getString(4));
+				tmp.setMedal(cursor.getString(5));
+				AllReads.add(tmp);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return AllReads;
+		} else {
+			cursor.close();
+			return AllReads;
+		}
+	}
+
+
+	public Boolean hasMedal(String name) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges Where Name = '"+name+"';", null);
+		return cursor.getCount() != 0;
+	}
+
 	@Nullable
 	public LinkedList<BadgeRec> getBadgesByDate(String day) {
-		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges WHERE Type = 'daily' AND DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
 		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();

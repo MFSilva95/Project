@@ -64,8 +64,8 @@ public class HomeElement {
     }
 
     public String getFormattedTime() {
-//        return DateUtils.getFormattedTime(dateTime);
-        return DateUtils.getFormattedTimeSec(dateTime);
+        return DateUtils.getFormattedTime(dateTime);
+        //return DateUtils.getFormattedTimeSec(dateTime);
     }
 
     public String getTag() {

@@ -121,14 +121,18 @@ public class BadgeUtils {
     public static void addPhotoBadge(Context context) {
         DB_Read db = new DB_Read(context);
         int idUser = db.getId();
-        LinkedList<BadgeRec> list = db.Badges_GetAll();
+        boolean flag = db.hasMedal("photo");
+        db.close();
+
+        /*LinkedList<BadgeRec> list = db.Badges_GetAll();
         db.close();
         boolean flag = false;
         for (BadgeRec rec : list) {
             if (rec.getName().equals("photo")) {
                 flag = true;
             }
-        }
+        }*/
+
         if (!flag) {
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
@@ -147,14 +151,17 @@ public class BadgeUtils {
     public static void addExportBadge(Context context) {
         DB_Read db = new DB_Read(context);
         int idUser = db.getId();
-        LinkedList<BadgeRec> list = db.Badges_GetAll();
+        /*LinkedList<BadgeRec> list = db.Badges_GetAll();
         db.close();
         boolean flag = false;
         for (BadgeRec rec : list) {
             if (rec.getName().equals("export")) {
                 flag = true;
             }
-        }
+        }*/
+        boolean flag = db.hasMedal("export");
+        db.close();
+
         if (!flag) {
             DB_Write dbwrite = new DB_Write(context);
             BadgeRec badge = new BadgeRec();
@@ -171,10 +178,15 @@ public class BadgeUtils {
     }
 
     public static void addLogBadge(Context context) {
+
         DB_Read db = new DB_Read(context);
         int idUser = db.getId();
         LinkedList<HomeElement> logBookEntries = new LinkedList<>();
-        LinkedList<BadgeRec> list = db.Badges_GetAll();
+
+        db.close();
+
+        //LinkedList<BadgeRec> list = db.Badges_GetAll();
+        LinkedList<BadgeRec> list = db.getAllMedals("log");
 
         boolean flagBronzeB = false;
         boolean flagSilverB = false;
@@ -188,9 +200,8 @@ public class BadgeUtils {
         boolean flagSilverA = false;
         boolean flagGoldA = false;
 
-
         for (BadgeRec rec : list) {
-            if (rec.getName().equals("log") && rec.getType().equals("beginner")) {
+            if (rec.getType().equals("beginner")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeB = true;
                 if(rec.getMedal().equals("silver"))
@@ -199,7 +210,7 @@ public class BadgeUtils {
                     flagGoldB = true;
             }
 
-            if (rec.getName().equals("log") && rec.getType().equals("medium")) {
+            if (rec.getType().equals("medium")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeM = true;
                 if(rec.getMedal().equals("silver"))
@@ -208,7 +219,7 @@ public class BadgeUtils {
                     flagGoldM = true;
             }
 
-            if (rec.getName().equals("log") && rec.getType().equals("advanced")) {
+            if (rec.getType().equals("advanced")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeA = true;
                 if(rec.getMedal().equals("silver"))
@@ -218,21 +229,67 @@ public class BadgeUtils {
             }
         }
 
+
+//        for (BadgeRec rec : list) {
+//            if (rec.getName().equals("log") && rec.getType().equals("beginner")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeB = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverB = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldB = true;
+//            }
+//
+//            if (rec.getName().equals("log") && rec.getType().equals("medium")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeM = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverM = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldM = true;
+//            }
+//
+//            if (rec.getName().equals("log") && rec.getType().equals("advanced")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeA = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverA = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldA = true;
+//            }
+//        }
+
+//        if(LevelsPointsUtils.getLevel(context) < LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
+//            PointsRec pnt = db.getFirstPointToReachLevel(0);
+//            logBookEntries = db.getLogBookFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),LOG_GOLD_RECORDS_B);
+//        }
+//        if(LevelsPointsUtils.getLevel(context) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL && LevelsPointsUtils.getLevel(context) < LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
+//            int points = LevelsPointsUtils.getPointsInLevel(LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL);
+//            PointsRec pnt = db.getFirstPointToReachLevel(points);
+//            logBookEntries = db.getLogBookFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),LOG_GOLD_RECORDS_M);
+//        }
+//        if(LevelsPointsUtils.getLevel(context) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
+//            int points = LevelsPointsUtils.getPointsInLevel(LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL);
+//            PointsRec pnt = db.getFirstPointToReachLevel(points);
+//            logBookEntries = db.getLogBookFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),LOG_GOLD_RECORDS_A);
+//        }
+
         if(LevelsPointsUtils.getLevel(context) < LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
             PointsRec pnt = db.getFirstPointToReachLevel(0);
             logBookEntries = db.getLogBookFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),LOG_GOLD_RECORDS_B);
+        }else{
+            if(LevelsPointsUtils.getLevel(context) < LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
+                int points = LevelsPointsUtils.getPointsInLevel(LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL);
+                PointsRec pnt = db.getFirstPointToReachLevel(points);
+                logBookEntries = db.getLogBookFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),LOG_GOLD_RECORDS_M);
+            }else{
+                if(LevelsPointsUtils.getLevel(context) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
+                    int points = LevelsPointsUtils.getPointsInLevel(LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL);
+                    PointsRec pnt = db.getFirstPointToReachLevel(points);
+                    logBookEntries = db.getLogBookFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),LOG_GOLD_RECORDS_A);
+                }
+            }
         }
-        if(LevelsPointsUtils.getLevel(context) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL && LevelsPointsUtils.getLevel(context) < LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
-            int points = LevelsPointsUtils.getPointsInLevel(LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL);
-            PointsRec pnt = db.getFirstPointToReachLevel(points);
-            logBookEntries = db.getLogBookFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),LOG_GOLD_RECORDS_M);
-        }
-        if(LevelsPointsUtils.getLevel(context) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
-            int points = LevelsPointsUtils.getPointsInLevel(LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL);
-            PointsRec pnt = db.getFirstPointToReachLevel(points);
-            logBookEntries = db.getLogBookFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),LOG_GOLD_RECORDS_A);
-        }
-
         db.close();
 
         //BEGINNER
@@ -360,7 +417,8 @@ public class BadgeUtils {
     public static void addExerciseBadge(Context context) {
         DB_Read db = new DB_Read(context);
         LinkedList<ExerciseRec> exerciseEntries = new LinkedList<>();
-        LinkedList<BadgeRec> list = db.Badges_GetAll();
+        //LinkedList<BadgeRec> list = db.Badges_GetAll();
+        LinkedList<BadgeRec> list = db.getAllMedals("exercise");
         int idUser = db.getId();
 
         boolean flagBronzeB = false;
@@ -376,7 +434,7 @@ public class BadgeUtils {
         boolean flagGoldA = false;
 
         for (BadgeRec rec : list) {
-            if (rec.getName().equals("exercise") && rec.getType().equals("beginner")) {
+            if (rec.getType().equals("beginner")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeB = true;
                 if(rec.getMedal().equals("silver"))
@@ -385,7 +443,7 @@ public class BadgeUtils {
                     flagGoldB = true;
             }
 
-            if (rec.getName().equals("exercise") && rec.getType().equals("medium")) {
+            if (rec.getType().equals("medium")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeM = true;
                 if(rec.getMedal().equals("silver"))
@@ -394,7 +452,7 @@ public class BadgeUtils {
                     flagGoldM = true;
             }
 
-            if (rec.getName().equals("exercise") && rec.getType().equals("advanced")) {
+            if (rec.getType().equals("advanced")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeA = true;
                 if(rec.getMedal().equals("silver"))
@@ -403,6 +461,35 @@ public class BadgeUtils {
                     flagGoldA = true;
             }
         }
+
+//        for (BadgeRec rec : list) {
+//            if (rec.getName().equals("exercise") && rec.getType().equals("beginner")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeB = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverB = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldB = true;
+//            }
+//
+//            if (rec.getName().equals("exercise") && rec.getType().equals("medium")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeM = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverM = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldM = true;
+//            }
+//
+//            if (rec.getName().equals("exercise") && rec.getType().equals("advanced")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeA = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverA = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldA = true;
+//            }
+//        }
         if(LevelsPointsUtils.getLevel(context) < LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
             PointsRec pnt = db.getFirstPointToReachLevel(0);
             exerciseEntries = db.getExerciseFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),EXERCISE_GOLD_RECORDS_B);
@@ -544,7 +631,8 @@ public class BadgeUtils {
     public static void addDiseaseBadge(Context context) {
         DB_Read db = new DB_Read(context);
         int idUser = db.getId();
-        LinkedList<BadgeRec> list = db.Badges_GetAll();
+        //LinkedList<BadgeRec> list = db.Badges_GetAll();
+        LinkedList<BadgeRec> list = db.getAllMedals("disease");
 
         boolean flagBronzeB = false;
         boolean flagSilverB = false;
@@ -559,7 +647,7 @@ public class BadgeUtils {
         boolean flagGoldA = false;
 
         for (BadgeRec rec : list) {
-            if (rec.getName().equals("disease") && rec.getType().equals("beginner")) {
+            if (rec.getType().equals("beginner")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeB = true;
                 if(rec.getMedal().equals("silver"))
@@ -568,7 +656,7 @@ public class BadgeUtils {
                     flagGoldB = true;
             }
 
-            if (rec.getName().equals("disease") && rec.getType().equals("medium")) {
+            if (rec.getType().equals("medium")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeM = true;
                 if(rec.getMedal().equals("silver"))
@@ -577,7 +665,7 @@ public class BadgeUtils {
                     flagGoldM = true;
             }
 
-            if (rec.getName().equals("disease") && rec.getType().equals("advanced")) {
+            if (rec.getType().equals("advanced")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeA = true;
                 if(rec.getMedal().equals("silver"))
@@ -586,6 +674,34 @@ public class BadgeUtils {
                     flagGoldA = true;
             }
         }
+//        for (BadgeRec rec : list) {
+//            if (rec.getName().equals("disease") && rec.getType().equals("beginner")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeB = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverB = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldB = true;
+//            }
+//
+//            if (rec.getName().equals("disease") && rec.getType().equals("medium")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeM = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverM = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldM = true;
+//            }
+//
+//            if (rec.getName().equals("disease") && rec.getType().equals("advanced")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeA = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverA = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldA = true;
+//            }
+//        }
         LinkedList<DiseaseRec> diseaseEntries = new LinkedList<>();
         if(LevelsPointsUtils.getLevel(context) < LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
             PointsRec pnt = db.getFirstPointToReachLevel(0);
@@ -728,7 +844,9 @@ public class BadgeUtils {
 
     public static void addWeightBadge(Context context) {
         DB_Read db = new DB_Read(context);
-        LinkedList<BadgeRec> list = db.Badges_GetAll();
+        //LinkedList<BadgeRec> list = db.Badges_GetAll();
+        LinkedList<BadgeRec> list = db.getAllMedals("weight");
+
         int idUser = db.getId();
         boolean flagBronzeB = false;
         boolean flagSilverB = false;
@@ -743,7 +861,7 @@ public class BadgeUtils {
         boolean flagGoldA = false;
 
         for (BadgeRec rec : list) {
-            if (rec.getName().equals("weight") && rec.getType().equals("beginner")) {
+            if (rec.getType().equals("beginner")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeB = true;
                 if(rec.getMedal().equals("silver"))
@@ -752,7 +870,7 @@ public class BadgeUtils {
                     flagGoldB = true;
             }
 
-            if (rec.getName().equals("weight") && rec.getType().equals("medium")) {
+            if (rec.getType().equals("medium")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeM = true;
                 if(rec.getMedal().equals("silver"))
@@ -761,7 +879,7 @@ public class BadgeUtils {
                     flagGoldM = true;
             }
 
-            if (rec.getName().equals("weight") && rec.getType().equals("advanced")) {
+            if (rec.getType().equals("advanced")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeA = true;
                 if(rec.getMedal().equals("silver"))
@@ -770,6 +888,35 @@ public class BadgeUtils {
                     flagGoldA = true;
             }
         }
+
+//        for (BadgeRec rec : list) {
+//            if (rec.getName().equals("weight") && rec.getType().equals("beginner")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeB = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverB = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldB = true;
+//            }
+//
+//            if (rec.getName().equals("weight") && rec.getType().equals("medium")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeM = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverM = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldM = true;
+//            }
+//
+//            if (rec.getName().equals("weight") && rec.getType().equals("advanced")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeA = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverA = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldA = true;
+//            }
+//        }
         LinkedList<WeightRec> weightEntries = new LinkedList<>();
         if(LevelsPointsUtils.getLevel(context) < LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
             PointsRec pnt = db.getFirstPointToReachLevel(0);
@@ -912,7 +1059,9 @@ public class BadgeUtils {
 
     public static void addBpBadge(Context context) {
         DB_Read db = new DB_Read(context);
-        LinkedList<BadgeRec> list = db.Badges_GetAll();
+//        LinkedList<BadgeRec> list = db.Badges_GetAll();
+        LinkedList<BadgeRec> list = db.getAllMedals("bp");
+
         int idUser = db.getId();
         boolean flagBronzeB = false;
         boolean flagSilverB = false;
@@ -925,8 +1074,9 @@ public class BadgeUtils {
         boolean flagBronzeA = false;
         boolean flagSilverA = false;
         boolean flagGoldA = false;
+
         for (BadgeRec rec : list) {
-            if (rec.getName().equals("bp") && rec.getType().equals("beginner")) {
+            if (rec.getType().equals("beginner")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeB = true;
                 if(rec.getMedal().equals("silver"))
@@ -935,7 +1085,7 @@ public class BadgeUtils {
                     flagGoldB = true;
             }
 
-            if (rec.getName().equals("bp") && rec.getType().equals("medium")) {
+            if (rec.getType().equals("medium")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeM = true;
                 if(rec.getMedal().equals("silver"))
@@ -944,7 +1094,7 @@ public class BadgeUtils {
                     flagGoldM = true;
             }
 
-            if (rec.getName().equals("bp") && rec.getType().equals("advanced")) {
+            if (rec.getType().equals("advanced")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeA = true;
                 if(rec.getMedal().equals("silver"))
@@ -953,6 +1103,34 @@ public class BadgeUtils {
                     flagGoldA = true;
             }
         }
+//        for (BadgeRec rec : list) {
+//            if (rec.getName().equals("bp") && rec.getType().equals("beginner")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeB = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverB = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldB = true;
+//            }
+//
+//            if (rec.getName().equals("bp") && rec.getType().equals("medium")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeM = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverM = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldM = true;
+//            }
+//
+//            if (rec.getName().equals("bp") && rec.getType().equals("advanced")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeA = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverA = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldA = true;
+//            }
+//        }
 
         LinkedList<BloodPressureRec> bpEntries = new LinkedList<>();
         if(LevelsPointsUtils.getLevel(context) < LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -1095,7 +1273,8 @@ public class BadgeUtils {
 
     public static void addCholesterolBadge(Context context) {
         DB_Read db = new DB_Read(context);
-        LinkedList<BadgeRec> list = db.Badges_GetAll();
+//        LinkedList<BadgeRec> list = db.Badges_GetAll();
+        LinkedList<BadgeRec> list = db.getAllMedals("cholesterol");
         int idUser = db.getId();
         boolean flagBronzeB = false;
         boolean flagSilverB = false;
@@ -1109,7 +1288,7 @@ public class BadgeUtils {
         boolean flagSilverA = false;
         boolean flagGoldA = false;
         for (BadgeRec rec : list) {
-            if (rec.getName().equals("cholesterol") && rec.getType().equals("beginner")) {
+            if (rec.getType().equals("beginner")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeB = true;
                 if(rec.getMedal().equals("silver"))
@@ -1118,7 +1297,7 @@ public class BadgeUtils {
                     flagGoldB = true;
             }
 
-            if (rec.getName().equals("cholesterol") && rec.getType().equals("medium")) {
+            if (rec.getType().equals("medium")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeM = true;
                 if(rec.getMedal().equals("silver"))
@@ -1127,7 +1306,7 @@ public class BadgeUtils {
                     flagGoldM = true;
             }
 
-            if (rec.getName().equals("cholesterol") && rec.getType().equals("advanced")) {
+            if (rec.getType().equals("advanced")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeA = true;
                 if(rec.getMedal().equals("silver"))
@@ -1136,6 +1315,34 @@ public class BadgeUtils {
                     flagGoldA = true;
             }
         }
+//        for (BadgeRec rec : list) {
+//            if (rec.getName().equals("cholesterol") && rec.getType().equals("beginner")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeB = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverB = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldB = true;
+//            }
+//
+//            if (rec.getName().equals("cholesterol") && rec.getType().equals("medium")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeM = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverM = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldM = true;
+//            }
+//
+//            if (rec.getName().equals("cholesterol") && rec.getType().equals("advanced")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeA = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverA = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldA = true;
+//            }
+//        }
 
         LinkedList<CholesterolRec> cholesterolEntries = new LinkedList<>();
         if(LevelsPointsUtils.getLevel(context) < LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -1278,7 +1485,8 @@ public class BadgeUtils {
 
     public static void addHba1cBadge(Context context) {
         DB_Read db = new DB_Read(context);
-        LinkedList<BadgeRec> list = db.Badges_GetAll();
+//        LinkedList<BadgeRec> list = db.Badges_GetAll();
+        LinkedList<BadgeRec> list = db.getAllMedals("hba1c");
         int idUser = db.getId();
         boolean flagBronzeB = false;
         boolean flagSilverB = false;
@@ -1291,8 +1499,9 @@ public class BadgeUtils {
         boolean flagBronzeA = false;
         boolean flagSilverA = false;
         boolean flagGoldA = false;
+
         for (BadgeRec rec : list) {
-            if (rec.getName().equals("hba1c") && rec.getType().equals("beginner")) {
+            if (rec.getType().equals("beginner")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeB = true;
                 if(rec.getMedal().equals("silver"))
@@ -1301,7 +1510,7 @@ public class BadgeUtils {
                     flagGoldB = true;
             }
 
-            if (rec.getName().equals("hba1c") && rec.getType().equals("medium")) {
+            if (rec.getType().equals("medium")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeM = true;
                 if(rec.getMedal().equals("silver"))
@@ -1310,7 +1519,7 @@ public class BadgeUtils {
                     flagGoldM = true;
             }
 
-            if (rec.getName().equals("hba1c") && rec.getType().equals("advanced")) {
+            if (rec.getType().equals("advanced")) {
                 if(rec.getMedal().equals("bronze"))
                     flagBronzeA = true;
                 if(rec.getMedal().equals("silver"))
@@ -1319,6 +1528,35 @@ public class BadgeUtils {
                     flagGoldA = true;
             }
         }
+
+//        for (BadgeRec rec : list) {
+//            if (rec.getName().equals("hba1c") && rec.getType().equals("beginner")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeB = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverB = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldB = true;
+//            }
+//
+//            if (rec.getName().equals("hba1c") && rec.getType().equals("medium")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeM = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverM = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldM = true;
+//            }
+//
+//            if (rec.getName().equals("hba1c") && rec.getType().equals("advanced")) {
+//                if(rec.getMedal().equals("bronze"))
+//                    flagBronzeA = true;
+//                if(rec.getMedal().equals("silver"))
+//                    flagSilverA = true;
+//                if(rec.getMedal().equals("gold"))
+//                    flagGoldA = true;
+//            }
+//        }
 
         LinkedList<HbA1cRec> hba1cEntries = new LinkedList<>();
         if(LevelsPointsUtils.getLevel(context) < LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -1469,20 +1707,33 @@ public class BadgeUtils {
         int idSilver = 0;
         boolean flagGold = false;
         for (BadgeRec rec : list) {
-            if (rec.getType().equals("daily")) {
-                if(rec.getMedal().equals("bronze")){
-                    flagBronze = true;
-                    idBronze = rec.getId();
-                }
-                if(rec.getMedal().equals("silver")){
-                    flagSilver = true;
-                    idSilver = rec.getId();
-                }
-                if(rec.getMedal().equals("gold")){
-                    flagGold = true;
-                }
+            if(rec.getMedal().equals("bronze")){
+                flagBronze = true;
+                idBronze = rec.getId();
+            }
+            if(rec.getMedal().equals("silver")){
+                flagSilver = true;
+                idSilver = rec.getId();
+            }
+            if(rec.getMedal().equals("gold")){
+                flagGold = true;
             }
         }
+//        for (BadgeRec rec : list) {
+//            if (rec.getType().equals("daily")) {
+//                if(rec.getMedal().equals("bronze")){
+//                    flagBronze = true;
+//                    idBronze = rec.getId();
+//                }
+//                if(rec.getMedal().equals("silver")){
+//                    flagSilver = true;
+//                    idSilver = rec.getId();
+//                }
+//                if(rec.getMedal().equals("gold")){
+//                    flagGold = true;
+//                }
+//            }
+//        }
         LinkedList<ExerciseRec> exerciseList = db.getExerciceByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
         LinkedList<BloodPressureRec> bpList = db.getBloodPressureByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
         LinkedList<CholesterolRec> cholesterolList = db.getCholesterolByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
@@ -1535,7 +1786,5 @@ public class BadgeUtils {
             SimpleToast.info(context, context.getString(R.string.received_a_daily_medal), "{fa-trophy}");
         }
     }
-
-
 
 }

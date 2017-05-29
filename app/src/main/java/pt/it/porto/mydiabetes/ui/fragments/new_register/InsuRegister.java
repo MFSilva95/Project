@@ -94,7 +94,7 @@ public class InsuRegister extends LinearLayout {
     }
     public boolean validate(){
         try{
-            insuData.setInsulinUnits( Integer.parseInt(insulin_input.getEditText().getText().toString()));
+            insuData.setInsulinUnits( Float.parseFloat(insulin_input.getEditText().getText().toString()));
         }catch (Exception e){
             insulin_input.setError(getContext().getString(R.string.glicInputError));
             insulin_input.requestFocus();
