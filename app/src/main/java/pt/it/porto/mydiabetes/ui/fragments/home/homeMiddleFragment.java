@@ -136,23 +136,36 @@ public class homeMiddleFragment extends Fragment {
 		DB_Read db = new DB_Read(getContext());
 		String date = DateUtils.getFormattedDate(calendar);
 		long currentTime= System.currentTimeMillis();
-		if (db.getLogBookByDate(date).size() > 0) {
-			Log.e("getLogBookByDate.size", db.getLogBookByDate(date).size() + "");
-			CharSequence dateText = android.text.format.DateUtils.getRelativeTimeSpanString(getDateInMillis(date), currentTime, android.text.format.DateUtils.DAY_IN_MILLIS);
-			this.logBookList.add(new HomeElement(HomeElement.Type.HEADER, dateText.toString()));
-			this.logBookList.addAll(db.getLogBookByDate(date));
+		LinkedList<HomeElement> list;
+		if ((list = db.getLogBookFromStartDate(date)).size() > 0) {
+			CharSequence dateText = "";
+			for(HomeElement elem: list){
+
+				CharSequence newDateText = android.text.format.DateUtils.getRelativeTimeSpanString(getDateInMillis(elem.getFormattedDate()), currentTime, android.text.format.DateUtils.DAY_IN_MILLIS);
+				if(dateText.equals(newDateText)){
+					this.logBookList.add(elem);
+				}else{
+					dateText = newDateText;
+					this.logBookList.add(new HomeElement(HomeElement.Type.HEADER, dateText.toString()));
+					this.logBookList.add(elem);
+				}
+			}
 		}
 		db.close();
 	}
 
 	public void fillDays() {
+
 		Calendar calendar = Calendar.getInstance(); // this would default to now
-		int index = 0;
+		calendar.add(Calendar.DAY_OF_MONTH, -NUMBER_OF_DAYS);
+		dbRead(calendar);
+
+		/*int index = 0;
 		while (index != NUMBER_OF_DAYS) {
 			dbRead(calendar);
 			calendar.add(Calendar.DAY_OF_MONTH, -1);
 			index++;
-		}
+		}*/
 	}
 
 	private void setFabClickListeners() {
