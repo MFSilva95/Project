@@ -19,7 +19,7 @@
             android:layout_gravity="center_vertical"
             android:baselineAlignBottom="true"
             android:padding="24dp"
-            android:src="@drawable/logbook" />
+            android:src="@drawable/ic_notes" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/note_input_txt"

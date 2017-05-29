@@ -85,7 +85,7 @@
             android:layout_weight="1"
             android:background="?selectableItemBackground"
             android:drawablePadding="10dp"
-            android:drawableTop="@drawable/logbook"
+            android:drawableTop="@drawable/ic_notes"
             android:paddingBottom="8dp"
             android:paddingTop="12dp"
             android:text="@string/notes"/>
