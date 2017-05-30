@@ -69,7 +69,7 @@ public class CarbsRegister extends LinearLayout {
             carbs_input.requestFocus();
             return false;
         }
-        if(carbsData.getCarbsValue()>900 || carbsData.getCarbsValue()<=0){
+        if(carbsData.getCarbsValue()>900 || carbsData.getCarbsValue()<0){
             carbs_input.setError(getContext().getString(R.string.glicInputError));
             carbs_input.requestFocus();
             return false;

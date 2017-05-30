@@ -102,7 +102,7 @@ public class InsuRegister extends LinearLayout {
             insulin_input.requestFocus();
             return false;
         }
-        if(insuData.getInsulinUnits()>900 || insuData.getInsulinUnits()<=0){
+        if(insuData.getInsulinUnits()>900 || insuData.getInsulinUnits()<0){
             insulin_input.setError(getContext().getString(R.string.glicInputError));
             insulin_input.requestFocus();
             return false;

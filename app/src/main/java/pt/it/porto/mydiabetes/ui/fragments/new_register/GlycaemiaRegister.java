@@ -93,11 +93,11 @@ public class GlycaemiaRegister extends LinearLayout {
             glycaemia_input.requestFocus();
             return false;
         }
-        if(glycaemiaData.getBG_target()>900 || glycaemiaData.getBG_target()<30){
+        /*if(glycaemiaData.getBG_target()>900 || glycaemiaData.getBG_target()<30){
             glycaemia_obj_input.setError(getContext().getString(R.string.glicInputError));
             glycaemia_obj_input.requestFocus();
             return false;
-        }
+        }*/
         return true;
     }
 
