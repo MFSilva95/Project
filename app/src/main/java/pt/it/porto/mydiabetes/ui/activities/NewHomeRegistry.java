@@ -37,9 +37,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -56,8 +54,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
@@ -79,7 +75,6 @@ import pt.it.porto.mydiabetes.ui.fragments.new_register.GlycaemiaRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.InsuRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.NoteRegister;
 import pt.it.porto.mydiabetes.ui.listAdapters.StringSpinnerAdapter;
-import pt.it.porto.mydiabetes.ui.views.ExtendedEditText;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
@@ -87,7 +82,6 @@ import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 import static pt.it.porto.mydiabetes.utils.DateUtils.ISO8601_FORMAT_SECONDS;
-import static pt.it.porto.mydiabetes.utils.DateUtils.dateFormat;
 
 public class NewHomeRegistry extends AppCompatActivity{
 
@@ -389,6 +383,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         carbsRegister = new CarbsRegister(this, new NewHomeRegCallImpl());
         glycaemiaRegister = new GlycaemiaRegister(this, registerDate, new NewHomeRegCallImpl());
         noteRegister = new NoteRegister(this);
+        bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(false);
     }
     private void goBack(){
         carbsData = carbsRegister.save_read();
@@ -510,7 +505,6 @@ public class NewHomeRegistry extends AppCompatActivity{
         }
     }
     private void validateInfo_Save()throws Exception{
-
         spinner = (Spinner) findViewById(R.id.tag_spinner);
         String tag = null;
         if (spinner != null) {
@@ -520,15 +514,19 @@ public class NewHomeRegistry extends AppCompatActivity{
         DB_Read rdb = new DB_Read(this);
         int idUser = rdb.getId();
         int idTag = rdb.Tag_GetIdByName(tag);
-        rdb.close();
 
 
         DB_Write reg = new DB_Write(this);
 
         if(buttons.contains(NOTE)){
+            if(buttons.size()<=2){
+                noteRegister.setErrorMessage(getString(R.string.noteError));
+                throw new Exception("Just note no cry");
+            }
             noteData = noteRegister.save_read();
             if(noteData.getNote()!=null){
                 if(!noteData.getNote().equals("")){
+
                     if (buttonsUpdate.contains(NOTE)) {
                         reg.Note_Update(noteData);
                     } else {
@@ -624,11 +622,12 @@ public class NewHomeRegistry extends AppCompatActivity{
         if(buttons.size()==1 && buttons.contains(NOTE)){
             reg.Note_Delete(noteData.getId());
         }
-        reg.close();
-        BadgeUtils.addLogBadge(getBaseContext());
-        BadgeUtils.addDailyBadge(getBaseContext());
+        BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
+        BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
         LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log");
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
+        rdb.close();
+        reg.close();
     }
 
     private void insertNoteMenu(){
@@ -645,6 +644,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         glycaemiaRegister = new GlycaemiaRegister(this,registerDate, glycaemiaRegister.getCallBack());
         addContent(glycaemiaRegister);
         buttons.add(0, GLICAEMIA);
+        bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(true);
     }
     private void insertCarbsMenu(){
         /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
@@ -655,6 +655,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         carbsRegister = new CarbsRegister(this, carbsRegister.getCallBack());
         addContent(carbsRegister);
         buttons.add(0, CARBS);
+        bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(true);
     }
     private void insertInsulinMenu(){
         /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
@@ -665,6 +666,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         insuRegister = new InsuRegister(this, iRatio, cRatio);
         addContent(insuRegister);
         buttons.add(0, INSULIN);
+        bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(true);
     }
 
     private void setCarbsPressed(View v){
@@ -680,15 +682,17 @@ public class NewHomeRegistry extends AppCompatActivity{
         if(buttons.contains(GLICAEMIA) && !buttons.contains(INSULIN)){insertInsulinSuggestion(CARBS);}
     }
     private void setNotePressed(View v){
-        insertNoteMenu();
-        v.getAnimation();
-        v.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                bottomSheetViewgroup.findViewById(R.id.bs_notes).setPressed(true);
-            }
-        }, 100L);
-        hideBottomSheet();
+        if(buttons.size()>1){
+            insertNoteMenu();
+            v.getAnimation();
+            v.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    bottomSheetViewgroup.findViewById(R.id.bs_notes).setPressed(true);
+                }
+            }, 100L);
+            hideBottomSheet();
+        }
     }
     private void setGlicPressed(View v){
         insertGlicMenu();
@@ -731,7 +735,6 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         }
     }
-
     private void setupBottomSheet() {
 
         Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
@@ -1254,7 +1257,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void removeContent(LinearLayout view) {
         contentLayout.removeView(view);
         Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
-        if(buttonsUpdate.size()==0 && buttons.size()==0){
+        if(buttons.size()<=1){
             button.setEnabled(false);
         }
     }

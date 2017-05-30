@@ -24,6 +24,9 @@ public class NoteRegister extends LinearLayout {
         init();
     }
 
+    public void setErrorMessage(String errorMessage){
+        this.note_input.setError(errorMessage);
+    }
     private void init() {
         inflate(getContext(), R.layout.note_content_edit, this);
         this.note = new Note();

@@ -1203,6 +1203,13 @@ public class DB_WriteTest {
 		dbWrite.close();
 	}
 
+
+	@Test
+	public void testBadges() throws Exception {
+
+
+	}
+
 	@Test
 	public void testLogbook_Delete() throws Exception {
 

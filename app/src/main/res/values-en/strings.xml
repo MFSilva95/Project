@@ -11,7 +11,7 @@
     <string name="navLog">My Logbook</string>
     <string name="navPersonalTools">Personal options</string>
     <string name="navDiabetesTools">Diabetes options</string>
-
+    <string name="noteError">Please insert at least one record</string>
     <string name="Carbs">Carbs</string>
     <string name="Exercise">Exercise</string>
     <string name="Glycemia">Glycaemia</string>

@@ -1813,7 +1813,7 @@ public class DB_Read {
 				" AND Tag.Id = Reg_BloodGlucose.Id_Tag" +
 				" UNION " +
 				"SELECT Reg_Insulin.DateTime as datetime, Tag.Name as tag, -1 as carbs, -1 as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, -1 AS glycemia, -1 as glycemiaId" +
-				" FROM  Tag, Reg_Insulin, Reg_BloodGlucose, Insulin" +
+				" FROM  Tag, Reg_Insulin, Insulin" +
 				" WHERE " +
 				"Reg_Insulin.DateTime NOT IN (SELECT Reg_CarboHydrate.DateTime FROM Reg_CarboHydrate)" +
 				" AND Reg_Insulin.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
@@ -1821,6 +1821,15 @@ public class DB_Read {
 				")" +
 				"WHERE datetime >='" + startDate + "'" +
 				"ORDER BY datetime DESC;",null);
+
+//				" FROM  Tag, Reg_Insulin, Reg_BloodGlucose, Insulin" +
+//				" WHERE " +
+//				"Reg_Insulin.DateTime NOT IN (SELECT Reg_CarboHydrate.DateTime FROM Reg_CarboHydrate)" +
+//				" AND Reg_Insulin.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
+//				" AND Tag.Id = Reg_Insulin.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
+//				")" +
+//				"WHERE datetime >='" + startDate + "'" +
+//				"ORDER BY datetime DESC;",null);
 
 		LinkedList<HomeElement> logBookEntries = new LinkedList<HomeElement>();
 		if (cursor.getCount() > 0) {
@@ -1953,18 +1962,21 @@ public class DB_Read {
 
 	public LinkedList<BadgeRec> getAllMedals(String name) {
 		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
-		Cursor cursor = myDB.rawQuery("SELECT Type FROM Badges Where Name='"+name+"'ORDER BY DateTime DESC;", null);
+		Cursor cursor = myDB.rawQuery("SELECT Type, Medal FROM Badges Where Name='"+name+"'ORDER BY DateTime DESC;", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			BadgeRec tmp;
 			do {
 				tmp = new BadgeRec();
-				tmp.setId(cursor.getInt(0));
-				tmp.setIdUser(cursor.getInt(1));
-				tmp.setDateTime(cursor.getString(2));
-				tmp.setType(cursor.getString(3));
-				tmp.setName(cursor.getString(4));
-				tmp.setMedal(cursor.getString(5));
+				tmp.setType(cursor.getString(0));
+				tmp.setMedal(cursor.getString(1));
+//				tmp = new BadgeRec();
+//				tmp.setId(cursor.getInt(0));
+//				tmp.setIdUser(cursor.getInt(1));
+//				tmp.setDateTime(cursor.getString(2));
+//				tmp.setType(cursor.getString(3));
+//				tmp.setName(cursor.getString(4));
+//				tmp.setMedal(cursor.getString(5));
 				AllReads.add(tmp);
 				cursor.moveToNext();
 			} while (!cursor.isAfterLast());

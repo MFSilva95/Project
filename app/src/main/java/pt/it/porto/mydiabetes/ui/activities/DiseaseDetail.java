@@ -201,7 +201,7 @@ public class DiseaseDetail extends BaseActivity {
 		reg.DiseaseReg_Save(dis);
 
 		BadgeUtils.addDiseaseBadge(getBaseContext());
-		BadgeUtils.addDailyBadge(getBaseContext());
+		BadgeUtils.addDailyBadge(getBaseContext(), null, null);
 		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "disease");
 
 		reg.close();
