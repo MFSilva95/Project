@@ -65,23 +65,7 @@ public class GlycaemiaRegister extends LinearLayout {
         this.glycaemia_input = (TextInputLayout) findViewById(R.id.glycemia_txt);
         this.glycaemia_obj_input = (TextInputLayout) findViewById(R.id.glycemia_obj);
         setGlycemiaListeners();
-    }
-    public boolean canSave(){
-        try{
-            Integer.parseInt(glycaemia_input.getEditText().getText().toString());
-        }catch (Exception e){
-            glycaemia_input.setError(getContext().getString(R.string.glicInputError));
-            glycaemia_input.requestFocus();
-            return false;
-        }
-        try{
-            Integer.parseInt(glycaemia_obj_input.getEditText().getText().toString());
-        }catch (Exception e){
-            glycaemia_obj_input.setError(getContext().getString(R.string.glicInputError));
-            glycaemia_obj_input.requestFocus();
-            return false;
-        }
-        return true;
+        requestFocus();
     }
     public void fill_parameters(GlycemiaRec glyrec){
 

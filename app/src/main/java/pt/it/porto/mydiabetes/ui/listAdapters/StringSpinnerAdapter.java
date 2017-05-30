@@ -20,6 +20,14 @@ public class StringSpinnerAdapter extends BaseAdapter {
 		this.mItems = mItems;
 
 	}
+	public int getItemPosition(String elem){
+		for(int index=0;index<mItems.length;index++){
+			if(mItems[index].equals(elem)){
+				return index;
+			}
+		}
+		return -1;
+	}
 
 	@Override
 	public int getCount() {

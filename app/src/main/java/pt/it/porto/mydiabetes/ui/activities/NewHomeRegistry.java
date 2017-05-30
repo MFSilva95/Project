@@ -838,6 +838,12 @@ public class NewHomeRegistry extends AppCompatActivity{
         if (args.containsKey(ARG_BUTTONS_DELETE_LIST)) {
             this.delete_buttons = args.getStringArrayList(ARG_BUTTONS_DELETE_LIST);
         }
+        if(args.containsKey("tag")){
+            int index = ((StringSpinnerAdapter) spinner.getAdapter()).getItemPosition(args.getString("tag"));
+            if(index>=0){
+                spinner.setSelection(index);
+            }
+        }
 
         DB_Read db_read = new DB_Read(this);
         if(isUpdate){
@@ -991,8 +997,6 @@ public class NewHomeRegistry extends AppCompatActivity{
             hideKeyboard();
         }
     }
-
-
 
 
 

@@ -329,6 +329,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 Intent intent = new Intent(v.getContext(), NewHomeRegistry.class);
                 Bundle args = new Bundle();
                 HomeElement logbookDataBinding = ((ViewHolder) v.getTag()).item;
+                if(logbookDataBinding.getTag() != null){
+                    args.putString("tag",logbookDataBinding.getTag());
+                }
                 if (logbookDataBinding.getGlycemiaId() != -1) {
                     GlycemiaRec glycemiaRec = new GlycemiaRec();
                     glycemiaRec.setId(logbookDataBinding.getGlycemiaId());

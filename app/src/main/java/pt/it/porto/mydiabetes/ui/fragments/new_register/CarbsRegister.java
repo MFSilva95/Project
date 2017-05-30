@@ -53,8 +53,8 @@ public class CarbsRegister extends LinearLayout {
         inflate(getContext(), R.layout.meal_content_edit, this);
         this.carbs_input = (TextInputLayout) findViewById(R.id.meal_txt);
         this.image_button = (ImageButton) findViewById(R.id.iv_MealDetail_Photo);
-
         setMealListeners();
+        requestFocus();
     }
 
     public void requestCarbsFocus(){

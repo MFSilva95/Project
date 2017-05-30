@@ -45,6 +45,7 @@ public class InsuRegister extends LinearLayout {
     private int cRatio;
     private Spinner insu_spinner;
     private InsulinCalculator calc;
+    private TextWatcher insuWatcher;
 
 
 
@@ -109,7 +110,7 @@ public class InsuRegister extends LinearLayout {
         return true;
     }
     private TextWatcher getInsulinTW(){
-        TextWatcher ins = new TextWatcher() {
+        insuWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
             @Override
@@ -129,7 +130,7 @@ public class InsuRegister extends LinearLayout {
             @Override
             public void afterTextChanged(Editable editable) {}
         };
-        return ins;
+        return insuWatcher;
     }
     public void setIsManual(boolean bool){
         this.isManual = bool;
@@ -202,7 +203,7 @@ public class InsuRegister extends LinearLayout {
 
         insulin_input.setHintEnabled(true);
         TextView insuTxt = insulin_input.getEditText();
-        insuTxt.removeTextChangedListener(getInsulinTW());
+        insuTxt.removeTextChangedListener(insuWatcher);
         //insuTxt.requestFocus();
         insuTxt.setText(insulinUnits+"");
         insuTxt.addTextChangedListener(getInsulinTW());
