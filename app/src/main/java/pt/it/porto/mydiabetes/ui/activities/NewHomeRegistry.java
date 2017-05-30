@@ -696,6 +696,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         addContent(glycaemiaRegister);
         buttons.add(0, GLICAEMIA);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(true);
+        requestKeyboard(glycaemiaRegister);
     }
     private void insertCarbsMenu(){
         /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
@@ -707,8 +708,9 @@ public class NewHomeRegistry extends AppCompatActivity{
         addContent(carbsRegister);
         buttons.add(0, CARBS);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(true);
+        requestKeyboard(carbsRegister);
     }
-    private void insertInsulinMenu(){
+    private void insertInsulinMenu(boolean reqKey){
         /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
                     if(newAdvice!=null){
                         addContent(R.layout.dialog_exp_advice);
@@ -718,6 +720,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         addContent(insuRegister);
         buttons.add(0, INSULIN);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(true);
+        if(reqKey){requestKeyboard(insuRegister);}
     }
 
     private void setCarbsPressed(View v){
@@ -758,7 +761,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         if(buttons.contains(CARBS) && !buttons.contains(INSULIN)){insertInsulinSuggestion(GLICAEMIA);}
     }
     private void setInsuPressed(View v){
-        insertInsulinMenu();
+        insertInsulinMenu(true);
         v.getAnimation();
         v.postDelayed(new Runnable() {
             @Override
@@ -775,7 +778,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             if(buttonsUpdate.contains(INSULIN)){
                 delete_buttons.remove(INSULIN);
             }
-            insertInsulinMenu();
+            insertInsulinMenu(false);
             bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(true);
             hideBottomSheet();
             insuRegister.updateInsuCalc(insulinCalculator);
@@ -935,7 +938,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                     insulinData = db_read.InsulinReg_GetById(insulinData.getId());
                     if (insulinData != null) {
                         buttonsUpdate.add(INSULIN);
-                        insertInsulinMenu();
+                        insertInsulinMenu(false);
                         insuRegister.fill_parameters(insulinData);
 
                         setNoteId(insulinData.getIdNote());
@@ -1016,7 +1019,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                 insulinData = args.getParcelable(ARG_INSULIN);
                 if (insulinData != null) {
                     buttons.add(INSULIN);
-                    insertInsulinMenu();
+                    insertInsulinMenu(false);
                     insuRegister.fill_parameters(insulinData);
                     setNoteId(insulinData.getIdNote());
                     if(insulinData.getDateTime()!=null){
