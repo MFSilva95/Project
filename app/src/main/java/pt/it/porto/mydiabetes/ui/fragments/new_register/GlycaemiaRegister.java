@@ -44,6 +44,8 @@ public class GlycaemiaRegister extends LinearLayout {
     private GlycemiaRec glycaemiaData;
     private TextInputLayout glycaemia_obj_input;
     private Calendar registerDate;
+    private ImageButton plusButton;
+    private ArrayList<GlycemiaObjectivesData> objList;
 
     public NewHomeRegistry.NewHomeRegCallBack getCallBack() {
         return callBack;
@@ -64,6 +66,7 @@ public class GlycaemiaRegister extends LinearLayout {
         inflate(getContext(), R.layout.glycemia_content_edit, this);
         this.glycaemia_input = (TextInputLayout) findViewById(R.id.glycemia_txt);
         this.glycaemia_obj_input = (TextInputLayout) findViewById(R.id.glycemia_obj);
+        plusButton = (ImageButton) findViewById(R.id.insert_new_glic_objective);
         setGlycemiaListeners();
         requestFocus();
     }
@@ -127,38 +130,9 @@ public class GlycaemiaRegister extends LinearLayout {
         glycaemia_input.requestFocus();
     }
     public void setGlycemiaListeners(){
-        MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
-
         glycaemia_input.getEditText().addTextChangedListener(getGlicTW());
         glycaemia_obj_input.getEditText().addTextChangedListener(getGlicObjTW());
-        int objective;
-        ImageButton plusButton = (ImageButton) findViewById(R.id.insert_new_glic_objective);
-        try {
-            ArrayList<GlycemiaObjectivesData> objList = storage.getGlycemiaObjectives();
-            objective = GlicObjTimesOverlap(objList, DateUtils.getFormattedTime(registerDate));
-            //objective = storage.getGlycemiaObjectives(DateUtils.getFormattedTime(registerDate));
-            if(objective == -1){
-                plusButton.setVisibility(View.VISIBLE);
-                plusButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addGlycemiaObjective();
-                    }
-                });
-            }else{
-                insertGlicObjData(objective);
-                plusButton.setVisibility(View.INVISIBLE);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            plusButton.setVisibility(View.VISIBLE);
-            plusButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    addGlycemiaObjective();
-                }
-            });
-        }
+        updateObjective();
     }
 
     public int GlicObjTimesOverlap(ArrayList<GlycemiaObjectivesData> objs, String currentTime){
@@ -267,5 +241,38 @@ public class GlycaemiaRegister extends LinearLayout {
 
     public GlycemiaRec save_read(){
         return glycaemiaData;
+    }
+
+    public void updateObjective() {
+        if(objList==null){
+            MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
+            try {
+                objList = storage.getGlycemiaObjectives();
+            } catch (Exception e) {
+                e.printStackTrace();
+                plusButton.setVisibility(View.VISIBLE);
+                plusButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addGlycemiaObjective();
+                    }
+                });
+            }
+        }
+        int objective;
+        objective = GlicObjTimesOverlap(objList, DateUtils.getFormattedTime(registerDate));
+
+        if(objective == -1){
+            plusButton.setVisibility(View.VISIBLE);
+            plusButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addGlycemiaObjective();
+                }
+            });
+        }else{
+            insertGlicObjData(objective);
+            plusButton.setVisibility(View.INVISIBLE);
+        }
     }
 }

@@ -75,6 +75,7 @@ import pt.it.porto.mydiabetes.ui.fragments.new_register.GlycaemiaRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.InsuRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.NoteRegister;
 import pt.it.porto.mydiabetes.ui.listAdapters.StringSpinnerAdapter;
+import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
@@ -126,6 +127,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     private Toolbar toolbar;
     private FloatingActionButton fab;
     private Spinner spinner;
+    private ArrayList<Tag> t;
 
     int iRatio;
     int cRatio;
@@ -346,9 +348,8 @@ public class NewHomeRegistry extends AppCompatActivity{
         registerDate = Calendar.getInstance();
 
         DB_Read rdb = new DB_Read(this);
-        ArrayList<Tag> t = rdb.Tag_GetAll();
+        t = rdb.Tag_GetAll();
         String[] allTags = new String[t.size()];
-
         UserInfo obj = rdb.MyData_Read();
         iRatio = obj.getInsulinRatio();
         cRatio = obj.getCarbsRatio();
@@ -373,6 +374,8 @@ public class NewHomeRegistry extends AppCompatActivity{
         spinner = ((Spinner) findViewById(R.id.tag_spinner));
         spinner.setAdapter(new StringSpinnerAdapter(this, allTags));
 
+        updateTagSpinner();
+
         carbsData = new CarbsRec();
         glycemiaData = new GlycemiaRec();
         insulinData = new InsulinRec();
@@ -385,6 +388,54 @@ public class NewHomeRegistry extends AppCompatActivity{
         noteRegister = new NoteRegister(this);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(false);
     }
+
+    private void updateTagSpinner() {
+        Tag displayTag = getCurrentTag(t, registerDate);
+        if(displayTag!=null){
+            int index = ((StringSpinnerAdapter) spinner.getAdapter()).getItemPosition(displayTag.getName());
+            if(index>=0){
+                spinner.setSelection(index);
+            }
+        }
+    }
+
+    private Tag getCurrentTag(ArrayList<Tag> t, Calendar registerDate) {
+
+        String timeString[] = DateUtils.getFormattedTime(registerDate).split(":");
+        int currentTime = Integer.parseInt(timeString[0], 10) * 60 + Integer.parseInt(timeString[1]);
+
+        Tag otherCase = null;
+        for(Tag tag: t){
+            if(tag.getStart()!=null) {
+                String[] temp_start = tag.getStart().split(":");
+                String[] temp_end = tag.getEnd().split(":");
+                int startTagTime = Integer.parseInt(temp_start[0], 10) * 60 + Integer.parseInt(temp_start[1]);
+                int endTagTime = Integer.parseInt(temp_end[0], 10) * 60 + Integer.parseInt(temp_end[1]);
+                if (timeOverlaps(currentTime, startTagTime, endTagTime)) {
+                    return tag;
+                }
+            }else{
+                otherCase=tag;
+            }
+        }
+        return otherCase;
+    }
+
+    private boolean timeOverlaps(int t, int s0, int e0) {
+            if ( e0 < s0){
+                if(t < s0){
+                    t = t +1440;
+                }
+                e0 = e0 + 1440;
+            }
+
+            if(s0 < t && t < e0) {
+                return true;
+            }else{
+                return false;
+            }
+    }
+
     private void goBack(){
         carbsData = carbsRegister.save_read();
         insulinData = insuRegister.save_read();
@@ -1197,6 +1248,10 @@ public class NewHomeRegistry extends AppCompatActivity{
                     setTime(calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE),calendar.get(Calendar.MINUTE));
                     String timeString = DateUtils.getFormattedTime(registerDate);
                     registerTimeTextV.setText(timeString);
+                    updateTagSpinner();
+                    if(buttons.contains(GLICAEMIA)){
+                        glycaemiaRegister.updateObjective();
+                    }
                 }
             }
         });
