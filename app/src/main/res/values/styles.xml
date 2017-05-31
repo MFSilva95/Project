@@ -46,6 +46,7 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <item name="colorPrimary">@color/primary</item>
         <item name="background">@color/background</item>
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
     <style name="HomeTheme2" parent="HomeTheme">
@@ -54,6 +55,8 @@
     <!-- ToolBar -->
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:background">?colorPrimary</item>
+        <item name="android:windowActionModeOverlay">true</item>
+        <item name="windowActionModeOverlay">true</item>
     </style>
 
     <style name="ToolbarTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
