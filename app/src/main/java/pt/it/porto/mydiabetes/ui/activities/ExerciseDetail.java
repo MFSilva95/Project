@@ -233,7 +233,7 @@ public class ExerciseDetail extends BaseActivity {
 		reg.Exercise_Save(ex);
 
 		BadgeUtils.addExerciseBadge(getBaseContext());
-		BadgeUtils.addDailyBadge(getBaseContext(), null, null);
+		BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
 		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "exercise");
 
 		reg.close();
