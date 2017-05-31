@@ -84,6 +84,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         TextView ctag;
         TextView tag;
         TextView gtag;
+        RelativeLayout background;
         HomeElement item;
 
         public LinearLayout view;
@@ -101,6 +102,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 cvalue = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_value);
                 ctag = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_title);
                 tag = (TextView) view.findViewById(R.id.tv_list_logbookreg_tag);
+                background = (RelativeLayout) view.findViewById(R.id.logbookRecords);
 
 
                 view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -241,26 +243,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             @Override
             public boolean onLongClick(View v) {
 
-
                 HomeElement logbookDataBinding = ((ViewHolder) v.getTag()).item;
-
-                //RelativeLayout ViewH = (RelativeLayout) v.findViewById(R.id.logbookRecords);
                 if(logbookDataBinding.isPressed()){
                     Log.i("cenas", "onLongClick: NOT pressed");
                     logbookDataBinding.setPressed(false);
-                    //ViewH.setBackgroundColor(v.getContext().getResources().getColor(R.color.activity_blue));
-
-                    callBack.removeToDelete(logbookDataBinding);//args);
+                    callBack.removeToDelete(logbookDataBinding);
 
                 }else{
                     Log.i("cenas", "onLongClick: pressed");
                     logbookDataBinding.setPressed(true);
-                    //ViewH.setBackgroundColor(v.getContext().getResources().getColor(R.color.white_background));
-                    //.setBackgroundColor(0xFF00FF00);
-                    //.setPressed(false);123
-                    //v.setPressed(true);
-                    callBack.addToDelete(logbookDataBinding);//args);
+                    callBack.addToDelete(logbookDataBinding);
                 }
+                notifyDataSetChanged();
 
                 return true;
             }
@@ -268,41 +262,101 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         return onLongclick;
 
     }
+    private View.OnClickListener getLogItemClickListener(){
+        View.OnClickListener onclick;
+        onclick = new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                HomeElement logbookDataBinding = ((ViewHolder) v.getTag()).item;
+                if(callBack.isInDeleteMode()){
+                    if(logbookDataBinding.isPressed()){
+                        logbookDataBinding.setPressed(false);
+                        callBack.removeToDelete(logbookDataBinding);
 
+                    }else{
+                        logbookDataBinding.setPressed(true);
+                        callBack.addToDelete(logbookDataBinding);
+                    }
+                    notifyDataSetChanged();
 
-    /*public void remove(int position) {
-        //Log.i("HOME", "remove: POS:"+position);
-        int headerPos = -1;
-        HomeElement toBeRemoved = homeList.get(position);
-        homeList.remove(position);
-        notifyItemRemoved(position);
-
-        if(toBeRemoved.getDisplayType().equals(HomeElement.Type.ADVICE)){
-            nAdvices--;
-            if(nAdvices==0){
-                headerPos = homeList.indexOf(getHeader(c.getString(R.string.advices)));
-                homeList.remove(headerPos);
-                notifyItemRemoved(headerPos);
+                }else{
+                    Intent intent = new Intent(v.getContext(), NewHomeRegistry.class);
+                    Bundle args = new Bundle();
+                    if(logbookDataBinding.getTag() != null){
+                        args.putString("tag",logbookDataBinding.getTag());
+                    }
+                    if (logbookDataBinding.getGlycemiaId() != -1) {
+                        GlycemiaRec glycemiaRec = new GlycemiaRec();
+                        glycemiaRec.setId(logbookDataBinding.getGlycemiaId());
+                        args.putString("bg", String.valueOf(glycemiaRec.getId())); //bg id
+                        args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, glycemiaRec);
+                    }
+                    if (logbookDataBinding.getCarbsId() != -1) {
+                        CarbsRec carbs = new CarbsRec();
+                        carbs.setId(logbookDataBinding.getCarbsId());
+                        args.putString("ch", String.valueOf(carbs.getId())); //ch id
+                        args.putParcelable(DetailLogbookActivity.ARG_CARBS, carbs);
+                    }
+                    if (logbookDataBinding.getInsulinId() != -1) {
+                        InsulinRec insulin = new InsulinRec();
+                        insulin.setId(logbookDataBinding.getInsulinId());
+                        args.putString("ins", String.valueOf(insulin.getId())); //ins id
+                        args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);
+                    }
+                    intent.putExtras(args);
+                    callBack.updateHomeList(intent);
+                }
             }
+        };
+        return onclick;
+
+    }
+    private void setLogItemAppearence(ViewHolder holder, int position){
+
+        HomeElement currentView = homeList.get(position);
+
+        holder.item = currentView;
+        holder.hora.setText(currentView.getFormattedTime());
+        holder.tag.setText(currentView.getTag());
+        LinearLayout imageTitleHolder = (LinearLayout) holder.view.findViewById(R.id.imageTitleHolder);
+
+        holder.background.setBackgroundColor(!currentView.isPressed()?Color.TRANSPARENT:Color.LTGRAY);
+
+        //View sep = holder.view.findViewById(R.id.sep);
+        if(homeList.get(position-1).getDisplayType() == HomeElement.Type.HEADER && (position - 1) > -1){
+            imageTitleHolder.setVisibility(View.VISIBLE);
         }
-        if(toBeRemoved.getDisplayType().equals(HomeElement.Type.TASK)){
-            nTasks--;
-            if(nTasks==0){
-                headerPos = homeList.indexOf(getHeader(c.getString(R.string.tasks)));
-                homeList.remove(headerPos);
-                notifyItemRemoved(headerPos);
-            }
+        else{
+            imageTitleHolder.setVisibility(View.INVISIBLE);
+        }
+        if (currentView.getInsulinId() != -1) {
+            holder.insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", currentView.getInsulinVal()));
+            holder.insulinName.setText(currentView.getInsulinName());
+            holder.insulinValue.setVisibility(View.VISIBLE);
+            holder.insulinName.setVisibility(View.VISIBLE);
+        } else {
+            holder.insulinValue.setVisibility(View.INVISIBLE);
+            holder.insulinName.setVisibility(View.INVISIBLE);
+        }
+        if (currentView.getGlycemiaId() != -1) {
+            holder.gvalue.setText(String.valueOf(currentView.getGlycemia()));
+            holder.gvalue.setVisibility(View.VISIBLE);
+            holder.gtag.setVisibility(View.VISIBLE);
+        } else {
+            holder.gvalue.setVisibility(View.INVISIBLE);
+            holder.gtag.setVisibility(View.INVISIBLE);
+        }
+        if (currentView.getCarbsId() != -1) {
+            holder.cvalue.setText(String.valueOf(currentView.getCarbs()));
+            holder.cvalue.setVisibility(View.VISIBLE);
+            holder.ctag.setVisibility(View.VISIBLE);
+        } else {
+            holder.cvalue.setVisibility(View.INVISIBLE);
+            holder.ctag.setVisibility(View.INVISIBLE);
         }
     }
-    public HomeElement getHeader(String title){
-        for(HomeElement elem:homeList){
-            if(elem.getDisplayType().equals(HomeElement.Type.HEADER) && elem.getName().equals(title)){
-                return elem;
-            }
-        }
-        return null;
-    }*/
+
 
     private View.OnClickListener getAdviceClickListener(final Advice currentAdvice){
 
@@ -377,88 +431,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         return onclick;
 
     }
-    private View.OnClickListener getLogItemClickListener(){
-        View.OnClickListener onclick = new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                //Intent intent = new Intent(v.getContext(), DetailLogbookActivity.class);
-                Intent intent = new Intent(v.getContext(), NewHomeRegistry.class);
-                Bundle args = new Bundle();
-                HomeElement logbookDataBinding = ((ViewHolder) v.getTag()).item;
-                if(logbookDataBinding.getTag() != null){
-                    args.putString("tag",logbookDataBinding.getTag());
-                }
-                if (logbookDataBinding.getGlycemiaId() != -1) {
-                    GlycemiaRec glycemiaRec = new GlycemiaRec();
-                    glycemiaRec.setId(logbookDataBinding.getGlycemiaId());
-                    args.putString("bg", String.valueOf(glycemiaRec.getId())); //bg id
-                    args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, glycemiaRec);
-                }
-                if (logbookDataBinding.getCarbsId() != -1) {
-                    CarbsRec carbs = new CarbsRec();
-                    carbs.setId(logbookDataBinding.getCarbsId());
-                    args.putString("ch", String.valueOf(carbs.getId())); //ch id
-                    args.putParcelable(DetailLogbookActivity.ARG_CARBS, carbs);
-                }
-                if (logbookDataBinding.getInsulinId() != -1) {
-                    InsulinRec insulin = new InsulinRec();
-                    insulin.setId(logbookDataBinding.getInsulinId());
-                    args.putString("ins", String.valueOf(insulin.getId())); //ins id
-                    args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);
-                }
-                intent.putExtras(args);
-                callBack.updateHomeList(intent);
-                //v.getContext().startActivity(intent);
-            }
-        };
-        return onclick;
-
-    }
-    private void setLogItemAppearence(ViewHolder holder, int position){
-
-        HomeElement currentView = homeList.get(position);
-
-        holder.item = currentView;
-        holder.hora.setText(currentView.getFormattedTime());
-        holder.tag.setText(currentView.getTag());
-        LinearLayout imageTitleHolder = (LinearLayout) holder.view.findViewById(R.id.imageTitleHolder);
-
-        //View sep = holder.view.findViewById(R.id.sep);
-        if(homeList.get(position-1).getDisplayType() == HomeElement.Type.HEADER && (position - 1) > -1){
-            imageTitleHolder.setVisibility(View.VISIBLE);
-        }
-        else{
-            imageTitleHolder.setVisibility(View.INVISIBLE);
-        }
-        if (currentView.getInsulinId() != -1) {
-            holder.insulinValue.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.1f", currentView.getInsulinVal()));
-            holder.insulinName.setText(currentView.getInsulinName());
-            holder.insulinValue.setVisibility(View.VISIBLE);
-            holder.insulinName.setVisibility(View.VISIBLE);
-        } else {
-            holder.insulinValue.setVisibility(View.INVISIBLE);
-            holder.insulinName.setVisibility(View.INVISIBLE);
-        }
-        if (currentView.getGlycemiaId() != -1) {
-            holder.gvalue.setText(String.valueOf(currentView.getGlycemia()));
-            holder.gvalue.setVisibility(View.VISIBLE);
-            holder.gtag.setVisibility(View.VISIBLE);
-        } else {
-            holder.gvalue.setVisibility(View.INVISIBLE);
-            holder.gtag.setVisibility(View.INVISIBLE);
-        }
-        if (currentView.getCarbsId() != -1) {
-            holder.cvalue.setText(String.valueOf(currentView.getCarbs()));
-            holder.cvalue.setVisibility(View.VISIBLE);
-            holder.ctag.setVisibility(View.VISIBLE);
-        } else {
-            holder.cvalue.setVisibility(View.INVISIBLE);
-            holder.ctag.setVisibility(View.INVISIBLE);
-        }
-    }
-
-
     @Override
     public int getItemCount() {
         return homeList.size();
