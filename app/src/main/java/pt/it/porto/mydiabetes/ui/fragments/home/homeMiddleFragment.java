@@ -150,6 +150,7 @@ public class homeMiddleFragment extends Fragment {
         //fillAdviceList();
         fillDays();
         if (logBookList.size() == 0) {
+        //if (hasNoLogElements(logBookList)) {
             listEmpty.setVisibility(View.VISIBLE);
             listEmpty.bringToFront();
         } else {
@@ -168,6 +169,7 @@ public class homeMiddleFragment extends Fragment {
         //fillAdviceList();
         fillDays();
         if (logBookList.size() == 0) {
+        //if (hasNoLogElements(logBookList)) {
             listEmpty.setVisibility(View.VISIBLE);
             listEmpty.bringToFront();
         } else {
@@ -385,8 +387,9 @@ public class homeMiddleFragment extends Fragment {
                             }
                             reg.close();
                             db_read.close();
-                            Log.i(TAG, "onClick: cenas -> " + logBookList.size());
-                            if (logBookList.size() == 0) {
+//                            Log.i(TAG, "onClick: cenas -> " + logBookList.size());
+                            if (hasNoLogElements(logBookList)) {
+                                logBookList = new ArrayList<HomeElement>();
                                 listEmpty.setVisibility(View.VISIBLE);
                                 listEmpty.bringToFront();
                             } else {
@@ -411,20 +414,14 @@ public class homeMiddleFragment extends Fragment {
                 }).show();
     }
 
-
-//								if (bundle.containsKey(ARG_CARBS)) {
-//									carbsData = bundle.getParcelable(ARG_CARBS);
-//									if(carbsData!=null){setNoteId( carbsData.getIdNote() ); reg.Carbs_Delete(carbsData.getId());}
-//								}
-//								if (bundle.containsKey(ARG_BLOOD_GLUCOSE)) {
-//									glycemiaData = bundle.getParcelable(ARG_BLOOD_GLUCOSE);
-//									if(glycemiaData!=null){setNoteId( glycemiaData.getIdNote() ); reg.Glycemia_Delete(glycemiaData.getId());}
-//								}
-//								if (bundle.containsKey(ARG_INSULIN)) {
-//									insulinData = bundle.getParcelable(ARG_INSULIN);
-//									if(insulinData!=null){setNoteId( insulinData.getIdNote() ); reg.Insulin_Delete(insulinData.getId());}
-//								}
-//								if(noteId != -1){reg.Note_Delete(noteId);}
+    private boolean hasNoLogElements(List<HomeElement> logBookList) {
+        for(HomeElement elem:logBookList){
+            if(elem.getDisplayType().equals(HomeElement.Type.LOGITEM.toString())){
+                return false;
+            }
+        }
+        return true;
+    }
 
 
     private void setNoteId(int noteId) {
@@ -434,11 +431,7 @@ public class homeMiddleFragment extends Fragment {
     }
 
     private void setDeleteMode(boolean bool) {
-		/*if(bool){
-			setHasOptionsMenu(true);
-		}else{
-			setHasOptionsMenu(false);
-		}*/
+
         deleteMode = bool;
         if (bool) {
             if(actionMode == null){
@@ -451,12 +444,6 @@ public class homeMiddleFragment extends Fragment {
                 toDeleteList.get(i).setPressed(false);
             }
             toDeleteList.clear();
-            if (logBookList.size() == 0) {
-                listEmpty.setVisibility(View.VISIBLE);
-                listEmpty.bringToFront();
-            } else {
-                listEmpty.setVisibility(View.GONE);
-            }
             ((HomeAdapter) homeRecyclerView.getAdapter()).updateList(logBookList);
             homeRecyclerView.getAdapter().notifyDataSetChanged();
 
