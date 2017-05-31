@@ -24,7 +24,14 @@ public class HomeElement {
     private int carbsId;
     private int insulinId;
     private int glycemiaId;
+    private boolean isPressed = false;
 
+    public boolean isPressed(){
+        return isPressed;
+    }
+    public void setPressed(boolean pressed){
+        isPressed = pressed;
+    }
 
     public HomeElement(Type type){
         this.displayType = type;

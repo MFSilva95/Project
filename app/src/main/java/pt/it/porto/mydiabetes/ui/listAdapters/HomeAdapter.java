@@ -12,6 +12,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -48,6 +51,24 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private static int indexSelected;
     private homeMiddleFragment.MiddleFragRegCallBackImpl callBack;
 
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        Bundle args = getIntent().getExtras();
+//        if (args != null) {
+//            inflater.inflate(R.menu.weight_detail_delete, menu);
+//        }
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.menuItem_WeightDetail_Delete:
+//                deleteRegister();
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     public HomeElement getFromHomeList(int index) {
         return homeList.get(index);
@@ -195,6 +216,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 v = holder.view;
                 setLogItemAppearence(holder, position);
                 v.setOnClickListener(getLogItemClickListener());
+                v.setOnLongClickListener(getLogItemLongClickListener());
                 break;
             case SPACE:
                 break;
@@ -210,6 +232,41 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 holder.view.setOnClickListener(getTaskClickListener(currentTask));
                 break;
         }
+    }
+
+    private View.OnLongClickListener getLogItemLongClickListener() {
+
+        View.OnLongClickListener onLongclick = new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View v) {
+
+
+                HomeElement logbookDataBinding = ((ViewHolder) v.getTag()).item;
+
+                //RelativeLayout ViewH = (RelativeLayout) v.findViewById(R.id.logbookRecords);
+                if(logbookDataBinding.isPressed()){
+                    Log.i("cenas", "onLongClick: NOT pressed");
+                    logbookDataBinding.setPressed(false);
+                    //ViewH.setBackgroundColor(v.getContext().getResources().getColor(R.color.activity_blue));
+
+                    callBack.removeToDelete(logbookDataBinding);//args);
+
+                }else{
+                    Log.i("cenas", "onLongClick: pressed");
+                    logbookDataBinding.setPressed(true);
+                    //ViewH.setBackgroundColor(v.getContext().getResources().getColor(R.color.white_background));
+                    //.setBackgroundColor(0xFF00FF00);
+                    //.setPressed(false);123
+                    //v.setPressed(true);
+                    callBack.addToDelete(logbookDataBinding);//args);
+                }
+
+                return true;
+            }
+        };
+        return onLongclick;
+
     }
 
 
@@ -366,6 +423,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.hora.setText(currentView.getFormattedTime());
         holder.tag.setText(currentView.getTag());
         LinearLayout imageTitleHolder = (LinearLayout) holder.view.findViewById(R.id.imageTitleHolder);
+
         //View sep = holder.view.findViewById(R.id.sep);
         if(homeList.get(position-1).getDisplayType() == HomeElement.Type.HEADER && (position - 1) > -1){
             imageTitleHolder.setVisibility(View.VISIBLE);

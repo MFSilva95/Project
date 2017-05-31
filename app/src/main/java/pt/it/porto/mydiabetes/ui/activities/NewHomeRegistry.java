@@ -163,25 +163,24 @@ public class NewHomeRegistry extends AppCompatActivity{
     private boolean sentToSettings = false;
     private SharedPreferences permissionStatus;
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        Bundle args = getIntent().getExtras();
-        if (args != null) {
-            inflater.inflate(R.menu.weight_detail_delete, menu);
-        }
-        return super.onCreateOptionsMenu(menu);
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menuItem_WeightDetail_Delete:
-                deleteRegister();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        Bundle args = getIntent().getExtras();
+//        if (args != null) {
+//            inflater.inflate(R.menu.weight_detail_delete, menu);
+//        }
+//        return super.onCreateOptionsMenu(menu);
+//    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.menuItem_WeightDetail_Delete:
+//                deleteRegister();
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
     @Override
     public void finishAfterTransition() {
         contentLayout.setAlpha(0);

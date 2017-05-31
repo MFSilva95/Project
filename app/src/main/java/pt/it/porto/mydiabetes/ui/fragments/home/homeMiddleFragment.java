@@ -1,12 +1,15 @@
 package pt.it.porto.mydiabetes.ui.fragments.home;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
@@ -17,9 +20,13 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -34,8 +41,14 @@ import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.data.Advice;
+import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.InsulinRec;
+import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Task;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.ui.activities.TargetBG_detail;
@@ -58,12 +71,38 @@ public class homeMiddleFragment extends Fragment {
 	//private ItemTouchHelper helper = null;
 	private FloatingActionButton fab;
     private View listEmpty;
+	private int noteId;
+	public static final String ARG_CARBS = "ARG_CARBS";
+	public static final String ARG_INSULIN = "ARG_INSULIN";
+	public static final String ARG_BLOOD_GLUCOSE = "ARG_BLOOD_GLUCOSE";
+	public static final String ARG_NOTE = "ARG_NOTE";
+
+	private boolean deleteMode;
 
     private ArrayList<Task> taskListFromYap = new ArrayList<>();
     private ArrayList<Advice> receiverAdviceList = new ArrayList<>();
+	private ArrayList<HomeElement> toDeleteList = new ArrayList<>();
 
 	private RecyclerView homeRecyclerView;
 	private List<HomeElement> logBookList;
+
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		//if(deleteMode){
+			inflater.inflate(R.menu.weight_detail_delete, menu);
+		//}
+		super.onCreateOptionsMenu(menu, inflater);
+	}
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menuItem_WeightDetail_Delete:
+                deleteRegister();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 	public static homeMiddleFragment newInstance() {
 		homeMiddleFragment fragment = new homeMiddleFragment();
@@ -73,6 +112,8 @@ public class homeMiddleFragment extends Fragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		deleteMode = false;
+		setHasOptionsMenu(true);
 		super.onCreate(savedInstanceState);
 	}
 	@Override
@@ -253,6 +294,8 @@ public class homeMiddleFragment extends Fragment {
 	}
 	public interface MiddleFragRegCallBack{
 		void updateHomeList(Intent intent);
+		void addToDelete(HomeElement args);
+		void removeToDelete(HomeElement args);
 	}
 	public class MiddleFragRegCallBackImpl implements MiddleFragRegCallBack {
 
@@ -261,5 +304,115 @@ public class homeMiddleFragment extends Fragment {
 			//startActivity(intent);
 			startActivityForResult(intent, WAIT_REGISTER);
 		}
+
+		@Override
+		public void addToDelete(HomeElement elem) {
+			setDeleteMode(true);
+			toDeleteList.add(elem);
+			Log.i(TAG, "addToDelete: SIZE NOW:"+toDeleteList.size());
+		}
+
+		@Override
+		public void removeToDelete(HomeElement elem) {
+			toDeleteList.remove(elem);
+			if(toDeleteList.size()==0){
+				setDeleteMode(false);
+			}
+		}
 	}
+	private void deleteRegister(){
+		final Context c = getContext();
+		new AlertDialog.Builder(c)
+				.setTitle(getString(R.string.deleteReading))
+				.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						//Falta verificar se não está associada a nenhuma entrada da DB
+						//Rever porque não elimina o registo de glicemia
+
+						//DB_Write reg = new DB_Write(c);
+						DB_Read db_read = new DB_Read(c);
+						DB_Write reg = new DB_Write(c);
+						try {
+							Log.i(TAG, "onClick: deleteSIZE:"+toDeleteList.size());
+							for(HomeElement elem:toDeleteList){
+								int glyID;
+								int carbsID;
+								int insuID;
+
+								if(( glyID = elem.getGlycemiaId()) != -1){glycemiaData = db_read.Glycemia_GetById(glyID);setNoteId(glycemiaData.getIdNote());reg.Glycemia_Delete(glyID);}//}
+								if(( carbsID = elem.getCarbsId()) != -1){carbsData = db_read.CarboHydrate_GetById(carbsID);setNoteId(carbsData.getIdNote());reg.Carbs_Delete(carbsID);}//}
+								if(( insuID = elem.getInsulinId()) != -1){insulinData = db_read.InsulinReg_GetById(insuID);setNoteId(insulinData.getIdNote());reg.Insulin_Delete(insuID);}//}
+								if((noteId != -1)){reg.Note_Delete(noteId);}
+								logBookList.remove(elem);
+							}
+							reg.close();
+							db_read.close();
+							Log.i(TAG, "onClick: cenas -> "+logBookList.size());
+							if (logBookList.size() == 0) {
+								listEmpty.setVisibility(View.VISIBLE);
+								listEmpty.bringToFront();
+							} else {
+								listEmpty.setVisibility(View.GONE);
+							}
+							((HomeAdapter) homeRecyclerView.getAdapter()).updateList(logBookList);
+							homeRecyclerView.getAdapter().notifyDataSetChanged();
+							toDeleteList.clear();
+						} catch (Exception e) {
+							e.printStackTrace();
+							Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
+						}
+						//reg.close();
+						//finish();
+					}
+				})
+				.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						// Do nothing.
+					}
+				}).show();
+	}
+
+
+
+//								if (bundle.containsKey(ARG_CARBS)) {
+//									carbsData = bundle.getParcelable(ARG_CARBS);
+//									if(carbsData!=null){setNoteId( carbsData.getIdNote() ); reg.Carbs_Delete(carbsData.getId());}
+//								}
+//								if (bundle.containsKey(ARG_BLOOD_GLUCOSE)) {
+//									glycemiaData = bundle.getParcelable(ARG_BLOOD_GLUCOSE);
+//									if(glycemiaData!=null){setNoteId( glycemiaData.getIdNote() ); reg.Glycemia_Delete(glycemiaData.getId());}
+//								}
+//								if (bundle.containsKey(ARG_INSULIN)) {
+//									insulinData = bundle.getParcelable(ARG_INSULIN);
+//									if(insulinData!=null){setNoteId( insulinData.getIdNote() ); reg.Insulin_Delete(insulinData.getId());}
+//								}
+//								if(noteId != -1){reg.Note_Delete(noteId);}
+
+
+
+
+	private void setNoteId(int noteId){
+		if(noteId!=-1){
+			this.noteId = noteId;
+		}
+	}
+	private void setDeleteMode(boolean bool){
+		/*if(bool){
+			setHasOptionsMenu(true);
+		}else{
+			setHasOptionsMenu(false);
+		}*/
+		deleteMode = bool;
+	}
+
+
+	@Nullable
+	private GlycemiaRec glycemiaData;
+	@Nullable
+	private CarbsRec carbsData;
+	@Nullable
+	private InsulinRec insulinData;
+	@Nullable
+	private Note noteData;
+
 }
