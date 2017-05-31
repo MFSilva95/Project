@@ -33,6 +33,11 @@ public class CarbsRegister extends LinearLayout {
     private TextInputLayout carbs_input;
     private ImageButton image_button;
     private CarbsRec carbsData;
+
+    public Uri getImgUri() {
+        return imgUri;
+    }
+
     private Uri imgUri;
     private Bitmap b;
 
@@ -81,7 +86,7 @@ public class CarbsRegister extends LinearLayout {
         carbsData = carbData;
         carbs_input.getEditText().setText(""+carbsData.getCarbsValue());
         if(carbsData.getPhotoPath()!= null){
-            imgUri = Uri.parse(carbData.getPhotoPath());
+            imgUri = Uri.parse(carbsData.getPhotoPath());
         }
         ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
         if (imgUri == null) {

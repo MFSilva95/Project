@@ -601,6 +601,10 @@ public class NewHomeRegistry extends AppCompatActivity{
                         }else{
                             carbsData.setIdNote(-1);
                         }
+                        Uri imgpath = carbsRegister.getImgUri();
+                        if(imgpath!=null){
+                            carbsData.setPhotoPath(imgpath.toString());
+                        }
                         if (buttonsUpdate.contains(CARBS) && !delete_buttons.contains(CARBS)) {
                             reg.Carbs_Update(carbsData);
                         } else {

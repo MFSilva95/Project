@@ -359,18 +359,24 @@ public class homeMiddleFragment extends Fragment {
 
                                 if ((glyID = elem.getGlycemiaId()) != -1) {
                                     glycemiaData = db_read.Glycemia_GetById(glyID);
-                                    setNoteId(glycemiaData.getIdNote());
-                                    reg.Glycemia_Delete(glyID);
+                                    if(glycemiaData!=null){
+                                        setNoteId(glycemiaData.getIdNote());
+                                        reg.Glycemia_Delete(glyID);
+                                    }
                                 }//}
                                 if ((carbsID = elem.getCarbsId()) != -1) {
                                     carbsData = db_read.CarboHydrate_GetById(carbsID);
-                                    setNoteId(carbsData.getIdNote());
-                                    reg.Carbs_Delete(carbsID);
+                                    if(carbsData!=null){
+                                        setNoteId(carbsData.getIdNote());
+                                        reg.Carbs_Delete(carbsID);
+                                    }
                                 }//}
                                 if ((insuID = elem.getInsulinId()) != -1) {
                                     insulinData = db_read.InsulinReg_GetById(insuID);
-                                    setNoteId(insulinData.getIdNote());
-                                    reg.Insulin_Delete(insuID);
+                                    if(insulinData!=null){
+                                        setNoteId(insulinData.getIdNote());
+                                        reg.Insulin_Delete(insuID);
+                                    }
                                 }//}
                                 if ((noteId != -1)) {
                                     reg.Note_Delete(noteId);
