@@ -307,15 +307,15 @@ public class homeRightFragment extends Fragment  {
         mCircleView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ImagePickerActivity.class);
-
-                intent.putExtra(ImagePicker.EXTRA_FOLDER_MODE, true);
-                intent.putExtra(ImagePicker.EXTRA_MODE, ImagePicker.MODE_SINGLE);
-                intent.putExtra(ImagePicker.EXTRA_SHOW_CAMERA, true);
-                intent.putExtra(ImagePicker.EXTRA_SELECTED_IMAGES, images);
-                intent.putExtra(ImagePicker.EXTRA_FOLDER_TITLE, "Album");
-                intent.putExtra(ImagePicker.EXTRA_IMAGE_TITLE, "Tap to select images");
-                intent.putExtra(ImagePicker.EXTRA_IMAGE_DIRECTORY, "Camera");
+                Intent intent=ImagePicker.create(homeRightFragment.this)
+                        .returnAfterFirst(true)
+                        .folderMode(true)
+                        .showCamera(true)
+                        .limit(1)
+                        .folderTitle("Album")
+                        .imageTitle("Tap to select images")
+                        .imageDirectory("Camera")
+                        .getIntent(homeRightFragment.this.getContext());
 
                 startActivityForResult(intent, RC_CODE_PICKER);
             }
