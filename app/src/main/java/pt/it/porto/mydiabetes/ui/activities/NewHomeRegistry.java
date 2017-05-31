@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -1067,11 +1068,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                     e.printStackTrace();
                 }
             } else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.CAMERA)) {
-                    ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
-                } else {
-                    Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
-                }
+                Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -1089,31 +1086,46 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,
+
+                if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+                    Uri photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,
                             BuildConfig.APPLICATION_ID + ".provider",
                             photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                }else{
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                }
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
         }
     }
+
     private File createImageFile() throws IOException {
-        // Create an image file name
+
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
-        if (!dir.exists()) {
-            if (dir.mkdir()) {
-                // unable to create directory
-                // todo report and recover
+        File image;
+        if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+            // Create an image file name
+
+            File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
+            if (!dir.exists()) {
+                if (dir.mkdir()) {
+                    // unable to create directory
+                    // todo report and recover
+                }
             }
+            image = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    dir      /* directory */
+            );
+            mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        }else{
+            //File file = new File(Environment.getExternalStorageDirectory()+ "/MyDiabetes", new Date().getTime() + ".jpg");
+            image  = new File(Environment.getExternalStorageDirectory()+"/MyDiabetes", imageFileName+".jpg");
+            mCurrentPhotoPath = image.getAbsolutePath();
         }
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                dir      /* directory */
-        );
-        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         return image;
     }
 
@@ -1148,7 +1160,6 @@ public class NewHomeRegistry extends AppCompatActivity{
 
 
             } else {
-                //You already have the permission, just go ahead.
                 try {
                     dispatchTakePictureIntent();
                 } catch (IOException e) {
@@ -1185,13 +1196,6 @@ public class NewHomeRegistry extends AppCompatActivity{
                 startActivityForResult(intent, IMAGE_VIEW);
             }else {
                 checkPermissions();
-                /*try {
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, thisImgUri);
-                    startActivityForResult(intent, REQUEST_TAKE_PHOTO);//IMAGE_CAPTURE);
-                } catch (Exception e) {
-                    //error label -> permition denied
-                }*/
             }
         }
 
@@ -1289,13 +1293,8 @@ public class NewHomeRegistry extends AppCompatActivity{
         displayTime.append(registerDate.get(Calendar.MINUTE));
         registerTimeTextV.setText(displayTime);
     }
-    private void addContent(int layout) {
-        contentLayout.addView(LayoutInflater.from(this).inflate(layout, contentLayout, false), 0);//contentLayout.getChildCount() - 1);
-        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
-        button.setEnabled(true);
-    }
     private void addContent(LinearLayout view) {
-        contentLayout.addView(view, 0);//contentLayout.getChildCount() - 1);
+        contentLayout.addView(view, contentLayout.getChildCount() - 1);//contentLayout.getChildCount() - 1);
         Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
         button.setEnabled(true);
     }
@@ -1309,11 +1308,4 @@ public class NewHomeRegistry extends AppCompatActivity{
             button.setEnabled(false);
         }
     }
-    //    private void removeContent(int child) {
-//        contentLayout.removeViewAt(child);
-//        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
-//        if(buttonsUpdate.size()==0 && buttons.size()==0){
-//            button.setEnabled(false);
-//        }
-//    }
 }
