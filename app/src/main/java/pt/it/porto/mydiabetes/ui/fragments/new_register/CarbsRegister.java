@@ -131,6 +131,8 @@ public class CarbsRegister extends LinearLayout {
         this.imgUri = u;
         if(u==null) {
             image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
+        } else {
+            carbsData.setPhotoPath(imgUri.getPath());
         }
     }
     private TextWatcher getCarbsTW(){
@@ -189,5 +191,17 @@ public class CarbsRegister extends LinearLayout {
 
     public int getCarbs() {
         return carbsData.getCarbsValue();
+    }
+
+    public void setImage(Uri imageUri, Activity activity){
+        this.imgUri=imageUri;
+        if (imgUri != null) {
+            DisplayMetrics displaymetrics = new DisplayMetrics();
+            activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+            int height = (int) (displaymetrics.heightPixels * 0.1);
+            int width = (int) (displaymetrics.widthPixels * 0.1);
+            b = ImageUtils.decodeSampledBitmapFromPath(imageUri.getPath(), width, height);
+            image_button.setImageBitmap(b);
+        }
     }
 }

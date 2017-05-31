@@ -186,15 +186,9 @@ public class NewHomeRegistry extends AppCompatActivity{
                 }
             }
         }
-        ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             setImgURI(Uri.parse(mCurrentPhotoPath));
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-            int height = (int) (displaymetrics.heightPixels * 0.1);
-            int width = (int) (displaymetrics.widthPixels * 0.1);
-            b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
-            imageView.setImageBitmap(b);
+            carbsRegister.setImage(imgUri, this);
         } else if (requestCode == IMAGE_VIEW) {
             //se tivermos apagado a foto dá result code -1
             //se voltarmos por um return por exemplo o resultcode é 0
@@ -256,6 +250,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             if(carbsData.getCarbsValue()!=0){
                 outState.putParcelable(ARG_CARBS, carbsData);
             }
+
         }
         if(noteRegister != null){
             noteData = noteRegister.save_read();
@@ -900,6 +895,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                         carbsRegister.fill_parameters(carbsData);
                         String imgPath = carbsData.getPhotoPath();
                         if(imgPath!=null){imgUri = Uri.parse(imgPath);}
+                        carbsRegister.setImage(imgUri, this);
 
                         setNoteId(carbsData.getIdNote());
                         registerDate = carbsData.getDateTime();
@@ -980,9 +976,10 @@ public class NewHomeRegistry extends AppCompatActivity{
                     buttons.add(CARBS);
                     insertCarbsMenu();
 
-                    carbsRegister.fill_parameters(carbsData);
                     String imgPath = carbsData.getPhotoPath();
                     if(imgPath!=null){imgUri = Uri.parse(imgPath);}
+                    carbsRegister.fill_parameters(carbsData);
+                    carbsRegister.setImage(imgUri, this);
 
                     setNoteId(carbsData.getIdNote());
                     if(carbsData.getDateTime()!=null){
