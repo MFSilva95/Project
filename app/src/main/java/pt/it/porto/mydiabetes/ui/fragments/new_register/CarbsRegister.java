@@ -92,12 +92,12 @@ public class CarbsRegister extends LinearLayout {
         if (imgUri == null) {
             imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
         } else {
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            //getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-            int height = (int) (displaymetrics.heightPixels * 0.1);
-            int width = (int) (displaymetrics.widthPixels * 0.1);
-            b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
-            imageView.setImageBitmap(b);
+//            DisplayMetrics displaymetrics = new DisplayMetrics();
+//            //getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+//            int height = (int) (displaymetrics.heightPixels * 0.1);
+//            int width = (int) (displaymetrics.widthPixels * 0.1);
+//            b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+//            imageView.setImageBitmap(b);
         }
         //image_button.
     }

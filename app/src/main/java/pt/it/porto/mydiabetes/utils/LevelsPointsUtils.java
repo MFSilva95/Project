@@ -33,10 +33,10 @@ public class LevelsPointsUtils {
             202000, 210000, 220000, 230000
     };
 
-    public static int getLevel(Context context){
-        DB_Read db = new DB_Read(context);
+    public static int getLevel(Context context, DB_Read db){
+        //DB_Read db = new DB_Read(context);
         int userPoints = db.getTotalPoints();
-        db.close();
+        //db.close();
 
         int index;
         for(index=1 ; index<levels.length; index++){
@@ -51,12 +51,12 @@ public class LevelsPointsUtils {
         return levels[level-1];
     }
 
-    public static int getPercentageLevels(Context context){
-        DB_Read db = new DB_Read(context);
+    public static int getPercentageLevels(Context context, DB_Read db){
+        //DB_Read db = new DB_Read(context);
         int userPoints = db.getTotalPoints();
-        db.close();
+        //db.close();
         int percent = 0;
-        int index = getLevel(context);
+        int index = getLevel(context, db);
         if(index != levels.length){
             int max = levels[index] - levels[index-1];
             userPoints = userPoints - levels[index-1];
@@ -70,8 +70,8 @@ public class LevelsPointsUtils {
     }
 
 
-    public static int getPointsNextLevel(Context context){
-        int index = getLevel(context);
+    public static int getPointsNextLevel(Context context, DB_Read db){
+        int index = getLevel(context,db);
         if (index != levels.length) {
             return levels[index];
         }
@@ -88,12 +88,12 @@ public class LevelsPointsUtils {
     //public static int STREAK_NUMBER = 1;
     //public static final int REMOVE_POINTS = -50;
 
-    public static void addPoints(Context context, int points, String origin) {
-        DB_Read db = new DB_Read(context);
+    public static void addPoints(Context context, int points, String origin, DB_Read db) {
+        //DB_Read db = new DB_Read(context);
         int idUser = db.getId();
         int userPoints = db.getTotalPoints();
-        db.close();
-        int index = getLevel(context);
+        //db.close();
+        int index = getLevel(context, db);
 
 
         if((userPoints + points) >= levels[index-1]){

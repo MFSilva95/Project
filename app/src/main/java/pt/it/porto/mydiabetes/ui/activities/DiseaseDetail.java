@@ -202,7 +202,7 @@ public class DiseaseDetail extends BaseActivity {
 
 		BadgeUtils.addDiseaseBadge(getBaseContext());
 		BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
-		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "disease");
+		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "disease", rdb);
 
 		reg.close();
 		rdb.close();

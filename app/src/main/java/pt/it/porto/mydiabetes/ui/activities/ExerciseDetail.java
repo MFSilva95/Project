@@ -234,7 +234,7 @@ public class ExerciseDetail extends BaseActivity {
 
 		BadgeUtils.addExerciseBadge(getBaseContext());
 		BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
-		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "exercise");
+		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "exercise", rdb);
 
 		reg.close();
 		rdb.close();

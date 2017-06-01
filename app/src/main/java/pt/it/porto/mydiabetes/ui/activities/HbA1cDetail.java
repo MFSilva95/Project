@@ -170,7 +170,7 @@ public class HbA1cDetail extends BaseActivity {
 
 		BadgeUtils.addHba1cBadge(getBaseContext());
         BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
-		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "hba1c");
+		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "hba1c", rdb);
 
 		wdb.close();
 		rdb.close();

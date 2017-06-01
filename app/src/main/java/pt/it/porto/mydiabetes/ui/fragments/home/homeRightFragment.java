@@ -104,25 +104,31 @@ public class homeRightFragment extends Fragment  {
         layout = inflater.inflate(R.layout.fragment_home_right, container, false);
         mPrefs = getContext().getSharedPreferences("label", 0);
         imgUriString = mPrefs.getString("userImgUri", null);
+        DB_Read read = new DB_Read(getContext());
+        int points = LevelsPointsUtils.getPercentageLevels(getContext(),read);
+        int lvl = LevelsPointsUtils.getLevel(getContext(),read);
+        int nextLvlPoints = LevelsPointsUtils.getPointsNextLevel(getContext(),read);
+        read.close();
+
 
         mCircleView = (CircularMusicProgressBar) layout.findViewById(R.id.circleView);
-        mCircleView.setValue(LevelsPointsUtils.getPercentageLevels(getContext()));
+        mCircleView.setValue(points);
 
         levelText = (TextView) layout.findViewById(R.id.numberLevel);
-        levelText.setText(LevelsPointsUtils.getLevel(getContext())+"");
+        levelText.setText(lvl+"");
         pointsText = (TextView) layout.findViewById(R.id.numberPoints);
-        pointsText.setText(LevelsPointsUtils.getTotalPoints(getContext())+" / "+LevelsPointsUtils.getPointsNextLevel(getContext()));
+        pointsText.setText(LevelsPointsUtils.getTotalPoints(getContext())+" / "+nextLvlPoints);
 
         mediumLayout = (LinearLayout) layout.findViewById(R.id.mediumLayout);
         advancedLayout = (LinearLayout) layout.findViewById(R.id.advancedLayout);
 
-        if(LevelsPointsUtils.getLevel(getContext()) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
+        if( lvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
             mediumLayout.setVisibility(View.VISIBLE);
         }
         else{
             mediumLayout.setVisibility(View.GONE);
         }
-        if(LevelsPointsUtils.getLevel(getContext()) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
+        if(lvl >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
             advancedLayout.setVisibility(View.VISIBLE);
         }
         else{
@@ -232,25 +238,28 @@ public class homeRightFragment extends Fragment  {
         //Read MyData From DB
         DB_Read db_read = new DB_Read(getContext());
         myData = db_read.MyData_Read();
+        int points = LevelsPointsUtils.getLevel(getContext(), db_read);
+        int percentageLvL = LevelsPointsUtils.getPercentageLevels(getContext(),db_read);
+        int pointsToNextLvL = LevelsPointsUtils.getPointsNextLevel(getContext(),db_read);
         LinkedList<BadgeRec> list = db_read.Badges_GetAll();
         db_read.close();
 
-        if(LevelsPointsUtils.getLevel(getContext()) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
+        if( points >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
             mediumLayout.setVisibility(View.VISIBLE);
         }
         else{
             mediumLayout.setVisibility(View.GONE);
         }
-        if(LevelsPointsUtils.getLevel(getContext()) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
+        if( points >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
             advancedLayout.setVisibility(View.VISIBLE);
         }
         else{
             advancedLayout.setVisibility(View.GONE);
         }
 
-        levelText.setText(LevelsPointsUtils.getLevel(getContext())+"");
-        mCircleView.setValue(LevelsPointsUtils.getPercentageLevels(getContext()));
-        pointsText.setText(LevelsPointsUtils.getTotalPoints(getContext())+" / "+LevelsPointsUtils.getPointsNextLevel(getContext()));
+        levelText.setText(points+"");
+        mCircleView.setValue(percentageLvL);
+        pointsText.setText(LevelsPointsUtils.getTotalPoints(getContext())+" / "+pointsToNextLvL);
 
         setMyDataFromDB(myData);
         updateMedals(list);

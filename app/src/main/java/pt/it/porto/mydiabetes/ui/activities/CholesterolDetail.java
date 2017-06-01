@@ -171,7 +171,7 @@ public class CholesterolDetail extends BaseActivity {
 
 		BadgeUtils.addCholesterolBadge(getBaseContext());
         BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
-		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "cholesterol");
+		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "cholesterol", rdb);
 
 		wdb.close();
 		rdb.close();

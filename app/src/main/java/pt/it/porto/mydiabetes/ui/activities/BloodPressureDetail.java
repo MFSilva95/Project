@@ -262,7 +262,7 @@ public class BloodPressureDetail extends BaseActivity {
 		BadgeUtils.addBpBadge(getBaseContext());
 		BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
 
-		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "bp");
+		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "bp",rdb);
 
 		wdb.close();
 		rdb.close();

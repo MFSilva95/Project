@@ -167,7 +167,7 @@ public class WeightDetail extends BaseActivity {
 
 		BadgeUtils.addWeightBadge(getBaseContext());
 		BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
-		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "weight");
+		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "weight", rdb);
 
 		wdb.close();
 		rdb.close();

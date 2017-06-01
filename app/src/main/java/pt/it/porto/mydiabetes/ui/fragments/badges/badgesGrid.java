@@ -123,6 +123,9 @@ public class badgesGrid extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.fragment_badges_grid, container, false);
+        DB_Read read = new DB_Read(getContext());
+        int lvl = LevelsPointsUtils.getLevel(getContext(), read);
+        read.close();
 
         RelativeLayout beginnerBadges = (RelativeLayout) layout.findViewById(R.id.beginnerBadgesText);
         final ExpandableRelativeLayout expandableBegginerBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableBegginerBadges);
@@ -138,7 +141,7 @@ public class badgesGrid extends Fragment  {
         RelativeLayout mediumBadges = (RelativeLayout) layout.findViewById(R.id.mediumBadges);
         final ExpandableRelativeLayout expandableMediumBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableMediumBadges);
         expandableMediumBadges.collapse();
-        if(LevelsPointsUtils.getLevel(getContext()) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL ) {
+        if(lvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL ) {
             int[] attrs = new int[] { android.R.attr.selectableItemBackground /* index 0 */};
             TypedArray ta = getContext().obtainStyledAttributes(attrs);
             Drawable drawableFromTheme = ta.getDrawable(0);
@@ -162,7 +165,7 @@ public class badgesGrid extends Fragment  {
         RelativeLayout advancedBadges = (RelativeLayout) layout.findViewById(R.id.advancedBadges);
         final ExpandableRelativeLayout expandableAdvancedBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableAdvancedBadges);
         expandableAdvancedBadges.collapse();
-        if(LevelsPointsUtils.getLevel(getContext()) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL ) {
+        if(lvl >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL ) {
             int[] attrs = new int[] { android.R.attr.selectableItemBackground /* index 0 */};
             TypedArray ta = getContext().obtainStyledAttributes(attrs);
             Drawable drawableFromTheme = ta.getDrawable(0);

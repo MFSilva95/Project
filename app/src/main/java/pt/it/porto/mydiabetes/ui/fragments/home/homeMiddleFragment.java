@@ -1,36 +1,25 @@
 package pt.it.porto.mydiabetes.ui.fragments.home;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,15 +40,11 @@ import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Task;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
-import pt.it.porto.mydiabetes.ui.activities.TargetBG_detail;
-import pt.it.porto.mydiabetes.ui.activities.ViewPhoto;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.HomeElement;
-import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 /**
  * Created by parra on 21/02/2017.
@@ -71,14 +56,10 @@ public class homeMiddleFragment extends Fragment {
     //Number of last days shown
     final int NUMBER_OF_DAYS = 7;
     final String TAG = "homeFrag";
-    //private ItemTouchHelper helper = null;
     private FloatingActionButton fab;
     private View listEmpty;
     private int noteId;
-    public static final String ARG_CARBS = "ARG_CARBS";
-    public static final String ARG_INSULIN = "ARG_INSULIN";
-    public static final String ARG_BLOOD_GLUCOSE = "ARG_BLOOD_GLUCOSE";
-    public static final String ARG_NOTE = "ARG_NOTE";
+
 
     private boolean deleteMode;
 
@@ -89,14 +70,6 @@ public class homeMiddleFragment extends Fragment {
     private RecyclerView homeRecyclerView;
     private List<HomeElement> logBookList;
 
-
-    //	@Override
-//	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//		//if(deleteMode){
-//			inflater.inflate(R.menu.weight_detail_delete, menu);
-//		//}
-//		super.onCreateOptionsMenu(menu, inflater);
-//	}
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -211,13 +184,6 @@ public class homeMiddleFragment extends Fragment {
         Calendar calendar = Calendar.getInstance(); // this would default to now
         calendar.add(Calendar.DAY_OF_MONTH, -NUMBER_OF_DAYS);
         dbRead(calendar);
-
-		/*int index = 0;
-        while (index != NUMBER_OF_DAYS) {
-			dbRead(calendar);
-			calendar.add(Calendar.DAY_OF_MONTH, -1);
-			index++;
-		}*/
     }
 
     private void setFabClickListeners() {

@@ -22,6 +22,7 @@ import android.widget.Toast;
 import java.io.File;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
@@ -197,7 +198,9 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		if (mypath.exists()) {
 			BadgeUtils.addPhotoBadge(getContext());
 		}
-		LevelsPointsUtils.addPoints(getContext(),0,"first");
+		DB_Read read = new DB_Read(getContext());
+		LevelsPointsUtils.addPoints(getContext(),0,"first", read);
+		read.close();
 	}
 
 	private float getNumber(String val) {
