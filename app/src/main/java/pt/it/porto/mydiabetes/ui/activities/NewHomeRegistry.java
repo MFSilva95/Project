@@ -924,7 +924,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                         buttonsUpdate.add(INSULIN);
                         insertInsulinMenu(false);
                         insuRegister.fill_parameters(insulinData);
-
+                        insuRegister.updateInsuCalc(insulinCalculator);
                         setNoteId(insulinData.getIdNote());
                         registerDate = insulinData.getDateTime();
                     }
