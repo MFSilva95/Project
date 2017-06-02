@@ -169,7 +169,7 @@ public class CholesterolDetail extends BaseActivity {
 		cho.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 		wdb.Cholesterol_Save(cho);
 
-		BadgeUtils.addCholesterolBadge(getBaseContext());
+		BadgeUtils.addCholesterolBadge(getBaseContext(), rdb);
         BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
 		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "cholesterol", rdb);
 

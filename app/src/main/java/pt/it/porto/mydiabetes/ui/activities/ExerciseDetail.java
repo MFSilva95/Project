@@ -232,7 +232,7 @@ public class ExerciseDetail extends BaseActivity {
 		ex.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 		reg.Exercise_Save(ex);
 
-		BadgeUtils.addExerciseBadge(getBaseContext());
+		BadgeUtils.addExerciseBadge(getBaseContext(),rdb);
 		BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
 		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "exercise", rdb);
 

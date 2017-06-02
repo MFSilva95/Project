@@ -108,7 +108,7 @@ public class homeRightFragment extends Fragment  {
         int points = LevelsPointsUtils.getPercentageLevels(getContext(),read);
         int lvl = LevelsPointsUtils.getLevel(getContext(),read);
         int nextLvlPoints = LevelsPointsUtils.getPointsNextLevel(getContext(),read);
-        read.close();
+
 
 
         mCircleView = (CircularMusicProgressBar) layout.findViewById(R.id.circleView);
@@ -117,7 +117,8 @@ public class homeRightFragment extends Fragment  {
         levelText = (TextView) layout.findViewById(R.id.numberLevel);
         levelText.setText(lvl+"");
         pointsText = (TextView) layout.findViewById(R.id.numberPoints);
-        pointsText.setText(LevelsPointsUtils.getTotalPoints(getContext())+" / "+nextLvlPoints);
+        pointsText.setText(LevelsPointsUtils.getTotalPoints(getContext(), read)+" / "+nextLvlPoints);
+        read.close();
 
         mediumLayout = (LinearLayout) layout.findViewById(R.id.mediumLayout);
         advancedLayout = (LinearLayout) layout.findViewById(R.id.advancedLayout);
@@ -226,7 +227,9 @@ public class homeRightFragment extends Fragment  {
                 }
             }
             mCircleView.setImageBitmap(bmp);
-            BadgeUtils.addPhotoBadge(getContext());
+            DB_Read rdb = new DB_Read(getContext());
+            BadgeUtils.addPhotoBadge(getContext(), rdb);
+            rdb.close();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -242,7 +245,7 @@ public class homeRightFragment extends Fragment  {
         int percentageLvL = LevelsPointsUtils.getPercentageLevels(getContext(),db_read);
         int pointsToNextLvL = LevelsPointsUtils.getPointsNextLevel(getContext(),db_read);
         LinkedList<BadgeRec> list = db_read.Badges_GetAll();
-        db_read.close();
+
 
         if( points >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
             mediumLayout.setVisibility(View.VISIBLE);
@@ -259,8 +262,8 @@ public class homeRightFragment extends Fragment  {
 
         levelText.setText(points+"");
         mCircleView.setValue(percentageLvL);
-        pointsText.setText(LevelsPointsUtils.getTotalPoints(getContext())+" / "+pointsToNextLvL);
-
+        pointsText.setText(LevelsPointsUtils.getTotalPoints(getContext(), db_read)+" / "+pointsToNextLvL);
+        db_read.close();
         setMyDataFromDB(myData);
         updateMedals(list);
     }

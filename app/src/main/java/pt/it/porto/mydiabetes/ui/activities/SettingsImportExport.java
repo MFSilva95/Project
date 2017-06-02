@@ -173,7 +173,9 @@ public class SettingsImportExport extends BaseActivity {
 	public void backupButton(View v) {
 		if (backup(getApplicationContext())) {
 			ShowDialogMsg(getString(R.string.dbcopy_success));
-			BadgeUtils.addExportBadge(getBaseContext());
+			DB_Read rdb = new DB_Read(v.getContext());
+			BadgeUtils.addExportBadge(getBaseContext(), rdb);
+			rdb.close();
 		} else {
 			ShowDialogMsg(getString(R.string.dbcopy_error));
 		}

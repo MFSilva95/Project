@@ -195,10 +195,10 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
 		// Create imageDir
 		File mypath = new File(directory, userImgFileName);
-		if (mypath.exists()) {
-			BadgeUtils.addPhotoBadge(getContext());
-		}
 		DB_Read read = new DB_Read(getContext());
+		if (mypath.exists()) {
+			BadgeUtils.addPhotoBadge(getContext(), read);
+		}
 		LevelsPointsUtils.addPoints(getContext(),0,"first", read);
 		read.close();
 	}

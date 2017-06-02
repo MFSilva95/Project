@@ -104,7 +104,7 @@ public class LevelsPointsUtils {
             newPointRec.setValue(points);
             newPointRec.setOrigin(origin);
             dbwrite.Point_Save(newPointRec);
-            dbwrite.close();
+
         }
         if((userPoints + points) < levels[index-1]){
             DB_Write dbwrite = new DB_Write(context);
@@ -114,14 +114,11 @@ public class LevelsPointsUtils {
             newPointRec.setValue(-Math.abs(levels[index-1] - userPoints));
             newPointRec.setOrigin(origin);
             dbwrite.Point_Save(newPointRec);
-            dbwrite.close();
         }
     }
 
-    public static int getTotalPoints(Context context){
-        DB_Read db = new DB_Read(context);
+    public static int getTotalPoints(Context context, DB_Read db){
         int points = db.getTotalPoints();
-        db.close();
         return points;
     }
 

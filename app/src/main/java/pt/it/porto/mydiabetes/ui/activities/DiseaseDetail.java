@@ -200,7 +200,7 @@ public class DiseaseDetail extends BaseActivity {
 		dis.setEndDate((!dataTo.getText().toString().equals("")) ? dataTo.getText().toString() : null);
 		reg.DiseaseReg_Save(dis);
 
-		BadgeUtils.addDiseaseBadge(getBaseContext());
+		BadgeUtils.addDiseaseBadge(getBaseContext(), rdb);
 		BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
 		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "disease", rdb);
 

@@ -168,7 +168,7 @@ public class HbA1cDetail extends BaseActivity {
 		hba1c.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 		wdb.HbA1c_Save(hba1c);
 
-		BadgeUtils.addHba1cBadge(getBaseContext());
+		BadgeUtils.addHba1cBadge(getBaseContext(), rdb);
         BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
 		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "hba1c", rdb);
 

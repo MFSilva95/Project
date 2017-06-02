@@ -118,14 +118,14 @@ public class BadgeUtils {
     static final private int DAILY_GOLD_RECORDS = 6;
 
 
-    public static void addPhotoBadge(Context context) {
-        DB_Read db = new DB_Read(context);
+    public static void addPhotoBadge(Context context, DB_Read db) {
+
         int idUser = db.getId();
         boolean flag = db.hasMedal("photo");
-        db.close();
+        
 
         /*LinkedList<BadgeRec> list = db.Badges_GetAll();
-        db.close();
+        
         boolean flag = false;
         for (BadgeRec rec : list) {
             if (rec.getName().equals("photo")) {
@@ -142,17 +142,18 @@ public class BadgeUtils {
             badge.setName("photo");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
     }
 
-    public static void addExportBadge(Context context) {
-        DB_Read db = new DB_Read(context);
+    public static void addExportBadge(Context context, DB_Read db) {
+
         int idUser = db.getId();
         /*LinkedList<BadgeRec> list = db.Badges_GetAll();
-        db.close();
+        
         boolean flag = false;
         for (BadgeRec rec : list) {
             if (rec.getName().equals("export")) {
@@ -160,7 +161,7 @@ public class BadgeUtils {
             }
         }*/
         boolean flag = db.hasMedal("export");
-        db.close();
+        
 
         if (!flag) {
             DB_Write dbwrite = new DB_Write(context);
@@ -171,8 +172,9 @@ public class BadgeUtils {
             badge.setName("export");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
     }
@@ -413,8 +415,8 @@ public class BadgeUtils {
         Log.i("rawr", "addLogBadge:  END");
     }
 
-    public static void addExerciseBadge(Context context) {
-        DB_Read db = new DB_Read(context);
+    public static void addExerciseBadge(Context context, DB_Read db) {
+
         LinkedList<ExerciseRec> exerciseEntries = new LinkedList<>();
         //LinkedList<BadgeRec> list = db.Badges_GetAll();
         LinkedList<BadgeRec> list = db.getAllMedals("exercise");
@@ -503,7 +505,7 @@ public class BadgeUtils {
             PointsRec pnt = db.getFirstPointToReachLevel(points);
             exerciseEntries = db.getExerciseFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),EXERCISE_GOLD_RECORDS_A);
         }
-        db.close();
+        
         //BEGINNER
         if(exerciseEntries.size()>=EXERCISE_BRONZE_RECORDS_B && !flagBronzeB){
             DB_Write dbwrite = new DB_Write(context);
@@ -514,8 +516,9 @@ public class BadgeUtils {
             badge.setName("exercise");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(exerciseEntries.size()>=EXERCISE_SILVER_RECORDS_B && !flagSilverB){
@@ -527,8 +530,9 @@ public class BadgeUtils {
             badge.setName("exercise");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(exerciseEntries.size()>=EXERCISE_GOLD_RECORDS_B && !flagGoldB){
@@ -540,8 +544,9 @@ public class BadgeUtils {
             badge.setName("exercise");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         //MEDIUM
@@ -554,8 +559,9 @@ public class BadgeUtils {
             badge.setName("exercise");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(exerciseEntries.size()>=EXERCISE_SILVER_RECORDS_M && !flagSilverM && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -567,8 +573,9 @@ public class BadgeUtils {
             badge.setName("exercise");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(exerciseEntries.size()>=EXERCISE_GOLD_RECORDS_M && !flagGoldM && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -580,8 +587,9 @@ public class BadgeUtils {
             badge.setName("exercise");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         //ADVANCED
@@ -594,8 +602,9 @@ public class BadgeUtils {
             badge.setName("exercise");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(exerciseEntries.size()>=EXERCISE_SILVER_RECORDS_A && !flagSilverA && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
@@ -607,8 +616,9 @@ public class BadgeUtils {
             badge.setName("exercise");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(exerciseEntries.size()>=EXERCISE_GOLD_RECORDS_A && !flagGoldA && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
@@ -620,15 +630,16 @@ public class BadgeUtils {
             badge.setName("exercise");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
 
     }
 
-    public static void addDiseaseBadge(Context context) {
-        DB_Read db = new DB_Read(context);
+    public static void addDiseaseBadge(Context context, DB_Read db) {
+
         int idUser = db.getId();
         //LinkedList<BadgeRec> list = db.Badges_GetAll();
         LinkedList<BadgeRec> list = db.getAllMedals("disease");
@@ -716,7 +727,7 @@ public class BadgeUtils {
             PointsRec pnt = db.getFirstPointToReachLevel(points);
             diseaseEntries = db.getDiseaseFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),DISEASE_GOLD_RECORDS_A);
         }
-        db.close();
+
 
         if(diseaseEntries.size()>=DISEASE_BRONZE_RECORDS_B && !flagBronzeB){
             DB_Write dbwrite = new DB_Write(context);
@@ -727,8 +738,8 @@ public class BadgeUtils {
             badge.setName("disease");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(diseaseEntries.size()>=DISEASE_SILVER_RECORDS_B && !flagSilverB){
@@ -740,8 +751,8 @@ public class BadgeUtils {
             badge.setName("disease");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(diseaseEntries.size()>=DISEASE_GOLD_RECORDS_B && !flagGoldB){
@@ -753,8 +764,8 @@ public class BadgeUtils {
             badge.setName("disease");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         //MEDIUM
@@ -767,8 +778,8 @@ public class BadgeUtils {
             badge.setName("disease");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(diseaseEntries.size()>=DISEASE_SILVER_RECORDS_M && !flagSilverM && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -780,8 +791,8 @@ public class BadgeUtils {
             badge.setName("disease");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(diseaseEntries.size()>=DISEASE_GOLD_RECORDS_M && !flagGoldM && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -793,8 +804,8 @@ public class BadgeUtils {
             badge.setName("disease");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         //ADVANCED
@@ -807,8 +818,8 @@ public class BadgeUtils {
             badge.setName("disease");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(diseaseEntries.size()>=DISEASE_SILVER_RECORDS_A && !flagSilverA && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
@@ -820,8 +831,8 @@ public class BadgeUtils {
             badge.setName("disease");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(diseaseEntries.size()>=DISEASE_GOLD_RECORDS_A && !flagGoldA && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
@@ -833,16 +844,16 @@ public class BadgeUtils {
             badge.setName("disease");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
-
+        
 
     }
 
-    public static void addWeightBadge(Context context) {
-        DB_Read db = new DB_Read(context);
+    public static void addWeightBadge(Context context, DB_Read db) {
+
         //LinkedList<BadgeRec> list = db.Badges_GetAll();
         LinkedList<BadgeRec> list = db.getAllMedals("weight");
 
@@ -931,7 +942,7 @@ public class BadgeUtils {
             PointsRec pnt = db.getFirstPointToReachLevel(points);
             weightEntries = db.getWeightFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),WEIGHT_GOLD_RECORDS_A);
         }
-        db.close();
+
 
         if(weightEntries.size()>=WEIGHT_BRONZE_RECORDS_B && !flagBronzeB){
             DB_Write dbwrite = new DB_Write(context);
@@ -942,8 +953,9 @@ public class BadgeUtils {
             badge.setName("weight");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(weightEntries.size()>=WEIGHT_SILVER_RECORDS_B && !flagSilverB){
@@ -955,8 +967,8 @@ public class BadgeUtils {
             badge.setName("weight");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(weightEntries.size()>=WEIGHT_GOLD_RECORDS_B && !flagGoldB){
@@ -968,8 +980,8 @@ public class BadgeUtils {
             badge.setName("weight");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
 
@@ -983,8 +995,9 @@ public class BadgeUtils {
             badge.setName("weight");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(weightEntries.size()>=WEIGHT_SILVER_RECORDS_M && !flagSilverM && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -996,8 +1009,9 @@ public class BadgeUtils {
             badge.setName("weight");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(weightEntries.size()>=WEIGHT_GOLD_RECORDS_M && !flagGoldM && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -1009,8 +1023,8 @@ public class BadgeUtils {
             badge.setName("weight");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         //ADVANCED
@@ -1023,8 +1037,8 @@ public class BadgeUtils {
             badge.setName("weight");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(weightEntries.size()>=WEIGHT_SILVER_RECORDS_A && !flagSilverA && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
@@ -1036,8 +1050,9 @@ public class BadgeUtils {
             badge.setName("weight");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(weightEntries.size()>=WEIGHT_GOLD_RECORDS_A && !flagGoldA && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
@@ -1049,15 +1064,16 @@ public class BadgeUtils {
             badge.setName("weight");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
-
+        
     }
 
-    public static void addBpBadge(Context context) {
-        DB_Read db = new DB_Read(context);
+    public static void addBpBadge(Context context, DB_Read db) {
+
 //        LinkedList<BadgeRec> list = db.Badges_GetAll();
         LinkedList<BadgeRec> list = db.getAllMedals("bp");
 
@@ -1146,7 +1162,6 @@ public class BadgeUtils {
             PointsRec pnt = db.getFirstPointToReachLevel(points);
             bpEntries = db.getBpFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),BP_GOLD_RECORDS_A);
         }
-        db.close();
 
         if(bpEntries.size()>=BP_BRONZE_RECORDS_B && !flagBronzeB){
             DB_Write dbwrite = new DB_Write(context);
@@ -1157,8 +1172,9 @@ public class BadgeUtils {
             badge.setName("bp");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(bpEntries.size()>=BP_SILVER_RECORDS_B && !flagSilverB){
@@ -1170,8 +1186,9 @@ public class BadgeUtils {
             badge.setName("bp");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(bpEntries.size()>=BP_GOLD_RECORDS_B && !flagGoldB){
@@ -1183,8 +1200,9 @@ public class BadgeUtils {
             badge.setName("bp");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
 
@@ -1198,8 +1216,8 @@ public class BadgeUtils {
             badge.setName("bp");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(bpEntries.size()>=BP_SILVER_RECORDS_M && !flagSilverM && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -1211,8 +1229,9 @@ public class BadgeUtils {
             badge.setName("bp");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(bpEntries.size()>=BP_GOLD_RECORDS_M && !flagGoldM && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -1224,8 +1243,9 @@ public class BadgeUtils {
             badge.setName("bp");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         //ADVANCED
@@ -1238,8 +1258,9 @@ public class BadgeUtils {
             badge.setName("bp");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(bpEntries.size()>=BP_SILVER_RECORDS_A && !flagSilverA && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
@@ -1251,8 +1272,10 @@ public class BadgeUtils {
             badge.setName("bp");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
+
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(bpEntries.size()>=BP_GOLD_RECORDS_A && !flagGoldA && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
@@ -1264,14 +1287,16 @@ public class BadgeUtils {
             badge.setName("bp");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
+        
     }
 
-    public static void addCholesterolBadge(Context context) {
-        DB_Read db = new DB_Read(context);
+    public static void addCholesterolBadge(Context context, DB_Read db) {
+
 //        LinkedList<BadgeRec> list = db.Badges_GetAll();
         LinkedList<BadgeRec> list = db.getAllMedals("cholesterol");
         int idUser = db.getId();
@@ -1358,7 +1383,6 @@ public class BadgeUtils {
             PointsRec pnt = db.getFirstPointToReachLevel(points);
             cholesterolEntries = db.getCholesterolFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),CHOLESTEROL_GOLD_RECORDS_A);
         }
-        db.close();
 
         if(cholesterolEntries.size()>=CHOLESTEROL_BRONZE_RECORDS_B && !flagBronzeB){
             DB_Write dbwrite = new DB_Write(context);
@@ -1369,8 +1393,9 @@ public class BadgeUtils {
             badge.setName("cholesterol");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(cholesterolEntries.size()>=CHOLESTEROL_SILVER_RECORDS_B && !flagSilverB){
@@ -1382,8 +1407,9 @@ public class BadgeUtils {
             badge.setName("cholesterol");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(cholesterolEntries.size()>=CHOLESTEROL_GOLD_RECORDS_B && !flagGoldB){
@@ -1395,8 +1421,9 @@ public class BadgeUtils {
             badge.setName("cholesterol");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         //MEDIUM
@@ -1409,8 +1436,9 @@ public class BadgeUtils {
             badge.setName("cholesterol");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(cholesterolEntries.size()>=CHOLESTEROL_SILVER_RECORDS_M && !flagSilverM && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -1422,8 +1450,9 @@ public class BadgeUtils {
             badge.setName("cholesterol");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(cholesterolEntries.size()>=CHOLESTEROL_GOLD_RECORDS_M && !flagGoldM && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -1435,8 +1464,9 @@ public class BadgeUtils {
             badge.setName("cholesterol");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         //ADVANCED
@@ -1449,8 +1479,9 @@ public class BadgeUtils {
             badge.setName("cholesterol");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(cholesterolEntries.size()>=CHOLESTEROL_SILVER_RECORDS_A && !flagSilverA && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
@@ -1462,8 +1493,9 @@ public class BadgeUtils {
             badge.setName("cholesterol");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(cholesterolEntries.size()>=CHOLESTEROL_GOLD_RECORDS_A && !flagGoldA && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
@@ -1475,15 +1507,16 @@ public class BadgeUtils {
             badge.setName("cholesterol");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
-
+        
     }
 
-    public static void addHba1cBadge(Context context) {
-        DB_Read db = new DB_Read(context);
+    public static void addHba1cBadge(Context context, DB_Read db) {
+
 //        LinkedList<BadgeRec> list = db.Badges_GetAll();
         LinkedList<BadgeRec> list = db.getAllMedals("hba1c");
         int idUser = db.getId();
@@ -1572,7 +1605,6 @@ public class BadgeUtils {
             PointsRec pnt = db.getFirstPointToReachLevel(points);
             hba1cEntries = db.getHbA1cFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),HBA1C_GOLD_RECORDS_A);
         }
-        db.close();
 
         if(hba1cEntries.size()>=HBA1C_BRONZE_RECORDS_B && !flagBronzeB){
             DB_Write dbwrite = new DB_Write(context);
@@ -1583,8 +1615,9 @@ public class BadgeUtils {
             badge.setName("hba1c");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(hba1cEntries.size()>=HBA1C_SILVER_RECORDS_B && !flagSilverB){
@@ -1596,8 +1629,9 @@ public class BadgeUtils {
             badge.setName("hba1c");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(hba1cEntries.size()>=HBA1C_GOLD_RECORDS_B && !flagGoldB){
@@ -1609,8 +1643,9 @@ public class BadgeUtils {
             badge.setName("hba1c");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         //MEDIUM
@@ -1623,8 +1658,9 @@ public class BadgeUtils {
             badge.setName("hba1c");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(hba1cEntries.size()>=HBA1C_SILVER_RECORDS_M && !flagSilverM && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -1636,8 +1672,9 @@ public class BadgeUtils {
             badge.setName("hba1c");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(hba1cEntries.size()>=HBA1C_GOLD_RECORDS_M && !flagGoldM && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
@@ -1649,8 +1686,9 @@ public class BadgeUtils {
             badge.setName("hba1c");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         //ADVANCED
@@ -1663,8 +1701,9 @@ public class BadgeUtils {
             badge.setName("hba1c");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(hba1cEntries.size()>=HBA1C_SILVER_RECORDS_A && !flagSilverA && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
@@ -1676,8 +1715,9 @@ public class BadgeUtils {
             badge.setName("hba1c");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
         if(hba1cEntries.size()>=HBA1C_GOLD_RECORDS_A && !flagGoldA && LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
@@ -1689,11 +1729,12 @@ public class BadgeUtils {
             badge.setName("hba1c");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.close();
+
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+            dbwrite.close();
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
-
+        
     }
 
     public static void addDailyBadge(Context context, DB_Read db, DB_Write dbwrite) {
@@ -1739,7 +1780,7 @@ public class BadgeUtils {
         LinkedList<HbA1cRec> hbA1cList = db.getHbA1cByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
         LinkedList<DiseaseRec> diseaseList = db.getDiseaseByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
         LinkedList<HomeElement> logList = db.getLogBookByDate(DateUtils.getFormattedDate(Calendar.getInstance())); // this costs a lot
-        //db.close();
+        //
 
         int size = exerciseList.size() + bpList.size() + cholesterolList.size() + weightList.size() + hbA1cList.size() + diseaseList.size() + logList.size();
         if(size >= DAILY_BRONZE_RECORDS && !flagBronze && !flagSilver && !flagGold){
@@ -1777,6 +1818,7 @@ public class BadgeUtils {
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
             SimpleToast.info(context, context.getString(R.string.received_a_daily_medal), "{fa-trophy}");
         }
+        
     }
 
 }

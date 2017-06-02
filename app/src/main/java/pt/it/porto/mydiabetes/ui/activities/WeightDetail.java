@@ -165,7 +165,7 @@ public class WeightDetail extends BaseActivity {
 		weight.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 		wdb.Weight_Save(weight);
 
-		BadgeUtils.addWeightBadge(getBaseContext());
+		BadgeUtils.addWeightBadge(getBaseContext(), rdb);
 		BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
 		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "weight", rdb);
 
