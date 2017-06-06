@@ -281,6 +281,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         init_vars();
         init_listeners();
         buttons.add(PLUS);
@@ -320,6 +321,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         permissionStatus = getSharedPreferences("permissionStatus", MODE_PRIVATE);
         registerDate = Calendar.getInstance();

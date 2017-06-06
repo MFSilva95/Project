@@ -9,70 +9,130 @@
     android:fitsSystemWindows="false">
 
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:background="?attr/colorPrimary"
-            android:elevation="4dp"
-            android:minHeight="?attr/actionBarSize"
-            app:theme="@style/ToolbarTheme"
-            app:layout_collapseMode="pin"
-            app:popupTheme="@style/ToolbarTheme.PopupOverlay"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_collapseMode="pin"
+        app:popupTheme="@style/ToolbarTheme.PopupOverlay"
+        app:theme="@style/ToolbarTheme"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/registryDate"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_corners_layout"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/registryDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:gravity="center_horizontal"
+                        android:inputType="date"
+                        android:onClick="showDatePickerDialogFrom"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/round_corners_layout"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/registerTime"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:gravity="center_horizontal"
+                        android:inputType="date"
+                        android:onClick="showDatePickerDialogTo"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_gravity="start"
-                android:background="?selectableItemBackground"
-                android:clickable="true"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/round_corners_layout"
                 android:gravity="center_vertical"
-                android:padding="5dp"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="0dp" />
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/registerTime"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:background="?selectableItemBackground"
-                android:clickable="true"
-                android:gravity="center|start"
-                android:text=""
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="48dp"
-                android:padding="5dp"
-                tools:text="18:00"/>
+                <TextView
+                    android:id="@+id/textView15"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="@color/primary_dark"
+                    android:text="Tag"
+                    android:textSize="14sp" />
 
-            <Spinner
-                android:id="@+id/tag_spinner"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:background="@null"
-                android:entries="@array/daytimes"
-                android:layout_marginStart="0dp"
-                android:layout_marginEnd="0dp"
-                android:textAlignment="inherit"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="5dp"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="96dp"/>
+                <Spinner
+                    android:id="@+id/tag_spinner"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:entries="@array/daytimes"
+                    android:padding="5dp"
+                    android:textAlignment="inherit"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="96dp" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
+
     </android.support.v7.widget.Toolbar>
+
 
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="100dp"
         android:layout_height="match_parent">
 
         <include layout="@layout/content_add_event"/>

@@ -17,7 +17,7 @@ import pt.it.porto.mydiabetes.R;
 public class DB_Handler extends SQLiteOpenHelper {
 
 	// Database Version
-	private static final int DATABASE_VERSION = 15;
+	private static final int DATABASE_VERSION = 16;
     private static final int DATABASE_VERSION_USERID_BADGES = 8;
 	private static final int DATABASE_VERSION_TARGET_BG = 10;
 
@@ -126,10 +126,16 @@ public class DB_Handler extends SQLiteOpenHelper {
 					"INSERT INTO Reg_Insulin(id, id_user, value, datetime, id_tag, id_note, target_bg) SELECT b.*,u.id FROM Reg_Insulin_backup as b, userinfo as u;\n" +//recover the old ones to the one table
 					"DROP TABLE Reg_Insulin_backup;";
 
+			String updateUSABILITY = "DROP TABLE Usability_Clicks;\n" +
+					"DROP TABLE Usability_Events;\n" +
+					"DROP TABLE Usability_Flux;\n"
+					;
+
 			try {
 				db.execSQL(updateDATABASE_NOTE_BG_DEPENDENCY);
 				db.execSQL(updateDATABASE_NOTE_CARBS_DEPENDENCY);
 				db.execSQL(updateDATABASE_NOTE_INSU_DEPENDENCY);
+				db.execSQL(updateUSABILITY);
 				Log.i("DB Upgrade", "Finished altering DB");
 			} catch (SQLException sqlE) {
 				Log.e("DB Update adding column", sqlE.getLocalizedMessage());
