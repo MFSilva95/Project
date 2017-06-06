@@ -362,4 +362,5 @@
 
     <string name="exit_dialog_title">Exit without saving</string>
     <string name="exit_dialog_description">Are you sure you want to leave without saving?</string>
+    <string name="hc_units">uni</string>
 </resources>
