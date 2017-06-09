@@ -350,6 +350,7 @@
     <string name="schedule">Schedule</string>
 
     <string name="use_iob">Use Insulin On Board</string>
+    <string name="settings_factors_ratio">Edit Factors and Ratio\'s</string>
     <string name="settings_edit_insulins">Edit Insulin\'s</string>
     <string name="settings_edit_glicemia_targets">Edit Glucose Goals</string>
     <string name="new_note">New Note</string>
@@ -363,4 +364,9 @@
     <string name="exit_dialog_title">Exit without saving</string>
     <string name="exit_dialog_description">Are you sure you want to leave without saving?</string>
     <string name="hc_units">uni</string>
+
+    <string name="preferences_day">Day Fases</string>
+    <string name="preferences_target">Glycemia Objectives</string>
+    <string name="preferences_insulins">Insulins</string>
+    <string name="preferences_factors">Factors and Ratio\'s</string>
 </resources>

@@ -179,8 +179,7 @@
     <string name="preferences_day">Fases do Dia</string>
     <string name="preferences_target">Objetivos Glicemia</string>
     <string name="preferences_insulins">Insulinas</string>
-    <string name="preferences_diseases">Doenças</string>
-    <string name="preferences_exercises">Exercícios</string>
+    <string name="preferences_factors">Fatores e Rácios</string>
 
     <string name="transfer_fail_connection">Ligação Falhou!</string>
     <string name="transfer_check_wifi">Verifique se tem o wi-fi ligado</string>
@@ -396,6 +395,7 @@
     <string name="login_try_later">Tentar mais tarde</string>
     <string name="login_try_again">Tentar novamente</string>
     <string name="cloudSync_edit_account">Editar conta</string>
+    <string name="settings_factors_ratio">Editar Fatores e Rácios</string>
     <string name="settings_edit_insulins">Editar Insulinas</string>
     <string name="settings_edit_glicemia_targets">Editar Objectivos de Glicemia</string>
     <string name="glycemia_objective">Objectivo de Glicemia</string>

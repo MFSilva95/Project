@@ -24,12 +24,6 @@
             android:icon="@drawable/ic_opacity"/>
 
         <item
-            android:id="@+id/personalData"
-            android:checked="false"
-            android:title="@string/navPersonalTools"
-            android:icon="@drawable/ic_fingerprint"/>
-
-        <item
             android:id="@+id/importAndExport"
             android:checked="false"
             android:title="@string/title_activity_import_export"

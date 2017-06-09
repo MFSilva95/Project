@@ -11,8 +11,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -36,7 +38,6 @@ public class Settings extends BaseActivity {
 
 	private CheckBox useActiveInsulin;
 	private UserInfo myData;
-	private FloatingActionButton fab;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,31 +50,25 @@ public class Settings extends BaseActivity {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
 
-		fab = (FloatingActionButton) findViewById(R.id.fab);
-		fab.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				if (inputIsValid()) {
-
-					DB_Write rdb = new DB_Write(getBaseContext());
-					rdb.MyData_Save(getMyDataFromActivity());
-					rdb.close();
-					FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
-					db.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, useActiveInsulin.isChecked());
-					Toast.makeText(getBaseContext(), getString(R.string.mydata_saved), Toast.LENGTH_LONG).show();
-					finish();
-				} else {
-					//toast message
-					Toast.makeText(getBaseContext(), getString(R.string.mydata_before_saving), Toast.LENGTH_LONG).show();
-				}
-
-			}
-		});
-
 		Spinner sp_MyData_DiabetesType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
 		ArrayAdapter<CharSequence> adapter_sp_MyData_DiabetesType = ArrayAdapter.createFromResource(this, R.array.diabetes_Type, android.R.layout.simple_spinner_item);
 		adapter_sp_MyData_DiabetesType.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		sp_MyData_DiabetesType.setAdapter(adapter_sp_MyData_DiabetesType);
+
+		sp_MyData_DiabetesType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				DB_Write rdb = new DB_Write(getBaseContext());
+				rdb.MyData_Save(getMyDataFromActivity());
+				rdb.close();
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+				// your code here
+			}
+
+		});
 
 		//Read MyData From DB
 		DB_Read db = new DB_Read(this);
@@ -82,6 +77,15 @@ public class Settings extends BaseActivity {
 		db.close();
 
 		useActiveInsulin = (CheckBox) findViewById(R.id.use_IOB);
+
+		useActiveInsulin.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+				FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
+				db.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, useActiveInsulin.isChecked());
+			}
+		});
+
 		FeaturesDB features = new FeaturesDB(MyDiabetesStorage.getInstance(this));
 		useActiveInsulin.setChecked(features.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD));
 
@@ -98,12 +102,6 @@ public class Settings extends BaseActivity {
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MyData_BirthDate,
-				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "DatePicker");
 	}
 
 	//corrige erro ao gravar
@@ -126,16 +124,7 @@ public class Settings extends BaseActivity {
 
 	public UserInfo getMyDataFromActivity() {
 		Spinner dType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
-		EditText iRatio = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
-		EditText cRatio = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
-		EditText lRange = (EditText) findViewById(R.id.et_MyData_LowerRange);
-		EditText hRange = (EditText) findViewById(R.id.et_MyData_HigherRange);
-
 		myData.setDiabetesType(dType.getSelectedItem().toString());
-		myData.setInsulinRatio(Integer.parseInt(iRatio.getText().toString()));
-		myData.setCarbsRatio(Integer.parseInt(cRatio.getText().toString()));
-		myData.setLowerRange(Integer.parseInt(lRange.getText().toString()));
-		myData.setHigherRange(Integer.parseInt(hRange.getText().toString()));
 
 		return myData;
 	}
@@ -143,10 +132,6 @@ public class Settings extends BaseActivity {
 	public void setMyDataFromDB(UserInfo obj) {
 		if (obj != null) {
 			Spinner dType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
-			EditText iRatio = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
-			EditText cRatio = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
-			EditText lRange = (EditText) findViewById(R.id.et_MyData_LowerRange);
-			EditText hRange = (EditText) findViewById(R.id.et_MyData_HigherRange);
 
 			String diabetesType=obj.getDiabetesType().getValue(this);
 			try {
@@ -159,10 +144,6 @@ public class Settings extends BaseActivity {
 					}
 				}
 			}
-			iRatio.setText(String.format(LocaleUtils.MY_LOCALE, "%d", obj.getInsulinRatio()));
-			cRatio.setText(String.format(LocaleUtils.MY_LOCALE, "%d", obj.getCarbsRatio()));
-			lRange.setText(String.format(LocaleUtils.MY_LOCALE, "%d", obj.getLowerRange()));
-			hRange.setText(String.format(LocaleUtils.MY_LOCALE, "%d", obj.getHigherRange()));
 		}
 	}
 
@@ -182,6 +163,11 @@ public class Settings extends BaseActivity {
 			}
 		});
 		dialog.show(getFragmentManager(), "iob");
+	}
+
+	public void editFactors(View v) {
+		Intent intent = new Intent(this, SettingsFactors.class);
+		startActivity(intent);
 	}
 
 	public void editInsulins(View v) {

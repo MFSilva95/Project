@@ -95,6 +95,14 @@
                 android:value=".ui.activities.Home"/>
         </activity>
         <activity
+            android:name=".ui.activities.SettingsFactors"
+            android:label="@string/preferences_factors"
+            android:parentActivityName=".ui.activities.Settings">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.Settings"/>
+        </activity>
+        <activity
             android:name=".ui.activities.SettingsInsulins"
             android:label="@string/preferences_insulins"
             android:parentActivityName=".ui.activities.Settings">
@@ -126,7 +134,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
         </activity>
-        <activity
+        <!-- <activity
             android:name=".ui.activities.GlycemiaChartList"
             android:label="@string/title_activity_glycemia"
             android:parentActivityName=".ui.activities.Home"
@@ -143,7 +151,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
-        </activity>
+        </activity>-->
         <activity
             android:name=".ui.activities.BloodPressure"
             android:label="@string/title_activity_blood_pressure"
@@ -193,7 +201,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
         </activity>
-        <activity
+        <!--<activity
             android:name=".ui.activities.GlycemiaDetail"
             android:label="@string/title_activity_glycemia_detail"
             android:theme="@style/HomeTheme"
@@ -209,7 +217,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
-        </activity>
+        </activity>-->
         <activity
             android:name=".ui.activities.ExerciseDetail"
             android:label="@string/title_activity_exercise_detail"
@@ -218,7 +226,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
         </activity>
-        <activity
+        <!--<activity
             android:name=".ui.activities.MealActivity"
             android:label="@string/title_activity_meal"
             android:theme="@style/HomeTheme"
@@ -226,7 +234,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
-        </activity>
+        </activity>-->
         <activity
             android:name=".ui.activities.CarboHydrateDetail"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -348,7 +356,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
         </activity>
-        <activity
+       <!--<activity
             android:name=".ui.activities.DetailLogbookActivity"
             android:label="@string/title_activity_logbook_detail"
             android:parentActivityName=".ui.activities.LogbookChartList"
@@ -356,7 +364,7 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.LogbookChartList"/>
-        </activity>
+        </activity>-->
 
         <activity
             android:name=".ui.activities.TaskListActivity"
@@ -365,8 +373,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
         </activity>
-    <!---->
-
 
         <!-- <activity
             android:name="com.example.projetoandroid.CloudServerActivity"
@@ -410,12 +416,14 @@
             android:exported="true">
         </receiver>
 
-        <receiver
+        <!--<receiver
             android:name=".utils.AdviceAlertReceiver"
             android:enabled="true"
             android:exported="true">
-        </receiver><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+        </receiver>
+         ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

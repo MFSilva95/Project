@@ -134,10 +134,6 @@ public class Home extends BaseActivity {
 						intent = new Intent(getApplicationContext(), LogbookChartList.class);
 						startActivity(intent);
 						return true;
-					case R.id.personalData:
-						intent = new Intent(getApplicationContext(), MyData.class);
-						startActivity(intent);
-						return true;
 					case R.id.diabetesData:
 						intent = new Intent(getApplicationContext(), Settings.class);
 						startActivity(intent);
