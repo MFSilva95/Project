@@ -73,7 +73,7 @@ public class BadgeUtils {
     static final private int WEIGHT_SILVER_RECORDS_M = 60;
     static final private int WEIGHT_GOLD_RECORDS_M = 80;
 
-    static final private int WEIGHT_BRONZE_RECORDS_A = 100;
+    static final private int WEIGHT_BRONZE_RECORDS_A = 90;
     static final private int WEIGHT_SILVER_RECORDS_A = 120;
     static final private int WEIGHT_GOLD_RECORDS_A = 150;
 

@@ -352,7 +352,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_100_records_weight"
+                        android:text="@string/add_90_records_weight"
                         android:textSize="12sp" />
 
                 </LinearLayout>
