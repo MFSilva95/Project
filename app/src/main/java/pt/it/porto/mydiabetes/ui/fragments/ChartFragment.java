@@ -218,6 +218,7 @@ public class ChartFragment extends Fragment {
 
 		chart.setZoomType(ZoomType.HORIZONTAL);
 		Viewport tempViewPort = new Viewport(chart.getMaximumViewport());
+
 		float dx = tempViewPort.width() / 3;
 		tempViewPort.inset(dx, 0);
 		tempViewPort.offset(dx, 0);

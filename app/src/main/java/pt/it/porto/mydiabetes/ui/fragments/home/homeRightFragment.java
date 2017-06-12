@@ -108,7 +108,8 @@ public class homeRightFragment extends Fragment  {
         int points = LevelsPointsUtils.getPercentageLevels(getContext(),read);
         int lvl = LevelsPointsUtils.getLevel(getContext(),read);
         int nextLvlPoints = LevelsPointsUtils.getPointsNextLevel(getContext(),read);
-
+        int totalPoints = LevelsPointsUtils.getTotalPoints(getContext(), read);
+        read.close();
 
 
         mCircleView = (CircularMusicProgressBar) layout.findViewById(R.id.circleView);
@@ -117,8 +118,8 @@ public class homeRightFragment extends Fragment  {
         levelText = (TextView) layout.findViewById(R.id.numberLevel);
         levelText.setText(lvl+"");
         pointsText = (TextView) layout.findViewById(R.id.numberPoints);
-        pointsText.setText(LevelsPointsUtils.getTotalPoints(getContext(), read)+" / "+nextLvlPoints);
-        read.close();
+        pointsText.setText(totalPoints+" / "+nextLvlPoints);
+
 
         mediumLayout = (LinearLayout) layout.findViewById(R.id.mediumLayout);
         advancedLayout = (LinearLayout) layout.findViewById(R.id.advancedLayout);

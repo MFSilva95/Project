@@ -679,6 +679,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                     }*/
         glycaemiaRegister = new GlycaemiaRegister(this,registerDate, glycaemiaRegister.getCallBack());
         addContent(glycaemiaRegister);
+        bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(true);
         buttons.add(0, GLICAEMIA);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(true);
         requestKeyboard(glycaemiaRegister);
@@ -691,6 +692,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                     }*/
         carbsRegister = new CarbsRegister(this, carbsRegister.getCallBack());
         addContent(carbsRegister);
+        bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(true);
         buttons.add(0, CARBS);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(true);
         requestKeyboard(carbsRegister);
@@ -704,6 +706,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         insuRegister = new InsuRegister(this, iRatio, cRatio);
         addContent(insuRegister);
         buttons.add(0, INSULIN);
+        bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(true);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(true);
         if(reqKey){requestKeyboard(insuRegister);}
     }
