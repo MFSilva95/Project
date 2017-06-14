@@ -19,6 +19,8 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "long", "BUILDDATE", System.currentTimeMillis() + "L"
+
+        vectorDrawables.useSupportLibrary = true
     }
     productFlavors {
         prod {

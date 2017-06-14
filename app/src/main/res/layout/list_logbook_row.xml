@@ -38,7 +38,7 @@
                     android:layout_height="45dp"
                     android:layout_weight="1"
                     android:padding="5dp"
-                    android:src="@drawable/ic_note" />
+                    app:srcCompat="@drawable/ic_note" />
 
                 <TextView
                     android:id="@+id/Registo"
