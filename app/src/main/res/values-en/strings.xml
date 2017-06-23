@@ -247,15 +247,15 @@
     <string name="add_photo">Add Photo</string>
     <string name="create_backup">Create Backup</string>
 
-    <string name="add_3_records_log">Add 3 Logbook Entries</string>
     <string name="add_10_records_log">Add 10 Logbook Entries</string>
     <string name="add_20_records_log">Add 20 Logbook Entries</string>
-    <string name="add_40_records_log">Add 40 Logbook Entries</string>
-    <string name="add_60_records_log">Add 60 Logbook Entries</string>
-    <string name="add_80_records_log">Add 80 Logbook Entries</string>
+    <string name="add_30_records_log">Add 30 Logbook Entries</string>
+    <string name="add_50_records_log">Add 50 Logbook Entries</string>
+    <string name="add_100_records_log">Add 100 Logbook Entries</string>
     <string name="add_150_records_log">Add 150 Logbook Entries</string>
     <string name="add_200_records_log">Add 200 Logbook Entries</string>
     <string name="add_250_records_log">Add 250 Logbook Entries</string>
+    <string name="add_300_records_log">Add 300 Logbook Entries</string>
 
     <string name="add_3_records_exercise">Add 3 Exercise Records</string>
     <string name="add_10_records_exercise">Add 10 Exercise Records</string>
@@ -318,9 +318,9 @@
     <string name="add_9_records_hba1c">Add 9 Hba1c Records</string>
 
 
-    <string name="add_2_daily_record">Add 2 Daily Records</string>
-    <string name="add_4_daily_record">Add 4 Daily Records</string>
-    <string name="add_6_daily_record">Add 6 Daily Records</string>
+    <string name="add_5_daily_record">Add 5 Daily Records</string>
+    <string name="add_10_daily_record">Add 10 Daily Records</string>
+    <string name="add_15_daily_record">Add 15 Daily Records</string>
 
     <string name="sick_days">Sick Days</string>
     <string name="subtitle_diabetes_factors">Details and Factors</string>

@@ -28,17 +28,17 @@ import pt.it.porto.mydiabetes.database.DB_Write;
  */
 
 public class BadgeUtils {
-    static final private int LOG_BRONZE_RECORDS_B = 3;
-    static final private int LOG_SILVER_RECORDS_B = 10;
-    static final private int LOG_GOLD_RECORDS_B = 20;
+    static final private int LOG_BRONZE_RECORDS_B = 10;
+    static final private int LOG_SILVER_RECORDS_B = 20;
+    static final private int LOG_GOLD_RECORDS_B = 30;
 
-    static final private int LOG_BRONZE_RECORDS_M = 40;
-    static final private int LOG_SILVER_RECORDS_M = 60;
-    static final private int LOG_GOLD_RECORDS_M = 80;
+    static final private int LOG_BRONZE_RECORDS_M = 50;
+    static final private int LOG_SILVER_RECORDS_M = 100;
+    static final private int LOG_GOLD_RECORDS_M = 150;
 
-    static final private int LOG_BRONZE_RECORDS_A = 150;
-    static final private int LOG_SILVER_RECORDS_A = 200;
-    static final private int LOG_GOLD_RECORDS_A = 250;
+    static final private int LOG_BRONZE_RECORDS_A = 200;
+    static final private int LOG_SILVER_RECORDS_A = 250;
+    static final private int LOG_GOLD_RECORDS_A = 300;
 
     static final private int EXERCISE_BRONZE_RECORDS_B = 3;
     static final private int EXERCISE_SILVER_RECORDS_B = 10;
@@ -113,9 +113,9 @@ public class BadgeUtils {
     static final private int HBA1C_SILVER_RECORDS_A = 8;
     static final private int HBA1C_GOLD_RECORDS_A = 9;
 
-    static final private int DAILY_BRONZE_RECORDS = 2;
-    static final private int DAILY_SILVER_RECORDS = 4;
-    static final private int DAILY_GOLD_RECORDS = 6;
+    static final private int DAILY_BRONZE_RECORDS = 5;
+    static final private int DAILY_SILVER_RECORDS = 10;
+    static final private int DAILY_GOLD_RECORDS = 15;
 
 
     public static void addPhotoBadge(Context context, DB_Read db) {

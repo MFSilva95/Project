@@ -466,15 +466,15 @@
     <string name="add_photo">Adicionar Foto</string>
     <string name="create_backup">Criar Cópia de Segurança</string>
 
-    <string name="add_3_records_log">Adicionar 3 Registos no LogBook</string>
     <string name="add_10_records_log">Adicionar 10 Registos no LogBook</string>
     <string name="add_20_records_log">Adicionar 20 Registos no LogBook</string>
-    <string name="add_40_records_log">Adicionar 40 Registos no LogBook</string>
-    <string name="add_60_records_log">Adicionar 60 Registos no LogBook</string>
-    <string name="add_80_records_log">Adicionar 80 Registos no LogBook</string>
+    <string name="add_30_records_log">Adicionar 30 Registos no LogBook</string>
+    <string name="add_50_records_log">Adicionar 50 Registos no LogBook</string>
+    <string name="add_100_records_log">Adicionar 100 Registos no LogBook</string>
     <string name="add_150_records_log">Adicionar 150 Registos no LogBook</string>
     <string name="add_200_records_log">Adicionar 200 Registos no LogBook</string>
     <string name="add_250_records_log">Adicionar 250 Registos no LogBook</string>
+    <string name="add_300_records_log">Adicionar 300 Registos no LogBook</string>
 
     <string name="add_3_records_exercise">Adicionar 3 Registos de Exercício</string>
     <string name="add_10_records_exercise">Adicionar 10 Registos de Exercício</string>
@@ -537,9 +537,9 @@
     <string name="add_9_records_hba1c">Adicionar 9 Registos de Hba1c</string>
 
 
-    <string name="add_2_daily_record">Adicionar 2 Registos Diários</string>
-    <string name="add_4_daily_record">Adicionar 4 Registos Diários</string>
-    <string name="add_6_daily_record">Adicionar 6 Registos Diários</string>
+    <string name="add_5_daily_record">Adicionar 5 Registos Diários</string>
+    <string name="add_10_daily_record">Adicionar 10 Registos Diários</string>
+    <string name="add_15_daily_record">Adicionar 15 Registos Diários</string>
 
     <string name="sick_days">Dias Doente</string>
     <string name="bp_unit" translatable="false">mmHg</string>

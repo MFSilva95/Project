@@ -76,7 +76,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_150_records_log"
+                        android:text="@string/add_200_records_log"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -100,7 +100,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_200_records_log"
+                        android:text="@string/add_250_records_log"
                         android:textSize="12sp" />
 
                 </LinearLayout>
@@ -124,7 +124,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_250_records_log"
+                        android:text="@string/add_300_records_log"
                         android:textSize="12sp" />
 
                 </LinearLayout>

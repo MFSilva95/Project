@@ -71,7 +71,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_2_daily_record"
+                        android:text="@string/add_5_daily_record"
                         android:textSize="12sp" />
 
                     <TextView
@@ -103,7 +103,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_4_daily_record"
+                        android:text="@string/add_10_daily_record"
                         android:textSize="12sp" />
 
                     <TextView
@@ -136,7 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_6_daily_record"
+                        android:text="@string/add_15_daily_record"
                         android:textSize="12sp" />
 
                     <TextView
