@@ -354,7 +354,7 @@ public class homeMiddleFragment extends Fragment {
                             reg.close();
                             db_read.close();
 //                            Log.i(TAG, "onClick: cenas -> " + logBookList.size());
-                            if (hasNoLogElements(logBookList)) {
+                           /* if (hasNoLogElements(logBookList)) {
                                 logBookList = new ArrayList<HomeElement>();
                                 listEmpty.setVisibility(View.VISIBLE);
                                 listEmpty.bringToFront();
@@ -362,7 +362,8 @@ public class homeMiddleFragment extends Fragment {
                                 listEmpty.setVisibility(View.GONE);
                             }
                             ((HomeAdapter) homeRecyclerView.getAdapter()).updateList(logBookList);
-                            homeRecyclerView.getAdapter().notifyDataSetChanged();
+                            homeRecyclerView.getAdapter().notifyDataSetChanged();*/
+                            fillHomeList();
                             toDeleteList.clear();
                             setDeleteMode(false);
                         } catch (Exception e) {
@@ -382,7 +383,7 @@ public class homeMiddleFragment extends Fragment {
 
     private boolean hasNoLogElements(List<HomeElement> logBookList) {
         for(HomeElement elem:logBookList){
-            if(elem.getDisplayType().equals(HomeElement.Type.LOGITEM.toString())){
+            if(elem.getDisplayType().toString().equals(HomeElement.Type.LOGITEM.toString())){
                 return false;
             }
         }
