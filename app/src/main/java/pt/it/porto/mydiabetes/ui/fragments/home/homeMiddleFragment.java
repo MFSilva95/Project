@@ -363,7 +363,7 @@ public class homeMiddleFragment extends Fragment {
                             }
                             ((HomeAdapter) homeRecyclerView.getAdapter()).updateList(logBookList);
                             homeRecyclerView.getAdapter().notifyDataSetChanged();*/
-                            fillHomeList();
+                            updateHomeList();
                             toDeleteList.clear();
                             setDeleteMode(false);
                         } catch (Exception e) {
