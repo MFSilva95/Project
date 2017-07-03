@@ -156,7 +156,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 return vh;
             case 3:
                 // Log.i("________POSITION_____", "TASK");
-                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_task_row, parent, false);
+//                v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_task_row, parent, false);
                 vh = new ViewHolder((LinearLayout) v, true);
                 v.setTag(vh);
                 return vh;
@@ -212,7 +212,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     myText.setTextColor(Color.RED);
                 }
                 myText.setText(currentAdvice.getSummaryText());
-                holder.view.setOnClickListener(getAdviceClickListener(currentAdvice));
+//                holder.view.setOnClickListener(getAdviceClickListener(currentAdvice));
                 break;
             case LOGITEM:
                 v = holder.view;
@@ -224,14 +224,14 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 break;
             case TASK:
                 final Task currentTask = (Task) currentView;
-                textHolder = (LinearLayout) v.findViewById(R.id.taskRowBackground);
+//                textHolder = (LinearLayout) v.findViewById(R.id.taskRowBackground);
                 textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
                 myText = (TextView) v.findViewById(R.id.content);
                 if (currentTask.getUrgency() > 7) {
                     myText.setTextColor(Color.RED);
                 }
                 myText.setText(currentTask.getSummaryText());
-                holder.view.setOnClickListener(getTaskClickListener(currentTask));
+//                holder.view.setOnClickListener(getTaskClickListener(currentTask));
                 break;
         }
     }
@@ -358,79 +358,79 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     }
 
 
-    private View.OnClickListener getAdviceClickListener(final Advice currentAdvice){
-
-
-        View.OnClickListener onclick = new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                LayoutInflater inflater = LayoutInflater.from(v.getContext());
-                builder.setView(inflater.inflate(R.layout.dialog_exp_advice, null));
-                if (!currentAdvice.getAdviceType().equals("ALERT") && !currentAdvice.getAdviceType().equals("NORMAL")) {
-                    builder.setNegativeButton(v.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            if (currentAdvice.getAdviceType().equals("QUESTION")) {
-                                //myYapInstance.insertRule("has("+currentAdvice.getRegistryType()+")");
-                            }
-                            if (currentAdvice.getAdviceType().equals("SUGGESTION")) {
-                                Class<?> wantedAct = null;
-                                String classPath = "";
-                                try {
-                                    classPath = "pt.it.porto.mydiabetes.ui.activities." + currentAdvice.getRegistryType();
-                                    wantedAct = Class.forName(classPath);
-
-                                } catch (ClassNotFoundException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
-                                }
-
-                                Intent intent = new Intent(c, wantedAct);
-                                c.startActivity(intent);
-                            }
-                            dialog.dismiss();
-                        }
-                    });
-                }
-
-                Dialog dialog = builder.create();
-                dialog.show();
-
-                TextView textView = (TextView) dialog.findViewById(R.id.popup_text);
-                textView.setText(currentAdvice.getExpandedText());
-
-            }
-        };
-        return onclick;
-    }
-    private View.OnClickListener getTaskClickListener(final Task currentTask){
-
-
-        View.OnClickListener onclick = new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-                LayoutInflater inflater = LayoutInflater.from(v.getContext());
-                builder.setView(inflater.inflate(R.layout.dialog_exp_task, null));
-                Dialog dialog = builder.create();
-                dialog.show();
-                TextView textView = (TextView) dialog.findViewById(R.id.popup_task_text);
-                textView.setText(currentTask.getExpandedText());
-            }
-        };
-        return onclick;
-
-    }
+//    private View.OnClickListener getAdviceClickListener(final Advice currentAdvice){
+//
+//
+//        View.OnClickListener onclick = new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//
+//                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+//                LayoutInflater inflater = LayoutInflater.from(v.getContext());
+//                builder.setView(inflater.inflate(R.layout.dialog_exp_advice, null));
+//                if (!currentAdvice.getAdviceType().equals("ALERT") && !currentAdvice.getAdviceType().equals("NORMAL")) {
+//                    builder.setNegativeButton(v.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialog, int which) {
+//                            if (currentAdvice.getAdviceType().equals("QUESTION")) {
+//                                //myYapInstance.insertRule("has("+currentAdvice.getRegistryType()+")");
+//                            }
+//                            if (currentAdvice.getAdviceType().equals("SUGGESTION")) {
+//                                Class<?> wantedAct = null;
+//                                String classPath = "";
+//                                try {
+//                                    classPath = "pt.it.porto.mydiabetes.ui.activities." + currentAdvice.getRegistryType();
+//                                    wantedAct = Class.forName(classPath);
+//
+//                                } catch (ClassNotFoundException e) {
+//                                    // TODO Auto-generated catch block
+//                                    e.printStackTrace();
+//                                }
+//
+//                                Intent intent = new Intent(c, wantedAct);
+//                                c.startActivity(intent);
+//                            }
+//                            dialog.dismiss();
+//                        }
+//                    });
+//                }
+//
+//                Dialog dialog = builder.create();
+//                dialog.show();
+//
+//                TextView textView = (TextView) dialog.findViewById(R.id.popup_text);
+//                textView.setText(currentAdvice.getExpandedText());
+//
+//            }
+//        };
+//        return onclick;
+//    }
+//    private View.OnClickListener getTaskClickListener(final Task currentTask){
+//
+//
+//        View.OnClickListener onclick = new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+//                LayoutInflater inflater = LayoutInflater.from(v.getContext());
+//                builder.setView(inflater.inflate(R.layout.dialog_exp_task, null));
+//                Dialog dialog = builder.create();
+//                dialog.show();
+//                TextView textView = (TextView) dialog.findViewById(R.id.popup_task_text);
+//                textView.setText(currentTask.getExpandedText());
+//            }
+//        };
+//        return onclick;
+//
+//    }
     @Override
     public int getItemCount() {
         return homeList.size();
