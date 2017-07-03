@@ -1,8 +1,20 @@
 <resources>
+    <string name="advice">Advice</string>
+    <string name="task">Task</string>
+    <string name="advices">Advices</string>
+    <string name="tasks">Tasks</string>
+    <string name="recentReg">Recent Registries</string>
 
+    <string name="targetOverlapError">A glicemic target is already defined at this time period</string>
+    <string name="glycemia_value">Glycaemia Value</string>
+    <string name="navTask">My Tasks</string>
+    <string name="navLog">My Logbook</string>
+    <string name="navPersonalTools">Personal options</string>
+    <string name="navDiabetesTools">Diabetes options</string>
+    <string name="noteError">Please insert at least one record</string>
     <string name="Carbs">Carbs</string>
     <string name="Exercise">Exercise</string>
-    <string name="Glycemia">Glycemia</string>
+    <string name="Glycemia">Glycaemia</string>
     <string name="Insulin">Insulin</string>
     <string name="Meal">Meal</string>
     <string name="action_settings">Settings</string>
@@ -22,5 +34,339 @@
     <string name="goal">Goal</string>
     <string name="gender">Gender</string>
     <string name="flu">Flu</string>
+    <string name="information_about_developers">Developed by Diogo Machado, Ricardo Parra, Eduardo Soares, João Maia, João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
+    <string name="information_about_libraries">This application uses the AAkira/ExpandableLayout and Pierry/SimpleToast library.</string>
+    <string name="insulin">Insulin</string>
+    <string name="information_about_version">Version </string>
+    <string name="weight">Weight</string>
+    <string name="Logbook">Logbook</string>
+    <string name="cholesterol">Cholesterol</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="export">Export</string>
+    <string name="grams">grams</string>
+    <string name="hint_value3">e.g.: 45</string>
+    <string name="add_H1A1c">Add HbA1C</string>
+    <string name="add_InsulinsFragment">Add Insulin</string>
+    <string name="app_name">myDiabetes</string>
+    <string name="hint_value4">e.g.: 10</string>
+    <string name="hint_value5">e.g.: 70</string>
+    <string name="hint_value6">e.g.: 150</string>
+    <string name="hint_value7">e.g.: 1.82</string>
+    <string name="hint_weight">170 (in lbs)</string>
+    <string name="hour">Hour</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
+    <string-array name="daytimes">
+        <item>Waking up</item>
+        <item>Before Breakfast</item>
+        <item>After Breakfast</item>
+        <item>Before Lunch</item>
+        <item>After Lunch</item>
+        <item>Before Dinner</item>
+        <item>After Dinner</item>
+        <item>Going to bed</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="bg_targets">
+        <item>Day</item>
+        <item>Night</item>
+    </string-array>
+
+
+    <string name="add_Exercise">Add Exercise</string>
+    <string name="title_activity_my_data">My Data</string>
+    <string name="title_activity_preferences">Preferences</string>
+    <string name="title_activity_exercise">Exercise Register</string>
+    <string name="save_MyData">Save</string>
+    <string name="title_activity_glycemia">Glycaemia Register</string>
+    <string name="add_Glycemia">Add Glycaemia</string>
+    <string name="title_activity_insulin">Insulin Register</string>
+    <string name="title_activity_logbook">LogBook</string>
+    <string name="add_Insulin">Add Insulin</string>
+    <string name="title_activity_carbo_hydrate">Carbohydrates Register</string>
+    <string name="title_activity_cholesterol">Cholesterol Register</string>
+    <string name="title_activity_disease">Disease Register</string>
+    <string name="title_activity_h1_a1c">HbA1c Register</string>
+    <string name="title_activity_weight">Weight Register</string>
+    <string name="add_Weight">Add Weight</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_TagsFragment">Add Tag</string>
+    <string name="add_ExercisesFragment">Add Exercise</string>
+
+    <string name="add_MedicinesFragment">Add Medicament</string>
+    <string name="delete_MedicinesFragment">Delete Medicament?</string>
+    <string name="error_MedicinesFragment">You cannot delete this medicament, it is referred in the Register!</string>
+    <string name="delete_Disease">Delete Disease?</string>
+    <string name="title_activity_transfer">Transfer to PC</string>
+    <string name="title_activity_scan">Scan</string>
+    <string name="title_activity_cloud_server">CloudServerActivity</string>
+    <string name="transf_WaitMesg">Wait Connection</string>
+    <string name="transf_WaitTitle">Atention</string>
+    <string name="transf_ConnOK">Connection Established</string>
+    <string name="transf_InfoTitle">Information</string>
+
+    <string-array name="Sex">
+        <item>@string/gender_male</item>
+        <item>@string/gender_female</item>
+    </string-array>
+    <string-array name="diabetes_Type">
+        <item>@string/diabetes_type_1</item>
+        <item>@string/diabetes_type_2</item>
+        <item>@string/diabetes_type_gestational</item>
+    </string-array>
+    <string name="diabetes_type_1">Type 1</string>
+    <string name="diabetes_type_2">Type 2</string>
+    <string name="diabetes_type_gestational">Gestational</string>
+    <string name="title_activity_data_tools">Definitions &amp; Tools</string>
+    <string name="title_activity_glycemia_detail">Glycaemia Register</string>
+    <string name="save_GlycemiaDetail">Save</string>
+    <string name="title_activity_insulin_detail">Insulin Register</string>
+    <string name="title_activity_exercise_detail">Exercise Register</string>
+    <string name="title_activity_logbook_detail">Logbook Register</string>
+    <string name="save_detail">Save</string>
+    <string name="delete_detail">Delete</string>
+    <string name="deleteReading">Delete Reading?</string>
+    <string name="positiveButton">Yes</string>
+    <string name="negativeButton">Cancel</string>
+    <string name="saveButton">Save</string>
+    <string name="deleteException">Cannot delete this Reading!</string>
+    <string name="deleteAlert">Alert!</string>
+    <string name="deleteConfirmationSingular">The following item will be deleted:</string>
+    <string name="deleteConfirmationPlural">The following items will be deleted:</string>
+    <string name="deleteCarbsReg">Carbohydrates Register</string>
+    <string name="deleteGlycemiaReg">Glycaemia Register</string>
+    <string name="deleteInsulinReg">Insulin Register</string>
+
+    <string-array name="Effort">
+        <item>Very Light</item>
+        <item>Light</item>
+        <item>Moderate</item>
+        <item>Intense</item>
+        <item>Very Intense</item>
+    </string-array>
+
+    <string name="title_activity_carbo_hydrate_detail">Carbohydrates Register</string>
+    <string name="title_activity_cholesterol_detail">Cholesterol Register</string>
+    <string name="title_activity_weight_detail">Weight Register</string>
+    <string name="title_activity_hb_a1c_detail">HbA1c Register</string>
+    <string name="title_activity_disease_detail">Disease Register</string>
+    <string name="title_activity_import_export">Import &amp; Export</string>
+    <string name="title_activity_tag_detail">Day Time</string>
+    <string name="title_activity_target_bg_detail">Glycemia Objective</string>
+    <string name="title_activity_insulins_detail">Insulin</string>
+    <string name="title_activity_meal">Meal</string>
+    <string name="title_activity_info">Information</string>
+    <string name="delete_Exercise">Delete Exercise?</string>
+
+
+    <string name="select_time">Select Time</string>
+    <string name="select_date">Select Date</string>
+    <string name="add_more_registers">Add more Registers</string>
+
+    <string-array name="task_period_list">
+        <item>Every Day</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+        <item>Yearly</item>
+    </string-array>
+
+    <string-array name="task_type_list">
+        <item>Glycaemia</item>
+        <item>Insulin</item>
+        <item>Meal</item>
+        <item>Exercise</item>
+        <item>Weight</item>
+        <item>Cholesterol</item>
+    </string-array>
+
+
+    <string name="correction_glycemia">Glycaemia Correction</string>
+    <string name="correction_hc">Carbohydrates Correction</string>
+    <string name="insulin_active">Insulin On Board</string>
+    <string name="insulin_total">Total Insulin</string>
+
+    <string name="glycemia_objective">Glycaemia Objective</string>
+    <string name="glycemia_measure">Glycaemia Read</string>
+    <string name="insulin_intake">Insulin to Administrate</string>
+    <string name="carbs_intake">Carbohydrates Consumption</string>
+    <string name="active_insulin">Insulin on Board</string>
+    <string name="backup">Backup</string>
+    <string name="information_about">Application developed in the Instituto de Telecomunicações\'s interim project  \"S-Dia-SelMan - Smart Diabetes Self Management System\". Development in the School of Sciences and Medicine of the Univ. of Porto in cooperation with S. João\'s Hospital.</string>
+    <string name="information_about_using">The application is under development and for its use you should have signed the informed consent and have been informed about the methodology of the study.</string>
+    <string name="bloodglucose">Glycaemia</string>
+    <string name="bloodpressure">Blood pressure</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="carbs_extended">Carbohydrates</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="before_lunch">Before Lunch</string>
+    <string name="chart_activity_label">Weight</string>
+    <string name="cancel_read">Reading Cancelled</string>
+    <string name="delete">Delete</string>
+    <string name="diastolic">Diastolic</string>
+    <string name="disease">Disease</string>
+    <string name="duration">Duration</string>
+    <string name="effort"></string>
+    <string name="systolic">Systolic</string>
+    <string name="sync">Synchronization</string>
+    <string name="start">Start</string>
+    <string name="type">Type</string>
+    <string name="uni">Unit</string>
+    <string name="units">Units</string>
+    <string name="use">Use</string>
+    <string name="glicInputError">Not a valid Number</string>
+
+    <string name="years">Years Old</string>
+    <string name="badges">Badges</string>
+    <string name="beginner">Beginner</string>
+    <string name="daily">Daily</string>
+    <string name="list_badge_empty_message">Has not received any medals yet</string>
+    <string name="ainda_n_o_tem_registos_precione_o_simbolo_para_fazer_novo_registo">No registers this week\n Press \'+\' to do a new register.</string>
+
+    <string name="notes">Notes</string>
+
+    <string name="insulin_type_pen">Pen</string>
+    <string name="insulin_type_pump">Pump</string>
+
+    <string name="edit_day_phases">Edit Phases of the Day</string>
+    <string name="restore_backup_button">Restore Backup</string>
+    <string name="restore_backup_button_welcome">Restore\nBackup</string>
+    <string name="do_back">Create Backup</string>
+
+    <string name="health">Health</string>
+    <string name="record">Record</string>
+    <string name="records">Records</string>
+    <string name="personal">Personal</string>
+    <string name="today_medal">Today\'s Medal</string>
+    <string name="level">Level</string>
+    <string name="points">Points</string>
+    <string name="medium">Medium</string>
+    <string name="advanced">Advanced</string>
+
+    <string name="add_photo">Add Photo</string>
+    <string name="create_backup">Create Backup</string>
+
+    <string name="add_10_records_log">Add 10 Logbook Entries</string>
+    <string name="add_20_records_log">Add 20 Logbook Entries</string>
+    <string name="add_30_records_log">Add 30 Logbook Entries</string>
+    <string name="add_50_records_log">Add 50 Logbook Entries</string>
+    <string name="add_100_records_log">Add 100 Logbook Entries</string>
+    <string name="add_150_records_log">Add 150 Logbook Entries</string>
+    <string name="add_200_records_log">Add 200 Logbook Entries</string>
+    <string name="add_250_records_log">Add 250 Logbook Entries</string>
+    <string name="add_300_records_log">Add 300 Logbook Entries</string>
+
+    <string name="add_3_records_exercise">Add 3 Exercise Records</string>
+    <string name="add_10_records_exercise">Add 10 Exercise Records</string>
+    <string name="add_20_records_exercise">Add 20 Exercise Records</string>
+    <string name="add_30_records_exercise">Add 30 Exercise Records</string>
+    <string name="add_50_records_exercise">Add 50 Exercise Records</string>
+    <string name="add_70_records_exercise">Add 70 Exercise Records</string>
+    <string name="add_90_records_exercise">Add 90 Exercise Records</string>
+    <string name="add_120_records_exercise">Add 120 Exercise Records</string>
+    <string name="add_150_records_exercise">Add 150 Exercise Records</string>
+
+    <string name="add_1_records_disease">Add 1 Disease Record</string>
+    <string name="add_2_records_disease">Add 2 Disease Records</string>
+    <string name="add_3_records_disease">Add 3 Disease Records</string>
+    <string name="add_4_records_disease">Add 4 Disease Records</string>
+    <string name="add_5_records_disease">Add 5 Disease Records</string>
+    <string name="add_6_records_disease">Add 6 Disease Records</string>
+    <string name="add_7_records_disease">Add 7 Disease Records</string>
+    <string name="add_8_records_disease">Add 8 Disease Records</string>
+    <string name="add_9_records_disease">Add 9 Disease Records</string>
+
+    <string name="add_3_records_weight">Add 3 Weight Records</string>
+    <string name="add_10_records_weight">Add 10 Weight Records</string>
+    <string name="add_20_records_weight">Add 20 Weight Records</string>
+    <string name="add_40_records_weight">Add 40 Weight Records</string>
+    <string name="add_60_records_weight">Add 60 Weight Records</string>
+    <string name="add_80_records_weight">Add 80 Weight Records</string>
+    <string name="add_90_records_weight">Add 90 Weight Records</string>
+    <string name="add_120_records_weight">Add 120 Weight Records</string>
+    <string name="add_150_records_weight">Add 150 Weight Records</string>
+
+    <string name="add_1_records_bp">Add 1 B. Pressure Record</string>
+    <string name="add_3_records_bp">Add 3 B. Pressure Records</string>
+    <string name="add_5_records_bp">Add 5 B. Pressure Records</string>
+    <string name="add_10_records_bp">Add 10 B. Pressure Records</string>
+    <string name="add_20_records_bp">Add 20 B. Pressure Records</string>
+    <string name="add_30_records_bp">Add 30 B. Pressure Records</string>
+    <string name="add_40_records_bp">Add 40 B. Pressure Records</string>
+    <string name="add_50_records_bp">Add 50 B. Pressure Records</string>
+    <string name="add_60_records_bp">Add 60 B. Pressure Records</string>
+
+    <string name="add_1_records_cholesterol">Add 1 Cholesterol Record</string>
+    <string name="add_2_records_cholesterol">Add 2 Cholesterol Records</string>
+    <string name="add_3_records_cholesterol">Add 3 Cholesterol Records</string>
+    <string name="add_4_records_cholesterol">Add 4 Cholesterol Records</string>
+    <string name="add_5_records_cholesterol">Add 5 Cholesterol Records</string>
+    <string name="add_6_records_cholesterol">Add 6 Cholesterol Records</string>
+    <string name="add_7_records_cholesterol">Add 7 Cholesterol Records</string>
+    <string name="add_8_records_cholesterol">Add 8 Cholesterol Records</string>
+    <string name="add_9_records_cholesterol">Add 9 Cholesterol Records</string>
+
+    <string name="add_1_records_hba1c">Add 1 Hba1c Record</string>
+    <string name="add_2_records_hba1c">Add 2 Hba1c Records</string>
+    <string name="add_3_records_hba1c">Add 3 Hba1c Records</string>
+    <string name="add_4_records_hba1c">Add 4 Hba1c Records</string>
+    <string name="add_5_records_hba1c">Add 5 Hba1c Records</string>
+    <string name="add_6_records_hba1c">Add 6 Hba1c Records</string>
+    <string name="add_7_records_hba1c">Add 7 Hba1c Records</string>
+    <string name="add_8_records_hba1c">Add 8 Hba1c Records</string>
+    <string name="add_9_records_hba1c">Add 9 Hba1c Records</string>
+
+
+    <string name="add_5_daily_record">Add 5 Daily Records</string>
+    <string name="add_10_daily_record">Add 10 Daily Records</string>
+    <string name="add_15_daily_record">Add 15 Daily Records</string>
+
+    <string name="sick_days">Sick Days</string>
+    <string name="subtitle_diabetes_factors">Details and Factors</string>
+    <string name="subtitle_personal_data">Personal Data</string>
+    <string name="welcome_text">Welcome to myDiabetes</string>
+
+    <string name="new_insulin_record">New Insulin Record</string>
+    <string name="new_glycemia_objective">New Glucose Target</string>
+    <string name="medium_unlock_lvl10">Medium (Unlockable at level 10)</string>
+    <string name="advanced_unlock_lvl30">Advanced (Unlockable at level 30)</string>
+    <string name="received_a_medal">Received a Medal</string>
+    <string name="received_a_daily_medal">Received a Daily Medal</string>
+    <string name="minutes">Minutes</string>
+
+    <string name="next_button">Next</string>
+    <string name="name">Name</string>
+
+    <string name="diabetes_type">Type of Diabetes</string>
+    <string name="sensivity_factor">Sensitivity factor</string>
+    <string name="carbs_racio">Carbohydrate Ratio</string>
+    <string name="hypoglycemia_limit">Limit to Hypoglycaemia</string>
+    <string name="hyperglycemia_limit">Limit for Hyperglycaemia</string>
+
+    <string name="insulin_name">Name for Insulin</string>
+    <string name="insulin_method">Type of Administration</string>
+    <string name="description">Description</string>
+    <string name="schedule">Schedule</string>
+
+    <string name="use_iob">Use Insulin On Board</string>
+    <string name="settings_factors_ratio">Edit Factors and Ratio\'s</string>
+    <string name="settings_edit_insulins">Edit Insulin\'s</string>
+    <string name="settings_edit_glicemia_targets">Edit Glucose Goals</string>
+    <string name="new_note">New Note</string>
+
+    <string name="badge_help_dialog_title">How to win Badges?</string>
+    <string name="badge_help_dialog_desc">To win Badges you must complete the required records for each. The intermediate and advanced levels are unlockable at levels 10 and 30 respectively.
+        For each record inserted gain 100 points and 200 per medal. Collect points to level up.</string>
+
+    <string name="email_feedback_subject">Opinion and Comments about myDiabetes</string>
+
+    <string name="exit_dialog_title">Exit without saving</string>
+    <string name="exit_dialog_description">Are you sure you want to leave without saving?</string>
+    <string name="hc_units">uni</string>
+
+    <string name="preferences_day">Day Fases</string>
+    <string name="preferences_target">Glycemia Objectives</string>
+    <string name="preferences_insulins">Insulins</string>
+    <string name="preferences_factors">Factors and Ratio\'s</string>
 </resources>

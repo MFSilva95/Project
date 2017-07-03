@@ -23,9 +23,8 @@ public class InsulinData implements Serializable, Parcelable {
 	int pox;
 
 
-	public InsulinData(int pox, Context context) {
+	public InsulinData(int pox) {
 		this.pox = pox;
-		this.name = context.getResources().getString(R.string.insulin) + " " + String.valueOf(pox + 1);
 	}
 
 	protected InsulinData(Parcel in) {

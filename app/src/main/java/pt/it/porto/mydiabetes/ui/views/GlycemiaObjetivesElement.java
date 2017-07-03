@@ -60,7 +60,7 @@ public class GlycemiaObjetivesElement extends CardView {
 		setupRemoveButton((Button) layoutEdit.findViewById(R.id.buttons_create).findViewById(R.id.cancelButton));
 		setupRemoveButton((Button) layoutEdit.findViewById(R.id.buttons_edit).findViewById(R.id.removeButton));
 
-		((TextView) layoutEdit.findViewById(R.id.description)).setOnFocusChangeListener(new OnFocusChangeListener() {
+		layoutEdit.findViewById(R.id.description).setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View view, boolean b) {
 				if (!b) {
@@ -69,7 +69,7 @@ public class GlycemiaObjetivesElement extends CardView {
 			}
 		});
 
-		((TextView) layoutEdit.findViewById(R.id.time_start)).setOnFocusChangeListener(new OnFocusChangeListener() {
+		layoutEdit.findViewById(R.id.time_start).setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View view, boolean b) {
 				if (!b) {
@@ -77,7 +77,7 @@ public class GlycemiaObjetivesElement extends CardView {
 				}
 			}
 		});
-		((TextView) layoutEdit.findViewById(R.id.time_end)).setOnFocusChangeListener(new OnFocusChangeListener() {
+		layoutEdit.findViewById(R.id.time_end).setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View view, boolean b) {
 				if (!b) {
@@ -85,7 +85,7 @@ public class GlycemiaObjetivesElement extends CardView {
 				}
 			}
 		});
-		((TextView) layoutEdit.findViewById(R.id.glycemia_objective)).setOnFocusChangeListener(new OnFocusChangeListener() {
+		layoutEdit.findViewById(R.id.glycemia_objective).setOnFocusChangeListener(new OnFocusChangeListener() {
 			@Override
 			public void onFocusChange(View view, boolean b) {
 				if (!b) {
@@ -94,26 +94,26 @@ public class GlycemiaObjetivesElement extends CardView {
 			}
 		});
 
-		((TextView) layoutEdit.findViewById(R.id.time_start)).setOnClickListener(new OnClickListener() {
+		layoutEdit.findViewById(R.id.time_start).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
 					@Override
 					public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-						((TextView) layoutEdit.findViewById(R.id.time_start)).setText(String.format("%s:%s", String.valueOf(hour), String.valueOf(minute)));
+						((TextView) layoutEdit.findViewById(R.id.time_start)).setText(String.format("%02d:%02d", hour, minute));
 
 					}
 				}, 12, 0, true).show();
 			}
 		});
 
-		((TextView) layoutEdit.findViewById(R.id.time_end)).setOnClickListener(new OnClickListener() {
+		layoutEdit.findViewById(R.id.time_end).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View view) {
 				new TimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
 					@Override
 					public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-						((TextView) layoutEdit.findViewById(R.id.time_end)).setText(String.format("%s:%s", String.valueOf(hour), String.valueOf(minute)));
+						((TextView) layoutEdit.findViewById(R.id.time_end)).setText(String.format("%02d:%02d",hour, minute));
 
 					}
 				}, 12, 0, true).show();

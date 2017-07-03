@@ -1,144 +1,319 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.Activity;
-import android.app.AlertDialog;
+import android.Manifest;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.GestureDetector;
-import android.view.GestureDetector.SimpleOnGestureListener;
+import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ShareCompat;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnTouchListener;
-import android.widget.ScrollView;
+import android.widget.Toast;
 
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
+import pt.it.porto.mydiabetes.utils.CustomViewPager;
+
+import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.PROJECT_MANAGER_EMAIL;
 
 
-public class Home extends BaseOldActivity {
+public class Home extends BaseActivity {
 
-	private static final String TAG = "Home";
+	public static final int CHANGES_OCCURRED = 1;
+
+	private NavigationView navigationView;
+	private DrawerLayout drawerLayout;
+
+	private YapDroid yapDroid;
+
+	private CustomViewPager mViewPager;
+	private PagerAdapter adapter;
+	private BottomNavigationView bottomNavigationView;
+
+	private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
+	private static final int REQUEST_PERMISSION_SETTING = 101;
+	private boolean sentToSettings = false;
+	private SharedPreferences permissionStatus;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
-		getActionBar();
+
+		permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
 
 		DB_Read read = new DB_Read(this);
+
 		if (!read.MyData_HasData()) {
 			ShowDialogAddData();
+			read.close();
+			return;
 		}
 		read.close();
 
-		final GestureDetector gestureDetector;
-		gestureDetector = new GestureDetector(this, new MyGestureDetector());
-		ScrollView sv = (ScrollView) findViewById(R.id.homeScrollView);
-		sv.setOnTouchListener(new OnTouchListener() {
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		setSupportActionBar(toolbar);
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
 
-			public boolean onTouch(View v, MotionEvent event) {
-				return !gestureDetector.onTouchEvent(event);
+		ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
+				this, drawerLayout, toolbar,
+				R.string.navigation_drawer_open, R.string.navigation_drawer_close
+		);
+
+
+
+		drawerLayout.addDrawerListener(mDrawerToggle);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		getSupportActionBar().setHomeButtonEnabled(true);
+		mDrawerToggle.syncState();
+
+
+		mViewPager = (CustomViewPager) super.findViewById(R.id.content_home_fragment);
+		adapter = new homePageAdapter(super.getSupportFragmentManager());
+		mViewPager.setAdapter(adapter);
+		mViewPager.setOffscreenPageLimit(1);
+		mViewPager.blockSwipeRight(true);
+		mViewPager.blockSwipeLeft(true);
+		if (savedInstanceState == null) {
+			mViewPager.setCurrentItem(1);
+		}
+		else{
+			mViewPager.setCurrentItem(savedInstanceState.getInt("viewpager", 0));
+		}
+
+
+		bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+		//----------------------nav
+		navigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+        if(!BuildConfig.TASKS_AVAILABLE){
+			navigationView.getMenu().findItem(R.id.userTasks).setVisible(false);
+        }
+
+		navigationView.setItemIconTintList(null);
+		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+			// This method will trigger on item Click of navigation menu
+			@Override
+			public boolean onNavigationItemSelected(MenuItem menuItem) {
+				drawerLayout.closeDrawers();
+				Intent intent;
+
+				switch (menuItem.getItemId()) {
+					case R.id.userTasks:
+						intent = new Intent(getApplicationContext(), TaskListActivity.class);
+						startActivity(intent);
+						return true;
+					case R.id.userLogbook:
+						intent = new Intent(getApplicationContext(), LogbookChartList.class);
+						startActivity(intent);
+						return true;
+					case R.id.diabetesData:
+						intent = new Intent(getApplicationContext(), Settings.class);
+						startActivity(intent);
+						return true;
+					case R.id.importAndExport:
+						checkPermissions();
+						return true;
+					case R.id.info:
+						intent = new Intent(getApplicationContext(), Info.class);
+						startActivity(intent);
+						return true;
+					case R.id.feedback:
+						feedback();
+						return true;
+					default:
+						Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
+						return true;
+				}
 			}
 		});
-
+		bottomNavigationView.getMenu().getItem(mViewPager.getCurrentItem()).setChecked(true);
+		setupBottomNavigationView();
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.home, menu);
-		return true;
-	}
+	public void checkPermissions(){
+		if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+			if (ActivityCompat.shouldShowRequestPermissionRationale(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+				ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+			} else if (permissionStatus.getBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,false)) {
+						sentToSettings = true;
+						Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+						Uri uri = Uri.fromParts("package", getPackageName(), null);
+						intent.setData(uri);
+						startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+			} else {
+				//just request the permission
+				ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+			}
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-			case R.id.menuItem_Home:
-				Call_DataTools();
-				return true;
+			SharedPreferences.Editor editor = permissionStatus.edit();
+			editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,true);
+			editor.commit();
+
+
+		} else {
+			//You already have the permission, just go ahead.
+			proceedAfterPermission();
 		}
-		return super.onOptionsItemSelected(item);
+	}
+
+	private void proceedAfterPermission() {
+		//We've got the permission, now we can proceed further
+		Intent intent = new Intent(getApplicationContext(), SettingsImportExport.class);
+		startActivity(intent);
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if (requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT) {
+			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				//The External Storage Write Permission is granted to you... Continue your left job...
+				proceedAfterPermission();
+			} else {
+				if (ActivityCompat.shouldShowRequestPermissionRationale(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+					ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+				} else {
+					Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+				}
+			}
+		}
+	}
+
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if (requestCode == REQUEST_PERMISSION_SETTING) {
+			if (ActivityCompat.checkSelfPermission(Home.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+				//Got Permission
+				proceedAfterPermission();
+			}
+		}
+	}
+
+
+	@Override
+	protected void onPostResume() {
+		super.onPostResume();
+		if (sentToSettings) {
+			if (ActivityCompat.checkSelfPermission(Home.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+				//Got Permission
+				proceedAfterPermission();
+			}
+		}
 	}
 
 
 	public void ShowDialogAddData() {
-		Intent intent =new Intent(this, WelcomeActivity.class);
+		Intent intent = new Intent(this, WelcomeActivity.class);
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		startActivity(intent);
 		finish();
 	}
-
-	public void Call_DataTools() {
-		Intent intent = new Intent(this, DataTools.class);
-		startActivity(intent);
-	}
-
-	public void Call_OutrasLeituras(View view) {
-		Intent intent = new Intent(this, ExBPChoDisWei.class);
-		startActivity(intent);
-	}
-
-	public void Call_Meal(View view) {
-		Intent intent = new Intent(this, Meal.class);
-		startActivity(intent);
-	}
-
-	public void Call_Glycemia(View view) {
-		Intent intent = new Intent(this, Glycemia.class);
-		startActivity(intent);
-	}
-
-	public void Call_Exercise(View view) {
-		Intent intent = new Intent(this, Exercise.class);
-		startActivity(intent);
-	}
-
-	public void Call_Insulin(View view) {
-		Intent intent = new Intent(this, Insulin.class);
-		startActivity(intent);
-	}
-
-	public void Call_Carbs(View view) {
-		Intent intent = new Intent(this, CarboHydrate.class);
-		startActivity(intent);
-	}
-
-	//ADDED BY ZE ORNELAS
-	public void Call_Logbook(View view) {
-		Intent intent = new Intent(this, Logbook.class);
-		startActivity(intent);
-	}
-
-	private class MyGestureDetector extends SimpleOnGestureListener {
-
-		private static final int SWIPE_MIN_DISTANCE = 120;
-		private static final int SWIPE_MAX_OFF_PATH = 250;
-		private static final int SWIPE_THRESHOLD_VELOCITY = 200;
-
-
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
-							   float velocityY) {
-			if (e1 != null && e2 != null) {
-				System.out.println(" in onFling() :: ");
-				if (Math.abs(e1.getY() - e2.getY()) > SWIPE_MAX_OFF_PATH)
-					return false;
-				if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE
-						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-
-					//Right
-					Call_OutrasLeituras(getCurrentFocus());
-
-				} else if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE
-						&& Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-					//Left
+	private void setupBottomNavigationView() {
+		bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+			@Override
+			public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+				switch (item.getItemId()) {
+					case R.id.action_health:
+						mViewPager.setCurrentItem(0);
+						break;
+					case R.id.action_register:
+						mViewPager.setCurrentItem(1);
+						break;
+					case R.id.action_person:
+						mViewPager.setCurrentItem(2);
+						break;
 				}
+				updateNavigationBarState(item.getItemId());
+				return true;
 			}
-			return super.onFling(e1, e2, velocityX, velocityY);
+		});
+	}
+
+	private void updateNavigationBarState(int actionId){
+		Menu menu = bottomNavigationView.getMenu();
+		for (int i = 0, size = menu.size(); i < size; i++) {
+			MenuItem item = menu.getItem(i);
+			item.setChecked(item.getItemId() == actionId);
 		}
 	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt("viewpager", mViewPager.getCurrentItem());
+		// do this for each or your Spinner
+		// You might consider using Bundle.putStringArray() instead
+	}
+
+	public void feedback() {
+		DB_Read read = new DB_Read(this);
+		Intent intent = ShareCompat.IntentBuilder.from(this)
+				.setType("message/rfc822")
+				.addEmailTo(PROJECT_MANAGER_EMAIL)
+				.setSubject(getResources().getString(R.string.email_feedback_subject))
+				.setText(getResources().getString(R.string.share_text))
+				.getIntent();
+
+		// get apps that resolve email
+		Intent justEmailAppsIntent = new Intent(Intent.ACTION_SENDTO);
+		justEmailAppsIntent.setType("text/plain");
+		justEmailAppsIntent.setData(Uri.parse("mailto:"));
+		List<ResolveInfo> activities = getPackageManager().queryIntentActivities(justEmailAppsIntent, 0);
+
+		Intent[] extraIntents = new Intent[activities.size() - 1];
+		for (int i = 0; i < activities.size() - 1; i++) {
+			extraIntents[i] = (Intent) intent.clone();
+			extraIntents[i].setClassName(activities.get(i).activityInfo.packageName, activities.get(i).activityInfo.name);
+		}
+		Intent one = (Intent) intent.clone();
+		one.setClassName(activities.get(activities.size() - 1).activityInfo.packageName, activities.get(activities.size() - 1).activityInfo.name);
+
+		Intent openInChooser = Intent.createChooser(one, null);
+		openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+
+		ComponentName activityResolved = openInChooser.resolveActivity(getPackageManager());
+		if (activityResolved != null) {
+			if (intent.resolveActivity(getPackageManager()) != null) {
+				startActivity(openInChooser);
+			}
+		} else {
+			Log.e("Share", "No email client found!");
+			//TODO do something to show the error
+		}
+	}
+
+
+
 }
 
 

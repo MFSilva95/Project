@@ -1,17 +1,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:gravity="center_horizontal"
-              android:orientation="vertical"
-              tools:context=".ui.activities.WelcomeActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".ui.activities.WelcomeActivity"
+    android:id="@+id/welcome_layout">
 
-    <FrameLayout
+    <pt.it.porto.mydiabetes.utils.CustomViewPager
         android:id="@+id/content_fragment"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
-
+        android:layout_weight="1"
+        android:visibility="visible" />
 
     <RelativeLayout
         android:id="@+id/footer"
@@ -20,11 +21,27 @@
         android:layout_gravity="bottom"
         android:layout_margin="0dp">
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:layout_alignParentTop="true"
-            android:background="@color/material_grey_300"/>
+        <Button
+            android:id="@+id/restoreDb"
+            style="@style/Regist.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="0dp"
+            android:paddingBottom="0dp"
+            android:paddingTop="0dp"
+            android:gravity="center_vertical"
+            android:layout_margin="0dp"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/restore_backup_button_welcome"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:textColor="@android:color/white" />
 
         <LinearLayout
             android:id="@+id/page_indicator"
@@ -57,6 +74,13 @@
             <View
                 android:layout_width="10dp"
                 android:layout_height="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/dot_small"
+                />
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="10dp"
                 android:background="@drawable/dot_small"
                 />
 
@@ -68,14 +92,13 @@
             style="@style/Regist.Button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="0dp"
             android:layout_marginTop="0dp"
             android:paddingBottom="0dp"
             android:paddingTop="0dp"
-            android:text="Seguinte"
-            />
+            android:text="@string/next_button"
+            android:textColor="@android:color/white" />
     </RelativeLayout>
-
-
-</LinearLayout>
+    </LinearLayout>

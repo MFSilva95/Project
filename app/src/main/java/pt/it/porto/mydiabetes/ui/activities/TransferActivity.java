@@ -1,8 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -16,14 +13,21 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.Messenger; 
+import android.os.Messenger;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CheckedTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.sync.transfer.FileInfo;
@@ -31,7 +35,7 @@ import pt.it.porto.mydiabetes.sync.transfer.Stream;
 import pt.it.porto.mydiabetes.sync.transfer.Stream.StreamBinder;
 import pt.it.porto.mydiabetes.sync.transfer.Transmission;
 
-public class TransferActivity extends Activity {
+public class TransferActivity extends BaseActivity {
 	private String host = "";
 	private int port = 5444;
 	private byte[] key;
@@ -56,7 +60,7 @@ public class TransferActivity extends Activity {
 			else {
 				showDialogTransf(false);
 			}
-		};
+		}
 	};
 	
 	private Handler handler1 = new Handler() {
@@ -67,7 +71,7 @@ public class TransferActivity extends Activity {
 			else {
 				showDialogProg();
 			}
-		};
+		}
 	};
 
 	private Handler handler_transf = new Handler() {
@@ -77,13 +81,25 @@ public class TransferActivity extends Activity {
 			} else {
 				showDialogFinal(false);
 			}
-		};
+		}
 	};
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_transfer);
+		// Show the Up button in the action bar.
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
+		findViewById(R.id.checkedTextView1).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				((CheckedTextView)v).toggle();
+			}
+		});
 		starter = getIntent();
 		Bundle extras = starter.getExtras();
 		host = extras.getString("host");
@@ -91,7 +107,6 @@ public class TransferActivity extends Activity {
 		iv = extras.getByteArray("iv").clone();
 		onPC = extras.getBoolean("onPC");
 		showDialogLig();
-
 	}
 
 	@Override
@@ -144,7 +159,7 @@ public class TransferActivity extends Activity {
 		ArrayList<FileInfo> alfi = getSelectFiles((LinearLayout) findViewById(R.id.llFiles));
 		FileInfo fi = new FileInfo(getApplicationInfo().dataDir + "/databases",
 				"/DB_Diabetes");
-		alfi.add(fi);
+		alfi.add(0, fi); // ensure the database is the first file to send
 		intent.putExtra("files", alfi);
 		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 		//Messenger messenger1 = new Messenger(handler3);
@@ -159,20 +174,18 @@ public class TransferActivity extends Activity {
 	private ArrayList<FileInfo> getSelectFiles(LinearLayout ll) {
 		ArrayList<FileInfo> fil = new ArrayList<FileInfo>();
 		LinearLayout ll2;
-		CheckBox cb;
+		CheckedTextView cb;
 		TextView tv;
 		FileInfo fi;
-		for (int i = 0; i < ll.getChildCount(); i++) {
-			ll2 = (LinearLayout) ll.getChildAt(i);
-			if (ll2.getChildAt(0) instanceof LinearLayout) {
-				fil.addAll(getSelectFiles(ll2));
+		for (int i = 1; i < ll.getChildCount(); i++) {
+			if (ll.getChildAt(i) instanceof LinearLayout) {
+				fil.addAll(getSelectFiles((LinearLayout) ll.getChildAt(i)));
 			} else {
-				cb = (CheckBox) ll2.getChildAt(0);
+				cb = (CheckedTextView) ll.getChildAt(i);
 				if (cb == null)
 					System.out.println("CheckBox is null");
 				else if (cb.isChecked()) {
-					tv = (TextView) ll2.getChildAt(1);
-					fi = htFileInfo.get(tv.getText().toString());
+					fi = htFileInfo.get(cb.getText().toString());
 					if (fi != null && !fi.isDir() && fi.checkFileExists()) {
 						fil.add(fi);
 					}
@@ -185,7 +198,6 @@ public class TransferActivity extends Activity {
 
 	/**
 	 * Button refresh, call method addFiles to put images from FileInfo in ll
-	 * @param view
 	 */
 	public void button2Click() {
 		if (mBound) {
@@ -193,10 +205,10 @@ public class TransferActivity extends Activity {
 				System.out.println("Ainda não obteve fi do Servidor");
 			} else {
 				LinearLayout ll = (LinearLayout) findViewById(R.id.llFiles);
-				if (ll != null && ll.getChildCount() > 0) {
+				if (ll != null && ll.getChildCount() > 1) {
 					try {
 						System.out.println("Entrou if button2Click --->"+ll.getChildCount());
-						ll.removeViews(0, ll.getChildCount());
+						ll.removeViews(1, ll.getChildCount());
 						htFileInfo.clear();
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -230,9 +242,6 @@ public class TransferActivity extends Activity {
 
 	public void addFiles2(LinearLayout ll, FileInfo fi) {
 		LinearLayout ll2;
-		CheckBox cb;
-		TextView text;
-		ImageView androidImage;
 		String fileName;
 
 		for (FileInfo fiChild : fi.getFileList()) {
@@ -240,24 +249,18 @@ public class TransferActivity extends Activity {
 			if (!htFileInfo.containsKey(fiChild.getName())) {
 
 				if (fiChild.getName().contains(".jpg")){
-					ll2 = new LinearLayout(this);
-
-					cb = new CheckBox(this);
-					ll2.addView(cb);
-
-					text = new TextView(this);
-					System.out.println("Nome do ficheiro --->"+fiChild.getName());
+					CheckedTextView layout2= (CheckedTextView) getLayoutInflater().inflate(R.layout.list_item_tranfere_activity, ll, false);
+					layout2.setOnClickListener(new View.OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							((CheckedTextView)v).toggle();
+						}
+					});
 					fileName = fiChild.getName();
-					text.setText(fileName);
+					System.out.println("Nome do ficheiro --->"+fiChild.getName());
 					htFileInfo.put(fileName, fiChild);
-					ll2.addView(text);
-
-					androidImage = new ImageView(this);
-					androidImage.setImageResource(R.drawable.android_icon);
-					androidImage.setMaxWidth(50);
-					androidImage.setAdjustViewBounds(true);
-					ll2.addView(androidImage);
-					ll.addView(ll2);
+					layout2.setText(fileName);
+					ll.addView(layout2);
 				}
 			}
 
@@ -280,15 +283,12 @@ public class TransferActivity extends Activity {
 	}
 
 	public void selectAll2(LinearLayout ll) {
-		LinearLayout ll2;
 		try {
-
-			for (int i = 0; i < ll.getChildCount(); i++) {
-				ll2 = (LinearLayout) ll.getChildAt(i);
-				if (ll2.getChildAt(0) instanceof LinearLayout) {
-					selectAll2(ll2);
-				} else if (ll2.getChildAt(0) instanceof CheckBox) {
-					((CheckBox) ll2.getChildAt(0)).setChecked(true);
+			for (int i = 1; i < ll.getChildCount(); i++) {
+				if (ll.getChildAt(i) instanceof LinearLayout) {
+					selectAll2((LinearLayout) ll.getChildAt(i));
+				} else if (ll.getChildAt(i) instanceof CheckedTextView) {
+					((CheckedTextView) ll.getChildAt(i)).setChecked(true);
 				}
 			}
 		} catch (Exception e) {
@@ -366,7 +366,7 @@ public class TransferActivity extends Activity {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this); 
 		builder.setTitle(R.string.transf_WaitTitle).
 		setMessage(this.getString(R.string.transf_WaitMesg));
-		dialog1 = builder.create();;
+		dialog1 = builder.create();
 		dialog1.show();
 		dialog1.setCanceledOnTouchOutside(false);
 	}
@@ -374,14 +374,16 @@ public class TransferActivity extends Activity {
 
 	/**
 	 * Diálogo para a ligação
-	 * @param d
+	 * @param success
 	 */
-	public void showDialogTransf(boolean d){
-		final Context c = this;
+	public void showDialogTransf(boolean success){
+		if(isFinishing()){
+			return;
+		}
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(this.getString(R.string.transf_InfoTitle));
 		
-		if (d){	
+		if (success){
 			builder.setMessage(this.getString(R.string.transf_ConnOK));
 			builder.setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
@@ -389,15 +391,13 @@ public class TransferActivity extends Activity {
 					button2Click();
 				}
 			}).show();
-		}
-		else {
-			//TODO set in string
+		} else {
 			builder.setMessage(getString(R.string.transfer_fail_connection )+ "\n"
 					+ getString(R.string.transfer_check_wifi ) + "\n"
 					+ getString(R.string.transfer_correct_network));
 			builder.setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
-					Intent intent = new Intent(c, ImportExport.class);
+					Intent intent = new Intent(TransferActivity.this, SettingsImportExport.class);
 					startActivity(intent);
 				}
 			}).show();
@@ -409,9 +409,10 @@ public class TransferActivity extends Activity {
 	 * Dialogo progresso transfeencia
 	 */
 	public void showDialogProg(){
-		
+		if(isFinishing()){
+			return;
+		}
 		ProgressDialog pd = new ProgressDialog(this);
-		//TODO set in string
 		pd.setMessage(getString(R.string.transfer_transfer));
 		pd.setCanceledOnTouchOutside(false);
 		pd.show();
@@ -422,16 +423,14 @@ public class TransferActivity extends Activity {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(this.getString(R.string.transf_InfoTitle));
 		if (d){
-			//TODO set in string
 		builder.setMessage(getString(R.string.transfer_success))
 		.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
-				// TODO Auto-generated method stub
-				Intent intent = new Intent(c, ImportExport.class);
-				startActivity(intent);
-				
+				Intent intent = new Intent(c, SettingsImportExport.class);
+				NavUtils.navigateUpTo(TransferActivity.this, intent);
+				finish();
 			}
 		}).show();
 		}
@@ -444,7 +443,7 @@ public class TransferActivity extends Activity {
 				@Override
 				public void onClick(DialogInterface dialog, int whichButton) {
 					// TODO Auto-generated method stub
-					Intent intent = new Intent(c, ImportExport.class);
+					Intent intent = new Intent(c, SettingsImportExport.class);
 					startActivity(intent);
 					
 				}

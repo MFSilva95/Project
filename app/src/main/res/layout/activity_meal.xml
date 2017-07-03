@@ -1,437 +1,518 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:scrollbars="vertical"
-    tools:context=".ui.activities.Meal" >
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:scrollbars="vertical"
+            tools:context=".ui.activities.Meal">
 
     <LinearLayout
-        android:paddingTop="8dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:descendantFocusability="beforeDescendants"
-		android:focusableInTouchMode="true">
-		
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:paddingTop="8dp">
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp"
-        	android:layout_marginTop="8dp" >
-        	
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark"
-		        android:layout_gravity="center_vertical" />
-            
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/holo_blue_dark"/>
+
             <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:text="@string/date_hour"
-		        android:textSize="16sp"
-		        android:gravity="center_vertical|center_horizontal" />
-            
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark" 
-		        android:layout_gravity="center_vertical" />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/date_hour"
+                android:textSize="16sp"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/holo_blue_dark"/>
         </LinearLayout>
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp" >
-	        
-	        <EditText
-		        android:id="@+id/et_MealDetail_Data"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:layout_marginLeft="16dp"
-		        android:layout_marginRight="16dp"
-		        android:textSize="18sp"
-		        android:gravity="center_horizontal"
-		        style="@style/Holo.Spinner"
-		        android:focusable="false"
-		        android:focusableInTouchMode="false"
-		        android:onClick="showDatePickerDialog" />
-	        
-	        <EditText
-		        android:id="@+id/et_MealDetail_Hora"
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:layout_marginLeft="16dp"
-		        android:layout_marginRight="16dp"
-		        android:textSize="18sp"
-		        android:gravity="center_horizontal"
-		        style="@style/Holo.Spinner"
-		        android:focusable="false"
-		        android:focusableInTouchMode="false"
-		        android:onClick="showTimePickerDialog" />
-        </LinearLayout>
-        
-        
-        
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp"
-        	android:layout_marginTop="8dp" >
-        	
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark"
-		        android:layout_gravity="center_vertical" />
-            
-            <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="1"
-		        android:text="@string/title_activity_tag_detail"
-		        android:textSize="16sp"
-		        android:gravity="center_vertical|center_horizontal" />
-            
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark" 
-		        android:layout_gravity="center_vertical" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:gravity="center_horizontal" >
-            <Spinner
-			    android:id="@+id/sp_MealDetail_Tag"
-			    android:layout_width="wrap_content"
-			    android:layout_height="36dp" />
-        </LinearLayout>
-        
-        
-        
-        
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp"
-        	android:layout_marginTop="8dp" >
-        	
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark"
-		        android:layout_gravity="center_vertical" />
-            
-            <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="0.75"
-		        android:text="@string/bloodglucose"
-		        android:textSize="16sp"
-		        android:gravity="center_vertical|center_horizontal" />
-            
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark" 
-		        android:layout_gravity="center_vertical" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:gravity="center_horizontal" >
-	        
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
+
             <EditText
-		        android:id="@+id/et_MealDetail_Glycemia"
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:gravity="center_horizontal"
-		        android:width="100dp"
-		        android:textSize="24sp"
-		        android:inputType="numberDecimal" />
+                android:id="@+id/et_MealDetail_Data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center_horizontal"
+                android:onClick="showDatePickerDialog"
+                android:textSize="18sp"/>
+
+            <EditText
+                android:id="@+id/time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_weight="1"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:gravity="center_horizontal"
+                android:onClick="showTimePickerDialog"
+                android:textSize="18sp"/>
         </LinearLayout>
+
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:gravity="center_horizontal"
-        	android:layout_marginBottom="8dp" >
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/holo_blue_dark"/>
+
             <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:text="@string/mg_dl"
-		        android:textSize="16sp"
-		        android:gravity="center_vertical|center_horizontal" />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/title_activity_tag_detail"
+                android:textSize="16sp"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/holo_blue_dark"/>
         </LinearLayout>
-        
-        
-        
-        
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp"
-        	android:layout_marginTop="8dp" >
-        	
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark"
-		        android:layout_gravity="center_vertical" />
-            
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/tag"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/holo_blue_dark"/>
+
             <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="0.50"
-		        android:text="@string/carbs_extended"
-		        android:textSize="16sp"
-		        android:gravity="center_vertical|center_horizontal" />
-            
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark" 
-		        android:layout_gravity="center_vertical" />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/bloodglucose"
+                android:textSize="16sp"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/holo_blue_dark"/>
         </LinearLayout>
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:gravity="center_horizontal" >
-            <LinearLayout
-	            android:orientation="vertical"
-	            android:layout_width="0dp"
-	        	android:layout_height="wrap_content"
-	        	android:layout_weight="1"
-	        	android:gravity="center_vertical" >
-	        	<TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="@string/photo"
-			        android:textSize="16sp"
-			        android:layout_gravity="center_horizontal" />
-	        	<ImageView
-	        	    android:contentDescription="iv_MealDetail_Photo"
-				    android:id="@+id/iv_MealDetail_Photo"
-				    android:layout_width="72dp"
-				    android:layout_height="72dp"
-				    android:src="@drawable/newphoto"
-				    android:layout_gravity="center_horizontal"
-				    android:onClick="TakePhoto" />
-	            <EditText
-			        android:id="@+id/et_MealDetail_Photo"
-			        android:layout_width="0dp"
-			        android:layout_height="0dp"
-			        android:layout_gravity="center_horizontal"
-			        android:gravity="center_horizontal"
-			        android:inputType="text"
-			        android:visibility="invisible" />
-	        	 
-            </LinearLayout>
-            <LinearLayout
-	            android:orientation="vertical"
-	            android:layout_width="0dp"
-	        	android:layout_height="wrap_content"
-	        	android:layout_weight="1"
-	        	android:gravity="center_vertical" >
-	        	<TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="@string/Carbs"
-			        android:textSize="16sp"
-			        android:layout_gravity="center_horizontal" />
-	            <EditText
-			        android:id="@+id/et_MealDetail_Carbs"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_gravity="center_horizontal"
-			        android:gravity="center_horizontal"
-			        android:width="100dp"
-			        android:textSize="24sp"
-			        android:inputType="numberDecimal" />
-	            <TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="@string/grams"
-			        android:textSize="16sp"
-			        android:layout_gravity="center_horizontal" />
-            </LinearLayout>
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/glycemia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:width="100dp"
+                android:gravity="center_horizontal"
+                android:inputType="numberDecimal"
+                android:textSize="24sp"/>
         </LinearLayout>
-        
-        
-        
-        
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp"
-        	android:layout_marginTop="8dp" >
-        	
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark"
-		        android:layout_gravity="center_vertical" />
-            
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
             <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="0.75"
-		        android:text="@string/insulin"
-		        android:textSize="16sp"
-		        android:gravity="center_vertical|center_horizontal" />
-            
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark" 
-		        android:layout_gravity="center_vertical" />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/mg_dl"
+                android:textSize="16sp"/>
         </LinearLayout>
+
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:gravity="center_horizontal" >
-            
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/holo_blue_dark"/>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.50"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/carbs_extended"
+                android:textSize="16sp"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/holo_blue_dark"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
             <LinearLayout
-	            android:orientation="vertical"
-	            android:layout_width="0dp"
-	        	android:layout_height="wrap_content"
-	        	android:layout_weight="1"
-	        	android:gravity="center_vertical"
-	        	android:layout_gravity="center_vertical" >
-	        	
-				<Spinner
-				    android:id="@+id/sp_MealDetail_Insulin"
-				    android:layout_width="match_parent"
-			        android:layout_height="wrap_content"
-			        android:layout_weight="1"
-			        android:layout_marginLeft="16dp"
-			        android:layout_marginRight="16dp"
-			        android:gravity="center_horizontal" />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/photo"
+                    android:textSize="16sp"/>
+
+                <ImageView
+                    android:id="@+id/iv_MealDetail_Photo"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_gravity="center_horizontal"
+                    android:contentDescription="iv_MealDetail_Photo"
+                    android:onClick="TakePhoto"
+                    android:src="@drawable/newphoto"/>
+
+                <EditText
+                    android:id="@+id/et_MealDetail_Photo"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:inputType="text"
+                    android:visibility="invisible"/>
 
             </LinearLayout>
+
             <LinearLayout
-	            android:orientation="vertical"
-	            android:layout_width="0dp"
-	        	android:layout_height="wrap_content"
-	        	android:layout_weight="1"
-	        	android:gravity="center_vertical" >
-	        	<TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="@string/goal"
-			        android:textSize="16sp"
-			        android:layout_gravity="center_horizontal" />
-	            <EditText
-			        android:id="@+id/et_MealDetail_TargetGlycemia"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_gravity="center_horizontal"
-			        android:gravity="center_horizontal"
-			        android:width="100dp"
-			        android:textSize="24sp"
-			        android:inputType="numberDecimal" />
-	            <TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="@string/mg_dl"
-			        android:textSize="16sp"
-			        android:layout_gravity="center_horizontal" />
-            </LinearLayout>
-            <LinearLayout
-	            android:orientation="vertical"
-	            android:layout_width="0dp"
-	        	android:layout_height="wrap_content"
-	        	android:layout_weight="1"
-	        	android:gravity="center_vertical" >
-	        	<TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="@string/insulin"
-			        android:textSize="16sp"
-			        android:layout_gravity="center_horizontal" />
-	            <EditText
-			        android:id="@+id/et_MealDetail_InsulinUnits"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_gravity="center_horizontal"
-			        android:gravity="center_horizontal"
-			        android:width="100dp"
-			        android:textSize="24sp"
-			        android:inputType="numberDecimal" />
-	            <TextView
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:text="@string/units"
-			        android:textSize="16sp"
-			        android:layout_gravity="center_horizontal" />
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/Carbs"
+                    android:textSize="16sp"/>
+
+                <EditText
+                    android:id="@+id/carbs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:width="100dp"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:textSize="24sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/grams"
+                    android:textSize="16sp"/>
             </LinearLayout>
         </LinearLayout>
-        
-        
-        
+
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-        	android:layout_marginBottom="8dp"
-        	android:layout_marginTop="8dp" >
-        	
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark"
-		        android:layout_gravity="center_vertical" />
-            
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/holo_blue_dark"/>
+
             <TextView
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_weight="0.75"
-		        android:text="@string/notes"
-		        android:textSize="16sp"
-		        android:gravity="center_vertical|center_horizontal" />
-            
-            <View android:layout_height="1dip"
-		        android:layout_width="fill_parent" 
-		        android:layout_weight="1"
-		        android:background="@color/holo_blue_dark" 
-		        android:layout_gravity="center_vertical" />
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/insulin"
+                android:textSize="16sp"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/holo_blue_dark"/>
         </LinearLayout>
-    	<LinearLayout
-	            android:orientation="vertical"
-	            android:layout_width="fill_parent"
-	        	android:layout_height="0dp"
-	        	android:layout_weight="1"
-	        	android:gravity="center_vertical" >
-	            <EditText
-			        android:id="@+id/et_MealDetail_Notes"
-			        android:layout_width="fill_parent"
-			        android:layout_height="wrap_content"
-			        android:layout_gravity="center_horizontal"
-			        android:gravity="top|left"
-			        android:singleLine="false"
-			        android:lines="2"
-			        android:inputType="textMultiLine"
-			        android:textSize="16sp"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <Spinner
+                    android:id="@+id/sp_MealDetail_Insulin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/goal"
+                    android:textSize="16sp"/>
+
+                <EditText
+                    android:id="@+id/glycemia_target"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:width="100dp"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:textSize="24sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/mg_dl"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/insulin"
+                    android:textSize="16sp"/>
+
+                <EditText
+                    android:id="@+id/insulin_intake"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:width="100dp"
+                    android:gravity="center_horizontal"
+                    android:inputType="numberDecimal"
+                    android:textSize="24sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/units"
+                    android:textSize="16sp"/>
+            </LinearLayout>
         </LinearLayout>
-        
-    	
-    	
-    	
-        
-	</LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/addTargetObjective"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/btn_holo_tip"
+                android:gravity="center"
+                android:onClick="addGlycemiaObjective"
+                android:text="@string/button_add_glicemia_objective"
+                android:textSize="16sp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3">
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="2"/>
+
+                <FrameLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <ToggleButton
+                        android:id="@+id/bt_insulin_calc_info"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:textOn=""
+                        android:onClick="toggleInsulinCalcDetails"
+                        android:textOff=""
+                        android:background="@drawable/ic_bt_toggle_pointing"
+                        android:drawableTop="@android:drawable/ic_menu_info_details"/>
+                </FrameLayout>
+            </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fragment_calcs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_black_background"
+            tools:layout="@layout/fragment_insulin_meal_calc"
+            tools:layout_height="200dp"/>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/holo_blue_dark"/>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.75"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/notes"
+                android:textSize="16sp"/>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dip"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/holo_blue_dark"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/notes"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="top|left"
+                android:inputType="textMultiLine"
+                android:lines="2"
+                android:singleLine="false"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
 </ScrollView>

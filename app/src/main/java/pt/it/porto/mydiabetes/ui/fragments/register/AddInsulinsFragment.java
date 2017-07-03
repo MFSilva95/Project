@@ -3,42 +3,42 @@ package pt.it.porto.mydiabetes.ui.fragments.register;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.ui.views.InsulinData;
 import pt.it.porto.mydiabetes.ui.views.InsulinElement;
+import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
-import java.util.ArrayList;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnFormEnd} interface
- * to handle interaction events.
- * Use the {@link AddInsulinsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddInsulinsFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
 
 	private static final String TAG = AddInsulinsFragment.class.getCanonicalName();
 
 	private static final String STATE_ITEMS = "items";
 
-	private OnFormEnd mListener;
 	private RecyclerView list;
+	private TextView title;
 	private ArrayList<InsulinData> items = new ArrayList<>(3);
+	private View layout;
 
 	/**
 	 * Use this factory method to create a new instance of
@@ -69,55 +69,45 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View layout = inflater.inflate(R.layout.fragment_register_insulins, container, false);
+		layout = inflater.inflate(R.layout.fragment_register_insulins, container, false);
 		list = (RecyclerView) layout.findViewById(R.id.insulin_list);
+		title = (TextView) layout.findViewById(R.id.title);
+		title.setText(getString(R.string.new_insulin_record));
 
-		list.setAdapter(new InsulinAdapter());
+		InsulinAdapter adapter = new InsulinAdapter();
+		list.setAdapter(adapter);
 		list.setLayoutManager(new LinearLayoutManager(getContext()));
 		list.setItemAnimator(new DefaultItemAnimator());
-		if (savedInstanceState == null) {
-			addInsulin();
-		} else {
+		if (savedInstanceState != null) {
 			items = (ArrayList) savedInstanceState.getSerializable(STATE_ITEMS);
 		}
+
+		FloatingActionButton myFab = (FloatingActionButton) layout.findViewById(R.id.floatingActionButton);
+		myFab.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				addInsulin();
+			}
+		});
+
+/*
+		ItemTouchHelper.Callback callback=new SwipeHelper(adapter);
+		ItemTouchHelper helper=new ItemTouchHelper(callback);
+		helper.attachToRecyclerView(list);*/
+
 
 		return layout;
 	}
 
 	private void addInsulin() {
-		items.add(new InsulinData(items.size(), getContext()));
+		items.add(new InsulinData(items.size()));
 		list.getAdapter().notifyItemInserted(items.size());
-	}
-
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.formFillEnded();
-		}
-	}
-
-	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-
-		if (context instanceof OnFormEnd) {
-			mListener = (OnFormEnd) context;
-		} else {
-			throw new RuntimeException(context.toString()
-					+ " must implement OnFormEnd");
-		}
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		mListener = null;
 	}
 
 	@Override
 	public boolean allFieldsAreValid() {
 		boolean cancel = false;
-		if(items.size()==0){
-			items.add(new InsulinData(0, getContext()));
+		if (items.size() == 0) {
+			items.add(new InsulinData(0));
 			list.getAdapter().notifyItemInserted(0);
 			return false;
 		}
@@ -150,11 +140,6 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 		}
 	}
 
-	@Override
-	public int getSubtitle() {
-		return R.string.preferences_insulins;
-	}
-
 
 	class Holder extends RecyclerView.ViewHolder {
 
@@ -172,36 +157,13 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 		}
 	}
 
-	class ButtonHolder extends Holder {
-
-		public ButtonHolder(View itemView, String text) {
-			super(itemView);
-			((Button) itemView).setText(text);
-			itemView.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					addInsulin();
-				}
-			});
-		}
-	}
 
 	class InsulinAdapter extends RecyclerView.Adapter<Holder> {
-		private static final int TYPE_NEW_INSULIN = 0;
-		private static final int TYPE_FOOTER_BUTTON = 1;
 
 		@Override
 		public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
 			LayoutInflater layoutInflator = getLayoutInflater(null);
-			if (viewType == TYPE_FOOTER_BUTTON) {
-				return new ButtonHolder(layoutInflator.inflate(R.layout.list_item_new_element_button, parent, false), getContext().getString(R.string.new_insulin));
-			}
 			return new InsulinHolder(layoutInflator.inflate(R.layout.listitem_new_insulin, parent, false));
-		}
-
-		@Override
-		public int getItemViewType(int position) {
-			return position == items.size() ? TYPE_FOOTER_BUTTON : TYPE_NEW_INSULIN;
 		}
 
 		@Override
@@ -214,7 +176,7 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 
 		@Override
 		public int getItemCount() {
-			return items.size() + 1;
+			return items.size();
 		}
 	}
 
@@ -237,4 +199,10 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 			}
 		});
 	}
+
+	@Override
+	public int getSubtitle() {
+		return R.string.preferences_insulins;
+	}
+
 }

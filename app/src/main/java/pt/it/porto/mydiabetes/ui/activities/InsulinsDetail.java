@@ -1,19 +1,20 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.Menu;
@@ -23,10 +24,10 @@ import android.view.MenuInflater;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.listAdapters.InsulinDataBinding;
+import pt.it.porto.mydiabetes.data.Insulin;
 
 
-public class InsulinsDetail extends Activity {
+public class InsulinsDetail extends BaseActivity {
 
 	int idInsulin = 0;
 	String originalName;
@@ -37,30 +38,38 @@ public class InsulinsDetail extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_insulins_detail);
 		// Show the Up button in the action bar.
-		getActionBar();
+		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+		ActionBar actionBar=getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
+
+
 
 		Bundle args = getIntent().getExtras();
 		if(args!=null){
 			DB_Read rdb = new DB_Read(this);
 			String id = args.getString("Id");
 			idInsulin = Integer.parseInt(id);
-			InsulinDataBinding toFill = rdb.Insulin_GetById(Integer.parseInt(id));
+			Insulin toFill = rdb.Insulin_GetById(Integer.parseInt(id));
 
 			EditText name = (EditText)findViewById(R.id.et_Insulins_Nome);
 			name.setText(toFill.getName());
 			originalName = toFill.getName();
-			EditText type = (EditText)findViewById(R.id.et_Insulins_Tipo);
-			type.setText(toFill.getType());
 
-			RadioGroup myRadioGroup = (RadioGroup)findViewById(R.id.et_insulin_action);
+			Spinner spinnerAction = (Spinner)findViewById(R.id.insulin_type);
+			spinnerAction.setSelection(Integer.parseInt(toFill.getAction()));
+
+			RadioGroup adminMethod = (RadioGroup) findViewById(R.id.admininistration_method_insert);
 			int index = 0;
 			try {
-				index = Integer.parseInt(toFill.getAction());
+				index = Integer.parseInt(toFill.getType());
 			} catch (NumberFormatException nfe) {
 				// index will get 0
 				Log.e ("onCreate", "Read a text that was not a number from action"+ nfe);
 			}
-			((RadioButton)myRadioGroup.getChildAt(index)).setChecked(true);
+			((RadioButton)adminMethod.getChildAt(index)).setChecked(true);
+
 
 
 			rdb.close();
@@ -76,9 +85,22 @@ public class InsulinsDetail extends Activity {
 
 		Bundle args = getIntent().getExtras();
 		if(args!=null){
-			inflater.inflate(R.menu.insulins_detail_edit, menu);
+			inflater.inflate(R.menu.insulins_detail_delete, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					UpdateInsulin();
+				}
+			});
 		}else{
-			inflater.inflate(R.menu.insulins_detail, menu);
+			FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+			fab.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					AddNewInsulin();
+				}
+			});
 		}
 
 		//getSupportMenuInflater().inflate(R.menu.tag_detail, menu);
@@ -89,18 +111,7 @@ public class InsulinsDetail extends Activity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				NavUtils.navigateUpFromSameTask(this);
-				return true;
-			case R.id.menuItem_InsulinsDetail_Save:
-				AddNewInsulin();
-				//Intent data = new Intent();
-				//data.putExtra("tabPosition", 2);
-				//setResult(RESULT_OK, data);
-				//NavUtils.navigateUpFromSameTask(this);
-
-				return true;
-			case R.id.menuItem_InsulinsDetail_EditSave:
-				UpdateInsulin();
+				finish();
 				return true;
 			case R.id.menuItem_InsulinsDetail_Delete:
 				DeleteInsulin();
@@ -109,48 +120,19 @@ public class InsulinsDetail extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	public void ShowDialogAddTarget(){
-		final Context c = this;
-		new AlertDialog.Builder(this)
-				.setTitle(getString(R.string.title_activity_info))
-				.setMessage(getString(R.string.how_to_add_insulins))
-				.setPositiveButton(getString(R.string.okButton), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						//Falta verificar se não está associada a nenhuma entrada da DB
-						//Rever porque não elimina o registo de glicemia
-						Intent intent = new Intent(c, Preferences.class);
-						intent.putExtra("tabPosition", 1);
-						startActivity(intent);
-						finish();
-					}
-				}).show();
-	}
-
 	public void AddNewInsulin(){
 		EditText name = (EditText)findViewById(R.id.et_Insulins_Nome);
-		EditText type = (EditText)findViewById(R.id.et_Insulins_Tipo);
-		RadioGroup myRadioGroup = (RadioGroup)findViewById(R.id.et_insulin_action);
-		int index = myRadioGroup.indexOfChild(findViewById(myRadioGroup.getCheckedRadioButtonId()));
+		RadioGroup adminMethod = (RadioGroup) findViewById(R.id.admininistration_method_insert);
+		int index = adminMethod.indexOfChild(findViewById(adminMethod.getCheckedRadioButtonId()));
 
-
-		//EditText value = (EditText)findViewById(R.id.et_TargetBG_Glycemia);
-
-		//adicionado por zeornelas
-		//para obrigar a colocar o valor dos hidratos e nao crashar
 		if(name.getText().toString().equals("")){
 			name.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(name, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if(type.getText().toString().equals("")){
-			type.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(type, InputMethodManager.SHOW_IMPLICIT);
-			return;
-		}
 		if(index==-1){
-			myRadioGroup.requestFocus();
+			adminMethod.requestFocus();
 			Toast.makeText(this, getString(R.string.insulin_message_action), Toast.LENGTH_SHORT).show();
 			return;
 		}
@@ -169,60 +151,38 @@ public class InsulinsDetail extends Activity {
 
 
 
-
 		DB_Write wdb = new DB_Write(this);
 
-		InsulinDataBinding insulin = new InsulinDataBinding();
-
-
+		Insulin insulin = new Insulin();
 		insulin.setName(name.getText().toString());
 
-		insulin.setType(type.getText().toString());
-		insulin.setAction(String.valueOf(index));
-
+		insulin.setType(String.valueOf(index));
+		insulin.setAction(String.valueOf(((Spinner)findViewById(R.id.insulin_type)).getSelectedItemPosition()));
 
 		wdb.Insulin_Add(insulin);
 		wdb.close();
 
-		read = new DB_Read(this);
-		if(!read.Target_HasTargets()){
-			read.close();
-			ShowDialogAddTarget();
-		}else{
-			finish();
-		}
+		finish();
 	}
 
 
 	public void UpdateInsulin(){
 		EditText name = (EditText)findViewById(R.id.et_Insulins_Nome);
-		EditText type = (EditText)findViewById(R.id.et_Insulins_Tipo);
+		RadioGroup adminMethod = (RadioGroup) findViewById(R.id.admininistration_method_insert);
+		int index = adminMethod.indexOfChild(findViewById(adminMethod.getCheckedRadioButtonId()));
 
-		RadioGroup myRadioGroup = (RadioGroup)findViewById(R.id.et_insulin_action);
-		int index = myRadioGroup.indexOfChild(findViewById(myRadioGroup.getCheckedRadioButtonId()));
-
-		//EditText value = (EditText)findViewById(R.id.et_TargetBG_Glycemia);
-
-		//adicionado por zeornelas
-		//para obrigar a colocar o valor dos hidratos e nao crashar
 		if(name.getText().toString().equals("")){
 			name.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(name, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if(type.getText().toString().equals("")){
-			type.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(type, InputMethodManager.SHOW_IMPLICIT);
-			return;
-		}
 		if(index==-1){
-			myRadioGroup.requestFocus();
+			adminMethod.requestFocus();
 			Toast.makeText(this,getString(R.string.insulin_message_action),Toast.LENGTH_SHORT).show();
-
 			return;
 		}
+
 
 
 		DB_Read read = new DB_Read(this);
@@ -239,25 +199,19 @@ public class InsulinsDetail extends Activity {
 
 		DB_Write wdb = new DB_Write(this);
 
-		InsulinDataBinding insulin = new InsulinDataBinding();
+		Insulin insulin = new pt.it.porto.mydiabetes.data.Insulin();
 
 		insulin.setId(idInsulin);
 		insulin.setName(name.getText().toString());
 
-		insulin.setType(type.getText().toString());
-		insulin.setAction(String.valueOf(index));
+		insulin.setType(String.valueOf(index));
+		insulin.setAction(String.valueOf(((Spinner)findViewById(R.id.insulin_type)).getSelectedItemPosition()));
 
 
 		wdb.Insulin_Update(insulin);
 		wdb.close();
 
-		read = new DB_Read(this);
-		if(!read.Target_HasTargets()){
-			read.close();
-			ShowDialogAddTarget();
-		}else{
-			finish();
-		}
+		finish();
 	}
 
 

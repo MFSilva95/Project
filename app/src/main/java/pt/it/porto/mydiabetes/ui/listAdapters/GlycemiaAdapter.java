@@ -1,7 +1,5 @@
 package pt.it.porto.mydiabetes.ui.listAdapters;
 
-import java.util.ArrayList;
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,91 +7,81 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import pt.it.porto.mydiabetes.ui.activities.GlycemiaDetail;
+import java.util.ArrayList;
+
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.ui.activities.TargetBG_detail;
+import pt.it.porto.mydiabetes.data.InsulinTarget;
 
 
 public class GlycemiaAdapter extends BaseAdapter {
 
-	private ArrayList<GlycemiaDataBinding> _data;
-    Context _c;
-    
-    public GlycemiaAdapter (ArrayList<GlycemiaDataBinding> data, Context c){
-        _data = data;
-        _c = c;
-    }
-	
-	
+	Context _c;
+	private ArrayList<InsulinTarget> _data;
+
+	public GlycemiaAdapter(ArrayList<InsulinTarget> data, Context c) {
+		_data = data;
+		_c = c;
+	}
+
+
 	@Override
 	public int getCount() {
-		// TODO Auto-generated method stub
 		return _data.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		// TODO Auto-generated method stub
 		return _data.get(position);
 	}
 
 	@Override
 	public long getItemId(int position) {
-		// TODO Auto-generated method stub
 		return position;
 	}
 
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
-		// TODO Auto-generated method stub
 		View v = convertView;
-         if (v == null)
-         {
-            LayoutInflater vi = (LayoutInflater)_c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.list_glycemia_row, null);
-         }
- 
-           TextView data = (TextView)v.findViewById(R.id.tv_list_glicemia_data);
-           TextView hora = (TextView)v.findViewById(R.id.tv_list_glicemia_hora);
-           TextView value = (TextView)v.findViewById(R.id.tv_list_glicemia_value);
-		   TextView tag = (TextView)v.findViewById(R.id.tv_list_glicemia_tag);
-           final ImageButton viewdetail = (ImageButton)v.findViewById(R.id.ib_list_glicemia_detail);
-           
-           final GlycemiaDataBinding glycemia = _data.get(position);
-           final String _id = ""+glycemia.getId();
-           data.setText(glycemia.getDate());
-           hora.setText(glycemia.getTime());
-           value.setTag(_id);
-           value.setText(glycemia.getValue().toString());
+		if (v == null) {
+			LayoutInflater vi = (LayoutInflater) _c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			v = vi.inflate(R.layout.list_glycemia_row, parent, false);
+		}
 
-		   DB_Read rdb = new DB_Read(_c);
-		   tag.setText(rdb.Tag_GetById(glycemia.getIdTag()).getName());
-		   rdb.close();
+		LinearLayout rLayout = (LinearLayout) v.findViewById(R.id.TargetBGRow);
 
-		   viewdetail.setTag(_id);
+		TextView targetName = (TextView) v.findViewById(R.id.list_targetName);
+		TextView targetStart = (TextView) v.findViewById(R.id.list_targetStart);
+		TextView targetEnd = (TextView) v.findViewById(R.id.list_targetEnd);
+		TextView targetvalue = (TextView) v.findViewById(R.id.list_targetValue);
 
 
+		InsulinTarget target = _data.get(position);
+		rLayout.setTag(target);
+		targetName.setText(target.getName());
+		targetStart.setText(target.getStart());
+		targetEnd.setText(target.getEnd());
 
-           
-           
-           viewdetail.setOnClickListener(new View.OnClickListener() {
+		targetvalue.setText(String.valueOf((int) target.getTarget()));
+
+		rLayout.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(final View v) {
-				Intent intent = new Intent(v.getContext(), GlycemiaDetail.class);
+				Intent intent = new Intent(v.getContext(), TargetBG_detail.class);
 				Bundle args = new Bundle();
-				args.putString("Id", _id); //Your id
+				args.putString("Id", String.valueOf(((InsulinTarget) v.getTag()).getId()));
+				args.putParcelable(TargetBG_detail.BUNDLE_DATA, ((InsulinTarget) v.getTag()));
+
 				intent.putExtras(args);
 				v.getContext().startActivity(intent);
 			}
-        	   
-           });
-                                     
-                        
-        return v;
+		});
+
+		return v;
 	}
-	
+
 }

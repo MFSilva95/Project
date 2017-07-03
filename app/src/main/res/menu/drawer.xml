@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <group android:checkableBehavior="none">
+
+        <item
+            android:id="@+id/userTasks"
+            android:checked="false"
+            android:title="@string/navTask"
+            android:icon="@drawable/ic_flag"
+            />
+
+        <item
+            android:id="@+id/userLogbook"
+            android:checked="false"
+            android:title="@string/navLog"
+            android:icon="@drawable/ic_book"/>
+
+        <item
+            android:id="@+id/diabetesData"
+            android:checked="false"
+            android:title="@string/navDiabetesTools"
+            android:icon="@drawable/ic_opacity"/>
+
+        <item
+            android:id="@+id/importAndExport"
+            android:checked="false"
+            android:title="@string/title_activity_import_export"
+            android:icon="@drawable/ic_import_export"/>
+
+        <item
+            android:id="@+id/info"
+            android:checked="false"
+            android:icon="@drawable/ic_info_outline_24dp"
+            android:title="@string/title_activity_info" />
+
+        <item
+            android:id="@+id/feedback"
+            android:checked="false"
+            android:icon="@drawable/ic_feedback"
+            android:title="Feedback" />
+
+    </group>
+
+</menu>

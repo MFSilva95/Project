@@ -1,40 +1,47 @@
 package pt.it.porto.mydiabetes.ui.fragments.register;
 
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.io.File;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
+import pt.it.porto.mydiabetes.utils.BadgeUtils;
+import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
+import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OnFormEnd} interface
- * to handle interaction events.
- * Use the {@link FactorsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class FactorsFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
 
 
 	private static final String TAG = FactorsFragment.class.getCanonicalName();
-	private OnFormEnd mListener;
 	private Spinner diabetesType;
 	private EditText sensibilityFactor;
 	private EditText carbsRatio;
 	private EditText hypoglycemiaLimit;
 	private EditText hyperglycemiaLimit;
+	private View layout = null;
+	private String userImgFileName = "profilePhoto.png";
+	private ScrollView scrollView;
 
 	/**
 	 * Use this factory method to create a new instance of
@@ -59,38 +66,56 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View layout = inflater.inflate(R.layout.fragment_register_factors, container, false);
+		layout = inflater.inflate(R.layout.fragment_register_factors, container, false);
+		scrollView = (ScrollView) layout.findViewById(R.id.scrollview);
 
 		diabetesType = (Spinner) layout.findViewById(R.id.diabetes_type);
+
+		ArrayAdapter adapter = ArrayAdapter.createFromResource(getActivity(), R.array.diabetes_Type , R.layout.welcome_spinner_item);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		diabetesType.setAdapter(adapter);
+
 		sensibilityFactor = (EditText) layout.findViewById(R.id.sensibility_factor);
 		carbsRatio = (EditText) layout.findViewById(R.id.carbs_ratio);
 		hypoglycemiaLimit = (EditText) layout.findViewById(R.id.hypoglycemia_limit);
 		hyperglycemiaLimit = (EditText) layout.findViewById(R.id.hyperglycemia_limit);
 
+
+		sensibilityFactor.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					focusOnView(sensibilityFactor);
+				}
+			}
+		});
+		carbsRatio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					focusOnView(carbsRatio);
+				}
+			}
+		});
+		hypoglycemiaLimit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					focusOnView(hypoglycemiaLimit);
+				}
+			}
+		});
+		hyperglycemiaLimit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(hasFocus){
+					focusOnView(hyperglycemiaLimit);
+				}
+			}
+		});
+
+
 		return layout;
-	}
-
-	public void onButtonPressed(Uri uri) {
-		if (mListener != null) {
-			mListener.formFillEnded();
-		}
-	}
-
-	@Override
-	public void onAttach(Context context) {
-		super.onAttach(context);
-		if (context instanceof OnFormEnd) {
-			mListener = (OnFormEnd) context;
-		} else {
-			throw new RuntimeException(context.toString()
-					+ " must implement OnFormEnd");
-		}
-	}
-
-	@Override
-	public void onDetach() {
-		super.onDetach();
-		mListener = null;
 	}
 
 	@Override
@@ -166,11 +191,16 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		if(!success){
 			Log.w(TAG, "Failed to save user data!");
 		}
-	}
-
-	@Override
-	public int getSubtitle() {
-		return R.string.subtitle_diabetes_factors;
+		ContextWrapper cw = new ContextWrapper(getContext());
+		File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+		// Create imageDir
+		File mypath = new File(directory, userImgFileName);
+		DB_Read read = new DB_Read(getContext());
+		if (mypath.exists()) {
+			BadgeUtils.addPhotoBadge(getContext(), read);
+		}
+		LevelsPointsUtils.addPoints(getContext(),0,"first", read);
+		read.close();
 	}
 
 	private float getNumber(String val) {
@@ -181,4 +211,19 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		}
 		return result;
 	}
+	@Override
+	public int getSubtitle() {
+		return R.string.subtitle_diabetes_factors;
+	}
+
+	private final void focusOnView(final View view){
+		scrollView.post(new Runnable() {
+			@Override
+			public void run() {
+				scrollView.scrollTo(0, view.getBottom());
+			}
+		});
+	}
+
+
 }

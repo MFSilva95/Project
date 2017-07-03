@@ -1,12 +1,13 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/menuItem_ExerciseDetail_Delete"
         android:title="@string/delete"
         android:icon="@drawable/ic_action_discard"
         android:orderInCategory="100"
-        android:showAsAction="always"
-        android:enabled="true" 
+        app:showAsAction="always"
+        android:enabled="true"
         android:visible="true"/>
     
     <item
@@ -14,8 +15,8 @@
         android:title="@string/save_GlycemiaDetail"
         android:icon="@drawable/ic_action_save"
         android:orderInCategory="100"
-        android:showAsAction="always"
-        android:enabled="true" 
+        app:showAsAction="always"
+        android:enabled="true"
         android:visible="true"/>
 
 </menu>

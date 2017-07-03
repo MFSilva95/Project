@@ -1,12 +1,14 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/menuItem_HbA1c"
+        android:enabled="true"
+        android:icon="@drawable/plus_btn"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:icon="@drawable/plus_btn"
-        android:title="@string/add_Weight" 
-        android:visible="true" 
-        android:enabled="true" />
+        android:title="@string/add_Weight"
+        android:visible="true"
+        app:showAsAction="always" />
 
 </menu>

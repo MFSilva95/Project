@@ -1,57 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
-    
-	<LinearLayout
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_marginLeft="3dp"
-	    android:orientation="vertical"
-	    android:layout_centerVertical="true"
-	    android:layout_alignParentLeft="true" >
-	    <TextView
-	        android:id="@+id/tv_list_weight_data"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:textSize="16sp"
-	        android:textStyle="bold" />
+    android:layout_height="wrap_content"
+    android:background="?android:selectableItemBackground"
+    android:minHeight="@dimen/list_row_default_height"
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/list_item_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/list_item_vertical_margin"
+    tools:layout_height="48dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
         <TextView
-	        android:id="@+id/tv_list_weight_hora"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_weight="1"
-	        android:textSize="16sp"
-	        android:textStyle="bold" />
-	</LinearLayout>
-	<TextView
-	        android:id="@+id/tv_list_weight_value"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_centerVertical="true"
-	        android:text="@string/hint_value1"
-	        android:textSize="36sp"
-	        android:layout_toLeftOf="@+id/tv_list_weight_unit" />
-	<TextView
-	        android:id="@+id/tv_list_weight_unit"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="@string/kg"
-	        android:textSize="16sp"
-	        android:paddingLeft="8dp"
-	        android:layout_centerVertical="true"
-	        android:layout_toLeftOf="@+id/ib_list_weight_detail" />
-	<ImageButton
-        android:contentDescription="weight_detail_img"
-        android:id="@+id/ib_list_weight_detail"
+            android:id="@+id/txt_date"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="bottom"
+            android:lines="1"
+            android:textColor="@android:color/background_dark"
+            tools:text="2016-02-10" />
+
+        <TextView
+            android:id="@+id/txt_time"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:textColor="@android:color/background_dark"
+            android:textStyle=""
+            tools:text="11:00" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txt_value"
+        style="@android:style/TextAppearance.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:paddingRight="8dp"
+        android:layout_gravity="center_vertical"
         android:paddingLeft="8dp"
-        android:layout_alignParentRight="true"
-        android:src="@drawable/viewdetail"
-        android:background="@color/transparent" />
-</RelativeLayout>
+        android:paddingRight="8dp"
+        android:textColor="@android:color/background_dark"
+        android:textSize="@dimen/list_text_huge"
+        tools:text="@string/hint_value1" />
+
+    <TextView
+        android:id="@+id/tv_list_weight_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:fontFamily="sans-serif-light"
+        android:gravity="center_horizontal"
+        android:text="@string/weight_unit"
+        android:textColor="@android:color/background_dark" />
+
+</LinearLayout>

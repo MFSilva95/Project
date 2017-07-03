@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -56,6 +57,18 @@ public class BodyExpandFrameLayout extends FrameLayout {
 		});
 		bodyOverlapHeaderGesture.collapse();
 		gestureDetector = new GestureDetector(getContext(), bodyOverlapHeaderGesture);
+		setFocusableInTouchMode(true);
+		requestFocus();
+		setOnKeyListener(new OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if(keyCode==KeyEvent.KEYCODE_BACK && bodyOverlapHeaderGesture.isExpanded()){
+					bodyOverlapHeaderGesture.collapse();
+					return true;
+				}
+				return false;
+			}
+		});
 	}
 
 

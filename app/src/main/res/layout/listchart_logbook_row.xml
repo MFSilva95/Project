@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="?android:selectableItemBackground"
+              android:minHeight="@dimen/list_row_default_height"
+              android:orientation="horizontal"
+              android:paddingBottom="@dimen/list_item_vertical_margin"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingStart="@dimen/activity_horizontal_margin"
+              android:paddingTop="@dimen/list_item_vertical_margin"
+              tools:layout_height="48dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:lines="1"
+            android:textColor="@android:color/background_dark"
+            tools:text="2015-11-03"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:fontFamily="sans-serif-light"
+            android:lines="1"
+            android:textColor="@android:color/background_dark"
+            android:textStyle=""
+            tools:text="21:50"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/glycemia"
+        android:layout_width="75dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_horizontal"
+            android:text="@string/bloodglucose"
+            android:textColor="@android:color/background_dark"
+            />
+
+        <TextView
+            android:id="@+id/glycemiaVal"
+            style="@android:style/TextAppearance.Large"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/background_dark"
+            tools:text="100"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/carbs"
+        android:layout_width="75dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_horizontal"
+            android:text="@string/Carbs"
+            android:textColor="@android:color/background_dark"
+            />
+
+        <TextView
+            android:id="@+id/carbsVal"
+            style="@android:style/TextAppearance.Large"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/background_dark"
+            tools:text="50"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/insulin"
+        android:layout_width="75dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/insulinName"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center"
+            android:lines="1"
+            android:textColor="@android:color/background_dark"
+            tools:text="Novolog"/>
+
+        <TextView
+            android:id="@+id/insulinVal"
+            style="@android:style/TextAppearance.Large"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@android:color/background_dark"
+            tools:text="2.0"/>
+    </LinearLayout>
+
+</LinearLayout>
