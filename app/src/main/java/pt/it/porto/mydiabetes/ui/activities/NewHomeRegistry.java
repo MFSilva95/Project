@@ -57,6 +57,7 @@ import java.util.Date;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.Advice;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
@@ -70,6 +71,7 @@ import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
+import pt.it.porto.mydiabetes.ui.fragments.new_register.AdviceRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.CarbsRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.GlycaemiaRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.InsuRegister;
@@ -685,10 +687,15 @@ public class NewHomeRegistry extends AppCompatActivity{
         requestKeyboard(glycaemiaRegister);
     }
     private void insertCarbsMenu(){
-        /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
-                    if(newAdvice!=null){
-                        addContent(R.layout.dialog_exp_advice);
-                        setAdviceText();
+        //Advice advice1 = new Advice();
+        //advice1.setSummaryText("You have recently exercised. You should compensate it with carbohydrates.");
+        //advice1.setExpandedText("You have recently exercised. You should compensate it with carbohydrates.");
+        //advice1.setUrgency(5);
+        //advice1.setType("NORMAL");
+        //Advice newAdvice = //YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
+                    /*if(advice1!=null){
+                        addContentAt(new AdviceRegister(this, advice1),0);
+                        //setAdviceText();
                     }*/
         carbsRegister = new CarbsRegister(this, carbsRegister.getCallBack());
         addContent(carbsRegister);
@@ -1303,6 +1310,9 @@ public class NewHomeRegistry extends AppCompatActivity{
         contentLayout.addView(view, contentLayout.getChildCount() - 1);//contentLayout.getChildCount() - 1);
         Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
         button.setEnabled(true);
+    }
+    private void addContentAt(LinearLayout view, int pos) {
+        contentLayout.addView(view, pos);//contentLayout.getChildCount() - 1);
     }
     private void addContentAt(int layout, int pos) {
         contentLayout.addView(LayoutInflater.from(this).inflate(layout, contentLayout, false), pos);//contentLayout.getChildCount() - 1);

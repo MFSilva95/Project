@@ -137,52 +137,52 @@ public class badgesGrid extends Fragment  {
             }
         });
 
-        TextView textMedium = (TextView) layout.findViewById(R.id.textMedium);
-        RelativeLayout mediumBadges = (RelativeLayout) layout.findViewById(R.id.mediumBadges);
-        final ExpandableRelativeLayout expandableMediumBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableMediumBadges);
-        expandableMediumBadges.collapse();
-        if(lvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL ) {
-            int[] attrs = new int[] { android.R.attr.selectableItemBackground /* index 0 */};
-            TypedArray ta = getContext().obtainStyledAttributes(attrs);
-            Drawable drawableFromTheme = ta.getDrawable(0);
-            ta.recycle();
-            mediumBadges.setBackground(drawableFromTheme);
-            textMedium.setText(getString(R.string.medium));
-            mediumBadges.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    expandableMediumBadges.toggle();
-                }
-            });
-        }
-        else{
-            mediumBadges.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.divider));
-            textMedium.setText(getString(R.string.medium_unlock_lvl10));
-        }
+//        TextView textMedium = (TextView) layout.findViewById(R.id.textMedium);
+//        RelativeLayout mediumBadges = (RelativeLayout) layout.findViewById(R.id.mediumBadges);
+//        final ExpandableRelativeLayout expandableMediumBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableMediumBadges);
+//        expandableMediumBadges.collapse();
+//        if(lvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL ) {
+//            int[] attrs = new int[] { android.R.attr.selectableItemBackground /* index 0 */};
+//            TypedArray ta = getContext().obtainStyledAttributes(attrs);
+//            Drawable drawableFromTheme = ta.getDrawable(0);
+//            ta.recycle();
+//            mediumBadges.setBackground(drawableFromTheme);
+//            textMedium.setText(getString(R.string.medium));
+//            mediumBadges.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    expandableMediumBadges.toggle();
+//                }
+//            });
+//        }
+//        else{
+//            mediumBadges.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.divider));
+//            textMedium.setText(getString(R.string.medium_unlock_lvl10));
+//        }
 
 
-        TextView textAdvanced = (TextView) layout.findViewById(R.id.textAdvanced);
-        RelativeLayout advancedBadges = (RelativeLayout) layout.findViewById(R.id.advancedBadges);
-        final ExpandableRelativeLayout expandableAdvancedBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableAdvancedBadges);
-        expandableAdvancedBadges.collapse();
-        if(lvl >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL ) {
-            int[] attrs = new int[] { android.R.attr.selectableItemBackground /* index 0 */};
-            TypedArray ta = getContext().obtainStyledAttributes(attrs);
-            Drawable drawableFromTheme = ta.getDrawable(0);
-            ta.recycle();
-            advancedBadges.setBackground(drawableFromTheme);
-            textAdvanced.setText(getString(R.string.advanced));
-            advancedBadges.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    expandableAdvancedBadges.toggle();
-                }
-            });
-        }
-        else{
-            advancedBadges.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.divider));
-            textAdvanced.setText(getString(R.string.advanced_unlock_lvl30));
-        }
+//        TextView textAdvanced = (TextView) layout.findViewById(R.id.textAdvanced);
+//        RelativeLayout advancedBadges = (RelativeLayout) layout.findViewById(R.id.advancedBadges);
+//        final ExpandableRelativeLayout expandableAdvancedBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableAdvancedBadges);
+//        expandableAdvancedBadges.collapse();
+//        if(lvl >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL ) {
+//            int[] attrs = new int[] { android.R.attr.selectableItemBackground /* index 0 */};
+//            TypedArray ta = getContext().obtainStyledAttributes(attrs);
+//            Drawable drawableFromTheme = ta.getDrawable(0);
+//            ta.recycle();
+//            advancedBadges.setBackground(drawableFromTheme);
+//            textAdvanced.setText(getString(R.string.advanced));
+//            advancedBadges.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    expandableAdvancedBadges.toggle();
+//                }
+//            });
+//        }
+//        else{
+//            advancedBadges.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.divider));
+//            textAdvanced.setText(getString(R.string.advanced_unlock_lvl30));
+//        }
 
         RelativeLayout dailyBadges = (RelativeLayout) layout.findViewById(R.id.dailyBadges);
         final ExpandableRelativeLayout expandableDailyBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableDailyBadges);
@@ -218,50 +218,50 @@ public class badgesGrid extends Fragment  {
         bronzeHba1cBadge = (ImageView) layout.findViewById(R.id.bronzeHba1cBadge);
         silverHba1cBadge = (ImageView) layout.findViewById(R.id.silverHba1cBadge);
         goldHba1cBadge = (ImageView) layout.findViewById(R.id.goldHba1cBadge);
+//
+//        bronzeLogMediumBadge = (ImageView) layout.findViewById(R.id.bronzeLogMediumBadge);
+//        silverLogMediumBadge = (ImageView) layout.findViewById(R.id.silverLogMediumBadge);
+//        goldLogMediumBadge = (ImageView) layout.findViewById(R.id.goldLogMediumBadge);
+//        bronzeExerciseMediumBadge = (ImageView) layout.findViewById(R.id.bronzeExerciseMediumBadge);
+//        silverExerciseMediumBadge = (ImageView) layout.findViewById(R.id.silverExerciseMediumBadge);
+//        goldExerciseMediumBadge = (ImageView) layout.findViewById(R.id.goldExerciseMediumBadge);
+//        bronzeDiseaseMediumBadge = (ImageView) layout.findViewById(R.id.bronzeDiseaseMediumBadge);
+//        silverDiseaseMediumBadge = (ImageView) layout.findViewById(R.id.silverDiseaseMediumBadge);
+//        goldDiseaseMediumBadge = (ImageView) layout.findViewById(R.id.goldDiseaseMediumBadge);
+//        bronzeWeightMediumBadge = (ImageView) layout.findViewById(R.id.bronzeWeightMediumBadge);
+//        silverWeightMediumBadge = (ImageView) layout.findViewById(R.id.silverWeightMediumBadge);
+//        goldWeightMediumBadge = (ImageView) layout.findViewById(R.id.goldWeightMediumBadge);
+//        bronzeBpMediumBadge = (ImageView) layout.findViewById(R.id.bronzeBpMediumBadge);
+//        silverBpMediumBadge = (ImageView) layout.findViewById(R.id.silverBpMediumBadge);
+//        goldBpMediumBadge = (ImageView) layout.findViewById(R.id.goldBpMediumBadge);
+//        bronzeCholesterolMediumBadge = (ImageView) layout.findViewById(R.id.bronzeCholesterolMediumBadge);
+//        silverCholesterolMediumBadge = (ImageView) layout.findViewById(R.id.silverCholesterolMediumBadge);
+//        goldCholesterolMediumBadge = (ImageView) layout.findViewById(R.id.goldCholesterolMediumBadge);
+//        bronzeHba1cMediumBadge = (ImageView) layout.findViewById(R.id.bronzeHba1cMediumBadge);
+//        silverHba1cMediumBadge = (ImageView) layout.findViewById(R.id.silverHba1cMediumBadge);
+//        goldHba1cMediumBadge = (ImageView) layout.findViewById(R.id.goldHba1cMediumBadge);
 
-        bronzeLogMediumBadge = (ImageView) layout.findViewById(R.id.bronzeLogMediumBadge);
-        silverLogMediumBadge = (ImageView) layout.findViewById(R.id.silverLogMediumBadge);
-        goldLogMediumBadge = (ImageView) layout.findViewById(R.id.goldLogMediumBadge);
-        bronzeExerciseMediumBadge = (ImageView) layout.findViewById(R.id.bronzeExerciseMediumBadge);
-        silverExerciseMediumBadge = (ImageView) layout.findViewById(R.id.silverExerciseMediumBadge);
-        goldExerciseMediumBadge = (ImageView) layout.findViewById(R.id.goldExerciseMediumBadge);
-        bronzeDiseaseMediumBadge = (ImageView) layout.findViewById(R.id.bronzeDiseaseMediumBadge);
-        silverDiseaseMediumBadge = (ImageView) layout.findViewById(R.id.silverDiseaseMediumBadge);
-        goldDiseaseMediumBadge = (ImageView) layout.findViewById(R.id.goldDiseaseMediumBadge);
-        bronzeWeightMediumBadge = (ImageView) layout.findViewById(R.id.bronzeWeightMediumBadge);
-        silverWeightMediumBadge = (ImageView) layout.findViewById(R.id.silverWeightMediumBadge);
-        goldWeightMediumBadge = (ImageView) layout.findViewById(R.id.goldWeightMediumBadge);
-        bronzeBpMediumBadge = (ImageView) layout.findViewById(R.id.bronzeBpMediumBadge);
-        silverBpMediumBadge = (ImageView) layout.findViewById(R.id.silverBpMediumBadge);
-        goldBpMediumBadge = (ImageView) layout.findViewById(R.id.goldBpMediumBadge);
-        bronzeCholesterolMediumBadge = (ImageView) layout.findViewById(R.id.bronzeCholesterolMediumBadge);
-        silverCholesterolMediumBadge = (ImageView) layout.findViewById(R.id.silverCholesterolMediumBadge);
-        goldCholesterolMediumBadge = (ImageView) layout.findViewById(R.id.goldCholesterolMediumBadge);
-        bronzeHba1cMediumBadge = (ImageView) layout.findViewById(R.id.bronzeHba1cMediumBadge);
-        silverHba1cMediumBadge = (ImageView) layout.findViewById(R.id.silverHba1cMediumBadge);
-        goldHba1cMediumBadge = (ImageView) layout.findViewById(R.id.goldHba1cMediumBadge);
-
-        bronzeLogAdvancedBadge = (ImageView) layout.findViewById(R.id.bronzeLogAdvancedBadge);
-        silverLogAdvancedBadge = (ImageView) layout.findViewById(R.id.silverLogAdvancedBadge);
-        goldLogAdvancedBadge = (ImageView) layout.findViewById(R.id.goldLogAdvancedBadge);
-        bronzeExerciseAdvancedBadge = (ImageView) layout.findViewById(R.id.bronzeExerciseAdvancedBadge);
-        silverExerciseAdvancedBadge = (ImageView) layout.findViewById(R.id.silverExerciseAdvancedBadge);
-        goldExerciseAdvancedBadge = (ImageView) layout.findViewById(R.id.goldExerciseAdvancedBadge);
-        bronzeDiseaseAdvancedBadge = (ImageView) layout.findViewById(R.id.bronzeDiseaseAdvancedBadge);
-        silverDiseaseAdvancedBadge = (ImageView) layout.findViewById(R.id.silverDiseaseAdvancedBadge);
-        goldDiseaseAdvancedBadge = (ImageView) layout.findViewById(R.id.goldDiseaseAdvancedBadge);
-        bronzeWeightAdvancedBadge = (ImageView) layout.findViewById(R.id.bronzeWeightAdvancedBadge);
-        silverWeightAdvancedBadge = (ImageView) layout.findViewById(R.id.silverWeightAdvancedBadge);
-        goldWeightAdvancedBadge = (ImageView) layout.findViewById(R.id.goldWeightAdvancedBadge);
-        bronzeBpAdvancedBadge = (ImageView) layout.findViewById(R.id.bronzeBpAdvancedBadge);
-        silverBpAdvancedBadge = (ImageView) layout.findViewById(R.id.silverBpAdvancedBadge);
-        goldBpAdvancedBadge = (ImageView) layout.findViewById(R.id.goldBpAdvancedBadge);
-        bronzeCholesterolAdvancedBadge = (ImageView) layout.findViewById(R.id.bronzeCholesterolAdvancedBadge);
-        silverCholesterolAdvancedBadge = (ImageView) layout.findViewById(R.id.silverCholesterolAdvancedBadge);
-        goldCholesterolAdvancedBadge = (ImageView) layout.findViewById(R.id.goldCholesterolAdvancedBadge);
-        bronzeHba1cAdvancedBadge = (ImageView) layout.findViewById(R.id.bronzeHba1cAdvancedBadge);
-        silverHba1cAdvancedBadge = (ImageView) layout.findViewById(R.id.silverHba1cAdvancedBadge);
-        goldHba1cAdvancedBadge = (ImageView) layout.findViewById(R.id.goldHba1cAdvancedBadge);
+//        bronzeLogAdvancedBadge = (ImageView) layout.findViewById(R.id.bronzeLogAdvancedBadge);
+//        silverLogAdvancedBadge = (ImageView) layout.findViewById(R.id.silverLogAdvancedBadge);
+//        goldLogAdvancedBadge = (ImageView) layout.findViewById(R.id.goldLogAdvancedBadge);
+//        bronzeExerciseAdvancedBadge = (ImageView) layout.findViewById(R.id.bronzeExerciseAdvancedBadge);
+//        silverExerciseAdvancedBadge = (ImageView) layout.findViewById(R.id.silverExerciseAdvancedBadge);
+//        goldExerciseAdvancedBadge = (ImageView) layout.findViewById(R.id.goldExerciseAdvancedBadge);
+//        bronzeDiseaseAdvancedBadge = (ImageView) layout.findViewById(R.id.bronzeDiseaseAdvancedBadge);
+//        silverDiseaseAdvancedBadge = (ImageView) layout.findViewById(R.id.silverDiseaseAdvancedBadge);
+//        goldDiseaseAdvancedBadge = (ImageView) layout.findViewById(R.id.goldDiseaseAdvancedBadge);
+//        bronzeWeightAdvancedBadge = (ImageView) layout.findViewById(R.id.bronzeWeightAdvancedBadge);
+//        silverWeightAdvancedBadge = (ImageView) layout.findViewById(R.id.silverWeightAdvancedBadge);
+//        goldWeightAdvancedBadge = (ImageView) layout.findViewById(R.id.goldWeightAdvancedBadge);
+//        bronzeBpAdvancedBadge = (ImageView) layout.findViewById(R.id.bronzeBpAdvancedBadge);
+//        silverBpAdvancedBadge = (ImageView) layout.findViewById(R.id.silverBpAdvancedBadge);
+//        goldBpAdvancedBadge = (ImageView) layout.findViewById(R.id.goldBpAdvancedBadge);
+//        bronzeCholesterolAdvancedBadge = (ImageView) layout.findViewById(R.id.bronzeCholesterolAdvancedBadge);
+//        silverCholesterolAdvancedBadge = (ImageView) layout.findViewById(R.id.silverCholesterolAdvancedBadge);
+//        goldCholesterolAdvancedBadge = (ImageView) layout.findViewById(R.id.goldCholesterolAdvancedBadge);
+//        bronzeHba1cAdvancedBadge = (ImageView) layout.findViewById(R.id.bronzeHba1cAdvancedBadge);
+//        silverHba1cAdvancedBadge = (ImageView) layout.findViewById(R.id.silverHba1cAdvancedBadge);
+//        goldHba1cAdvancedBadge = (ImageView) layout.findViewById(R.id.goldHba1cAdvancedBadge);
 
         bronzeDailyBadge = (ImageView) layout.findViewById(R.id.bronzeDailyBadge);
         silverDailyBadge = (ImageView) layout.findViewById(R.id.silverDailyBadge);

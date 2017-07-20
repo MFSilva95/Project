@@ -2,53 +2,32 @@
 <resources>
     <string name="advice">Conselho</string>
     <string name="task">Tarefa</string>
-    <string name="advices">Conselhos</string>
     <string name="tasks">Tarefas</string>
-    <string name="recentReg">Registos Recentes</string>
 
     <string name="targetOverlapError">Já existe um objectivo definido para o tempo escolhido</string>
 
     <string name="navTask">As minhas tarefas</string>
     <string name="navLog">O meu Logbook</string>
-    <string name="navPersonalTools">Definições Pessoais</string>
     <string name="navDiabetesTools">Definições Gestão Diabetes</string>
 
     <string name="app_name">myDiabetes</string>
-    <string name="add_Exercise">Adicionar Exercício</string>
     <string name="title_activity_my_data">Os Meus Dados</string>
-    <string name="title_activity_preferences">Configurações</string>
     <string name="title_activity_exercise">Registos de Exercício</string>
-    <string name="save_MyData">Guardar</string>
-    <string name="title_activity_glycemia">Registos de Glicemia</string>
     <string name="action_settings">Settings</string>
-    <string name="add_Glycemia">Adicionar Glicemia</string>
     <string name="title_activity_insulin">Registos de Insulina</string>
     <string name="title_activity_logbook">LogBook</string>
-    <string name="add_Insulin">Adicionar Insulina</string>
     <string name="title_activity_blood_pressure">Registos de P. Arterial</string>
-    <string name="add_BloodPressure">Adicionar Pressão Arterial</string>
     <string name="title_activity_carbo_hydrate">Registos de H. Carbono</string>
     <string name="add_Carbs">Adicionar Hidratos de Carbono</string>
     <string name="title_activity_cholesterol">Registos de Colesterol</string>
-    <string name="add_Cholesterol">Adicionar Colesterol</string>
     <string name="title_activity_disease">Registos de Doenças</string>
-    <string name="add_Disease">Adicionar Doença</string>
     <string name="title_activity_h1_a1c">Registos de HbA1c</string>
-    <string name="add_H1A1c">Adicionar HbA1c</string>
     <string name="title_activity_weight">Registos de Peso</string>
-    <string name="add_Weight">Adicionar Peso</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="add_TagsFragment">Adicionar Etiqueta</string>
-    <string name="add_DiseasesFragment">Adicionar Doença</string>
-    <string name="add_ExercisesFragment">Adicionar Exercício</string>
-    <string name="add_InsulinsFragment">Adicionar Insulina</string>
     <string name="add_MedicinesFragment">Adicionar Medicamento</string>
     <string name="delete_MedicinesFragment">Eliminar medicamento?</string>
     <string name="error_MedicinesFragment">Não pode eliminar este medicamento, referenciado em registos!</string>
-    <string name="delete_Disease">Eliminar doença?</string>
     <string name="title_activity_transfer">Transferência PC</string>
     <string name="title_activity_scan">Digitalizar</string>
-    <string name="title_activity_cloud_server">CloudServerActivity</string>
     <string name="transf_WaitMesg">Esperar ligação</string>
     <string name="transf_WaitTitle">Atenção</string>
     <string name="transf_ConnOK">Ligação Estabelecida</string>
@@ -68,15 +47,8 @@
     <string name="diabetes_type_2">Tipo 2</string>
     <string name="diabetes_type_gestational">Gestacional</string>
 
-    <string name="title_activity_data_tools">Definições &amp; Ferramentas</string>
-    <string name="title_activity_gly_ins_carbs">A Minha Diabetes</string>
-    <string name="title_activity_ex_bpcho_dis_wei">A Minha Diabetes</string>
-    <string name="title_activity_glycemia_detail">Registo de Glicemia</string>
     <string name="save_GlycemiaDetail">Guardar</string>
-    <string name="title_activity_insulin_detail">Registo de Insulina</string>
     <string name="title_activity_exercise_detail">Registo de Exercício</string>
-    <string name="title_activity_logbook_detail">Registo no Logbook</string>
-    <string name="save_detail">Guardar</string>
     <string name="delete_detail">Eliminar</string>
     <string name="deleteReading">Eliminar leitura?</string>
     <string name="positiveButton">Sim</string>
@@ -84,12 +56,6 @@
     <string name="okButton" translatable="false">OK</string>
     <string name="saveButton">Gravar</string>
     <string name="deleteException">Não pode eliminar esta leitura!</string>
-    <string name="deleteAlert">Alerta!</string>
-    <string name="deleteConfirmationSingular">O item seguinte será apagado:</string>
-    <string name="deleteConfirmationPlural">Os itens seguintes serão apagados:</string>
-    <string name="deleteCarbsReg">Registo de Hidratos de Carbonos</string>
-    <string name="deleteGlycemiaReg">Registo de Glicemia</string>
-    <string name="deleteInsulinReg">Registo de Insulina</string>
 
     <string-array name="Effort">
         <item>Muito Leve</item>
@@ -112,10 +78,6 @@
         <item>Deitar</item>
         <item>Outra</item>
     </string-array>
-    <string-array name="bg_targets">
-        <item>Dia</item>
-        <item>Noite</item>
-    </string-array>
 
     <string name="title_activity_blood_pressure_detail">Registo de P. Arterial</string>
     <string name="title_activity_cholesterol_detail">Registo de Colesterol</string>
@@ -126,7 +88,6 @@
     <string name="title_activity_tag_detail">Fase do Dia</string>
     <string name="title_activity_target_bg_detail">Objetivo de Glicemia</string>
     <string name="title_activity_insulins_detail">Insulina</string>
-    <string name="title_activity_meal">Refeição</string>
     <string name="title_activity_info">Informação</string>
     <string name="title_activity_view_photo">Fotografia</string>
     <string name="Meal">Refeição</string>
@@ -134,20 +95,13 @@
     <string name="Insulin">Insulina</string>
     <string name="Carbs">H.Carb</string>
     <string name="Exercise">Exercício</string>
-    <string name="delete_Exercise">Eliminar exercício?</string>
-    <string name="Logbook">Logbook</string>
     <string name="photoSaved">Guardada em: </string>
-    <string name="information_about">Aplicação desenvolvida no âmbito do projeto interno do Instituto de Telecomunicações \"S-Dia-SelMan - Smart Diabetes Self Management System\" na Fac. de Ciências e Fac. de Medicina da Universidade do Porto. Trabalho realizado em colaboração com o Hospital de S. João,  Serviço de Endocrinologia.</string>
     <string name="information_about_using">Esta aplicação está em desenvolvimento e para a usar deve ter assinado o Consentimento Informado e ter sido informado sobre a metodologia do estudo.</string>
     <string name="information_about_libraries">Esta aplicação utiliza as bibliotecas AAkira/ExpandableLayout, e Pierry/SimpleToast.</string>
     <string name="information_about_version">Versão </string>
 
-    <string name="diseaseInputAlert">Insira o nome de doença antes de gravar!</string>
-    <string name="exerciseInputAlert">Insira o nome do exercício antes de gravar!</string>
-
 
     <string name="information_about_contact" translatable="false">mydiabetes@dcc.fc.up.pt\n\nhttp://mydiabetes.dcc.fc.up.pt/</string>
-    <string name="uporto" translatable="false">Univ. Porto</string>
 
 
     <string name="sync_with_pc">Sincronizar com PC</string>
@@ -156,15 +110,8 @@
 
     <string name="qr">Ler QR</string>
 
-    <string name="homeInfo">Antes de adicionar qualquer registo deve adicionar a sua informação!</string>
-    <string name="insulin_info_insulins">Antes de adicionar registos de insulina deve adicionar a insulina a administrar!</string>
-    <string name="insulin_info_target">Antes de adicionar registos de insulina deve adicionar os seus objetivos da glicemia!</string>
-    <string name="how_to_add_insulins">Para adicionar mais insulinas deve carregar no ícone superior direito do menu inicial, de seguida entrar em Configurações e depois seleccionar a aba Insulinas. Para finalizar deve adicionar os seus objetivos da glicemia!</string>
     <string name="delete_insulin">Eliminar Insulina?</string>
     <string name="delete_insulin_exception">Não pode eliminar esta insulina, associado a outros registos!</string>
-    <string name="logbook_alert">Antes de gravar deve adicionar a insulina a administrar</string>
-    <string name="meal_alert_insulin">Antes de adicionar uma refeição deve adicionar a insulina a administrar!</string>
-    <string name="meal_alert_target">Antes de adicionar uma refeição deve adicionar os seus objetivos da glicemia!</string>
     <string name="delete_photo">Eliminar foto?</string>
     <string name="targetbg_info">Eliminar Objetivo de Glicemia?</string>
     <string name="targetbg_delete_exception">Não pode eliminar este objetivo, associado a outros registos!</string>
@@ -174,9 +121,7 @@
     <string name="cancel_read">Leitura cancelada</string>
     <string name="mydata_saved">Guardado</string>
     <string name="mydata_before_saving">Antes de guardar preencha todos os campos.</string>
-    <string name="mydata_next_add_insulin">De seguida deve adicionar a insulina a administrar!</string>
 
-    <string name="preferences_day">Fases do Dia</string>
     <string name="preferences_target">Objetivos Glicemia</string>
     <string name="preferences_insulins">Insulinas</string>
     <string name="preferences_factors">Fatores e Rácios</string>
@@ -194,7 +139,6 @@
     <string name="dbcopy_error">Ocorreu um erro durante a cópia de segurança, verifique se a memória externa está disponivel!</string>
 
     <string name="date_hour">Data e Hora</string>
-    <string name="hour">Hora</string>
     <string name="time_of_day">Altura do Dia</string>
     <string name="bloodpressure">Pressão Arterial</string>
     <string name="systolic">Sistólica</string>
@@ -204,42 +148,22 @@
     <string name="delete">Eliminar</string>
     <string name="name">Nome</string>
     <string name="bloodglucose">Glicemia</string>
-    <string name="quantity">Quantidade</string>
-    <string name="quantity_grams">qtd. em gramas</string>
     <string name="label">Etiqueta</string>
-    <string name="before_lunch">Antes de almoço</string>
     <string name="insulin">Insulina</string>
     <string name="mg_dl" translatable="false">mg/dl</string>
     <string name="from">De</string>
     <string name="to">Até</string>
-    <string name="data_config">Dados e Config.</string>
-    <string name="value">Valor</string>
     <string name="disease">Doença</string>
     <string name="flu">Gripe</string>
     <string name="name_hint">Jorge Mendes</string>
-    <string name="duration">Duração</string>
     <string name="minutes">Minutos</string>
-    <string name="effort">Esforço</string>
-    <string name="very_light">Muito leve</string>
-    <string name="start">Inicio</string>
-    <string name="hint_value" translatable="false">120</string>
     <string name="hint_value1" translatable="false">95</string>
-    <string name="hint_hour">15:30</string>
-    <string name="hint_value2" translatable="false">90</string>
     <string name="glycemia_value">Valor de glicemia</string>
-    <string name="hemoglobin_value">Valor Hemoglobina Glicosilada</string>
-    <string name="hint_hemoglobin">10 (valor em %)</string>
-    <string name="hint_date_hour" translatable="false">2013-04-06 15:30</string>
-    <string name="hint_date" translatable="false">2013-04-06</string>
     <string name="weight">Peso</string>
-    <string name="export_data">Dados a exportar:</string>
     <string name="select_all">Selecionar Tudo</string>
-    <string name="select_time">Selecione a Hora</string>
-    <string name="select_date">Selecione a Data</string>
     <string name="add_more_registers">Adicionar mais registos</string>
     <string name="transfer_db">Transferir Base de Dados</string>
     <string name="transfer">Transferir</string>
-    <string name="hint_weight">80 (em kg)</string>
     <string name="backup">Cópia de Segurança</string>
     <string name="do_back">Efectuar Cópia de Segurança</string>
     <string name="restore_backup">Restaurar Cópia</string>
@@ -248,11 +172,6 @@
     <string name="restore_backup_success">Restauro efectuado com sucesso!</string>
     <string name="restore_backup_error">Ocurreu um erro durante o restauro, verifique se a memória externa está disponivel!</string>
     <string name="last_backup">Última Cópia de Segurança</string>
-    <string name="new_disease">Nova doença</string>
-    <string name="new_exercise">Novo exercicio</string>
-    <string name="hint_exercise">BTT</string>
-    <string name="new_insulin">Nova Insulina</string>
-    <string name="type">Tipo</string>
     <string name="action">Ação</string>
     <string name="new_medicine">Novo medicamento</string>
     <string name="hint_medicine">Ben u Ron 1000</string>
@@ -261,10 +180,6 @@
     <string name="hc_units">uni</string>
     <string name="gli_units">mg/dl</string>
     <string name="pills">comprimidos</string>
-    <string name="new_label">Nova etiqueta</string>
-    <string name="breakfast">Pequeno almoço</string>
-    <string name="disease_period">Período de doença</string>
-    <string name="exercise_duration">Exercício e Duração</string>
     <string name="hint_exercise1">Corrida</string>
     <string name="schedule">Horário</string>
     <string name="send_to_cloud">Enviar para Cloud</string>
@@ -289,20 +204,9 @@
     <string name="grams">gramas</string>
     <string name="percent" translatable="false">%</string>
     <string name="weight_unit">Kg</string>
-    <string name="uni">uni.</string>
     <string name="insulin_method">Modo de Administração</string>
-    <string name="read_value">Valor de Leitura</string>
-    <string name="insulin_and_day">Insulina e Fase do Dia</string>
-    <string name="hint_insulin_type">ex.: injecção</string>
     <string name="photo_and_value">Foto e Valor</string>
-    <string name="data_and_read">Dados e Leitura</string>
-    <string name="hint_insulin_action">ex.: rápida</string>
     <string name="photo">Foto</string>
-    <string name="carbs_extended">Hidratos de Carbono</string>
-    <string name="goal">Objetivo</string>
-    <string name="dates_from_until">Datas De/Até</string>
-    <string name="send_email">Enviar por E-mail</string>
-    <string name="export">Exportar</string>
 
     <string name="insulin_action_rapid">Rápida</string>
     <string name="insulin_action_short">Curta</string>
@@ -319,16 +223,10 @@
     <string name="insulin_message_action">Escolha um modo de administração.</string>
 
     <string name="insulin_message_name_exists">Já existe uma insulina com esse nome, escolha outro por favor.</string>
-    <string name="meal_insulin_calc">Seleccionou uma insulina </string>
-    <string name="meal_insulin_calc_1"> . Esta será utilizada para fazer o cálculo da insulina activa"</string>
 
-    <string name="meal_insulin_no_calc">A insulina que seleccionou não será utilizada para fazer o cálculo da insulina activa"</string>
-    <string name="chart_activity_label">Peso</string>
     <string name="title_activity_welcome">Registo</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_name">Nome</string>
-    <string name="prompt_height">Altura (em metros)</string>
     <string name="error_invalid_height">Altura errada, tem de ser em metros. (Falta um ponto algures?)</string>
     <string name="error_field_required">Campo necessário</string>
     <string name="height_hint" translatable="false">1.65</string>
@@ -346,13 +244,10 @@
     <string name="subtitle_personal_data">Dados Pessoais</string>
     <string name="welcome">Início</string>
 
-    <string name="no_measures_added_to_database">Não foram adicionadas novas medições.</string>
-    <string name="measures_added_to_database">Foram adicionadas %d novas medições!</string>
     <string name="backup_share">Gravar cópia de segurança e\n enviar para o Gestor do Projecto</string>
     <string name="share_subject">Dados do paciente %1$s</string>
     <string name="share_text">Enviado da aplicação: A Minha Diabetes</string>
     <string name="information_about_developers">Aplicação desenvolvida por Diogo Machado, Ricardo Parra, Eduardo Soares, João Maia, João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
-    <string name="button_add_glicemia_objective">Adicionar objectivo de glicemia</string>
 
     <string name="correction_glycemia">Correcção Glicemia</string>
     <string name="correction_hc">Correcção Hidratos</string>
@@ -368,15 +263,12 @@
     <string name="new_feature_iob_text_2">Agora pode ter informação da insulina que ainda está activa no seu organismo quando for tomar uma nova insulina</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
-    <string name="report">Relatório</string>
-    <string name="insulin_calc">Cálculo Insulina</string>
     <string name="use_iob">Usar Insulina Activa</string>
     <string name="backup_restore_confirmation_dialog_text">Este processo vai substituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
     <string name="next_button">Seguinte</string>
     <string name="notification_sync_recurrent">Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?</string>
     <string name="notification_sync_first_time">Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?</string>
     <string name="notification_sync_text">Envie os dados ao gestor do projecto</string>
-    <string name="see_in_chart">Ver em gráfico</string>
     <string name="list_empty_message">Nenhum resultado encontrado\nAumente o intervalo de tempo</string>
     <string name="show_labels">Mostrar valores</string>
     <string name="show_hiperglicemia_limit">Mostrar limite de hiperglicemia</string>
@@ -399,20 +291,7 @@
     <string name="settings_edit_insulins">Editar Insulinas</string>
     <string name="settings_edit_glicemia_targets">Editar Objectivos de Glicemia</string>
     <string name="glycemia_objective">Objectivo de Glicemia</string>
-    <string name="glycemia_measure">Glicemia Lida</string>
     <string name="insulin_intake">Insulina a Administrar</string>
-    <string name="carbs_intake">Hidratos de Carbono Consumidos</string>
-
-
-    <plurals name="notification_text_new_glucose_measure">
-        <item quantity="zero">Não existem novas medições para adicionar!</item>
-        <item quantity="one">Foi adicionada 1 nova medição de Glicemia!</item>
-        <item quantity="other">Foram adicionadas %d novas medições de Glicemia!</item>
-    </plurals>
-    <plurals name="notification_text_new_meal">
-        <item quantity="one">Esta é recente. Clique para adicionar refeição.</item>
-        <item quantity="other">Uma é recente. Clique para adicionar refeição.</item>
-    </plurals>
 
 
     <string-array name="task_period_list">
@@ -443,7 +322,6 @@
         <item>@string/insulin_type_pump</item>
     </string-array>
 
-    <string name="years">Anos</string>
     <string name="badges">Medalhas</string>
     <string name="beginner">Principiante</string>
     <string name="daily">Diárias</string>

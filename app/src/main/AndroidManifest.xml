@@ -385,17 +385,8 @@
         </activity> -->
 
 
-        <activity
-            android:name=".ui.activities.AddEvent"
-            android:label="Test"
-            android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/HomeTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="pt.it.porto.mydiabetes.ui.activities.Home"/>
-        </activity>
 
-        0<activity
+        <activity
             android:name=".ui.activities.Badges"
             android:label="@string/badges"
             android:parentActivityName=".ui.activities.Home">

@@ -188,7 +188,7 @@ public class homeRightFragment extends Fragment  {
                         .setTitle(getString(R.string.badge_help_dialog_title))
                         .setDescription(getString(R.string.badge_help_dialog_desc))
                         .setStyle(Style.HEADER_WITH_ICON)
-                        .setIcon(R.drawable.medal_gold_record_a)
+//                        .setIcon(R.drawable.medal_gold_record_a)
                         .withDialogAnimation(true)
                         .withDarkerOverlay(true)
                         .withIconAnimation(false)

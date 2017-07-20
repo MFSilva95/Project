@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.listAdapters;
 
 import android.content.Context;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,11 +51,36 @@ public class BadgeListAdapter extends BaseAdapter {
         TextView date = (TextView) v.findViewById(R.id.date);
         TextView type = (TextView) v.findViewById(R.id.type);
         ImageView image = (ImageView) v.findViewById(R.id.image);
+        ImageView imageBadge = (ImageView) v.findViewById(R.id.badgeType);
 
         BadgeRec badge = _data.get(position);
         date.setText(badge.getFormattedDate());
 
 
+
+
+        // Type -> daily, [beginner, ...]
+        // Medal -> bronze, silver, gold
+        // ID -> randomID
+        // Name -> photo, BP, etc
+
+        String medalType = "medal_"+badge.getMedal()+"_"+badge.getType();
+        String badgeType = badge.getName();
+
+        Log.i("cenas", "MEDAL getType: "+badge.getType()+" getMedal:"+badge.getMedal()+" getID:"+badge.getId());
+        Log.i("cenas", "MEDAL getName: "+badge.getName());
+        try{
+            image.setImageResource(_c.getResources().getIdentifier(medalType,"drawable",_c.getPackageName()));
+            imageBadge.setImageResource(_c.getResources().getIdentifier(badgeType,"drawable",_c.getPackageName()));
+        }catch (Exception e){
+            Log.i("cemas", "MISSING:"+badgeType);
+            e.printStackTrace();
+        }
+
+
+
+        //badge.getType().equals("daily");
+/*
         if(badge.getType().equals("daily")){
             type.setText(R.string.daily);
             if(badge.getMedal().equals("bronze")){
@@ -271,7 +297,7 @@ public class BadgeListAdapter extends BaseAdapter {
                     image.setImageResource(R.drawable.medal_gold_hba1c_a);
             }
         }
-
+*/
         return v;
     }
 

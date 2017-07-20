@@ -56,54 +56,70 @@
                 android:orientation="horizontal"
                 android:weightSum="3">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/photoBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_gold_profile" />
+                        app:srcCompat="@drawable/medal_gold_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/bp"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/photoBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_photo"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/exportBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_gold_save" />
+                        app:srcCompat="@drawable/medal_gold_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/save"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/exportBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/create_backup"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -132,7 +148,7 @@
                 android:orientation="horizontal"
                 android:weightSum="3">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -140,69 +156,95 @@
 
                     <ImageView
                         android:id="@+id/bronzeLogBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_bronze_log" />
+                        app:srcCompat="@drawable/medal_bronze_beginner" />
+
+                    <ImageView
+                        android:id="@+id/badgeType"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/log"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/bronzeLogBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_10_records_log"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/silverLogBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_silver_log" />
+                        app:srcCompat="@drawable/medal_silver_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/log"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/silverLogBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_20_records_log"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/goldLogBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_gold_log" />
+                        app:srcCompat="@drawable/medal_gold_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/log"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/goldLogBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_30_records_log"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
 
             <View
@@ -223,77 +265,101 @@
                 android:orientation="horizontal"
                 android:weightSum="3">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/bronzeExerciseBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_bronze_exercise" />
+                        app:srcCompat="@drawable/medal_bronze_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/exercise"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/bronzeExerciseBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_3_records_exercise"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/silverExerciseBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_silver_exercise" />
+                        app:srcCompat="@drawable/medal_silver_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/exercise"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/silverExerciseBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_10_records_exercise"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/goldExerciseBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_gold_exercise" />
+                        app:srcCompat="@drawable/medal_gold_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/exercise"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/goldExerciseBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_20_records_exercise"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
 
             <View
@@ -315,77 +381,101 @@
                 android:orientation="horizontal"
                 android:weightSum="3">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/bronzeDiseaseBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_bronze_disease" />
+                        app:srcCompat="@drawable/medal_bronze_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/disease"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/bronzeDiseaseBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_1_records_disease"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/silverDiseaseBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_silver_disease" />
+                        app:srcCompat="@drawable/medal_silver_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/disease"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/silverDiseaseBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_2_records_disease"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/goldDiseaseBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_gold_disease" />
+                        app:srcCompat="@drawable/medal_gold_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/disease"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/goldDiseaseBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_3_records_disease"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
 
             <View
@@ -407,78 +497,101 @@
                 android:orientation="horizontal"
                 android:weightSum="3">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/bronzeWeightBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_bronze_weight" />
+                        app:srcCompat="@drawable/medal_bronze_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/weight"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
-                        android:id="@+id/textView13"
+                        android:layout_below="@+id/bronzeWeightBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_3_records_weight"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/silverWeightBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_silver_weight" />
+                        app:srcCompat="@drawable/medal_silver_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/weight"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/silverWeightBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_10_records_weight"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/goldWeightBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_gold_weight" />
+                        app:srcCompat="@drawable/medal_gold_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/weight"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/goldWeightBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_20_records_weight"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
 
             <View
@@ -500,77 +613,104 @@
                 android:orientation="horizontal"
                 android:weightSum="3">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/bronzeBpBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_bronze_bp" />
+                        app:srcCompat="@drawable/medal_bronze_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/bp"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/bronzeBpBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_1_records_bp"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <table android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">oi</table>
+
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/silverBpBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_silver_bp" />
+                        app:srcCompat="@drawable/medal_silver_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/bp"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/silverBpBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_3_records_bp"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/goldBpBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_gold_bp" />
+                        app:srcCompat="@drawable/medal_gold_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/bp"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/goldBpBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_5_records_bp"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
 
             <View
@@ -592,77 +732,101 @@
                 android:orientation="horizontal"
                 android:weightSum="3">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/bronzeCholesterolBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_bronze_cholesterol" />
+                        app:srcCompat="@drawable/medal_bronze_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/cholesterol"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/bronzeCholesterolBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_1_records_cholesterol"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/silverCholesterolBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_silver_cholesterol" />
+                        app:srcCompat="@drawable/medal_silver_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/cholesterol"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/silverCholesterolBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_2_records_cholesterol"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/goldCholesterolBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_gold_cholesterol" />
+                        app:srcCompat="@drawable/medal_gold_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/cholesterol"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/goldCholesterolBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_3_records_cholesterol"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
 
             <View
@@ -684,77 +848,101 @@
                 android:orientation="horizontal"
                 android:weightSum="3">
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/bronzeHba1cBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_bronze_hba1c" />
+                        app:srcCompat="@drawable/medal_bronze_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/hba1c"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/bronzeHba1cBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_1_records_hba1c"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/silverHba1cBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_silver_hba1c" />
+                        app:srcCompat="@drawable/medal_silver_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/hba1c"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/silverHba1cBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_2_records_hba1c"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
+                    android:layout_weight="1">
 
                     <ImageView
                         android:id="@+id/goldHba1cBadge"
-                        android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_width="60dp"
+                        android:layout_height="80dp"
+                        android:layout_centerHorizontal="true"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_gold_hba1c" />
+                        app:srcCompat="@drawable/medal_gold_beginner" />
+
+                    <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:src="@drawable/hba1c"
+                        android:layout_marginTop="42dp"
+                        android:layout_centerHorizontal="true" />
 
                     <TextView
+                        android:layout_below="@+id/goldHba1cBadge"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:text="@string/add_3_records_hba1c"
                         android:textSize="12sp" />
 
-                </LinearLayout>
+                </RelativeLayout>
             </LinearLayout>
 
 

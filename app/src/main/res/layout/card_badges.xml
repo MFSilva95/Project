@@ -73,7 +73,7 @@
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_gold_record" />
+                        app:srcCompat="@drawable/medal_gold_beginner" />
 
                     <TextView
                         android:id="@+id/beginnerBadgesText"
@@ -100,7 +100,7 @@
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_gold_record_m" />
+                        app:srcCompat="@drawable/medal_gold_beginner" />
 
                     <TextView
                         android:id="@+id/mediumBadgesText"
@@ -122,12 +122,11 @@
                     <ImageView
                         android:id="@+id/advancedBadge"
                         android:layout_width="match_parent"
-
                         android:layout_height="70dp"
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
-                        app:srcCompat="@drawable/medal_gold_record_a" />
+                        app:srcCompat="@drawable/medal_gold_beginner" />
 
                     <TextView
                         android:id="@+id/advancedBadgesText"

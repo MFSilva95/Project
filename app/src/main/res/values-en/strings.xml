@@ -1,15 +1,12 @@
 <resources>
     <string name="advice">Advice</string>
     <string name="task">Task</string>
-    <string name="advices">Advices</string>
     <string name="tasks">Tasks</string>
-    <string name="recentReg">Recent Registries</string>
 
     <string name="targetOverlapError">A glicemic target is already defined at this time period</string>
     <string name="glycemia_value">Glycaemia Value</string>
     <string name="navTask">My Tasks</string>
     <string name="navLog">My Logbook</string>
-    <string name="navPersonalTools">Personal options</string>
     <string name="navDiabetesTools">Diabetes options</string>
     <string name="noteError">Please insert at least one record</string>
     <string name="Carbs">Carbs</string>
@@ -18,20 +15,13 @@
     <string name="Insulin">Insulin</string>
     <string name="Meal">Meal</string>
     <string name="action_settings">Settings</string>
-    <string name="add_BloodPressure">Add Blood Pressure</string>
     <string name="add_Carbs">Add Carbo-hydrates</string>
-    <string name="add_Cholesterol">Add colhesterol</string>
-    <string name="add_Disease">Add Disease</string>
     <string name="title_activity_blood_pressure">B.P. Registers</string>
     <string name="title_activity_blood_pressure_detail">B.P. Register</string>
-    <string name="title_activity_ex_bpcho_dis_wei">My Diabetes</string>
-    <string name="title_activity_gly_ins_carbs">My Diabetes</string>
     <string name="title_activity_view_photo">Photograph</string>
     <string name="photoSaved">Stored in: </string>
     <string name="action">Action</string>
-    <string name="add_DiseasesFragment">Add Disease</string>
     <string name="height">Height</string>
-    <string name="goal">Goal</string>
     <string name="gender">Gender</string>
     <string name="flu">Flu</string>
     <string name="information_about_developers">Developed by Diogo Machado, Ricardo Parra, Eduardo Soares, João Maia, João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
@@ -39,22 +29,16 @@
     <string name="insulin">Insulin</string>
     <string name="information_about_version">Version </string>
     <string name="weight">Weight</string>
-    <string name="Logbook">Logbook</string>
     <string name="cholesterol">Cholesterol</string>
     <string name="from">From</string>
     <string name="to">To</string>
-    <string name="export">Export</string>
     <string name="grams">grams</string>
     <string name="hint_value3">e.g.: 45</string>
-    <string name="add_H1A1c">Add HbA1C</string>
-    <string name="add_InsulinsFragment">Add Insulin</string>
     <string name="app_name">myDiabetes</string>
     <string name="hint_value4">e.g.: 10</string>
     <string name="hint_value5">e.g.: 70</string>
     <string name="hint_value6">e.g.: 150</string>
     <string name="hint_value7">e.g.: 1.82</string>
-    <string name="hint_weight">170 (in lbs)</string>
-    <string name="hour">Hour</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 
@@ -69,39 +53,23 @@
         <item>Going to bed</item>
         <item>Other</item>
     </string-array>
-    <string-array name="bg_targets">
-        <item>Day</item>
-        <item>Night</item>
-    </string-array>
 
 
-    <string name="add_Exercise">Add Exercise</string>
     <string name="title_activity_my_data">My Data</string>
-    <string name="title_activity_preferences">Preferences</string>
     <string name="title_activity_exercise">Exercise Register</string>
-    <string name="save_MyData">Save</string>
-    <string name="title_activity_glycemia">Glycaemia Register</string>
-    <string name="add_Glycemia">Add Glycaemia</string>
     <string name="title_activity_insulin">Insulin Register</string>
     <string name="title_activity_logbook">LogBook</string>
-    <string name="add_Insulin">Add Insulin</string>
     <string name="title_activity_carbo_hydrate">Carbohydrates Register</string>
     <string name="title_activity_cholesterol">Cholesterol Register</string>
     <string name="title_activity_disease">Disease Register</string>
     <string name="title_activity_h1_a1c">HbA1c Register</string>
     <string name="title_activity_weight">Weight Register</string>
-    <string name="add_Weight">Add Weight</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="add_TagsFragment">Add Tag</string>
-    <string name="add_ExercisesFragment">Add Exercise</string>
 
     <string name="add_MedicinesFragment">Add Medicament</string>
     <string name="delete_MedicinesFragment">Delete Medicament?</string>
     <string name="error_MedicinesFragment">You cannot delete this medicament, it is referred in the Register!</string>
-    <string name="delete_Disease">Delete Disease?</string>
     <string name="title_activity_transfer">Transfer to PC</string>
     <string name="title_activity_scan">Scan</string>
-    <string name="title_activity_cloud_server">CloudServerActivity</string>
     <string name="transf_WaitMesg">Wait Connection</string>
     <string name="transf_WaitTitle">Atention</string>
     <string name="transf_ConnOK">Connection Established</string>
@@ -119,25 +87,14 @@
     <string name="diabetes_type_1">Type 1</string>
     <string name="diabetes_type_2">Type 2</string>
     <string name="diabetes_type_gestational">Gestational</string>
-    <string name="title_activity_data_tools">Definitions &amp; Tools</string>
-    <string name="title_activity_glycemia_detail">Glycaemia Register</string>
     <string name="save_GlycemiaDetail">Save</string>
-    <string name="title_activity_insulin_detail">Insulin Register</string>
     <string name="title_activity_exercise_detail">Exercise Register</string>
-    <string name="title_activity_logbook_detail">Logbook Register</string>
-    <string name="save_detail">Save</string>
     <string name="delete_detail">Delete</string>
     <string name="deleteReading">Delete Reading?</string>
     <string name="positiveButton">Yes</string>
     <string name="negativeButton">Cancel</string>
     <string name="saveButton">Save</string>
     <string name="deleteException">Cannot delete this Reading!</string>
-    <string name="deleteAlert">Alert!</string>
-    <string name="deleteConfirmationSingular">The following item will be deleted:</string>
-    <string name="deleteConfirmationPlural">The following items will be deleted:</string>
-    <string name="deleteCarbsReg">Carbohydrates Register</string>
-    <string name="deleteGlycemiaReg">Glycaemia Register</string>
-    <string name="deleteInsulinReg">Insulin Register</string>
 
     <string-array name="Effort">
         <item>Very Light</item>
@@ -156,13 +113,9 @@
     <string name="title_activity_tag_detail">Day Time</string>
     <string name="title_activity_target_bg_detail">Glycemia Objective</string>
     <string name="title_activity_insulins_detail">Insulin</string>
-    <string name="title_activity_meal">Meal</string>
     <string name="title_activity_info">Information</string>
-    <string name="delete_Exercise">Delete Exercise?</string>
 
 
-    <string name="select_time">Select Time</string>
-    <string name="select_date">Select Date</string>
     <string name="add_more_registers">Add more Registers</string>
 
     <string-array name="task_period_list">
@@ -188,36 +141,23 @@
     <string name="insulin_total">Total Insulin</string>
 
     <string name="glycemia_objective">Glycaemia Objective</string>
-    <string name="glycemia_measure">Glycaemia Read</string>
     <string name="insulin_intake">Insulin to Administrate</string>
-    <string name="carbs_intake">Carbohydrates Consumption</string>
     <string name="active_insulin">Insulin on Board</string>
     <string name="backup">Backup</string>
-    <string name="information_about">Application developed in the Instituto de Telecomunicações\'s interim project  \"S-Dia-SelMan - Smart Diabetes Self Management System\". Development in the School of Sciences and Medicine of the Univ. of Porto in cooperation with S. João\'s Hospital.</string>
     <string name="information_about_using">The application is under development and for its use you should have signed the informed consent and have been informed about the methodology of the study.</string>
     <string name="bloodglucose">Glycaemia</string>
     <string name="bloodpressure">Blood pressure</string>
-    <string name="breakfast">Breakfast</string>
-    <string name="carbs_extended">Carbohydrates</string>
     <string name="birth_date">Birth Date</string>
-    <string name="before_lunch">Before Lunch</string>
-    <string name="chart_activity_label">Weight</string>
     <string name="cancel_read">Reading Cancelled</string>
     <string name="delete">Delete</string>
     <string name="diastolic">Diastolic</string>
     <string name="disease">Disease</string>
-    <string name="duration">Duration</string>
-    <string name="effort"></string>
     <string name="systolic">Systolic</string>
     <string name="sync">Synchronization</string>
-    <string name="start">Start</string>
-    <string name="type">Type</string>
-    <string name="uni">Unit</string>
     <string name="units">Units</string>
     <string name="use">Use</string>
     <string name="glicInputError">Not a valid Number</string>
 
-    <string name="years">Years Old</string>
     <string name="badges">Badges</string>
     <string name="beginner">Beginner</string>
     <string name="daily">Daily</string>
@@ -365,7 +305,6 @@
     <string name="exit_dialog_description">Are you sure you want to leave without saving?</string>
     <string name="hc_units">uni</string>
 
-    <string name="preferences_day">Day Fases</string>
     <string name="preferences_target">Glycemia Objectives</string>
     <string name="preferences_insulins">Insulins</string>
     <string name="preferences_factors">Factors and Ratio\'s</string>
