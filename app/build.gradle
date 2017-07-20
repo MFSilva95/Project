@@ -20,7 +20,7 @@ android {
 
         buildConfigField "long", "BUILDDATE", System.currentTimeMillis() + "L"
 
-        vectorDrawables.useSupportLibrary = true
+       // vectorDrawables.useSupportLibrary = true
     }
     productFlavors {
         prod {
