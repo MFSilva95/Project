@@ -46,13 +46,9 @@ public class badgesList extends Fragment  {
         layout = inflater.inflate(R.layout.fragment_badges_list, container, false);
         list = (ListView) layout.findViewById(R.id.list);
         DB_Read db = new DB_Read(getContext());
-        LinkedList<BadgeRec> badgeList = db.Badges_GetAll();
+        LinkedList<BadgeRec> badgeList = db.Badges_GetAll_NONDAILY();
         db.close();
-        for (int i=0; i<badgeList.size();i++){
-            if(badgeList.get(i).getType().equals("daily") && badgeList.get(i).getFormattedDate().equals(DateUtils.getFormattedDate(Calendar.getInstance()))){
-                badgeList.remove(i);
-            }
-        }
+
         list.setAdapter(new BadgeListAdapter(badgeList, getContext()));
         list.setEmptyView(layout.findViewById(R.id.list_empty));
 

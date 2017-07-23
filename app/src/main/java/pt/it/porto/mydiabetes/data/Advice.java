@@ -5,10 +5,12 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
+import pt.it.porto.mydiabetes.utils.AdviceAlertReceiver;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 
 /**
@@ -58,8 +60,8 @@ public class Advice extends HomeElement implements Comparable<Advice> {
     public void setNotification(String[] notificationParams, Context context){
         notificationText = notificationParams[0];
         registryType = notificationParams[1];
-        time = Integer.parseInt(notificationParams[2]);
-        timeUnit = notificationParams[3];
+        //time = Integer.parseInt(notificationParams[2]);
+        //timeUnit = notificationParams[3];
         setupAlarm(context);
 
     }
@@ -107,8 +109,9 @@ public class Advice extends HomeElement implements Comparable<Advice> {
     }
     private void setupAlarm(Context ctxt) {
 
-        /*AlarmManager alm = (AlarmManager) ctxt.getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alm = (AlarmManager) ctxt.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(ctxt, AdviceAlertReceiver.class);
+        Log.i("cenas", "onReceive:  -> IMA HERE");
 
         Bundle extras = new Bundle();
         extras.putString("RegistryClassName", this.getRegistryType());
@@ -117,8 +120,8 @@ public class Advice extends HomeElement implements Comparable<Advice> {
 
         PendingIntent alarmIntent = PendingIntent.getBroadcast(ctxt, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        long timeTest = getTime().getTimeInMillis();
-        alm.set(AlarmManager.RTC_WAKEUP, timeTest, alarmIntent);*/
+        long timeTest = 10;//getTime().getTimeInMillis();
+        alm.set(AlarmManager.RTC_WAKEUP, timeTest, alarmIntent);
     }
 
     public String getExpandedText() {return expandedText;}

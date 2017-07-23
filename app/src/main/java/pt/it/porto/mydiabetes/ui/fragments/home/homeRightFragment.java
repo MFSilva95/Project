@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
@@ -63,8 +64,8 @@ public class homeRightFragment extends Fragment  {
     private String imgUriString;
     private View layout;
 
-    private LinearLayout mediumLayout;
-    private LinearLayout advancedLayout;
+    private RelativeLayout mediumLayout;
+    private RelativeLayout advancedLayout;
 
     private ImageButton helpButton;
     private ImageView beginnerBadge;
@@ -74,10 +75,17 @@ public class homeRightFragment extends Fragment  {
     private ImageView advancedBadge;
     private TextView advancedBadgesText;
     private ImageView currentBadge;
+    private ImageView currentBadgeSymbol;
 
     private TextView levelText;
     private TextView pointsText;
     private CircularMusicProgressBar mCircleView;
+
+    private int countBeginner;
+    private int countMedium;
+    private int countAdvanced;
+    //private int countDaily;
+    private BadgeRec dailyBadge;
 
     private static final int RC_CODE_PICKER = 2000;
     private Bitmap bmp;
@@ -104,11 +112,24 @@ public class homeRightFragment extends Fragment  {
         layout = inflater.inflate(R.layout.fragment_home_right, container, false);
         mPrefs = getContext().getSharedPreferences("label", 0);
         imgUriString = mPrefs.getString("userImgUri", null);
+
+
         DB_Read read = new DB_Read(getContext());
+
         int points = LevelsPointsUtils.getPercentageLevels(getContext(),read);
         int lvl = LevelsPointsUtils.getLevel(getContext(),read);
         int nextLvlPoints = LevelsPointsUtils.getPointsNextLevel(getContext(),read);
         int totalPoints = LevelsPointsUtils.getTotalPoints(getContext(), read);
+
+        myData = read.MyData_Read();
+        //LinkedList<BadgeRec> list = read.Badges_GetAll();
+
+        countBeginner = read.Badges_GetCount("beginner");
+        countMedium = read.Badges_GetCount("medium");
+        countAdvanced = read.Badges_GetCount("advanced");
+        //countDaily = read.Badges_GetCount("daily");
+        dailyBadge = read.getLastDailyMedal();
+
         read.close();
 
 
@@ -120,47 +141,48 @@ public class homeRightFragment extends Fragment  {
         pointsText = (TextView) layout.findViewById(R.id.numberPoints);
         pointsText.setText(totalPoints+" / "+nextLvlPoints);
 
-
-        mediumLayout = (LinearLayout) layout.findViewById(R.id.mediumLayout);
-        advancedLayout = (LinearLayout) layout.findViewById(R.id.advancedLayout);
+        mediumLayout = (RelativeLayout) layout.findViewById(R.id.mediumLayout);
+        advancedLayout = (RelativeLayout) layout.findViewById(R.id.advancedLayout);
 
         if( lvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
             mediumLayout.setVisibility(View.VISIBLE);
+
+            mediumBadge = (ImageView) layout.findViewById(R.id.mediumBadge);
+            mediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+            mediumBadgesText = (TextView) layout.findViewById(R.id.mediumBadgesText);
+
+            if(lvl >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
+                advancedLayout.setVisibility(View.VISIBLE);
+
+                advancedBadge = (ImageView) layout.findViewById(R.id.advancedBadge);
+                advancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+                advancedBadgesText = (TextView) layout.findViewById(R.id.advancedBadgesText);
+            }
+//            else{
+//                advancedLayout.setVisibility(View.GONE);
+//            }
         }
-        else{
-            mediumLayout.setVisibility(View.GONE);
-        }
-        if(lvl >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
-            advancedLayout.setVisibility(View.VISIBLE);
-        }
-        else{
-            advancedLayout.setVisibility(View.GONE);
-        }
+//        else{
+//            mediumLayout.setVisibility(View.GONE);
+//        }
 
         helpButton = (ImageButton) layout.findViewById(R.id.helpButton);
+
         beginnerBadge = (ImageView) layout.findViewById(R.id.beginnerBadge);
         beginnerBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
         beginnerBadgesText = (TextView) layout.findViewById(R.id.beginnerBadgesText);
-        mediumBadge = (ImageView) layout.findViewById(R.id.mediumBadge);
-        mediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        mediumBadgesText = (TextView) layout.findViewById(R.id.mediumBadgesText);
-        advancedBadge = (ImageView) layout.findViewById(R.id.advancedBadge);
-        advancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        advancedBadgesText = (TextView) layout.findViewById(R.id.advancedBadgesText);
+
 
         currentBadge = (ImageView) layout.findViewById(R.id.currentBadge);
+        currentBadgeSymbol = (ImageView) layout.findViewById(R.id.currentBadgeSymbol);
+
         currentBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+        currentBadgeSymbol.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
 
         setImage();
 
-        //Read MyData From DB
-        DB_Read db_read = new DB_Read(getContext());
-        myData = db_read.MyData_Read();
-        LinkedList<BadgeRec> list = db_read.Badges_GetAll();
-        db_read.close();
-
         setMyDataFromDB(myData);
-        updateMedals(list);
+        updateMedals();
 
         CardView personalInfo = (CardView) layout.findViewById(R.id.personalInfo);
         CardView badgesInfo = (CardView) layout.findViewById(R.id.badgesInfo);
@@ -239,70 +261,63 @@ public class homeRightFragment extends Fragment  {
     @Override
     public void onResume() {
         super.onResume();
-        //Read MyData From DB
-        DB_Read db_read = new DB_Read(getContext());
-        myData = db_read.MyData_Read();
-        int points = LevelsPointsUtils.getLevel(getContext(), db_read);
-        int percentageLvL = LevelsPointsUtils.getPercentageLevels(getContext(),db_read);
-        int pointsToNextLvL = LevelsPointsUtils.getPointsNextLevel(getContext(),db_read);
-        LinkedList<BadgeRec> list = db_read.Badges_GetAll();
 
+        DB_Read read = new DB_Read(getContext());
+
+        int points = LevelsPointsUtils.getPercentageLevels(getContext(),read);
+        int percentageLvL = LevelsPointsUtils.getPercentageLevels(getContext(),read);
+        int pointsToNextLvL = LevelsPointsUtils.getPointsNextLevel(getContext(),read);
+
+        myData = read.MyData_Read();
+
+        countBeginner = read.Badges_GetCount("beginner");
+        countMedium = read.Badges_GetCount("medium");
+        countAdvanced = read.Badges_GetCount("advanced");
+        dailyBadge = read.getLastDailyMedal();
+        //countDaily = read.Badges_GetCount("daily");
+
+        String numberMedals_total = LevelsPointsUtils.getTotalPoints(getContext(), read)+" / "+pointsToNextLvL;
+
+        read.close();
 
         if( points >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
             mediumLayout.setVisibility(View.VISIBLE);
-        }
-        else{
-            mediumLayout.setVisibility(View.GONE);
-        }
-        if( points >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
-            advancedLayout.setVisibility(View.VISIBLE);
-        }
-        else{
-            advancedLayout.setVisibility(View.GONE);
+            if( points >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
+                advancedLayout.setVisibility(View.VISIBLE);
+            }
         }
 
         levelText.setText(points+"");
         mCircleView.setValue(percentageLvL);
-        pointsText.setText(LevelsPointsUtils.getTotalPoints(getContext(), db_read)+" / "+pointsToNextLvL);
-        db_read.close();
+        pointsText.setText(numberMedals_total);
         setMyDataFromDB(myData);
-        updateMedals(list);
+        updateMedals();
     }
 
-    private void updateMedals(LinkedList<BadgeRec> list) {
-        int countBeginner = 0;
-        int countMedium = 0;
-        int countAdvanced = 0;
-        for (BadgeRec badge : list) {
-            if(badge.getType().equals("beginner"))
-                countBeginner++;
-            if(badge.getType().equals("medium"))
-                countMedium++;
-            if(badge.getType().equals("advanced"))
-                countAdvanced++;
-            if(badge.getType().equals("daily") && badge.getFormattedDate().equals(DateUtils.getFormattedDate(Calendar.getInstance()))){
-                if(badge.getMedal().equals("bronze")){
-                    currentBadge.clearColorFilter();
-                }
-                if(badge.getMedal().equals("silver")){
-                    currentBadge.clearColorFilter();
-                    currentBadge.setImageResource(R.drawable.medal_silver_daily);}
-                if(badge.getMedal().equals("gold")){
-                    currentBadge.clearColorFilter();
-                    currentBadge.setImageResource(R.drawable.medal_gold_daily);}
-            }
+    private void updateMedals() {
+
+        if(dailyBadge != null){
+
+            String medalType = "medal_"+dailyBadge.getMedal()+"_"+dailyBadge.getType();
+            String badgeType = "record";//dailyBadge.getName();
+
+            currentBadge.setImageResource(getContext().getResources().getIdentifier(medalType,"drawable",getContext().getPackageName()));
+            currentBadgeSymbol.setImageResource(getContext().getResources().getIdentifier(badgeType,"drawable",getContext().getPackageName()));
         }
 
-        if(countBeginner > 0)
+        if(countBeginner > 0){
             beginnerBadge.clearColorFilter();
-        if(countMedium > 0)
+            beginnerBadgesText.setText(countBeginner+"/23");
+        }
+        if(countMedium > 0){
             mediumBadge.clearColorFilter();
-        if(countAdvanced > 0)
+            mediumBadgesText.setText(countMedium+"/21");
+        }
+        if(countAdvanced > 0){
             advancedBadge.clearColorFilter();
+            advancedBadgesText.setText(countAdvanced+"/21");
+        }
 
-        beginnerBadgesText.setText(countBeginner+"/23");
-        mediumBadgesText.setText(countMedium+"/21");
-        advancedBadgesText.setText(countAdvanced+"/21");
     }
 
     private void setImage() {

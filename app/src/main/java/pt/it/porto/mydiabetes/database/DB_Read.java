@@ -1993,6 +1993,31 @@ public class DB_Read {
 		}
 	}
 
+	public LinkedList<BadgeRec> Badges_GetAll_NONDAILY() {
+		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges WHERE TYPE != 'daily' ORDER BY DateTime DESC;", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			BadgeRec tmp;
+			do {
+				tmp = new BadgeRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setDateTime(cursor.getString(2));
+				tmp.setType(cursor.getString(3));
+				tmp.setName(cursor.getString(4));
+				tmp.setMedal(cursor.getString(5));
+				AllReads.add(tmp);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return AllReads;
+		} else {
+			cursor.close();
+			return AllReads;
+		}
+	}
+
 	public LinkedList<BadgeRec> Badges_GetAll() {
 		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges ORDER BY DateTime DESC;", null);
@@ -2015,6 +2040,73 @@ public class DB_Read {
 		} else {
 			cursor.close();
 			return AllReads;
+		}
+	}
+
+	public LinkedList<BadgeRec> Badges_GetBadgeList(String difficulty) {
+		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges WHERE TYPE = "+difficulty+" ORDER BY DateTime DESC;", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			BadgeRec tmp;
+			do {
+				tmp = new BadgeRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setDateTime(cursor.getString(2));
+				tmp.setType(cursor.getString(3));
+				tmp.setName(cursor.getString(4));
+				tmp.setMedal(cursor.getString(5));
+				AllReads.add(tmp);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return AllReads;
+		} else {
+			cursor.close();
+			return AllReads;
+		}
+	}
+
+	public BadgeRec getLastDailyMedal(){
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges WHERE TYPE = 'daily' and DATETIME >= date('now');", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			BadgeRec tmp;
+
+			tmp = new BadgeRec();
+			tmp.setId(cursor.getInt(0));
+			tmp.setIdUser(cursor.getInt(1));
+			tmp.setDateTime(cursor.getString(2));
+			tmp.setType(cursor.getString(3));
+			tmp.setName(cursor.getString(4));
+			tmp.setMedal(cursor.getString(5));
+
+			cursor.close();
+			return tmp;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
+	public int Badges_GetCount(String difficulty) {
+		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
+		Cursor cursor;
+		if(difficulty.equals("daily")){
+			cursor = myDB.rawQuery("SELECT Count(*) FROM Badges WHERE TYPE = 'daily' and DATETIME >= date('now');", null);
+		}else{
+			cursor = myDB.rawQuery("SELECT Count(*) FROM Badges WHERE TYPE = '"+difficulty+"' ORDER BY DateTime DESC;", null);
+		}
+
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			int count = cursor.getInt(0);
+			cursor.close();
+			return count;
+		} else {
+			cursor.close();
+			return 0;
 		}
 	}
 

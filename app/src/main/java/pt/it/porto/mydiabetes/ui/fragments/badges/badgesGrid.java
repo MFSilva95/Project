@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,6 +22,7 @@ import java.util.LinkedList;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.ui.listAdapters.BadgeListAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
@@ -104,6 +107,10 @@ public class badgesGrid extends Fragment  {
     private TextView silverDailyCount;
     private TextView goldDailyCount;
 
+    private ExpandableRelativeLayout expandableBeginnerBadges;
+    private ExpandableRelativeLayout expandableMediumBadges;
+    private ExpandableRelativeLayout expandableAdvancedBadges;
+
     public static pt.it.porto.mydiabetes.ui.fragments.badges.badgesGrid newInstance() {
         pt.it.porto.mydiabetes.ui.fragments.badges.badgesGrid fragment = new pt.it.porto.mydiabetes.ui.fragments.badges.badgesGrid();
         return fragment;
@@ -121,25 +128,37 @@ public class badgesGrid extends Fragment  {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.fragment_badges_grid, container, false);
+
         DB_Read read = new DB_Read(getContext());
         int lvl = LevelsPointsUtils.getLevel(getContext(), read);
+        LinkedList<BadgeRec> badgeList = read.Badges_GetAll_NONDAILY();
+
+        LinkedList<BadgeRec> badgeList_b = read.Badges_GetAll_NONDAILY();
+        LinkedList<BadgeRec> badgeList_m = read.Badges_GetAll_NONDAILY();
+        LinkedList<BadgeRec> badgeList_a = read.Badges_GetAll_NONDAILY();
+
         read.close();
 
+
         RelativeLayout beginnerBadges = (RelativeLayout) layout.findViewById(R.id.beginnerBadgesText);
-        final ExpandableRelativeLayout expandableBegginerBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableBegginerBadges);
-        expandableBegginerBadges.collapse();
+        expandableBeginnerBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableBegginerBadges);
+        expandableBeginnerBadges.collapse();
         beginnerBadges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                expandableBegginerBadges.toggle();
+                expandableBeginnerBadges.toggle();
             }
         });
+        unlock_badges(badgeList_b);
+
+
 
 //        TextView textMedium = (TextView) layout.findViewById(R.id.textMedium);
 //        RelativeLayout mediumBadges = (RelativeLayout) layout.findViewById(R.id.mediumBadges);
-//        final ExpandableRelativeLayout expandableMediumBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableMediumBadges);
+//        expandableMediumBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableMediumBadges);
 //        expandableMediumBadges.collapse();
 //        if(lvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL ) {
 //            int[] attrs = new int[] { android.R.attr.selectableItemBackground /* index 0 */};
@@ -163,7 +182,7 @@ public class badgesGrid extends Fragment  {
 
 //        TextView textAdvanced = (TextView) layout.findViewById(R.id.textAdvanced);
 //        RelativeLayout advancedBadges = (RelativeLayout) layout.findViewById(R.id.advancedBadges);
-//        final ExpandableRelativeLayout expandableAdvancedBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableAdvancedBadges);
+        expandableAdvancedBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableAdvancedBadges);
 //        expandableAdvancedBadges.collapse();
 //        if(lvl >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL ) {
 //            int[] attrs = new int[] { android.R.attr.selectableItemBackground /* index 0 */};
@@ -195,29 +214,29 @@ public class badgesGrid extends Fragment  {
         });
 
 
-        photoBadge = (ImageView) layout.findViewById(R.id.photoBadge);
-        exportBadge = (ImageView) layout.findViewById(R.id.exportBadge);
-        bronzeLogBadge = (ImageView) layout.findViewById(R.id.bronzeLogBadge);
-        silverLogBadge = (ImageView) layout.findViewById(R.id.silverLogBadge);
-        goldLogBadge = (ImageView) layout.findViewById(R.id.goldLogBadge);
-        bronzeExerciseBadge = (ImageView) layout.findViewById(R.id.bronzeExerciseBadge);
-        silverExerciseBadge = (ImageView) layout.findViewById(R.id.silverExerciseBadge);
-        goldExerciseBadge = (ImageView) layout.findViewById(R.id.goldExerciseBadge);
-        bronzeDiseaseBadge = (ImageView) layout.findViewById(R.id.bronzeDiseaseBadge);
-        silverDiseaseBadge = (ImageView) layout.findViewById(R.id.silverDiseaseBadge);
-        goldDiseaseBadge = (ImageView) layout.findViewById(R.id.goldDiseaseBadge);
-        bronzeWeightBadge = (ImageView) layout.findViewById(R.id.bronzeWeightBadge);
-        silverWeightBadge = (ImageView) layout.findViewById(R.id.silverWeightBadge);
-        goldWeightBadge = (ImageView) layout.findViewById(R.id.goldWeightBadge);
-        bronzeBpBadge = (ImageView) layout.findViewById(R.id.bronzeBpBadge);
-        silverBpBadge = (ImageView) layout.findViewById(R.id.silverBpBadge);
-        goldBpBadge = (ImageView) layout.findViewById(R.id.goldBpBadge);
-        bronzeCholesterolBadge = (ImageView) layout.findViewById(R.id.bronzeCholesterolBadge);
-        silverCholesterolBadge = (ImageView) layout.findViewById(R.id.silverCholesterolBadge);
-        goldCholesterolBadge = (ImageView) layout.findViewById(R.id.goldCholesterolBadge);
-        bronzeHba1cBadge = (ImageView) layout.findViewById(R.id.bronzeHba1cBadge);
-        silverHba1cBadge = (ImageView) layout.findViewById(R.id.silverHba1cBadge);
-        goldHba1cBadge = (ImageView) layout.findViewById(R.id.goldHba1cBadge);
+//        photoBadge = (ImageView) layout.findViewById(R.id.photoBadge);
+//        exportBadge = (ImageView) layout.findViewById(R.id.exportBadge);
+//        bronzeLogBadge = (ImageView) layout.findViewById(R.id.bronzeLogBadge);
+//        silverLogBadge = (ImageView) layout.findViewById(R.id.silverLogBadge);
+//        goldLogBadge = (ImageView) layout.findViewById(R.id.goldLogBadge);
+//        bronzeExerciseBadge = (ImageView) layout.findViewById(R.id.bronzeExerciseBadge);
+//        silverExerciseBadge = (ImageView) layout.findViewById(R.id.silverExerciseBadge);
+//        goldExerciseBadge = (ImageView) layout.findViewById(R.id.goldExerciseBadge);
+//        bronzeDiseaseBadge = (ImageView) layout.findViewById(R.id.bronzeDiseaseBadge);
+//        silverDiseaseBadge = (ImageView) layout.findViewById(R.id.silverDiseaseBadge);
+//        goldDiseaseBadge = (ImageView) layout.findViewById(R.id.goldDiseaseBadge);
+//        bronzeWeightBadge = (ImageView) layout.findViewById(R.id.bronzeWeightBadge);
+//        silverWeightBadge = (ImageView) layout.findViewById(R.id.silverWeightBadge);
+//        goldWeightBadge = (ImageView) layout.findViewById(R.id.goldWeightBadge);
+//        bronzeBpBadge = (ImageView) layout.findViewById(R.id.bronzeBpBadge);
+//        silverBpBadge = (ImageView) layout.findViewById(R.id.silverBpBadge);
+//        goldBpBadge = (ImageView) layout.findViewById(R.id.goldBpBadge);
+//        bronzeCholesterolBadge = (ImageView) layout.findViewById(R.id.bronzeCholesterolBadge);
+//        silverCholesterolBadge = (ImageView) layout.findViewById(R.id.silverCholesterolBadge);
+//        goldCholesterolBadge = (ImageView) layout.findViewById(R.id.goldCholesterolBadge);
+//        bronzeHba1cBadge = (ImageView) layout.findViewById(R.id.bronzeHba1cBadge);
+//        silverHba1cBadge = (ImageView) layout.findViewById(R.id.silverHba1cBadge);
+//        goldHba1cBadge = (ImageView) layout.findViewById(R.id.goldHba1cBadge);
 //
 //        bronzeLogMediumBadge = (ImageView) layout.findViewById(R.id.bronzeLogMediumBadge);
 //        silverLogMediumBadge = (ImageView) layout.findViewById(R.id.silverLogMediumBadge);
@@ -263,84 +282,84 @@ public class badgesGrid extends Fragment  {
 //        silverHba1cAdvancedBadge = (ImageView) layout.findViewById(R.id.silverHba1cAdvancedBadge);
 //        goldHba1cAdvancedBadge = (ImageView) layout.findViewById(R.id.goldHba1cAdvancedBadge);
 
-        bronzeDailyBadge = (ImageView) layout.findViewById(R.id.bronzeDailyBadge);
-        silverDailyBadge = (ImageView) layout.findViewById(R.id.silverDailyBadge);
-        goldDailyBadge = (ImageView) layout.findViewById(R.id.goldDailyBadge);
-
-        bronzeDailyCount = (TextView) layout.findViewById(R.id.bronzeDailyCount);
-        silverDailyCount = (TextView) layout.findViewById(R.id.silverDailyCount);
-        goldDailyCount = (TextView) layout.findViewById(R.id.goldDailyCount);
-
-        photoBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        exportBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeLogBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverLogBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldLogBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeExerciseBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverExerciseBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldExerciseBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeDiseaseBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverDiseaseBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldDiseaseBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeWeightBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverWeightBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldWeightBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeBpBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverBpBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldBpBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeCholesterolBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverCholesterolBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldCholesterolBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeHba1cBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverHba1cBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldHba1cBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeDailyBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverDailyBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldDailyBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-
-        bronzeLogMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverLogMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldLogMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeExerciseMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverExerciseMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldExerciseMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeDiseaseMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverDiseaseMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldDiseaseMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeWeightMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverWeightMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldWeightMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeBpMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverBpMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldBpMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeCholesterolMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverCholesterolMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldCholesterolMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeHba1cMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverHba1cMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldHba1cMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-
-        bronzeLogAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverLogAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldLogAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeExerciseAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverExerciseAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldExerciseAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeDiseaseAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverDiseaseAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldDiseaseAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeWeightAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverWeightAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldWeightAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeBpAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverBpAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldBpAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeCholesterolAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverCholesterolAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldCholesterolAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        bronzeHba1cAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        silverHba1cAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
-        goldHba1cAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeDailyBadge = (ImageView) layout.findViewById(R.id.bronzeDailyBadge);
+//        silverDailyBadge = (ImageView) layout.findViewById(R.id.silverDailyBadge);
+//        goldDailyBadge = (ImageView) layout.findViewById(R.id.goldDailyBadge);
+//
+//        bronzeDailyCount = (TextView) layout.findViewById(R.id.bronzeDailyCount);
+//        silverDailyCount = (TextView) layout.findViewById(R.id.silverDailyCount);
+//        goldDailyCount = (TextView) layout.findViewById(R.id.goldDailyCount);
+//
+//        photoBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        exportBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeLogBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverLogBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldLogBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeExerciseBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverExerciseBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldExerciseBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeDiseaseBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverDiseaseBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldDiseaseBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeWeightBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverWeightBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldWeightBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeBpBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverBpBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldBpBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeCholesterolBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverCholesterolBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldCholesterolBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeHba1cBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverHba1cBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldHba1cBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeDailyBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverDailyBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldDailyBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//
+//        bronzeLogMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverLogMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldLogMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeExerciseMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverExerciseMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldExerciseMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeDiseaseMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverDiseaseMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldDiseaseMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeWeightMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverWeightMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldWeightMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeBpMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverBpMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldBpMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeCholesterolMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverCholesterolMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldCholesterolMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeHba1cMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverHba1cMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldHba1cMediumBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//
+//        bronzeLogAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverLogAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldLogAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeExerciseAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverExerciseAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldExerciseAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeDiseaseAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverDiseaseAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldDiseaseAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeWeightAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverWeightAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldWeightAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeBpAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverBpAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldBpAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeCholesterolAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverCholesterolAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldCholesterolAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        bronzeHba1cAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        silverHba1cAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
+//        goldHba1cAdvancedBadge.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
 
         checkBadges();
 
@@ -579,5 +598,29 @@ public class badgesGrid extends Fragment  {
         goldDailyCount.setText("("+goldDailyFlag+" "+getString(R.string.badges)+")");
 
     }
+
+    public void unlock_badges(LinkedList<BadgeRec> badgesUnlocked){
+        for(BadgeRec badge:badgesUnlocked){
+            //Create NameID
+            //Unlock Medal
+        }
+    }
+
+//    public void setDisplay(ExpandableRelativeLayout expLayout, LinkedList<BadgeRec> badgeList){
+//
+//        LinearLayout content = (LinearLayout) expLayout.getChildAt(0);
+//        int nBadgeRow = content.getChildCount();
+//        for (int i = 0; i < nBadgeRow; i++) {
+//            LinearLayout badgeRow = (LinearLayout) content.getChildAt(nBadgeRow);
+//            int nBadges = badgeRow.getChildCount();
+//            for(int y=0;y<nBadges;y++){
+//                RelativeLayout badgeDisplayer = (RelativeLayout) badgeRow.getChildAt(y);
+//                ImageView badge = (ImageView) badgeDisplayer.getChildAt(1);
+//                if(badgeList.contains(badge.getResources().getResourceName(badge.getId()))){
+//
+//                }
+//            }
+//        }
+//    }
 }
 

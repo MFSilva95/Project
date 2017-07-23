@@ -30,14 +30,12 @@
                     android:id="@+id/image"
                     android:layout_width="60dp"
                     android:layout_height="120dp"
-                    tools:src="@drawable/medal_bronze_beginner"
                     android:layout_centerInParent="true" />
 
                 <ImageView
                     android:id="@+id/badgeType"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    tools:src="@drawable/bp"
                     android:layout_marginTop="60dp"
                     android:layout_centerHorizontal="true"/>
 

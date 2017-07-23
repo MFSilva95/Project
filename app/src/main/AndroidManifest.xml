@@ -407,13 +407,11 @@
             android:exported="true">
         </receiver>
 
-        <!--<receiver
+        <receiver
             android:name=".utils.AdviceAlertReceiver"
             android:enabled="true"
             android:exported="true">
         </receiver>
-         ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
 
         <meta-data
             android:name="com.google.android.gms.version"
