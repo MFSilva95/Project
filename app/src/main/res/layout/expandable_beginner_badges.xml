@@ -178,7 +178,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_10_records_log"
+                        android:text="@string/beginner_bronze_log"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -210,7 +210,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_20_records_log"
+                        android:text="@string/beginner_silver_log"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -242,7 +242,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_30_records_log"
+                        android:text="@string/beginner_gold_log"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -293,7 +293,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_exercise"
+                        android:text="@string/beginner_bronze_exercise"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -325,7 +325,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_10_records_exercise"
+                        android:text="@string/beginner_silver_exercise"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -357,7 +357,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_20_records_exercise"
+                        android:text="@string/beginner_gold_exercise"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -409,7 +409,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_1_records_disease"
+                        android:text="@string/beginner_bronze_disease"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -441,7 +441,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_2_records_disease"
+                        android:text="@string/beginner_silver_disease"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -473,7 +473,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_disease"
+                        android:text="@string/beginner_gold_disease"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -525,7 +525,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_weight"
+                        android:text="@string/beginner_bronze_weight"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -557,7 +557,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_10_records_weight"
+                        android:text="@string/beginner_silver_weight"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -589,7 +589,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_20_records_weight"
+                        android:text="@string/beginner_gold_weight"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -641,7 +641,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_1_records_bp"
+                        android:text="@string/beginner_bronze_bp"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -676,7 +676,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_bp"
+                        android:text="@string/beginner_silver_bp"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -708,7 +708,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_5_records_bp"
+                        android:text="@string/beginner_gold_bp"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -760,7 +760,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_1_records_cholesterol"
+                        android:text="@string/beginner_bronze_cholesterol"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -792,7 +792,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_2_records_cholesterol"
+                        android:text="@string/beginner_silver_cholesterol"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -824,7 +824,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_cholesterol"
+                        android:text="@string/beginner_gold_cholesterol"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -876,7 +876,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_1_records_hba1c"
+                        android:text="@string/beginner_bronze_hba1c"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -908,7 +908,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_2_records_hba1c"
+                        android:text="@string/beginner_silver_hba1c"
                         android:textSize="12sp" />
 
                 </RelativeLayout>
@@ -940,7 +940,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_3_records_hba1c"
+                        android:text="@string/beginner_gold_hba1c"
                         android:textSize="12sp" />
 
                 </RelativeLayout>

@@ -65,13 +65,14 @@
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
+                        android:tint="@color/ef_grey"
                         app:srcCompat="@drawable/medal_bronze_daily" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_5_daily_record"
+                        android:text="@string/daily_bronze_all"
                         android:textSize="12sp" />
 
                     <TextView
@@ -97,13 +98,14 @@
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
+                        android:tint="@color/ef_grey"
                         app:srcCompat="@drawable/medal_silver_daily" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_10_daily_record"
+                        android:text="@string/daily_silver_all"
                         android:textSize="12sp" />
 
                     <TextView
@@ -130,13 +132,14 @@
                         android:paddingLeft="5dp"
                         android:paddingRight="5dp"
                         android:paddingTop="5dp"
+                        android:tint="@color/ef_grey"
                         app:srcCompat="@drawable/medal_gold_daily" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/add_15_daily_record"
+                        android:text="@string/daily_gold_all"
                         android:textSize="12sp" />
 
                     <TextView

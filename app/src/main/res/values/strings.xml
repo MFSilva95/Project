@@ -344,80 +344,89 @@
     <string name="add_photo">Adicionar Foto</string>
     <string name="create_backup">Criar Cópia de Segurança</string>
 
-    <string name="add_10_records_log">Adicionar 10 Registos no LogBook</string>
-    <string name="add_20_records_log">Adicionar 20 Registos no LogBook</string>
-    <string name="add_30_records_log">Adicionar 30 Registos no LogBook</string>
-    <string name="add_50_records_log">Adicionar 50 Registos no LogBook</string>
-    <string name="add_100_records_log">Adicionar 100 Registos no LogBook</string>
-    <string name="add_150_records_log">Adicionar 150 Registos no LogBook</string>
-    <string name="add_200_records_log">Adicionar 200 Registos no LogBook</string>
-    <string name="add_250_records_log">Adicionar 250 Registos no LogBook</string>
-    <string name="add_300_records_log">Adicionar 300 Registos no LogBook</string>
-
-    <string name="add_3_records_exercise">Adicionar 3 Registos de Exercício</string>
-    <string name="add_10_records_exercise">Adicionar 10 Registos de Exercício</string>
-    <string name="add_20_records_exercise">Adicionar 20 Registos de Exercício</string>
-    <string name="add_30_records_exercise">Adicionar 30 Registos de Exercício</string>
-    <string name="add_50_records_exercise">Adicionar 50 Registos de Exercício</string>
-    <string name="add_70_records_exercise">Adicionar 70 Registos de Exercício</string>
-    <string name="add_90_records_exercise">Adicionar 90 Registos de Exercício</string>
-    <string name="add_120_records_exercise">Adicionar 120 Registos de Exercício</string>
-    <string name="add_150_records_exercise">Adicionar 150 Registos de Exercício</string>
-
-    <string name="add_1_records_disease">Adicionar 1 Registo de Doença</string>
-    <string name="add_2_records_disease">Adicionar 2 Registos de Doença</string>
-    <string name="add_3_records_disease">Adicionar 3 Registos de Doença</string>
-    <string name="add_4_records_disease">Adicionar 4 Registos de Doença</string>
-    <string name="add_5_records_disease">Adicionar 5 Registos de Doença</string>
-    <string name="add_6_records_disease">Adicionar 6 Registos de Doença</string>
-    <string name="add_7_records_disease">Adicionar 7 Registos de Doença</string>
-    <string name="add_8_records_disease">Adicionar 8 Registos de Doença</string>
-    <string name="add_9_records_disease">Adicionar 9 Registos de Doença</string>
-
-    <string name="add_3_records_weight">Adicionar 3 Registos de Peso</string>
-    <string name="add_10_records_weight">Adicionar 10 Registos de Peso</string>
-    <string name="add_20_records_weight">Adicionar 20 Registos de Peso</string>
-    <string name="add_40_records_weight">Adicionar 40 Registos de Peso</string>
-    <string name="add_60_records_weight">Adicionar 60 Registos de Peso</string>
-    <string name="add_80_records_weight">Adicionar 80 Registos de Peso</string>
-    <string name="add_90_records_weight">Adicionar 90 Registos de Peso</string>
-    <string name="add_120_records_weight">Adicionar 120 Registos de Peso</string>
-    <string name="add_150_records_weight">Adicionar 150 Registos de Peso</string>
-
-    <string name="add_1_records_bp">Adicionar 1 Registo de P. Arterial</string>
-    <string name="add_3_records_bp">Adicionar 3 Registos de P. Arterial</string>
-    <string name="add_5_records_bp">Adicionar 5 Registos de P. Arterial</string>
-    <string name="add_10_records_bp">Adicionar 10 Registos de P. Arterial</string>
-    <string name="add_20_records_bp">Adicionar 20 Registos de P. Arterial</string>
-    <string name="add_30_records_bp">Adicionar 30 Registos de P. Arterial</string>
-    <string name="add_40_records_bp">Adicionar 40 Registos de P. Arterial</string>
-    <string name="add_50_records_bp">Adicionar 50 Registos de P. Arterial</string>
-    <string name="add_60_records_bp">Adicionar 60 Registos de P. Arterial</string>
-
-    <string name="add_1_records_cholesterol">Adicionar 1 Registo de Colesterol</string>
-    <string name="add_2_records_cholesterol">Adicionar 2 Registos de Colesterol</string>
-    <string name="add_3_records_cholesterol">Adicionar 3 Registos de Colesterol</string>
-    <string name="add_4_records_cholesterol">Adicionar 4 Registos de Colesterol</string>
-    <string name="add_5_records_cholesterol">Adicionar 5 Registos de Colesterol</string>
-    <string name="add_6_records_cholesterol">Adicionar 6 Registos de Colesterol</string>
-    <string name="add_7_records_cholesterol">Adicionar 7 Registos de Colesterol</string>
-    <string name="add_8_records_cholesterol">Adicionar 8 Registos de Colesterol</string>
-    <string name="add_9_records_cholesterol">Adicionar 9 Registos de Colesterol</string>
-
-    <string name="add_1_records_hba1c">Adicionar 1 Registo de Hba1c</string>
-    <string name="add_2_records_hba1c">Adicionar 2 Registos de Hba1c</string>
-    <string name="add_3_records_hba1c">Adicionar 3 Registos de Hba1c</string>
-    <string name="add_4_records_hba1c">Adicionar 4 Registos de Hba1c</string>
-    <string name="add_5_records_hba1c">Adicionar 5 Registos de Hba1c</string>
-    <string name="add_6_records_hba1c">Adicionar 6 Registos de Hba1c</string>
-    <string name="add_7_records_hba1c">Adicionar 7 Registos de Hba1c</string>
-    <string name="add_8_records_hba1c">Adicionar 8 Registos de Hba1c</string>
-    <string name="add_9_records_hba1c">Adicionar 9 Registos de Hba1c</string>
 
 
-    <string name="add_5_daily_record">Adicionar 5 Registos Diários</string>
-    <string name="add_10_daily_record">Adicionar 10 Registos Diários</string>
-    <string name="add_15_daily_record">Adicionar 15 Registos Diários</string>
+    add_5_daily_record
+
+    // Type -> daily, [beginner, ...]
+    // Medal -> bronze, silver, gold
+    // Name -> photo, BP, etc
+    ""
+
+    <string name="beginner_bronze_log">Adicionar 10 Registos no LogBook</string>
+    <string name="beginner_silver_log">Adicionar 20 Registos no LogBook</string>
+    <string name="beginner_gold_log">Adicionar 30 Registos no LogBook</string>
+    <string name="medium_bronze_log">Adicionar 50 Registos no LogBook</string>
+    <string name="medium_silver_log">Adicionar 100 Registos no LogBook</string>
+    <string name="medium_gold_log">Adicionar 150 Registos no LogBook</string>
+    <string name="advanced_bronze_log">Adicionar 200 Registos no LogBook</string>
+    <string name="advanced_silver_log">Adicionar 250 Registos no LogBook</string>
+    <string name="advanced_gold_log">Adicionar 300 Registos no LogBook</string>
+
+    <string name="beginner_bronze_exercise">Adicionar 3 Registos de Exercício</string>
+    <string name="beginner_silver_exercise">Adicionar 10 Registos de Exercício</string>
+    <string name="beginner_gold_exercise">Adicionar 20 Registos de Exercício</string>
+    <string name="medium_bronze_exercise">Adicionar 30 Registos de Exercício</string>
+    <string name="medium_silver_exercise">Adicionar 50 Registos de Exercício</string>
+    <string name="medium_gold_exercise">Adicionar 70 Registos de Exercício</string>
+    <string name="advanced_bronze_exercise">Adicionar 90 Registos de Exercício</string>
+    <string name="advanced_silver_exercise">Adicionar 120 Registos de Exercício</string>
+    <string name="advanced_gold_exercise">Adicionar 150 Registos de Exercício</string>
+
+    <string name="beginner_bronze_disease">Adicionar 1 Registo de Doença</string>
+    <string name="beginner_silver_disease">Adicionar 2 Registos de Doença</string>
+    <string name="beginner_gold_disease">Adicionar 3 Registos de Doença</string>
+    <string name="medium_bronze_disease">Adicionar 4 Registos de Doença</string>
+    <string name="medium_silver_disease">Adicionar 5 Registos de Doença</string>
+    <string name="medium_gold_disease">Adicionar 6 Registos de Doença</string>
+    <string name="advanced_bronze_disease">Adicionar 7 Registos de Doença</string>
+    <string name="advanced_silver_disease">Adicionar 8 Registos de Doença</string>
+    <string name="advanced_gold_disease">Adicionar 9 Registos de Doença</string>
+
+    <string name="beginner_bronze_weight">Adicionar 3 Registos de Peso</string>
+    <string name="beginner_silver_weight">Adicionar 10 Registos de Peso</string>
+    <string name="beginner_gold_weight">Adicionar 20 Registos de Peso</string>
+    <string name="medium_bronze_weight">Adicionar 40 Registos de Peso</string>
+    <string name="medium_silver_weight">Adicionar 60 Registos de Peso</string>
+    <string name="medium_gold_weight">Adicionar 80 Registos de Peso</string>
+    <string name="advanced_bronze_weight">Adicionar 90 Registos de Peso</string>
+    <string name="advanced_silver_weight">Adicionar 120 Registos de Peso</string>
+    <string name="advanced_gold_weight">Adicionar 150 Registos de Peso</string>
+
+    <string name="beginner_bronze_bp">Adicionar 1 Registo de P. Arterial</string>
+    <string name="beginner_silver_bp">Adicionar 3 Registos de P. Arterial</string>
+    <string name="beginner_gold_bp">Adicionar 5 Registos de P. Arterial</string>
+    <string name="medium_bronze_bp">Adicionar 10 Registos de P. Arterial</string>
+    <string name="medium_silver_bp">Adicionar 20 Registos de P. Arterial</string>
+    <string name="medium_gold_bp">Adicionar 30 Registos de P. Arterial</string>
+    <string name="advanced_bronze_bp">Adicionar 40 Registos de P. Arterial</string>
+    <string name="advanced_silver_bp">Adicionar 50 Registos de P. Arterial</string>
+    <string name="advanced_gold_bp">Adicionar 60 Registos de P. Arterial</string>
+
+    <string name="beginner_bronze_cholesterol">Adicionar 1 Registo de Colesterol</string>
+    <string name="beginner_silver_cholesterol">Adicionar 2 Registos de Colesterol</string>
+    <string name="beginner_gold_cholesterol">Adicionar 3 Registos de Colesterol</string>
+    <string name="medium_bronze_cholesterol">Adicionar 4 Registos de Colesterol</string>
+    <string name="medium_silver_cholesterol">Adicionar 5 Registos de Colesterol</string>
+    <string name="medium_gold_cholesterol">Adicionar 6 Registos de Colesterol</string>
+    <string name="advanced_bronze_cholesterol">Adicionar 7 Registos de Colesterol</string>
+    <string name="advanced_silver_cholesterol">Adicionar 8 Registos de Colesterol</string>
+    <string name="advanced_gold_cholesterol">Adicionar 9 Registos de Colesterol</string>
+
+    <string name="beginner_bronze_hba1c">Adicionar 1 Registo de Hba1c</string>
+    <string name="beginner_silver_hba1c">Adicionar 2 Registos de Hba1c</string>
+    <string name="beginner_gold_hba1c">Adicionar 3 Registos de Hba1c</string>
+    <string name="medium_bronze_hba1c">Adicionar 4 Registos de Hba1c</string>
+    <string name="medium_silver_hba1c">Adicionar 5 Registos de Hba1c</string>
+    <string name="medium_gold_hba1c">Adicionar 6 Registos de Hba1c</string>
+    <string name="advanced_bronze_hba1c">Adicionar 7 Registos de Hba1c</string>
+    <string name="advanced_silver_hba1c">Adicionar 8 Registos de Hba1c</string>
+    <string name="advanced_gold_hba1c">Adicionar 9 Registos de Hba1c</string>
+
+
+    <string name="daily_bronze_all">Adicionar 5 Registos Diários</string>
+    <string name="daily_silver_all">Adicionar 10 Registos Diários</string>
+    <string name="daily_gold_all">Adicionar 15 Registos Diários</string>
 
     <string name="sick_days">Dias Doente</string>
     <string name="bp_unit" translatable="false">mmHg</string>
