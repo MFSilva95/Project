@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import pt.it.porto.mydiabetes.data.BadgeBoard;
 import pt.it.porto.mydiabetes.ui.fragments.badges.badgesGrid;
 import pt.it.porto.mydiabetes.ui.fragments.badges.badgesList;
 import pt.it.porto.mydiabetes.ui.fragments.home.homeLeftFragment;
@@ -25,7 +26,7 @@ public class BadgePageAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case FRAGMENT_ONE_POSITION:
-                return new badgesGrid();
+                return BadgeBoard.newInstance();//badgesGrid();
             case FRAGMENT_TWO_POSITION:
                 return new badgesList();
         }

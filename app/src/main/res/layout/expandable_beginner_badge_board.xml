@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/beginnerBadgesTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:paddingBottom="16dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="16dp">
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/beginner"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+            android:tint="@color/ef_grey" />
+    </RelativeLayout>
+
+    <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+        android:id="@+id/expandableBeginnerBadges"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/beginnerBadgesText"
+        app:ael_duration="500"
+        app:ael_expanded="false"
+        app:ael_orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/beginnerBadgeContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="16dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="16dp">
+
+
+        </LinearLayout>
+
+    </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+</RelativeLayout>

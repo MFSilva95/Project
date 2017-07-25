@@ -41,15 +41,14 @@ public class BadgeLayout extends RelativeLayout {
         }else{
             inflate(getContext(), R.layout.badge_holder_advanced, this);
         }
+        badgeTextHolder = (TextView) findViewById(R.id.badge_text);
+        badgeTextHolder.setText(getContext().getResources().getIdentifier(myStringPath,"string", getContext().getPackageName()));
         if(mylvl>0){
             badgeBackGroundHolder = (ImageView) findViewById(R.id.badge_background);
             badgeIcon = (ImageView) findViewById(R.id.badgeType);
-            badgeTextHolder = (TextView) findViewById(R.id.badge_text);
 
             badgeBackGroundHolder.setImageResource(getContext().getResources().getIdentifier(myBackgroundPath,"drawable", getContext().getPackageName()));
             badgeIcon.setImageResource(getContext().getResources().getIdentifier(myIconPath,"drawable", getContext().getPackageName()));
-
-            badgeTextHolder.setText(getContext().getResources().getIdentifier(myStringPath,"strings", getContext().getPackageName()));
         }
     }
 }

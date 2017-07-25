@@ -132,7 +132,7 @@ public class badgesGrid extends Fragment  {
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.fragment_badges_grid, container, false);
 
-        DB_Read read = new DB_Read(getContext());
+        DB_Read read = new DB_Read(this.getContext());
         int lvl = LevelsPointsUtils.getLevel(getContext(), read);
         LinkedList<BadgeRec> badgeList = read.Badges_GetAll_NONDAILY();
 
