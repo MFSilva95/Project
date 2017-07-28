@@ -269,8 +269,8 @@
 
     <string name="new_insulin_record">New Insulin Record</string>
     <string name="new_glycemia_objective">New Glucose Target</string>
-    <string name="medium_unlock_lvl10">Medium (Unlockable at level 10)</string>
-    <string name="advanced_unlock_lvl30">Advanced (Unlockable at level 30)</string>
+    <string name="medium_locked">Medium (Unlockable at level 10)</string>
+    <string name="advanced_locked">Advanced (Unlockable at level 30)</string>
     <string name="received_a_medal">Received a Medal</string>
     <string name="received_a_daily_medal">Received a Daily Medal</string>
     <string name="minutes">Minutes</string>

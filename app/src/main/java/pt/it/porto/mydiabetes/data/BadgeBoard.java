@@ -3,21 +3,20 @@ package pt.it.porto.mydiabetes.data;
 import  android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
-import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
-
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.ui.listAdapters.BadgeListAdapter;
 import pt.it.porto.mydiabetes.ui.views.BadgeLayout;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
@@ -28,59 +27,121 @@ import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 
 public class BadgeBoard extends Fragment{
-    public enum badgeName{photo, export, bp, log, hba1c, cholesterol, weight, disease, exercise}
+    public enum BadgeName {photo, export, bp, log, hba1c, cholesterol, weight, disease, exercise}
+    public enum Difficulty {beginner, medium, advanced}
+    public enum Marks {bronze, silver, gold}
+    private HashMap<String, HashMap<String,HashMap<String,BadgeGlobalObjective.BadgeSingleObjective>>> allMedals;
 
-    private ExpandableRelativeLayout expandableBeginnerBadges;
-    private ExpandableRelativeLayout expandableMediumBadges;
-    private ExpandableRelativeLayout expandableAdvancedBadges;
+    private ExpandableListView expBadgeList;
 
-    private RelativeLayout beginnerContainer;
-    private RelativeLayout mediumContainer;
-    private RelativeLayout advancedContainer;
+    //Objectivos   Trigger -> function -> getAllObjectives(Type) -> check conditions -> check if medal given -> ?give
 
-    private LinearLayout beginner_expandable_container;
-    private LinearLayout medium_expandable_container;
-    private LinearLayout advanced_expandable_container;
+    // HASHMAP
+        // BEGINNER HASHMAP
+          // BP
+          // photo
+            //BRONZE  BadgeLayoyt
+            //SILVER
+            //GOLD
+        // MEDIUM
+        // ADVANCED
 
+    private HashMap<Difficulty, LinkedList<LinkedList<BadgeGlobalObjective.BadgeSingleObjective>>> expandableListMap;
 
     private LinkedList<BadgeRec> badgeList_b;
     private LinkedList<BadgeRec> badgeList_m;
     private LinkedList<BadgeRec> badgeList_a;
 
-    class BadgeObjective{
-        badgeName type;
-        boolean isSingular;
-        int baseRecordNumber;
-        int increaseFactor;
-        public BadgeObjective(badgeName bType, boolean bIsSingular, int bBaseRecordNumber, int bIncreaseFactor){
+
+
+
+    public class BadgeGlobalObjective {
+
+        public class BadgeSingleObjective{
+
+            private int nRecords;//conditions to trigger
+            private Difficulty diff;
+            private BadgeName name;
+            private Marks mark;
+            private boolean unlocked = false;
+
+            public void unlock(){
+                this.unlocked = true;
+            }
+
+            public BadgeSingleObjective(int baseNumber, int increaseFact, Difficulty diff, BadgeName name, Marks mark){
+
+                this.nRecords = (int) ((baseNumber*markToNumber(mark))*(Math.pow(increaseFact, diffToNumber(diff))));
+                        //baseNumber+increaseFact*(diffToNumber(diff))*(markToNumber(mark));
+                this.diff = diff;
+                this.name = name;
+                this.mark = mark;
+            }
+
+            private int markToNumber(Marks mark) {
+                return Marks.valueOf(mark.toString()).ordinal();
+            }
+
+            private int diffToNumber(Difficulty diff) {
+                return Difficulty.valueOf(diff.toString()).ordinal();
+            }
+
+            public String getMedalID(){
+                //return type.toString()+"_"+medal+"_"+name;
+                return diff+"_"+mark+"_"+name;
+            }
+        }
+
+        private BadgeName type;
+        private int baseRecordNumber;
+        private int increaseFactor;
+
+        public BadgeGlobalObjective(BadgeName bType, int bBaseRecordNumber, int bIncreaseFactor){
+
             this.type = bType;
-            this.isSingular = bIsSingular;
             this.baseRecordNumber = bBaseRecordNumber;
             this.increaseFactor = bIncreaseFactor;
         }
-    }
 
-//    3 Layouts
+        public HashMap<String, HashMap<String, HashMap<String, BadgeSingleObjective>>> createAllSingleObjectives(){
+
+            HashMap<String, HashMap<String,HashMap<String,BadgeSingleObjective>>> allMedals = new HashMap<>();
+            for(Difficulty diff: Difficulty.values()){
+                HashMap<String, HashMap<String,BadgeSingleObjective>> allDiffMedals = new HashMap<>();
+                for(BadgeName name:BadgeName.values()){
+                    HashMap<String,BadgeSingleObjective> allNameMedals = new HashMap<>();
+                    for(Marks mark:Marks.values()){
+                        allNameMedals.put((mark.toString()),new BadgeSingleObjective(baseRecordNumber,increaseFactor,diff,name,mark));
+                    }
+                    allDiffMedals.put((name.toString()), allNameMedals);
+                }
+                allMedals.put((diff.toString()), allDiffMedals);
+            }
+            return allMedals;
+        }
+    }
 
     // Type -> daily, [beginner, ...]
     // Medal -> bronze, silver, gold
     // ID -> randomID
     // Name -> photo, BP, etc
 
-    //private BadgeObjective export_badge = new BadgeObjective(badgeName.export, true, 1, 0);
-    //private BadgeObjective photo_badge = new BadgeObjective(badgeName.photo, true, 1, 0);
+    private BadgeGlobalObjective export_badge = new BadgeGlobalObjective(BadgeName.export, 1, 0);
+    private BadgeGlobalObjective photo_badge = new BadgeGlobalObjective(BadgeName.photo, 1, 0);
 
-    private BadgeObjective bp_badge = new BadgeObjective(badgeName.bp, false, 3, 1);
-    private BadgeObjective cholesterol_badge = new BadgeObjective(badgeName.cholesterol, false, 3, 1);
-    private BadgeObjective disease_badge = new BadgeObjective(badgeName.disease, false, 3, 1);
-    private BadgeObjective exercise_badge = new BadgeObjective(badgeName.exercise, false, 3, 1);
-    private BadgeObjective hba1c_badge = new BadgeObjective(badgeName.hba1c, false, 3, 1);
-    private BadgeObjective log_badge = new BadgeObjective(badgeName.log, false, 3, 1);
-    private BadgeObjective weight_badge = new BadgeObjective(badgeName.weight, false, 3, 1);
+    private BadgeGlobalObjective bp_badge = new BadgeGlobalObjective(BadgeName.bp, 3, 1);
+    private BadgeGlobalObjective cholesterol_badge = new BadgeGlobalObjective(BadgeName.cholesterol, 3, 1);
+    private BadgeGlobalObjective disease_badge = new BadgeGlobalObjective(BadgeName.disease, 3, 1);
+    private BadgeGlobalObjective exercise_badge = new BadgeGlobalObjective(BadgeName.exercise, 3, 1);
+    private BadgeGlobalObjective hba1c_badge = new BadgeGlobalObjective(BadgeName.hba1c, 3, 1);
+    private BadgeGlobalObjective log_badge = new BadgeGlobalObjective(BadgeName.log, 3, 1);
+    private BadgeGlobalObjective weight_badge = new BadgeGlobalObjective(BadgeName.weight, 3, 1);
 
 
 
-    LinkedList<BadgeObjective> myDiabetesObjectives = new LinkedList<>();
+    LinkedList<BadgeGlobalObjective> myDiabetesMultiObjectives = new LinkedList<>();
+    LinkedList<BadgeGlobalObjective> myDiabetesSingleObjectives = new LinkedList<>();
+
 
     public static BadgeBoard newInstance() {
 
@@ -93,27 +154,42 @@ public class BadgeBoard extends Fragment{
 
     public BadgeBoard(){
 
-        //myDiabetesObjectives.add(export_badge);
-        //myDiabetesObjectives.add(photo_badge);
+        myDiabetesSingleObjectives.add(export_badge);
+        myDiabetesSingleObjectives.add(photo_badge);
 
-        myDiabetesObjectives.add(bp_badge);
-        myDiabetesObjectives.add(cholesterol_badge);
-        myDiabetesObjectives.add(disease_badge);
-        myDiabetesObjectives.add(exercise_badge);
-        myDiabetesObjectives.add(hba1c_badge);
-        myDiabetesObjectives.add(log_badge);
-        myDiabetesObjectives.add(weight_badge);
+        myDiabetesMultiObjectives.add(bp_badge);
+        myDiabetesMultiObjectives.add(cholesterol_badge);
+        myDiabetesMultiObjectives.add(disease_badge);
+        myDiabetesMultiObjectives.add(exercise_badge);
+        myDiabetesMultiObjectives.add(hba1c_badge);
+        myDiabetesMultiObjectives.add(log_badge);
+        myDiabetesMultiObjectives.add(weight_badge);
 
+        allMedals = new HashMap<>();
+        for(BadgeGlobalObjective obj:myDiabetesMultiObjectives){
+            allMedals.putAll(obj.createAllSingleObjectives());
+        }
 
+        String TAG = "cenas";
 
+        Log.i("cenas", "----------------------------------------");
+        //HashMap<String, HashMap<String,HashMap<String,BadgeGlobalObjective.BadgeSingleObjective>>>
+        Log.i(TAG, "BadgeBoard: lvl:0 "+allMedals.keySet());
+        for(HashMap<String,HashMap<String,BadgeGlobalObjective.BadgeSingleObjective>> s:allMedals.values()){
+            Log.i(TAG, "BadgeBoard: lvl:1 "+s.keySet());
+            for(HashMap<String,BadgeGlobalObjective.BadgeSingleObjective> s1:s.values()){
+                Log.i(TAG, "BadgeBoard: lvl:2 "+s1.keySet());
+            }
+        }
+        Log.i("cenas", "----------------------------------------");
 
-//        if(beginnerLayout is visible ){
-//            for each objective ->
-//            add new LayoutRow
-//            if is singular add
-//                    else bronze, silver, gold
-//        }
+    }
 
+    public void unlock_medals(LinkedList<BadgeRec> unlockedBadgeList){
+        for(BadgeRec badge:unlockedBadgeList){
+            //Difficulty, BadgeName, Mark
+            allMedals.get(badge.getType()).get(badge.getName()).get(badge.getMedal()).unlock();
+        }
     }
 
     @Override
@@ -131,134 +207,22 @@ public class BadgeBoard extends Fragment{
         DB_Read read = new DB_Read(container.getContext());
         int lvl = LevelsPointsUtils.getLevel(container.getContext(), read);
         LinkedList<BadgeRec> badgeList = read.Badges_GetAll_NONDAILY();
-
-        badgeList_b = read.Badges_GetAll_NONDAILY();
-        badgeList_m = read.Badges_GetAll_NONDAILY();
-        badgeList_a = read.Badges_GetAll_NONDAILY();
-
         read.close();
 
-        /*layout = inflater.inflate(R.layout.fragment_badges_list, container, false);
-        list = (ListView) layout.findViewById(R.id.list);
+        unlock_medals(badgeList);
 
-        list.setAdapter(new BadgeListAdapter(badgeList, getContext()));
-        list.setEmptyView(layout.findViewById(R.id.list_empty));*/
+        expBadgeList = (ExpandableListView) layout.findViewById(R.id.expandableBadges);
+        BadgeListAdapter expandableListAdapter = new BadgeListAdapter(container.getContext(), Difficulty2Array(), allMedals, lvl);
+        expBadgeList.setAdapter(expandableListAdapter);
 
-
-        expandableBeginnerBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableBeginnerBadges);
-        expandableBeginnerBadges.collapse();
-        beginner_expandable_container = (LinearLayout) layout.findViewById(R.id.beginnerBadgeContent);
-
-        beginnerContainer = (RelativeLayout) layout.findViewById(R.id.beginnerBadgesTitle);
-        beginnerContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(!expandableBeginnerBadges.isExpanded()){
-                    fillExpandable(beginner_expandable_container, myDiabetesObjectives, 1, layout.getContext());
-                    //unlockBadges(badgeList_b, container.getContext());
-                }
-                expandableBeginnerBadges.toggle();
-
-            }
-        });
-
-        if(lvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL ) {
-
-            expandableMediumBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableMediumBadge);
-            expandableMediumBadges.collapse();
-
-            mediumContainer = (RelativeLayout) layout.findViewById(R.id.mediumBadgesTitle);
-            mediumContainer.setBackground(ContextCompat.getDrawable(container.getContext(), R.drawable.background_empty));
-
-            TextView m_title = (TextView) layout.findViewById(R.id.textMedium);
-            m_title.setText(getString(R.string.medium));
-
-            medium_expandable_container = (LinearLayout) layout.findViewById(R.id.mediumBadgeContent);
-
-            mediumContainer.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(!expandableMediumBadges.isExpanded()){
-                        fillExpandable(medium_expandable_container, myDiabetesObjectives, 2, layout.getContext());
-                        //unlockBadges(badgeList_m);
-                    }
-                    expandableMediumBadges.toggle();
-
-                }
-            });
-
-            if(lvl >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL ) {
-
-                expandableAdvancedBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableAdvancedBadge);
-                expandableAdvancedBadges.collapse();
-
-                advancedContainer = (RelativeLayout) layout.findViewById(R.id.advancedBadgesTitle);
-                advancedContainer.setBackground(ContextCompat.getDrawable(container.getContext(), R.drawable.background_empty));
-
-                TextView a_title = (TextView) layout.findViewById(R.id.textAdvanced);
-                a_title.setText(getString(R.string.advanced));
-
-                advanced_expandable_container = (LinearLayout) layout.findViewById(R.id.advancedBadgeContent);
-
-                advancedContainer.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if(!expandableAdvancedBadges.isExpanded()){
-
-                            fillExpandable(advanced_expandable_container, myDiabetesObjectives, 3, layout.getContext());
-                            //unlockBadges(badgeList_a);
-                        }
-                        expandableAdvancedBadges.toggle();
-                    }
-                });
-            }
-        }
-
-        //unlock_badges(badgeList_b);
         return layout;
     }
 
-    private void fillExpandable(LinearLayout badgeContent, LinkedList<BadgeObjective> myDiabetesObjectives, int lvl, Context con) {
-
-        Log.i("cenas", "fillExpandable: "+myDiabetesObjectives.size());
-        for(BadgeObjective obj:myDiabetesObjectives){
-            try{
-                Log.i("cenas", "fillExpandable inside: "+obj.type);
-                LinearLayout badgeRow = new LinearLayout(con);
-                badgeRow.setOrientation(LinearLayout.HORIZONTAL);
-                badgeRow.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                BadgeLayout bronzeMedal = null;
-                BadgeLayout silverMedal = null;
-                BadgeLayout goldMedal = null;
-                if (!obj.isSingular){
-                    switch (lvl){
-                        case 1:
-                            bronzeMedal = new BadgeLayout(con,"medal_locked_beginner","","beginner_bronze_"+obj.type,0);
-                            silverMedal = new BadgeLayout(con,"medal_locked_beginner","","beginner_silver_"+obj.type,0);
-                            goldMedal = new BadgeLayout(con,"medal_locked_beginner","","beginner_gold_"+obj.type,0);
-                            break;
-                        case 2:
-                            bronzeMedal = new BadgeLayout(con,"medal_locked_beginner","","medium_bronze_"+obj.type,0);
-                            silverMedal = new BadgeLayout(con,"medal_locked_beginner","","medium_silver_"+obj.type,0);
-                            goldMedal = new BadgeLayout(con,"medal_locked_beginner","","medium_gold_"+obj.type,0);
-                            break;
-                        case 3:
-                            bronzeMedal = new BadgeLayout(con,"medal_locked_advanced","","advanced_bronze_"+obj.type,0);
-                            silverMedal = new BadgeLayout(con,"medal_locked_advanced","","advanced_silver_"+obj.type,0);
-                            goldMedal = new BadgeLayout(con,"medal_locked_advanced","","advanced_gold_"+obj.type,0);
-                            break;
-                    }
-                }
-                badgeRow.addView(bronzeMedal);
-                badgeRow.addView(silverMedal);
-                badgeRow.addView(goldMedal);
-
-                badgeContent.addView(badgeRow);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-
+    public ArrayList<String> Difficulty2Array(){
+        ArrayList<String> difs = new ArrayList<>();
+        for(Difficulty diff:Difficulty.values()){
+            difs.add(diff.toString());
         }
+        return difs;
     }
-
 }

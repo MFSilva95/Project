@@ -1,16 +1,11 @@
 package pt.it.porto.mydiabetes.ui.fragments.badges;
 
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,7 +17,6 @@ import java.util.LinkedList;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.listAdapters.BadgeListAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
@@ -160,7 +154,7 @@ public class badgesGrid extends Fragment  {
 //        RelativeLayout mediumBadges = (RelativeLayout) layout.findViewById(R.id.mediumBadges);
 //        expandableMediumBadges = (ExpandableRelativeLayout) layout.findViewById(R.id.expandableMediumBadges);
 //        expandableMediumBadges.collapse();
-//        if(lvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL ) {
+//       if(lvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL ) {
 //            int[] attrs = new int[] { android.R.attr.selectableItemBackground /* index 0 */};
 //            TypedArray ta = getContext().obtainStyledAttributes(attrs);
 //            Drawable drawableFromTheme = ta.getDrawable(0);

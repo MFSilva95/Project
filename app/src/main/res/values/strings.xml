@@ -345,14 +345,6 @@
     <string name="create_backup">Criar Cópia de Segurança</string>
 
 
-
-    add_5_daily_record
-
-    // Type -> daily, [beginner, ...]
-    // Medal -> bronze, silver, gold
-    // Name -> photo, BP, etc
-    ""
-
     <string name="beginner_bronze_log">Adicionar 10 Registos no LogBook</string>
     <string name="beginner_silver_log">Adicionar 20 Registos no LogBook</string>
     <string name="beginner_gold_log">Adicionar 30 Registos no LogBook</string>
@@ -433,8 +425,8 @@
     <string name="welcome_text">Bem-Vindo à myDiabetes</string>
 
     <string name="new_insulin_record">Novo Registo de Insulina</string>
-    <string name="medium_unlock_lvl10">Médio (Desbloqueável a nível 10)</string>
-    <string name="advanced_unlock_lvl30">Avançado (Desbloqueável a nível 30)</string>
+    <string name="medium_locked">Médio (Desbloqueável a nível 10)</string>
+    <string name="advanced_locked">Avançado (Desbloqueável a nível 30)</string>
     <string name="received_a_medal">Recebeu uma Medalha</string>
     <string name="received_a_daily_medal">Recebeu uma Medalha Diária</string>
     <string name="new_note">Nova anotação</string>
