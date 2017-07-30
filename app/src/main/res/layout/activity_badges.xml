@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/background">
 
     <android.support.v7.widget.Toolbar
@@ -49,12 +50,121 @@
             app:srcCompat="@drawable/ic_reorder_24dp" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal"
+        android:layout_below="@+id/menu"
+        android:weightSum="3">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:orientation="vertical"
+            android:layout_width="80dp"
+            android:layout_height="150dp"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/daily_bronze_background"
+                android:layout_width="65dp"
+                android:layout_height="125dp"
+                android:src="@drawable/medal_locked_beginner"
+                tools:src="@drawable/medal_gold_advanced"
+                android:layout_centerHorizontal="true" />
+
+            <ImageView
+                android:id="@+id/daily_bronze_symbol"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="32dp"
+                tools:src="@drawable/bp"
+                android:layout_centerHorizontal="true" />
+            <TextView
+                android:id="@+id/daily_bronze_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                tools:text="@string/daily_bronze_all"
+                android:layout_alignParentBottom="true"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:orientation="vertical"
+            android:layout_width="80dp"
+            android:layout_weight="1"
+            android:layout_height="150dp">
+
+            <ImageView
+                android:id="@+id/daily_silver_background"
+                android:layout_width="65dp"
+                android:layout_height="125dp"
+                android:src="@drawable/medal_locked_beginner"
+                tools:src="@drawable/medal_gold_advanced"
+                android:layout_centerHorizontal="true" />
+
+            <ImageView
+                android:id="@+id/daily_silver_symbol"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="32dp"
+                tools:src="@drawable/bp"
+                android:layout_centerHorizontal="true" />
+            <TextView
+                android:id="@+id/daily_silver_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                tools:text="@string/daily_bronze_all"
+                android:layout_alignParentBottom="true"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:orientation="vertical"
+            android:layout_width="80dp"
+            android:layout_weight="1"
+            android:layout_height="150dp">
+
+            <ImageView
+                android:id="@+id/daily_gold_background"
+                android:layout_width="65dp"
+                android:layout_height="125dp"
+                android:src="@drawable/medal_locked_beginner"
+                tools:src="@drawable/medal_gold_advanced"
+                android:layout_centerHorizontal="true" />
+
+            <ImageView
+                android:id="@+id/daily_gold_symbol"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="32dp"
+                tools:src="@drawable/bp"
+                android:layout_centerHorizontal="true" />
+            <TextView
+                android:id="@+id/daily_gold_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:text="@string/daily_bronze_all"
+                android:padding="10dp"
+                android:layout_alignParentBottom="true"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
     <pt.it.porto.mydiabetes.utils.CustomViewPager
         android:id="@+id/content_fragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
+android:layout_weight="1"
         android:layout_below="@+id/menu"
         android:visibility="visible" />
 
 
-</RelativeLayout>
+</LinearLayout>

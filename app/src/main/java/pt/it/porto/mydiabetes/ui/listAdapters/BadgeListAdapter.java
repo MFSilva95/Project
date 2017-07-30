@@ -1,7 +1,10 @@
 package pt.it.porto.mydiabetes.ui.listAdapters;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -20,6 +25,7 @@ import java.util.Set;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeBoard;
 import pt.it.porto.mydiabetes.data.BadgeRec;
+import pt.it.porto.mydiabetes.ui.views.BadgeLayout;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 
@@ -37,67 +43,120 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
         this.expandableListTitle = diff;
         this.con = con;
         this.playerLvl = lvl;
+        Log.i(TAG, "BadgeListAdapter: PlayerLvL: "+lvl);
     }
 
 
     @Override
     public Object getChild(int listPosition, int expandedListPosition) { //returns hashmap (Bronze/silver/gold - conditions)
 
-        //Log.i(TAG, "getChild: TESTING:");
-        //Log.i(TAG, "getChild: expandableList: POS: "+listPosition+" = "+this.expandableListTitle.get(listPosition));
-
         HashMap<String, HashMap<String, BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective>> tempResult = this.allMedals.get(this.expandableListTitle.get(listPosition));
         List<String> s = new ArrayList<>(tempResult.keySet());
-
-
-        //Log.i(TAG, "getChild: result_temp: "+this.allMedals.get(this.expandableListTitle.get(listPosition)).get(s.get(expandedListPosition)).keySet().toString());//.get(expandedListPosition));
-        return this.allMedals.get(this.expandableListTitle.get(listPosition)).get(s.get(expandedListPosition)).keySet().toString();
+        //Log.i(TAG, "getChild: "+this.allMedals.get(this.expandableListTitle.get(listPosition)).get(s.get(expandedListPosition)));
+        return this.allMedals.get(this.expandableListTitle.get(listPosition)).get(s.get(expandedListPosition));
+        //type ( row medals)
     }
 
     @Override
     public long getChildId(int listPosition, int expandedListPosition) {
-        Log.i(TAG, "getChildID: result: "+expandedListPosition);
+        //Log.i(TAG, "getChildID: result: "+expandedListPosition);
         return expandedListPosition;
     }
 
     @Override
     public View getChildView(int listPosition, final int expandedListPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-        Log.i(TAG, "getChildView:");
+        //Log.i(TAG, "getChildView:");
         //return Linear Layout with 3 medals
-        final String expandedListText = (String) getChild(listPosition, expandedListPosition);
-        if (convertView == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        HashMap<String, BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective> badgeRow = (HashMap<String, BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective>) getChild(listPosition, expandedListPosition);
+        LayoutInflater layoutInflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        if (listPosition>=2) {
+            convertView = layoutInflater.inflate(R.layout.badge_display_row_advanced, null);
+        }else{
             convertView = layoutInflater.inflate(R.layout.badge_display_row, null);
         }
-        TextView expandedListTextView = (TextView) convertView.findViewById(R.id.expandedListItem);
-        expandedListTextView.setText(expandedListText);
+
+        Log.i(TAG, "-----------------------------getChildView: "+badgeRow.keySet());
+
+        for(BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective obj: badgeRow.values()){
+            TextView badgeTextHolder = null;
+            ImageView badgeBackGroundHolder = null;
+            ImageView badgeIcon = null;
+            switch (obj.getMark()){
+                case bronze:
+                    badgeTextHolder = (TextView) convertView.findViewById(R.id.badge_text1);
+                    badgeBackGroundHolder = (ImageView) convertView.findViewById(R.id.badge_background1);
+                    badgeIcon = (ImageView) convertView.findViewById(R.id.badge_symbol1);
+                    break;
+                case silver:
+                    badgeTextHolder = (TextView) convertView.findViewById(R.id.badge_text2);
+                    badgeBackGroundHolder = (ImageView) convertView.findViewById(R.id.badge_background2);
+                    badgeIcon = (ImageView) convertView.findViewById(R.id.badge_symbol2);
+                    break;
+                case gold:
+                    badgeTextHolder = (TextView) convertView.findViewById(R.id.badge_text3);
+                    badgeBackGroundHolder = (ImageView) convertView.findViewById(R.id.badge_background3);
+                    badgeIcon = (ImageView) convertView.findViewById(R.id.badge_symbol3);
+                    break;
+                case single:
+                    badgeTextHolder = (TextView) convertView.findViewById(R.id.badge_text1);
+                    badgeBackGroundHolder = (ImageView) convertView.findViewById(R.id.badge_background1);
+                    badgeIcon = (ImageView) convertView.findViewById(R.id.badge_symbol1);
+
+                    TextView badgeTextHolder1 = (TextView) convertView.findViewById(R.id.badge_text2);
+                    ImageView badgeBackGroundHolder1 = (ImageView) convertView.findViewById(R.id.badge_background2);
+                    ImageView badgeIcon1 = (ImageView) convertView.findViewById(R.id.badge_symbol2);
+
+                    TextView badgeTextHolder2 = (TextView) convertView.findViewById(R.id.badge_text3);
+                    ImageView badgeBackGroundHolder2 = (ImageView) convertView.findViewById(R.id.badge_background3);
+                    ImageView badgeIcon2 = (ImageView) convertView.findViewById(R.id.badge_symbol3);
+
+                    badgeBackGroundHolder1.setVisibility(View.INVISIBLE);
+                    badgeIcon1.setVisibility(View.INVISIBLE);
+                    badgeTextHolder1.setVisibility(View.INVISIBLE);
+
+                    badgeBackGroundHolder2.setVisibility(View.INVISIBLE);
+                    badgeIcon2.setVisibility(View.INVISIBLE);
+                    badgeTextHolder2.setVisibility(View.INVISIBLE);
+                    break;
+            }
+
+            String test = obj.getMyStringPath();
+            Log.i(TAG, "test: "+test);
+
+            badgeTextHolder.setText(con.getResources().getIdentifier(obj.getMyStringPath(),"string", con.getPackageName()));
+            if(!obj.isLocked()){
+                badgeBackGroundHolder.setImageResource(con.getResources().getIdentifier(obj.getMyBackgroundPath(),"drawable", con.getPackageName()));
+                badgeIcon.setImageResource(con.getResources().getIdentifier(obj.getMyIconPath(),"drawable", con.getPackageName()));
+
+            }
+        }
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int listPosition) {
-
-        Log.i(TAG, "getChildrenCount: Result: "+this.allMedals.get(this.expandableListTitle.get(listPosition)).size());
         return this.allMedals.get(this.expandableListTitle.get(listPosition)).size();
     }
 
     @Override
     public Object getGroup(int listPosition) {
-        Log.i(TAG, "getGroup: result: "+this.expandableListTitle.get(listPosition));
+        //Log.i(TAG, "getGroup: result: "+this.expandableListTitle.get(listPosition));
         return this.expandableListTitle.get(listPosition);
     }
 
     @Override
     public int getGroupCount() {
-        Log.i(TAG, "getGroupCount: result: "+this.expandableListTitle.size());
+        //Log.i(TAG, "getGroupCount: result: "+this.expandableListTitle.size());
         return this.expandableListTitle.size();
     }
 
     @Override
     public long getGroupId(int listPosition) {
 
-        Log.i(TAG, "getGroup: result: "+listPosition);
+        //Log.i(TAG, "getGroup: result: "+listPosition);
         return listPosition;
     }
 
@@ -106,7 +165,7 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
 
         //titulos
 
-        Log.i(TAG, "getGroupView: ListPosition: "+listPosition);
+        //Log.i(TAG, "getGroupView: ListPosition: "+listPosition);
 
         if (convertView == null) {
             LayoutInflater layoutInflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -116,15 +175,29 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
         listTitleTextView = (TextView) convertView.findViewById(R.id.listTitle);
         String text;
         if(isUnlocked(playerLvl, expandableListTitle.get(listPosition))){
-            Log.i(TAG, "getGroupView: -> STRING1: "+expandableListTitle.get(listPosition));
+            //Log.i(TAG, "getGroupView: -> STRING1: "+expandableListTitle.get(listPosition));
             text = con.getString(con.getResources().getIdentifier(expandableListTitle.get(listPosition),"string", con.getPackageName()));
             listTitleTextView.setTypeface(null, Typeface.BOLD);
             listTitleTextView.setText(text);
+            int[] attrs = new int[] { android.R.attr.selectableItemBackground /* index 0 */};
+            TypedArray ta = con.obtainStyledAttributes(attrs);
+            Drawable drawableFromTheme = ta.getDrawable(0);
+            ta.recycle();
+            convertView.setBackground(drawableFromTheme);
         }else{
-            Log.i(TAG, "getGroupView: -> STRING2: "+expandableListTitle.get(listPosition)+"_locked");
+            //Log.i(TAG, "getGroupView: -> STRING2: "+expandableListTitle.get(listPosition)+"_locked");
             text = con.getString(con.getResources().getIdentifier(expandableListTitle.get(listPosition)+"_locked","string", con.getPackageName()));
             listTitleTextView.setTypeface(null, Typeface.BOLD);
             listTitleTextView.setText(text);
+
+            convertView.setEnabled(false);
+            convertView.setClickable(false);
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    return;
+                }
+            });
         }
         return convertView;
     }

@@ -345,6 +345,11 @@
     <string name="create_backup">Criar Cópia de Segurança</string>
 
 
+    <string name="beginner_single_export">Criar Cópia de Segurança</string>
+    <string name="beginner_single_photo">Adicionar Foto</string>
+    <string name="beginner_single_send_data_badge">Enviar Informação</string>
+
+
     <string name="beginner_bronze_log">Adicionar 10 Registos no LogBook</string>
     <string name="beginner_silver_log">Adicionar 20 Registos no LogBook</string>
     <string name="beginner_gold_log">Adicionar 30 Registos no LogBook</string>
