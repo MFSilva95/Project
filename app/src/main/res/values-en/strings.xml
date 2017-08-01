@@ -187,9 +187,9 @@
     <string name="add_photo">Add Photo</string>
     <string name="create_backup">Create Backup</string>
 
-    <string name="beginner_single_export">Create Backup</string>
-    <string name="beginner_single_photo">Add Photo</string>
-    <string name="beginner_single_send_data_badge">Send Data</string>
+    <string name="beginner_gold_export">Create Backup</string>
+    <string name="beginner_gold_photo">Add Photo</string>
+    <string name="beginner_gold_send_data_badge">Send Data</string>
 
     <string name="beginner_bronze_log">Add 10 Logbook Entries</string>
     <string name="beginner_silver_log">Add 20 Logbook Entries</string>

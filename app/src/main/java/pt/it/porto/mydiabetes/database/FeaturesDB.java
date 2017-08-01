@@ -8,6 +8,7 @@ import pt.it.porto.mydiabetes.BuildConfig;
 public class FeaturesDB {
 	public static final String FEATURE_INSULIN_ON_BOARD = "feature_insulin_on_board";
 	public static final String FEATURE_CLOUD_SYNC = "feature_cloud_sync/2";
+	public static final String INITIAL_REG_DONE = "initial_reg_done";
 
 	private MyDiabetesStorage storage;
 
@@ -15,7 +16,7 @@ public class FeaturesDB {
 		this.storage = storage;
 	}
 
-	public boolean isFeatureActive(String feature) {
+	public boolean isFeatureActive(String feature) {//INITIAL_REG_DONE
 		if(FEATURE_CLOUD_SYNC.equals(feature) && !BuildConfig.SYNC_AVAILABLE){
 			return false;
 		}

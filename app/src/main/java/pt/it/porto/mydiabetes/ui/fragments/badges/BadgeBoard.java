@@ -1,4 +1,4 @@
-package pt.it.porto.mydiabetes.data;
+package pt.it.porto.mydiabetes.ui.fragments.badges;
 
 import  android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.listAdapters.BadgeListAdapter;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
@@ -149,7 +150,7 @@ public class BadgeBoard extends Fragment{
             HashMap<String,BadgeSingleObjective> allNameMedals = new HashMap<>();
 
             if(isSingle) {
-                allNameMedals.put(Marks.single.toString(), new BadgeSingleObjective(baseRecordNumber, increaseFactor, Difficulty.beginner, type, Marks.single, true));
+                allNameMedals.put(Marks.gold.toString(), new BadgeSingleObjective(baseRecordNumber, increaseFactor, Difficulty.beginner, type, Marks.gold, true));
                 allDiffMedals.put(type.toString(), allNameMedals);
                 allMedals.put(Difficulty.beginner.toString(), allDiffMedals);
 
@@ -257,12 +258,7 @@ public class BadgeBoard extends Fragment{
     public void unlock_medals(LinkedList<BadgeRec> unlockedBadgeList){
         for(BadgeRec badge:unlockedBadgeList){
             //Difficulty, BadgeName, Mark
-            String TAG = "cenas";
-            Log.i(TAG, " -: "+allMedals);
-            Log.i(TAG, "--: "+badge.getType());
-            Log.i(TAG, "--: "+badge.getName());
-            Log.i(TAG, "--: "+badge.getMedal());
-
+            Log.i("cenas", "unlock_medals: MEDAL: TYPE: "+badge.getType()+" NAME: "+badge.getName()+" MEDAL: "+badge.getMedal());
             allMedals.get(badge.getType()).get(badge.getName()).get(badge.getMedal()).unlock();
         }
     }
@@ -284,8 +280,9 @@ public class BadgeBoard extends Fragment{
             lvl = LevelsPointsUtils.getLevel(container.getContext(), read);
             badgeList = read.Badges_GetAll_NONDAILY();
             read.close();
-
-            unlock_medals(badgeList);
+            if(badgeList!=null){
+                unlock_medals(badgeList);
+            }
         }
 
 

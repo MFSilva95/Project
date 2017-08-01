@@ -35,8 +35,11 @@ import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.database.FeaturesDB;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
 
@@ -68,14 +71,12 @@ public class Home extends BaseActivity {
 
 		permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
 
-		DB_Read read = new DB_Read(this);
-
-		if (!read.MyData_HasData()) {
+		FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
+		//if (!read.MyData_HasData()) {
+		if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
 			ShowDialogAddData();
-			read.close();
 			return;
 		}
-		read.close();
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);

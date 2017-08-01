@@ -5,13 +5,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import pt.it.porto.mydiabetes.data.BadgeBoard;
-import pt.it.porto.mydiabetes.ui.fragments.badges.badgesGrid;
+import pt.it.porto.mydiabetes.ui.fragments.badges.BadgeBoard;
 import pt.it.porto.mydiabetes.ui.fragments.badges.badgesList;
-import pt.it.porto.mydiabetes.ui.fragments.home.homeLeftFragment;
-import pt.it.porto.mydiabetes.ui.fragments.home.homeMiddleFragment;
-import pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment;
-import pt.it.porto.mydiabetes.ui.fragments.register.welcomeFragment;
 
 public class BadgePageAdapter extends FragmentPagerAdapter {
     private static final int FRAGMENT_ONE_POSITION = 0;

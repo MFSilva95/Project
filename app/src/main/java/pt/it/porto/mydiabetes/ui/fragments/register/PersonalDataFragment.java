@@ -35,6 +35,8 @@ import com.esafirm.imagepicker.features.ImagePickerActivity;
 import com.esafirm.imagepicker.model.Image;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import pt.it.porto.mydiabetes.data.UserInfo;
+import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
@@ -99,6 +101,10 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
+
+		DB_Read read = new DB_Read(this.getContext());
+		UserInfo user_info = read.MyData_Read();
+		read.close();
 
 		// Inflate the layout for this fragment
 		layout = inflater.inflate(R.layout.fragment_register_personal_data, container, false);
@@ -182,7 +188,17 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 			}
 		});
 
-
+		if(user_info!=null){
+			if(user_info.getUsername()!=null){mNameView.setText(user_info.getUsername());}
+			UserInfo.Gender gender;
+			if((gender = user_info.getGender())!=null){switch (gender){
+				case MAN:((RadioButton) layout.findViewById(R.id.radioButtonM)).setChecked(true);break;
+				case WOMAN:((RadioButton) layout.findViewById(R.id.radioButtonF)).setChecked(true);break;}}
+			String date;
+			if((date = user_info.getBirthday())!=null){mDateView.setText(date);}
+			Double height;
+			if((height = user_info.getHeight()) != null){mHeightView.setText(height.toString());}
+		}
 
 
 		return layout;

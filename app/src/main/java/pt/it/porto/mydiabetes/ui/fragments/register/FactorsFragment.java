@@ -22,6 +22,7 @@ import android.widget.Toast;
 import java.io.File;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
@@ -66,6 +67,11 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
+
+		DB_Read read = new DB_Read(this.getContext());
+		UserInfo user_info = read.MyData_Read();
+		read.close();
+
 		layout = inflater.inflate(R.layout.fragment_register_factors, container, false);
 		scrollView = (ScrollView) layout.findViewById(R.id.scrollview);
 
@@ -79,6 +85,18 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		carbsRatio = (EditText) layout.findViewById(R.id.carbs_ratio);
 		hypoglycemiaLimit = (EditText) layout.findViewById(R.id.hypoglycemia_limit);
 		hyperglycemiaLimit = (EditText) layout.findViewById(R.id.hyperglycemia_limit);
+
+
+		if(user_info!=null){
+			int carbsR;
+			if((carbsR = user_info.getCarbsRatio())!=-1){carbsRatio.setText(carbsR+"");}
+			int sensF;
+			if((sensF = user_info.getInsulinRatio())!=-1){sensibilityFactor.setText(sensF+"");}
+			int hypoV;
+			if((hypoV = user_info.getLowerRange())!=-1){hypoglycemiaLimit.setText(hypoV+"");}
+			int hyperV;
+			if((hyperV = user_info.getHigherRange())!=-1){hyperglycemiaLimit.setText(hyperV+"");}
+		}
 
 
 		sensibilityFactor.setOnFocusChangeListener(new View.OnFocusChangeListener() {

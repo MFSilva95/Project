@@ -50,7 +50,6 @@ public class GlycaemiaRegister extends LinearLayout {
     public NewHomeRegistry.NewHomeRegCallBack getCallBack() {
         return callBack;
     }
-
     private NewHomeRegistry.NewHomeRegCallBack callBack;
 
 

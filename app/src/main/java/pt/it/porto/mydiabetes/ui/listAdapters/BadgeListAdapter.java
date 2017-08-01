@@ -4,28 +4,20 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.BadgeBoard;
-import pt.it.porto.mydiabetes.data.BadgeRec;
-import pt.it.porto.mydiabetes.ui.views.BadgeLayout;
+import pt.it.porto.mydiabetes.ui.fragments.badges.BadgeBoard;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 

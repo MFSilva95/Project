@@ -7,8 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.BadgeBoard;
-import pt.it.porto.mydiabetes.utils.BadgeUtils;
+import pt.it.porto.mydiabetes.ui.fragments.badges.BadgeBoard;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 
