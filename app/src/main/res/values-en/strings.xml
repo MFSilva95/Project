@@ -231,15 +231,15 @@
     <string name="advanced_silver_weight">Add 120 Weight Records</string>
     <string name="advanced_gold_weight">Add 150 Weight Records</string>
 
-    <string name="beginner_bronze_bp">Add 1 B. Pressure Record</string>
-    <string name="beginner_silver_bp">Add 3 B. Pressure Records</string>
-    <string name="beginner_gold_bp">Add 5 B. Pressure Records</string>
-    <string name="medium_bronze_bp">Add 10 B. Pressure Records</string>
-    <string name="medium_silver_bp">Add 20 B. Pressure Records</string>
-    <string name="medium_gold_bp">Add 30 B. Pressure Records</string>
-    <string name="advanced_bronze_bp">Add 40 B. Pressure Records</string>
-    <string name="advanced_silver_bp">Add 50 B. Pressure Records</string>
-    <string name="advanced_gold_bp">Add 60 B. Pressure Records</string>
+    <string name="beginner_bronze_bp">Add 1 B.P. Record</string>
+    <string name="beginner_silver_bp">Add 3 B.P. Records</string>
+    <string name="beginner_gold_bp">Add 5 B.P. Records</string>
+    <string name="medium_bronze_bp">Add 10 B.P. Records</string>
+    <string name="medium_silver_bp">Add 20 B.P. Records</string>
+    <string name="medium_gold_bp">Add 30 B.P. Records</string>
+    <string name="advanced_bronze_bp">Add 40 B.P. Records</string>
+    <string name="advanced_silver_bp">Add 50 B.P. Records</string>
+    <string name="advanced_gold_bp">Add 60 B.P. Records</string>
 
     <string name="beginner_bronze_cholesterol">Add 1 Cholesterol Record</string>
     <string name="beginner_silver_cholesterol">Add 2 Cholesterol Records</string>
@@ -251,15 +251,15 @@
     <string name="advanced_silver_cholesterol">Add 8 Cholesterol Records</string>
     <string name="advanced_gold_cholesterol">Add 9 Cholesterol Records</string>
 
-    <string name="beginner_bronze_hba1c">Add 1 Hba1c Record</string>
-    <string name="beginner_silver_hba1c">Add 2 Hba1c Records</string>
-    <string name="beginner_gold_hba1c">Add 3 Hba1c Records</string>
-    <string name="medium_bronze_hba1c">Add 4 Hba1c Records</string>
-    <string name="medium_silver_hba1c">Add 5 Hba1c Records</string>
-    <string name="medium_gold_hba1c">Add 6 Hba1c Records</string>
-    <string name="advanced_bronze_hba1c">Add 7 Hba1c Records</string>
-    <string name="advanced_silver_hba1c">Add 8 Hba1c Records</string>
-    <string name="advanced_gold_hba1c">Add 9 Hba1c Records</string>
+    <string name="beginner_bronze_hba1c">Add 1 HbA1c Record</string>
+    <string name="beginner_silver_hba1c">Add 2 HbA1c Records</string>
+    <string name="beginner_gold_hba1c">Add 3 HbA1c Records</string>
+    <string name="medium_bronze_hba1c">Add 4 HbA1c Records</string>
+    <string name="medium_silver_hba1c">Add 5 HbA1c Records</string>
+    <string name="medium_gold_hba1c">Add 6 HbA1c Records</string>
+    <string name="advanced_bronze_hba1c">Add 7 HbA1c Records</string>
+    <string name="advanced_silver_hba1c">Add 8 HbA1c Records</string>
+    <string name="advanced_gold_hba1c">Add 9 HbA1c Records</string>
 
 
     <string name="daily_bronze_all">Add 5 Daily Records</string>
