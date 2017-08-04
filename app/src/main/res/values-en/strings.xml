@@ -187,9 +187,9 @@
     <string name="add_photo">Add Photo</string>
     <string name="create_backup">Create Backup</string>
 
-    <string name="beginner_gold_export">Create Backup</string>
-    <string name="beginner_gold_photo">Add Photo</string>
-    <string name="beginner_gold_send_data_badge">Send Data</string>
+    <string name="beginner_single_export">Create Backup</string>
+    <string name="beginner_single_photo">Add Photo</string>
+    <string name="beginner_single_send_data_badge">Send Data</string>
 
     <string name="beginner_bronze_log">Add 10 Logbook Entries</string>
     <string name="beginner_silver_log">Add 20 Logbook Entries</string>
@@ -262,9 +262,9 @@
     <string name="advanced_gold_hba1c">Add 9 HbA1c Records</string>
 
 
-    <string name="daily_bronze_all">Add 5 Daily Records</string>
-    <string name="daily_silver_all">Add 10 Daily Records</string>
-    <string name="daily_gold_all">Add 15 Daily Records</string>
+    <string name="daily_bronze_log">Add 5 Daily Records</string>
+    <string name="daily_silver_log">Add 10 Daily Records</string>
+    <string name="daily_gold_log">Add 15 Daily Records</string>
 
     <string name="sick_days">Sick Days</string>
     <string name="subtitle_diabetes_factors">Details and Factors</string>

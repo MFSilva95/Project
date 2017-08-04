@@ -345,9 +345,9 @@
     <string name="create_backup">Criar Cópia de Segurança</string>
 
 
-    <string name="beginner_gold_export">Criar Cópia de Segurança</string>
-    <string name="beginner_gold_photo">Adicionar Foto</string>
-    <string name="beginner_gold_send_data_badge">Enviar Informação</string>
+    <string name="beginner_single_export">Criar Cópia de Segurança</string>
+    <string name="beginner_single_photo">Adicionar Foto</string>
+    <string name="beginner_single_send_data_badge">Enviar Informação</string>
 
 
     <string name="beginner_bronze_log">Adicionar 10 Registos no LogBook</string>
@@ -421,9 +421,9 @@
     <string name="advanced_gold_hba1c">Adicionar 9 Registos de HbA1c</string>
 
 
-    <string name="daily_bronze_all">Adicionar 5 Registos Diários</string>
-    <string name="daily_silver_all">Adicionar 10 Registos Diários</string>
-    <string name="daily_gold_all">Adicionar 15 Registos Diários</string>
+    <string name="daily_bronze_log">Adicionar 5 Registos Diários</string>
+    <string name="daily_silver_log">Adicionar 10 Registos Diários</string>
+    <string name="daily_gold_log">Adicionar 15 Registos Diários</string>
 
     <string name="sick_days">Dias Doente</string>
     <string name="bp_unit" translatable="false">mmHg</string>

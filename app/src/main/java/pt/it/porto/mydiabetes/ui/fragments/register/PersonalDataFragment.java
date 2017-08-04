@@ -17,9 +17,11 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -155,39 +157,6 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 
 		});
 
-		mNameView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if(hasFocus){
-					focusOnView(mNameView);
-				}
-			}
-		});
-		mHeightView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if(hasFocus){
-					focusOnView(mHeightView);
-				}
-			}
-		});
-		mGenderGroup.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if(hasFocus){
-					focusOnView(mGenderGroup);
-				}
-			}
-		});
-		mNameView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if(hasFocus){
-					focusOnView(mNameView);
-				}
-			}
-		});
-
 		if(user_info!=null){
 			if(user_info.getUsername()!=null){mNameView.setText(user_info.getUsername());}
 			UserInfo.Gender gender;
@@ -304,7 +273,7 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 		} catch (NumberFormatException e) {
 			return false;
 		}
-		return !TextUtils.isEmpty(height) && val > 0 && val < 3;
+		return (!TextUtils.isEmpty(height) && val > 0 && val < 3) || (!TextUtils.isEmpty(height) && val>120 && val < 300) ;
 	}
 
 	public void showDatePickerDialog() {
@@ -335,15 +304,5 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 	public int getSubtitle() {
 		return R.string.subtitle_personal_data;
 	}
-
-	private final void focusOnView(final View view){
-		scrollView.post(new Runnable() {
-			@Override
-			public void run() {
-				scrollView.scrollTo(0, view.getBottom());
-			}
-		});
-	}
-
 
 }

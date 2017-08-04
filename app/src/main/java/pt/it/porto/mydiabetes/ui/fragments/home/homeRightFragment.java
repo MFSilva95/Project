@@ -64,10 +64,6 @@ public class homeRightFragment extends Fragment  {
     private String imgUriString;
     private View layout;
 
-    private ImageView beginnerLayout;
-    private ImageView mediumLayout;
-    private ImageView advancedLayout;
-
     private ImageButton helpButton;
     private ImageView beginnerBadge;
     private TextView beginnerBadgesText;
@@ -76,7 +72,6 @@ public class homeRightFragment extends Fragment  {
     private ImageView advancedBadge;
     private TextView advancedBadgesText;
     private ImageView currentBadge;
-    private ImageView currentBadgeSymbol;
 
     private TextView levelText;
     private TextView pointsText;
@@ -143,13 +138,15 @@ public class homeRightFragment extends Fragment  {
         pointsText = (TextView) layout.findViewById(R.id.numberPoints);
         pointsText.setText(totalPoints+" / "+nextLvlPoints);
 
-        if(countBeginner>0){
-            beginnerBadge = (ImageView) layout.findViewById(R.id.beginnerBadge);
-            beginnerBadgesText = (TextView) layout.findViewById(R.id.beginnerBadgesText);
 
+        beginnerBadge = (ImageView) layout.findViewById(R.id.beginnerBadge);
+        beginnerBadgesText = (TextView) layout.findViewById(R.id.beginnerBadgesText);
+        mediumBadgesText = (TextView) layout.findViewById(R.id.beginnerBadgesText);
+
+        if(countBeginner>0){
             beginnerBadge.setImageResource(R.drawable.medal_gold_beginner);
-            mediumBadgesText = (TextView) layout.findViewById(R.id.beginnerBadgesText);
         }
+
 
         if( lvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
             mediumBadge = (ImageView) layout.findViewById(R.id.mediumBadge);
@@ -161,22 +158,12 @@ public class homeRightFragment extends Fragment  {
                 advancedBadge.setImageResource(R.drawable.medal_gold_advanced);
                 advancedBadgesText = (TextView) layout.findViewById(R.id.advancedBadgesText);
             }
-//            else{
-//                advancedLayout.setVisibility(View.GONE);
-//            }
         }
-//        else{
-//            mediumLayout.setVisibility(View.GONE);
-//        }
 
         helpButton = (ImageButton) layout.findViewById(R.id.helpButton);
-
         currentBadge = (ImageView) layout.findViewById(R.id.currentBadge);
-        //currentBadgeSymbol = (ImageView) layout.findViewById(R.id.currentBadgeSymbol);
-        //currentBadgeSymbol.setColorFilter(ContextCompat.getColor(getContext(),R.color.ef_grey));
 
         setImage();
-
         setMyDataFromDB(myData);
         updateMedals();
 
@@ -249,6 +236,7 @@ public class homeRightFragment extends Fragment  {
             DB_Read rdb = new DB_Read(getContext());
             BadgeUtils.addPhotoBadge(getContext(), rdb);
             rdb.close();
+            updateMedals();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -260,30 +248,19 @@ public class homeRightFragment extends Fragment  {
 
         DB_Read read = new DB_Read(getContext());
 
-        int points = LevelsPointsUtils.getPercentageLevels(getContext(),read);
         int percentageLvL = LevelsPointsUtils.getPercentageLevels(getContext(),read);
         int pointsToNextLvL = LevelsPointsUtils.getPointsNextLevel(getContext(),read);
-
         myData = read.MyData_Read();
 
         countBeginner = read.Badges_GetCount("beginner");
         countMedium = read.Badges_GetCount("medium");
         countAdvanced = read.Badges_GetCount("advanced");
         dailyBadge = read.getLastDailyMedal();
-        //countDaily = read.Badges_GetCount("daily");
 
         String numberMedals_total = LevelsPointsUtils.getTotalPoints(getContext(), read)+" / "+pointsToNextLvL;
 
         read.close();
 
-//        if( points >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
-//            mediumLayout.setVisibility(View.VISIBLE);
-//            if( points >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
-//                advancedLayout.setVisibility(View.VISIBLE);
-//            }
-//        }
-
-        //levelText.setText(points+"");
         mCircleView.setValue(percentageLvL);
         pointsText.setText(numberMedals_total);
         setMyDataFromDB(myData);
@@ -291,23 +268,20 @@ public class homeRightFragment extends Fragment  {
     }
 
     private void updateMedals() {
-
         if(dailyBadge != null){
-
             String medalType = "medal_"+dailyBadge.getMedal()+"_"+dailyBadge.getType();
-            //String badgeType = "record";//dailyBadge.getName();
-
             currentBadge.setImageResource(getContext().getResources().getIdentifier(medalType,"drawable",getContext().getPackageName()));
-            //currentBadgeSymbol.setImageResource(getContext().getResources().getIdentifier(badgeType,"drawable",getContext().getPackageName()));
         }
-
         if(countBeginner > 0){
+            beginnerBadge.setImageResource(R.drawable.medal_gold_beginner);
             beginnerBadgesText.setText(countBeginner+"/23");
         }
         if(countMedium > 0){
+            mediumBadge.setImageResource(R.drawable.medal_gold_medium);
             mediumBadgesText.setText(countMedium+"/21");
         }
         if(countAdvanced > 0){
+            advancedBadge.setImageResource(R.drawable.medal_gold_advanced);
             advancedBadgesText.setText(countAdvanced+"/21");
         }
 

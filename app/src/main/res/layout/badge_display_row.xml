@@ -32,8 +32,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            tools:text="@string/daily_bronze_all"
-            android:layout_alignBottom="@+id/badge_background1"
+            android:padding="10dp"
+            tools:text="@string/daily_bronze_log"
+            android:layout_alignParentBottom="true"
             android:textSize="12sp" />
 
     </RelativeLayout>
@@ -65,8 +66,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            tools:text="@string/daily_bronze_all"
-            android:layout_alignBottom="@+id/badge_background2"
+            android:padding="10dp"
+            tools:text="@string/daily_bronze_log"
+            android:layout_alignParentBottom="true"
             android:textSize="12sp" />
 
     </RelativeLayout>
@@ -98,8 +100,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            tools:text="@string/daily_bronze_all"
-            android:layout_alignBottom="@+id/badge_background3"
+            android:padding="10dp"
+            tools:text="@string/daily_bronze_log"
+            android:layout_alignParentBottom="true"
             android:textSize="12sp" />
 
     </RelativeLayout>

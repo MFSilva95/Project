@@ -25,8 +25,8 @@ import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 
 public class BadgeBoard extends Fragment{
-    public enum BadgeName {bp, log, hba1c, cholesterol, weight, disease, exercise, export, photo,send_data_badge}
-    public enum Difficulty {beginner, medium, advanced}
+    public enum BadgeName {photo, export, bp, log, hba1c, cholesterol, weight, disease, exercise}//send_data_badge,
+    public enum Difficulty {daily, beginner, medium, advanced}
     public enum Marks {single, bronze, silver, gold}
 
     private int lvl;
@@ -90,7 +90,7 @@ public class BadgeBoard extends Fragment{
                 this.unlocked = true;
             }
 
-            public BadgeSingleObjective(int baseNumber, int increaseFact, Difficulty diff, BadgeName name, Marks mark, boolean isSingle){
+            public BadgeSingleObjective(int baseNumber, int increaseFact, Difficulty diff, BadgeName name, Marks mark){
 
                 this.nRecords = 2;//(int) ((baseNumber*markToNumber(mark))*(Math.pow(increaseFact, diffToNumber(diff))));
                 //baseNumber+increaseFact*(diffToNumber(diff))*(markToNumber(mark));
@@ -98,11 +98,15 @@ public class BadgeBoard extends Fragment{
                 this.name = name;
                 this.mark = mark;
 
-                this.isSingle = isSingle;
-
-                this.myBackgroundPath = "medal_"+mark.toString()+"_"+diff.toString();
-                this.myIconPath = name.toString();
-                this.myStringPath = diff.toString()+"_"+mark.toString()+"_"+name.toString();
+                if(mark.equals(Marks.single)){
+                    this.myBackgroundPath = "medal_gold_"+diff.toString();
+                    this.myIconPath = name.toString();
+                    this.myStringPath = diff.toString()+"_"+mark.toString()+"_"+name.toString();
+                }else {
+                    this.myBackgroundPath = "medal_"+mark.toString()+"_"+diff.toString();
+                    this.myIconPath = name.toString();
+                    this.myStringPath = diff.toString()+"_"+mark.toString()+"_"+name.toString();
+                }
             }
 
             private int markToNumber(Marks mark) {
@@ -127,18 +131,16 @@ public class BadgeBoard extends Fragment{
         private BadgeName type;
         private int baseRecordNumber;
         private int increaseFactor;
-        private boolean isSingle;
+        Difficulty[] difficulties;
+        Marks[] marks;
 
-        public boolean isSingle(){
-            return isSingle;
-        }
-
-        public BadgeGlobalObjective(BadgeName bType, int bBaseRecordNumber, int bIncreaseFactor, Boolean isSingle){
+        public BadgeGlobalObjective(BadgeName bType, Difficulty[] difficulties, Marks[] marks, int bBaseRecordNumber, int bIncreaseFactor){
 
             this.type = bType;
+            this.difficulties = difficulties;
             this.baseRecordNumber = bBaseRecordNumber;
             this.increaseFactor = bIncreaseFactor;
-            this.isSingle = isSingle;
+            this.marks = marks;
         }
 
 
@@ -146,26 +148,17 @@ public class BadgeBoard extends Fragment{
 
             HashMap<String, HashMap<String,HashMap<String,BadgeSingleObjective>>> allMedals = new HashMap<>();
 
-            HashMap<String, HashMap<String,BadgeSingleObjective>> allDiffMedals = new HashMap<>();
-            HashMap<String,BadgeSingleObjective> allNameMedals = new HashMap<>();
+            HashMap<String, HashMap<String,BadgeSingleObjective>> allDiffMedals;
+            HashMap<String,BadgeSingleObjective> allNameMedals;
 
-            if(isSingle) {
-                allNameMedals.put(Marks.gold.toString(), new BadgeSingleObjective(baseRecordNumber, increaseFactor, Difficulty.beginner, type, Marks.gold, true));
-                allDiffMedals.put(type.toString(), allNameMedals);
-                allMedals.put(Difficulty.beginner.toString(), allDiffMedals);
-
-            }else{
-                for(Difficulty diff: Difficulty.values()){
-                    allDiffMedals = new HashMap<>();
-                    allNameMedals = new HashMap<>();
-                    for(Marks mark:Marks.values()){
-                        if(!mark.equals(Marks.single)) {
-                            allNameMedals.put(mark.toString(), new BadgeSingleObjective(baseRecordNumber, increaseFactor, diff, type, mark, false));//name,mark));
-                        }
-                    }
-                    allDiffMedals.put(type.toString(), allNameMedals);
-                    allMedals.put(diff.toString(), allDiffMedals);
+            for(Difficulty diff: difficulties){
+                allDiffMedals = new HashMap<>();
+                allNameMedals = new HashMap<>();
+                for(Marks mark:marks){
+                    allNameMedals.put(mark.toString(), new BadgeSingleObjective(baseRecordNumber, increaseFactor, diff, type, mark));
                 }
+                allDiffMedals.put(type.toString(), allNameMedals);
+                allMedals.put(diff.toString(), allDiffMedals);
             }
             return allMedals;
         }
@@ -176,17 +169,20 @@ public class BadgeBoard extends Fragment{
     // ID -> randomID
     // Name -> photo, BP, etc
 
-    private BadgeGlobalObjective export_badge = new BadgeGlobalObjective(BadgeName.export, 1, 0, true);
-    private BadgeGlobalObjective photo_badge = new BadgeGlobalObjective(BadgeName.photo, 1, 0, true);
+    //BadgeName bType, Difficulty[] difficulties, Marks[] marks, int bBaseRecordNumber, int bIncreaseFactor
+    private BadgeGlobalObjective export_badge = new BadgeGlobalObjective(BadgeName.export, new Difficulty[]{Difficulty.beginner}, new Marks[]{Marks.single},1,1);
+    private BadgeGlobalObjective photo_badge = new BadgeGlobalObjective(BadgeName.photo, new Difficulty[]{Difficulty.beginner}, new Marks[]{Marks.single},1,1);
     //private BadgeGlobalObjective send_data_badge = new BadgeGlobalObjective(BadgeName.send_data_badge, 1, 0, true);
 
-    private BadgeGlobalObjective bp_badge = new BadgeGlobalObjective(BadgeName.bp, 3, 1, false);
-    private BadgeGlobalObjective cholesterol_badge = new BadgeGlobalObjective(BadgeName.cholesterol, 3, 1, false);
-    private BadgeGlobalObjective disease_badge = new BadgeGlobalObjective(BadgeName.disease, 3, 1, false);
-    private BadgeGlobalObjective exercise_badge = new BadgeGlobalObjective(BadgeName.exercise, 3, 1, false);
-    private BadgeGlobalObjective hba1c_badge = new BadgeGlobalObjective(BadgeName.hba1c, 3, 1, false);
-    private BadgeGlobalObjective log_badge = new BadgeGlobalObjective(BadgeName.log, 3, 1, false);
-    private BadgeGlobalObjective weight_badge = new BadgeGlobalObjective(BadgeName.weight, 3, 1, false);
+    private BadgeGlobalObjective bp_badge = new BadgeGlobalObjective(BadgeName.bp, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.bronze, Marks.silver, Marks.gold},1,1);
+    private BadgeGlobalObjective cholesterol_badge = new BadgeGlobalObjective(BadgeName.cholesterol, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.bronze, Marks.silver, Marks.gold},1,1);
+    private BadgeGlobalObjective disease_badge = new BadgeGlobalObjective(BadgeName.disease, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.bronze, Marks.silver, Marks.gold},1,1);
+    private BadgeGlobalObjective exercise_badge = new BadgeGlobalObjective(BadgeName.exercise, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.bronze, Marks.silver, Marks.gold},1,1);
+    private BadgeGlobalObjective hba1c_badge = new BadgeGlobalObjective(BadgeName.hba1c, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.bronze, Marks.silver, Marks.gold},1,1);
+    private BadgeGlobalObjective log_badge = new BadgeGlobalObjective(BadgeName.log, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.bronze, Marks.silver, Marks.gold},1,1);
+    private BadgeGlobalObjective weight_badge = new BadgeGlobalObjective(BadgeName.weight, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.bronze, Marks.silver, Marks.gold},1,1);
+
+    private BadgeGlobalObjective daily_badge = new BadgeGlobalObjective(BadgeName.log, new Difficulty[]{Difficulty.daily}, new Marks[]{Marks.bronze, Marks.silver, Marks.gold},1,1);
 
 
 
@@ -213,20 +209,13 @@ public class BadgeBoard extends Fragment{
         myDiabetesMultiObjectives.add(hba1c_badge);
         myDiabetesMultiObjectives.add(log_badge);
         myDiabetesMultiObjectives.add(weight_badge);
+        myDiabetesMultiObjectives.add(daily_badge);
         //myDiabetesMultiObjectives.add(send_data_badge);
 
 
         allMedals = new HashMap<>();
-        //HashMap<String, HashMap<String, HashMap<String,HashMap<String,BadgeGlobalObjective.BadgeSingleObjective>>>> allMedalsTest = new HashMap<>();
         for(BadgeGlobalObjective obj:myDiabetesMultiObjectives){
-
             addHashMap(allMedals, obj.createAllSingleObjectives());
-            //HashMap<String, HashMap<String, HashMap<String, BadgeGlobalObjective.BadgeSingleObjective>>> singleMedals = obj.createAllSingleObjectives();
-            //Log.i("cenas", "BadgeBoard-SingleIteration: "+singleMedals);
-            //allMedalsTest.put("",singleMedals);
-            //allMedals.putAll(singleMedals);
-            Log.i("cenas", "AllMedals: "+allMedals);
-            //Log.i("cenas", "AllMedals: "+allMedalsTest);
         }
     }
 
@@ -237,11 +226,6 @@ public class BadgeBoard extends Fragment{
                 for(String name:allSingleObjectives.get(diffKey).keySet()){
                     if(allMedals.get(diffKey).keySet().contains(name)) {
                         for(String mark:allSingleObjectives.get(diffKey).get(name).keySet()){
-//                            if(allMedals.get(diffKey).get(name).keySet().contains(mark)){
-//
-//                            }else{
-//
-//                            }
                             allMedals.get(diffKey).get(name).put(mark, allSingleObjectives.get(diffKey).get(name).get(mark));
                         }
                     }else{
@@ -257,8 +241,6 @@ public class BadgeBoard extends Fragment{
 
     public void unlock_medals(LinkedList<BadgeRec> unlockedBadgeList){
         for(BadgeRec badge:unlockedBadgeList){
-            //Difficulty, BadgeName, Mark
-            Log.i("cenas", "unlock_medals: MEDAL: TYPE: "+badge.getType()+" NAME: "+badge.getName()+" MEDAL: "+badge.getMedal());
             allMedals.get(badge.getType()).get(badge.getName()).get(badge.getMedal()).unlock();
         }
     }
@@ -272,9 +254,7 @@ public class BadgeBoard extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState){
 
-        // Inflate the layout for this fragment
         final View layout = inflater.inflate(R.layout.fragment_badge_board, container, false);
-
         if(badgeList==null){
             DB_Read read = new DB_Read(container.getContext());
             lvl = LevelsPointsUtils.getLevel(container.getContext(), read);
@@ -288,10 +268,19 @@ public class BadgeBoard extends Fragment{
 
 
         expBadgeList = (ExpandableListView) layout.findViewById(R.id.expandableBadges);
-        BadgeListAdapter expandableListAdapter = new BadgeListAdapter(container.getContext(), Difficulty2Array(), allMedals, lvl);
+        BadgeListAdapter expandableListAdapter = new BadgeListAdapter(container.getContext(), Difficulty2Array(), Types2Array(), allMedals, lvl);
         expBadgeList.setAdapter(expandableListAdapter);
+        expBadgeList.expandGroup(0);
 
         return layout;
+    }
+
+    private ArrayList<String> Types2Array() {
+        ArrayList<String> types = new ArrayList<>();
+        for(BadgeName t:BadgeName.values()){
+            types.add(t.toString());
+        }
+        return types;
     }
 
     public ArrayList<String> Difficulty2Array(){

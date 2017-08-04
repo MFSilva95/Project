@@ -140,7 +140,7 @@ public class BadgeUtils {
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("photo");
-            badge.setMedal("gold");
+            badge.setMedal("single");
             dbwrite.Badge_Save(badge);
 
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
@@ -170,7 +170,7 @@ public class BadgeUtils {
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("export");
-            badge.setMedal("gold");
+            badge.setMedal("single");
             dbwrite.Badge_Save(badge);
 
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);

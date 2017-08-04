@@ -196,6 +196,11 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 	@Override
 	public void saveData(Bundle container) {
+
+		float height = Float.parseFloat(container.getString(WelcomeActivity.USER_DATA_HEIGHT));
+
+		if(height>100){height = height/100;}
+
 		MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
 		boolean success = storage.addUserData(container.getString(WelcomeActivity.USER_DATA_NAME),
 				String.valueOf(diabetesType.getSelectedItemPosition()),
@@ -205,7 +210,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 				Integer.parseInt(hyperglycemiaLimit.getText().toString(), 10),
 				container.getString(WelcomeActivity.USER_DATA_BIRTHDAY_DATE),
 				container.getString(WelcomeActivity.USER_DATA_GENDER),
-				Float.parseFloat(container.getString(WelcomeActivity.USER_DATA_HEIGHT)));
+				height);
 		if(!success){
 			Log.w(TAG, "Failed to save user data!");
 		}

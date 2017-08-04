@@ -61,7 +61,9 @@ public class BadgeListAdapter_old extends BaseAdapter {
         // Medal -> bronze, silver, gold
         // ID -> randomID
         // Name -> photo, BP, etc
-
+        if(badge.getMedal().equals("single")){
+            badge.setMedal("gold");
+        }
         String medalType = "medal_"+badge.getMedal()+"_"+badge.getType();
         String badgeType = badge.getName();
 
