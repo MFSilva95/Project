@@ -1788,7 +1788,7 @@ public class BadgeUtils {
             badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("daily");
-            badge.setName("all");
+            badge.setName("log");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
@@ -1799,7 +1799,7 @@ public class BadgeUtils {
             badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("daily");
-            badge.setName("all");
+            badge.setName("log");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
             dbwrite.Badge_Remove(idBronze);
@@ -1811,7 +1811,7 @@ public class BadgeUtils {
             badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("daily");
-            badge.setName("all");
+            badge.setName("log");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
             dbwrite.Badge_Remove(idSilver);
