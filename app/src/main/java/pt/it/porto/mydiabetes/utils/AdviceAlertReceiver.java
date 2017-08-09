@@ -50,7 +50,7 @@ public class AdviceAlertReceiver extends BroadcastReceiver {
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-        builder.setSmallIcon(R.drawable.gota_white);
+        //builder.setSmallIcon(R.drawable.gota_white);
         builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.logo_v2));
         builder.setContentTitle(context.getString(R.string.app_name));
         NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
