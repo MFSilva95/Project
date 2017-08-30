@@ -99,7 +99,7 @@
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:tint="@android:color/darker_gray"
-                    app:srcCompat="@drawable/ic_access_time_black_24dp" />
+                    app:srcCompat="@drawable/ic_access_time" />
 
                 <EditText
                     android:id="@+id/et_WeightDetail_Hora"
