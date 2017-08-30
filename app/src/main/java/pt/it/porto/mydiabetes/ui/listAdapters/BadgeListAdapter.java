@@ -51,12 +51,28 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
             //Log.i(TAG, "getChild: "+this.allMedals.get(this.expandableListTitle.get(listPosition)).get(s.get(expandedListPosition)));
             return this.allMedals.get(this.expandableListTitle.get(listPosition)).get(s.get(expandedListPosition));
         }else{
-            //HashMap<String, HashMap<String, BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective>> tempResult = this.allMedals.get(this.expandableListTitle.get(listPosition));
-            Log.i(TAG, "getChild: -> -> "+allMedals);
-            Log.i(TAG, "getChild: -> -> "+allMedals.get(this.expandableListTitle.get(listPosition)));
-            Log.i(TAG, "getChild: -> -> "+expandableListBadgeNames.get(expandedListPosition));
-            return this.allMedals.get(this.expandableListTitle.get(listPosition)).get(expandableListBadgeNames.get(expandedListPosition));
+            if(this.expandableListTitle.get(listPosition).equals("beginner")){
+                //HashMap<String, HashMap<String, BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective>> tempResult = this.allMedals.get(this.expandableListTitle.get(listPosition));
+//                Log.i(TAG, "getChild: -> -> "+allMedals);
+//                Log.i(TAG, "getChild: -> -> "+allMedals.get(this.expandableListTitle.get(listPosition)));
+//                Log.i(TAG, "getChild: -> -> "+expandableListBadgeNames.get(expandedListPosition));
+                return this.allMedals.get(this.expandableListTitle.get(listPosition)).get(expandableListBadgeNames.get(expandedListPosition));
+            }else{
+                HashMap<String, HashMap<String, BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective>> diffMedals = this.allMedals.get(this.expandableListTitle.get(listPosition));
+//                Log.i(TAG, "selectedChild:Pos: "+expandedListPosition);
+//                Log.i(TAG, "selectedChild:Name: "+Types2ArrayAdv().get(expandedListPosition));
+                HashMap<String, BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective> listChildMedals = diffMedals.get(Types2ArrayAdv().get(expandedListPosition));
+                return listChildMedals;
+            }
         }
+    }
+
+    public ArrayList<String> Types2ArrayAdv() {
+        ArrayList<String> types = new ArrayList<>();
+        for(int index = 2; index< BadgeBoard.BadgeName.values().length; index++){
+            types.add(BadgeBoard.BadgeName.values()[index].toString());
+        }
+        return types;
     }
 
     @Override
@@ -80,7 +96,9 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
             convertView = layoutInflater.inflate(R.layout.badge_display_row, null);
         }
 
-        Log.i(TAG, "-----------------------------getChildView: "+badgeRow.keySet());
+        Log.i(TAG, "CLICKED ON: POS: "+listPosition+" inside: " +expandedListPosition);
+
+        //Log.i(TAG, "-----------------------------getChildView: "+badgeRow.keySet());
 
         for(BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective obj: badgeRow.values()){
             TextView badgeTextHolder = null;
@@ -140,6 +158,7 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int listPosition) {
+//        Log.i(TAG, "CHILD OF LIGHT: "+this.expandableListTitle.get(listPosition)+" : "+this.allMedals.get(this.expandableListTitle.get(listPosition)));
         return this.allMedals.get(this.expandableListTitle.get(listPosition)).size();
     }
 
@@ -199,12 +218,12 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
 
             convertView.setEnabled(false);
             convertView.setClickable(false);
-//            convertView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    return;
-//                }
-//            });
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    return;
+                }
+            });
         }
         return convertView;
     }
