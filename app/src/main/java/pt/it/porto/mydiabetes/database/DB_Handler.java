@@ -11,13 +11,15 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.Tag;
 
 public class DB_Handler extends SQLiteOpenHelper {
 
 	// Database Version
-	private static final int DATABASE_VERSION = 16;
+	private static final int DATABASE_VERSION = 17;
     private static final int DATABASE_VERSION_USERID_BADGES = 8;
 	private static final int DATABASE_VERSION_TARGET_BG = 10;
 
@@ -42,7 +44,29 @@ public class DB_Handler extends SQLiteOpenHelper {
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		initDatabaseTables(db);
+		initDayPhases(db);
+//		initRacioSens(db, "Sensitivity_Reg");
+//		initRacioSens(db, "Ratio_Reg");
+	}
 
+//	private void initRacioSens(SQLiteDatabase db, String table){
+//
+//		DB_Read dbRead = new DB_Read(db);
+//		ArrayList<Tag> tags = dbRead.Tag_GetAll();
+//		int id_user = dbRead.getId();
+//		for(int index=0;index<tags.size();index++){
+//			ContentValues toInsert = new ContentValues();
+//			toInsert.put("Id_User", id_user);
+//			toInsert.put("Id_Tag", tags.get(index).getId());
+//			toInsert.put("Value", -1);
+//			toInsert.put("Name", tags.get(index).getName());
+//			toInsert.put("TimeStart", tags.get(index).getStart());
+//			toInsert.put("TimeEnd", tags.get(index).getEnd());
+//			db.insert(table, null, toInsert);
+//		}
+//	}
+
+	private void initDayPhases(SQLiteDatabase db){
 		Resources res = this.myContext.getResources();
 		String[] daytimes = res.getStringArray(R.array.daytimes);
 
@@ -113,6 +137,28 @@ public class DB_Handler extends SQLiteOpenHelper {
 		Log.i("DB Upgrade", "Upgrading DB");
 		if(oldVersion>0){
 
+			String updateDATABASE_SENSITIVITY_DEPENDENCY = "CREATE TABLE IF NOT EXISTS Sensitivity_Reg(" +
+					"Id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+					"Id_User INTEGER NOT NULL, " +
+					"Id_Tag INTEGER NOT NULL, "+
+					"Value REAL NOT NULL, " +
+					"Name TEXT NOT NULL, " +
+					"TimeStart DATETIME NOT NULL, " +
+					"TimeEnd DATETIME NOT NULL, " +
+					"FOREIGN KEY(Id_User) REFERENCES UserInfo(Id), " +
+					"FOREIGN KEY(Id_Tag) REFERENCES Tag(Id) );";
+
+			String updateDATABASE_RATIO_DEPENDENCY = "CREATE TABLE IF NOT EXISTS Ratio_Reg(" +
+					"Id INTEGER PRIMARY KEY AUTOINCREMENT, "+
+					"Id_User INTEGER NOT NULL, " +
+					"Id_Tag INTEGER NOT NULL, "+
+					"Value REAL NOT NULL, " +
+					"Name TEXT NOT NULL, " +
+					"TimeStart DATETIME NOT NULL, " +
+					"TimeEnd DATETIME NOT NULL, " +
+					"FOREIGN KEY(Id_User) REFERENCES UserInfo(Id), " +
+					"FOREIGN KEY(Id_Tag) REFERENCES Tag(Id) );";
+
 			String updateDATABASE_NOTE_BG_DEPENDENCY = "ALTER TABLE Reg_BloodGlucose rename to Reg_BloodGlucose_backup;\n" + //rename old table
 					"CREATE TABLE IF NOT EXISTS Reg_BloodGlucose (Id INTEGER PRIMARY KEY AUTOINCREMENT, Id_User INTEGER NOT NULL, Value REAL NOT NULL, DateTime DATETIME NOT NULL, Id_Tag INTEGER, Id_Note INTEGER, Target_BG REAL, FOREIGN KEY(Id_User) REFERENCES UserInfo(Id), FOREIGN KEY(Id_Tag) REFERENCES Tag(Id), FOREIGN KEY (Id_Note) REFERENCES Note(Id) ON DELETE SET NULL);\n" +
 					"INSERT INTO Reg_BloodGlucose(id, id_user, value, datetime, id_tag, id_note, target_bg) SELECT b.*,u.id FROM Reg_BloodGlucose_backup as b, userinfo as u;\n" +//recover the old ones to the one table
@@ -132,6 +178,8 @@ public class DB_Handler extends SQLiteOpenHelper {
 					;
 
 			try {
+				db.execSQL(updateDATABASE_RATIO_DEPENDENCY);
+				db.execSQL(updateDATABASE_SENSITIVITY_DEPENDENCY);
 				db.execSQL(updateDATABASE_NOTE_BG_DEPENDENCY);
 				db.execSQL(updateDATABASE_NOTE_CARBS_DEPENDENCY);
 				db.execSQL(updateDATABASE_NOTE_INSU_DEPENDENCY);

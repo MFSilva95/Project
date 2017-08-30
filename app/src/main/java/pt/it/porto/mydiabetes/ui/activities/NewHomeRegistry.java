@@ -41,7 +41,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -57,7 +56,6 @@ import java.util.Date;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.Advice;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
@@ -71,16 +69,13 @@ import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
-import pt.it.porto.mydiabetes.ui.fragments.new_register.AdviceRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.CarbsRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.GlycaemiaRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.InsuRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.NoteRegister;
 import pt.it.porto.mydiabetes.ui.listAdapters.StringSpinnerAdapter;
-import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
-import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
@@ -1244,8 +1239,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
     private void showTimePickerDialog(View v) {
 
-        DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.registerTime,
-                DateUtils.getTimeCalendar(((TextView) v).getText().toString()));
+        DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.registerTime, DateUtils.getTimeCalendar(((TextView) v).getText().toString()));
         ((TimePickerFragment) newFragment).setListener(new TimePickerFragment.TimePickerChangeListener() {
             @Override
             public void onTimeSet(String time) {

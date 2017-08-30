@@ -241,10 +241,10 @@ public class BadgeBoard extends Fragment{
 
     public void unlock_medals(LinkedList<BadgeRec> unlockedBadgeList){
         for(BadgeRec badge:unlockedBadgeList){
-            String TAG = "cenas";
-            Log.i(TAG, "unlock_medals: "+badge.getType());
-            Log.i(TAG, "unlock_medals: "+badge.getName());
-            Log.i(TAG, "unlock_medals: "+badge.getMedal());
+            //String TAG = "cenas";
+            //Log.i(TAG, "unlock_medals: "+badge.getType());
+            //Log.i(TAG, "unlock_medals: "+badge.getName());
+            //Log.i(TAG, "unlock_medals: "+badge.getMedal());
             allMedals.get(badge.getType()).get(badge.getName()).get(badge.getMedal()).unlock();
         }
     }

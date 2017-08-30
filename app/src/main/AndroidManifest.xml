@@ -119,8 +119,24 @@
                 android:value=".ui.activities.Settings"/>
         </activity>
         <activity
+        android:name=".ui.activities.SettingsCarbsRatio"
+        android:label="@string/carbs_racio"
+        android:parentActivityName=".ui.activities.SettingsFactors">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ui.activities.SettingsFactors"/>
+        </activity>
+        <activity
+            android:name=".ui.activities.SettingsSensitivity"
+            android:label="@string/sensivity_factor"
+            android:parentActivityName=".ui.activities.SettingsFactors">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.SettingsFactors"/>
+        </activity>
+        <activity
             android:name=".ui.activities.SettingsDayFases"
-            android:label="Fases do dia"
+            android:label="@string/fases_do_dia"
             android:parentActivityName=".ui.activities.Settings">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -293,6 +309,25 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Settings"/>
         </activity>
+
+        <activity
+            android:name=".ui.activities.Ratio_detail"
+            android:label="@string/title_activity_tag_detail"
+            android:parentActivityName=".ui.activities.SettingsCarbsRatio">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.SettingsCarbsRatio"/>
+        </activity>
+
+        <activity
+            android:name=".ui.activities.Sensitivity_detail"
+            android:label="@string/title_activity_tag_detail"
+            android:parentActivityName=".ui.activities.SettingsSensitivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.SettingsSensitivity"/>
+        </activity>
+
         <activity
             android:name=".ui.activities.TargetBG_detail"
             android:label="@string/title_activity_target_bg_detail"

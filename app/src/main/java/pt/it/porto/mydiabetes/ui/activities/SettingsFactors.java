@@ -1,6 +1,7 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
@@ -113,16 +114,25 @@ public class SettingsFactors extends BaseActivity {
 
     public void setMyDataFromDB(UserInfo obj) {
         if (obj != null) {
-            EditText iRatio = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
-            EditText cRatio = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
+//            EditText iRatio = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
+//            EditText cRatio = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
             EditText lRange = (EditText) findViewById(R.id.et_MyData_LowerRange);
             EditText hRange = (EditText) findViewById(R.id.et_MyData_HigherRange);
 
-            iRatio.setText(String.format(LocaleUtils.MY_LOCALE, "%d", obj.getInsulinRatio()));
-            cRatio.setText(String.format(LocaleUtils.MY_LOCALE, "%d", obj.getCarbsRatio()));
+//            iRatio.setText(String.format(LocaleUtils.MY_LOCALE, "%d", obj.getInsulinRatio()));
+//            cRatio.setText(String.format(LocaleUtils.MY_LOCALE, "%d", obj.getCarbsRatio()));
             lRange.setText(String.format(LocaleUtils.MY_LOCALE, "%d", obj.getLowerRange()));
             hRange.setText(String.format(LocaleUtils.MY_LOCALE, "%d", obj.getHigherRange()));
         }
+    }
+    public void editFactorsInsu(View v) {
+        Intent intent = new Intent(this, SettingsSensitivity.class);
+        startActivity(intent);
+    }
+
+    public void editFactorCarbs(View v) {
+        Intent intent = new Intent(this, SettingsCarbsRatio.class);
+        startActivity(intent);
     }
 
 

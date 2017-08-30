@@ -11,19 +11,21 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.Tag;
+import pt.it.porto.mydiabetes.data.InsulinTarget;
+import pt.it.porto.mydiabetes.data.Sensitivity;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.listAdapters.DayFaseAdapter;
+import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaAdapter;
+import pt.it.porto.mydiabetes.ui.listAdapters.SensitivityListAdapter;
 
 
-public class SettingsDayFases extends BaseActivity {
+public class SettingsSensitivity extends BaseActivity {
 
-    private ListView tagList;
+    private ListView targetList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_day_fases);
+        setContentView(R.layout.fragment_glycemia);
         // Show the Up button in the action bar.
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         ActionBar actionBar=getSupportActionBar();
@@ -35,27 +37,29 @@ public class SettingsDayFases extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), DayFaseDetail.class);
+                Intent intent = new Intent(getBaseContext(), Sensitivity_detail.class);
                 startActivity(intent);
             }
         });
 
 
-        tagList = (ListView) findViewById(R.id.tagsFragmentList);
-        fillListView(tagList);
+        targetList = (ListView) findViewById(R.id.targetsFragmentList);
+        fillListView(targetList);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        tagList = (ListView) findViewById(R.id.tagsFragmentList);
-        fillListView(tagList);
+        targetList = (ListView) findViewById(R.id.targetsFragmentList);
+        fillListView(targetList);
     }
 
     public void fillListView(ListView lv) {
         DB_Read rdb = new DB_Read(this);
-        ArrayList<Tag> allTags = rdb.Tag_GetAll();
+        ArrayList<Sensitivity> allTags = rdb.Sensitivity_GetAll();
+
         rdb.close();
-        lv.setAdapter(new DayFaseAdapter(allTags, this));
+
+        lv.setAdapter(new SensitivityListAdapter(allTags, this));
     }
 }

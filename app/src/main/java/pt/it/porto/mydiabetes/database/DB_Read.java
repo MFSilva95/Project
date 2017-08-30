@@ -8,12 +8,12 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.BloodPressureRec;
+import pt.it.porto.mydiabetes.data.CarbsRatioData;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.CholesterolRec;
 import pt.it.porto.mydiabetes.data.Disease;
@@ -24,9 +24,9 @@ import pt.it.porto.mydiabetes.data.HbA1cRec;
 import pt.it.porto.mydiabetes.data.Insulin;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.InsulinTarget;
-import pt.it.porto.mydiabetes.data.LogBookEntry;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.PointsRec;
+import pt.it.porto.mydiabetes.data.Sensitivity;
 import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.data.WeightRec;
@@ -43,6 +43,11 @@ public class DB_Read {
 		DB_Handler db = new DB_Handler(context);
 		this.myContext = context;
 		this.myDB = db.getReadableDatabase();
+	}
+	public DB_Read(SQLiteDatabase myDB) {
+		super();
+		myContext = null;
+		this.myDB = myDB;
 	}
 	public void close() {
 		myDB.close();
@@ -1487,8 +1492,6 @@ public class DB_Read {
 		return cursor.getCount() > 0;
 
 	}
-
-
 	public double Target_GetTargetByTime(String time) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM BG_Target WHERE  " + "(TimeStart < TimeEnd AND '" + time + "' >= TimeStart AND '" + time + "' <= TimeEnd)" +
 				"OR " + "(TimeStart > TimeEnd AND('" + time + "' >= TimeStart OR '" + time + "' <= TimeEnd ))" + ";", null);
@@ -1502,6 +1505,99 @@ public class DB_Read {
 
 		return d;
 	}
+
+
+	public ArrayList<Sensitivity> Sensitivity_GetAll() {
+		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Value, Name, TimeStart, TimeEnd FROM Sensitivity_Reg", null);
+		Log.d("Cursor", String.valueOf(cursor.getCount()));
+		ArrayList<Sensitivity> targets = new ArrayList<Sensitivity>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			Sensitivity t;
+			do {
+				t = new Sensitivity();
+				t.setId(cursor.getInt(0));
+				t.setUser_id(cursor.getInt(1));
+				t.setSensitivity(cursor.getDouble(2));
+				t.setName(cursor.getString(3));
+				t.setStart(cursor.getString(4));
+				t.setEnd(cursor.getString(5));
+				targets.add(t);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return targets;
+		} else {
+			cursor.close();
+			return targets;
+		}
+	}
+	public ArrayList<CarbsRatioData> Ratio_GetAll() {
+		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Value, Name, TimeStart, TimeEnd FROM Ratio_Reg", null);
+		Log.d("Cursor", String.valueOf(cursor.getCount()));
+		ArrayList<CarbsRatioData> targets = new ArrayList<CarbsRatioData>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+            CarbsRatioData t;
+			do {
+				t = new CarbsRatioData();
+				t.setId(cursor.getInt(0));
+				t.setUser_id(cursor.getInt(1));
+				t.setValue(cursor.getDouble(2));
+				t.setName(cursor.getString(3));
+				t.setStart(cursor.getString(4));
+				t.setEnd(cursor.getString(5));
+				targets.add(t);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return targets;
+		} else {
+			cursor.close();
+			return targets;
+		}
+	}
+
+
+	public Sensitivity Sensitivity_GetByID(String id) {
+		Cursor cursor = myDB.rawQuery("SELECT Id, Value, Name, TimeStart, TimeEnd FROM Sensitivity_Reg Where Id = "+ id , null);
+		Log.d("Cursor", String.valueOf(cursor.getCount()));
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			Sensitivity t;
+			t = new Sensitivity();
+			t.setId(cursor.getInt(0));
+			t.setSensitivity(cursor.getDouble(1));
+			t.setName(cursor.getString(2));
+			t.setStart(cursor.getString(3));
+			t.setEnd(cursor.getString(4));
+			cursor.close();
+			return t;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+	public CarbsRatioData Ratio_GetById(String id) {
+		Cursor cursor = myDB.rawQuery("SELECT Id, Value, Name, TimeStart, TimeEnd FROM Ratio_Reg Where Id = "+ id, null);
+		Log.d("Cursor", String.valueOf(cursor.getCount()));
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			CarbsRatioData t;
+			t = new CarbsRatioData();
+			t.setId(cursor.getInt(0));
+			t.setValue(cursor.getDouble(1));
+			t.setName(cursor.getString(2));
+			t.setStart(cursor.getString(3));
+			t.setEnd(cursor.getString(4));
+			cursor.close();
+			return t;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
 
 	public ArrayList<InsulinTarget> Target_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM BG_Target", null);
@@ -2138,7 +2234,6 @@ public class DB_Read {
 		}
 	}
 
-
 	public Boolean hasMedal(String name) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges Where Name = '"+name+"';", null);
 		return cursor.getCount() != 0;
@@ -2169,7 +2264,6 @@ public class DB_Read {
 			return AllReads;
 		}
 	}
-
 	public int getTotalPoints() {
 		Cursor cursor = myDB.rawQuery("SELECT SUM(Value) FROM Points;", null);
 		cursor.moveToLast();
@@ -2180,8 +2274,6 @@ public class DB_Read {
 		cursor.close();
 		return points;
 	}
-
-
     @Nullable
     public PointsRec getFirstPointToReachLevel(int points) {
         Cursor cursor = myDB.rawQuery("SELECT Points1.Id, Points1.Id_User, Points1.DateTime, Points1.Value, Points1.Origin, SUM(Points2.Value) AS SUMMATORY " +

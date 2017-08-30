@@ -3,7 +3,7 @@
     <string name="task">Task</string>
     <string name="tasks">Tasks</string>
 
-    <string name="targetOverlapError">A glicemic target is already defined at this time period</string>
+    <string name="targetOverlapError">A glicemic sensitivity is already defined at this time period</string>
     <string name="glycemia_value">Glycaemia Value</string>
     <string name="navTask">My Tasks</string>
     <string name="navLog">My Logbook</string>
@@ -169,6 +169,7 @@
     <string name="insulin_type_pen">Pen</string>
     <string name="insulin_type_pump">Pump</string>
 
+    <string name="fases_do_dia">Phases of the Day</string>
     <string name="edit_day_phases">Edit Phases of the Day</string>
     <string name="restore_backup_button">Restore Backup</string>
     <string name="restore_backup_button_welcome">Restore\nBackup</string>

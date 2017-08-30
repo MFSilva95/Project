@@ -201,11 +201,14 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 		if(height>100){height = height/100;}
 
+		int carbsR = Integer.parseInt(carbsRatio.getText().toString(), 10);
+		int sensR = Integer.parseInt(sensibilityFactor.getText().toString(), 10);
+
 		MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
 		boolean success = storage.addUserData(container.getString(WelcomeActivity.USER_DATA_NAME),
 				String.valueOf(diabetesType.getSelectedItemPosition()),
-				Integer.parseInt(sensibilityFactor.getText().toString(), 10),
-				Integer.parseInt(carbsRatio.getText().toString(), 10),
+				sensR,
+				carbsR,
 				Integer.parseInt(hypoglycemiaLimit.getText().toString(), 10),
 				Integer.parseInt(hyperglycemiaLimit.getText().toString(), 10),
 				container.getString(WelcomeActivity.USER_DATA_BIRTHDAY_DATE),
@@ -218,6 +221,10 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
 		// Create imageDir
 		File mypath = new File(directory, userImgFileName);
+
+		storage.updateRacioSens(sensR, "Sensitivity_Reg");
+		storage.updateRacioSens(carbsR, "Ratio_Reg");
+
 		DB_Read read = new DB_Read(getContext());
 		if (mypath.exists()) {
 			BadgeUtils.addPhotoBadge(getContext(), read);

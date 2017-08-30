@@ -67,13 +67,13 @@ public class BadgeListAdapter_old extends BaseAdapter {
         String medalType = "medal_"+badge.getMedal()+"_"+badge.getType();
         String badgeType = badge.getName();
 
-        Log.i("cenas", "MEDAL getType: "+badge.getType()+" getMedal:"+badge.getMedal()+" getID:"+badge.getId());
-        Log.i("cenas", "MEDAL getName: "+badge.getName());
+       //Log.i("cenas", "MEDAL getType: "+badge.getType()+" getMedal:"+badge.getMedal()+" getID:"+badge.getId());
+        //Log.i("cenas", "MEDAL getName: "+badge.getName());
         try{
             image.setImageResource(_c.getResources().getIdentifier(medalType,"drawable",_c.getPackageName()));
             imageBadge.setImageResource(_c.getResources().getIdentifier(badgeType,"drawable",_c.getPackageName()));
         }catch (Exception e){
-            Log.i("cemas", "MISSING:"+badgeType);
+            //Log.i("cemas", "MISSING:"+badgeType);
             e.printStackTrace();
         }
         return v;

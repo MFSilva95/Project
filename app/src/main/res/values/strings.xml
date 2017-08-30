@@ -328,6 +328,8 @@
     <string name="ainda_n_o_tem_registos_precione_o_simbolo_para_fazer_novo_registo">Ainda não tem registos esta semana\n Precione o simbolo \'+\' para fazer novo registo.</string>
     <string name="list_badge_empty_message">Ainda não recebeu nenhuma medalha</string>
 
+
+    <string name="fases_do_dia">Fases do Dia</string>
     <string name="edit_day_phases">Editar Fases do Dia</string>
     <string name="health">Saúde</string>
     <string name="record">Registo</string>

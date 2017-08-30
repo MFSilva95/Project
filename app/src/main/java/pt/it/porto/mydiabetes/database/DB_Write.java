@@ -4,16 +4,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.text.format.Time;
 import android.util.Log;
 
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.BloodPressureRec;
+import pt.it.porto.mydiabetes.data.CarbsRatioData;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.CholesterolRec;
-import pt.it.porto.mydiabetes.data.DateTime;
 import pt.it.porto.mydiabetes.data.Disease;
 import pt.it.porto.mydiabetes.data.DiseaseRec;
 import pt.it.porto.mydiabetes.data.Exercise;
@@ -25,6 +24,7 @@ import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.PointsRec;
+import pt.it.porto.mydiabetes.data.Sensitivity;
 import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.data.WeightRec;
@@ -632,7 +632,6 @@ public class DB_Write {
 		Note_Delete(idNote);
 	}
 
-
 	//------------- TARGET BG --------------
 	public void Target_Remove(int id) {
 		myDB.delete("BG_Target", "id=" + id, null);
@@ -751,4 +750,72 @@ public class DB_Write {
 		toInsert.put("Y_Value", yvalue);
 		myDB.insert("Clicks_Log", null, toInsert);
 	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	//------------- TARGET Sensitivity --------------
+	public void Sensitivity_Reg_Remove(int id) {
+		myDB.delete("Sensitivity_Reg", "id=" + id, null);
+
+	}
+
+	public void Sensitivity_Reg_Add(Sensitivity t) {
+		ContentValues toInsert = new ContentValues();
+		toInsert.put("Id_User", t.getUser_id());
+		toInsert.put("Name", t.getName());
+		toInsert.put("TimeStart", t.getStart());
+		toInsert.put("TimeEnd", t.getEnd());
+		toInsert.put("Value", t.getSensitivity());
+		myDB.insert("Sensitivity_Reg", null, toInsert);
+	}
+
+	public void Sensitivity_Reg_Update(Sensitivity t) {
+		ContentValues toUpdate = new ContentValues();
+		toUpdate.put("Name", t.getName());
+		toUpdate.put("TimeStart", t.getStart());
+		toUpdate.put("TimeEnd", t.getEnd());
+		toUpdate.put("Value", t.getSensitivity());
+		myDB.update("Sensitivity_Reg", toUpdate, "Id=" + t.getId(), null);
+	}
+
+	//------------- TARGET Ratio --------------
+	public void Ratio_Reg_Remove(int id) {
+		myDB.delete("Sensitivity_Reg", "id=" + id, null);
+
+	}
+
+	public void Ratio_Reg_Add(CarbsRatioData t) {
+		ContentValues toInsert = new ContentValues();
+		toInsert.put("Name", t.getName());
+		toInsert.put("Id_User", t.getUser_id());
+		toInsert.put("TimeStart", t.getStart());
+		toInsert.put("TimeEnd", t.getEnd());
+		toInsert.put("Value", t.getValue());
+		myDB.insert("Ratio_Reg", null, toInsert);
+	}
+
+	public void Ratio_Reg_Update(CarbsRatioData t) {
+		ContentValues toUpdate = new ContentValues();
+		toUpdate.put("Name", t.getName());
+		toUpdate.put("TimeStart", t.getStart());
+		toUpdate.put("TimeEnd", t.getEnd());
+		toUpdate.put("Value", t.getValue());
+		myDB.update("Ratio_Reg", toUpdate, "Id=" + t.getId(), null);
+	}
+
+
 }
