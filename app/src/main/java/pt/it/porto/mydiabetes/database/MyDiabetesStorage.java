@@ -98,18 +98,18 @@ public class MyDiabetesStorage {
 		return db.insert(MyDiabetesContract.BG_Target.TABLE_NAME, null, toInsert) != -1;
 	}
 
-	public void updateRacioSens( int value, String table){
+	public void initRacioSens(int value, String table){
 
 		SQLiteDatabase db = mHandler.getWritableDatabase();
 		DB_Read dbRead = new DB_Read(db);
 		ArrayList<Tag> tags = dbRead.Tag_GetAll();
 		int id_user = dbRead.getId();
-		String TAG = "cenas";
-		Log.i(TAG, "updateRacioSens: USER_ID= "+id_user);
-		Log.i(TAG, " TABLE : "+table);
+//		String TAG = "cenas";
+//		Log.i(TAG, "initRacioSens: USER_ID= "+id_user);
+//		Log.i(TAG, " TABLE : "+table);
 
 		for(int index=0;index<tags.size()-1;index++){
-			Log.i(TAG, "- NEW TAG -");
+//			Log.i(TAG, "- NEW TAG -");
 
 			ContentValues toInsert = new ContentValues();
 			toInsert.put("Id_User", id_user);
@@ -119,11 +119,11 @@ public class MyDiabetesStorage {
 			toInsert.put("TimeStart", tags.get(index).getStart());
 			toInsert.put("TimeEnd", tags.get(index).getEnd());
 
-			Log.i(TAG, " TAG ID: "+tags.get(index).getId());
-			Log.i(TAG, " TAG VALUE: "+value);
-			Log.i(TAG, " TAG NAME: "+tags.get(index).getName());
-			Log.i(TAG, " TAG : START"+tags.get(index).getStart());
-			Log.i(TAG, " TAG END: "+tags.get(index).getEnd());
+//			Log.i(TAG, " TAG ID: "+tags.get(index).getId());
+//			Log.i(TAG, " TAG VALUE: "+value);
+//			Log.i(TAG, " TAG NAME: "+tags.get(index).getName());
+//			Log.i(TAG, " TAG : START"+tags.get(index).getStart());
+//			Log.i(TAG, " TAG END: "+tags.get(index).getEnd());
 
 			db.insert(table, null, toInsert);
 		}

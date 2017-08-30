@@ -14,6 +14,7 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.data.Sensitivity;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaAdapter;
 import pt.it.porto.mydiabetes.ui.listAdapters.SensitivityListAdapter;
 
@@ -56,10 +57,17 @@ public class SettingsSensitivity extends BaseActivity {
 
     public void fillListView(ListView lv) {
         DB_Read rdb = new DB_Read(this);
+        int baseInsuRatio = rdb.getInsulinRatio();
         ArrayList<Sensitivity> allTags = rdb.Sensitivity_GetAll();
-
         rdb.close();
 
+        if(allTags==null){
+            MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
+            storage.initRacioSens(baseInsuRatio, "Sensitivity_Reg");
+            rdb = new DB_Read(this);
+            allTags = rdb.Sensitivity_GetAll();
+            rdb.close();
+        }
         lv.setAdapter(new SensitivityListAdapter(allTags, this));
     }
 }

@@ -84,6 +84,28 @@ public class DB_Read {
 		return val;
 	}
 
+	public int getCarbsRatio() {
+		Cursor cursor = myDB.rawQuery("SELECT CarbsRatio FROM UserInfo", null);
+		int val = -1;
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			val = Integer.parseInt(cursor.getString(0));
+		}
+		cursor.close();
+		return val;
+	}
+
+	public int getInsulinRatio() {
+		Cursor cursor = myDB.rawQuery("SELECT InsulinRatio FROM UserInfo", null);
+		int val = -1;
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			val = Integer.parseInt(cursor.getString(0));
+		}
+		cursor.close();
+		return val;
+	}
+
 	public Cursor getGlicObj() {
 		Cursor cursor = myDB.rawQuery("SELECT " + MyDiabetesContract.BG_Target.COLUMN_NAME_ID+","+ MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_START+","+MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_END + " FROM "+MyDiabetesContract.BG_Target.TABLE_NAME, null);
 		return cursor;

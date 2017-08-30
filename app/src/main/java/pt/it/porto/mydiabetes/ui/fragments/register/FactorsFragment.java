@@ -2,11 +2,7 @@ package pt.it.porto.mydiabetes.ui.fragments.register;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,7 +13,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.io.File;
 
@@ -28,7 +23,6 @@ import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
-import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
 
 public class FactorsFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
@@ -222,8 +216,8 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		// Create imageDir
 		File mypath = new File(directory, userImgFileName);
 
-		storage.updateRacioSens(sensR, "Sensitivity_Reg");
-		storage.updateRacioSens(carbsR, "Ratio_Reg");
+		storage.initRacioSens(sensR, "Sensitivity_Reg");
+		storage.initRacioSens(carbsR, "Ratio_Reg");
 
 		DB_Read read = new DB_Read(getContext());
 		if (mypath.exists()) {
