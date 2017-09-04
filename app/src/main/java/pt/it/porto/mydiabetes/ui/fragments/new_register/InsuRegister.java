@@ -81,8 +81,8 @@ public class InsuRegister extends LinearLayout {
     public void updateInsuCalc(InsulinCalculator calculator){
         this.calc = calculator;
         this.fragmentInsulinCalcsFragment.setInsulinCalculator(calculator);
+        float totalInsu = calculator.getInsulinTotal(false, true);
         if(!isManual){
-            float totalInsu = calculator.getInsulinTotal(false, true);
             insertInsulinData(totalInsu);
             if(totalInsu>0){
                 insuData.setInsulinUnits(totalInsu);

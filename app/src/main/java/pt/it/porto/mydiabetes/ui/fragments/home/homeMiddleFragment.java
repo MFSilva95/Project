@@ -223,29 +223,29 @@ public class homeMiddleFragment extends Fragment {
 
     public void fillAdviceList() {
         //receiverAdviceList.addAll(yapDroid.getAllEndAdvices(getApplicationContext()));
-//        Advice advice1 = new Advice();
-//        advice1.setSummaryText("Low glycaemia value detected!");
-//        advice1.setExpandedText("Your glycaemia values are low, you should ingest fast carbohydrates.");
-//        advice1.setUrgency(5);
-//        advice1.setType("NORMAL");
+        Advice advice1 = new Advice();
+        advice1.setSummaryText("Low glycaemia value detected!");
+        advice1.setExpandedText("Your glycaemia values are low, you should ingest fast carbohydrates.");
+        advice1.setUrgency(5);
+        advice1.setType("NORMAL");
 
 //        Advice advice2 = new Advice();
 //        advice2.setSummaryText("");
 //        advice2.setExpandedText("Fazer a sincronização da bomba com a aplicação!");
 //        advice2.setUrgency(3);
 
-        //ArrayList<Advice> adviceList = new ArrayList<>();
-        //adviceList.add(advice1);
+        ArrayList<Advice> adviceList = new ArrayList<>();
+        adviceList.add(advice1);
         //adviceList.add(advice2);
 
-        //receiverAdviceList = new ArrayList<>();
-        //receiverAdviceList.addAll(adviceList);
-        //Collections.sort(receiverAdviceList);
+        receiverAdviceList = new ArrayList<>();
+        receiverAdviceList.addAll(adviceList);
+        Collections.sort(receiverAdviceList);
 
-        /*if (receiverAdviceList.size() > 0) {//&& BuildConfig.ADVICES_AVAILABLE){
-            logBookList.add(new HomeElement(HomeElement.Type.HEADER, getContext().getString(R.string.advices)));
+        if (receiverAdviceList.size() > 0) {//&& BuildConfig.ADVICES_AVAILABLE){
+            logBookList.add(new HomeElement(HomeElement.Type.HEADER, "Advice"));
             logBookList.addAll(receiverAdviceList);
-        }*/
+        }
     }
 
 

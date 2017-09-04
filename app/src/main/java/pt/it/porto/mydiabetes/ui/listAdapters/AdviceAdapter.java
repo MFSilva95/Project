@@ -63,15 +63,15 @@ public class AdviceAdapter extends RecyclerView.Adapter<AdviceAdapter.ViewHolder
 
         Advice identity = adviceList.get(position);
 
-        if(identity.getUrgency()>7){
-            holder.view.setBackgroundColor(Color.RED);
-        }else{
-            if(identity.getUrgency()>5){
-                holder.view.setBackgroundColor(Color.YELLOW);
-            }else{
-                holder.view.setBackgroundColor(Color.GREEN);
-            }
-        }
+//        if(identity.getUrgency()>7){
+//            holder.view.setBackgroundColor(Color.RED);
+//        }else{
+//            if(identity.getUrgency()>5){
+//                holder.view.setBackgroundColor(Color.YELLOW);
+//            }else{
+//                holder.view.setBackgroundColor(Color.GREEN);
+//            }
+//        }
 
         LinearLayout textHolder = (LinearLayout) holder.view.getChildAt(0);
         textHolder.setBackgroundColor(Color.WHITE);

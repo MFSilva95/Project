@@ -45,6 +45,9 @@ public class InsulinCalculator  implements Cloneable {
 		if (round) {
 			insulinTotal = (float) (0.5 * Math.round(insulinTotal / 0.5));
 		}
+		if(insulinTotal<0){
+			insulinTotal = 0;
+		}
 		return insulinTotal;
 	}
 
