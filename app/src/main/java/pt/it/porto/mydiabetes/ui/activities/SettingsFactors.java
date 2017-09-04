@@ -48,15 +48,15 @@ public class SettingsFactors extends BaseActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (inputIsValid()) {
+//                if (inputIsValid()) {
                     DB_Write rdb = new DB_Write(getBaseContext());
                     rdb.MyData_Save(getMyDataFromActivity());
                     rdb.close();
                     finish();
-                } else {
-                    //toast message
-                    Toast.makeText(getBaseContext(), getString(R.string.mydata_before_saving), Toast.LENGTH_LONG).show();
-                }
+//                } else {
+//                    //toast message
+//                    Toast.makeText(getBaseContext(), getString(R.string.mydata_before_saving), Toast.LENGTH_LONG).show();
+//                }
             }
         });
 
@@ -79,32 +79,32 @@ public class SettingsFactors extends BaseActivity {
     }
 
 
-    //corrige erro ao gravar
-    // os spinners não são verificados porque incialmente têm sempre valor
-    public boolean inputIsValid() {
-        EditText[] obj = new EditText[4];
-        obj[0] = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
-        obj[1] = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
-        obj[2] = (EditText) findViewById(R.id.et_MyData_LowerRange);
-        obj[3] = (EditText) findViewById(R.id.et_MyData_HigherRange);
-
-        for (EditText aux : obj) {
-            if (aux.getText().toString().trim().length() == 0) {
-                aux.setError(getString(R.string.error_field_required));
-                return false;
-            }
-        }
-        return true;
-    }
+//    //corrige erro ao gravar
+//    // os spinners não são verificados porque incialmente têm sempre valor
+//    public boolean inputIsValid() {
+//        EditText[] obj = new EditText[4];
+//        obj[0] = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
+//        obj[1] = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
+//        obj[2] = (EditText) findViewById(R.id.et_MyData_LowerRange);
+//        obj[3] = (EditText) findViewById(R.id.et_MyData_HigherRange);
+//
+//        for (EditText aux : obj) {
+//            if (aux.getText().toString().trim().length() == 0) {
+//                aux.setError(getString(R.string.error_field_required));
+//                return false;
+//            }
+//        }
+//        return true;
+//    }
 
     public UserInfo getMyDataFromActivity() {
-        EditText iRatio = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
-        EditText cRatio = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
+       // EditText iRatio = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
+       // EditText cRatio = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
         EditText lRange = (EditText) findViewById(R.id.et_MyData_LowerRange);
         EditText hRange = (EditText) findViewById(R.id.et_MyData_HigherRange);
 
-        myData.setInsulinRatio(Integer.parseInt(iRatio.getText().toString()));
-        myData.setCarbsRatio(Integer.parseInt(cRatio.getText().toString()));
+        //myData.setInsulinRatio(Integer.parseInt(iRatio.getText().toString()));
+       ///myData.setCarbsRatio(Integer.parseInt(cRatio.getText().toString()));
         myData.setLowerRange(Integer.parseInt(lRange.getText().toString()));
         myData.setHigherRange(Integer.parseInt(hRange.getText().toString()));
 

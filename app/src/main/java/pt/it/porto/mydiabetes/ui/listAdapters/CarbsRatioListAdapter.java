@@ -53,16 +53,16 @@ public class CarbsRatioListAdapter extends BaseAdapter {
 		View v = convertView;
 		if (v == null) {
 			LayoutInflater vi = (LayoutInflater) _c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.list_tag_row, parent, false);
+			v = vi.inflate(R.layout.list_carb_ratio_row, parent, false);
 		}
 
 
-		LinearLayout rLayout = (LinearLayout) v.findViewById(R.id.FaseDiaRow);
+		LinearLayout rLayout = (LinearLayout) v.findViewById(R.id.TargetCarbsRatioRow);
 
-
-		TextView tagName = (TextView) v.findViewById(R.id.list_tagName);
-		TextView tagStart = (TextView) v.findViewById(R.id.list_tagStart);
-		TextView tagEnd = (TextView) v.findViewById(R.id.list_tagEnd);
+		TextView ratioValue = (TextView) v.findViewById(R.id.list_targetValue);
+		TextView tagName = (TextView) v.findViewById(R.id.list_targetName);
+		TextView tagStart = (TextView) v.findViewById(R.id.list_targetStart);
+		TextView tagEnd = (TextView) v.findViewById(R.id.list_targetEnd);
 
 
 		CarbsRatioData tag = _data.get(position);
@@ -71,6 +71,7 @@ public class CarbsRatioListAdapter extends BaseAdapter {
 		tagName.setText(tag.getName());
 		tagStart.setText(tag.getStart());
 		tagEnd.setText(tag.getEnd());
+		ratioValue.setText(tag.getValue()+"");
 
 
 		rLayout.setOnClickListener(new View.OnClickListener() {

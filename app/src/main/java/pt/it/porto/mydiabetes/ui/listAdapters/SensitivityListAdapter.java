@@ -51,16 +51,16 @@ public class SensitivityListAdapter extends BaseAdapter {
 		View v = convertView;
 		if (v == null) {
 			LayoutInflater vi = (LayoutInflater) _c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			v = vi.inflate(R.layout.list_tag_row, parent, false);
+			v = vi.inflate(R.layout.list_insu_ratio_row, parent, false);
 		}
 
 
-		LinearLayout rLayout = (LinearLayout) v.findViewById(R.id.FaseDiaRow);
+		LinearLayout rLayout = (LinearLayout) v.findViewById(R.id.TargetInsuRatioRow);
 
-
-		TextView tagName = (TextView) v.findViewById(R.id.list_tagName);
-		TextView tagStart = (TextView) v.findViewById(R.id.list_tagStart);
-		TextView tagEnd = (TextView) v.findViewById(R.id.list_tagEnd);
+		TextView insuRatio = (TextView) v.findViewById(R.id.list_targetValue);
+		TextView tagName = (TextView) v.findViewById(R.id.list_targetName);
+		TextView tagStart = (TextView) v.findViewById(R.id.list_targetStart);
+		TextView tagEnd = (TextView) v.findViewById(R.id.list_targetEnd);
 
 
 		Sensitivity tag = _data.get(position);
@@ -69,6 +69,7 @@ public class SensitivityListAdapter extends BaseAdapter {
 		tagName.setText(tag.getName());
 		tagStart.setText(tag.getStart());
 		tagEnd.setText(tag.getEnd());
+		insuRatio.setText(tag.getSensitivity()+"");
 
 
 		rLayout.setOnClickListener(new View.OnClickListener() {

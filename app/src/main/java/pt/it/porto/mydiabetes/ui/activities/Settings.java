@@ -104,23 +104,23 @@ public class Settings extends BaseActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	//corrige erro ao gravar
-	// os spinners não são verificados porque incialmente têm sempre valor
-	public boolean inputIsValid() {
-		EditText[] obj = new EditText[4];
-		obj[0] = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
-		obj[1] = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
-		obj[2] = (EditText) findViewById(R.id.et_MyData_LowerRange);
-		obj[3] = (EditText) findViewById(R.id.et_MyData_HigherRange);
-
-		for (EditText aux : obj) {
-			if (aux.getText().toString().trim().length() == 0) {
-				aux.setError(getString(R.string.error_field_required));
-				return false;
-			}
-		}
-		return true;
-	}
+//	//corrige erro ao gravar
+//	// os spinners não são verificados porque incialmente têm sempre valor
+//	public boolean inputIsValid() {
+//		EditText[] obj = new EditText[4];
+//		obj[0] = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
+//		obj[1] = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
+//		obj[2] = (EditText) findViewById(R.id.et_MyData_LowerRange);
+//		obj[3] = (EditText) findViewById(R.id.et_MyData_HigherRange);
+//
+//		for (EditText aux : obj) {
+//			if (aux.getText().toString().trim().length() == 0) {
+//				aux.setError(getString(R.string.error_field_required));
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
 
 	public UserInfo getMyDataFromActivity() {
 		Spinner dType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
