@@ -16,6 +16,11 @@ public class FeaturesDB {
 		this.storage = storage;
 	}
 
+	public boolean isUpdated(){
+
+		return true;
+	}
+
 	public boolean isFeatureActive(String feature) {//INITIAL_REG_DONE
 		if(FEATURE_CLOUD_SYNC.equals(feature) && !BuildConfig.SYNC_AVAILABLE){
 			return false;

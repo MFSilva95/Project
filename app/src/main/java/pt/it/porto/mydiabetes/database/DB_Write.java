@@ -26,6 +26,7 @@ import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.PointsRec;
 import pt.it.porto.mydiabetes.data.Sensitivity;
 import pt.it.porto.mydiabetes.data.Tag;
+import pt.it.porto.mydiabetes.data.TargetBGRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -45,6 +46,16 @@ public class DB_Write {
 		this.myDB.execSQL("PRAGMA foreign_keys=ON;");
 	}
 
+	public DB_Write(SQLiteDatabase newDb) {
+		super();
+		// TODO Auto-generated constructor stub
+		//DB_Handler db = new DB_Handler(context);
+		//this.myContext = context;
+		myContext = null;
+		this.myDB = newDb;//db.getWritableDatabase();
+		//this.myDB.execSQL("PRAGMA foreign_keys=ON;");
+	}
+
 	public void close() {
 		myDB.close();
 		Log.d("Close", "DB_Write");
@@ -60,6 +71,11 @@ public class DB_Write {
 			myDB.insert("UserInfo", null, contentValues);
 		}
 		Log.d("Guardou", "Preferencias");
+	}
+	public void addFeature(ContentValues contentValues){
+
+		myDB.insert("Feature", null, contentValues);
+
 	}
 
 	//--------------- TAG ----------------------
@@ -161,22 +177,18 @@ public class DB_Write {
 		//Note_Delete(idNote);
 	}
 
-	//------------------ INSULIN ----------------------
-	@Deprecated
-	/**
-	 * Instead use @{code Insulin_Add(Insulin i)}
-	 */
-	public void Insulin_Add(Object[] obj) {
+
+	public void TargetBG_Add(TargetBGRec i) {
 		ContentValues toInsert = new ContentValues();
-		toInsert.put("Name", obj[0].toString());
-		toInsert.put("Type", obj[1].toString());
-		toInsert.put("Action", obj[2].toString());
-		toInsert.put("Duration", Double.parseDouble(obj[3].toString()));
+		toInsert.put("Name", i.getName());
+		toInsert.put("TimeStart", i.getTimeStart());
+		toInsert.put("TimeEnd", i.getTimeEnd());
+		toInsert.put("Value", i.getValue());
+		myDB.insert("BG_Target", null, toInsert);
 
-		myDB.insert("Insulin", null, toInsert);
-
-		Log.d("Guardou", "Insulin");
+		Log.d("Guardou", "BG_Target");
 	}
+
 
 	public void Insulin_Add(Insulin i) {
 		ContentValues toInsert = new ContentValues();

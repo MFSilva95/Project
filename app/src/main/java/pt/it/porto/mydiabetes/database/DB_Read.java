@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.database;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -28,6 +29,7 @@ import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.PointsRec;
 import pt.it.porto.mydiabetes.data.Sensitivity;
 import pt.it.porto.mydiabetes.data.Tag;
+import pt.it.porto.mydiabetes.data.TargetBGRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.utils.HomeElement;
@@ -42,7 +44,9 @@ public class DB_Read {
 		super();
 		DB_Handler db = new DB_Handler(context);
 		this.myContext = context;
-		this.myDB = db.getReadableDatabase();
+		SQLiteDatabase myDB1;
+		myDB1 = db.getReadableDatabase();
+		this.myDB = myDB1;
 	}
 	public DB_Read(SQLiteDatabase myDB) {
 		super();
@@ -52,6 +56,15 @@ public class DB_Read {
 	public void close() {
 		myDB.close();
 		Log.d("Close", "DB_Read");
+	}
+	public boolean isEmpty(){
+		Cursor cursor = myDB.rawQuery("SELECT Count(*) FROM sqlite_master", null);
+		cursor.moveToFirst();
+		boolean result = cursor.getInt(0) > 1;
+		Log.i("cenas", "isEmpty: "+cursor.getInt(0));
+		Log.i("cenas", "isEmpty: "+result);
+		cursor.close();
+		return !result;
 	}
 	public boolean MyData_HasData() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM UserInfo", null);
@@ -246,6 +259,32 @@ public class DB_Read {
 		}
 	}
 
+	public ArrayList<GlycemiaRec> GlycemiaRec_GetAll() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose", null);
+		Log.d("Cursor", String.valueOf(cursor.getCount()));
+		String[] row;
+		ArrayList<GlycemiaRec> glycemiaRecs = new ArrayList<>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+
+			do {
+				GlycemiaRec newRec = new GlycemiaRec();
+				newRec.setIdUser(cursor.getInt(1));
+				newRec.setValue(cursor.getInt(2)); //Value
+				newRec.setDateTime(cursor.getString(3)); //DateTime
+				newRec.setIdTag(cursor.getInt(4)); //Id_Tag
+				//row[3] = cursor.getString(5); //Id_Note
+				glycemiaRecs.add(newRec);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return glycemiaRecs;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
 	public ArrayList<GlycemiaRec> Glycemia_GetByDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
 		ArrayList<GlycemiaRec> allreads = new ArrayList<GlycemiaRec>();
@@ -298,11 +337,96 @@ public class DB_Read {
 
 
 	//---------------------- INSULIN ------------------------------
+
+
+	public ArrayList<InsulinRec> InsulinRec_GetAll() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Insulin", null);
+		Log.d("Cursor", String.valueOf(cursor.getCount()));
+		ArrayList<InsulinRec> insulinRecs = new ArrayList<>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			do {
+				InsulinRec oldRec = new InsulinRec();
+				oldRec.setIdUser(cursor.getInt(1));
+				oldRec.setIdInsulin(cursor.getInt(2));
+				oldRec.setDateTime(cursor.getString(4));
+				oldRec.setInsulinUnits(cursor.getInt(6));
+				oldRec.setIdTag(cursor.getInt(7));
+				oldRec.setIdNote(cursor.getInt(8));
+				insulinRecs.add(oldRec);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return insulinRecs;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
+	public ArrayList<Insulin> Insulins_GetAll() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Insulin", null);
+		Log.i("cenas", "Insulins_GetAll-> ->: "+DatabaseUtils.dumpCursorToString(cursor));
+
+		Log.d("Cursor", String.valueOf(cursor.getCount()));
+		ArrayList<Insulin> insulinRecs = new ArrayList<>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			do {
+				Insulin oldRec = new Insulin();
+				oldRec.setName(cursor.getString(1));
+				oldRec.setType(cursor.getString(2));
+				oldRec.setAction(cursor.getString(3));
+				//oldRec.setDuration(cursor.getDouble(4));
+
+				Log.i("cenas", "Insulins_GetAll: Name: "+oldRec.getName()+" Type: "+oldRec.getType()+" ACTION: "+oldRec.getAction()+" DURATION: "+oldRec.getDuration());
+				insulinRecs.add(oldRec);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return insulinRecs;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
+//	public ArrayList<Insulin> Insulins_GetAll() {
+//		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Insulin", null);
+//		Log.i("cenas", "Insulins_GetAll-> ->: "+DatabaseUtils.dumpCursorToString(cursor));
+//
+//		Log.d("Cursor", String.valueOf(cursor.getCount()));
+//		ArrayList<Insulin> insulinRecs = new ArrayList<>();
+//		if (cursor.getCount() > 0) {
+//			cursor.moveToFirst();
+//			do {
+//				Insulin oldRec = new Insulin();
+//				oldRec.setName(cursor.getString(1));
+//				oldRec.setType(cursor.getString(2));
+//				oldRec.setAction(cursor.getString(3));
+//				oldRec.setDuration(cursor.getDouble(4));
+//
+//				Log.i("cenas", "Insulins_GetAll: Name: "+oldRec.getName()+" Type: "+oldRec.getType()+" ACTION: "+oldRec.getAction()+" DURATION: "+oldRec.getDuration());
+//				insulinRecs.add(oldRec);
+//				cursor.moveToNext();
+//			} while (!cursor.isAfterLast());
+//			cursor.close();
+//			return insulinRecs;
+//		} else {
+//			cursor.close();
+//			return null;
+//		}
+//	}
+
 	public HashMap<Integer, String[]> Insulin_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Insulin", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		HashMap<Integer, String[]> insulins = new HashMap<Integer, String[]>();
 		String[] row;
+		Log.i("cenas", "Insulin_GetAll: -------------------------------------------");
+		Log.i("cenas", "Insulin_GetAll: "+DatabaseUtils.dumpCursorToString(cursor));
+		Log.i("cenas", "Insulin_GetAll: -------------------------------------------");
+
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 
@@ -311,7 +435,7 @@ public class DB_Read {
 				row[0] = cursor.getString(1); //Name
 				row[1] = cursor.getString(2); //Type
 				row[2] = cursor.getString(3); //Action
-				row[3] = String.valueOf(cursor.getDouble(4)); //Duration
+				//row[3] = String.valueOf(cursor.getDouble(4)); //Duration
 				insulins.put(cursor.getInt(0), row);
 				cursor.moveToNext();
 			} while (!cursor.isAfterLast());
@@ -1529,6 +1653,32 @@ public class DB_Read {
 	}
 
 
+
+	public ArrayList<TargetBGRec> TargetBG_GetAll() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM BG_Target", null);
+		Log.d("Cursor", String.valueOf(cursor.getCount()));
+		ArrayList<TargetBGRec> targets = new ArrayList<TargetBGRec>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			TargetBGRec t;
+			do {
+				t = new TargetBGRec();
+				t.setId(cursor.getInt(0));
+				t.setName(cursor.getString(1));
+				t.setTimeStart(cursor.getString(2));
+				t.setTimeEnd(cursor.getString(3));
+				t.setValue(cursor.getInt(4));
+				targets.add(t);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return targets;
+		} else {
+			cursor.close();
+			return targets;
+		}
+	}
+
 	public ArrayList<Sensitivity> Sensitivity_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Value, Name, TimeStart, TimeEnd FROM Sensitivity_Reg", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
@@ -2160,6 +2310,29 @@ public class DB_Read {
 			return AllReads;
 		}
 	}
+	public ArrayList<BadgeRec> getAllMedals() {
+		ArrayList<BadgeRec> AllReads = new ArrayList<BadgeRec>();
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges;", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			BadgeRec tmp;
+			do {
+				tmp = new BadgeRec();
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setDateTime(cursor.getString(2));
+				tmp.setType(cursor.getString(3));
+				tmp.setName(cursor.getString(4));
+				tmp.setMedal(cursor.getString(5));
+				AllReads.add(tmp);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return AllReads;
+		} else {
+			cursor.close();
+			return AllReads;
+		}
+	}
 
 	public LinkedList<BadgeRec> Badges_GetBadgeList(String difficulty) {
 		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
@@ -2227,6 +2400,32 @@ public class DB_Read {
 			return 0;
 		}
 	}
+
+	public ArrayList<CarbsRec> CarbsRec_GetAll() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_CarboHydrate", null);
+		Log.d("Cursor", String.valueOf(cursor.getCount()));
+		ArrayList<CarbsRec> carbsRecs = new ArrayList<>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			do {
+				CarbsRec oldRec = new CarbsRec();
+				oldRec.setIdUser(cursor.getInt(1));
+				oldRec.setCarbsValue(cursor.getInt(2));
+				oldRec.setPhotoPath(cursor.getString(3));
+				oldRec.setDateTime(cursor.getString(4));
+				oldRec.setIdTag(cursor.getInt(5));
+				oldRec.setIdNote(cursor.getInt(6));
+				carbsRecs.add(oldRec);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return carbsRecs;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
 
 	public LinkedList<BadgeRec> getAllMedals(String name) {
 		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();

@@ -36,6 +36,7 @@ import java.util.List;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.database.DB_Handler;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
@@ -115,21 +116,26 @@ public class SettingsImportExport extends BaseActivity {
 		if (isSDWriteable()) {
 			File inputFile = new File(Environment.getExternalStorageDirectory()
 					+ "/MyDiabetes/backup/DB_Diabetes");
-
-			File outputDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases");
-			outputDir.mkdirs();
-			if (inputFile.exists()) {
-				File fileBackup = new File(outputDir, "DB_Diabetes");
-				try {
-					fileBackup.createNewFile();
-					copyFile(inputFile, fileBackup);
-					return true;
-				} catch (IOException ioException) {
-					return false;
-				} catch (Exception exception) {
-					return false;
-				}
+			if(inputFile.exists()){
+				DB_Handler handler = new DB_Handler(context);
+				handler.insertIntoDB(inputFile);
+				return true;
 			}
+//
+//			File outputDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases");
+//			outputDir.mkdirs();
+//			if (inputFile.exists()) {
+//				File fileBackup = new File(outputDir, "DB_Diabetes");
+//				try {
+//					fileBackup.createNewFile();
+//					copyFile(inputFile, fileBackup);
+//					return true;
+//				} catch (IOException ioException) {
+//					return false;
+//				} catch (Exception exception) {
+//					return false;
+//				}
+//			}
 		}
 		return false;
 	}

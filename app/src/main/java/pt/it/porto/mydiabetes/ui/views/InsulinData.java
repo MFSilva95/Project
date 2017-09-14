@@ -40,6 +40,7 @@ public class InsulinData implements Serializable, Parcelable {
 		name = in[0].toString();
 		administrationMethod = in[1].toString();
 		action = Integer.parseInt(in[2].toString());
+
 		this.pox = pox;
 	}
 

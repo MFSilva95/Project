@@ -119,7 +119,6 @@ public class homeMiddleFragment extends Fragment {
 
     private void updateHomeList() {
         logBookList = new LinkedList<>();
-        //fillTaskList();
         fillAdviceList();
         fillDays();
         if (logBookList.size() == 0) {

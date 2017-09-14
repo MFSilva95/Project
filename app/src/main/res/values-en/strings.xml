@@ -48,9 +48,11 @@
         <item>After Breakfast</item>
         <item>Before Lunch</item>
         <item>After Lunch</item>
+        <item>Tea</item>
         <item>Before Dinner</item>
         <item>After Dinner</item>
         <item>Going to bed</item>
+        <item>Night</item>
         <item>Other</item>
     </string-array>
 

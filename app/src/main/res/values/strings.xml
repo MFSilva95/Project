@@ -73,9 +73,11 @@
         <item>Depois Peq. almoço</item>
         <item>Antes almoço</item>
         <item>Depois Almoço</item>
+        <item>Lanche</item>
         <item>Antes jantar</item>
         <item>Depois jantar</item>
         <item>Deitar</item>
+        <item>Noite</item>
         <item>Outra</item>
     </string-array>
 

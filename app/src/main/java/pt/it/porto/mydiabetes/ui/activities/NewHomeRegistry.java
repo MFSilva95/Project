@@ -222,7 +222,7 @@ public class NewHomeRegistry extends AppCompatActivity{
 
         DB_Read rdb = new DB_Read(this);
         //int idUser = rdb.getId();
-        int idTag = rdb.Tag_GetIdByName(tag);
+        int idTag = (spinner.getSelectedItemPosition()+1);//rdb.Tag_GetIdByName(tag);
         rdb.close();
 
         if (glycaemiaRegister != null ) {

@@ -73,6 +73,9 @@ public class Home extends BaseActivity {
 
 		FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
 		//if (!read.MyData_HasData()) {
+		if(!db.isUpdated()){
+			//updateDB();
+		}
 		if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
 			ShowDialogAddData();
 			return;
