@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.utils;
 import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.util.Log;
 
 import java.util.Calendar;
 
@@ -40,29 +41,36 @@ public class InsulinCalculator  implements Cloneable {
 		this.carbsRatio = obj.getCarbsRatio();
 	}
 
-	public float getInsulinTotal(boolean withIOB, boolean round) {
-		float insulinTotal = getInsulinTotal(withIOB);
+	public float getInsulinTotalFloat(boolean withIOB, boolean round) {
+		float insulinTotal = getInsulinTotalFloat(withIOB);
 		if (round) {
 			insulinTotal = (float) (0.5 * Math.round(insulinTotal / 0.5));
 		}
 		if(insulinTotal<0){
-			insulinTotal = 0;
+			insulinTotal = 0.0f;
 		}
+		Log.i("cenas", "  -> getInsulinTotal: "+insulinTotal);
 		return insulinTotal;
 	}
 
-	public float getInsulinTotal(boolean withIOB) {
+	public float getInsulinTotalFloat(boolean withIOB) {
 		return getInsulinCarbs() + getInsulinGlycemia() - (withIOB ? insulinOnBoard : 0);
 	}
 
 
 	public String getInsulinTotal(){
-		return String.valueOf(getInsulinTotal(false, true));
+		String result = String.valueOf(getInsulinTotalFloat(false, true));
+		if(result==null){return "---";}
+		else{
+			return result;
+		}
 	}
 
 	public float getInsulinCarbs() {
 		return ((float)carbs / carbsRatio);
 	}
+
+
 
 	public float getInsulinGlycemia() {
 		return ((float)(glycemia - insulinTarget) / glycemiaRatio);
@@ -99,8 +107,11 @@ public class InsulinCalculator  implements Cloneable {
 		this.glycemiaRatio = glycemiaRatio;
 	}
 
-	public float getCarbsRatio() {
+	public int getCarbsRatio() {
 		return carbsRatio;
+	}
+	public int getInsulinRatio() {
+		return glycemiaRatio;
 	}
 
 	public void setCarbsRatio(int carbsRatio) {

@@ -357,8 +357,8 @@ public class NewHomeRegistry extends AppCompatActivity{
         insulinData = new InsulinRec();
         noteData = new Note();
 
-        insuRegister= new InsuRegister(this, iRatio, cRatio);
-        insuRegister.updateInsuCalc(insulinCalculator);
+//        insuRegister= new InsuRegister(this, iRatio, cRatio);
+//        insuRegister.updateInsuCalc(insulinCalculator);
         carbsRegister = new CarbsRegister(this, new NewHomeRegCallImpl());
         glycaemiaRegister = new GlycaemiaRegister(this, registerDate, new NewHomeRegCallImpl());
         noteRegister = new NoteRegister(this);
@@ -707,6 +707,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                     }*/
         insuRegister = new InsuRegister(this, iRatio, cRatio);
         addContent(insuRegister);
+        insuRegister.updateInsuCalc(insulinCalculator);
         buttons.add(0, INSULIN);
         bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(true);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(true);
@@ -1212,8 +1213,8 @@ public class NewHomeRegistry extends AppCompatActivity{
             insulinCalculator.setCarbs(carbsRegister!=null?carbsRegister.getCarbs():0);
             insulinCalculator.setGlycemia(glycaemiaRegister!=null?glycaemiaRegister.getGlycemia():0);
             insulinCalculator.setGlycemiaTarget(glycaemiaRegister!=null?glycaemiaRegister.getGlycemiaTarget():0);
-
-            insuRegister.updateInsuCalc(insulinCalculator);
+            if(insuRegister!=null)
+                insuRegister.updateInsuCalc(insulinCalculator);
         }
     }
     private void hideKeyboard() {

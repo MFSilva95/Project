@@ -25,7 +25,7 @@ public class SettingsCarbsRatio extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_glycemia);
+        setContentView(R.layout.fragment_ratios);
         // Show the Up button in the action bar.
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
         ActionBar actionBar=getSupportActionBar();
@@ -33,14 +33,14 @@ public class SettingsCarbsRatio extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getBaseContext(), Ratio_detail.class);
-                startActivity(intent);
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getBaseContext(), Ratio_detail.class);
+//                startActivity(intent);
+//            }
+//        });
 
 
         targetList = (ListView) findViewById(R.id.targetsFragmentList);
@@ -58,15 +58,14 @@ public class SettingsCarbsRatio extends BaseActivity {
         DB_Read rdb = new DB_Read(this);
         int baseCarbsRatio = rdb.getCarbsRatio();
         ArrayList<CarbsRatioData> allTags = rdb.Ratio_GetAll();
-        rdb.close();
 
         if(allTags==null){
             MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
             storage.initRacioSens(baseCarbsRatio, "Ratio_Reg");
-            rdb = new DB_Read(this);
+            //rdb = new DB_Read(this);
             allTags = rdb.Ratio_GetAll();
-            rdb.close();
         }
+        rdb.close();
         lv.setAdapter(new CarbsRatioListAdapter(allTags, this));
     }
 }

@@ -449,5 +449,6 @@
 
     <string name="exit_dialog_title">Sair sem Salvar</string>
     <string name="exit_dialog_description">Tem certeza de que deseja sair sem salvar?</string>
+    <string name="dependencies">Dependências</string>
 
 </resources>

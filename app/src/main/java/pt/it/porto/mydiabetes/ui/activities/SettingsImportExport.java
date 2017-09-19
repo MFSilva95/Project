@@ -87,7 +87,6 @@ public class SettingsImportExport extends BaseActivity {
 			restore.setEnabled(false);
 			findViewById(R.id.share).setEnabled(false);
 		}
-
 	}
 
 
@@ -98,7 +97,6 @@ public class SettingsImportExport extends BaseActivity {
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
 			rc = true;
 		}
-
 		return rc;
 	}
 

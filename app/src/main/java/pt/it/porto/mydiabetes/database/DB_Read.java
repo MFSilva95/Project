@@ -1682,8 +1682,9 @@ public class DB_Read {
 	public ArrayList<Sensitivity> Sensitivity_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Value, Name, TimeStart, TimeEnd FROM Sensitivity_Reg", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
-		ArrayList<Sensitivity> targets = new ArrayList<Sensitivity>();
+		ArrayList<Sensitivity> targets = null;
 		if (cursor.getCount() > 0) {
+			targets = new ArrayList<>();
 			cursor.moveToFirst();
 			Sensitivity t;
 			do {
@@ -1707,8 +1708,9 @@ public class DB_Read {
 	public ArrayList<CarbsRatioData> Ratio_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Value, Name, TimeStart, TimeEnd FROM Ratio_Reg", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
-		ArrayList<CarbsRatioData> targets = new ArrayList<CarbsRatioData>();
+		ArrayList<CarbsRatioData> targets = null;
 		if (cursor.getCount() > 0) {
+			targets = new ArrayList<>();
 			cursor.moveToFirst();
             CarbsRatioData t;
 			do {

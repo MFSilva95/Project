@@ -315,4 +315,5 @@
     <string name="preferences_target">Glycemia Objectives</string>
     <string name="preferences_insulins">Insulins</string>
     <string name="preferences_factors">Factors and Ratio\'s</string>
+    <string name="dependencies">Dependencies</string>
 </resources>

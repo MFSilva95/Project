@@ -42,7 +42,7 @@ public class Ratio_detail extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_target_bg_detail);
+		setContentView(R.layout.activity_ratio_detail);
 		// Show the Up button in the action bar.
 		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 		ActionBar actionBar=getSupportActionBar();

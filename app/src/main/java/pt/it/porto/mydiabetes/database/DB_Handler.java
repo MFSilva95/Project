@@ -43,6 +43,7 @@ public class DB_Handler extends SQLiteOpenHelper {
     // Database Name
     private static final String DATABASE_NAME = "DB_Diabetes";
     private static final String DATABASE_NAME_V2 = "DB_Diabetes_v2";
+    private static String currentDB_name;
 
     // Context to be accessible from any method
     private Context myContext;
@@ -52,10 +53,15 @@ public class DB_Handler extends SQLiteOpenHelper {
     public DB_Handler(Context context) {
 //        super(context, DATABASE_VERSION <= DATABASE_VERSION_V2 ? DATABASE_NAME_V2 : DATABASE_NAME, null, DATABASE_VERSION);
         super(context, DATABASE_NAME_V2, null, DATABASE_VERSION);
+
+        currentDB_name = DATABASE_NAME_V2;
         this.myContext = context;
         //Log.i(TAG, "-------------DB_HANDLE!: NAME: "+getDatabaseName());
     }
 
+    public static String getCurrentDbName(){
+        return currentDB_name;
+    }
     @Override
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
@@ -90,6 +96,75 @@ public class DB_Handler extends SQLiteOpenHelper {
 
 
     private void initDayPhases(SQLiteDatabase db) {
+        Resources res = this.myContext.getResources();
+        String[] daytimes = res.getStringArray(R.array.daytimes);
+
+        ContentValues toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[0]);
+        toInsert.put("TimeStart", "06:00");
+        toInsert.put("TimeEnd", "07:30");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[1]);
+        toInsert.put("TimeStart", "07:30");
+        toInsert.put("TimeEnd", "09:00");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[2]);
+        toInsert.put("TimeStart", "09:00");
+        toInsert.put("TimeEnd", "10:30");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[3]);
+        toInsert.put("TimeStart", "10:30");
+        toInsert.put("TimeEnd", "13:00");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[4]);
+        toInsert.put("TimeStart", "13:00");
+        toInsert.put("TimeEnd", "15:30");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[5]);
+        toInsert.put("TimeStart", "15:30");
+        toInsert.put("TimeEnd", "18:00");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[6]);
+        toInsert.put("TimeStart", "18:00");
+        toInsert.put("TimeEnd", "20:30");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[7]);
+        toInsert.put("TimeStart", "20:30");
+        toInsert.put("TimeEnd", "22:30");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[8]);
+        toInsert.put("TimeStart", "22:30");
+        toInsert.put("TimeEnd", "01:00");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[9]);
+        toInsert.put("TimeStart", "1:00");
+        toInsert.put("TimeEnd", "06:00");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[10]);
+        db.insert("Tag", null, toInsert);
+    }
+
+    private void initTags(SQLiteDatabase db) {
         Resources res = this.myContext.getResources();
         String[] daytimes = res.getStringArray(R.array.daytimes);
 

@@ -7,6 +7,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -18,19 +19,29 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 
+//import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
+
 
 public class Info extends BaseActivity {
+
+    Intent dependenciesIntent;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+
+//        startActivity(new Intent(this, OssLicensesMenuActivity.class));
+
 
         // Show the Up button in the action bar.
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
@@ -54,6 +65,17 @@ public class Info extends BaseActivity {
 
         // 	Show the Up button in the action bar.
         getActionBar();
+//        Button infoDependencies = (Button) findViewById(R.id.showDependencies);
+//        dependenciesIntent = new Intent(this, OssLicensesMenuActivity.class);
+//        infoDependencies.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                String title = getString(R.string.dependencies);
+//                dependenciesIntent.putExtra("title", title);
+//                startActivity(dependenciesIntent);
+//            }
+//        });
     }
 
     @Override
