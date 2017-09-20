@@ -211,28 +211,28 @@ public class Sensitivity_detail extends BaseActivity {
 
 	public boolean GlicObjTimesOverlap(String st, String et){
 
-		DB_Read read = new DB_Read(this);
-		Cursor cursor = read.getGlicObj();
-		// validate time intervals
-		ArrayList<Point> times = new ArrayList<>(cursor.getCount());
-		String[] temp;
-		cursor.moveToFirst();
-
-		temp = st.split(":");
-		int startTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-		temp = et.split(":");
-		int endTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-
-		for(int y=0;y<cursor.getCount();y++){
-			cursor.moveToPosition(y);
-			if(!cursor.getString(0).equals(idTarget+"")){
-				temp = cursor.getString(1).split(":");
-				int startTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-				temp = cursor.getString(2).split(":");
-				int endTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-				if(CheckOverlap(startTime, startTime2, endTime, endTime2)){return true;}
-			}
-		}
+//		DB_Read read = new DB_Read(this);
+//		Cursor cursor = read.getGlicObj();
+//		// validate time intervals
+//		ArrayList<Point> times = new ArrayList<>(cursor.getCount());
+//		String[] temp;
+//		cursor.moveToFirst();
+//
+//		temp = st.split(":");
+//		int startTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+//		temp = et.split(":");
+//		int endTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+//
+//		for(int y=0;y<cursor.getCount();y++){
+//			cursor.moveToPosition(y);
+//			if(!cursor.getString(0).equals(idTarget+"")){
+//				temp = cursor.getString(1).split(":");
+//				int startTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+//				temp = cursor.getString(2).split(":");
+//				int endTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+//				if(CheckOverlap(startTime, startTime2, endTime, endTime2)){return true;}
+//			}
+//		}
 		return false;
 	}
 	public int getDuration(int start, int end){

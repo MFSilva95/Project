@@ -66,7 +66,9 @@ public class ExerciseDetail extends BaseActivity {
 			AutoCompleteTextView exerciseSpinner = (AutoCompleteTextView) findViewById(R.id.ac_ExerciseDetail_Exercise);
 			exerciseSpinner.setText(toFill.getExercise());
 			Spinner effortSpinner = (Spinner) findViewById(R.id.sp_ExerciseDetail_Effort);
-			SelectSpinnerItemByValue(effortSpinner, toFill.getEffort());
+//			SelectSpinnerItemByValue(effortSpinner, toFill.getEffort());
+			SpinnerAdapter adapter = effortSpinner.getAdapter();
+			effortSpinner.setSelection(toFill.getEffort());
 			EditText duration = (EditText) findViewById(R.id.et_ExerciseDetail_Duration);
 			duration.setText(String.valueOf(toFill.getDuration()));
 			EditText data = (EditText) findViewById(R.id.et_ExerciseDetail_Data);
@@ -222,7 +224,7 @@ public class ExerciseDetail extends BaseActivity {
 			ex.setIdNote(reg.Note_Add(n));
 		}
 
-		String effort = effortSpinner.getSelectedItem().toString();
+		int effort = effortSpinner.getSelectedItemPosition();//.toString();
 
 		ex.setIdUser(idUser);
 		ex.setExercise(exerciseSpinner.getText().toString());
@@ -329,7 +331,7 @@ public class ExerciseDetail extends BaseActivity {
 		toUpdate.setDuration(Integer.parseInt(duration.getText().toString()));
 		// Add the current seconds to differentiate (and correctly order) entries on the same minute
 		toUpdate.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
-		toUpdate.setEffort(effortSpinner.getSelectedItem().toString());
+		toUpdate.setEffort(effortSpinner.getSelectedItemPosition());
 		toUpdate.setExercise(exerciseSpinner.getText().toString());
 
 		wdb.Exercise_Update(toUpdate);

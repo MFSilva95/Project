@@ -9,7 +9,7 @@ public class ExerciseRec extends DateTime {
 	private int id;
 	private String exercise;
 	private int duration;
-	private String effort;
+	private int effort;
 	private int id_User;
 	private int idNote;
 
@@ -37,11 +37,11 @@ public class ExerciseRec extends DateTime {
 		this.duration = duration;
 	}
 
-	public String getEffort() {
+	public int getEffort() {
 		return effort;
 	}
 
-	public void setEffort(String effort) {
+	public void setEffort(int effort) {
 		this.effort = effort;
 	}
 

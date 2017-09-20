@@ -435,7 +435,7 @@ public class DB_Read {
 				row[0] = cursor.getString(1); //Name
 				row[1] = cursor.getString(2); //Type
 				row[2] = cursor.getString(3); //Action
-				//row[3] = String.valueOf(cursor.getDouble(4)); //Duration
+				row[3] = String.valueOf(cursor.getDouble(4)); //Duration
 				insulins.put(cursor.getInt(0), row);
 				cursor.moveToNext();
 			} while (!cursor.isAfterLast());
@@ -716,13 +716,38 @@ public class DB_Read {
 		tmp.setIdUser(cursor.getInt(1));
 		tmp.setExercise(cursor.getString(2));
 		tmp.setDuration(cursor.getInt(3));
-		tmp.setEffort(cursor.getString(4));
+		tmp.setEffort(cursor.getInt(4));
 		tmp.setDateTime(cursor.getString(5));
 		tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
 
 		cursor.close();
 		return tmp;
 
+	}
+
+	public ArrayList<ExerciseRec> ExerciseReg_GetAll() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM RegExercise", null);
+		Log.d("Cursor", String.valueOf(cursor.getCount()));
+		ArrayList<ExerciseRec> exRecList = new ArrayList<>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			do {
+				ExerciseRec rec = new ExerciseRec();
+				rec.setIdUser(cursor.getInt(1));
+				rec.setExercise(cursor.getString(2));
+				rec.setDuration(cursor.getInt(3));
+				rec.setEffort(cursor.getInt(4));
+				rec.setDateTime(cursor.getString(5));
+				rec.setIdNote(cursor.getInt(6));
+				exRecList.add(rec);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return exRecList;
+		} else {
+			cursor.close();
+			return null;
+		}
 	}
 
 
@@ -760,7 +785,7 @@ public class DB_Read {
 		ex.setIdUser(cursor.getInt(1));
 		ex.setExercise(cursor.getString(2));
 		ex.setDuration(cursor.getInt(3));
-		ex.setEffort(cursor.getString(4));
+		ex.setEffort(cursor.getInt(4));
 		String t = cursor.getString(5);
 		ex.setDateTime(t);
 		ex.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
@@ -784,7 +809,7 @@ public class DB_Read {
 				tmp.setIdUser(cursor.getInt(1));
 				tmp.setExercise(cursor.getString(2));
 				tmp.setDuration(cursor.getInt(3));
-				tmp.setEffort(cursor.getString(4));
+				tmp.setEffort(cursor.getInt(4));
 				tmp.setDateTime(cursor.getString(5));
 				tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
 				exs.add(tmp);
@@ -813,7 +838,7 @@ public class DB_Read {
                 tmp.setIdUser(cursor.getInt(1));
                 tmp.setExercise(cursor.getString(2));
                 tmp.setDuration(cursor.getInt(3));
-                tmp.setEffort(cursor.getString(4));
+                tmp.setEffort(cursor.getInt(4));
                 tmp.setDateTime(cursor.getString(5));
                 tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
                 exs.add(tmp);
@@ -1536,6 +1561,29 @@ public class DB_Read {
 	}
 
 	//----------------------- DISEASE REG
+
+	@Nullable
+	public ArrayList<DiseaseRec> DiseaseReg_GetAll() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Disease;", null);
+		ArrayList<DiseaseRec> list = new ArrayList<>();
+		cursor.moveToFirst();
+		if (cursor.getCount() == 0) {
+			cursor.close();
+			return null;
+		}
+		do {
+			DiseaseRec tmp = new DiseaseRec();
+			tmp.setId(cursor.getInt(0));
+			tmp.setIdUser(cursor.getInt(1));
+			tmp.setDisease(cursor.getString(2));
+			tmp.setDateTime(cursor.getString(3));
+			tmp.setEndDate((!cursor.isNull(4)) ? cursor.getString(4) : null);
+			tmp.setIdNote((!cursor.isNull(5)) ? cursor.getInt(5) : -1);
+			list.add(tmp);
+		}while (!cursor.isAfterLast());
+		cursor.close();
+		return list;
+	}
 	@Nullable
 	public DiseaseRec DiseaseReg_GetById(int id) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Disease WHERE Id='" + id + "';", null);

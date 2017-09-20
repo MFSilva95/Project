@@ -342,7 +342,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         buttonsUpdate = new ArrayList<>();
         delete_buttons = new ArrayList<>();
 
-        insulinCalculator = new InsulinCalculator(this);
+        insulinCalculator = new InsulinCalculator(this,registerDate);
         imgUri = null;
         noteId = -1;
 
@@ -952,13 +952,13 @@ public class NewHomeRegistry extends AppCompatActivity{
             setDate(registerDate);
             setTime(registerDate);
 
-            insulinCalculator = new InsulinCalculator(this);
+            insulinCalculator = new InsulinCalculator(this, registerDate);
             insulinCalculator.setCarbs(carbsData != null ? carbsData.getCarbsValue() : 0);
             insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);
             insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
 
             if (registerDate != null) {
-                insulinCalculator.setTime(this, registerDate.get(Calendar.HOUR_OF_DAY), registerDate.get(Calendar.MINUTE), DateUtils.getFormattedTime(registerDate));
+                insulinCalculator.setTime(this, registerDate);
             }
             hideBottomSheet();
             hideKeyboard();
@@ -1032,13 +1032,13 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
 
 
-            insulinCalculator = new InsulinCalculator(this);
+            insulinCalculator = new InsulinCalculator(this, registerDate);
             insulinCalculator.setCarbs(carbsData != null ? carbsData.getCarbsValue() : 0);
             insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);
             insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
 
             if (registerDate != null) {
-                insulinCalculator.setTime(this, registerDate.get(Calendar.HOUR_OF_DAY), registerDate.get(Calendar.MINUTE), DateUtils.getFormattedTime(registerDate));
+                insulinCalculator.setTime(this, registerDate);
             }
             hideBottomSheet();
             hideKeyboard();

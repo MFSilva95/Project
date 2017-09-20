@@ -28,13 +28,16 @@ import android.widget.Toast;
 
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
+import pt.it.porto.mydiabetes.data.CarbsRatioData;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.Sensitivity;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
@@ -72,14 +75,29 @@ public class Home extends BaseActivity {
 		permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
 
 		FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
-		//if (!read.MyData_HasData()) {
-		if(!db.isUpdated()){
-			//updateDB();
-		}
 		if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
 			ShowDialogAddData();
 			return;
 		}
+
+		DB_Read rdb = new DB_Read(this);
+		int baseCarbsRatio = rdb.getCarbsRatio();
+		int baseInsuRatio = rdb.getInsulinRatio();
+
+		ArrayList<CarbsRatioData> allCarbsTags = rdb.Ratio_GetAll();
+		ArrayList<Sensitivity> allInsuTags = rdb.Sensitivity_GetAll();
+
+		if(allCarbsTags==null){
+			MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
+			storage.initRacioSens(baseCarbsRatio, "Ratio_Reg");
+		}
+		if(allInsuTags==null){
+			MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
+			storage.initRacioSens(baseInsuRatio, "Sensitivity_Reg");
+		}
+		rdb.close();
+
+
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);

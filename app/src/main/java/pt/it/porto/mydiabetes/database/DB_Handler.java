@@ -20,13 +20,19 @@ import java.util.Scanner;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeRec;
+import pt.it.porto.mydiabetes.data.BloodPressureRec;
 import pt.it.porto.mydiabetes.data.CarbsRec;
+import pt.it.porto.mydiabetes.data.CholesterolRec;
+import pt.it.porto.mydiabetes.data.DiseaseRec;
+import pt.it.porto.mydiabetes.data.ExerciseRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.Insulin;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.data.TargetBGRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
+import pt.it.porto.mydiabetes.data.WeightRec;
+import pt.it.porto.mydiabetes.ui.charts.data.Weight;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjetivesElement;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
@@ -70,28 +76,18 @@ public class DB_Handler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        //Log.i(TAG, "onCreate: PASSOU AKI lol...");
-        //Log.i(TAG, "onCreate: lvl: "+DATABASE_VERSION+" -> "+db.getVersion());
         if(db.getVersion()==0){// empty or in need of update
             old_db = myContext.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
             DB_Read db_read = new DB_Read(old_db);
             if(db_read.isEmpty()){
-                //Log.i(TAG, "onCreate: EMPTY BOTH");
-                initDatabaseTables(db);//initialize new database
+                initDatabaseTables(db);
                 initDayPhases(db);
             }else{
-                //Log.i(TAG, "onCreate: EMPTY UPGRADE FROM EXISTING");
                 onUpgrade(db,db.getVersion(),DATABASE_VERSION);
             }
             db_read.close();
             old_db.close();
         }
-//        if(DATABASE_VERSION > DATABASE_VERSION_V2){
-//            onUpgrade(db,db.getVersion(),DATABASE_VERSION);
-//        }else{
-//            initDatabaseTables(db);
-//            initDayPhases(db);
-//        }
     }
 
 
@@ -144,18 +140,18 @@ public class DB_Handler extends SQLiteOpenHelper {
         toInsert = new ContentValues();
         toInsert.put("Name", daytimes[7]);
         toInsert.put("TimeStart", "20:30");
-        toInsert.put("TimeEnd", "22:30");
+        toInsert.put("TimeEnd", "22:00");
         db.insert("Tag", null, toInsert);
 
         toInsert = new ContentValues();
         toInsert.put("Name", daytimes[8]);
-        toInsert.put("TimeStart", "22:30");
-        toInsert.put("TimeEnd", "01:00");
+        toInsert.put("TimeStart", "22:00");
+        toInsert.put("TimeEnd", "00:00");
         db.insert("Tag", null, toInsert);
 
         toInsert = new ContentValues();
         toInsert.put("Name", daytimes[9]);
-        toInsert.put("TimeStart", "1:00");
+        toInsert.put("TimeStart", "00:00");
         toInsert.put("TimeEnd", "06:00");
         db.insert("Tag", null, toInsert);
 
@@ -242,12 +238,9 @@ public class DB_Handler extends SQLiteOpenHelper {
     /**
      * @see android.database.sqlite.SQLiteOpenHelper#onUpgrade(android.database.sqlite.SQLiteDatabase, int, int)
      */
-    //String TAG = "TAG!";
 
     @Override
     public void onUpgrade(SQLiteDatabase myDB, int oldVersion, int newVersion) {
-        //Log.i(TAG, "onUpgrade: IS USING: "+getDatabaseName());
-        //Log.i(TAG, "onUpgrade: myDB name: "+myDB.getPath());
         insertIntoDB(myDB, null);
     }
 
@@ -269,62 +262,81 @@ public class DB_Handler extends SQLiteOpenHelper {
             oldReads.close();
             old.close();
 
-            //personal info...
-//			ArrayList<GlycemiaRec> old_weight_recs = oldReads.GlycemiaRec_GetAll();
-//			ArrayList<GlycemiaRec> old_exercise_recs = oldReads.GlycemiaRec_GetAll();
-//			ArrayList<GlycemiaRec> old_BP_recs = oldReads.GlycemiaRec_GetAll();
-//			ArrayList<GlycemiaRec> old_chol_recs = oldReads.GlycemiaRec_GetAll();
-//			ArrayList<GlycemiaRec> old_disease_recs = oldReads.GlycemiaRec_GetAll();
+			ArrayList<WeightRec> old_weight_recs = oldReads.Weight_GetAll();
+			ArrayList<ExerciseRec> old_exercise_recs = oldReads.ExerciseReg_GetAll();
+			ArrayList<BloodPressureRec> old_BP_recs = oldReads.BloodPressure_GetAll();
+			ArrayList<CholesterolRec> old_chol_recs = oldReads.Cholesterol_GetAll();
+			ArrayList<DiseaseRec> old_disease_recs = oldReads.DiseaseReg_GetAll();
 
-
-//            myDB = myContext.openOrCreateDatabase(DATABASE_NAME_V2, Context.MODE_PRIVATE, null); //old database
             DB_Read db_read = new DB_Read(myDB);
             if(db_read.isEmpty()){
                 initDatabaseTables(myDB);//initialize new database
                 initDayPhases(myDB);
+            }else{
+                //TODO
+                //updateTags
+                //updateRatios
+                //updateSensitivity
             }
-            //Log.d(TAG, "onUpgrade2: "+ DatabaseUtils.dumpCursorToString(myDB.rawQuery("SELECT * from  sqlite_sequence", null)));
 
             DB_Write newWrites = new DB_Write(myDB);
             if (basic_info != null) {
                 newWrites.MyData_Save(basic_info);
-                //Log.i(TAG, "USER ADD");
             }
             if (old_insulins != null) {
                 for (Insulin rec : old_insulins) {
                     newWrites.Insulin_Add(rec);
-                    //Log.i(TAG, "INSU ADDED: "+rec.toString());
                 }
             }
             if (old_targetBG_recs != null) {
                 for (TargetBGRec rec : old_targetBG_recs) {
                     newWrites.TargetBG_Add(rec);
-                    //Log.i(TAG, "TARGET ADDED");
                 }
             }
             if (old_gly_recs != null) {
                 for (GlycemiaRec rec : old_gly_recs) {
                     newWrites.Glycemia_Save(rec);
-                    //Log.i(TAG, "GLY_REC ADDED");
                 }
             }
             if (old_insu_recs != null) {
                 for (InsulinRec rec : old_insu_recs) {
                     newWrites.Insulin_Save(rec);
-                    //Log.i(TAG, "INSU_REC ADDED");
                 }
             }
 
             if (old_carbs_recs != null) {
                 for (CarbsRec rec : old_carbs_recs) {
                     newWrites.Carbs_Save(rec);
-                    //Log.i(TAG, "CARBS_REC ADDED");
                 }
             }
             if (old_medals_recs != null) {
                 for (BadgeRec rec : old_medals_recs) {
                     newWrites.Badge_Save(rec);
-                    //Log.i(TAG, "BADGE_REC ADDED");
+                }
+            }
+            if (old_BP_recs != null) {
+                for (BloodPressureRec rec : old_BP_recs) {
+                    newWrites.BloodPressure_Save(rec);
+                }
+            }
+            if (old_weight_recs != null) {
+                for (WeightRec rec : old_weight_recs) {
+                    newWrites.Weight_Save(rec);
+                }
+            }
+            if (old_exercise_recs != null) {
+                for (ExerciseRec rec : old_exercise_recs) {
+                    newWrites.Exercise_Save(rec);
+                }
+            }
+            if (old_chol_recs != null) {
+                for (CholesterolRec rec : old_chol_recs) {
+                    newWrites.Cholesterol_Save(rec);
+                }
+            }
+            if (old_disease_recs != null) {
+                for (DiseaseRec rec : old_disease_recs) {
+                    newWrites.DiseaseReg_Save(rec);
                 }
             }
 
@@ -332,15 +344,11 @@ public class DB_Handler extends SQLiteOpenHelper {
             toInsert.put("Name", FeaturesDB.INITIAL_REG_DONE);
             toInsert.put("Activated", 1);
             newWrites.addFeature(toInsert);
-
+            newWrites.close();
             myContext.deleteDatabase(DATABASE_NAME);
-            //Log.d(TAG, "onUpgrade3: "+ DatabaseUtils.dumpCursorToString(myDB.rawQuery("SELECT * from  sqlite_sequence", null)));
-            //newWrites.close();
 
-            Log.i("cenas", "onUpgrade: END");
         } catch (Exception e) {
             e.printStackTrace();
-            Log.i("cenas", "onUpgrade: deu poopoo");
         }
     }
 

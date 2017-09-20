@@ -90,6 +90,20 @@ public class Sensitivity implements Parcelable {
     public String getStart() {
         return start;
     }
+    public int getStartInMinutes() {
+        String[] time = start.split(":");
+        int hour = Integer.parseInt(time[0]);
+        int minute = Integer.parseInt(time[1]);
+        return ((hour*60)+minute);
+    }
+    public int getEndInMinutes() {
+        String[] time = end.split(":");
+        int hour = Integer.parseInt(time[0]);
+        int start = Integer.parseInt(getStart().split(":")[0]);
+        if(hour<start){hour+=24;}
+        int minute = Integer.parseInt(time[1]);
+        return ((hour*60)+minute);
+    }
 
     public void setStart(String start) {
         this.start = start;
