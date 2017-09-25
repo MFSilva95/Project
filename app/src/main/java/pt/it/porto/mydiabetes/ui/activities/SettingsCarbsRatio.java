@@ -43,14 +43,14 @@ public class SettingsCarbsRatio extends BaseActivity {
 //        });
 
 
-        targetList = (ListView) findViewById(R.id.targetsFragmentList);
+        targetList = (ListView) findViewById(R.id.targetsRatiosFragmentList);
         fillListView(targetList);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        targetList = (ListView) findViewById(R.id.targetsFragmentList);
+        targetList = (ListView) findViewById(R.id.targetsRatiosFragmentList);
         fillListView(targetList);
     }
 

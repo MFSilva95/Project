@@ -241,16 +241,21 @@ public class DB_Handler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase myDB, int oldVersion, int newVersion) {
-        insertIntoDB(myDB, null);
+        try {
+            insertIntoDB(myDB, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    private void insertIntoDB(SQLiteDatabase myDB, SQLiteDatabase old){
-        try {
+    private void insertIntoDB(SQLiteDatabase myDB, SQLiteDatabase old) throws Exception{
+            String TAG = "cenas";
             if(old==null){
+                Log.i(TAG, "onUpgrade: -> old is null");
                 old = myContext.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null); //old database
             }
 
-            //Log.i(TAG, "onUpgrade: -> "+(old != null));
+
             DB_Read oldReads = new DB_Read(old);
             UserInfo basic_info = oldReads.MyData_Read();
             ArrayList<Insulin> old_insulins = oldReads.Insulins_GetAll();
@@ -259,20 +264,25 @@ public class DB_Handler extends SQLiteOpenHelper {
             ArrayList<GlycemiaRec> old_gly_recs = oldReads.GlycemiaRec_GetAll();
             ArrayList<TargetBGRec> old_targetBG_recs = oldReads.TargetBG_GetAll();
             ArrayList<BadgeRec> old_medals_recs = oldReads.getAllMedals();
+
+            ArrayList<WeightRec> old_weight_recs = oldReads.Weight_GetAll();
+            ArrayList<ExerciseRec> old_exercise_recs = oldReads.ExerciseReg_GetAll();
+            ArrayList<BloodPressureRec> old_BP_recs = oldReads.BloodPressure_GetAll();
+            ArrayList<CholesterolRec> old_chol_recs = oldReads.Cholesterol_GetAll();
+            ArrayList<DiseaseRec> old_disease_recs = oldReads.DiseaseReg_GetAll();
+
             oldReads.close();
             old.close();
 
-			ArrayList<WeightRec> old_weight_recs = oldReads.Weight_GetAll();
-			ArrayList<ExerciseRec> old_exercise_recs = oldReads.ExerciseReg_GetAll();
-			ArrayList<BloodPressureRec> old_BP_recs = oldReads.BloodPressure_GetAll();
-			ArrayList<CholesterolRec> old_chol_recs = oldReads.Cholesterol_GetAll();
-			ArrayList<DiseaseRec> old_disease_recs = oldReads.DiseaseReg_GetAll();
+
 
             DB_Read db_read = new DB_Read(myDB);
             if(db_read.isEmpty()){
+                Log.i(TAG, "DATABASE EMPTY");
                 initDatabaseTables(myDB);//initialize new database
                 initDayPhases(myDB);
             }else{
+                Log.i(TAG, "DATABASE NOT EMPTY");
                 //TODO
                 //updateTags
                 //updateRatios
@@ -346,10 +356,6 @@ public class DB_Handler extends SQLiteOpenHelper {
             newWrites.addFeature(toInsert);
             newWrites.close();
             myContext.deleteDatabase(DATABASE_NAME);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     private void initDatabaseTables(SQLiteDatabase db) {
@@ -371,10 +377,11 @@ public class DB_Handler extends SQLiteOpenHelper {
         }
     }
 
-    public void insertIntoDB(File inputFile) {
+    public void insertIntoDB(File inputFile) throws Exception{
         SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
         DB_Handler dbwrite = new DB_Handler(this.myContext);
         insertIntoDB(dbwrite.getWritableDatabase(),db);
+        Log.i("cenas", "insertIntoDB: DONE");
     }
 }
 

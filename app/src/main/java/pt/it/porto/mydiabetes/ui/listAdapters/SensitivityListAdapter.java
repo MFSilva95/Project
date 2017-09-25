@@ -55,7 +55,7 @@ public class SensitivityListAdapter extends BaseAdapter {
 		}
 
 
-		LinearLayout rLayout = (LinearLayout) v.findViewById(R.id.TargetInsuRatioRow);
+		LinearLayout rLayout = (LinearLayout) v.findViewById(R.id.TargetSenseRow);
 
 		TextView insuRatio = (TextView) v.findViewById(R.id.list_targetValue);
 		TextView tagName = (TextView) v.findViewById(R.id.list_targetName);
@@ -68,7 +68,7 @@ public class SensitivityListAdapter extends BaseAdapter {
 		rLayout.setTag(tag);
 		tagName.setText(tag.getName());
 		tagStart.setText(tag.getStart());
-		tagEnd.setText(tag.getEnd());
+		//tagEnd.setText(tag.getEnd());
 		insuRatio.setText(tag.getSensitivity()+"");
 
 

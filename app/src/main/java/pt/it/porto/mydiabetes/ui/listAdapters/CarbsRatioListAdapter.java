@@ -70,7 +70,7 @@ public class CarbsRatioListAdapter extends BaseAdapter {
 		rLayout.setTag(tag);
 		tagName.setText(tag.getName());
 		tagStart.setText(tag.getStart());
-		tagEnd.setText(tag.getEnd());
+//		tagEnd.setText(tag.getEnd());
 		ratioValue.setText(tag.getValue()+"");
 
 

@@ -539,7 +539,7 @@ public class DB_WriteTest {
 		exerciseRec.setDateTime(Calendar.getInstance());
 		exerciseRec.setDuration(10);
 		exerciseRec.setExercise("running");
-		exerciseRec.setEffort("forte");
+		exerciseRec.setEffort(2);
 		dbWrite.Exercise_Save(exerciseRec);
 
 		Assert.assertEquals("Exercise reg not added", exerciseRec, dbRead.ExerciseReg_GetById(1));
@@ -563,7 +563,7 @@ public class DB_WriteTest {
 		exerciseRec.setDuration(10);
 		exerciseRec.setExercise("running");
 		exerciseRec.setIdUser(1);
-		exerciseRec.setEffort("forte");
+		exerciseRec.setEffort(2);
 		dbWrite.Exercise_Save(exerciseRec);
 
 		dbWrite.Exercise_Delete(1);
@@ -589,7 +589,7 @@ public class DB_WriteTest {
 		exerciseRec.setDuration(10);
 		exerciseRec.setExercise("running");
 		exerciseRec.setIdUser(1);
-		exerciseRec.setEffort("forte");
+		exerciseRec.setEffort(2);
 		dbWrite.Exercise_Save(exerciseRec);
 		exerciseRec.setDuration(20);
 		dbWrite.Exercise_Update(exerciseRec);

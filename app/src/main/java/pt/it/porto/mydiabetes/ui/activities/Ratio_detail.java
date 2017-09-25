@@ -252,6 +252,9 @@ public class Ratio_detail extends BaseActivity {
 	}
 
 
+	public int getTime(){
+		return 50;
+	}
 
 	public void UpdateTarget() {
 		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);

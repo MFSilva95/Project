@@ -36,7 +36,7 @@
         <!--tools:layout_editor_absoluteY="116dp" />-->
 
     <ListView
-        android:id="@+id/targetsFragmentList"
+        android:id="@+id/targetsRatiosFragmentList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbarbig"
@@ -45,6 +45,6 @@
         android:layout_weight="1"
         android:paddingBottom="72dp"
         android:clipToPadding="false"
-        tools:listitem="@layout/list_glycemia_row" />
+        tools:listitem="@layout/list_ratio_row"/>
 
 </RelativeLayout>

@@ -726,7 +726,7 @@ public class DB_Read {
 	}
 
 	public ArrayList<ExerciseRec> ExerciseReg_GetAll() {
-		Cursor cursor = myDB.rawQuery("SELECT * FROM RegExercise", null);
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Exercise", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		ArrayList<ExerciseRec> exRecList = new ArrayList<>();
 		if (cursor.getCount() > 0) {

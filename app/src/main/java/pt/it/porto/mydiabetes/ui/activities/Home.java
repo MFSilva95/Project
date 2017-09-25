@@ -80,22 +80,22 @@ public class Home extends BaseActivity {
 			return;
 		}
 
-		DB_Read rdb = new DB_Read(this);
-		int baseCarbsRatio = rdb.getCarbsRatio();
-		int baseInsuRatio = rdb.getInsulinRatio();
-
-		ArrayList<CarbsRatioData> allCarbsTags = rdb.Ratio_GetAll();
-		ArrayList<Sensitivity> allInsuTags = rdb.Sensitivity_GetAll();
-
-		if(allCarbsTags==null){
-			MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
-			storage.initRacioSens(baseCarbsRatio, "Ratio_Reg");
-		}
-		if(allInsuTags==null){
-			MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
-			storage.initRacioSens(baseInsuRatio, "Sensitivity_Reg");
-		}
-		rdb.close();
+//		DB_Read rdb = new DB_Read(this);
+//		int baseCarbsRatio = rdb.getCarbsRatio();
+//		int baseInsuRatio = rdb.getInsulinRatio();
+//
+//		ArrayList<CarbsRatioData> allCarbsTags = rdb.Ratio_GetAll();
+//		ArrayList<Sensitivity> allInsuTags = rdb.Sensitivity_GetAll();
+//
+//		if(allCarbsTags==null){
+//			MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
+//			storage.initRacioSens(baseCarbsRatio, "Ratio_Reg");
+//		}
+//		if(allInsuTags==null){
+//			MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
+//			storage.initRacioSens(baseInsuRatio, "Sensitivity_Reg");
+//		}
+//		rdb.close();
 
 
 

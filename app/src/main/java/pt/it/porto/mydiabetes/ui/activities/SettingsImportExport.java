@@ -115,8 +115,14 @@ public class SettingsImportExport extends BaseActivity {
 			File inputFile = new File(Environment.getExternalStorageDirectory()
 					+ "/MyDiabetes/backup/DB_Diabetes");
 			if(inputFile.exists()){
+				Log.i("cenas", "restoreBackup: RESTORING FROM: "+inputFile.getAbsolutePath());
 				DB_Handler handler = new DB_Handler(context);
-				handler.insertIntoDB(inputFile);
+				try {
+					handler.insertIntoDB(inputFile);
+				} catch (Exception e) {
+					e.printStackTrace();
+					return false;
+				}
 				return true;
 			}
 //

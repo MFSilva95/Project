@@ -413,9 +413,10 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
 
     private void goBack(){
-        carbsData = carbsRegister.save_read();
-        insulinData = insuRegister.save_read();
-        glycemiaData = glycaemiaRegister.save_read();
+        if(carbsRegister!=null){carbsData = carbsRegister.save_read();}
+        if(insuRegister!=null){insulinData = insuRegister.save_read();}
+        if(glycaemiaRegister!=null){glycemiaData = glycaemiaRegister.save_read();}
+
         if((carbsData != null && carbsData.getCarbsValue() > 0) || (insulinData != null && insulinData.getInsulinUnits() > 0) || (glycemiaData != null && glycemiaData.getValue() >  0)) {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(NewHomeRegistry.this);
             builder1.setTitle(getString(R.string.exit_dialog_title));
