@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
@@ -21,10 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.LinkedList;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.data.Sensitivity;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
@@ -74,8 +71,8 @@ public class Sensitivity_detail extends BaseActivity {
 				name.setText(toFill.getName());
 				EditText from = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
 				from.setText(toFill.getStart());
-				EditText to = (EditText) findViewById(R.id.et_TargetBG_HourTo);
-				to.setText(toFill.getEnd());
+//				EditText to = (EditText) findViewById(R.id.et_TargetBG_HourTo);
+//				to.setText(toFill.getEnd());
 				EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
 				value.setText(String.valueOf((int) toFill.getSensitivity()));
 			}
@@ -102,7 +99,7 @@ public class Sensitivity_detail extends BaseActivity {
 			fab.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					UpdateTarget();
+					VerifyTargetBeforeUpdate();
 				}
 			});
 		} else {
@@ -153,7 +150,7 @@ public class Sensitivity_detail extends BaseActivity {
 	public void AddNewTarget() {
 		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
 		EditText hourFrom = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
-		EditText hourTo = (EditText) findViewById(R.id.et_TargetBG_HourTo);
+		//EditText hourTo = (EditText) findViewById(R.id.et_TargetBG_HourTo);
 		EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
 
 		if (name.getText().toString().equals("")) {
@@ -168,12 +165,12 @@ public class Sensitivity_detail extends BaseActivity {
 			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if (hourTo.getText().toString().equals("")) {
-			hourTo.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(hourTo, InputMethodManager.SHOW_IMPLICIT);
-			return;
-		}
+//		if (hourTo.getText().toString().equals("")) {
+//			hourTo.requestFocus();
+//			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//			imm.showSoftInput(hourTo, InputMethodManager.SHOW_IMPLICIT);
+//			return;
+//		}
 		if (value.getText().toString().equals("")) {
 			value.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -181,26 +178,35 @@ public class Sensitivity_detail extends BaseActivity {
 			return;
 		}
 
-		if(GlicObjTimesOverlap(hourFrom.getText().toString(), hourTo.getText().toString())){
-
-			TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
-			errorLabel.setVisibility(View.VISIBLE);
-			errorLabel.setText(R.string.targetOverlapError);
-			return;}
-
-
 		Sensitivity target = new Sensitivity();
 		target.setName(name.getText().toString());
 		target.setStart(hourFrom.getText().toString());
-		target.setEnd(hourTo.getText().toString());
+		//target.setEnd(hourTo.getText().toString());
 		DB_Read read = new DB_Read(this);
 		target.setUser_id(read.getId());
+		ArrayList<Sensitivity> all_sensitivities = read.Sensitivity_GetAll();
 		read.close();
+		Sensitivity sens = null;
+		Sensitivity next = null;
+		for(int index=0;index<all_sensitivities.size();index++){
+			sens = all_sensitivities.get(index);
+			if(sens.getStartInMinutes() < target.getStartInMinutes()){
+				sens.setEnd(target.getStart());
+				if(index+1 < all_sensitivities.size()){
+					next = all_sensitivities.get(index+1);
+					target.setEnd(target.getStart(), 30);
+					next.setStart(target.getEnd());
+				}
 
-
-		Log.i("cenas", "AddNewTarget:From -> _>_>_>_> "+hourFrom.getText().toString());
-		Log.i("cenas", "AddNewTarget: To -> _>_>_>_> "+hourTo.getText().toString());
-
+				break;
+			}
+		}
+		if(sens !=null){
+			DB_Write write = new DB_Write(this);
+			write.Sensitivity_Reg_Update(sens);
+			if(next!=null){write.Sensitivity_Reg_Update(next);}
+			write.close();
+		}
 
 		target.setSensitivity(Double.valueOf(value.getText().toString()));
 		DB_Write wdb = new DB_Write(this);
@@ -209,61 +215,21 @@ public class Sensitivity_detail extends BaseActivity {
 		finish();
 	}
 
-	public boolean GlicObjTimesOverlap(String st, String et){
-
-//		DB_Read read = new DB_Read(this);
-//		Cursor cursor = read.getGlicObj();
-//		// validate time intervals
-//		ArrayList<Point> times = new ArrayList<>(cursor.getCount());
-//		String[] temp;
-//		cursor.moveToFirst();
-//
-//		temp = st.split(":");
-//		int startTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-//		temp = et.split(":");
-//		int endTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-//
-//		for(int y=0;y<cursor.getCount();y++){
-//			cursor.moveToPosition(y);
-//			if(!cursor.getString(0).equals(idTarget+"")){
-//				temp = cursor.getString(1).split(":");
-//				int startTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-//				temp = cursor.getString(2).split(":");
-//				int endTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-//				if(CheckOverlap(startTime, startTime2, endTime, endTime2)){return true;}
-//			}
-//		}
-		return false;
-	}
 	public int getDuration(int start, int end){
 		if (start>end){return start-end;}
 		return end-start;
 	}
-	public boolean CheckOverlap(int s0, int s1, int e0, int e1){
-		int d0 = getDuration(s0,e0);
-		int d1 = getDuration(s1,e1);
-
-		if (s0 <= s1 && s0 + d0 >= s1) {
-			// startTime inside a previews interval
-			return true;
-		} else if (s0 <= e1 && s0 + d0 >= e1) {
-			// endTime inside a interval
-			return true;
-		} else if (d1 <= 0 && s0 < e1) {
-			// endTime in the next day
-			// compares if endTime will be after a startTime of other interval
-			// if true than it should fail
-			return true;
-		}
-		return false;
-	}
 
 
 
-	public void UpdateTarget() {
+    Sensitivity target = new Sensitivity();
+	public void VerifyTargetBeforeUpdate() {
+
+        String TAG = "cenas";
+
 		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
 		EditText hourFrom = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
-		EditText hourTo = (EditText) findViewById(R.id.et_TargetBG_HourTo);
+		//EditText hourTo = (EditText) findViewById(R.id.et_TargetBG_HourTo);
 		EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
 
 		if (name.getText().toString().equals("")) {
@@ -278,12 +244,12 @@ public class Sensitivity_detail extends BaseActivity {
 			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if (hourTo.getText().toString().equals("")) {
-			hourTo.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(hourTo, InputMethodManager.SHOW_IMPLICIT);
-			return;
-		}
+//		if (hourTo.getText().toString().equals("")) {
+//			hourTo.requestFocus();
+//			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//			imm.showSoftInput(hourTo, InputMethodManager.SHOW_IMPLICIT);
+//			return;
+//		}
 		if (value.getText().toString().equals("")) {
 			value.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -291,32 +257,97 @@ public class Sensitivity_detail extends BaseActivity {
 			return;
 		}
 
-		if(GlicObjTimesOverlap(hourFrom.getText().toString(), hourTo.getText().toString())){
-
-			TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
-			errorLabel.setVisibility(View.VISIBLE);
-			errorLabel.setText(R.string.targetOverlapError);
-			return;}
-
-		DB_Write wdb = new DB_Write(this);
-
-		Sensitivity target = new Sensitivity();
 
 		target.setId(idTarget);
-		target.setName(name.getText().toString());
 
-		if (!hourFrom.getText().toString().equals("") && !hourTo.getText().toString().equals("")) {
-			target.setStart(hourFrom.getText().toString());
-			target.setEnd(hourTo.getText().toString());
+        final DB_Read read = new DB_Read(this);
+		target = read.Sensitivity_GetByID(target.getId()+"");//get Base target
+        target.setName(name.getText().toString());//update name
+        target.setSensitivity(Double.valueOf(value.getText().toString()));//update value
+
+		String[] time = hourFrom.getText().toString().split(":");
+		int hour = Integer.parseInt(time[0]);
+		int minute = Integer.parseInt(time[1]);
+		int thisStart = hour*60+minute;
+		if(thisStart > target.getEndInMinutes()){
+			hourFrom.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
+			return;
 		}
+		target.setStart(hourFrom.getText().toString());//update start time
+        final LinkedList<Integer> overlapCount = read.countSensOverlap(target.getStart(),target.getEnd(),idTarget);
 
-		target.setSensitivity(Double.valueOf(value.getText().toString()));
+		if(overlapCount!=null){
+            Log.i(TAG, "VerifyTargetBeforeUpdate: Count = "+overlapCount.size() );
+            final Context c = this;
+			new AlertDialog.Builder(this)
+					.setTitle(getString(R.string.targetbg_info))
+					.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							DB_Write wdb = new DB_Write(c);
+							try {
+                                for(int id:overlapCount){
+                                    wdb.Sensitivity_Reg_Remove(id);
+                                }
 
-		wdb.Sensitivity_Reg_Update(target);
-		wdb.close();
-		finish();
+                                Sensitivity previous = read.getPreviousRatio(target);
+                                Sensitivity next = read.getNextRatio(target);
+                                read.close();
+                                updateTarget(previous, target, next, wdb);
+
+								goUp();
+							} catch (Exception e) {
+								Toast.makeText(c, getString(R.string.targetbg_delete_exception), Toast.LENGTH_LONG).show();
+							}
+                            wdb.close();
+						}
+					})
+					.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+                            read.close();
+							// Do nothing.
+						}
+					}).show();
+		}else{
+            Sensitivity previous = read.getPreviousRatio(target);
+            Sensitivity next = read.getNextRatio(target);
+            read.close();
+            updateTarget(previous, target,  next);
+            finish();
+        }
 
 	}
+
+    private void updateTarget(Sensitivity previous, Sensitivity current, Sensitivity next){
+
+        previous.setEnd(current.getStart());
+        next.setStart(current.getEnd());
+
+        DB_Write wdb = new DB_Write(this);
+        wdb.Sensitivity_Reg_Update(previous);
+        wdb.Sensitivity_Reg_Update(current);
+        wdb.Sensitivity_Reg_Update(next);
+        wdb.close();
+        DB_Read read = new DB_Read(this);
+        ArrayList<Sensitivity> sensitivities = read.Sensitivity_GetAll();
+        Log.i("cenas", "updateTarget: -------------------------------------------");
+        for(Sensitivity s:sensitivities){
+            Log.i("cenas", s.toString());
+        }
+    }
+    private void updateTarget(Sensitivity previous, Sensitivity current, Sensitivity next, DB_Write wdb){
+
+        previous.setEnd(current.getStart());
+        next.setStart(current.getEnd());
+
+        wdb.Sensitivity_Reg_Update(previous);
+        wdb.Sensitivity_Reg_Update(current);
+        wdb.Sensitivity_Reg_Update(next);
+    }
+
+
+
 	public void DeleteTarget() {
 		final Context c = this;
 		new AlertDialog.Builder(this)

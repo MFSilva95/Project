@@ -1728,7 +1728,7 @@ public class DB_Read {
 	}
 
 	public ArrayList<Sensitivity> Sensitivity_GetAll() {
-		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Value, Name, TimeStart, TimeEnd FROM Sensitivity_Reg", null);
+		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Value, Name, TimeStart, TimeEnd FROM Sensitivity_Reg ORDER BY TimeStart", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		ArrayList<Sensitivity> targets = null;
 		if (cursor.getCount() > 0) {
@@ -2568,5 +2568,168 @@ public class DB_Read {
         return tmp;
 
     }
+
+	public LinkedList<Integer> countSensOverlap(String start, String end, int id) {
+		Cursor cursor = myDB.rawQuery("SELECT Id, TimeStart, TimeEnd "+
+				"FROM Sensitivity_Reg "+
+				"WHERE TimeStart >= '" + start +"' and TimeEnd <= '"+end+"' and TimeStart < '"+end+"' and Id != "+id+" "+
+				"ORDER BY TimeStart", null);
+		cursor.moveToLast();
+		LinkedList<Integer> AllReads = new LinkedList<>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			do {
+				AllReads.add(cursor.getInt(0));
+				String TAG = "cenas";
+				Log.i(TAG, "countSensOverlap: Start: "+cursor.getString(1));
+				Log.i(TAG, "countSensOverlap: End: "+cursor.getString(2));
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return AllReads;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
+	public Sensitivity getPreviousRatio(Sensitivity target) {
+		Cursor cursor = myDB.rawQuery("SELECT *"+
+				"FROM Sensitivity_Reg "+
+				"WHERE TimeStart < '" + target.getStart() + "' "+
+				"ORDER BY TimeStart DESC limit 1", null);
+		cursor.moveToLast();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			Sensitivity t;
+			t = new Sensitivity();
+			t.setId(cursor.getInt(0));
+			t.setUser_id(cursor.getInt(1));
+			t.setSensitivity(cursor.getDouble(2));
+			t.setName(cursor.getString(3));
+			t.setStart(cursor.getString(4));
+			t.setEnd(cursor.getString(5));
+			cursor.close();
+			return t;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
+	public Sensitivity getNextRatio(Sensitivity target) {
+		Cursor cursor = myDB.rawQuery("SELECT *"+
+				"FROM Sensitivity_Reg "+
+				"WHERE TimeEnd > '" + target.getEnd() + "' "+
+				"ORDER BY TimeStart limit 1", null);
+		cursor.moveToLast();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			Sensitivity t;
+			t = new Sensitivity();
+			t.setId(cursor.getInt(0));
+			t.setUser_id(cursor.getInt(1));
+			t.setSensitivity(cursor.getDouble(2));
+			t.setName(cursor.getString(3));
+			t.setStart(cursor.getString(4));
+			t.setEnd(cursor.getString(5));
+			cursor.close();
+			return t;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
+
+	public LinkedList<Integer> countRatioOverlap(String start, String end,int id) {
+		Cursor cursor = myDB.rawQuery("SELECT Id, TimeStart, TimeEnd "+
+				"FROM Ratio_Reg "+
+				"WHERE TimeStart >= '" + start +"' and TimeEnd <= '"+end+"' and TimeStart < '"+end+"' and Id != "+id+" "+
+				"ORDER BY TimeStart", null);
+		cursor.moveToLast();
+		LinkedList<Integer> AllReads = new LinkedList<>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			do {
+				AllReads.add(cursor.getInt(0));
+				String TAG = "cenas";
+				Log.i(TAG, "countSensOverlap: Start: "+cursor.getString(1));
+				Log.i(TAG, "countSensOverlap: End: "+cursor.getString(2));
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return AllReads;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
+	public CarbsRatioData getPreviousRatio(CarbsRatioData target) {
+		Cursor cursor = myDB.rawQuery("SELECT *"+
+				"FROM Ratio_Reg "+
+				"WHERE TimeStart < '" + target.getStart() + "' "+
+				"ORDER BY TimeStart DESC limit 1", null);
+		cursor.moveToLast();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			CarbsRatioData t;
+			t = new CarbsRatioData();
+			t.setId(cursor.getInt(0));
+			t.setUser_id(cursor.getInt(1));
+			t.setValue(cursor.getDouble(2));
+			t.setName(cursor.getString(3));
+			t.setStart(cursor.getString(4));
+			t.setEnd(cursor.getString(5));
+			cursor.close();
+			return t;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
+	public CarbsRatioData getNextRatio(CarbsRatioData target) {
+		Cursor cursor = myDB.rawQuery("SELECT *"+
+				"FROM Ratio_Reg "+
+				"WHERE TimeEnd > '" + target.getEnd() + "' "+
+				"ORDER BY TimeStart limit 1", null);
+		cursor.moveToLast();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			CarbsRatioData t;
+			t = new CarbsRatioData();
+			t.setId(cursor.getInt(0));
+			t.setUser_id(cursor.getInt(1));
+			t.setValue(cursor.getDouble(2));
+			t.setName(cursor.getString(3));
+			t.setStart(cursor.getString(4));
+			t.setEnd(cursor.getString(5));
+			cursor.close();
+			return t;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

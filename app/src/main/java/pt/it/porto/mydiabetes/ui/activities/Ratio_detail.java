@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,10 +21,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRatioData;
 import pt.it.porto.mydiabetes.data.InsulinTarget;
+import pt.it.porto.mydiabetes.data.Sensitivity;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
@@ -99,7 +102,7 @@ public class Ratio_detail extends BaseActivity {
 			fab.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					UpdateTarget();
+					VerifyTargetBeforeUpdate();
 				}
 			});
 		} else {
@@ -151,7 +154,6 @@ public class Ratio_detail extends BaseActivity {
 	public void AddNewTarget() {
 		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
 		EditText hourFrom = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
-		EditText hourTo = (EditText) findViewById(R.id.et_TargetBG_HourTo);
 		EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
 
 		if (name.getText().toString().equals("")) {
@@ -166,12 +168,6 @@ public class Ratio_detail extends BaseActivity {
 			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if (hourTo.getText().toString().equals("")) {
-			hourTo.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(hourTo, InputMethodManager.SHOW_IMPLICIT);
-			return;
-		}
 		if (value.getText().toString().equals("")) {
 			value.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -179,52 +175,44 @@ public class Ratio_detail extends BaseActivity {
 			return;
 		}
 
-		if(GlicObjTimesOverlap(hourFrom.getText().toString(), hourTo.getText().toString())){
 
-			TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
-			errorLabel.setVisibility(View.VISIBLE);
-			errorLabel.setText(R.string.targetOverlapError);
-			return;}
 
-		DB_Write wdb = new DB_Write(this);
-		InsulinTarget target = new InsulinTarget();
+		CarbsRatioData target = new CarbsRatioData();
 		target.setName(name.getText().toString());
-		if (!hourFrom.getText().toString().equals("") && !hourTo.getText().toString().equals("")) {
-			target.setStart(hourFrom.getText().toString());
-			target.setEnd(hourTo.getText().toString());
+		target.setStart(hourFrom.getText().toString());
+		//target.setEnd(hourTo.getText().toString());
+		DB_Read read = new DB_Read(this);
+		target.setUser_id(read.getId());
+		ArrayList<CarbsRatioData> all_sensitivities = read.Ratio_GetAll();
+		read.close();
+		CarbsRatioData sens = null;
+		CarbsRatioData next = null;
+
+		for(int index=0;index<all_sensitivities.size();index++){
+			sens = all_sensitivities.get(index);
+			if(sens.getStartInMinutes() < target.getStartInMinutes()){
+				sens.setEnd(target.getStart());
+				if(index+1 < all_sensitivities.size()){
+					next = all_sensitivities.get(index+1);
+					target.setEnd(target.getStart(), 30);
+					next.setStart(target.getEnd());
+				}
+
+				break;
+			}
+		}
+		if(sens !=null){
+			DB_Write write = new DB_Write(this);
+			write.Ratio_Reg_Update(sens);
+			if(next!=null){write.Ratio_Reg_Update(next);}
+			write.close();
 		}
 
-		target.setTarget(Double.valueOf(value.getText().toString()));
-		wdb.Target_Add(target);
+		target.setValue(Double.valueOf(value.getText().toString()));
+		DB_Write wdb = new DB_Write(this);
+		wdb.Ratio_Reg_Add(target);
 		wdb.close();
 		finish();
-	}
-
-	public boolean GlicObjTimesOverlap(String st, String et){
-
-//		DB_Read read = new DB_Read(this);
-//		Cursor cursor = read.getGlicObj();
-//		// validate time intervals
-//		ArrayList<Point> times = new ArrayList<>(cursor.getCount());
-//		String[] temp;
-//		cursor.moveToFirst();
-//
-//		temp = st.split(":");
-//		int startTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-//		temp = et.split(":");
-//		int endTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-//
-//		for(int y=0;y<cursor.getCount();y++){
-//			cursor.moveToPosition(y);
-//			if(!cursor.getString(0).equals(idTarget+"")){
-//				temp = cursor.getString(1).split(":");
-//				int startTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-//				temp = cursor.getString(2).split(":");
-//				int endTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-//				if(CheckOverlap(startTime, startTime2, endTime, endTime2)){return true;}
-//			}
-//		}
-		return false;
 	}
 
 	public int getDuration(int start, int end){
@@ -232,34 +220,18 @@ public class Ratio_detail extends BaseActivity {
 		return end-start;
 	}
 
-	public boolean CheckOverlap(int s0, int s1, int e0, int e1){
-		int d0 = getDuration(s0,e0);
-		int d1 = getDuration(s1,e1);
-
-		if (s0 <= s1 && s0 + d0 >= s1) {
-			// startTime inside a previews interval
-			return true;
-		} else if (s0 <= e1 && s0 + d0 >= e1) {
-			// endTime inside a interval
-			return true;
-		} else if (d1 <= 0 && s0 < e1) {
-			// endTime in the next day
-			// compares if endTime will be after a startTime of other interval
-			// if true than it should fail
-			return true;
-		}
-		return false;
-	}
-
-
 	public int getTime(){
 		return 50;
 	}
 
-	public void UpdateTarget() {
+	CarbsRatioData target = new CarbsRatioData();
+
+	public void VerifyTargetBeforeUpdate() {
+
+		String TAG = "cenas";
+
 		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
 		EditText hourFrom = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
-		EditText hourTo = (EditText) findViewById(R.id.et_TargetBG_HourTo);
 		EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
 
 		if (name.getText().toString().equals("")) {
@@ -274,12 +246,6 @@ public class Ratio_detail extends BaseActivity {
 			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if (hourTo.getText().toString().equals("")) {
-			hourTo.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(hourTo, InputMethodManager.SHOW_IMPLICIT);
-			return;
-		}
 		if (value.getText().toString().equals("")) {
 			value.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -287,36 +253,144 @@ public class Ratio_detail extends BaseActivity {
 			return;
 		}
 
-		if(GlicObjTimesOverlap(hourFrom.getText().toString(), hourTo.getText().toString())){
-
-			TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
-			errorLabel.setVisibility(View.VISIBLE);
-			errorLabel.setText(R.string.targetOverlapError);
-			return;}
-
-
-
-		CarbsRatioData target = new CarbsRatioData();
-
-		DB_Read read = new DB_Read(this);
-		target.setUser_id(read.getId());
-		read.close();
 		target.setId(idTarget);
-		target.setName(name.getText().toString());
 
-		if (!hourFrom.getText().toString().equals("") && !hourTo.getText().toString().equals("")) {
-			target.setStart(hourFrom.getText().toString());
-			target.setEnd(hourTo.getText().toString());
+		final DB_Read read = new DB_Read(this);
+		target = read.Ratio_GetById(target.getId()+"");//get Base target
+		target.setName(name.getText().toString());//update name
+		target.setValue(Double.valueOf(value.getText().toString()));//update value
+
+		String[] time = hourFrom.getText().toString().split(":");
+		int hour = Integer.parseInt(time[0]);
+		int minute = Integer.parseInt(time[1]);
+		int thisStart = hour*60+minute;
+		if(thisStart > target.getEndInMinutes()){
+			hourFrom.requestFocus();
+			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+		target.setStart(hourFrom.getText().toString());//update start time
+		final LinkedList<Integer> overlapCount = read.countRatioOverlap(target.getStart(),target.getEnd(),idTarget);
+
+		if(overlapCount!=null){
+			Log.i(TAG, "VerifyTargetBeforeUpdate: Count = "+overlapCount.size() );
+			final Context c = this;
+			new AlertDialog.Builder(this)
+					.setTitle(getString(R.string.targetbg_info))
+					.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							DB_Write wdb = new DB_Write(c);
+							try {
+								for(int id:overlapCount){
+									wdb.Sensitivity_Reg_Remove(id);
+								}
+
+								CarbsRatioData previous = read.getPreviousRatio(target);
+								CarbsRatioData next = read.getNextRatio(target);
+								read.close();
+								updateTarget(previous, target, next, wdb);
+
+								goUp();
+							} catch (Exception e) {
+								Toast.makeText(c, getString(R.string.targetbg_delete_exception), Toast.LENGTH_LONG).show();
+							}
+							wdb.close();
+						}
+					})
+					.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							read.close();
+							// Do nothing.
+						}
+					}).show();
+		}else{
+			CarbsRatioData previous = read.getPreviousRatio(target);
+			CarbsRatioData next = read.getNextRatio(target);
+			read.close();
+			updateTarget(previous, target,  next);
+			finish();
 		}
 
-		target.setValue(Double.valueOf(value.getText().toString()));
+	}
+
+
+	private void updateTarget(CarbsRatioData previous, CarbsRatioData current, CarbsRatioData next){
+
+		previous.setEnd(current.getStart());
+		next.setStart(current.getEnd());
 
 		DB_Write wdb = new DB_Write(this);
-		wdb.Ratio_Reg_Update(target);//Target_Update(target);
+		wdb.Ratio_Reg_Update(previous);
+		wdb.Ratio_Reg_Update(current);
+		wdb.Ratio_Reg_Update(next);
 		wdb.close();
-		finish();
-
 	}
+	private void updateTarget(CarbsRatioData previous, CarbsRatioData current,  CarbsRatioData next, DB_Write wdb){
+
+		previous.setEnd(current.getStart());
+		next.setStart(current.getEnd());
+
+		wdb.Ratio_Reg_Update(previous);
+		wdb.Ratio_Reg_Update(current);
+		wdb.Ratio_Reg_Update(next);
+	}
+
+//	public void UpdateTarget() {
+//		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
+//		EditText hourFrom = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
+//		EditText hourTo = (EditText) findViewById(R.id.et_TargetBG_HourTo);
+//		EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
+//
+//		if (name.getText().toString().equals("")) {
+//			name.requestFocus();
+//			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//			imm.showSoftInput(name, InputMethodManager.SHOW_IMPLICIT);
+//			return;
+//		}
+//		if (hourFrom.getText().toString().equals("")) {
+//			hourFrom.requestFocus();
+//			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
+//			return;
+//		}
+//		if (hourTo.getText().toString().equals("")) {
+//			hourTo.requestFocus();
+//			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//			imm.showSoftInput(hourTo, InputMethodManager.SHOW_IMPLICIT);
+//			return;
+//		}
+//		if (value.getText().toString().equals("")) {
+//			value.requestFocus();
+//			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//			imm.showSoftInput(value, InputMethodManager.SHOW_IMPLICIT);
+//			return;
+//		}
+//
+//
+//
+//
+//		CarbsRatioData target = new CarbsRatioData();
+//
+//		DB_Read read = new DB_Read(this);
+//		target.setUser_id(read.getId());
+//		read.close();
+//		target.setId(idTarget);
+//		target.setName(name.getText().toString());
+//
+//		if (!hourFrom.getText().toString().equals("") && !hourTo.getText().toString().equals("")) {
+//			target.setStart(hourFrom.getText().toString());
+//			target.setEnd(hourTo.getText().toString());
+//		}
+//
+//		target.setValue(Double.valueOf(value.getText().toString()));
+//
+//		DB_Write wdb = new DB_Write(this);
+//		wdb.Ratio_Reg_Update(target);//Target_Update(target);
+//		wdb.close();
+//		finish();
+//
+//	}
 
 
 	public void DeleteTarget() {

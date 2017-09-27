@@ -97,6 +97,20 @@ public class CarbsRatioData implements Parcelable {
 		return ((hour*60)+minute);
 	}
 
+	public void setEnd(String end, int minutesToAdd) {
+
+		String[] time = end.split(":");
+		int hour = Integer.parseInt(time[0]);
+		int minute = Integer.parseInt(time[1]);
+
+		minute += minutesToAdd;
+		int moreHours = minute/60;
+		minute = minute%60;
+		hour += moreHours;
+		hour = hour%24;
+		end = hour+":"+minute;
+		this.end = end;
+	}
 
 //	public int getTagId() {
 //		return tag_id;

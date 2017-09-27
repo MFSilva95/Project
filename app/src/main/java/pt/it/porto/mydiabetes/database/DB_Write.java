@@ -3,9 +3,11 @@ package pt.it.porto.mydiabetes.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.data.BadgeRec;
@@ -801,7 +803,8 @@ public class DB_Write {
 		toUpdate.put("TimeStart", t.getStart());
 		toUpdate.put("TimeEnd", t.getEnd());
 		toUpdate.put("Value", t.getSensitivity());
-		myDB.update("Sensitivity_Reg", toUpdate, "Id=" + t.getId(), null);
+		int affect = myDB.update("Sensitivity_Reg", toUpdate, "Id=" + t.getId(), null);
+		Log.i("cenas", "Sensitivity_Reg_Update:->->->->-> "+affect);
 	}
 
 	//------------- TARGET Ratio --------------
@@ -829,5 +832,66 @@ public class DB_Write {
 		myDB.update("Ratio_Reg", toUpdate, "Id=" + t.getId(), null);
 	}
 
+	public void recoverSensitivity(){
+		try {
+			String dropTable = "DROP TABLE Sensitivity_Reg;";
+			myDB.execSQL(dropTable);
+			String recoverSens = "CREATE TABLE IF NOT EXISTS Sensitivity_Reg(Id INTEGER PRIMARY KEY AUTOINCREMENT, Id_User INTEGER NOT NULL, Value REAL NOT NULL, Name TEXT NOT NULL, TimeStart DATETIME NOT NULL, TimeEnd DATETIME NOT NULL, FOREIGN KEY(Id_User) REFERENCES UserInfo(Id));";
+			myDB.execSQL(recoverSens);
+		} catch (SQLException sqlE) {
+				Log.e("DB Update adding column", sqlE.getLocalizedMessage());
+			}
+		initSensRacio(myDB);
+	}
+	public void recoverRatio(){
+		try {
+			String dropTable = "DROP TABLE Ratio_Reg;";
+			myDB.execSQL(dropTable);
+			String recoverSens = "CREATE TABLE IF NOT EXISTS Ratio_Reg(Id INTEGER PRIMARY KEY AUTOINCREMENT, Id_User INTEGER NOT NULL, Value REAL NOT NULL, Name TEXT NOT NULL, TimeStart DATETIME NOT NULL, TimeEnd DATETIME NOT NULL, FOREIGN KEY(Id_User) REFERENCES UserInfo(Id));";
+			myDB.execSQL(recoverSens);
+		} catch (SQLException sqlE) {
+			Log.e("DB Update adding column", sqlE.getLocalizedMessage());
+		}
+		initRacio(myDB);
+	}
+
+
+	private void initSensRacio(SQLiteDatabase db){
+
+		DB_Read dbRead = new DB_Read(db);
+		ArrayList<Tag> tags = dbRead.Tag_GetAll();
+		int id_user = dbRead.getId();
+		int value = dbRead.getInsulinRatio();
+		for(int index=0;index<tags.size()-1;index++){
+
+			ContentValues toInsert = new ContentValues();
+			toInsert.put("Id_User", id_user);
+			toInsert.put("Value", value);
+			toInsert.put("Name", tags.get(index).getName());
+			toInsert.put("TimeStart", tags.get(index).getStart());
+			toInsert.put("TimeEnd", tags.get(index).getEnd());
+
+			db.insert("Sensitivity_Reg", null, toInsert);
+		}
+	}
+
+	private void initRacio(SQLiteDatabase db){
+
+		DB_Read dbRead = new DB_Read(db);
+		ArrayList<Tag> tags = dbRead.Tag_GetAll();
+		int id_user = dbRead.getId();
+		int value = dbRead.getInsulinRatio();
+		for(int index=0;index<tags.size()-1;index++){
+
+			ContentValues toInsert = new ContentValues();
+			toInsert.put("Id_User", id_user);
+			toInsert.put("Value", value);
+			toInsert.put("Name", tags.get(index).getName());
+			toInsert.put("TimeStart", tags.get(index).getStart());
+			toInsert.put("TimeEnd", tags.get(index).getEnd());
+
+			db.insert("Ratio_Reg", null, toInsert);
+		}
+	}
 
 }

@@ -160,74 +160,6 @@ public class DB_Handler extends SQLiteOpenHelper {
         db.insert("Tag", null, toInsert);
     }
 
-    private void initTags(SQLiteDatabase db) {
-        Resources res = this.myContext.getResources();
-        String[] daytimes = res.getStringArray(R.array.daytimes);
-
-        ContentValues toInsert = new ContentValues();
-        toInsert.put("Name", daytimes[0]);
-        toInsert.put("TimeStart", "06:00");
-        toInsert.put("TimeEnd", "07:30");
-        db.insert("Tag", null, toInsert);
-
-        toInsert = new ContentValues();
-        toInsert.put("Name", daytimes[1]);
-        toInsert.put("TimeStart", "07:30");
-        toInsert.put("TimeEnd", "09:00");
-        db.insert("Tag", null, toInsert);
-
-        toInsert = new ContentValues();
-        toInsert.put("Name", daytimes[2]);
-        toInsert.put("TimeStart", "09:00");
-        toInsert.put("TimeEnd", "10:30");
-        db.insert("Tag", null, toInsert);
-
-        toInsert = new ContentValues();
-        toInsert.put("Name", daytimes[3]);
-        toInsert.put("TimeStart", "10:30");
-        toInsert.put("TimeEnd", "13:00");
-        db.insert("Tag", null, toInsert);
-
-        toInsert = new ContentValues();
-        toInsert.put("Name", daytimes[4]);
-        toInsert.put("TimeStart", "13:00");
-        toInsert.put("TimeEnd", "15:30");
-        db.insert("Tag", null, toInsert);
-
-        toInsert = new ContentValues();
-        toInsert.put("Name", daytimes[5]);
-        toInsert.put("TimeStart", "15:30");
-        toInsert.put("TimeEnd", "18:00");
-        db.insert("Tag", null, toInsert);
-
-        toInsert = new ContentValues();
-        toInsert.put("Name", daytimes[6]);
-        toInsert.put("TimeStart", "18:00");
-        toInsert.put("TimeEnd", "20:30");
-        db.insert("Tag", null, toInsert);
-
-        toInsert = new ContentValues();
-        toInsert.put("Name", daytimes[7]);
-        toInsert.put("TimeStart", "20:30");
-        toInsert.put("TimeEnd", "22:30");
-        db.insert("Tag", null, toInsert);
-
-        toInsert = new ContentValues();
-        toInsert.put("Name", daytimes[8]);
-        toInsert.put("TimeStart", "22:30");
-        toInsert.put("TimeEnd", "01:00");
-        db.insert("Tag", null, toInsert);
-
-        toInsert = new ContentValues();
-        toInsert.put("Name", daytimes[9]);
-        toInsert.put("TimeStart", "1:00");
-        toInsert.put("TimeEnd", "06:00");
-        db.insert("Tag", null, toInsert);
-
-        toInsert = new ContentValues();
-        toInsert.put("Name", daytimes[10]);
-        db.insert("Tag", null, toInsert);
-    }
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -281,12 +213,8 @@ public class DB_Handler extends SQLiteOpenHelper {
                 Log.i(TAG, "DATABASE EMPTY");
                 initDatabaseTables(myDB);//initialize new database
                 initDayPhases(myDB);
-            }else{
-                Log.i(TAG, "DATABASE NOT EMPTY");
-                //TODO
-                //updateTags
-                //updateRatios
-                //updateSensitivity
+                initSensRacio(myDB);
+                initCarbsRacio(myDB);
             }
 
             DB_Write newWrites = new DB_Write(myDB);
@@ -374,6 +302,44 @@ public class DB_Handler extends SQLiteOpenHelper {
         } catch (Exception e) {
             Log.d("Erro", e.toString());
             e.printStackTrace();
+        }
+    }
+
+    private void initCarbsRacio(SQLiteDatabase db){
+
+        DB_Read dbRead = new DB_Read(db);
+        ArrayList<Tag> tags = dbRead.Tag_GetAll();
+        int id_user = dbRead.getId();
+        int value = dbRead.getCarbsRatio();
+        for(int index=0;index<tags.size()-1;index++){
+
+            ContentValues toInsert = new ContentValues();
+            toInsert.put("Id_User", id_user);
+            toInsert.put("Value", value);
+            toInsert.put("Name", tags.get(index).getName());
+            toInsert.put("TimeStart", tags.get(index).getStart());
+            toInsert.put("TimeEnd", tags.get(index).getEnd());
+
+            db.insert("Ratio_Reg", null, toInsert);
+        }
+    }
+
+    private void initSensRacio(SQLiteDatabase db){
+
+        DB_Read dbRead = new DB_Read(db);
+        ArrayList<Tag> tags = dbRead.Tag_GetAll();
+        int id_user = dbRead.getId();
+        int value = dbRead.getInsulinRatio();
+        for(int index=0;index<tags.size()-1;index++){
+
+            ContentValues toInsert = new ContentValues();
+            toInsert.put("Id_User", id_user);
+            toInsert.put("Value", value);
+            toInsert.put("Name", tags.get(index).getName());
+            toInsert.put("TimeStart", tags.get(index).getStart());
+            toInsert.put("TimeEnd", tags.get(index).getEnd());
+
+            db.insert("Sensitivity_Reg", null, toInsert);
         }
     }
 
