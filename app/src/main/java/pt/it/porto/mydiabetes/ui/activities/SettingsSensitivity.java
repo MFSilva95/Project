@@ -34,14 +34,14 @@ public class SettingsSensitivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getBaseContext(), Sensitivity_detail.class);
-//                startActivity(intent);
-//            }
-//        });
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getBaseContext(), Sensitivity_detail.class);
+                startActivity(intent);
+            }
+        });
 
 
         targetList = (ListView) findViewById(R.id.targetsRatiosFragmentList);

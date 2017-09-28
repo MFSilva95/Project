@@ -52,6 +52,10 @@ public class Ratio_detail extends BaseActivity {
 		if (actionBar != null) {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
+		EditText to = (EditText) findViewById(R.id.et_TargetBG_HourTo);
+		EditText from = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
+		EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
+		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
@@ -70,13 +74,13 @@ public class Ratio_detail extends BaseActivity {
 			if (toFill != null) {
 				idTarget = toFill.getId();
 
-				EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
+
 				name.setText(toFill.getName());
-				EditText from = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
+
 				from.setText(toFill.getStart());
-				EditText to = (EditText) findViewById(R.id.et_TargetBG_HourTo);
+
 				to.setText(toFill.getEnd());
-				EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
+
 				value.setText(String.valueOf((int) toFill.getValue()));
 			}
 
@@ -84,7 +88,8 @@ public class Ratio_detail extends BaseActivity {
 				float goal = args.getFloat(BUNDLE_GOAL);
 				((EditText) findViewById(R.id.et_TargetBG_Glycemia)).setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) goal));
 			}
-
+		}else{
+			to.setVisibility(View.INVISIBLE);
 		}
 
 	}
@@ -180,6 +185,7 @@ public class Ratio_detail extends BaseActivity {
 		CarbsRatioData target = new CarbsRatioData();
 		target.setName(name.getText().toString());
 		target.setStart(hourFrom.getText().toString());
+		target.setEnd(target.getStart(), 30);
 		//target.setEnd(hourTo.getText().toString());
 		DB_Read read = new DB_Read(this);
 		target.setUser_id(read.getId());
@@ -194,7 +200,6 @@ public class Ratio_detail extends BaseActivity {
 				sens.setEnd(target.getStart());
 				if(index+1 < all_sensitivities.size()){
 					next = all_sensitivities.get(index+1);
-					target.setEnd(target.getStart(), 30);
 					next.setStart(target.getEnd());
 				}
 
