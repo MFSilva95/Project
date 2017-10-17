@@ -8,7 +8,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
     defaultConfig {
-        applicationId "pt.it.porto.mydiabetes1"
+        applicationId "pt.it.porto.mydiabetes"
         minSdkVersion 19
         targetSdkVersion 25
         // vars to enable new features
