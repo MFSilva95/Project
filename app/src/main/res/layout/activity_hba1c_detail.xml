@@ -9,7 +9,6 @@
         android:id="@+id/toolbarbig"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
         android:orientation="vertical"
         app:elevation="4dp"
@@ -48,7 +47,6 @@
                 android:padding="15dp">
 
                 <ImageView
-                    android:id="@+id/imageView"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:tint="@android:color/darker_gray"
@@ -88,7 +86,6 @@
                 android:padding="15dp">
 
                 <ImageView
-                    android:id="@+id/imageView"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:tint="@android:color/darker_gray"
@@ -127,7 +124,6 @@
                 android:padding="15dp">
 
                 <ImageView
-                    android:id="@+id/imageView"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:tint="@android:color/darker_gray"
@@ -167,7 +163,6 @@
                 android:padding="15dp">
 
                 <ImageView
-                    android:id="@+id/imageView"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:tint="@android:color/darker_gray"

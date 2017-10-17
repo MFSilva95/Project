@@ -81,12 +81,12 @@ public class homeLeftFragment extends Fragment  {
     private BloodPressureRec bloodPressureRec;
     private HbA1cRec hbA1cRec;
 
-    private LinearLayout layout1;
-    private LinearLayout layout2;
-    private LinearLayout layout3;
-    private LinearLayout layout4;
-    private LinearLayout layout5;
-    private LinearLayout layout6;
+    private CardView layout1;
+    private CardView layout2;
+    private CardView layout3;
+    private CardView layout4;
+    private CardView layout5;
+    private CardView layout6;
 
     private TextView exerciseText;
     private TextView exerciseDate;
@@ -120,12 +120,12 @@ public class homeLeftFragment extends Fragment  {
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_home_left, container, false);
 
-        layout1 = (LinearLayout) layout.findViewById(R.id.layout1);
-        layout2 = (LinearLayout) layout.findViewById(R.id.layout2);
-        layout3 = (LinearLayout) layout.findViewById(R.id.layout3);
-        layout4 = (LinearLayout) layout.findViewById(R.id.layout4);
-        layout5 = (LinearLayout) layout.findViewById(R.id.layout5);
-        layout6 = (LinearLayout) layout.findViewById(R.id.layout6);
+        layout1 = (CardView) layout.findViewById(R.id.layout1);
+        layout2 = (CardView) layout.findViewById(R.id.layout2);
+        layout3 = (CardView) layout.findViewById(R.id.layout3);
+        layout4 = (CardView) layout.findViewById(R.id.layout4);
+        layout5 = (CardView) layout.findViewById(R.id.layout5);
+        layout6 = (CardView) layout.findViewById(R.id.layout6);
 
         exerciseText = (TextView) layout.findViewById(R.id.value1);
         exerciseDate = (TextView) layout.findViewById(R.id.date1);

@@ -139,7 +139,7 @@ public class DiseaseDetail extends BaseActivity {
 
 	public void FillDiseaseAC() {
 		AutoCompleteTextView spinner = (AutoCompleteTextView) findViewById(R.id.ac_DiseaseRegDetail_Disease);
-		ArrayList<String> allDiseases = new ArrayList<String>();
+		ArrayList<String> allDiseases = new ArrayList<>();
 		DB_Read rdb = new DB_Read(this);
 		ArrayList<Disease> val = rdb.Disease_GetAll();
 		rdb.close();
@@ -150,7 +150,7 @@ public class DiseaseDetail extends BaseActivity {
 			}
 		}
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allDiseases);
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allDiseases);
 		spinner.setAdapter(adapter);
 	}
 

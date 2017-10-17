@@ -1,4 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
-            android:elevation="4dp"
+            app:elevation="4dp"
             android:minHeight="?attr/actionBarSize"
             app:theme="@style/ToolbarTheme" />
 
@@ -44,14 +45,12 @@
                         android:padding="15dp">
 
                         <ImageView
-                            android:id="@+id/imageView"
                             android:layout_width="25dp"
                             android:layout_height="25dp"
                             android:tint="@android:color/darker_gray"
                             app:srcCompat="@drawable/ic_backup_black_24dp" />
 
                         <TextView
-                            android:id="@+id/textView10"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="20dp"
@@ -96,7 +95,6 @@
                             android:layout_marginRight="50dp"
                             android:layout_weight="1"
                             android:backgroundTint="@android:color/white"
-                            android:elevation="2dp"
                             android:onClick="syncCloud"
                             android:text="@string/send_to_cloud"
                             android:textColor="@color/black" />
@@ -136,14 +134,12 @@
                     android:padding="15dp">
 
                     <ImageView
-                        android:id="@+id/imageView"
                         android:layout_width="25dp"
                         android:layout_height="25dp"
                         android:tint="@android:color/darker_gray"
                         app:srcCompat="@drawable/ic_import_export" />
 
                     <TextView
-                        android:id="@+id/textView10"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="20dp"
@@ -202,7 +198,6 @@
                     android:padding="15dp">
 
                     <TextView
-                        android:id="@+id/textView10"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="45dp"

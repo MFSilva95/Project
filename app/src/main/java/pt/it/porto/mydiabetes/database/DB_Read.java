@@ -174,7 +174,7 @@ public class DB_Read {
 	public ArrayList<Tag> Tag_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
-		ArrayList<Tag> tags = new ArrayList<Tag>();
+		ArrayList<Tag> tags = new ArrayList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			Tag t;
@@ -198,7 +198,7 @@ public class DB_Read {
 
 	//------------------- DISEASE ---------------------
 	public ArrayList<Disease> Disease_GetAll() {
-		ArrayList<Disease> AllReads = new ArrayList<Disease>();
+		ArrayList<Disease> AllReads = new ArrayList<>();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Disease", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -238,7 +238,7 @@ public class DB_Read {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		String[] row;
-		HashMap<Integer, String[]> glycemias = new HashMap<Integer, String[]>();
+		HashMap<Integer, String[]> glycemias = new HashMap<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 
@@ -287,7 +287,7 @@ public class DB_Read {
 
 	public ArrayList<GlycemiaRec> Glycemia_GetByDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
-		ArrayList<GlycemiaRec> allreads = new ArrayList<GlycemiaRec>();
+		ArrayList<GlycemiaRec> allreads = new ArrayList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			GlycemiaRec tmp;
@@ -421,7 +421,7 @@ public class DB_Read {
 	public HashMap<Integer, String[]> Insulin_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Insulin", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
-		HashMap<Integer, String[]> insulins = new HashMap<Integer, String[]>();
+		HashMap<Integer, String[]> insulins = new HashMap<>();
 		String[] row;
 		Log.i("cenas", "Insulin_GetAll: -------------------------------------------");
 		Log.i("cenas", "Insulin_GetAll: "+DatabaseUtils.dumpCursorToString(cursor));
@@ -488,7 +488,7 @@ public class DB_Read {
 	public HashMap<Integer, String> Insulin_GetAllNames() {
 		Cursor cursor = myDB.rawQuery("SELECT Id, Name FROM Insulin", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
-		HashMap<Integer, String> insulins = new HashMap<Integer, String>();
+		HashMap<Integer, String> insulins = new HashMap<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 
@@ -579,7 +579,7 @@ public class DB_Read {
 
 	public ArrayList<InsulinRec> InsulinReg_GetByDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Id_BloodGlucose, Id_Insulin, DateTime, Target_BG, Value, Id_Tag, Id_Note FROM Reg_Insulin WHERE DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
-		ArrayList<InsulinRec> allreads = new ArrayList<InsulinRec>();
+		ArrayList<InsulinRec> allreads = new ArrayList<>();
 		InsulinRec insulin;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -755,7 +755,7 @@ public class DB_Read {
 	public HashMap<Integer, String> Exercise_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Exercise", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
-		HashMap<Integer, String> exercises = new HashMap<Integer, String>();
+		HashMap<Integer, String> exercises = new HashMap<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 
@@ -798,7 +798,7 @@ public class DB_Read {
 	@Nullable
 	public LinkedList<ExerciseRec> getExerciceByDate(String day) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Exercise WHERE StartDateTime LIKE '%" + day + "%' ORDER BY StartDateTime DESC;", null);
-		LinkedList<ExerciseRec> exs = new LinkedList<ExerciseRec>();
+		LinkedList<ExerciseRec> exs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			ExerciseRec tmp;
@@ -827,7 +827,7 @@ public class DB_Read {
     @Nullable
     public LinkedList<ExerciseRec> getExerciseFromStartDate(String startDate, int limit) {
         Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Exercise WHERE StartDateTime >='" + startDate + "' ORDER BY StartDateTime DESC LIMIT "+limit+";", null);
-        LinkedList<ExerciseRec> exs = new LinkedList<ExerciseRec>();
+        LinkedList<ExerciseRec> exs = new LinkedList<>();
         if (cursor.getCount() > 0) {
             cursor.moveToFirst();
             ExerciseRec tmp;
@@ -857,7 +857,7 @@ public class DB_Read {
 	public HashMap<Integer, String[]> Medicine_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Medicine", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
-		HashMap<Integer, String[]> medicines = new HashMap<Integer, String[]>();
+		HashMap<Integer, String[]> medicines = new HashMap<>();
 		String[] row;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -881,7 +881,7 @@ public class DB_Read {
 	//-------------- CARBS ------------------
 	public ArrayList<CarbsRec> CarboHydrate_GetBtDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_CarboHydrate WHERE  DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
-		ArrayList<CarbsRec> allreads = new ArrayList<CarbsRec>();
+		ArrayList<CarbsRec> allreads = new ArrayList<>();
 		CarbsRec tmp;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -910,7 +910,7 @@ public class DB_Read {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_CarboHydrate", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		String[] row;
-		HashMap<Integer, String[]> glycemias = new HashMap<Integer, String[]>();
+		HashMap<Integer, String[]> glycemias = new HashMap<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 
@@ -976,7 +976,7 @@ public class DB_Read {
 	//---------------------- BLOODPRESSURE ---------------
 	public ArrayList<BloodPressureRec> BloodPressure_GetBtDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure WHERE  DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
-		ArrayList<BloodPressureRec> allreads = new ArrayList<BloodPressureRec>();
+		ArrayList<BloodPressureRec> allreads = new ArrayList<>();
 		BloodPressureRec tmp;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -1048,7 +1048,7 @@ public class DB_Read {
 
 	public ArrayList<BloodPressureRec> BloodPressure_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure;", null);
-		ArrayList<BloodPressureRec> allreads = new ArrayList<BloodPressureRec>();
+		ArrayList<BloodPressureRec> allreads = new ArrayList<>();
 		BloodPressureRec tmp;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -1076,7 +1076,7 @@ public class DB_Read {
 	@Nullable
 	public LinkedList<BloodPressureRec> getBloodPressureByDate(String day) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
-		LinkedList<BloodPressureRec> bloodPressureRecs = new LinkedList<BloodPressureRec>();
+		LinkedList<BloodPressureRec> bloodPressureRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			BloodPressureRec tmp;
@@ -1104,7 +1104,7 @@ public class DB_Read {
 	@Nullable
 	public LinkedList<BloodPressureRec> getBpFromStartDate(String startDate, int limit) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure WHERE DateTime >='" + startDate + "' ORDER BY DateTime DESC LIMIT "+limit+";", null);
-		LinkedList<BloodPressureRec> bloodPressureRecs = new LinkedList<BloodPressureRec>();
+		LinkedList<BloodPressureRec> bloodPressureRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			BloodPressureRec tmp;
@@ -1133,7 +1133,7 @@ public class DB_Read {
 	//----------- CHOLESTEROL ---------------
 	public ArrayList<CholesterolRec> Cholesterol_GetBtDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE  DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
-		ArrayList<CholesterolRec> allreads = new ArrayList<CholesterolRec>();
+		ArrayList<CholesterolRec> allreads = new ArrayList<>();
 		CholesterolRec tmp;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -1199,7 +1199,7 @@ public class DB_Read {
 
 	public ArrayList<CholesterolRec> Cholesterol_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol;", null);
-		ArrayList<CholesterolRec> allreads = new ArrayList<CholesterolRec>();
+		ArrayList<CholesterolRec> allreads = new ArrayList<>();
 		CholesterolRec tmp;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -1225,7 +1225,7 @@ public class DB_Read {
 	@Nullable
 	public LinkedList<CholesterolRec> getCholesterolByDate(String day) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
-		LinkedList<CholesterolRec> cholesterolRecs = new LinkedList<CholesterolRec>();
+		LinkedList<CholesterolRec> cholesterolRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			CholesterolRec tmp;
@@ -1251,7 +1251,7 @@ public class DB_Read {
 	@Nullable
 	public LinkedList<CholesterolRec> getCholesterolFromStartDate(String startDate, int limit) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE DateTime >='" + startDate + "' ORDER BY DateTime DESC LIMIT "+limit+";", null);
-		LinkedList<CholesterolRec> cholesterolRecs = new LinkedList<CholesterolRec>();
+		LinkedList<CholesterolRec> cholesterolRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			CholesterolRec tmp;
@@ -1277,7 +1277,7 @@ public class DB_Read {
 	//--------------- WEIGHT -----------------
 	public ArrayList<WeightRec> Weight_GetBtDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Weight WHERE  DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
-		ArrayList<WeightRec> allreads = new ArrayList<WeightRec>();
+		ArrayList<WeightRec> allreads = new ArrayList<>();
 		WeightRec tmp;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -1342,7 +1342,7 @@ public class DB_Read {
 	}
 
 	public ArrayList<WeightRec> Weight_GetAll() {
-		ArrayList<WeightRec> AllReads = new ArrayList<WeightRec>();
+		ArrayList<WeightRec> AllReads = new ArrayList<>();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Weight", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -1368,7 +1368,7 @@ public class DB_Read {
 	@Nullable
 	public LinkedList<WeightRec> getWeightByDate(String day) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Weight WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
-		LinkedList<WeightRec> weightRecs = new LinkedList<WeightRec>();
+		LinkedList<WeightRec> weightRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			WeightRec tmp;
@@ -1394,7 +1394,7 @@ public class DB_Read {
 	@Nullable
 	public LinkedList<WeightRec> getWeightFromStartDate(String startDate, int limit) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Weight WHERE DateTime >='" + startDate + "' ORDER BY DateTime DESC LIMIT "+limit+";", null);
-		LinkedList<WeightRec> weightRecs = new LinkedList<WeightRec>();
+		LinkedList<WeightRec> weightRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			WeightRec tmp;
@@ -1420,7 +1420,7 @@ public class DB_Read {
 	//------------------- HbA1c
 	public ArrayList<HbA1cRec> HbA1c_GetBtDate(String from, String to) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_A1c WHERE  DateTime > '" + from + " 00:00:00' AND DateTime < '" + to + " 23:59:59' ORDER BY DateTime DESC;", null);
-		ArrayList<HbA1cRec> allreads = new ArrayList<HbA1cRec>();
+		ArrayList<HbA1cRec> allreads = new ArrayList<>();
 		HbA1cRec tmp;
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -1485,7 +1485,7 @@ public class DB_Read {
 	}
 
 	public ArrayList<HbA1cRec> HbA1c_GetAll() {
-		ArrayList<HbA1cRec> AllReads = new ArrayList<HbA1cRec>();
+		ArrayList<HbA1cRec> AllReads = new ArrayList<>();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_A1c", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -1511,7 +1511,7 @@ public class DB_Read {
 	@Nullable
 	public LinkedList<HbA1cRec> getHbA1cByDate(String day) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_A1c WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
-		LinkedList<HbA1cRec> hbA1cRecs = new LinkedList<HbA1cRec>();
+		LinkedList<HbA1cRec> hbA1cRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			HbA1cRec tmp;
@@ -1537,7 +1537,7 @@ public class DB_Read {
 	@Nullable
 	public LinkedList<HbA1cRec> getHbA1cFromStartDate(String startDate, int limit) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_A1c WHERE DateTime >='" + startDate + "' ORDER BY DateTime DESC LIMIT "+limit+";", null);
-		LinkedList<HbA1cRec> hbA1cRecs = new LinkedList<HbA1cRec>();
+		LinkedList<HbA1cRec> hbA1cRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			HbA1cRec tmp;
@@ -1629,7 +1629,7 @@ public class DB_Read {
 	@Nullable
 	public LinkedList<DiseaseRec> getDiseaseByDate(String day) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Disease WHERE StartDate LIKE '%" + day + "%' ORDER BY StartDate DESC;", null);
-		LinkedList<DiseaseRec> diseaseRecs = new LinkedList<DiseaseRec>();
+		LinkedList<DiseaseRec> diseaseRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			DiseaseRec tmp;
@@ -1656,7 +1656,7 @@ public class DB_Read {
 	@Nullable
 	public LinkedList<DiseaseRec> getDiseaseFromStartDate(String startDate, int limit) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Disease WHERE StartDate >='" + startDate + "' ORDER BY StartDate DESC LIMIT "+limit+";", null);
-		LinkedList<DiseaseRec> diseaseRecs = new LinkedList<DiseaseRec>();
+		LinkedList<DiseaseRec> diseaseRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			DiseaseRec tmp;
@@ -1705,7 +1705,7 @@ public class DB_Read {
 	public ArrayList<TargetBGRec> TargetBG_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM BG_Target", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
-		ArrayList<TargetBGRec> targets = new ArrayList<TargetBGRec>();
+		ArrayList<TargetBGRec> targets = new ArrayList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			TargetBGRec t;
@@ -1824,7 +1824,7 @@ public class DB_Read {
 	public ArrayList<InsulinTarget> Target_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM BG_Target", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
-		ArrayList<InsulinTarget> targets = new ArrayList<InsulinTarget>();
+		ArrayList<InsulinTarget> targets = new ArrayList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			InsulinTarget t;
@@ -1930,7 +1930,7 @@ public class DB_Read {
 				"WHERE datetime LIKE '%" + date + "%'" +
 				"ORDER BY datetime DESC;",null);
 
-		LinkedList<HomeElement> logBookEntries = new LinkedList<HomeElement>();
+		LinkedList<HomeElement> logBookEntries = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			HomeElement tmp;
@@ -1986,7 +1986,7 @@ public class DB_Read {
 
 						") WHERE datetime >='" + date + "' ORDER BY datetime DESC LIMIT 9;", null);
 
-		LinkedList<HomeElement> logBookEntries = new LinkedList<HomeElement>();
+		LinkedList<HomeElement> logBookEntries = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			HomeElement tmp;
@@ -2063,7 +2063,7 @@ public class DB_Read {
 				"WHERE datetime >='" + startDate + "'" +
 				"ORDER BY datetime DESC LIMIT "+limit+";",null);
 
-		LinkedList<HomeElement> logBookEntries = new LinkedList<HomeElement>();
+		LinkedList<HomeElement> logBookEntries = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			HomeElement tmp;
@@ -2207,7 +2207,7 @@ public class DB_Read {
 //				"WHERE datetime >='" + startDate + "'" +
 //				"ORDER BY datetime DESC;",null);
 
-		LinkedList<HomeElement> logBookEntries = new LinkedList<HomeElement>();
+		LinkedList<HomeElement> logBookEntries = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			HomeElement tmp;
@@ -2285,7 +2285,7 @@ public class DB_Read {
 				")" +
 				"ORDER BY datetime DESC limit "+limit+";", null);
 
-		LinkedList<HomeElement> logBookEntries = new LinkedList<HomeElement>();
+		LinkedList<HomeElement> logBookEntries = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			HomeElement tmp;
@@ -2312,7 +2312,7 @@ public class DB_Read {
 	}
 
 	public LinkedList<BadgeRec> Badges_GetAll_NONDAILY() {
-		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
+		LinkedList<BadgeRec> AllReads = new LinkedList<>();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges WHERE TYPE != 'daily' ORDER BY DateTime DESC;", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -2337,7 +2337,7 @@ public class DB_Read {
 	}
 
 	public LinkedList<BadgeRec> Badges_GetAll() {
-		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
+		LinkedList<BadgeRec> AllReads = new LinkedList<>();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges ORDER BY DateTime DESC;", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -2361,7 +2361,7 @@ public class DB_Read {
 		}
 	}
 	public ArrayList<BadgeRec> getAllMedals() {
-		ArrayList<BadgeRec> AllReads = new ArrayList<BadgeRec>();
+		ArrayList<BadgeRec> AllReads = new ArrayList<>();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges;", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -2385,7 +2385,7 @@ public class DB_Read {
 	}
 
 	public LinkedList<BadgeRec> Badges_GetBadgeList(String difficulty) {
-		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
+		LinkedList<BadgeRec> AllReads = new LinkedList<>();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges WHERE TYPE = "+difficulty+" ORDER BY DateTime DESC;", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -2432,7 +2432,7 @@ public class DB_Read {
 	}
 
 	public int Badges_GetCount(String difficulty) {
-		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
+		LinkedList<BadgeRec> AllReads = new LinkedList<>();
 		Cursor cursor;
 		if(difficulty.equals("daily")){
 			cursor = myDB.rawQuery("SELECT Count(*) FROM Badges WHERE TYPE = 'daily' and DATETIME >= date('now');", null);
@@ -2478,7 +2478,7 @@ public class DB_Read {
 
 
 	public LinkedList<BadgeRec> getAllMedals(String name) {
-		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
+		LinkedList<BadgeRec> AllReads = new LinkedList<>();
 		Cursor cursor = myDB.rawQuery("SELECT Type, Medal FROM Badges Where Name='"+name+"'ORDER BY DateTime DESC;", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -2513,7 +2513,7 @@ public class DB_Read {
 	@Nullable
 	public LinkedList<BadgeRec> getBadgesByDate(String day) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges WHERE Type = 'daily' AND DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
-		LinkedList<BadgeRec> AllReads = new LinkedList<BadgeRec>();
+		LinkedList<BadgeRec> AllReads = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			BadgeRec tmp;

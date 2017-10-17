@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp"
+        app:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
         app:theme="@style/ToolbarTheme" />
 
@@ -36,7 +36,6 @@
                 android:weightSum="3">
 
                 <ImageView
-                    android:id="@+id/imageView3"
                     android:layout_width="150dp"
                     android:layout_height="80dp"
                     android:layout_margin="5dp"
@@ -46,7 +45,6 @@
                     app:srcCompat="@drawable/logo_fcup" />
 
                 <ImageView
-                    android:id="@+id/imageView3"
                     android:layout_width="150dp"
                     android:layout_height="80dp"
                     android:layout_margin="5dp"
@@ -56,7 +54,6 @@
                     app:srcCompat="@drawable/it_logo" />
 
                 <ImageView
-                    android:id="@+id/imageView3"
                     android:layout_width="150dp"
                     android:layout_height="80dp"
                     android:layout_margin="5dp"

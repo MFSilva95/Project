@@ -9,7 +9,6 @@
         android:id="@+id/toolbarbig"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
         android:orientation="vertical"
         app:elevation="4dp"
@@ -76,7 +75,6 @@
                 android:orientation="vertical">
 
                 <View
-                    android:id="@+id/view"
                     android:layout_width="wrap_content"
                     android:layout_height="1dp"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -179,7 +177,6 @@
                     android:background="?attr/selectableItemBackground"/>
 
                 <View
-                    android:id="@+id/view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"
@@ -203,7 +200,6 @@
                     android:textStyle="bold" />
 
                 <View
-                    android:id="@+id/view"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginLeft="@dimen/activity_horizontal_margin"

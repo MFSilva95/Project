@@ -12,9 +12,8 @@
         android:id="@+id/toolbarbig"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:minHeight="?attr/actionBarSize"
         app:elevation="4dp"
+        android:minHeight="?attr/actionBarSize"
         app:theme="@style/ToolbarTheme"
         android:orientation="vertical">
 

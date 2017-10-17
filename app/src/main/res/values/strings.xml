@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="advice">Conselho</string>
     <string name="task">Tarefa</string>
     <string name="tasks">Tarefas</string>
@@ -106,42 +106,42 @@
     <string name="information_about_contact" translatable="false">mydiabetes@dcc.fc.up.pt\n\nhttp://mydiabetes.dcc.fc.up.pt/</string>
 
 
-    <string name="sync_with_pc">Sincronizar com PC</string>
+    <string name="sync_with_pc" tools:ignore="MissingTranslation">Sincronizar com PC</string>
     <string name="sync">Sincronização</string>
 
 
-    <string name="qr">Ler QR</string>
+    <string name="qr" tools:ignore="MissingTranslation">Ler QR</string>
 
-    <string name="delete_insulin">Eliminar Insulina?</string>
-    <string name="delete_insulin_exception">Não pode eliminar esta insulina, associado a outros registos!</string>
-    <string name="delete_photo">Eliminar foto?</string>
-    <string name="targetbg_info">Eliminar Objetivo de Glicemia?</string>
-    <string name="targetbg_delete_exception">Não pode eliminar este objetivo, associado a outros registos!</string>
-    <string name="tag_info">Eliminar Fase do dia?</string>
-    <string name="tag_info_delete_exception">Não pode eliminar esta leitura, associada a outros registos!</string>
-    <string name="invalid_qr_code">QR code inválido</string>
+    <string name="delete_insulin" tools:ignore="MissingTranslation">Eliminar Insulina?</string>
+    <string name="delete_insulin_exception" tools:ignore="MissingTranslation">Não pode eliminar esta insulina, associado a outros registos!</string>
+    <string name="delete_photo" tools:ignore="MissingTranslation">Eliminar foto?</string>
+    <string name="targetbg_info" tools:ignore="MissingTranslation">Eliminar Objetivo de Glicemia?</string>
+    <string name="targetbg_delete_exception" tools:ignore="MissingTranslation">Não pode eliminar este objetivo, associado a outros registos!</string>
+    <string name="tag_info" tools:ignore="MissingTranslation">Eliminar Fase do dia?</string>
+    <string name="tag_info_delete_exception" tools:ignore="MissingTranslation">Não pode eliminar esta leitura, associada a outros registos!</string>
+    <string name="invalid_qr_code" tools:ignore="MissingTranslation">QR code inválido</string>
     <string name="cancel_read">Leitura cancelada</string>
-    <string name="mydata_saved">Guardado</string>
-    <string name="mydata_before_saving">Antes de guardar preencha todos os campos.</string>
+    <string name="mydata_saved" tools:ignore="MissingTranslation">Guardado</string>
+    <string name="mydata_before_saving" tools:ignore="MissingTranslation">Antes de guardar preencha todos os campos.</string>
 
     <string name="preferences_target">Objetivos Glicemia</string>
     <string name="preferences_insulins">Insulinas</string>
     <string name="preferences_factors">Fatores e Rácios</string>
 
-    <string name="transfer_fail_connection">Ligação Falhou!</string>
-    <string name="transfer_check_wifi">Verifique se tem o wi-fi ligado</string>
-    <string name="transfer_correct_network">ou se está na rede correta.</string>
-    <string name="transfer_transfer">A transferir. . .</string>
-    <string name="transfer_success">Transferência concluída com sucesso</string>
-    <string name="transfer_error">Ocorreu um erro</string>
-    <string name="transfer_try_again">tente novamente</string>
+    <string name="transfer_fail_connection" tools:ignore="MissingTranslation">Ligação Falhou!</string>
+    <string name="transfer_check_wifi" tools:ignore="MissingTranslation">Verifique se tem o wi-fi ligado</string>
+    <string name="transfer_correct_network" tools:ignore="MissingTranslation">ou se está na rede correta.</string>
+    <string name="transfer_transfer" tools:ignore="MissingTranslation">A transferir. . .</string>
+    <string name="transfer_success" tools:ignore="MissingTranslation">Transferência concluída com sucesso</string>
+    <string name="transfer_error" tools:ignore="MissingTranslation">Ocorreu um erro</string>
+    <string name="transfer_try_again" tools:ignore="MissingTranslation">tente novamente</string>
 
 
-    <string name="dbcopy_success">Cópia de segurança efectuada com sucesso!</string>
-    <string name="dbcopy_error">Ocorreu um erro durante a cópia de segurança, verifique se a memória externa está disponivel!</string>
+    <string name="dbcopy_success" tools:ignore="MissingTranslation">Cópia de segurança efectuada com sucesso!</string>
+    <string name="dbcopy_error" tools:ignore="MissingTranslation">Ocorreu um erro durante a cópia de segurança, verifique se a memória externa está disponivel!</string>
 
-    <string name="date_hour">Data e Hora</string>
-    <string name="time_of_day">Altura do Dia</string>
+    <string name="date_hour" tools:ignore="MissingTranslation">Data e Hora</string>
+    <string name="time_of_day" tools:ignore="MissingTranslation">Altura do Dia</string>
     <string name="bloodpressure">Pressão Arterial</string>
     <string name="systolic">Sistólica</string>
     <string name="diastolic">Diastólica</string>
@@ -150,45 +150,45 @@
     <string name="delete">Eliminar</string>
     <string name="name">Nome</string>
     <string name="bloodglucose">Glicemia</string>
-    <string name="label">Etiqueta</string>
+    <string name="label" tools:ignore="MissingTranslation">Etiqueta</string>
     <string name="insulin">Insulina</string>
     <string name="mg_dl" translatable="false">mg/dl</string>
     <string name="from">De</string>
     <string name="to">Até</string>
     <string name="disease">Doença</string>
     <string name="flu">Gripe</string>
-    <string name="name_hint">Jorge Mendes</string>
+    <string name="name_hint" tools:ignore="MissingTranslation">Jorge Mendes</string>
     <string name="minutes">Minutos</string>
     <string name="hint_value1" translatable="false">95</string>
     <string name="glycemia_value">Valor de glicemia</string>
     <string name="weight">Peso</string>
-    <string name="select_all">Selecionar Tudo</string>
+    <string name="select_all" tools:ignore="MissingTranslation">Selecionar Tudo</string>
     <string name="add_more_registers">Adicionar mais registos</string>
-    <string name="transfer_db">Transferir Base de Dados</string>
-    <string name="transfer">Transferir</string>
+    <string name="transfer_db" tools:ignore="MissingTranslation">Transferir Base de Dados</string>
+    <string name="transfer" tools:ignore="MissingTranslation">Transferir</string>
     <string name="backup">Cópia de Segurança</string>
     <string name="do_back">Efectuar Cópia de Segurança</string>
-    <string name="restore_backup">Restaurar Cópia</string>
+    <string name="restore_backup" tools:ignore="MissingTranslation">Restaurar Cópia</string>
     <string name="restore_backup_button">Restaurar Cópia de Segurança</string>
     <string name="restore_backup_button_welcome">Restaurar Cópia\nde Segurança</string>
-    <string name="restore_backup_success">Restauro efectuado com sucesso!</string>
-    <string name="restore_backup_error">Ocurreu um erro durante o restauro, verifique se a memória externa está disponivel!</string>
-    <string name="last_backup">Última Cópia de Segurança</string>
+    <string name="restore_backup_success" tools:ignore="MissingTranslation">Restauro efectuado com sucesso!</string>
+    <string name="restore_backup_error" tools:ignore="MissingTranslation">Ocurreu um erro durante o restauro, verifique se a memória externa está disponivel!</string>
+    <string name="last_backup" tools:ignore="MissingTranslation">Última Cópia de Segurança</string>
     <string name="action">Ação</string>
-    <string name="new_medicine">Novo medicamento</string>
-    <string name="hint_medicine">Ben u Ron 1000</string>
+    <string name="new_medicine" tools:ignore="MissingTranslation">Novo medicamento</string>
+    <string name="hint_medicine" tools:ignore="MissingTranslation">Ben u Ron 1000</string>
     <string name="units">unidades</string>
     <string name="noteError">Por favor insira um outro registo</string>
     <string name="hc_units">uni</string>
-    <string name="gli_units">mg/dl</string>
-    <string name="pills">comprimidos</string>
-    <string name="hint_exercise1">Corrida</string>
+    <string name="gli_units" tools:ignore="MissingTranslation">mg/dl</string>
+    <string name="pills" tools:ignore="MissingTranslation">comprimidos</string>
+    <string name="hint_exercise1" tools:ignore="MissingTranslation">Corrida</string>
     <string name="schedule">Horário</string>
-    <string name="send_to_cloud">Enviar para Cloud</string>
+    <string name="send_to_cloud" tools:ignore="MissingTranslation">Enviar para Cloud</string>
     <string name="description">Descrição</string>
     <string name="cholesterol">Colesterol</string>
     <string name="HbA1c" translatable="false">HbA1c</string>
-    <string name="hint_name">Jorge Mendes</string>
+    <string name="hint_name" tools:ignore="MissingTranslation">Jorge Mendes</string>
     <string name="diabetes_type">Tipo de diabetes</string>
     <string name="sensivity_factor">Fator de sensibilidade</string>
     <string name="hint_value3">ex.: 45</string>
@@ -205,15 +205,15 @@
     <string name="hint_value7">ex.: 1.82</string>
     <string name="grams">gramas</string>
     <string name="percent" translatable="false">%</string>
-    <string name="weight_unit">Kg</string>
+    <string name="weight_unit" tools:ignore="MissingTranslation">Kg</string>
     <string name="insulin_method">Modo de Administração</string>
-    <string name="photo_and_value">Foto e Valor</string>
-    <string name="photo">Foto</string>
+    <string name="photo_and_value" tools:ignore="MissingTranslation">Foto e Valor</string>
+    <string name="photo" tools:ignore="MissingTranslation">Foto</string>
 
-    <string name="insulin_action_rapid">Rápida</string>
-    <string name="insulin_action_short">Curta</string>
-    <string name="insulin_action_intermediate">Intermédia</string>
-    <string name="insulin_action_long">Longa</string>
+    <string name="insulin_action_rapid" tools:ignore="MissingTranslation">Rápida</string>
+    <string name="insulin_action_short" tools:ignore="MissingTranslation">Curta</string>
+    <string name="insulin_action_intermediate" tools:ignore="MissingTranslation">Intermédia</string>
+    <string name="insulin_action_long" tools:ignore="MissingTranslation">Longa</string>
 
     <string-array name="insulin_action">
         <item>@string/insulin_action_rapid</item>
@@ -222,33 +222,33 @@
         <item>@string/insulin_action_long</item>
     </string-array>
 
-    <string name="insulin_message_action">Escolha um modo de administração.</string>
+    <string name="insulin_message_action" tools:ignore="MissingTranslation">Escolha um modo de administração.</string>
 
-    <string name="insulin_message_name_exists">Já existe uma insulina com esse nome, escolha outro por favor.</string>
+    <string name="insulin_message_name_exists" tools:ignore="MissingTranslation">Já existe uma insulina com esse nome, escolha outro por favor.</string>
 
-    <string name="title_activity_welcome">Registo</string>
+    <string name="title_activity_welcome" tools:ignore="MissingTranslation">Registo</string>
 
     <!-- Strings related to login -->
-    <string name="error_invalid_height">Altura errada, tem de ser em metros. (Falta um ponto algures?)</string>
-    <string name="error_field_required">Campo necessário</string>
+    <string name="error_invalid_height" tools:ignore="MissingTranslation">Altura errada, tem de ser em metros. (Falta um ponto algures?)</string>
+    <string name="error_field_required" tools:ignore="MissingTranslation">Campo necessário</string>
     <string name="height_hint" translatable="false">1.65</string>
-    <string name="gender_male">Masculino</string>
-    <string name="gender_female">Feminino</string>
+    <string name="gender_male" tools:ignore="MissingTranslation">Masculino</string>
+    <string name="gender_female" tools:ignore="MissingTranslation">Feminino</string>
     <string name="insulin_name">Nome para a Insulina</string>
-    <string name="error_repeated_name">O Nome não pode ser repetido</string>
+    <string name="error_repeated_name" tools:ignore="MissingTranslation">O Nome não pode ser repetido</string>
     <string name="new_glycemia_objective">Novo Objectivo de Glicemia</string>
-    <string name="error_repeated_description">Descrição repetida</string>
-    <string name="glycemia_objective_time_start_end">Das %1$s até %2$s</string>
-    <string name="error_start_time_overlaps">Tempo inicial coincide com outro intervalo</string>
-    <string name="error_end_time_overlaps">Tempo final coincide com outro intervalo</string>
-    <string name="error_end_time_before_start_time">Tempo de fim antes do tempo de inicio</string>
+    <string name="error_repeated_description" tools:ignore="MissingTranslation">Descrição repetida</string>
+    <string name="glycemia_objective_time_start_end" tools:ignore="MissingTranslation">Das %1$s até %2$s</string>
+    <string name="error_start_time_overlaps" tools:ignore="MissingTranslation">Tempo inicial coincide com outro intervalo</string>
+    <string name="error_end_time_overlaps" tools:ignore="MissingTranslation">Tempo final coincide com outro intervalo</string>
+    <string name="error_end_time_before_start_time" tools:ignore="MissingTranslation">Tempo de fim antes do tempo de inicio</string>
     <string name="subtitle_diabetes_factors">Detalhes e Fatores</string>
     <string name="subtitle_personal_data">Dados Pessoais</string>
-    <string name="welcome">Início</string>
+    <string name="welcome" tools:ignore="MissingTranslation">Início</string>
 
-    <string name="backup_share">Gravar cópia de segurança e\n enviar para o Gestor do Projecto</string>
-    <string name="share_subject">Dados do paciente %1$s</string>
-    <string name="share_text">Enviado da aplicação: A Minha Diabetes</string>
+    <string name="backup_share" tools:ignore="MissingTranslation">Gravar cópia de segurança e\n enviar para o Gestor do Projecto</string>
+    <string name="share_subject" tools:ignore="MissingTranslation">Dados do paciente %1$s</string>
+    <string name="share_text" tools:ignore="MissingTranslation">Enviado da aplicação: A Minha Diabetes</string>
     <string name="information_about_developers">Aplicação desenvolvida por Diogo Machado, Ricardo Parra, Eduardo Soares, João Maia, João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
 
     <string name="correction_glycemia">Correcção Glicemia</string>
@@ -257,38 +257,38 @@
     <string name="insulin_total">Total de Insulina a tomar</string>
     <string name="minus_signal" translatable="false">-</string>
     <string name="plus_signal" translatable="false">+</string>
-    <string name="use_not">Não usar</string>
+    <string name="use_not" tools:ignore="MissingTranslation">Não usar</string>
     <string name="use">Usar</string>
-    <string name="new_feature">Nova funcionalidade</string>
+    <string name="new_feature" tools:ignore="MissingTranslation">Nova funcionalidade</string>
     <string name="active_insulin">Insulina Activa</string>
-    <string name="new_feature_iob_text_1">Quando toma uma insulina esta não actua de imediato, mas sim ao longo de algumas horas. Como pode ver na imagem acima.</string>
-    <string name="new_feature_iob_text_2">Agora pode ter informação da insulina que ainda está activa no seu organismo quando for tomar uma nova insulina</string>
+    <string name="new_feature_iob_text_1" tools:ignore="MissingTranslation">Quando toma uma insulina esta não actua de imediato, mas sim ao longo de algumas horas. Como pode ver na imagem acima.</string>
+    <string name="new_feature_iob_text_2" tools:ignore="MissingTranslation">Agora pode ter informação da insulina que ainda está activa no seu organismo quando for tomar uma nova insulina</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="use_iob">Usar Insulina Activa</string>
-    <string name="backup_restore_confirmation_dialog_text">Este processo vai substituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
+    <string name="backup_restore_confirmation_dialog_text" tools:ignore="MissingTranslation">Este processo vai substituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
     <string name="next_button">Seguinte</string>
-    <string name="notification_sync_recurrent">Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?</string>
-    <string name="notification_sync_first_time">Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?</string>
-    <string name="notification_sync_text">Envie os dados ao gestor do projecto</string>
-    <string name="list_empty_message">Nenhum resultado encontrado\nAumente o intervalo de tempo</string>
-    <string name="show_labels">Mostrar valores</string>
-    <string name="show_hiperglicemia_limit">Mostrar limite de hiperglicemia</string>
-    <string name="show_hipoglicemia_limit">Mostrar limite de hipoglicemia</string>
-    <string name="filterdialog_title">Filtro</string>
-    <string name="filterdialog_subtitle_extras">Extras</string>
-    <string name="filterdialog_subtitle_data">Dados</string>
-    <string name="feature_cloud_sync">Sincronizar com cloud</string>
-    <string name="feature_cloud_sync_description1">Pode enviar para a cloud os seus dados de forma segura.</string>
-    <string name="feature_cloud_sync_description2">A qualquer momento pode aceder aos dados em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
-    <string name="login_username">Nome do utilizador</string>
-    <string name="login_password">Palavra-passe</string>
-    <string name="login_extra_text">Se não tiver uma conta, pode criar uma em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
-    <string name="login_auth_error">Erro na autenticação, verifique o nome de utilizador e password e tente novamente.</string>
-    <string name="login_no_internet_error">Sem ligação à Internet</string>
-    <string name="login_try_later">Tentar mais tarde</string>
-    <string name="login_try_again">Tentar novamente</string>
-    <string name="cloudSync_edit_account">Editar conta</string>
+    <string name="notification_sync_recurrent" tools:ignore="MissingTranslation">Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?</string>
+    <string name="notification_sync_first_time" tools:ignore="MissingTranslation">Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?</string>
+    <string name="notification_sync_text" tools:ignore="MissingTranslation">Envie os dados ao gestor do projecto</string>
+    <string name="list_empty_message" tools:ignore="MissingTranslation">Nenhum resultado encontrado\nAumente o intervalo de tempo</string>
+    <string name="show_labels" tools:ignore="MissingTranslation">Mostrar valores</string>
+    <string name="show_hiperglicemia_limit" tools:ignore="MissingTranslation">Mostrar limite de hiperglicemia</string>
+    <string name="show_hipoglicemia_limit" tools:ignore="MissingTranslation">Mostrar limite de hipoglicemia</string>
+    <string name="filterdialog_title" tools:ignore="MissingTranslation">Filtro</string>
+    <string name="filterdialog_subtitle_extras" tools:ignore="MissingTranslation">Extras</string>
+    <string name="filterdialog_subtitle_data" tools:ignore="MissingTranslation">Dados</string>
+    <string name="feature_cloud_sync" tools:ignore="MissingTranslation">Sincronizar com cloud</string>
+    <string name="feature_cloud_sync_description1" tools:ignore="MissingTranslation">Pode enviar para a cloud os seus dados de forma segura.</string>
+    <string name="feature_cloud_sync_description2" tools:ignore="MissingTranslation">A qualquer momento pode aceder aos dados em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="login_username" tools:ignore="MissingTranslation">Nome do utilizador</string>
+    <string name="login_password" tools:ignore="MissingTranslation">Palavra-passe</string>
+    <string name="login_extra_text" tools:ignore="MissingTranslation">Se não tiver uma conta, pode criar uma em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="login_auth_error" tools:ignore="MissingTranslation">Erro na autenticação, verifique o nome de utilizador e password e tente novamente.</string>
+    <string name="login_no_internet_error" tools:ignore="MissingTranslation">Sem ligação à Internet</string>
+    <string name="login_try_later" tools:ignore="MissingTranslation">Tentar mais tarde</string>
+    <string name="login_try_again" tools:ignore="MissingTranslation">Tentar novamente</string>
+    <string name="cloudSync_edit_account" tools:ignore="MissingTranslation">Editar conta</string>
     <string name="settings_factors_ratio">Editar Fatores e Rácios</string>
     <string name="settings_edit_insulins">Editar Insulinas</string>
     <string name="settings_edit_glicemia_targets">Editar Objectivos de Glicemia</string>
@@ -312,8 +312,8 @@
         <item>Colesterol</item>
     </string-array>
 
-    <string name="navigation_drawer_open">open</string>
-    <string name="navigation_drawer_close">close</string>
+    <string name="navigation_drawer_open" tools:ignore="MissingTranslation">open</string>
+    <string name="navigation_drawer_close" tools:ignore="MissingTranslation">close</string>
 
 
     <string name="insulin_type_pen">Caneta</string>

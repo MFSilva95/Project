@@ -156,7 +156,7 @@ public class ExerciseDetail extends BaseActivity {
 
 	public void FillExerciseSpinner() {
 		AutoCompleteTextView spinner = (AutoCompleteTextView) findViewById(R.id.ac_ExerciseDetail_Exercise);
-		ArrayList<String> allExercises = new ArrayList<String>();
+		ArrayList<String> allExercises = new ArrayList<>();
 		DB_Read rdb = new DB_Read(this);
 		HashMap<Integer, String> val = rdb.Exercise_GetAll();
 		rdb.close();
@@ -167,7 +167,7 @@ public class ExerciseDetail extends BaseActivity {
 			}
 		}
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, allExercises);
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, allExercises);
 		spinner.setAdapter(adapter);
 	}
 

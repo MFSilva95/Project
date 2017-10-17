@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp"
+        app:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
         app:layout_collapseMode="pin"
         app:contentInsetStartWithNavigation="0dp"

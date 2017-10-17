@@ -139,7 +139,7 @@ public class DateUtils {
             age--;
         }
 
-        Integer ageInt = new Integer(age);
+        Integer ageInt = age;
 
         return ageInt;
     }

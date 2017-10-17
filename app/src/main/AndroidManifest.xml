@@ -58,7 +58,6 @@
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>
         </activity>
-        <!--android:label="@string/title_activity_preferences"-->
         <activity
             android:name=".ui.activities.NewHomeRegistry"
             android:parentActivityName=".ui.activities.Home">
@@ -150,24 +149,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
         </activity>
-        <!-- <activity
-            android:name=".ui.activities.GlycemiaChartList"
-            android:label="@string/title_activity_glycemia"
-            android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/HomeTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Home"/>
-        </activity>
-        <activity
-            android:name=".ui.activities.InsulinChartList"
-            android:label="@string/title_activity_insulin"
-            android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/HomeTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Home"/>
-        </activity>-->
         <activity
             android:name=".ui.activities.BloodPressure"
             android:label="@string/title_activity_blood_pressure"
@@ -176,15 +157,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
         </activity>
-        <activity
-            android:name=".ui.activities.CarbsChartList"
-            android:label="@string/title_activity_carbo_hydrate"
-            android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/HomeTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Home"/>
-        </activity>
+
         <activity
             android:name=".ui.activities.Cholesterol"
             android:label="@string/title_activity_cholesterol"
@@ -217,23 +190,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
         </activity>
-        <!--<activity
-            android:name=".ui.activities.GlycemiaDetail"
-            android:label="@string/title_activity_glycemia_detail"
-            android:theme="@style/HomeTheme"
-            android:parentActivityName=".ui.activities.Home">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Home"/>
-        </activity>
-        <activity
-            android:name=".ui.activities.InsulinDetail"
-            android:label="@string/title_activity_insulin_detail"
-            android:parentActivityName=".ui.activities.Home">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Home"/>
-        </activity>-->
+
         <activity
             android:name=".ui.activities.ExerciseDetail"
             android:label="@string/title_activity_exercise_detail"
@@ -242,25 +199,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
         </activity>
-        <!--<activity
-            android:name=".ui.activities.MealActivity"
-            android:label="@string/title_activity_meal"
-            android:theme="@style/HomeTheme"
-            android:parentActivityName=".ui.activities.Home">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Home"/>
-        </activity>-->
-        <activity
-            android:name=".ui.activities.CarboHydrateDetail"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:theme="@style/HomeTheme"
-            android:label="@string/title_activity_carbo_hydrate_detail"
-            android:parentActivityName=".ui.activities.Home">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.Home"/>
-        </activity>
+
         <activity
             android:name=".ui.activities.BloodPressureDetail"
             android:label="@string/title_activity_blood_pressure_detail"
@@ -353,14 +292,6 @@
                 android:value=".ui.activities.Home"/>
         </activity>
         <activity
-            android:name=".ui.activities.ViewPhoto"
-            android:label="@string/title_activity_view_photo"
-            android:parentActivityName=".ui.activities.CarboHydrateDetail">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.CarboHydrateDetail"/>
-        </activity>
-        <activity
             android:name=".ui.activities.TransferActivity"
             android:label="@string/title_activity_transfer"
             android:parentActivityName=".ui.activities.SettingsImportExport"
@@ -391,15 +322,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
         </activity>
-       <!--<activity
-            android:name=".ui.activities.DetailLogbookActivity"
-            android:label="@string/title_activity_logbook_detail"
-            android:parentActivityName=".ui.activities.LogbookChartList"
-            android:theme="@style/HomeTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.activities.LogbookChartList"/>
-        </activity>-->
 
         <activity
             android:name=".ui.activities.TaskListActivity"
@@ -408,18 +330,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
         </activity>
-
-        <!-- <activity
-            android:name="com.example.projetoandroid.CloudServerActivity"
-            android:label="@string/title_activity_cloud_server" >
-        </activity>
-        <activity
-            android:name="com.example.projetoandroid.CloudLoginActivity"
-            android:label="@string/title_activity_cloud_login"
-            android:windowSoftInputMode="adjustResize|stateVisible" >
-        </activity> -->
-
-
 
         <activity
             android:name=".ui.activities.Badges"

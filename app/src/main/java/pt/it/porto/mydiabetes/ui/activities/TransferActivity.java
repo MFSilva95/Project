@@ -43,7 +43,7 @@ public class TransferActivity extends BaseActivity {
 	private Intent starter;
 	private FileInfo fi;
 	private Boolean onPC = null;
-	private Hashtable<String, FileInfo> htFileInfo = new Hashtable<String, FileInfo>();
+	private Hashtable<String, FileInfo> htFileInfo = new Hashtable<>();
 	AlertDialog dialog1;
 
 	// Bound Service
@@ -172,7 +172,7 @@ public class TransferActivity extends BaseActivity {
 
 
 	private ArrayList<FileInfo> getSelectFiles(LinearLayout ll) {
-		ArrayList<FileInfo> fil = new ArrayList<FileInfo>();
+		ArrayList<FileInfo> fil = new ArrayList<>();
 		LinearLayout ll2;
 		CheckedTextView cb;
 		TextView tv;
