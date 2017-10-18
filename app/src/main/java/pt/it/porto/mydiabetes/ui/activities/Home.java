@@ -84,6 +84,7 @@ public class Home extends BaseActivity {
 		dbr.recoverSensitivity();
 		dbr.recoverRatio();
 		dbr.close();
+
 //		DB_Read rdb = new DB_Read(this);
 //		int baseCarbsRatio = rdb.getCarbsRatio();
 //		int baseInsuRatio = rdb.getInsulinRatio();
@@ -139,10 +140,6 @@ public class Home extends BaseActivity {
 		//----------------------nav
 		navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        if(!BuildConfig.TASKS_AVAILABLE){
-			navigationView.getMenu().findItem(R.id.userTasks).setVisible(false);
-        }
-
 		navigationView.setItemIconTintList(null);
 		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 			// This method will trigger on item Click of navigation menu
@@ -152,10 +149,6 @@ public class Home extends BaseActivity {
 				Intent intent;
 
 				switch (menuItem.getItemId()) {
-					case R.id.userTasks:
-						intent = new Intent(getApplicationContext(), TaskListActivity.class);
-						startActivity(intent);
-						return true;
 					case R.id.userLogbook:
 						intent = new Intent(getApplicationContext(), LogbookChartList.class);
 						startActivity(intent);

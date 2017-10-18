@@ -33,7 +33,8 @@ public class WeightChartList extends SingleDataChartActivity {
 			Calendar calendar = Calendar.getInstance();
 			extras.putSerializable(MultiDataChartActivity.EXTRAS_TIME_END, calendar);
 			Calendar calendar2 = Calendar.getInstance();
-			calendar2.add(Calendar.DAY_OF_YEAR, -8);
+//			calendar2.add(Calendar.DAY_OF_YEAR, -8);
+			calendar2.add(Calendar.YEAR, -10);
 			extras.putSerializable(MultiDataChartActivity.EXTRAS_TIME_START, calendar2);
 			getIntent().putExtras(extras);
 

@@ -60,7 +60,8 @@ public class LogbookChartList extends MultiDataChartActivity implements FilterDi
 			}
 			if (!extras.containsKey(MultiDataChartActivity.EXTRAS_TIME_START)) {
 				Calendar calendar2 = Calendar.getInstance();
-				calendar2.add(Calendar.DAY_OF_YEAR, -8);
+//				calendar2.add(Calendar.DAY_OF_YEAR, -8);
+				calendar2.add(Calendar.YEAR, -1);
 				extras.putSerializable(MultiDataChartActivity.EXTRAS_TIME_START, calendar2);
 			}
 			getIntent().putExtras(extras);

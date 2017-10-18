@@ -51,7 +51,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
 
         Task identity = taskList.get(position);
 
@@ -75,7 +75,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(c);
-                builder.setMessage(taskList.get(position).getExpandedText());
+                builder.setMessage(taskList.get(holder.getAdapterPosition()).getExpandedText());
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }

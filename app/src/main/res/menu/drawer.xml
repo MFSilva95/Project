@@ -4,12 +4,6 @@
 
     <group android:checkableBehavior="none">
 
-        <item
-            android:id="@+id/userTasks"
-            android:checked="false"
-            android:title="@string/navTask"
-            android:icon="@drawable/ic_flag"
-            />
 
         <item
             android:id="@+id/userLogbook"

@@ -59,7 +59,8 @@ public class AdviceAdapter extends RecyclerView.Adapter<AdviceAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
+
 
         Advice identity = adviceList.get(position);
 
@@ -83,7 +84,7 @@ public class AdviceAdapter extends RecyclerView.Adapter<AdviceAdapter.ViewHolder
             @Override
             public void onClick(View v) {
                 final AlertDialog.Builder builder = new AlertDialog.Builder(c);
-                builder.setMessage(adviceList.get(position).getExpandedText());
+                builder.setMessage(adviceList.get(holder.getAdapterPosition()).getExpandedText());
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
