@@ -27,11 +27,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.Advice;
+
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
-import pt.it.porto.mydiabetes.data.Task;
+
 //import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.activities.Home;
@@ -204,14 +204,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 rowText.setText(currentView.getName());
                 break;
             case ADVICE:
-                Advice currentAdvice = (Advice) currentView;
+
                 textHolder = (LinearLayout) v.findViewById(R.id.adviceRowBackground);
                 myText = (TextView) v.findViewById(R.id.content);
                 //textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
-                if (currentAdvice.getUrgency() > 7) {
-                    myText.setTextColor(Color.RED);
-                }
-                myText.setText(currentAdvice.getSummaryText());
 //                holder.view.setOnClickListener(getAdviceClickListener(currentAdvice));
                 break;
             case LOGITEM:
@@ -221,17 +217,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 v.setOnLongClickListener(getLogItemLongClickListener());
                 break;
             case SPACE:
-                break;
-            case TASK:
-                final Task currentTask = (Task) currentView;
-//                textHolder = (LinearLayout) v.findViewById(R.id.taskRowBackground);
-                textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
-                myText = (TextView) v.findViewById(R.id.content);
-                if (currentTask.getUrgency() > 7) {
-                    myText.setTextColor(Color.RED);
-                }
-                myText.setText(currentTask.getSummaryText());
-//                holder.view.setOnClickListener(getTaskClickListener(currentTask));
                 break;
         }
     }

@@ -52,6 +52,7 @@ public class Sensitivity_detail extends BaseActivity {
 		EditText from = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
 		EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
 		EditText to = (EditText) findViewById(R.id.et_TargetBG_HourTo);
+		to.setEnabled(false);
 //				to.setText(toFill.getEnd());
 
 		Bundle args = getIntent().getExtras();
@@ -76,6 +77,7 @@ public class Sensitivity_detail extends BaseActivity {
 				name.setText(toFill.getName());
 
 				from.setText(toFill.getStart());
+				to.setText(toFill.getEnd());
 
 				value.setText(String.valueOf((int) toFill.getSensitivity()));
 			}
@@ -139,7 +141,7 @@ public class Sensitivity_detail extends BaseActivity {
 
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourFrom, DateUtils.getTimeCalendar(((TextView) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
-		TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
+		TextView errorLabel = ((TextView) findViewById(R.id.ratioError));
 		errorLabel.setText("");
 		errorLabel.setVisibility(View.GONE);
 	}
@@ -147,9 +149,6 @@ public class Sensitivity_detail extends BaseActivity {
 	public void showTimePickerDialogTo(View v) {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourTo, DateUtils.getTimeCalendar(((TextView) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
-		TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
-		errorLabel.setText("");
-		errorLabel.setVisibility(View.GONE);
 	}
 
 	public void AddNewTarget() {
@@ -228,6 +227,7 @@ public class Sensitivity_detail extends BaseActivity {
 
 
     Sensitivity target = new Sensitivity();
+
 	public void VerifyTargetBeforeUpdate() {
 
         String TAG = "cenas";
@@ -275,9 +275,16 @@ public class Sensitivity_detail extends BaseActivity {
 		int minute = Integer.parseInt(time[1]);
 		int thisStart = hour*60+minute;
 		if(thisStart > target.getEndInMinutes()){
+
+			//goin for the past...
 			hourFrom.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
+
+			TextView errorLabel = ((TextView) findViewById(R.id.ratioError));
+
+			errorLabel.setVisibility(View.VISIBLE);
+
 			return;
 		}
 		target.setStart(hourFrom.getText().toString());//update start time
@@ -299,7 +306,7 @@ public class Sensitivity_detail extends BaseActivity {
                                 Sensitivity previous = read.getPreviousRatio(target);
                                 Sensitivity next = read.getNextRatio(target);
                                 read.close();
-                                updateTarget(previous, target, next, wdb);
+                                updateTarget(previous, next, wdb);
 
 								goUp();
 							} catch (Exception e) {
@@ -341,6 +348,16 @@ public class Sensitivity_detail extends BaseActivity {
             Log.i("cenas", s.toString());
         }
     }
+
+	private void updateTarget(Sensitivity previous, Sensitivity next, DB_Write wdb){
+
+		previous.setEnd(next.getStart());
+		next.setStart(previous.getEnd());
+
+		wdb.Sensitivity_Reg_Update(previous);
+		wdb.Sensitivity_Reg_Update(next);
+	}
+
     private void updateTarget(Sensitivity previous, Sensitivity current, Sensitivity next, DB_Write wdb){
 
         previous.setEnd(current.getStart());
@@ -363,13 +380,20 @@ public class Sensitivity_detail extends BaseActivity {
 						//Rever porque não elimina o registo de glicemia
 						DB_Write wdb = new DB_Write(c);
 						try {
-							wdb.Target_Remove(idTarget);
+							DB_Read read = new DB_Read(c);
+							target.setId(idTarget);
+							target = read.Sensitivity_GetByID(target.getId()+"");//get Base target
+							Sensitivity previous = read.getPreviousRatio(target);
+							Sensitivity next = read.getNextRatio(target);
+							read.close();
+							wdb.Sensitivity_Reg_Remove(idTarget);
+							updateTarget(previous, next, wdb);
+							wdb.close();
 							goUp();
 						} catch (Exception e) {
 							Toast.makeText(c, getString(R.string.targetbg_delete_exception), Toast.LENGTH_LONG).show();
 						}
 						wdb.close();
-
 					}
 				})
 				.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {

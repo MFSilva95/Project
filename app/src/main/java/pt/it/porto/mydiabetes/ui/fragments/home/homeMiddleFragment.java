@@ -31,13 +31,12 @@ import java.util.List;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
-import pt.it.porto.mydiabetes.data.Advice;
+
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
-import pt.it.porto.mydiabetes.data.Task;
+
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.activities.Home;
@@ -51,7 +50,7 @@ import pt.it.porto.mydiabetes.utils.HomeElement;
  */
 
 public class homeMiddleFragment extends Fragment {
-    private YapDroid yapDroid;
+
     final int WAIT_REGISTER = 123;
     //Number of last days shown
     final int NUMBER_OF_DAYS = 7;
@@ -63,8 +62,6 @@ public class homeMiddleFragment extends Fragment {
 
     private boolean deleteMode;
 
-    private ArrayList<Task> taskListFromYap = new ArrayList<>();
-    private ArrayList<Advice> receiverAdviceList = new ArrayList<>();
     private ArrayList<HomeElement> toDeleteList = new ArrayList<>();
 
     private RecyclerView homeRecyclerView;
@@ -197,55 +194,6 @@ public class homeMiddleFragment extends Fragment {
 
     }
 
-    private void fillTaskList() {
-        //taskListFromYap = yapDroid.getYapMultipleTasks();
-        Task task1 = new Task();
-        task1.setSummaryText("Fazer exercicio hoje!");
-        task1.setExpText("Hoje fiquei de fazer exercicio. O gim está à minha espera!");
-        task1.setUrg(5);
-
-        Task task2 = new Task();
-        task2.setSummaryText("Actualizar dados!");
-        task2.setExpText("Fazer a sincronização da bomba com a aplicação!");
-        task2.setUrg(3);
-
-        taskListFromYap = new ArrayList<>();
-        taskListFromYap.add(task1);
-        taskListFromYap.add(task2);
-
-        if (taskListFromYap.size() > 0 && BuildConfig.TASKS_AVAILABLE) {
-            logBookList.add(new HomeElement(HomeElement.Type.HEADER, getContext().getString(R.string.tasks)));
-            logBookList.addAll(taskListFromYap);
-        }
-
-    }
-
-    public void fillAdviceList() {
-        //receiverAdviceList.addAll(yapDroid.getAllEndAdvices(getApplicationContext()));
-        Advice advice1 = new Advice();
-        advice1.setSummaryText("Low glycaemia value detected!");
-        advice1.setExpandedText("Your glycaemia values are low, you should ingest fast carbohydrates.");
-        advice1.setUrgency(5);
-        advice1.setType("NORMAL");
-
-//        Advice advice2 = new Advice();
-//        advice2.setSummaryText("");
-//        advice2.setExpandedText("Fazer a sincronização da bomba com a aplicação!");
-//        advice2.setUrgency(3);
-
-        ArrayList<Advice> adviceList = new ArrayList<>();
-        adviceList.add(advice1);
-        //adviceList.add(advice2);
-
-        receiverAdviceList = new ArrayList<>();
-        receiverAdviceList.addAll(adviceList);
-        Collections.sort(receiverAdviceList);
-
-        if (receiverAdviceList.size() > 0) {//&& BuildConfig.ADVICES_AVAILABLE){
-            logBookList.add(new HomeElement(HomeElement.Type.HEADER, "Advice"));
-            logBookList.addAll(receiverAdviceList);
-        }
-    }
 
 
     @Override

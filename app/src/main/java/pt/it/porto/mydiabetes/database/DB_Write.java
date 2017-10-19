@@ -649,7 +649,6 @@ public class DB_Write {
 	//------------- TARGET BG --------------
 	public void Target_Remove(int id) {
 		myDB.delete("BG_Target", "id=" + id, null);
-
 	}
 
 	public void Target_Add(InsulinTarget t) {
