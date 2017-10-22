@@ -38,16 +38,42 @@ public class InsulinCalculator  implements Cloneable {
 		int defaultCarbsRatio = rdb.getCarbsRatio();
 		int defaultInsuratio = rdb.getInsulinRatio();
 
-		ArrayList<CarbsRatioData> allCarbs =  rdb.Ratio_GetAll();
-		ArrayList<Sensitivity> allSens =  rdb.Sensitivity_GetAll();
+		String d = DateUtils.formatTimeToDb(c);
+		Log.i("cenas", "InsulinCalculator: !!!! "+d);
+
+		glycemiaRatio = rdb.Ratio_GetCurrent(d);
+		carbsRatio = rdb.Sensitivity_GetCurrent(d);
+
+		//ArrayList<CarbsRatioData> allCarbs =  rdb.Ratio_GetAll();
+		//ArrayList<Sensitivity> allSens =  rdb.Sensitivity_GetAll();
 		rdb.close();
 
-		this.glycemiaRatio = getCurrentRatioInsulinElement(allSens);
-		this.carbsRatio = getCurrentCarbsRatioElement(allCarbs);
+//		this.glycemiaRatio = getCurrentRatioInsulinElement(allSens);
+//		this.carbsRatio = getCurrentCarbsRatioElement(allCarbs);
 		if(glycemiaRatio==-1){glycemiaRatio = defaultInsuratio;}
 		if(carbsRatio==-1){carbsRatio = defaultCarbsRatio;}
 
 		time = (date.get(Calendar.HOUR_OF_DAY) * 60) + date.get(Calendar.MINUTE);
+	}
+
+	public void updateRatios(Calendar c){
+		DB_Read rdb = new DB_Read(context);
+
+		int defaultCarbsRatio = rdb.getCarbsRatio();
+		int defaultInsuratio = rdb.getInsulinRatio();
+
+		String d = DateUtils.formatTimeToDb(c);
+
+		glycemiaRatio = rdb.Ratio_GetCurrent(d);
+		carbsRatio = rdb.Sensitivity_GetCurrent(d);
+
+//		glycemiaRatio = rdb.Ratio_GetCurrent(DateUtils.formatToDb(c));
+//		carbsRatio = rdb.Sensitivity_GetCurrent(DateUtils.formatToDb(c));
+
+		rdb.close();
+
+		if(glycemiaRatio==-1){glycemiaRatio = defaultInsuratio;}
+		if(carbsRatio==-1){carbsRatio = defaultCarbsRatio;}
 	}
 
 	private int getCurrentRatioInsulinElement(ArrayList<Sensitivity> list) {
@@ -197,7 +223,7 @@ public class InsulinCalculator  implements Cloneable {
 		read.close();
 
 		// this will be fun if it was in the day before at 23:XX and doing a Meal at 01:XX :)
-		// todo // FIXME: 03/02/16 take in consideration date
+
 		int minuteOriginal = lastInsulin[1] * 60 + lastInsulin[2];
 		int insulinType = lastInsulin[0];
 		int insulinDose = lastInsulin[3];
@@ -219,12 +245,14 @@ public class InsulinCalculator  implements Cloneable {
 		return newCalculator;
 	}
 
-	public void setTime(Context context, String time, String date) {
-		Calendar calendar = DateUtils.getTimeCalendar(time);
-		if (calendar != null) {
-			setTime(context, calendar);
-		}
-	}
+//	public void setTime(Context context, String time, String date) {
+//		Calendar calendar = DateUtils.getTimeCalendar(time);
+//		if (calendar != null) {
+//			setTime(context, calendar);
+//		}
+//	}
+
+
 
 
 	public interface InsulinCalculatorListener {

@@ -19,7 +19,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.Sensitivity;
@@ -53,11 +52,12 @@ public class Sensitivity_detail extends BaseActivity {
 		EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
 		EditText to = (EditText) findViewById(R.id.et_TargetBG_HourTo);
 		to.setEnabled(false);
-//				to.setText(toFill.getEnd());
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
+
 			Sensitivity toFill = null;
+			String lastTime;
 			if (args.containsKey(BUNDLE_DATA)) {
 				toFill = args.getParcelable(BUNDLE_DATA);
 			}
@@ -66,18 +66,19 @@ public class Sensitivity_detail extends BaseActivity {
 				String id = args.getString("Id");
 				DB_Read rdb = new DB_Read(this);
 				toFill = rdb.Sensitivity_GetByID(""+Integer.parseInt(id));
-				Log.i("cenas", "onCreate: ID is -> -> "+id);
+				if(toFill!=null){
+					lastTime = rdb.getNextSensTime(toFill);
+					if(lastTime!=null){to.setText(lastTime);}
+				}
+//				Log.i("cenas", "onCreate: ID is -> -> "+id);
 				rdb.close();
 			}
 
 			if (toFill != null) {
 				idTarget = toFill.getId();
-
-
 				name.setText(toFill.getName());
-
 				from.setText(toFill.getStart());
-				to.setText(toFill.getEnd());
+				//to.setText(toFill.getEnd());
 
 				value.setText(String.valueOf((int) toFill.getSensitivity()));
 			}
@@ -152,6 +153,7 @@ public class Sensitivity_detail extends BaseActivity {
 	}
 
 	public void AddNewTarget() {
+
 		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
 		EditText hourFrom = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
 		//EditText hourTo = (EditText) findViewById(R.id.et_TargetBG_HourTo);
@@ -189,28 +191,37 @@ public class Sensitivity_detail extends BaseActivity {
 		//target.setEnd(hourTo.getText().toString());
 		DB_Read read = new DB_Read(this);
 		target.setUser_id(read.getId());
-		ArrayList<Sensitivity> all_sensitivities = read.Sensitivity_GetAll();
+		//ArrayList<Sensitivity> all_sensitivities = read.Sensitivity_GetAll();
+//		boolean sensExists = read.Sensitivity_exists(idTarget);
+		boolean sensExists = read.sensitivityTimeStartExists(target.getStart(),idTarget+"");
 		read.close();
-		Sensitivity sens = null;
-		Sensitivity next = null;
-		for(int index=0;index<all_sensitivities.size();index++){
-			sens = all_sensitivities.get(index);
-			if(sens.getStartInMinutes() < target.getStartInMinutes()){
-				sens.setEnd(target.getStart());
-				if(index+1 < all_sensitivities.size()){
-					next = all_sensitivities.get(index+1);
-					next.setStart(target.getEnd());
-				}
+		if(sensExists){
+			TextView errorLabel = ((TextView) findViewById(R.id.ratioError));
+			errorLabel.setText(R.string.error_end_time_overlaps);
+			errorLabel.setVisibility(View.VISIBLE);
+			return;
+		}
 
-				break;
-			}
-		}
-		if(sens !=null){
-			DB_Write write = new DB_Write(this);
-			write.Sensitivity_Reg_Update(sens);
-			if(next!=null){write.Sensitivity_Reg_Update(next);}
-			write.close();
-		}
+//		Sensitivity sens = null;
+//		Sensitivity next = null;
+//		for(int index=0;index<all_sensitivities.size();index++){
+//			sens = all_sensitivities.get(index);
+//			if(sens.getStartInMinutes() < target.getStartInMinutes()){
+//				sens.setEnd(target.getStart());
+//				if(index+1 < all_sensitivities.size()){
+//					next = all_sensitivities.get(index+1);
+//					next.setStart(target.getEnd());
+//				}
+//
+//				break;
+//			}
+//		}
+//		if(sens !=null){
+//			DB_Write write = new DB_Write(this);
+//			write.Sensitivity_Reg_Update(sens);
+//			if(next!=null){write.Sensitivity_Reg_Update(next);}
+//			write.close();
+//		}
 
 		target.setSensitivity(Double.valueOf(value.getText().toString()));
 		DB_Write wdb = new DB_Write(this);
@@ -270,65 +281,76 @@ public class Sensitivity_detail extends BaseActivity {
         target.setName(name.getText().toString());//update name
         target.setSensitivity(Double.valueOf(value.getText().toString()));//update value
 
-		String[] time = hourFrom.getText().toString().split(":");
-		int hour = Integer.parseInt(time[0]);
-		int minute = Integer.parseInt(time[1]);
-		int thisStart = hour*60+minute;
-		if(thisStart > target.getEndInMinutes()){
+//		String[] time = hourFrom.getText().toString().split(":");
+//		int hour = Integer.parseInt(time[0]);
+//		int minute = Integer.parseInt(time[1]);
+//		int thisStart = hour*60+minute;
+//		if(thisStart > target.getEndInMinutes()){
+//
+//			//goin for the past...
+//			hourFrom.requestFocus();
+//			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
+//
+//			TextView errorLabel = ((TextView) findViewById(R.id.ratioError));
+//
+//			errorLabel.setVisibility(View.VISIBLE);
+//
+//			return;
+//		}
+		target.setStart(hourFrom.getText().toString());//update start time
+//        final LinkedList<Integer> overlapCount = read.countSensOverlap(target.getStart(),target.getEnd(),idTarget);
+//
+//		if(overlapCount!=null){
+//            Log.i(TAG, "VerifyTargetBeforeUpdate: Count = "+overlapCount.size() );
+//            final Context c = this;
+//			new AlertDialog.Builder(this)
+//					.setTitle(getString(R.string.targetbg_info))
+//					.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+//						public void onClick(DialogInterface dialog, int whichButton) {
+//							DB_Write wdb = new DB_Write(c);
+//							try {
+//                                for(int id:overlapCount){
+//                                    wdb.Sensitivity_Reg_Remove(id);
+//                                }
+//
+//                                Sensitivity previous = read.getPreviousRatio(target);
+//                                Sensitivity next = read.getNextRatio(target);
+//                                read.close();
+//                                updateTarget(previous, next, wdb);
+//
+//								goUp();
+//							} catch (Exception e) {
+//								Toast.makeText(c, getString(R.string.targetbg_delete_exception), Toast.LENGTH_LONG).show();
+//							}
+//                            wdb.close();
+//						}
+//					})
+//					.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
+//						public void onClick(DialogInterface dialog, int whichButton) {
+//                            read.close();
+//							// Do nothing.
+//						}
+//					}).show();
+//		}else{
+//            Sensitivity previous = read.getPreviousRatio(target);
+//            Sensitivity next = read.getNextRatio(target);
+		boolean sensExists = read.sensitivityTimeStartExists(target.getStart(),idTarget+"");//Sensitivity_exists(idTarget);
+		read.close();
 
-			//goin for the past...
-			hourFrom.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
-
+		if(sensExists){
 			TextView errorLabel = ((TextView) findViewById(R.id.ratioError));
-
+			errorLabel.setText(R.string.error_end_time_overlaps);
 			errorLabel.setVisibility(View.VISIBLE);
-
 			return;
 		}
-		target.setStart(hourFrom.getText().toString());//update start time
-        final LinkedList<Integer> overlapCount = read.countSensOverlap(target.getStart(),target.getEnd(),idTarget);
+		DB_Write wdb = new DB_Write(this);
+		wdb.Sensitivity_Reg_Update(target);
+		wdb.close();
 
-		if(overlapCount!=null){
-            Log.i(TAG, "VerifyTargetBeforeUpdate: Count = "+overlapCount.size() );
-            final Context c = this;
-			new AlertDialog.Builder(this)
-					.setTitle(getString(R.string.targetbg_info))
-					.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							DB_Write wdb = new DB_Write(c);
-							try {
-                                for(int id:overlapCount){
-                                    wdb.Sensitivity_Reg_Remove(id);
-                                }
-
-                                Sensitivity previous = read.getPreviousRatio(target);
-                                Sensitivity next = read.getNextRatio(target);
-                                read.close();
-                                updateTarget(previous, next, wdb);
-
-								goUp();
-							} catch (Exception e) {
-								Toast.makeText(c, getString(R.string.targetbg_delete_exception), Toast.LENGTH_LONG).show();
-							}
-                            wdb.close();
-						}
-					})
-					.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-                            read.close();
-							// Do nothing.
-						}
-					}).show();
-		}else{
-            Sensitivity previous = read.getPreviousRatio(target);
-            Sensitivity next = read.getNextRatio(target);
-            read.close();
-            updateTarget(previous, target,  next);
-            finish();
-        }
-
+//            updateTarget(previous, target,  next);
+		finish();
+//        }
 	}
 
     private void updateTarget(Sensitivity previous, Sensitivity current, Sensitivity next){
@@ -383,11 +405,11 @@ public class Sensitivity_detail extends BaseActivity {
 							DB_Read read = new DB_Read(c);
 							target.setId(idTarget);
 							target = read.Sensitivity_GetByID(target.getId()+"");//get Base target
-							Sensitivity previous = read.getPreviousRatio(target);
-							Sensitivity next = read.getNextRatio(target);
+//							Sensitivity previous = read.getPreviousRatio(target);
+//							Sensitivity next = read.getNextRatio(target);
 							read.close();
 							wdb.Sensitivity_Reg_Remove(idTarget);
-							updateTarget(previous, next, wdb);
+//							updateTarget(previous, next, wdb);
 							wdb.close();
 							goUp();
 						} catch (Exception e) {

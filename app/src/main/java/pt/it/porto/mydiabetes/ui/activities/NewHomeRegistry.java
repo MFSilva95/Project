@@ -1251,6 +1251,10 @@ public class NewHomeRegistry extends AppCompatActivity{
                     String timeString = DateUtils.getFormattedTime(registerDate);
                     registerTimeTextV.setText(timeString);
                     updateTagSpinner();
+                    if(insuRegister!=null){
+                        Log.i(TAG, "onTimeSet: "+DateUtils.getFormattedTime(registerDate));
+                        insuRegister.updateRatioCalc(registerDate);
+                    }
                     if(buttons.contains(GLICAEMIA)){
                         glycaemiaRegister.updateObjective();
                     }

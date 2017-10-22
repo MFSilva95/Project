@@ -34,6 +34,9 @@ public class DateUtils {
     public static String formatToDb(Calendar calendar) {
         return iso8601FormatSeconds.format(calendar.getTime());
     }
+    public static String formatTimeToDb(Calendar c){
+        return timeFormatSeconds.format(c.getTime());
+    }
 
 
     public static String getFormattedDate(Calendar calendar) {

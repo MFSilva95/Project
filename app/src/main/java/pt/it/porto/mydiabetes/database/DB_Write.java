@@ -808,7 +808,7 @@ public class DB_Write {
 
 	//------------- TARGET Ratio --------------
 	public void Ratio_Reg_Remove(int id) {
-		myDB.delete("Sensitivity_Reg", "id=" + id, null);
+		myDB.delete("Ratio_Reg", "id=" + id, null);
 
 	}
 

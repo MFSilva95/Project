@@ -77,10 +77,10 @@ public class Home extends BaseActivity {
 			return;
 		}
 
-		DB_Write dbr = new DB_Write(this);
-		dbr.recoverSensitivity();
-		dbr.recoverRatio();
-		dbr.close();
+//		DB_Write dbr = new DB_Write(this);
+//		dbr.recoverSensitivity();
+//		dbr.recoverRatio();
+//		dbr.close();
 
 //		DB_Read rdb = new DB_Read(this);
 //		int baseCarbsRatio = rdb.getCarbsRatio();

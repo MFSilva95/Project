@@ -4,13 +4,10 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.database.Cursor;
-import android.graphics.Point;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,13 +17,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRatioData;
-import pt.it.porto.mydiabetes.data.InsulinTarget;
-import pt.it.porto.mydiabetes.data.Sensitivity;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
@@ -56,10 +48,13 @@ public class Ratio_detail extends BaseActivity {
 		EditText from = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
 		EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
 		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
+		to.setEnabled(false);
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
+
 			CarbsRatioData toFill = null;
+			String lastTime;
 			if (args.containsKey(BUNDLE_DATA)) {
 				toFill = args.getParcelable(BUNDLE_DATA);
 			}
@@ -68,6 +63,10 @@ public class Ratio_detail extends BaseActivity {
 				String id = args.getString("Id");
 				DB_Read rdb = new DB_Read(this);
 				toFill = rdb.Ratio_GetById(""+id);//Target_GetById(Integer.parseInt(id));
+				if(toFill!=null){
+					lastTime = rdb.getNextRatioTime(toFill);
+					if(lastTime!=null){to.setText(lastTime);}
+				}
 				rdb.close();
 			}
 
@@ -79,7 +78,7 @@ public class Ratio_detail extends BaseActivity {
 
 				from.setText(toFill.getStart());
 
-				to.setText(toFill.getEnd());
+				//to.setText(toFill.getEnd());
 
 				value.setText(String.valueOf((int) toFill.getValue()));
 			}
@@ -189,29 +188,40 @@ public class Ratio_detail extends BaseActivity {
 		//target.setEnd(hourTo.getText().toString());
 		DB_Read read = new DB_Read(this);
 		target.setUser_id(read.getId());
-		ArrayList<CarbsRatioData> all_sensitivities = read.Ratio_GetAll();
+//		ArrayList<CarbsRatioData> all_sensitivities = read.Ratio_GetAll();
+
+//		boolean sensExists = read.Ratio_exists(idTarget);
+		boolean sensExists = read.ratioTimeStartExists(target.getStart(),idTarget+"");
 		read.close();
-		CarbsRatioData sens = null;
-		CarbsRatioData next = null;
-
-		for(int index=0;index<all_sensitivities.size();index++){
-			sens = all_sensitivities.get(index);
-			if(sens.getStartInMinutes() < target.getStartInMinutes()){
-				sens.setEnd(target.getStart());
-				if(index+1 < all_sensitivities.size()){
-					next = all_sensitivities.get(index+1);
-					next.setStart(target.getEnd());
-				}
-
-				break;
-			}
+		if(sensExists){
+			TextView errorLabel = ((TextView) findViewById(R.id.ratioError));
+			errorLabel.setText(R.string.error_end_time_overlaps);
+			errorLabel.setVisibility(View.VISIBLE);
+			return;
 		}
-		if(sens !=null){
-			DB_Write write = new DB_Write(this);
-			write.Ratio_Reg_Update(sens);
-			if(next!=null){write.Ratio_Reg_Update(next);}
-			write.close();
-		}
+
+
+//		CarbsRatioData sens = null;
+//		CarbsRatioData next = null;
+//
+//		for(int index=0;index<all_sensitivities.size();index++){
+//			sens = all_sensitivities.get(index);
+//			if(sens.getStartInMinutes() < target.getStartInMinutes()){
+//				sens.setEnd(target.getStart());
+//				if(index+1 < all_sensitivities.size()){
+//					next = all_sensitivities.get(index+1);
+//					next.setStart(target.getEnd());
+//				}
+//
+//				break;
+//			}
+//		}
+//		if(sens !=null){
+//			DB_Write write = new DB_Write(this);
+//			write.Ratio_Reg_Update(sens);
+//			if(next!=null){write.Ratio_Reg_Update(next);}
+//			write.close();
+//		}
 
 		target.setValue(Double.valueOf(value.getText().toString()));
 		DB_Write wdb = new DB_Write(this);
@@ -265,57 +275,67 @@ public class Ratio_detail extends BaseActivity {
 		target.setName(name.getText().toString());//update name
 		target.setValue(Double.valueOf(value.getText().toString()));//update value
 
-		String[] time = hourFrom.getText().toString().split(":");
-		int hour = Integer.parseInt(time[0]);
-		int minute = Integer.parseInt(time[1]);
-		int thisStart = hour*60+minute;
-		if(thisStart > target.getEndInMinutes()){
-			hourFrom.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
+//		String[] time = hourFrom.getText().toString().split(":");
+//		int hour = Integer.parseInt(time[0]);
+//		int minute = Integer.parseInt(time[1]);
+//		int thisStart = hour*60+minute;
+//		if(thisStart > target.getEndInMinutes()){
+//			hourFrom.requestFocus();
+//			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
+//			return;
+//		}
+		target.setStart(hourFrom.getText().toString());//update start time
+//		final LinkedList<Integer> overlapCount = read.countRatioOverlap(target.getStart(),target.getEnd(),idTarget);
+//
+//		if(overlapCount!=null){
+//			Log.i(TAG, "VerifyTargetBeforeUpdate: Count = "+overlapCount.size() );
+//			final Context c = this;
+//			new AlertDialog.Builder(this)
+//					.setTitle(getString(R.string.targetbg_info))
+//					.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+//						public void onClick(DialogInterface dialog, int whichButton) {
+//							DB_Write wdb = new DB_Write(c);
+//							try {
+//								for(int id:overlapCount){
+//									wdb.Sensitivity_Reg_Remove(id);
+//								}
+//
+//								CarbsRatioData previous = read.getPreviousRatio(target);
+//								CarbsRatioData next = read.getNextRatio(target);
+//								read.close();
+//								updateTarget(previous, target, next, wdb);
+//
+//								goUp();
+//							} catch (Exception e) {
+//								Toast.makeText(c, getString(R.string.targetbg_delete_exception), Toast.LENGTH_LONG).show();
+//							}
+//							wdb.close();
+//						}
+//					})
+//					.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
+//						public void onClick(DialogInterface dialog, int whichButton) {
+//							read.close();
+//							// Do nothing.
+//						}
+//					}).show();
+//		}else{
+//		boolean sensExists = read.Ratio_exists(idTarget);
+		boolean sensExists = read.ratioTimeStartExists(target.getStart(),idTarget+"");
+		read.close();
+
+		if(sensExists){
+			TextView errorLabel = ((TextView) findViewById(R.id.ratioError));
+			errorLabel.setText(R.string.error_end_time_overlaps);
+			errorLabel.setVisibility(View.VISIBLE);
 			return;
 		}
-		target.setStart(hourFrom.getText().toString());//update start time
-		final LinkedList<Integer> overlapCount = read.countRatioOverlap(target.getStart(),target.getEnd(),idTarget);
-
-		if(overlapCount!=null){
-			Log.i(TAG, "VerifyTargetBeforeUpdate: Count = "+overlapCount.size() );
-			final Context c = this;
-			new AlertDialog.Builder(this)
-					.setTitle(getString(R.string.targetbg_info))
-					.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							DB_Write wdb = new DB_Write(c);
-							try {
-								for(int id:overlapCount){
-									wdb.Sensitivity_Reg_Remove(id);
-								}
-
-								CarbsRatioData previous = read.getPreviousRatio(target);
-								CarbsRatioData next = read.getNextRatio(target);
-								read.close();
-								updateTarget(previous, target, next, wdb);
-
-								goUp();
-							} catch (Exception e) {
-								Toast.makeText(c, getString(R.string.targetbg_delete_exception), Toast.LENGTH_LONG).show();
-							}
-							wdb.close();
-						}
-					})
-					.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							read.close();
-							// Do nothing.
-						}
-					}).show();
-		}else{
-			CarbsRatioData previous = read.getPreviousRatio(target);
-			CarbsRatioData next = read.getNextRatio(target);
-			read.close();
-			updateTarget(previous, target,  next);
-			finish();
-		}
+		DB_Write wdb = new DB_Write(this);
+		wdb.Ratio_Reg_Update(target);
+		wdb.close();
+//			updateTarget(previous, target,  next);
+		finish();
+//		}
 
 	}
 
@@ -408,7 +428,7 @@ public class Ratio_detail extends BaseActivity {
 						//Rever porque não elimina o registo de glicemia
 						DB_Write wdb = new DB_Write(c);
 						try {
-							wdb.Target_Remove(idTarget);
+							wdb.Ratio_Reg_Remove(idTarget);
 							goUp();
 						} catch (Exception e) {
 							Toast.makeText(c, getString(R.string.targetbg_delete_exception), Toast.LENGTH_LONG).show();

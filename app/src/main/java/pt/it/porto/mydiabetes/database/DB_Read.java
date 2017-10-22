@@ -1727,6 +1727,47 @@ public class DB_Read {
 		}
 	}
 
+	public boolean Ratio_exists(int id) {
+		Cursor cursor = myDB.rawQuery("SELECT Id FROM Ratio_Reg Where Id = "+id, null);
+		if (cursor.getCount() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean Sensitivity_exists(int id) {
+		Cursor cursor = myDB.rawQuery("SELECT Id FROM Sensitivity_Reg Where Id = "+id, null);
+		ArrayList<Sensitivity> targets = null;
+		if (cursor.getCount() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	public int Sensitivity_GetCurrent(String currentTime) {
+		Cursor cursor = myDB.rawQuery("SELECT Value FROM Sensitivity_Reg Where TimeStart <= '"+currentTime+ "' ORDER BY TimeStart DESC limit 1", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			Log.i("cenas", "Sensitivity_GetCurrent: ->>>>>> "+currentTime+ " with value: "+cursor.getString(0));
+			return Integer.parseInt(cursor.getString(0));
+		} else {
+			cursor.close();
+			return -1;
+		}
+	}
+	public int Ratio_GetCurrent(String currentTime) {
+		Cursor cursor = myDB.rawQuery("SELECT Value FROM Ratio_Reg Where TimeStart <= '"+currentTime+ "' ORDER BY TimeStart DESC limit 1", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			Log.i("cenas", "RATIO_GetCurrent: ->>>>>> "+currentTime+ " with value: "+cursor.getString(0));
+			return Integer.parseInt(cursor.getString(0));
+		} else {
+			cursor.close();
+			return -1;
+		}
+	}
+
 	public ArrayList<Sensitivity> Sensitivity_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Value, Name, TimeStart, TimeEnd FROM Sensitivity_Reg ORDER BY TimeStart", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
@@ -1754,7 +1795,7 @@ public class DB_Read {
 		}
 	}
 	public ArrayList<CarbsRatioData> Ratio_GetAll() {
-		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Value, Name, TimeStart, TimeEnd FROM Ratio_Reg", null);
+		Cursor cursor = myDB.rawQuery("SELECT Id, Id_User, Value, Name, TimeStart, TimeEnd FROM Ratio_Reg ORDER BY TimeStart", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		ArrayList<CarbsRatioData> targets = null;
 		if (cursor.getCount() > 0) {
@@ -2569,6 +2610,30 @@ public class DB_Read {
 
     }
 
+	public boolean sensitivityTimeStartExists(String start, String id) {
+		Cursor cursor = myDB.rawQuery("SELECT Id "+
+				"FROM Sensitivity_Reg "+
+				"WHERE TimeStart == '" + start +"' and Id != '"+id+ "' "+
+				"ORDER BY TimeStart", null);
+		if (cursor.getCount() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	public boolean ratioTimeStartExists(String start, String id) {
+		Cursor cursor = myDB.rawQuery("SELECT Id "+
+				"FROM Ratio_Reg "+
+				"WHERE TimeStart == '" + start +"' and Id != '"+id+ "' "+
+				"ORDER BY TimeStart", null);
+		if (cursor.getCount() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public LinkedList<Integer> countSensOverlap(String start, String end, int id) {
 		Cursor cursor = myDB.rawQuery("SELECT Id, TimeStart, TimeEnd "+
 				"FROM Sensitivity_Reg "+
@@ -2593,12 +2658,47 @@ public class DB_Read {
 		}
 	}
 
+	public String getNextRatioTime(CarbsRatioData target) {
+		Cursor cursor = myDB.rawQuery("SELECT TimeEnd "+
+				"FROM Ratio_Reg "+
+				"WHERE TimeStart > '" + target.getEnd() + "' "+
+				"ORDER BY TimeStart limit 1", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			Sensitivity t;
+			t = new Sensitivity();
+			t.setEnd(cursor.getString(0));
+			cursor.close();
+			return t.getEnd();
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
+	public String getNextSensTime(Sensitivity target) {
+		Cursor cursor = myDB.rawQuery("SELECT TimeEnd "+
+				"FROM Sensitivity_Reg "+
+				"WHERE TimeStart >'" + target.getEnd() + "' "+
+				"ORDER BY TimeStart limit 1", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			Sensitivity t;
+			t = new Sensitivity();
+			t.setEnd(cursor.getString(0));
+			cursor.close();
+			return t.getEnd();
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
 	public Sensitivity getPreviousRatio(Sensitivity target) {
 		Cursor cursor = myDB.rawQuery("SELECT *"+
 				"FROM Sensitivity_Reg "+
 				"WHERE TimeStart < '" + target.getStart() + "' "+
 				"ORDER BY TimeStart DESC limit 1", null);
-		cursor.moveToLast();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			Sensitivity t;
@@ -2713,22 +2813,6 @@ public class DB_Read {
 			return null;
 		}
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

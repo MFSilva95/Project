@@ -89,6 +89,10 @@ public class InsuRegister extends LinearLayout {
             }
         }
     }
+    public void updateRatioCalc(Calendar c){
+        this.calc.updateRatios(c);
+        this.fragmentInsulinCalcsFragment.setInsulinCalculator(calc);
+    }
     public void fill_parameters(InsulinRec rec){
         this.insuData = rec;
         insertInsulinData(rec.getInsulinUnits());
