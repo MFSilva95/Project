@@ -17,7 +17,7 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 	public static final String ARG_DATE = "date";
 	public static final String ARG_TEXT_BOX = "textbox";
-	private static DatePickerDialog.OnDateSetListener listener;
+	private DatePickerDialog.OnDateSetListener listener;
 
 	TextView item;
 
@@ -73,6 +73,10 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		return dpdialog;
 	}
 
+	public void setListener(DatePickerDialog.OnDateSetListener listener) {
+		this.listener = listener;
+	}
+
 	public void onDateSet(DatePicker view, int year, int month, int day) {
 		// Do something with the date chosen by the user
 		//et_BDate
@@ -95,15 +99,16 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		newFragment.setArguments(args);
 		return newFragment;
 	}
+
 	public static DialogFragment getDatePickerFragment(int textbox, DatePickerDialog.OnDateSetListener lis, @Nullable Calendar date) {
-		DialogFragment newFragment = new DatePickerFragment();
+		DatePickerFragment newFragment = new DatePickerFragment();
 		Bundle args = new Bundle();
 		args.putInt(ARG_TEXT_BOX, textbox);
 		if (date != null) {
 			args.putSerializable(ARG_DATE, date);
 		}
-		listener = lis;
 		newFragment.setArguments(args);
+		newFragment.setListener(lis);
 		return newFragment;
 	}
 
