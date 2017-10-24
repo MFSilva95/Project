@@ -158,6 +158,7 @@
     <string name="sync">Synchronization</string>
     <string name="units">Units</string>
     <string name="use">Use</string>
+    <string name="use_not">Don\'t Use</string>
     <string name="glicInputError">Not a valid Number</string>
 
     <string name="badges">Badges</string>

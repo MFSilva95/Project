@@ -74,6 +74,7 @@ public class DiseaseDetail extends BaseActivity {
 				Note n = new Note();
 				n = rdb.Note_GetById(toFill.getIdNote());
 				note.setText(n.getNote());
+
 				idNote = n.getId();
 			}
 			rdb.close();

@@ -36,6 +36,7 @@ import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.ui.charts.data.Weight;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjetivesElement;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 public class DB_Handler extends SQLiteOpenHelper {
 
@@ -222,10 +223,23 @@ public class DB_Handler extends SQLiteOpenHelper {
                 initCarbsRacio(myDB);
             }
 
+
             DB_Write newWrites = new DB_Write(myDB);
             if (basic_info != null) {
                 newWrites.MyData_Save(basic_info);
             }
+
+            if (old_points_recs != null) {
+                for (PointsRec rec : old_points_recs) {
+                    newWrites.Point_Save(rec);
+                }
+            }
+
+            //            verify if points were initialized
+            if( db_read.Points_get_num_reg()<=0){
+                LevelsPointsUtils.addPoints(myContext,0,"first", db_read);
+            }
+
             if (old_insulins != null) {
                 for (Insulin rec : old_insulins) {
                     newWrites.Insulin_Add(rec);
@@ -257,13 +271,6 @@ public class DB_Handler extends SQLiteOpenHelper {
                     newWrites.Badge_Save(rec);
                 }
             }
-
-            if (old_points_recs != null) {
-                for (PointsRec rec : old_points_recs) {
-                    newWrites.Point_Save(rec);
-                }
-            }
-
             if (old_BP_recs != null) {
                 for (BloodPressureRec rec : old_BP_recs) {
                     newWrites.BloodPressure_Save(rec);
@@ -289,6 +296,7 @@ public class DB_Handler extends SQLiteOpenHelper {
                     newWrites.DiseaseReg_Save(rec);
                 }
             }
+
 
             ContentValues toInsert = new ContentValues();
             toInsert.put("Name", FeaturesDB.INITIAL_REG_DONE);

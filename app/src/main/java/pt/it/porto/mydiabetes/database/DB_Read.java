@@ -2589,6 +2589,16 @@ public class DB_Read {
 		return points;
 	}
 
+	public int Points_get_num_reg() {
+		Cursor cursor = myDB.rawQuery("SELECT COUNT(*) FROM Points;", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			return cursor.getInt(0);
+		}else{
+			return -1;
+		}
+	}
+
 	public ArrayList<PointsRec> PointsReg_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Points;", null);
 		ArrayList<PointsRec> AllPoints = new ArrayList<>();

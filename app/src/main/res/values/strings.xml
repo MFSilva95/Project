@@ -257,7 +257,7 @@
     <string name="insulin_total">Total de Insulina a tomar</string>
     <string name="minus_signal" translatable="false">-</string>
     <string name="plus_signal" translatable="false">+</string>
-    <string name="use_not" tools:ignore="MissingTranslation">Não usar</string>
+    <string name="use_not">Não usar</string>
     <string name="use">Usar</string>
     <string name="new_feature" tools:ignore="MissingTranslation">Nova funcionalidade</string>
     <string name="active_insulin">Insulina Activa</string>
