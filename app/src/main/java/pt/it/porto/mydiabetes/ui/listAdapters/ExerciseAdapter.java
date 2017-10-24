@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
@@ -38,7 +39,7 @@ public class ExerciseAdapter extends BaseAdapter {
 	public ExerciseReg getItem(int position) {
 		cursor.moveToPosition(position);
 		int pox = 0;
-		return new ExerciseReg(cursor.getInt(pox++), cursor.getString(pox++), cursor.getString(pox++), cursor.getInt(pox++), cursor.getString(pox));
+		return new ExerciseReg(cursor.getInt(pox++), cursor.getString(pox++), cursor.getString(pox++), cursor.getInt(pox++), cursor.getInt(pox));
 	}
 
 	@Override
@@ -92,7 +93,7 @@ public class ExerciseAdapter extends BaseAdapter {
 		int duration;
 		String effort;
 
-		public ExerciseReg(int id, String dateTime, String exercise, int duration, String effort) {
+		public ExerciseReg(int id, String dateTime, String exercise, int duration, int effort) {
 			this.id = id;
 			try {
 				this.dateTime = DateUtils.parseDateTime(dateTime);
@@ -101,7 +102,8 @@ public class ExerciseAdapter extends BaseAdapter {
 			}
 			this.exercise = exercise;
 			this.duration = duration;
-			this.effort = effort;
+			String[] arrayList = _c.getResources().getStringArray(R.array.Effort);
+			this.effort = arrayList[effort];
 		}
 
 

@@ -1560,6 +1560,8 @@ public class DB_Read {
 		}
 	}
 
+
+
 	//----------------------- DISEASE REG
 
 	@Nullable
@@ -2586,6 +2588,31 @@ public class DB_Read {
 		cursor.close();
 		return points;
 	}
+
+	public ArrayList<PointsRec> PointsReg_GetAll() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Points;", null);
+		ArrayList<PointsRec> AllPoints = new ArrayList<>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			PointsRec tmp;
+			do {
+				tmp = new PointsRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setDateTime(cursor.getString(2));
+				tmp.setValue(cursor.getInt(3));
+				tmp.setOrigin(cursor.getString(4));
+				AllPoints.add(tmp);
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return AllPoints;
+		} else {
+			cursor.close();
+			return AllPoints;
+		}
+	}
+
     @Nullable
     public PointsRec getFirstPointToReachLevel(int points) {
         Cursor cursor = myDB.rawQuery("SELECT Points1.Id, Points1.Id_User, Points1.DateTime, Points1.Value, Points1.Origin, SUM(Points2.Value) AS SUMMATORY " +

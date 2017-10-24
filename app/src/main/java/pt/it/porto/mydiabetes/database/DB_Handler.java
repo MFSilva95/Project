@@ -28,6 +28,7 @@ import pt.it.porto.mydiabetes.data.ExerciseRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.Insulin;
 import pt.it.porto.mydiabetes.data.InsulinRec;
+import pt.it.porto.mydiabetes.data.PointsRec;
 import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.data.TargetBGRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
@@ -197,11 +198,15 @@ public class DB_Handler extends SQLiteOpenHelper {
             ArrayList<TargetBGRec> old_targetBG_recs = oldReads.TargetBG_GetAll();
             ArrayList<BadgeRec> old_medals_recs = oldReads.getAllMedals();
 
+            ArrayList<PointsRec> old_points_recs = oldReads.PointsReg_GetAll();
+
             ArrayList<WeightRec> old_weight_recs = oldReads.Weight_GetAll();
             ArrayList<ExerciseRec> old_exercise_recs = oldReads.ExerciseReg_GetAll();
             ArrayList<BloodPressureRec> old_BP_recs = oldReads.BloodPressure_GetAll();
             ArrayList<CholesterolRec> old_chol_recs = oldReads.Cholesterol_GetAll();
             ArrayList<DiseaseRec> old_disease_recs = oldReads.DiseaseReg_GetAll();
+
+
 
             oldReads.close();
             old.close();
@@ -252,6 +257,13 @@ public class DB_Handler extends SQLiteOpenHelper {
                     newWrites.Badge_Save(rec);
                 }
             }
+
+            if (old_points_recs != null) {
+                for (PointsRec rec : old_points_recs) {
+                    newWrites.Point_Save(rec);
+                }
+            }
+
             if (old_BP_recs != null) {
                 for (BloodPressureRec rec : old_BP_recs) {
                     newWrites.BloodPressure_Save(rec);
