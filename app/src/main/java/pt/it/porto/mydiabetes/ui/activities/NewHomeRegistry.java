@@ -183,7 +183,11 @@ public class NewHomeRegistry extends AppCompatActivity{
         }
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             setImgURI(Uri.parse(mCurrentPhotoPath));
-            carbsRegister.setImage(imgUri, this);
+            try {
+                carbsRegister.setImage(imgUri, this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } else if (requestCode == IMAGE_VIEW) {
             //se tivermos apagado a foto dá result code -1
             //se voltarmos por um return por exemplo o resultcode é 0
@@ -903,11 +907,16 @@ public class NewHomeRegistry extends AppCompatActivity{
                         insertCarbsMenu();
                         carbsRegister.fill_parameters(carbsData);
                         String imgPath = carbsData.getPhotoPath();
-                        if(imgPath!=null){imgUri = Uri.parse(imgPath);}
-                        carbsRegister.setImage(imgUri, this);
-
                         setNoteId(carbsData.getIdNote());
                         registerDate = carbsData.getDateTime();
+                        if(imgPath!=null){imgUri = Uri.parse(imgPath);}
+                        try {
+                            carbsRegister.setImage(imgUri, this);
+                        } catch (Exception e) {
+                            //couldnt access storage
+                        }
+
+
                     }
                 }
             }
@@ -988,7 +997,11 @@ public class NewHomeRegistry extends AppCompatActivity{
                     String imgPath = carbsData.getPhotoPath();
                     if(imgPath!=null){imgUri = Uri.parse(imgPath);}
                     carbsRegister.fill_parameters(carbsData);
-                    carbsRegister.setImage(imgUri, this);
+                    try {
+                        carbsRegister.setImage(imgUri, this);
+                    } catch (Exception e) {
+                        //
+                    }
 
                     setNoteId(carbsData.getIdNote());
                     if(carbsData.getDateTime()!=null){
@@ -1152,23 +1165,22 @@ public class NewHomeRegistry extends AppCompatActivity{
             if (ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.CAMERA)) {
                     ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
-                } else if (permissionStatus.getBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,false) || (permissionStatus.getBoolean(Manifest.permission.CAMERA,false))) {
-                    sentToSettings = true;
-                    Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                    Uri uri = Uri.fromParts("package", getPackageName(), null);
-                    intent.setData(uri);
-                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-                } else {
-                    //just request the permission
-                    ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
                 }
+//                else if (permissionStatus.getBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,false) || (permissionStatus.getBoolean(Manifest.permission.CAMERA,false))) {
+//                    sentToSettings = true;
+//                    Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//                    Uri uri = Uri.fromParts("package", getPackageName(), null);
+//                    intent.setData(uri);
+//                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+//                } else {
+//                    //just request the permission
+//                    ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+//                }
 
-                SharedPreferences.Editor editor = permissionStatus.edit();
-                editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,true);
-                editor.putBoolean(Manifest.permission.CAMERA,true);
-                editor.commit();
-
-
+//                SharedPreferences.Editor editor = permissionStatus.edit();
+//                editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,true);
+//                editor.putBoolean(Manifest.permission.CAMERA,true);
+//                editor.commit();
             } else {
                 try {
                     dispatchTakePictureIntent();
@@ -1233,7 +1245,6 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
     private void showBottomSheet() {
         hideKeyboard();
-        //TODO SOLVE THIS PLS...
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
     }
     private void hideBottomSheet() {

@@ -1,12 +1,17 @@
 package pt.it.porto.mydiabetes.ui.fragments.new_register;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -20,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import java.io.IOException;
 import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRec;
@@ -193,15 +200,20 @@ public class CarbsRegister extends LinearLayout {
         return carbsData.getCarbsValue();
     }
 
-    public void setImage(Uri imageUri, Activity activity){
+    public void setImage(Uri imageUri, Activity activity)throws Exception{
         this.imgUri=imageUri;
         if (imgUri != null) {
             DisplayMetrics displaymetrics = new DisplayMetrics();
             activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
             int height = (int) (displaymetrics.heightPixels * 0.1);
             int width = (int) (displaymetrics.widthPixels * 0.1);
-            b = ImageUtils.decodeSampledBitmapFromPath(imageUri.getPath(), width, height);
+            try {
+                b = ImageUtils.decodeSampledBitmapFromPath(imageUri.getPath(), width, height);
+            }catch (Exception e){
+                throw new Exception("cant access file");
+            }
             image_button.setImageBitmap(b);
         }
     }
+
 }
