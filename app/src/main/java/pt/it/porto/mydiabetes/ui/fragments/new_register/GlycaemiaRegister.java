@@ -243,20 +243,18 @@ public class GlycaemiaRegister extends LinearLayout {
     }
 
     public void updateObjective() {
-        if(objList==null){
-            MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
-            try {
-                objList = storage.getGlycemiaObjectives();
-            } catch (Exception e) {
-                e.printStackTrace();
-                plusButton.setVisibility(View.VISIBLE);
-                plusButton.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addGlycemiaObjective();
-                    }
-                });
-            }
+        MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
+        try {
+            objList = storage.getGlycemiaObjectives();
+        } catch (Exception e) {
+            e.printStackTrace();
+            plusButton.setVisibility(View.VISIBLE);
+            plusButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addGlycemiaObjective();
+                }
+            });
         }
         int objective;
         objective = GlicObjTimesOverlap(objList, DateUtils.getFormattedTime(registerDate));

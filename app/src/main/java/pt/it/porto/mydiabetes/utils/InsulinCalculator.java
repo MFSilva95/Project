@@ -41,8 +41,8 @@ public class InsulinCalculator  implements Cloneable {
 		String d = DateUtils.formatTimeToDb(c);
 		Log.i("cenas", "InsulinCalculator: !!!! "+d);
 
-		glycemiaRatio = rdb.Ratio_GetCurrent(d);
-		carbsRatio = rdb.Sensitivity_GetCurrent(d);
+		glycemiaRatio = rdb.Sensitivity_GetCurrent(d);
+		carbsRatio = rdb.Ratio_GetCurrent(d);
 
 		//ArrayList<CarbsRatioData> allCarbs =  rdb.Ratio_GetAll();
 		//ArrayList<Sensitivity> allSens =  rdb.Sensitivity_GetAll();

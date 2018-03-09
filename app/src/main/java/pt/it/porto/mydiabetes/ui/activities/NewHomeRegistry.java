@@ -157,6 +157,8 @@ public class NewHomeRegistry extends AppCompatActivity{
 
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
+    private static final int BLOOD_GLUCOSE = 102;
+
     private boolean sentToSettings = false;
     private SharedPreferences permissionStatus;
 
@@ -172,6 +174,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //Log.d(TAG, "onActivityResult: requestCode: "+requestCode+" resultCode: "+resultCode);
         if (requestCode == REQUEST_PERMISSION_SETTING) {
             if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 try {
@@ -188,7 +191,10 @@ public class NewHomeRegistry extends AppCompatActivity{
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        } else if (requestCode == IMAGE_VIEW) {
+        }if(requestCode == BLOOD_GLUCOSE && resultCode == RESULT_OK){
+            glycaemiaRegister.updateObjective();
+        }
+        else if (requestCode == IMAGE_VIEW) {
             //se tivermos apagado a foto dá result code -1
             //se voltarmos por um return por exemplo o resultcode é 0
             if (resultCode == -1) {
@@ -1203,8 +1209,9 @@ public class NewHomeRegistry extends AppCompatActivity{
                 Bundle bundle = new Bundle();
                 bundle.putFloat(TargetBG_detail.BUNDLE_GOAL, target);
                 intent.putExtras(bundle);
-            }
-            startActivity(intent);
+            }//updateObjective()
+            startActivityForResult(intent, BLOOD_GLUCOSE);
+            //startActivity(intent);
         }
 
         @Override

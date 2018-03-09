@@ -199,6 +199,7 @@ public class TargetBG_detail extends BaseActivity {
 		target.setTarget(Double.valueOf(value.getText().toString()));
 		wdb.Target_Add(target);
 		wdb.close();
+		setResult(RESULT_OK);
 		finish();
 	}
 
