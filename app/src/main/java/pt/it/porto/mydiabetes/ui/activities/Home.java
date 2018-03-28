@@ -122,8 +122,8 @@ public class Home extends BaseActivity {
 		adapter = new homePageAdapter(super.getSupportFragmentManager());
 		mViewPager.setAdapter(adapter);
 		mViewPager.setOffscreenPageLimit(1);
-		mViewPager.blockSwipeRight(true);
-		mViewPager.blockSwipeLeft(true);
+		//mViewPager.blockSwipeRight(true);
+		//mViewPager.blockSwipeLeft(true);
 		if (savedInstanceState == null) {
 			mViewPager.setCurrentItem(1);
 		}
