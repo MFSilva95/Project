@@ -60,11 +60,13 @@ public class MultiDataChartActivity extends AbstractChartActivity {
 
 		int numberOfElementsInGraph = cursor.getCount() > MAX_VALUES_IN_GRAPH ? MAX_VALUES_IN_GRAPH : cursor.getCount();
 
+		@SuppressWarnings("unchecked")
 		List<PointValue> xss[] = new List[tables.size()];
 		for (int i = 0; i < tables.size(); i++) {
 			xss[i] = new ArrayList<>(numberOfElementsInGraph * 3 / 4);
 		}
 
+		@SuppressWarnings("unchecked")
 		ArrayList<Integer>[] positionInList = new ArrayList[xss.length];
 		for (int i = 0; i < positionInList.length; i++) {
 			positionInList[i] = new ArrayList<>(numberOfElementsInGraph);

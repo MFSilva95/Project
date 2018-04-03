@@ -86,7 +86,7 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
 
         //Log.i(TAG, "getChildView:");
         //return Linear Layout with 3 medals
-
+        @SuppressWarnings("unchecked")
         HashMap<String, BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective> badgeRow = (HashMap<String, BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective>) getChild(listPosition, expandedListPosition);
         LayoutInflater layoutInflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
