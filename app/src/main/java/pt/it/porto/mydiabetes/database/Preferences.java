@@ -149,6 +149,14 @@ public class Preferences {
 																				 .setStartDate(start.getTime())
 																				 .setEndDate(end.getTime())
 																				 .build();
+//			KeyGenParameterSpec  spec = new KeyGenParameterSpec.Builder(KEYSTORE_PK_ALIAS, KeyProperties.PURPOSE_DECRYPT)
+//					.setCertificateSubject(new X500Principal("CN=MyDiabetes, O=MyDiabetes"))
+//					.setCertificateSerialNumber(BigInteger.ONE)
+//					.setKeyValidityStart(start.getTime())
+//					.setKeyValidityEnd(end.getTime())
+//					.build();
+
+
 			generator.initialize(spec);
 
 			generator.generateKeyPair();
