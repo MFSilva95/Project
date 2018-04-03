@@ -179,8 +179,8 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 
 		@Override
 		public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-			LayoutInflater layoutInflator = getLayoutInflater(null);
-			return new InsulinHolder(layoutInflator.inflate(R.layout.listitem_new_insulin, parent, false));
+			LayoutInflater layoutInflater = getLayoutInflater();
+			return new InsulinHolder(layoutInflater.inflate(R.layout.listitem_new_insulin, parent, false));
 		}
 
 		@Override
