@@ -83,7 +83,7 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 		list.setLayoutManager(new LinearLayoutManager(getContext()));
 		list.setItemAnimator(new DefaultItemAnimator());
 		if (savedInstanceState != null) {
-			items = (ArrayList) savedInstanceState.getSerializable(STATE_ITEMS);
+			items = (ArrayList<InsulinData>) savedInstanceState.getSerializable(STATE_ITEMS);
 		}
 
 		FloatingActionButton myFab = (FloatingActionButton) layout.findViewById(R.id.floatingActionButton);

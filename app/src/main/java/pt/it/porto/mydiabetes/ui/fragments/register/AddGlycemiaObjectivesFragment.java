@@ -80,7 +80,7 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 		list.setLayoutManager(new LinearLayoutManager(getContext()));
 		list.setItemAnimator(new DefaultItemAnimator());
 		if (savedInstanceState != null) {
-			items = (ArrayList) savedInstanceState.getSerializable(STATE_ITEMS);
+            items = (ArrayList<GlycemiaObjectivesData>) savedInstanceState.getSerializable(STATE_ITEMS);
 		}
 
 		FloatingActionButton myFab = (FloatingActionButton) layout.findViewById(R.id.floatingActionButton);
@@ -170,8 +170,8 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 
 		@Override
 		public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-			LayoutInflater layoutInflator = getLayoutInflater(null);
-			return new GlycemiaHolder(layoutInflator.inflate(R.layout.list_item_new_glycemia_objective, parent, false));
+			LayoutInflater layoutInflater = getLayoutInflater();
+			return new GlycemiaHolder(layoutInflater.inflate(R.layout.list_item_new_glycemia_objective, parent, false));
 		}
 
 		@Override
