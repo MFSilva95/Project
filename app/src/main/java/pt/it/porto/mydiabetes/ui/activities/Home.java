@@ -33,7 +33,7 @@ import java.util.List;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
+//import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
@@ -50,7 +50,7 @@ public class Home extends BaseActivity {
 	private NavigationView navigationView;
 	private DrawerLayout drawerLayout;
 
-	private YapDroid yapDroid;
+	//private YapDroid yapDroid;
 
 	private CustomViewPager mViewPager;
 	private PagerAdapter adapter;

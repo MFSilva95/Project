@@ -31,7 +31,7 @@ import java.util.List;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
+//import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.data.Advice;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
@@ -51,7 +51,7 @@ import pt.it.porto.mydiabetes.utils.HomeElement;
  */
 
 public class homeMiddleFragment extends Fragment {
-    private YapDroid yapDroid;
+    //private YapDroid yapDroid;
     final int WAIT_REGISTER = 123;
     //Number of last days shown
     final int NUMBER_OF_DAYS = 7;

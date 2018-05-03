@@ -11,7 +11,7 @@ import java.util.LinkedList;
 
 import io.fabric.sdk.android.Fabric;
 import pt.it.porto.mydiabetes.BuildConfig;
-import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
+//import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.data.Advice;
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.database.DB_Read;

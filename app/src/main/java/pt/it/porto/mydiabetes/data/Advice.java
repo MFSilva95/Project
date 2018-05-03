@@ -8,7 +8,7 @@ import android.os.Bundle;
 
 import java.util.Calendar;
 
-import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
+//import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 
 /**
@@ -102,8 +102,9 @@ public class Advice extends HomeElement implements Comparable<Advice> {
     }
 
     public Calendar getTime(){
-        Calendar calendar = YapDroid.string2Time(time, timeUnit);
-        return calendar;
+        //Calendar calendar = YapDroid.string2Time(time, timeUnit);
+        //return calendar;
+        return null;
     }
     private void setupAlarm(Context ctxt) {
 

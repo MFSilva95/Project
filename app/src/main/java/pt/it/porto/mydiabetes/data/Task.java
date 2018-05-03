@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.Calendar;
 
-import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
+//import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 
 /**
@@ -68,8 +68,9 @@ public class Task extends HomeElement implements Comparable<Task> {
     public Calendar getTime(){
         String[] timings = timer.split(":");
         int timeValue = Integer.parseInt(timings[0]);
-        Calendar calendar = YapDroid.string2Time(timeValue, timings[1]);
-        return calendar;
+        //Calendar calendar = YapDroid.string2Time(timeValue, timings[1]);
+        //return calendar;
+        return null;
     }
 
     public String getExpandedText() {return expandedText;}
