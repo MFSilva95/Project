@@ -169,12 +169,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         super.finishAfterTransition();
     }
     @Override
-    public void supportFinishAfterTransition() {
-        super.supportFinishAfterTransition();
-    }
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //Log.d(TAG, "onActivityResult: requestCode: "+requestCode+" resultCode: "+resultCode);
         if (requestCode == REQUEST_PERMISSION_SETTING) {
             if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 try {
@@ -651,6 +646,11 @@ public class NewHomeRegistry extends AppCompatActivity{
                             reg.Insulin_Save(insulinData);
                         }
                         break;
+                }
+                if(!buttonsUpdate.isEmpty()){
+                    reg.Record_Update();
+                }else{
+                    reg.Record_Add();
                 }
             }catch (Exception e){
                throw e;
