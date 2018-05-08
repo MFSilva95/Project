@@ -42,7 +42,7 @@ public class DB_Write {
 	public DB_Write(Context context) {
 		super();
 		// TODO Auto-generated constructor stub
-		DB_Handler db = new DB_Handler(context);
+		DB_Handler_old db = new DB_Handler_old(context);
 		this.myContext = context;
 		this.myDB = db.getWritableDatabase();
 		this.myDB.execSQL("PRAGMA foreign_keys=ON;");
@@ -51,7 +51,7 @@ public class DB_Write {
 	public DB_Write(SQLiteDatabase newDb) {
 		super();
 		// TODO Auto-generated constructor stub
-		//DB_Handler db = new DB_Handler(context);
+		//DB_Handler_old db = new DB_Handler_old(context);
 		//this.myContext = context;
 		myContext = null;
 		this.myDB = newDb;//db.getWritableDatabase();
@@ -829,6 +829,28 @@ public class DB_Write {
 		toUpdate.put("TimeEnd", t.getEnd());
 		toUpdate.put("Value", t.getValue());
 		myDB.update("Ratio_Reg", toUpdate, "Id=" + t.getId(), null);
+	}
+
+	public void Record_Add(int user_id, ) {
+		ContentValues toInsert = new ContentValues();
+		toInsert.put("Id_User", t.getName());
+		toInsert.put("DateTime", t.getUser_id());
+		toInsert.put("Id_Tag", t.getStart());
+		toInsert.put("Id_Carbs", t.getEnd());
+		toInsert.put("Id_Insulin", t.getValue());
+		toInsert.put("Id_BloodGlucose", t.getValue());
+		myDB.insert("Record", null, toInsert);
+	}
+
+	public void Record_Update(CarbsRatioData t) {
+		ContentValues toUpdate = new ContentValues();
+		toUpdate.put("Id_User", t.getName());
+		toUpdate.put("DateTime", t.getUser_id());
+		toUpdate.put("Id_Tag", t.getStart());
+		toUpdate.put("Id_Carbs", t.getEnd());
+		toUpdate.put("Id_Insulin", t.getValue());
+		toUpdate.put("Id_BloodGlucose", t.getValue());
+		myDB.update("Record", toUpdate, "Id=" + t.getId(), null);
 	}
 
 	public void recoverSensitivity(){

@@ -287,8 +287,6 @@ public class NewHomeRegistry extends AppCompatActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         init_vars();
         init_listeners();
         buttons.add(PLUS);
@@ -314,8 +312,6 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void init_vars(){
         setContentView(R.layout.activity_add_event);
         FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(this));
-
-        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
         contentLayout = (LinearLayout) findViewById(R.id.content_panel);
@@ -543,7 +539,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         }
     }
     private void validateInfo_Save()throws Exception{
-        spinner = (Spinner) findViewById(R.id.tag_spinner);
+        spinner = findViewById(R.id.tag_spinner);
         String tag = null;
         if (spinner != null) {
             tag = spinner.getSelectedItem().toString();
@@ -553,13 +549,12 @@ public class NewHomeRegistry extends AppCompatActivity{
         int idUser = rdb.getId();
         int idTag = rdb.Tag_GetIdByName(tag);
 
-
         DB_Write reg = new DB_Write(this);
 
         if(buttons.contains(NOTE)){
             if(buttons.size()<=2){
                 noteRegister.setErrorMessage(getString(R.string.noteError));
-                throw new Exception("Just note no cry");
+                throw new Exception();
             }
             noteData = noteRegister.save_read();
             if(noteData.getNote()!=null){
@@ -664,6 +659,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         if(buttons.size()==1 && buttons.contains(NOTE)){
             reg.Note_Delete(noteData.getId());
         }
+
         Log.i(TAG, "validateInfo_Save: BEGIN");
         BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
         BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);

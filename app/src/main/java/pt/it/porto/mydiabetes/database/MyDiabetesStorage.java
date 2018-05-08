@@ -2,20 +2,13 @@ package pt.it.porto.mydiabetes.database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.net.Uri;
-import android.util.Log;
-import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.CarbsRec;
-import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -23,10 +16,10 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 public class MyDiabetesStorage {
 
 	private static MyDiabetesStorage instance;
-	private DB_Handler mHandler;
+	private DB_Handler_old mHandler;
 
 	private MyDiabetesStorage(Context context) {
-		mHandler = new DB_Handler(context);
+		mHandler = new DB_Handler_old(context);
 	}
 
 

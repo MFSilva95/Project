@@ -157,8 +157,8 @@ public class homeMiddleFragment extends Fragment {
         DB_Read db = new DB_Read(getContext());
         String date = DateUtils.getFormattedDate(calendar);
         long currentTime = System.currentTimeMillis();
-        LinkedList<HomeElement> list;
-        if ((list = db.getLogBookFromStartDate(date)).size() > 0) {
+        LinkedList<HomeElement> list = db.getLogBookFromStartDate(date);
+        if (list !=null && list.size() > 0 ) {
             CharSequence dateText = "";
             for (HomeElement elem : list) {
 
