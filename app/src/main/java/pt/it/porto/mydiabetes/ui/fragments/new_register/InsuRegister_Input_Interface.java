@@ -31,7 +31,7 @@ import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 
-public class InsuRegister extends LinearLayout {
+public class InsuRegister_Input_Interface extends LinearLayout {
     public static final String ARG_INSULIN = "ARG_INSULIN";
     private TextInputLayout insulin_input;
     private InsulinRec insuData;
@@ -49,7 +49,7 @@ public class InsuRegister extends LinearLayout {
 
 
 
-    public InsuRegister(Context context, int iRatio, int cRatio) {
+    public InsuRegister_Input_Interface(Context context, int iRatio, int cRatio) {
         super(context);
         this.iRatio = iRatio;
         this.cRatio = cRatio;

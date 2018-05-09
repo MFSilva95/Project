@@ -39,7 +39,7 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 
-public class GlycaemiaRegister extends LinearLayout {
+public class GlycaemiaRegister_Input_Interface extends LinearLayout {
     private TextInputLayout glycaemia_input;
     private GlycemiaRec glycaemiaData;
     private TextInputLayout glycaemia_obj_input;
@@ -53,7 +53,7 @@ public class GlycaemiaRegister extends LinearLayout {
     private NewHomeRegistry.NewHomeRegCallBack callBack;
 
 
-    public GlycaemiaRegister(Context context, Calendar calendar, NewHomeRegistry.NewHomeRegCallBack call) {
+    public GlycaemiaRegister_Input_Interface(Context context, Calendar calendar, NewHomeRegistry.NewHomeRegCallBack call) {
         super(context);
         registerDate = calendar;
         callBack = call;

@@ -36,7 +36,7 @@ import pt.it.porto.mydiabetes.ui.activities.ViewPhoto;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 
 
-public class CarbsRegister extends LinearLayout {
+public class CarbsRegister_Input_Interface extends LinearLayout {
     private TextInputLayout carbs_input;
     private ImageButton image_button;
     private CarbsRec carbsData;
@@ -54,7 +54,7 @@ public class CarbsRegister extends LinearLayout {
 
     private NewHomeRegistry.NewHomeRegCallBack callBack;
 
-    public CarbsRegister(Context context, NewHomeRegistry.NewHomeRegCallBack call) {
+    public CarbsRegister_Input_Interface(Context context, NewHomeRegistry.NewHomeRegCallBack call) {
         super(context);
         callBack = call;
         init();

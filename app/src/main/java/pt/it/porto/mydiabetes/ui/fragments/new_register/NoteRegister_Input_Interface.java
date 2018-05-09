@@ -14,12 +14,12 @@ import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 
-public class NoteRegister extends LinearLayout {
+public class NoteRegister_Input_Interface extends LinearLayout {
     private TextInputLayout note_input;
     private Note note;
 
 
-    public NoteRegister(Context context) {
+    public NoteRegister_Input_Interface(Context context) {
         super(context);
         init();
     }
