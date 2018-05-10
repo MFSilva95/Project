@@ -12,6 +12,7 @@ public class RawRecord {
     private String tag;
     private int id_carbs;
     private int id_insulin;
+    private int id;
 
     public String get_tag() {
         return tag;
@@ -32,17 +33,19 @@ public class RawRecord {
     public int getId_note() {
         return id_note;
     }
+    public int getId(){return id;}
 
     private int id_bloodglucose;
     private int id_note;
 
 
-    public RawRecord(String dateTime, String tag, int id_carbs, int id_insulin, int id_bloodglucose, int id_note) {
+    public RawRecord(int id, String dateTime, String tag, int id_carbs, int id_insulin, int id_bloodglucose, int id_note) {
         try {
             this.dateTime = DateUtils.parseDateTime(dateTime);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        this.id = id;
         this.tag = tag;
         this.id_carbs = id_carbs;
         this.id_insulin = id_insulin;

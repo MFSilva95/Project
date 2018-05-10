@@ -548,128 +548,91 @@ public class NewHomeRegistry extends AppCompatActivity{
         rdb.close();
         reg.close();
     }
-
-    private void validateInfo_Save()throws Exception{ //tag, idUser, idTag, error_handle, delete_handle, validate values, img
+    private void save_record () throws Exception{
         spinner = findViewById(R.id.tag_spinner);
-//        String tag = null;
-//        if (spinner != null) {
-//            tag = spinner.getSelectedItem().toString();
-//        }
         int idTag = (spinner.getSelectedItemPosition()+1);
 
         DB_Read rdb = new DB_Read(this);
         int idUser = rdb.getId();
-//        int idTag = rdb.Tag_GetIdByName(tag);
         DB_Write reg = new DB_Write(this);
 
-        if(buttons.contains(NOTE)){
-            if(buttons.size()<=2){
-                noteRegisterInputInterface.setErrorMessage(getString(R.string.noteError));
-                throw new Exception();
-            }
-            noteData = noteRegisterInputInterface.save_read();
-            if(noteData.getNote()!=null){
-                if(!noteData.getNote().equals("")){
+        verify_note_conditions();
+        verify_carbs_conditions();
+        verify_glucose_conditions();
+        verify_insulin_conditions();
 
-                    if (buttonsUpdate.contains(NOTE)) {
-                        reg.Note_Update(noteData);
-                    } else {
-                        noteData.setId(reg.Note_Add(noteData));
-                    }
-                }
-            }
-        }
         if(delete_buttons.contains(NOTE)){
             reg.Note_Delete(noteData.getId());
             noteData = null;
         }
         if(delete_buttons.contains(CARBS)){
             reg.Carbs_Delete(carbsData.getId());
+            carbsData = null;
         }
         if(delete_buttons.contains(GLICAEMIA)){
             reg.Glycemia_Delete(glycemiaData.getId());
+            glycemiaData = null;
         }
         if(delete_buttons.contains(INSULIN)){
             reg.Insulin_Delete(insulinData.getId());
+            insulinData = null;
         }
+
         for(String field:buttons){
             try {
-            switch (field){
+                switch (field){
                     case CARBS:
-                        carbsData = carbsRegisterInputInterface.save_read();
-                        if(!carbsRegisterInputInterface.validate()){throw new Exception();}
-                        carbsData.setIdTag(idTag);
-                        carbsData.setIdUser(idUser);
-                        carbsData.setDateTime(registerDate);
-                        if(noteData != null) {
-                            if(noteData.getNote()!= null && noteData.getId()!= -1){
-                                if (!noteData.getNote().equals("")) {
-                                    carbsData.setIdNote(noteData.getId());
-                                }
+                        if(carbsData != null){
+                            carbsData.setIdTag(idTag);
+                            carbsData.setIdUser(idUser);
+                            carbsData.setDateTime(registerDate);
+
+                            if(noteData != null) {
+                                carbsData.setIdNote(noteData.getId());
+                            }else{
+                                carbsData.setIdNote(-1);
                             }
-                        }else{
-                            carbsData.setIdNote(-1);
-                        }
-                        Uri imgpath = carbsRegisterInputInterface.getImgUri();
-                        if(imgpath!=null){
-                            carbsData.setPhotoPath(imgpath.toString());
-                        }
-                        if (buttonsUpdate.contains(CARBS) && !delete_buttons.contains(CARBS)) {
-                            reg.Carbs_Update(carbsData);
-                        } else {
                             reg.Carbs_Save(carbsData);
                         }
                         break;
                     case GLICAEMIA:
-                        glycemiaData = glycaemiaRegisterInputInterface.save_read();
-                        if(!glycaemiaRegisterInputInterface.validate()){throw new Exception();}
-                        glycemiaData.setIdTag(idTag);
-                        glycemiaData.setIdUser(idUser);
-                        glycemiaData.setDateTime(registerDate);
-                        if(noteData != null) {
-                            if(noteData.getNote()!= null && noteData.getId()!= -1){
-                                if (!noteData.getNote().equals("")) {
-                                    glycemiaData.setIdNote(noteData.getId());
-                                }
+                        if(glycemiaData != null){
+                            glycemiaData.setIdTag(idTag);
+                            glycemiaData.setIdUser(idUser);
+                            glycemiaData.setDateTime(registerDate);
+
+                            if(noteData != null) {
+                                glycemiaData.setIdNote(noteData.getId());
+                            }else{
+                                glycemiaData.setIdNote(-1);
                             }
-                        }else{
-                            glycemiaData.setIdNote(-1);
-                        }
-                        if (buttonsUpdate.contains(GLICAEMIA)&& !delete_buttons.contains(GLICAEMIA)) {
-                            reg.Glycemia_Update(glycemiaData);
-                        } else {
                             reg.Glycemia_Save(glycemiaData);
                         }
                         break;
                     case INSULIN:
-                        insulinData = insuRegisterInputInterface.save_read();
-                        if(!insuRegisterInputInterface.validate()){throw new Exception();}
-                        insulinData.setIdTag(idTag);
-                        insulinData.setIdUser(idUser);
-                        insulinData.setDateTime(registerDate);
-                        if(noteData != null) {
-                            if(noteData.getNote()!= null && noteData.getId()!= -1){
-                                if (!noteData.getNote().equals("")) {
-                                    insulinData.setIdNote(noteData.getId());
-                                }
+                        if(insulinData != null){
+                            insulinData.setIdTag(idTag);
+                            insulinData.setIdUser(idUser);
+                            insulinData.setDateTime(registerDate);
+
+                            if(noteData != null) {
+                                insulinData.setIdNote(noteData.getId());
+                            }else{
+                                insulinData.setIdNote(-1);
                             }
-                        }else{
-                            insulinData.setIdNote(-1);
-                        }
-                        if(buttonsUpdate.contains(INSULIN) && !delete_buttons.contains(INSULIN)){
-                            reg.Insulin_Update(insulinData);
-                        }else{
                             reg.Insulin_Save(insulinData);
                         }
                         break;
+                    case NOTE:
+                        if (noteData != null) {
+                            reg.Note_Add(noteData);
+                        }
+                        break;
                 }
-                if(!buttonsUpdate.isEmpty()){
-                    reg.Record_Update();
-                }else{
-                    reg.Record_Add();
-                }
+                reg.Record_Add(idUser, registerDate, idTag,carbsData.getId(),insulinData.getId(),glycemiaData.getId());
+
             }catch (Exception e){
-               throw e;
+                throw e;
             }
         }
         if(buttons.size()==1 && buttons.contains(NOTE)){

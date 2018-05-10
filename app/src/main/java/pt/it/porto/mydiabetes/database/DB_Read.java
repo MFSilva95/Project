@@ -1923,215 +1923,7 @@ public class DB_Read {
 		return n;
 	}
 
-	public LinkedList<HomeElement> getLogBookByDate(String date) {
-		Cursor cursor = myDB.rawQuery("SELECT DISTINCT datetime, tag, carbs, insulinVal, insulinName, glycemia, carbsId, insulinId, glycemiaId" +
-				" FROM " +
-				"(" +
-				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
-				" FROM Reg_CarboHydrate, Tag, Reg_Insulin, Reg_BloodGlucose, Insulin" +
-				" WHERE Reg_CarboHydrate.DateTime = Reg_Insulin.DateTime" +
-				" AND Reg_CarboHydrate.DateTime = Reg_BloodGlucose.DateTime" +
-				" AND Tag.Id = Reg_CarboHydrate.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
-				" UNION " +
-				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, -1 AS glycemia, -1 as glycemiaId" +
-				" FROM Reg_CarboHydrate, Tag, Reg_Insulin, Insulin" +
-				" WHERE Reg_CarboHydrate.DateTime = Reg_Insulin.DateTime" +
-				" AND Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
-				" AND Tag.Id = Reg_CarboHydrate.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
-				" UNION " +
-				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, -1 AS insulinVal, '' AS insulinName, -1 as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
-				" FROM Reg_CarboHydrate, Tag, Reg_BloodGlucose" +
-				" WHERE Reg_CarboHydrate.DateTime = Reg_BloodGlucose.DateTime " +
-				" AND Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_Insulin.DateTime FROM Reg_Insulin)" +
-				" AND Tag.Id = Reg_CarboHydrate.Id_Tag" +
-				" UNION " +
-				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, -1 AS insulinVal, '' AS insulinName, -1 as insulinId, -1 AS glycemia, -1 as glycemiaId" +
-				" FROM Reg_CarboHydrate, Tag" +
-				" WHERE Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_Insulin.DateTime FROM Reg_Insulin)" +
-				" AND Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
-				" AND Tag.Id = Reg_CarboHydrate.Id_Tag" +
-				" UNION " +
-				"SELECT Reg_BloodGlucose.DateTime as datetime, Tag.Name as tag, -1 as carbs, -1 as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
-				" FROM Tag, Reg_Insulin, Reg_BloodGlucose, Insulin" +
-				" WHERE Reg_BloodGlucose.DateTime = Reg_Insulin.DateTime " +
-				" AND Reg_BloodGlucose.DateTime NOT IN (SELECT Reg_CarboHydrate.DateTime FROM Reg_CarboHydrate)" +
-				" AND Tag.Id = Reg_BloodGlucose.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
-				" UNION " +
-				"SELECT Reg_BloodGlucose.DateTime as datetime, Tag.Name as tag, -1 as carbs, -1 as carbsId, -1 AS insulinVal, '' AS insulinName, -1 as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
-				" FROM Tag, Reg_BloodGlucose" +
-				" WHERE " +
-				"Reg_BloodGlucose.DateTime NOT IN (SELECT Reg_CarboHydrate.DateTime FROM Reg_CarboHydrate)" +
-				" AND Reg_BloodGlucose.DateTime NOT IN (SELECT Reg_Insulin.DateTime FROM Reg_Insulin)" +
-				" AND Tag.Id = Reg_BloodGlucose.Id_Tag" +
-				" UNION " +
-				"SELECT Reg_Insulin.DateTime as datetime, Tag.Name as tag, -1 as carbs, -1 as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, -1 AS glycemia, -1 as glycemiaId" +
-				" FROM  Tag, Reg_Insulin, Reg_BloodGlucose, Insulin" +
-				" WHERE " +
-				"Reg_Insulin.DateTime NOT IN (SELECT Reg_CarboHydrate.DateTime FROM Reg_CarboHydrate)" +
-				" AND Reg_Insulin.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
-				" AND Tag.Id = Reg_Insulin.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
-				")" +
-				"WHERE datetime LIKE '%" + date + "%'" +
-				"ORDER BY datetime DESC;",null);
 
-		LinkedList<HomeElement> logBookEntries = new LinkedList<>();
-		if (cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			HomeElement tmp;
-			do {
-				tmp = new HomeElement(
-						cursor.getString(0),
-						cursor.getString(1),
-						cursor.getInt(2),
-						cursor.getFloat(3),
-						cursor.getString(4),
-						cursor.getInt(5),
-						cursor.getInt(6),
-						cursor.getInt(7),
-						cursor.getInt(8));
-				logBookEntries.add(tmp);
-				cursor.moveToNext();
-			} while (!cursor.isAfterLast());
-			cursor.close();
-			return logBookEntries;
-		} else {
-			cursor.close();
-			return logBookEntries;
-		}
-	}
-
-	public LinkedList<HomeElement> getLogBookFromDateToNow(String date) {
-		Cursor cursor = myDB.rawQuery(
-				"SELECT DISTINCT datetime, tag, carbs, insulinVal, insulinName, glycemia, carbsId, insulinId, glycemiaId " +
-						"FROM ( " +
-
-						"SELECT " +
-						"Reg_CarboHydrate.DateTime as datetime, " +
-						"Tag.Name as tag, " +
-						"Reg_CarboHydrate.Value as carbs, " +
-						"Reg_CarboHydrate.Id as carbsId, " +
-						"Reg_Insulin.Value as insulinVal, " +
-						"Insulin.Name as insulinName, " +
-						"Reg_Insulin.Id as insulinId, " +
-						"Reg_BloodGlucose.Value AS glycemia, " +
-						"Reg_BloodGlucose.Id as glycemiaId " +
-
-						" FROM Reg_CarboHydrate, Tag, Reg_Insulin, Reg_BloodGlucose, Insulin " +
-
-						"WHERE " +
-						"( Reg_CarboHydrate.DateTime = Reg_Insulin.DateTime AND Reg_CarboHydrate.DateTime = Reg_BloodGlucose.DateTime ) " +
-						"OR ( Reg_CarboHydrate.DateTime = Reg_Insulin.DateTime AND ( Reg_CarboHydrate.DateTime != Reg_BloodGlucose.DateTime )) " +
-						"OR ( Reg_BloodGlucose.DateTime = Reg_CarboHydrate.DateTime AND ( Reg_BloodGlucose.DateTime != Reg_Insulin.DateTime )) " +
-						"OR ( Reg_Insulin.DateTime = Reg_BloodGlucose.DateTime AND( Reg_Insulin.DateTime != Reg_CarboHydrate.DateTime )) " +
-
-						"OR (( Reg_CarboHydrate.DateTime != Reg_BloodGlucose.DateTime ) AND ( Reg_CarboHydrate.DateTime != Reg_Insulin.DateTime )) " +
-						"OR (( Reg_BloodGlucose.DateTime != Reg_Insulin.DateTime ) AND ( Reg_BloodGlucose.DateTime != Reg_CarboHydrate.DateTime )) " +
-						"OR (( Reg_Insulin.DateTime != Reg_CarboHydrate.DateTime ) AND ( Reg_Insulin.DateTime != Reg_BloodGlucose.DateTime )) " +
-
-						") WHERE datetime >='" + date + "' ORDER BY datetime DESC LIMIT 9;", null);
-
-		LinkedList<HomeElement> logBookEntries = new LinkedList<>();
-		if (cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			HomeElement tmp;
-			do {
-				tmp = new HomeElement(
-						cursor.getString(0),
-						cursor.getString(1),
-						cursor.getInt(2),
-						cursor.getFloat(3),
-						cursor.getString(4),
-						cursor.getInt(5),
-						cursor.getInt(6),
-						cursor.getInt(7),
-						cursor.getInt(8));
-				logBookEntries.add(tmp);
-				cursor.moveToNext();
-			} while (!cursor.isAfterLast());
-			cursor.close();
-			return logBookEntries;
-		} else {
-			cursor.close();
-			return logBookEntries;
-		}
-	}
-
-	public LinkedList<HomeElement> getLogBookFromStartDate(String startDate, int limit) {
-		Cursor cursor = myDB.rawQuery("SELECT DISTINCT datetime, tag, carbs, insulinVal, insulinName, glycemia, carbsId, insulinId, glycemiaId" +
-				" FROM " +
-				"(" +
-				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
-				" FROM Reg_CarboHydrate, Tag, Reg_Insulin, Reg_BloodGlucose, Insulin" +
-				" WHERE Reg_CarboHydrate.DateTime = Reg_Insulin.DateTime" +
-				" AND Reg_CarboHydrate.DateTime = Reg_BloodGlucose.DateTime" +
-				" AND Tag.Id = Reg_CarboHydrate.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
-				" UNION " +
-				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, -1 AS glycemia, -1 as glycemiaId" +
-				" FROM Reg_CarboHydrate, Tag, Reg_Insulin, Insulin" +
-				" WHERE Reg_CarboHydrate.DateTime = Reg_Insulin.DateTime" +
-				" AND Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
-				" AND Tag.Id = Reg_CarboHydrate.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
-				" UNION " +
-				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, -1 AS insulinVal, '' AS insulinName, -1 as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
-				" FROM Reg_CarboHydrate, Tag, Reg_BloodGlucose" +
-				" WHERE Reg_CarboHydrate.DateTime = Reg_BloodGlucose.DateTime " +
-				" AND Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_Insulin.DateTime FROM Reg_Insulin)" +
-				" AND Tag.Id = Reg_CarboHydrate.Id_Tag" +
-				" UNION " +
-				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, -1 AS insulinVal, '' AS insulinName, -1 as insulinId, -1 AS glycemia, -1 as glycemiaId" +
-				" FROM Reg_CarboHydrate, Tag" +
-				" WHERE Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_Insulin.DateTime FROM Reg_Insulin)" +
-				" AND Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
-				" AND Tag.Id = Reg_CarboHydrate.Id_Tag" +
-				" UNION " +
-				"SELECT Reg_BloodGlucose.DateTime as datetime, Tag.Name as tag, -1 as carbs, -1 as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
-				" FROM Tag, Reg_Insulin, Reg_BloodGlucose, Insulin" +
-				" WHERE Reg_BloodGlucose.DateTime = Reg_Insulin.DateTime " +
-				" AND Reg_BloodGlucose.DateTime NOT IN (SELECT Reg_CarboHydrate.DateTime FROM Reg_CarboHydrate)" +
-				" AND Tag.Id = Reg_BloodGlucose.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
-				" UNION " +
-				"SELECT Reg_BloodGlucose.DateTime as datetime, Tag.Name as tag, -1 as carbs, -1 as carbsId, -1 AS insulinVal, '' AS insulinName, -1 as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
-				" FROM Tag, Reg_BloodGlucose" +
-				" WHERE " +
-				"Reg_BloodGlucose.DateTime NOT IN (SELECT Reg_CarboHydrate.DateTime FROM Reg_CarboHydrate)" +
-				" AND Reg_BloodGlucose.DateTime NOT IN (SELECT Reg_Insulin.DateTime FROM Reg_Insulin)" +
-				" AND Tag.Id = Reg_BloodGlucose.Id_Tag" +
-				" UNION " +
-				"SELECT Reg_Insulin.DateTime as datetime, Tag.Name as tag, -1 as carbs, -1 as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, -1 AS glycemia, -1 as glycemiaId" +
-				" FROM  Tag, Reg_Insulin, Reg_BloodGlucose, Insulin" +
-				" WHERE " +
-				"Reg_Insulin.DateTime NOT IN (SELECT Reg_CarboHydrate.DateTime FROM Reg_CarboHydrate)" +
-				" AND Reg_Insulin.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
-				" AND Tag.Id = Reg_Insulin.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
-				")" +
-				"WHERE datetime >='" + startDate + "'" +
-				"ORDER BY datetime DESC LIMIT "+limit+";",null);
-
-		LinkedList<HomeElement> logBookEntries = new LinkedList<>();
-		if (cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			HomeElement tmp;
-			do {
-				tmp = new HomeElement(
-						cursor.getString(0),
-						cursor.getString(1),
-						cursor.getInt(2),
-						cursor.getFloat(3),
-						cursor.getString(4),
-						cursor.getInt(5),
-						cursor.getInt(6),
-						cursor.getInt(7),
-						cursor.getInt(8));
-				logBookEntries.add(tmp);
-				cursor.moveToNext();
-			} while (!cursor.isAfterLast());
-			cursor.close();
-			return logBookEntries;
-		} else {
-			cursor.close();
-			return logBookEntries;
-		}
-	}
 
 	public int getLogBookCount(String startDate) {
 		Cursor cursor = myDB.rawQuery("SELECT COUNT(*) " +
@@ -2192,7 +1984,8 @@ public class DB_Read {
 	}
 
 	public LinkedList<HomeElement> getLogBookFromStartDate(String startDate) {
-		Cursor cursor = myDB.rawQuery("SELECT DateTime, Id_Tag, Id_Carbs, Id_Insulin, Id_BloodGlucose, Id_Note From Record ORDER BY Record.DateTime DESC",null);
+		Cursor cursor = myDB.rawQuery("SELECT Id, DateTime, Id_Tag, Id_Carbs, Id_Insulin, Id_BloodGlucose, Id_Note From Record WHERE datetime >='" +
+				startDate + "' ORDER BY Record.DateTime DESC LIMIT 9", null);
 
 		LinkedList<HomeElement> logBookEntries = null;
 		LinkedList<RawRecord> rawRecords = new LinkedList<>();
@@ -2201,12 +1994,13 @@ public class DB_Read {
 			RawRecord tmp;
 			do {
 				tmp = new RawRecord(
-						cursor.getString(0),
+						cursor.getInt(0),
 						cursor.getString(1),
-						cursor.getInt(2),
+						cursor.getString(2),
 						cursor.getInt(3),
 						cursor.getInt(4),
-						cursor.getInt(5));
+						cursor.getInt(5),
+						cursor.getInt(6));
 				//insert id_note
 				rawRecords.add(tmp);
 				cursor.moveToNext();
@@ -2230,6 +2024,7 @@ public class DB_Read {
 					HomeElement tmp;
 					do {
 						tmp = new HomeElement(
+								record.getId(),
 								record.getFormattedTime(),
 								record.get_tag(),
 								cursor.getInt(0),
@@ -2250,84 +2045,6 @@ public class DB_Read {
 			}
 		}
 		return logBookEntries;
-	}
-
-
-
-	public LinkedList<HomeElement> getLogBookByLimit(int limit) {
-		Cursor cursor = myDB.rawQuery("SELECT DISTINCT datetime, tag, carbs, insulinVal, insulinName, glycemia, carbsId, insulinId, glycemiaId" +
-				" FROM " +
-				"(" +
-				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
-				" FROM Reg_CarboHydrate, Tag, Reg_Insulin, Reg_BloodGlucose, Insulin" +
-				" WHERE Reg_CarboHydrate.DateTime = Reg_Insulin.DateTime" +
-				" AND Reg_CarboHydrate.DateTime = Reg_BloodGlucose.DateTime" +
-				" AND Tag.Id = Reg_CarboHydrate.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
-				" UNION " +
-				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, -1 AS glycemia, -1 as glycemiaId" +
-				" FROM Reg_CarboHydrate, Tag, Reg_Insulin, Insulin" +
-				" WHERE Reg_CarboHydrate.DateTime = Reg_Insulin.DateTime" +
-				" AND Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
-				" AND Tag.Id = Reg_CarboHydrate.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
-				" UNION " +
-				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, -1 AS insulinVal, '' AS insulinName, -1 as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
-				" FROM Reg_CarboHydrate, Tag, Reg_BloodGlucose" +
-				" WHERE Reg_CarboHydrate.DateTime = Reg_BloodGlucose.DateTime " +
-				" AND Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_Insulin.DateTime FROM Reg_Insulin)" +
-				" AND Tag.Id = Reg_CarboHydrate.Id_Tag" +
-				" UNION " +
-				"SELECT Reg_CarboHydrate.DateTime as datetime, Tag.Name as tag, Reg_CarboHydrate.Value as carbs, Reg_CarboHydrate.Id as carbsId, -1 AS insulinVal, '' AS insulinName, -1 as insulinId, -1 AS glycemia, -1 as glycemiaId" +
-				" FROM Reg_CarboHydrate, Tag" +
-				" WHERE Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_Insulin.DateTime FROM Reg_Insulin)" +
-				" AND Reg_CarboHydrate.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
-				" AND Tag.Id = Reg_CarboHydrate.Id_Tag" +
-				" UNION " +
-				"SELECT Reg_BloodGlucose.DateTime as datetime, Tag.Name as tag, -1 as carbs, -1 as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
-				" FROM Tag, Reg_Insulin, Reg_BloodGlucose, Insulin" +
-				" WHERE Reg_BloodGlucose.DateTime = Reg_Insulin.DateTime " +
-				" AND Reg_BloodGlucose.DateTime NOT IN (SELECT Reg_CarboHydrate.DateTime FROM Reg_CarboHydrate)" +
-				" AND Tag.Id = Reg_BloodGlucose.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
-				" UNION " +
-				"SELECT Reg_BloodGlucose.DateTime as datetime, Tag.Name as tag, -1 as carbs, -1 as carbsId, -1 AS insulinVal, '' AS insulinName, -1 as insulinId, Reg_BloodGlucose.Value AS glycemia, Reg_BloodGlucose.Id as glycemiaId" +
-				" FROM Tag, Reg_BloodGlucose" +
-				" WHERE " +
-				"Reg_BloodGlucose.DateTime NOT IN (SELECT Reg_CarboHydrate.DateTime FROM Reg_CarboHydrate)" +
-				" AND Reg_BloodGlucose.DateTime NOT IN (SELECT Reg_Insulin.DateTime FROM Reg_Insulin)" +
-				" AND Tag.Id = Reg_BloodGlucose.Id_Tag" +
-				" UNION " +
-				"SELECT Reg_Insulin.DateTime as datetime, Tag.Name as tag, -1 as carbs, -1 as carbsId, Reg_Insulin.Value AS insulinVal, Insulin.Name AS insulinName, Reg_Insulin.Id as insulinId, -1 AS glycemia, -1 as glycemiaId" +
-				" FROM  Tag, Reg_Insulin, Reg_BloodGlucose, Insulin" +
-				" WHERE " +
-				"Reg_Insulin.DateTime NOT IN (SELECT Reg_CarboHydrate.DateTime FROM Reg_CarboHydrate)" +
-				" AND Reg_Insulin.DateTime NOT IN (SELECT Reg_BloodGlucose.DateTime FROM Reg_BloodGlucose)" +
-				" AND Tag.Id = Reg_Insulin.Id_Tag AND Reg_Insulin.Id_Insulin = Insulin.Id" +
-				")" +
-				"ORDER BY datetime DESC limit "+limit+";", null);
-
-		LinkedList<HomeElement> logBookEntries = new LinkedList<>();
-		if (cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			HomeElement tmp;
-			do {
-				tmp = new HomeElement(
-						cursor.getString(0),
-						cursor.getString(1),
-						cursor.getInt(2),
-						cursor.getFloat(3),
-						cursor.getString(4),
-						cursor.getInt(5),
-						cursor.getInt(6),
-						cursor.getInt(7),
-						cursor.getInt(8));
-				logBookEntries.add(tmp);
-				cursor.moveToNext();
-			} while (!cursor.isAfterLast());
-			cursor.close();
-			return logBookEntries;
-		} else {
-			cursor.close();
-			return logBookEntries;
-		}
 	}
 
 	public LinkedList<BadgeRec> Badges_GetAll_NONDAILY() {

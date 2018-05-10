@@ -41,7 +41,7 @@ public class HomeElement {
         this.displayType = type;
         this.name = name;
     }
-    public HomeElement(String dateTime, int recordId, String tag, int carbs, float insulinVal, String insulinName, int glycemia, int carbsId, int insulinId, int glycemiaId) {
+    public HomeElement( int recordId, String dateTime, String tag, int carbs, float insulinVal, String insulinName, int glycemia, int carbsId, int insulinId, int glycemiaId) {
         this.displayType = Type.LOGITEM;
 
         try {
@@ -77,6 +77,7 @@ public class HomeElement {
         //return DateUtils.getFormattedTimeSec(dateTime);
     }
 
+    public int getRecordID(){return recordID;}
     public String getTag() {
         return tag;
     }

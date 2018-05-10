@@ -268,7 +268,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 }else{
                     Intent intent = new Intent(v.getContext(), NewHomeRegistry.class);
                     Bundle args = new Bundle();
-                    if(logbookDataBinding.getRecordID() != null){
+                    if(logbookDataBinding.getRecordID() != -1){
                         args.putInt(DetailLogbookActivity.ARG_RECORD_ID, logbookDataBinding.getRecordID());
                     }
                     if(logbookDataBinding.getTag() != null){
