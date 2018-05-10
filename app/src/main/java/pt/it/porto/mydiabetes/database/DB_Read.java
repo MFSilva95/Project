@@ -38,6 +38,8 @@ import pt.it.porto.mydiabetes.utils.RawRecord;
 @SuppressLint("UseSparseArrays")
 public class DB_Read {
 
+	private String TAG = "DB_READ_PRINT:";
+
 	final Context myContext;
 	final SQLiteDatabase myDB;
 
@@ -2002,6 +2004,9 @@ public class DB_Read {
 						cursor.getInt(5),
 						cursor.getInt(6));
 				//insert id_note
+				Log.i(TAG, "--------------------------------");
+				Log.i(TAG, tmp.toString());
+				Log.i(TAG, "--------------------------------");
 				rawRecords.add(tmp);
 				cursor.moveToNext();
 			} while (!cursor.isAfterLast());
@@ -2009,15 +2014,16 @@ public class DB_Read {
 		} else {
 			cursor.close();
 		}
+		Log.i(TAG, "number records = "+rawRecords.size());
 		if(!rawRecords.isEmpty()){
 
 			logBookEntries = new LinkedList<>();
 			for(RawRecord record:rawRecords){
-				cursor = myDB.rawQuery("SELECT Reg_CarboHydrate.Value, " +
-						"Reg_Insulin.Value, Insulin.Name, Reg_BloodGlucose.Value " +
-						"FROM Reg_BloodGlucose, Reg_CarboHydrate, Reg_Insulin, Insulin\n" +
-						"WHERE  Reg_CarboHydrate.Id ='"+record.getId_carbs()+"' and Reg_Insulin.Id = '"+record.getId_insulin()+"' and " +
-						"Reg_Insulin.Id_Insulin = Insulin.Id and Reg_BloodGlucose.Id = '"+record.getId_bloodglucose()+"';",null);
+
+			    String sqlCommand = create_sql_string(record);
+                Log.i(TAG, "sql_command: "+sqlCommand);
+
+				cursor = myDB.rawQuery(sqlCommand,null);
 
 				if (cursor.getCount() > 0) {
 					cursor.moveToFirst();
@@ -2025,7 +2031,7 @@ public class DB_Read {
 					do {
 						tmp = new HomeElement(
 								record.getId(),
-								record.getFormattedTime(),
+								record.getFormattedDate(),
 								record.get_tag(),
 								cursor.getInt(0),
 								cursor.getFloat(1),
@@ -2036,12 +2042,13 @@ public class DB_Read {
 								record.getId_bloodglucose());
 						//insert id_note
 						logBookEntries.add(tmp);
-						//cursor.moveToNext();
+						cursor.moveToNext();
 					} while (!cursor.isAfterLast());
 					cursor.close();
 				} else {
 					cursor.close();
 				}
+				Log.i(TAG, "number records after = "+logBookEntries.size());
 			}
 		}
 		return logBookEntries;
@@ -2543,7 +2550,96 @@ public class DB_Read {
 			return null;
 		}
 	}
+    private String create_sql_string(RawRecord record){
+        String sqlCommand = "SELECT ";
+        String selectCarbs;
+        String fromCarbs;
+        String whereCarbs;
 
+        String selectInsu;
+        String fromInsu;
+        String whereInsu;
+
+        String selectGluc;
+        String fromGluc;
+        String whereGluc;
+
+        //carbs, insu, insuname, glycemia
+        if(record.getId_carbs()!=-1){//TODO '' != -1 <- reparar
+            selectCarbs = " Reg_CarboHydrate.Value ";
+            fromCarbs = " Reg_CarboHydrate ";
+            whereCarbs = " Reg_CarboHydrate.Id ='"+record.getId_carbs()+"' ";
+
+            if(record.getId_insulin()!=-1){//TODO '' != -1 <- reparar
+                selectInsu = ", Reg_Insulin.Value, Insulin.Name ";
+                fromInsu = ", Reg_Insulin, Insulin ";
+                whereInsu = " and Reg_Insulin.Id = '"+record.getId_insulin()+"' and Reg_Insulin.Id_Insulin = Insulin.Id ";
+
+                if(record.getId_insulin()!=-1){//TODO '' != -1 <- reparar
+                    selectGluc = " , Reg_BloodGlucose.Value ";
+                    fromGluc = ", Reg_BloodGlucose ";
+                    whereGluc = " and Reg_BloodGlucose.Id = '"+record.getId_bloodglucose()+"' ";
+
+                }else{
+                    selectGluc = " , -1 ";
+                    fromGluc = " ";
+                    whereGluc = " ";
+                }
+            }else{
+                selectInsu = " , -1, -1 ";
+                fromInsu = " ";
+                whereInsu = " ";
+
+                if(record.getId_insulin()!=-1){//TODO '' != -1 <- reparar
+                    selectGluc = " , Reg_BloodGlucose.Value ";
+                    fromGluc = " , Reg_BloodGlucose ";
+                    whereGluc = " and Reg_BloodGlucose.Id = '"+record.getId_bloodglucose()+"' ";
+                }else{
+                    selectGluc = " , -1 ";
+                    fromGluc = " ";
+                    whereGluc = " ";
+                }
+            }
+        }else{
+            selectCarbs = "-1";
+            fromCarbs = " ";
+            whereCarbs = " ";
+
+            if(record.getId_insulin()!=-1){//TODO '' != -1 <- reparar
+                selectInsu = " ,Reg_Insulin.Value, Insulin.Name ";
+                fromInsu = " Reg_Insulin, Insulin ";
+                whereInsu = " Reg_Insulin.Id = '"+record.getId_insulin()+"' and Reg_Insulin.Id_Insulin = Insulin.Id ";
+
+                if(record.getId_insulin()!=-1){//TODO '' != -1 <- reparar
+                    selectGluc = " , Reg_BloodGlucose.Value ";
+                    fromGluc = " ,Reg_BloodGlucose ";
+                    whereGluc = " and Reg_BloodGlucose.Id = '"+record.getId_bloodglucose()+"' ";
+                }else{
+                    selectGluc = " , -1 ";
+                    fromGluc = " ";
+                    whereGluc = " ";
+                }
+            }else{
+				selectInsu = " , -1, -1 ";
+                fromInsu = " ";
+                whereInsu = " ";
+
+                if(record.getId_insulin()!=-1){//TODO '' != -1 <- reparar
+                    selectGluc = " , Reg_BloodGlucose.Value ";
+                    fromGluc = " Reg_BloodGlucose ";
+                    whereGluc = " Reg_BloodGlucose.Id = '"+record.getId_bloodglucose()+"' ";
+                }else{
+                    selectGluc = " , -1 ";
+                    fromGluc = " ";
+                    whereGluc = " ";
+                }
+            }
+        }
+
+
+        sqlCommand+=selectCarbs+selectInsu+selectGluc+" From "+fromCarbs+fromInsu+fromGluc+" Where "+whereCarbs+whereInsu+whereGluc;
+        return sqlCommand;
+    }
 
 
 }

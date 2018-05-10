@@ -16,10 +16,10 @@ public class GlycemiaRec extends DateTime implements Parcelable {
 			return new GlycemiaRec[size];
 		}
 	};
-	private int id;
-	private int idUser;
-	private int value;
-	private int idTag;
+	private int id = -1;
+	private int idUser = -1;
+	private int value = -1;
+	private int idTag = -1;
 	private int idNote = -1;
 	private int bg_target = -1;
 

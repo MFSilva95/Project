@@ -8,7 +8,7 @@ import java.util.Calendar;
  */
 public class RawRecord {
 
-    private Calendar dateTime;
+    private String dateTime;
     private String tag;
     private int id_carbs;
     private int id_insulin;
@@ -40,11 +40,8 @@ public class RawRecord {
 
 
     public RawRecord(int id, String dateTime, String tag, int id_carbs, int id_insulin, int id_bloodglucose, int id_note) {
-        try {
-            this.dateTime = DateUtils.parseDateTime(dateTime);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+        this.dateTime = dateTime;
         this.id = id;
         this.tag = tag;
         this.id_carbs = id_carbs;
@@ -54,11 +51,24 @@ public class RawRecord {
     }
 
     public String getFormattedDate() {
-        return DateUtils.getFormattedDate(dateTime);
+        return dateTime;
     }
 
     public String getFormattedTime() {
-        return DateUtils.getFormattedTime(dateTime);
+        //return DateUtils.getFormattedTime(dateTime);
+        return dateTime;
     }
 
+    @Override
+    public String toString() {
+        return "RawRecord{" +
+                //"dateTime=" + dateTime.toString() +
+                ", tag='" + tag + '\'' +
+                ", id_carbs=" + id_carbs +
+                ", id_insulin=" + id_insulin +
+                ", id=" + id +
+                ", id_bloodglucose=" + id_bloodglucose +
+                ", id_note=" + id_note +
+                '}';
+    }
 }

@@ -1780,7 +1780,7 @@ public class BadgeUtils {
         LinkedList<WeightRec> weightList = db.getWeightByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
         LinkedList<HbA1cRec> hbA1cList = db.getHbA1cByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
         LinkedList<DiseaseRec> diseaseList = db.getDiseaseByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
-        LinkedList<HomeElement> logList = db.getLogBookByDate(DateUtils.getFormattedDate(Calendar.getInstance())); // this costs a lot
+        LinkedList<HomeElement> logList = db.getLogBookFromStartDate(DateUtils.getFormattedDate(Calendar.getInstance()));
         //
 
         int size = exerciseList.size() + bpList.size() + cholesterolList.size() + weightList.size() + hbA1cList.size() + diseaseList.size() + logList.size();

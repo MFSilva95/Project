@@ -134,7 +134,7 @@ public class NewHomeRegistry extends AppCompatActivity{
 
 
     private ArrayList<String> buttons;
-    private ArrayList<String> buttonsUpdate;
+    //private ArrayList<String> buttonsUpdate;
     private ArrayList<String> delete_buttons;
 
 
@@ -483,7 +483,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                             if (carbsData.getId()!=-1) {
                                 reg.Carbs_Update(carbsData);
                             } else {
-                                reg.Carbs_Save(carbsData);
+                                carbsData.setId(reg.Carbs_Save(carbsData));
                             }
                         }
                         break;
@@ -501,7 +501,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                             if (glycemiaData.getId()!=-1) {
                                 reg.Glycemia_Update(glycemiaData);
                             } else {
-                                reg.Glycemia_Save(glycemiaData);
+                                glycemiaData.setId(reg.Glycemia_Save(glycemiaData));
                             }
                         }
                         break;
@@ -516,20 +516,25 @@ public class NewHomeRegistry extends AppCompatActivity{
                             }else{
                                 insulinData.setIdNote(-1);
                             }
-                            if(buttonsUpdate.contains(INSULIN) && !delete_buttons.contains(INSULIN)){
+                            if(insulinData.getId()!=-1){
                                 reg.Insulin_Update(insulinData);
                             }else{
-                                reg.Insulin_Save(insulinData);
+                                insulinData.setId(reg.Insulin_Save(insulinData));
                             }
                         }
                         break;
                     case NOTE:
                         if (noteData != null) {
-                            reg.Note_Update(noteData);
+                            if(noteData.getId()!=-1){
+                                reg.Note_Update(noteData);
+                            }else{
+                                noteData.setId(reg.Note_Add(noteData));
+                            }
+
                         }
                         break;
                 }
-                reg.Record_Update(recordId,idUser, registerDate, idTag,carbsData.getId(),insulinData.getId(),glycemiaData.getId());
+                reg.Record_Update(recordId,idUser, registerDate, idTag,carbsData.getId(),insulinData.getId(),glycemiaData.getId(),noteData.getId());
 
             }catch (Exception e){
                 throw e;
@@ -592,7 +597,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                             }else{
                                 carbsData.setIdNote(-1);
                             }
-                            reg.Carbs_Save(carbsData);
+                            carbsData.setId(reg.Carbs_Save(carbsData));
                         }
                         break;
                     case GLICAEMIA:
@@ -606,7 +611,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                             }else{
                                 glycemiaData.setIdNote(-1);
                             }
-                            reg.Glycemia_Save(glycemiaData);
+                            glycemiaData.setId(reg.Glycemia_Save(glycemiaData));
                         }
                         break;
                     case INSULIN:
@@ -620,16 +625,16 @@ public class NewHomeRegistry extends AppCompatActivity{
                             }else{
                                 insulinData.setIdNote(-1);
                             }
-                            reg.Insulin_Save(insulinData);
+                            noteData.setId(reg.Insulin_Save(insulinData));
                         }
                         break;
                     case NOTE:
                         if (noteData != null) {
-                            reg.Note_Add(noteData);
+                            noteData.setId(reg.Note_Add(noteData));
                         }
                         break;
                 }
-                reg.Record_Add(idUser, registerDate, idTag,carbsData.getId(),insulinData.getId(),glycemiaData.getId());
+                reg.Record_Add(idUser, registerDate, idTag,carbsData.getId(),insulinData.getId(),glycemiaData.getId(),noteData.getId());
 
             }catch (Exception e){
                 throw e;
@@ -752,7 +757,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void insertInsulinSuggestion(String field){
 
         if(!buttons.contains(INSULIN)){
-            if(buttonsUpdate.contains(INSULIN)){
+            if(isRecordUpdate){
                 delete_buttons.remove(INSULIN);
             }
             insertInsulinMenu(false);
@@ -769,21 +774,21 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void setupBottomSheet() {
 
         Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
-        if(buttonsUpdate.size()==0 && buttons.size()==0){
+        if(buttons.size()==0){
             button.setEnabled(false);
         }
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (buttons.contains(NOTE)) {
-                    if(buttonsUpdate.contains(NOTE)){
+                    if(isRecordUpdate){
                         delete_buttons.add(NOTE);
                     }
                     removeContent(noteRegisterInputInterface);
                     buttons.remove(NOTE);
                     bottomSheetViewgroup.findViewById(R.id.bs_notes).setPressed(false);
                 } else {
-                    if(buttonsUpdate.contains(NOTE)){
+                    if(isRecordUpdate){
                         delete_buttons.remove(NOTE);
                     }
                     setNotePressed(v);
@@ -796,14 +801,14 @@ public class NewHomeRegistry extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (buttons.contains(GLICAEMIA)) {
-                    if(buttonsUpdate.contains(GLICAEMIA)){
+                    if(isRecordUpdate){
                         delete_buttons.add(GLICAEMIA);
                     }
                     removeContent(glycaemiaRegisterInputInterface);
                     buttons.remove(GLICAEMIA);
                     bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(false);
                 } else {
-                    if(buttonsUpdate.contains(GLICAEMIA)){
+                    if(isRecordUpdate){
                         delete_buttons.remove(GLICAEMIA);
                     }
                     setGlicPressed(v);
@@ -814,14 +819,14 @@ public class NewHomeRegistry extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (buttons.contains(CARBS)) {
-                    if(buttonsUpdate.contains(CARBS)){
+                    if(isRecordUpdate){
                         delete_buttons.add(CARBS);
                     }
                     removeContent(carbsRegisterInputInterface);
                     buttons.remove(CARBS);
                     bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(false);
                 } else {
-                    if(buttonsUpdate.contains(CARBS)){
+                    if(isRecordUpdate){
                         delete_buttons.remove(CARBS);
                     }
                     setCarbsPressed(v);
@@ -833,14 +838,14 @@ public class NewHomeRegistry extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 if (buttons.contains(INSULIN)) {
-                    if(buttonsUpdate.contains(INSULIN)){
+                    if(isRecordUpdate){
                         delete_buttons.add(INSULIN);
                     }
                     removeContent(insuRegisterInputInterface);
                     buttons.remove(INSULIN);
                     bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(false);
                 } else {
-                    if(buttonsUpdate.contains(INSULIN)){
+                    if(isRecordUpdate){
                         delete_buttons.remove(INSULIN);
                     }
                     setInsuPressed(v);
@@ -864,8 +869,11 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
     private void fillParameters(Bundle args, boolean isUpdate){
 
-        if (args.containsKey(ARG_BUTTONS_UPDATE_LIST)) {
-            this.buttonsUpdate = args.getStringArrayList(ARG_BUTTONS_UPDATE_LIST);
+//        if (args.containsKey(ARG_BUTTONS_UPDATE_LIST)) {
+//            this.buttonsUpdate = args.getStringArrayList(ARG_BUTTONS_UPDATE_LIST);
+//        }
+        if (args.containsKey(ARG_IS_RECORD_UPDATE)){
+            this.isRecordUpdate = args.getBoolean(ARG_IS_RECORD_UPDATE);
         }
         if (args.containsKey(ARG_BUTTONS_DELETE_LIST)) {
             this.delete_buttons = args.getStringArrayList(ARG_BUTTONS_DELETE_LIST);
@@ -889,7 +897,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                 if (carbsData != null) {
                     carbsData = db_read.CarboHydrate_GetById(carbsData.getId());
                     if (carbsData != null) {
-                        buttonsUpdate.add(CARBS);
+                        //buttonsUpdate.add(CARBS);
                         insertCarbsMenu();
                         carbsRegisterInputInterface.fill_parameters(carbsData);
                         String imgPath = carbsData.getPhotoPath();
@@ -911,7 +919,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                 if (glycemiaData != null) {
                     glycemiaData = db_read.Glycemia_GetById(glycemiaData.getId());
                     if (glycemiaData != null) {
-                        buttonsUpdate.add(GLICAEMIA);
+                        //buttonsUpdate.add(GLICAEMIA);
                         insertGlicMenu();
                         glycaemiaRegisterInputInterface.fill_parameters(glycemiaData);
 
@@ -925,7 +933,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                 if (insulinData != null) {
                     insulinData = db_read.InsulinReg_GetById(insulinData.getId());
                     if (insulinData != null) {
-                        buttonsUpdate.add(INSULIN);
+                        //buttonsUpdate.add(INSULIN);
                         insertInsulinMenu(false);
                         insuRegisterInputInterface.fill_parameters(insulinData);
                         insuRegisterInputInterface.updateInsuCalc(insulinCalculator);
@@ -939,7 +947,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                 noteData.setId(noteId);//args.getParcelable(ARG_NOTE);
                 Log.i(TAG, "fillParameters: UPDATE "+noteData.toString());
                 if(noteData!=null){
-                    buttonsUpdate.add(NOTE);
+                    //buttonsUpdate.add(NOTE);
                     insertNoteMenu();
                     noteRegisterInputInterface.fill_parameters(noteData.getNote());
                 }

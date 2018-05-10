@@ -830,8 +830,15 @@ public class DB_Write {
 		toUpdate.put("Value", t.getValue());
 		myDB.update("Ratio_Reg", toUpdate, "Id=" + t.getId(), null);
 	}
-
-	public void Record_Add(int user_id, Calendar datetimeC, int tag_id, int carbs_id, int insulin_id, int bloodgluc_id) {
+//Record(Id INTEGER PRIMARY KEY AUTOINCREMENT,
+// Id_User INTEGER NOT NULL,
+// DateTime DATETIME NOT NULL,
+// Id_Tag INTEGER,
+// Id_Carbs INTEGER,
+// Id_Insulin INTEGER,
+// Id_BloodGlucose INTEGER,
+// Id_Note INTEGER);
+	public void Record_Add(int user_id, Calendar datetimeC, int tag_id, int carbs_id, int insulin_id, int bloodgluc_id, int note_id) {
 		String datetime = DateUtils.formatToDb(datetimeC);
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", user_id);
@@ -840,10 +847,11 @@ public class DB_Write {
 		toInsert.put("Id_Carbs", carbs_id);
 		toInsert.put("Id_Insulin", insulin_id);
 		toInsert.put("Id_BloodGlucose", bloodgluc_id);
+		toInsert.put("Id_Note", note_id);
 		myDB.insert("Record", null, toInsert);
 	}
 
-	public void Record_Update(int record_id, int user_id, Calendar datetimeC, int tag_id, int carbs_id, int insulin_id, int bloodgluc_id) {
+	public void Record_Update(int record_id, int user_id, Calendar datetimeC, int tag_id, int carbs_id, int insulin_id, int bloodgluc_id, int note_id) {
 		String datetime = DateUtils.formatToDb(datetimeC);
 		ContentValues toUpdate = new ContentValues();
 		toUpdate.put("Id_User", user_id);
@@ -852,6 +860,7 @@ public class DB_Write {
 		toUpdate.put("Id_Carbs", carbs_id);
 		toUpdate.put("Id_Insulin", insulin_id);
 		toUpdate.put("Id_BloodGlucose", bloodgluc_id);
+		toUpdate.put("Id_Note", note_id);
 		myDB.update("Record", toUpdate, "Id=" + record_id, null);
 	}
 
