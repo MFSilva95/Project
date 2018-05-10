@@ -52,6 +52,10 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         return callBack;
     }
 
+    public void setErrorMessage(String errorMessage){
+        this.carbs_input.setError(errorMessage);
+    }
+
     private NewHomeRegistry.NewHomeRegCallBack callBack;
 
     public CarbsRegister_Input_Interface(Context context, NewHomeRegistry.NewHomeRegCallBack call) {
@@ -120,6 +124,7 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
             int height = (int) (displaymetrics.heightPixels * 0.1);
             int width = (int) (displaymetrics.widthPixels * 0.1);
             b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+            carbsData.setPhotoPath(imgUri.getPath());
             image_button.setImageBitmap(b);
         }
 

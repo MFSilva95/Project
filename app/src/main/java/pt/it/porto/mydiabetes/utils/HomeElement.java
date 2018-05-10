@@ -17,6 +17,7 @@ public class HomeElement {
 
     private Calendar dateTime;
     private String tag;
+    private int recordID;
     private int carbs;
     private float insulinVal;
     private String insulinName;
@@ -40,7 +41,7 @@ public class HomeElement {
         this.displayType = type;
         this.name = name;
     }
-    public HomeElement(String dateTime, String tag, int carbs, float insulinVal, String insulinName, int glycemia, int carbsId, int insulinId, int glycemiaId) {
+    public HomeElement(String dateTime, int recordId, String tag, int carbs, float insulinVal, String insulinName, int glycemia, int carbsId, int insulinId, int glycemiaId) {
         this.displayType = Type.LOGITEM;
 
         try {
@@ -48,6 +49,7 @@ public class HomeElement {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        this.recordID = recordId;
         this.tag = tag;
         this.carbs = carbs;
         this.insulinVal = insulinVal;

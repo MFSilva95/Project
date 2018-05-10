@@ -55,6 +55,9 @@ public class InsuRegister_Input_Interface extends LinearLayout {
         this.cRatio = cRatio;
         init();
     }
+    public void setErrorMessage(String errorMessage){
+        this.insulin_input.setError(errorMessage);
+    }
 
     private void addContent(LinearLayout view) {
         insuInfoContent.addView(view, 0);//contentLayout.getChildCount() - 1);

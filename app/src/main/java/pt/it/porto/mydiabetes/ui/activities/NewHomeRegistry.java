@@ -66,6 +66,7 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
+import pt.it.porto.mydiabetes.ui.charts.data.Carbs;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
@@ -99,6 +100,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     private static final String ARG_BLOOD_GLUCOSE = "ARG_BLOOD_GLUCOSE";
     private static final String ARG_NOTE = "ARG_NOTE";
     private static final String ARG_TAG_INDEX = "ARG_TAG_INDEX";
+    private static final String ARG_RECORD_ID = "ARG_RECORD_ID";
 
     private static final String ARG_IS_RECORD_UPDATE = "ARG_IS_RECORD_UPDATE";
     private static final String ARG_BUTTONS_DELETE_LIST = "ARG_BUTTONS_DELETE_LIST";
@@ -148,6 +150,7 @@ public class NewHomeRegistry extends AppCompatActivity{
 
     private Uri generatedImageUri;
     private Uri imgUri;
+    private int recordId=-1;
 
     private int noteId;
     private String mCurrentPhotoPath;
@@ -247,6 +250,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         outState.putParcelable(ARG_CARBS, carbsData);
         outState.putParcelable(ARG_NOTE, noteData);
         outState.putInt(ARG_TAG_INDEX, idTag);
+        outState.putInt(ARG_RECORD_ID, recordId);
 
 //        if (glycaemiaRegisterInputInterface != null ) {
 //            glycemiaData  = glycaemiaRegisterInputInterface.save_read();
@@ -397,6 +401,154 @@ public class NewHomeRegistry extends AppCompatActivity{
             return;
         }
     }
+
+    private void verify_note_conditions()throws Exception{
+        if(buttons.contains(NOTE)){
+            if(buttons.size()<=2){
+                noteRegisterInputInterface.setErrorMessage(getString(R.string.noteError));
+                throw new Exception();
+            }
+        }
+    }
+    private void verify_carbs_conditions()throws Exception{
+        if(buttons.contains(CARBS)){
+            if(!carbsRegisterInputInterface.validate()){
+                carbsRegisterInputInterface.setErrorMessage(getString(R.string.carbsError));
+                throw new Exception();}
+        }
+    }
+    private void verify_glucose_conditions()throws Exception{
+        if(buttons.contains(GLICAEMIA)){
+            if(!glycaemiaRegisterInputInterface.validate()){
+                glycaemiaRegisterInputInterface.setErrorMessage(getString(R.string.glucError));
+                throw new Exception();
+            }
+        }
+    }
+    private void verify_insulin_conditions()throws Exception{
+        if(buttons.contains(INSULIN)){
+            if(!insuRegisterInputInterface.validate()){
+                insuRegisterInputInterface.setErrorMessage(getString(R.string.insuError));
+                throw new Exception();
+            }
+        }
+    }
+
+    private void update_record () throws Exception{
+
+        spinner = findViewById(R.id.tag_spinner);
+        int idTag = (spinner.getSelectedItemPosition()+1);
+
+        DB_Read rdb = new DB_Read(this);
+        int idUser = rdb.getId();
+        DB_Write reg = new DB_Write(this);
+
+        verify_note_conditions();
+        verify_carbs_conditions();
+        verify_glucose_conditions();
+        verify_insulin_conditions();
+
+        if(delete_buttons.contains(NOTE)){
+            reg.Note_Delete(noteData.getId());
+            noteData = null;
+        }
+        if(delete_buttons.contains(CARBS)){
+            reg.Carbs_Delete(carbsData.getId());
+            carbsData = null;
+        }
+        if(delete_buttons.contains(GLICAEMIA)){
+            reg.Glycemia_Delete(glycemiaData.getId());
+            glycemiaData = null;
+        }
+        if(delete_buttons.contains(INSULIN)){
+            reg.Insulin_Delete(insulinData.getId());
+            insulinData = null;
+        }
+
+        for(String field:buttons){
+            try {
+                switch (field){
+                    case CARBS:
+                        if(carbsData != null){
+                            carbsData.setIdTag(idTag);
+                            carbsData.setIdUser(idUser);
+                            carbsData.setDateTime(registerDate);
+
+                            if(noteData != null) {
+                                carbsData.setIdNote(noteData.getId());
+                            }else{
+                                carbsData.setIdNote(-1);
+                            }
+
+                            if (carbsData.getId()!=-1) {
+                                reg.Carbs_Update(carbsData);
+                            } else {
+                                reg.Carbs_Save(carbsData);
+                            }
+                        }
+                        break;
+                    case GLICAEMIA:
+                        if(glycemiaData != null){
+                            glycemiaData.setIdTag(idTag);
+                            glycemiaData.setIdUser(idUser);
+                            glycemiaData.setDateTime(registerDate);
+
+                            if(noteData != null) {
+                                glycemiaData.setIdNote(noteData.getId());
+                            }else{
+                                glycemiaData.setIdNote(-1);
+                            }
+                            if (glycemiaData.getId()!=-1) {
+                                reg.Glycemia_Update(glycemiaData);
+                            } else {
+                                reg.Glycemia_Save(glycemiaData);
+                            }
+                        }
+                        break;
+                    case INSULIN:
+                        if(insulinData != null){
+                            insulinData.setIdTag(idTag);
+                            insulinData.setIdUser(idUser);
+                            insulinData.setDateTime(registerDate);
+
+                            if(noteData != null) {
+                                insulinData.setIdNote(noteData.getId());
+                            }else{
+                                insulinData.setIdNote(-1);
+                            }
+                            if(buttonsUpdate.contains(INSULIN) && !delete_buttons.contains(INSULIN)){
+                                reg.Insulin_Update(insulinData);
+                            }else{
+                                reg.Insulin_Save(insulinData);
+                            }
+                        }
+                        break;
+                    case NOTE:
+                        if (noteData != null) {
+                            reg.Note_Update(noteData);
+                        }
+                        break;
+                }
+                reg.Record_Update(recordId,idUser, registerDate, idTag,carbsData.getId(),insulinData.getId(),glycemiaData.getId());
+
+            }catch (Exception e){
+                throw e;
+            }
+        }
+        if(buttons.size()==1 && buttons.contains(NOTE)){
+            reg.Note_Delete(noteData.getId());
+        }
+
+        Log.i(TAG, "validateInfo_Save: BEGIN");
+        BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
+        BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
+        LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log", rdb);
+        setResult(Home.CHANGES_OCCURRED, this.getIntent());
+        Log.i(TAG, "validateInfo_Save: END");
+        rdb.close();
+        reg.close();
+    }
+
     private void validateInfo_Save()throws Exception{ //tag, idUser, idTag, error_handle, delete_handle, validate values, img
         spinner = findViewById(R.id.tag_spinner);
 //        String tag = null;
@@ -742,7 +894,8 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
     private void setImgURI(Uri newUri){
         carbsRegisterInputInterface.setUri(newUri);
-        imgUri = newUri;}
+        //imgUri = newUri;
+    }
     private void imageRemoved() {
         setImgURI(null);
     }
@@ -763,6 +916,10 @@ public class NewHomeRegistry extends AppCompatActivity{
 
         DB_Read db_read = new DB_Read(this);
         if(isUpdate){
+
+            if(args.containsKey(ARG_RECORD_ID)){
+                recordId = args.getParcelable(ARG_RECORD_ID);
+            }
 
             if (args.containsKey(ARG_CARBS)) {
                 carbsData = args.getParcelable(ARG_CARBS);

@@ -17,7 +17,7 @@ public class CarbsRec extends DateTime implements Parcelable {
 			return new CarbsRec[size];
 		}
 	};
-	private int id;
+	private int id = -1;
 	private int id_User;
 	private int value;
 	private String photopath;

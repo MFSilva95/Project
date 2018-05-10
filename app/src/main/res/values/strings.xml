@@ -179,6 +179,9 @@
     <string name="hint_medicine" tools:ignore="MissingTranslation">Ben u Ron 1000</string>
     <string name="units">unidades</string>
     <string name="noteError">Por favor insira um outro registo</string>
+    <string name="carbsError">O valor inserido não é válido</string>
+    <string name="insuError">O valor inserido não é válido</string>
+    <string name="glucError">O valor inserido não é válido</string>
     <string name="hc_units">uni</string>
     <string name="gli_units" tools:ignore="MissingTranslation">mg/dl</string>
     <string name="pills" tools:ignore="MissingTranslation">comprimidos</string>

@@ -59,6 +59,9 @@ public class GlycaemiaRegister_Input_Interface extends LinearLayout {
         callBack = call;
         init();
     }
+    public void setErrorMessage(String errorMessage){
+        this.glycaemia_input.setError(errorMessage);
+    }
 
     private void init() {
         glycaemiaData = new GlycemiaRec();
