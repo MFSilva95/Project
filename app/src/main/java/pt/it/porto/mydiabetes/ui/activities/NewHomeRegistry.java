@@ -534,12 +534,13 @@ public class NewHomeRegistry extends AppCompatActivity{
                         }
                         break;
                 }
-                reg.Record_Update(recordId,idUser, registerDate, idTag,carbsData.getId(),insulinData.getId(),glycemiaData.getId(),noteData.getId());
+
 
             }catch (Exception e){
                 throw e;
             }
         }
+        reg.Record_Update(recordId,idUser, registerDate, idTag,carbsData.getId(),insulinData.getId(),glycemiaData.getId(),noteData.getId());
         if(buttons.size()==1 && buttons.contains(NOTE)){
             reg.Note_Delete(noteData.getId());
         }
@@ -634,12 +635,13 @@ public class NewHomeRegistry extends AppCompatActivity{
                         }
                         break;
                 }
-                reg.Record_Add(idUser, registerDate, idTag,carbsData.getId(),insulinData.getId(),glycemiaData.getId(),noteData.getId());
+
 
             }catch (Exception e){
                 throw e;
             }
         }
+        reg.Record_Add(idUser, registerDate, idTag,carbsData.getId(),insulinData.getId(),glycemiaData.getId(),noteData.getId());
         if(buttons.size()==1 && buttons.contains(NOTE)){
             reg.Note_Delete(noteData.getId());
         }
