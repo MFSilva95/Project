@@ -2551,6 +2551,7 @@ public class DB_Read {
 		}
 	}
     private String create_sql_string(RawRecord record){
+
         String sqlCommand = "SELECT ";
         String selectCarbs;
         String fromCarbs;
@@ -2624,7 +2625,7 @@ public class DB_Read {
                 fromInsu = " ";
                 whereInsu = " ";
 
-                if(record.getId_insulin()!=-1){//TODO '' != -1 <- reparar
+                if(record.getId_bloodglucose()!=-1){//TODO '' != -1 <- reparar
                     selectGluc = " , Reg_BloodGlucose.Value ";
                     fromGluc = " Reg_BloodGlucose ";
                     whereGluc = " Reg_BloodGlucose.Id = '"+record.getId_bloodglucose()+"' ";
