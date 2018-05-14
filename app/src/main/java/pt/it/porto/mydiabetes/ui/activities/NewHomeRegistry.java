@@ -626,7 +626,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                             }else{
                                 insulinData.setIdNote(-1);
                             }
-                            noteData.setId(reg.Insulin_Save(insulinData));
+                            insulinData.setId(reg.Insulin_Save(insulinData));
                         }
                         break;
                     case NOTE:
@@ -874,6 +874,8 @@ public class NewHomeRegistry extends AppCompatActivity{
 //        if (args.containsKey(ARG_BUTTONS_UPDATE_LIST)) {
 //            this.buttonsUpdate = args.getStringArrayList(ARG_BUTTONS_UPDATE_LIST);
 //        }
+        isRecordUpdate = isUpdate;
+
         if (args.containsKey(ARG_IS_RECORD_UPDATE)){
             this.isRecordUpdate = args.getBoolean(ARG_IS_RECORD_UPDATE);
         }
@@ -891,7 +893,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         if(isUpdate){
 
             if(args.containsKey(ARG_RECORD_ID)){
-                recordId = args.getParcelable(ARG_RECORD_ID);
+                recordId = args.getInt(ARG_RECORD_ID);
             }
 
             if (args.containsKey(ARG_CARBS)) {

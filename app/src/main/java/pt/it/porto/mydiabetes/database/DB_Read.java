@@ -150,6 +150,14 @@ public class DB_Read {
 		return tag;
 	}
 
+	public String Tag_GetNameById(int id) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag where Id='" + id + "'", null);
+		cursor.moveToFirst();
+		String name = cursor.getString(1);
+		cursor.close();
+		return name;
+	}
+
 	public Tag Tag_GetByTime(String time) {
 		Tag tag = new Tag();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag WHERE  " + "(TimeStart < TimeEnd AND '" + time + "' >= TimeStart AND '" + time + "' <= TimeEnd)" +
@@ -1998,7 +2006,7 @@ public class DB_Read {
 				tmp = new RawRecord(
 						cursor.getInt(0),
 						cursor.getString(1),
-						cursor.getString(2),
+						cursor.getInt(2),
 						cursor.getInt(3),
 						cursor.getInt(4),
 						cursor.getInt(5),
@@ -2611,7 +2619,7 @@ public class DB_Read {
                 fromInsu = " Reg_Insulin, Insulin ";
                 whereInsu = " Reg_Insulin.Id = '"+record.getId_insulin()+"' and Reg_Insulin.Id_Insulin = Insulin.Id ";
 
-                if(record.getId_insulin()!=-1){//TODO '' != -1 <- reparar
+                if(record.getId_bloodglucose()!=-1){//TODO '' != -1 <- reparar
                     selectGluc = " , Reg_BloodGlucose.Value ";
                     fromGluc = " ,Reg_BloodGlucose ";
                     whereGluc = " and Reg_BloodGlucose.Id = '"+record.getId_bloodglucose()+"' ";

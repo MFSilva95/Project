@@ -51,24 +51,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private static int indexSelected;
     private homeMiddleFragment.MiddleFragRegCallBackImpl callBack;
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        Bundle args = getIntent().getExtras();
-//        if (args != null) {
-//            inflater.inflate(R.menu.weight_detail_delete, menu);
-//        }
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.menuItem_WeightDetail_Delete:
-//                deleteRegister();
-//                return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+
 
     public HomeElement getFromHomeList(int index) {
         return homeList.get(index);
@@ -230,12 +213,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
                 HomeElement logbookDataBinding = ((ViewHolder) v.getTag()).item;
                 if(logbookDataBinding.isPressed()){
-                    Log.i("cenas", "onLongClick: NOT pressed");
+                    //Log.i("cenas", "onLongClick: NOT pressed");
                     logbookDataBinding.setPressed(false);
                     callBack.removeToDelete(logbookDataBinding);
 
                 }else{
-                    Log.i("cenas", "onLongClick: pressed");
+                    //Log.i("cenas", "onLongClick: pressed");
                     logbookDataBinding.setPressed(true);
                     callBack.addToDelete(logbookDataBinding);
                 }
@@ -271,8 +254,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     if(logbookDataBinding.getRecordID() != -1){
                         args.putInt(DetailLogbookActivity.ARG_RECORD_ID, logbookDataBinding.getRecordID());
                     }
-                    if(logbookDataBinding.getTag() != null){
-                        args.putString("tag",logbookDataBinding.getTag());
+                    if(logbookDataBinding.getTag_name() != null){
+                        args.putString("tag",logbookDataBinding.getTag_name());
                     }
                     if (logbookDataBinding.getGlycemiaId() != -1) {
                         GlycemiaRec glycemiaRec = new GlycemiaRec();
@@ -306,7 +289,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         holder.item = currentView;
         holder.hora.setText(currentView.getFormattedTime());
-        holder.tag.setText(currentView.getTag());
+        holder.tag.setText(currentView.getTag_name());
         LinearLayout imageTitleHolder = (LinearLayout) holder.view.findViewById(R.id.imageTitleHolder);
 
         holder.background.setBackgroundColor(!currentView.isPressed()?Color.TRANSPARENT:Color.LTGRAY);

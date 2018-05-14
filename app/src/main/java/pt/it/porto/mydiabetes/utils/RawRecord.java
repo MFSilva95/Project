@@ -9,12 +9,12 @@ import java.util.Calendar;
 public class RawRecord {
 
     private String dateTime;
-    private String tag;
+    private int tag;
     private int id_carbs;
     private int id_insulin;
     private int id;
 
-    public String get_tag() {
+    public int get_tag() {
         return tag;
     }
 
@@ -39,7 +39,7 @@ public class RawRecord {
     private int id_note;
 
 
-    public RawRecord(int id, String dateTime, String tag, int id_carbs, int id_insulin, int id_bloodglucose, int id_note) {
+    public RawRecord(int id, String dateTime, int tag, int id_carbs, int id_insulin, int id_bloodglucose, int id_note) {
 
         this.dateTime = dateTime;
         this.id = id;

@@ -16,7 +16,8 @@ public class HomeElement {
     private String name;
 
     private Calendar dateTime;
-    private String tag;
+    private String tag_name;
+    private int tag_id;
     private int recordID;
     private int carbs;
     private float insulinVal;
@@ -33,6 +34,12 @@ public class HomeElement {
     public void setPressed(boolean pressed){
         isPressed = pressed;
     }
+    public void setTag_id(int tag){
+        this.tag_id = tag;
+    }
+    public void setTag_name(String tag){
+        this.tag_name = tag;
+    }
 
     public HomeElement(Type type){
         this.displayType = type;
@@ -41,7 +48,7 @@ public class HomeElement {
         this.displayType = type;
         this.name = name;
     }
-    public HomeElement( int recordId, String dateTime, String tag, int carbs, float insulinVal, String insulinName, int glycemia, int carbsId, int insulinId, int glycemiaId) {
+    public HomeElement( int recordId, String dateTime, int tag, int carbs, float insulinVal, String insulinName, int glycemia, int carbsId, int insulinId, int glycemiaId) {
         this.displayType = Type.LOGITEM;
 
         try {
@@ -50,7 +57,7 @@ public class HomeElement {
             e.printStackTrace();
         }
         this.recordID = recordId;
-        this.tag = tag;
+        this.tag_id = tag;
         this.carbs = carbs;
         this.insulinVal = insulinVal;
         this.insulinName = insulinName;
@@ -78,8 +85,11 @@ public class HomeElement {
     }
 
     public int getRecordID(){return recordID;}
-    public String getTag() {
-        return tag;
+    public int getTag_id() {
+        return tag_id;
+    }
+    public String getTag_name() {
+        return tag_name;
     }
 
     public int getCarbs() {

@@ -24,12 +24,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 
 import pt.it.porto.mydiabetes.data.CarbsRec;
@@ -164,6 +162,7 @@ public class homeMiddleFragment extends Fragment {
 
                 CharSequence newDateText = android.text.format.DateUtils.getRelativeTimeSpanString(getDateInMillis(elem.getFormattedDate()), currentTime, android.text.format.DateUtils.DAY_IN_MILLIS);
                 if (dateText.equals(newDateText)) {
+                    elem.setTag_name(db.Tag_GetNameById(elem.getTag_id()));
                     this.logBookList.add(elem);
                 } else {
                     dateText = newDateText;

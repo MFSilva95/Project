@@ -60,6 +60,7 @@
 
             <pt.it.porto.mydiabetes.ui.views.ExtendedEditText
                 android:id="@+id/insulin_intake"
+                android:importantForAutofill="noExcludeDescendants"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/insulin_intake"
