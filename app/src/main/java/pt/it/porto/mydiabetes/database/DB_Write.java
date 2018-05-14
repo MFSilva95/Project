@@ -861,7 +861,8 @@ public class DB_Write {
 		toUpdate.put("Id_Insulin", insulin_id);
 		toUpdate.put("Id_BloodGlucose", bloodgluc_id);
 		toUpdate.put("Id_Note", note_id);
-		myDB.update("Record", toUpdate, "Id=" + record_id, null);
+		int res = myDB.update("Record", toUpdate, "Id=" + record_id, null);
+		//Log.i("debug", "Record_Update: -> "+res);
 	}
 
 	public void recoverSensitivity(){

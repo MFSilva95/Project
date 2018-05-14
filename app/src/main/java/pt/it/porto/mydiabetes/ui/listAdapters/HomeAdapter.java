@@ -33,6 +33,7 @@ import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 
 //import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
+import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
@@ -254,8 +255,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                     if(logbookDataBinding.getRecordID() != -1){
                         args.putInt(DetailLogbookActivity.ARG_RECORD_ID, logbookDataBinding.getRecordID());
                     }
-                    if(logbookDataBinding.getTag_name() != null){
-                        args.putString("tag",logbookDataBinding.getTag_name());
+                    if(logbookDataBinding.getTag_id()!=-1){
+                        DB_Read read = new DB_Read(v.getContext());
+                        args.putString("tag",read.Tag_GetNameById(logbookDataBinding.getTag_id()));
+                        read.close();
                     }
                     if (logbookDataBinding.getGlycemiaId() != -1) {
                         GlycemiaRec glycemiaRec = new GlycemiaRec();
@@ -289,7 +292,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         holder.item = currentView;
         holder.hora.setText(currentView.getFormattedTime());
-        holder.tag.setText(currentView.getTag_name());
+        if(currentView.getTag_id()!=-1){
+            DB_Read read = new DB_Read(holder.view.getContext());
+            holder.tag.setText(read.Tag_GetNameById(currentView.getTag_id()));
+            read.close();
+        }
+        //holder.tag.setText(currentView.getTag_name());
         LinearLayout imageTitleHolder = (LinearLayout) holder.view.findViewById(R.id.imageTitleHolder);
 
         holder.background.setBackgroundColor(!currentView.isPressed()?Color.TRANSPARENT:Color.LTGRAY);
