@@ -632,11 +632,12 @@ public class NewHomeRegistry extends AppCompatActivity{
 
 
             }catch (Exception e){
+                Log.i(TAG, "save_record: "+e.getMessage());
                 throw e;
             }
         }
         reg.Record_Add(idUser, registerDate, idTag,carbsData.getId(),insulinData.getId(),glycemiaData.getId(),noteData.getId());
-        if(buttons.size()==1 && buttons.contains(NOTE)){
+        if(buttons.size()>=2 && buttons.contains(NOTE)){
             reg.Note_Delete(noteData.getId());
         }
 

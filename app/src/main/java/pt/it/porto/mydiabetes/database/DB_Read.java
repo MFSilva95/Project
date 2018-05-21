@@ -2037,19 +2037,23 @@ public class DB_Read {
 					cursor.moveToFirst();
 					HomeElement tmp;
 					do {
-						tmp = new HomeElement(
-								record.getId(),
-								record.getFormattedDate(),
-								record.get_tag(),
-								cursor.getInt(0),
-								cursor.getFloat(1),
-								cursor.getString(2),
-								cursor.getInt(3),
-								record.getId_carbs(),
-								record.getId_insulin(),
-								record.getId_bloodglucose());
-						//insert id_note
-						logBookEntries.add(tmp);
+						try{
+							tmp = new HomeElement(
+									record.getId(),
+									record.getFormattedDate(),
+									record.get_tag(),
+									cursor.getInt(0),
+									cursor.getFloat(1),
+									cursor.getString(2),
+									cursor.getInt(3),
+									record.getId_carbs(),
+									record.getId_insulin(),
+									record.getId_bloodglucose());
+							//insert id_note
+							logBookEntries.add(tmp);
+						}catch (Exception e){
+							e.printStackTrace();
+						}
 						cursor.moveToNext();
 					} while (!cursor.isAfterLast());
 					cursor.close();
@@ -2584,7 +2588,7 @@ public class DB_Read {
                 fromInsu = ", Reg_Insulin, Insulin ";
                 whereInsu = " and Reg_Insulin.Id = '"+record.getId_insulin()+"' and Reg_Insulin.Id_Insulin = Insulin.Id ";
 
-                if(record.getId_insulin()!=-1){//TODO '' != -1 <- reparar
+                if(record.getId_bloodglucose()!=-1){//TODO '' != -1 <- reparar
                     selectGluc = " , Reg_BloodGlucose.Value ";
                     fromGluc = ", Reg_BloodGlucose ";
                     whereGluc = " and Reg_BloodGlucose.Id = '"+record.getId_bloodglucose()+"' ";
@@ -2599,7 +2603,7 @@ public class DB_Read {
                 fromInsu = " ";
                 whereInsu = " ";
 
-                if(record.getId_insulin()!=-1){//TODO '' != -1 <- reparar
+                if(record.getId_bloodglucose()!=-1){//TODO '' != -1 <- reparar
                     selectGluc = " , Reg_BloodGlucose.Value ";
                     fromGluc = " , Reg_BloodGlucose ";
                     whereGluc = " and Reg_BloodGlucose.Id = '"+record.getId_bloodglucose()+"' ";
@@ -2646,7 +2650,7 @@ public class DB_Read {
         }
 
 
-        sqlCommand+=selectCarbs+selectInsu+selectGluc+" From "+fromCarbs+fromInsu+fromGluc+" Where "+whereCarbs+whereInsu+whereGluc;
+        sqlCommand+=selectCarbs+selectInsu+selectGluc+" From "+fromCarbs+fromInsu+fromGluc+" Where "+whereCarbs+whereInsu+whereGluc+ ";";
         return sqlCommand;
     }
 

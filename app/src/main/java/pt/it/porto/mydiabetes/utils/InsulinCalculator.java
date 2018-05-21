@@ -133,6 +133,7 @@ public class InsulinCalculator  implements Cloneable {
 
 
 	public float getInsulinGlycemia() {
+		if(glycemia<=0){return 0;}
 		return ((float)(glycemia - insulinTarget) / glycemiaRatio);
 	}
 
