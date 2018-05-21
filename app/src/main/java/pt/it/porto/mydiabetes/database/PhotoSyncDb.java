@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.io.File;
+
 public class PhotoSyncDb {
 
 
@@ -15,6 +17,9 @@ public class PhotoSyncDb {
 
 	public void removePhoto(String photoPath) {
 		storage.delete(MyDiabetesContract.SyncImagesDiff.TABLE_NAME, MyDiabetesContract.SyncImagesDiff.COLUMN_NAME_FILE_NAME + "=?", new String[]{photoPath});
+		File file = new File(photoPath);
+		boolean deleted = file.delete();
+		//Log.i("TEMP", "removePhoto: success? "+deleted);
 	}
 
 	public void removePhoto(int carbsId) {
@@ -22,7 +27,7 @@ public class PhotoSyncDb {
 		if (cursor.moveToFirst()) {
 			removePhoto(cursor.getString(0));
 		} else {
-			Log.d("PhotoSyncDb", "Photo not found when tried to delete");
+			Log.d("PhotoSyncDb", "Photo not found when deleting");
 		}
 	}
 

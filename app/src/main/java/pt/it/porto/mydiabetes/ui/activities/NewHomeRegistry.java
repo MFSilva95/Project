@@ -1171,21 +1171,6 @@ public class NewHomeRegistry extends AppCompatActivity{
                 if (ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.CAMERA)) {
                     ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
                 }
-//                else if (permissionStatus.getBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,false) || (permissionStatus.getBoolean(Manifest.permission.CAMERA,false))) {
-//                    sentToSettings = true;
-//                    Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-//                    Uri uri = Uri.fromParts("package", getPackageName(), null);
-//                    intent.setData(uri);
-//                    startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-//                } else {
-//                    //just request the permission
-//                    ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
-//                }
-
-//                SharedPreferences.Editor editor = permissionStatus.edit();
-//                editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,true);
-//                editor.putBoolean(Manifest.permission.CAMERA,true);
-//                editor.commit();
             } else {
                 try {
                     dispatchTakePictureIntent();

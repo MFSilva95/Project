@@ -258,14 +258,10 @@ public class homeMiddleFragment extends Fragment {
                 .setTitle(getString(R.string.deleteReading))
                 .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        //Falta verificar se não está associada a nenhuma entrada da DB
-                        //Rever porque não elimina o registo de glicemia
 
-                        //DB_Write reg = new DB_Write(c);
                         DB_Read db_read = new DB_Read(c);
                         DB_Write reg = new DB_Write(c);
                         try {
-                            Log.i(TAG, "onClick: deleteSIZE:" + toDeleteList.size());
                             for (HomeElement elem : toDeleteList) {
                                 int glyID;
                                 int carbsID;
@@ -277,21 +273,21 @@ public class homeMiddleFragment extends Fragment {
                                         setNoteId(glycemiaData.getIdNote());
                                         reg.Glycemia_Delete(glyID);
                                     }
-                                }//}
+                                }
                                 if ((carbsID = elem.getCarbsId()) != -1) {
                                     carbsData = db_read.CarboHydrate_GetById(carbsID);
                                     if(carbsData!=null){
                                         setNoteId(carbsData.getIdNote());
                                         reg.Carbs_Delete(carbsID);
                                     }
-                                }//}
+                                }
                                 if ((insuID = elem.getInsulinId()) != -1) {
                                     insulinData = db_read.InsulinReg_GetById(insuID);
                                     if(insulinData!=null){
                                         setNoteId(insulinData.getIdNote());
                                         reg.Insulin_Delete(insuID);
                                     }
-                                }//}
+                                }
                                 if ((noteId != -1)) {
                                     reg.Note_Delete(noteId);
                                 }
@@ -299,16 +295,6 @@ public class homeMiddleFragment extends Fragment {
                             }
                             reg.close();
                             db_read.close();
-//                            Log.i(TAG, "onClick: cenas -> " + logBookList.size());
-                           /* if (hasNoLogElements(logBookList)) {
-                                logBookList = new ArrayList<HomeElement>();
-                                listEmpty.setVisibility(View.VISIBLE);
-                                listEmpty.bringToFront();
-                            } else {
-                                listEmpty.setVisibility(View.GONE);
-                            }
-                            ((HomeAdapter) homeRecyclerView.getAdapter()).updateList(logBookList);
-                            homeRecyclerView.getAdapter().notifyDataSetChanged();*/
                             updateHomeList();
                             toDeleteList.clear();
                             setDeleteMode(false);
@@ -316,8 +302,6 @@ public class homeMiddleFragment extends Fragment {
                             e.printStackTrace();
                             Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
                         }
-                        //reg.close();
-                        //finish();
                     }
                 })
                 .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
