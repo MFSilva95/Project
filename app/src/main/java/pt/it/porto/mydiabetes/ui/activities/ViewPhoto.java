@@ -222,33 +222,4 @@ public class ViewPhoto extends BaseActivity {
 	         }
 	    }).show();
 	}
-	
-	public void DeleteCarbsRead(final int id){
-		final Context c = this;
-		new AlertDialog.Builder(this)
-	    .setTitle(getString(R.string.deleteReading))
-	    .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
-	         public void onClick(DialogInterface dialog, int whichButton) {
-	             //Falta verificar se não está associada a nenhuma entrada da DB
-	        	 DB_Write wdb = new DB_Write(c);
-	        	 try {
-	        		 wdb.Carbs_Delete(id);
-	        		 goUp();
-	        	 }catch (Exception e) {
-	        		 Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
-	     		 }
-	             wdb.close();
-	             
-	         }
-	    })
-	    .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
-	         public void onClick(DialogInterface dialog, int whichButton) {
-	                // Do nothing.
-	         }
-	    }).show();
-	}
-	
-	public void goUp(){
-		NavUtils.navigateUpFromSameTask(this);
-	}
 }

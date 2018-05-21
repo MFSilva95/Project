@@ -40,6 +40,8 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
     private TextInputLayout carbs_input;
     private ImageButton image_button;
     private CarbsRec carbsData;
+    private int default_height;
+    private int default_width;
 
     public Uri getImgUri() {
         return imgUri;
@@ -58,8 +60,10 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
 
     private NewHomeRegistry.NewHomeRegCallBack callBack;
 
-    public CarbsRegister_Input_Interface(Context context, NewHomeRegistry.NewHomeRegCallBack call) {
+    public CarbsRegister_Input_Interface(Context context, NewHomeRegistry.NewHomeRegCallBack call, int default_height, int default_width) {
         super(context);
+        this.default_height = default_height;
+        this.default_width = default_width;
         callBack = call;
         init();
     }
@@ -93,7 +97,7 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         return true;
     }
 
-    public void fill_parameters(CarbsRec carbData){
+    public void fill_parameters(CarbsRec carbData) throws Exception {
         carbsData = carbData;
         carbs_input.getEditText().setText(""+carbsData.getCarbsValue());
         if(carbsData.getPhotoPath()!= null){
@@ -103,14 +107,8 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         if (imgUri == null) {
             imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
         } else {
-//            DisplayMetrics displaymetrics = new DisplayMetrics();
-//            //getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-//            int height = (int) (displaymetrics.heightPixels * 0.1);
-//            int width = (int) (displaymetrics.widthPixels * 0.1);
-//            b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
-//            imageView.setImageBitmap(b);
+            setImage(imgUri);
         }
-        //image_button.
     }
     private void setMealListeners(){
         if (image_button == null) {
@@ -144,7 +142,12 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         if(u==null) {
             image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
         } else {
-            carbsData.setPhotoPath(imgUri.getPath());
+            this.carbsData.setPhotoPath(imgUri.getPath());
+            try {
+                setImage(imgUri);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
     private TextWatcher getCarbsTW(){
@@ -205,15 +208,13 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         return carbsData.getCarbsValue();
     }
 
-    public void setImage(Uri imageUri, Activity activity)throws Exception{
+    public void setImage(Uri imageUri)throws Exception{
+        this.carbsData.setPhotoPath(imageUri.getPath());
         this.imgUri=imageUri;
         if (imgUri != null) {
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            activity.getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-            int height = (int) (displaymetrics.heightPixels * 0.1);
-            int width = (int) (displaymetrics.widthPixels * 0.1);
+
             try {
-                b = ImageUtils.decodeSampledBitmapFromPath(imageUri.getPath(), width, height);
+                b = ImageUtils.decodeSampledBitmapFromPath(imageUri.getPath(),default_height, default_width);
             }catch (Exception e){
                 throw new Exception("cant access file");
             }

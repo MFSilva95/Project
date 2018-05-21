@@ -102,6 +102,13 @@
                 android:value=".ui.activities.Settings"/>
         </activity>
         <activity
+            android:name=".ui.activities.ViewPhoto"
+            android:parentActivityName=".ui.activities.NewHomeRegistry">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.activities.NewHomeRegistry"/>
+        </activity>
+        <activity
             android:name=".ui.activities.SettingsInsulins"
             android:label="@string/preferences_insulins"
             android:parentActivityName=".ui.activities.Settings">

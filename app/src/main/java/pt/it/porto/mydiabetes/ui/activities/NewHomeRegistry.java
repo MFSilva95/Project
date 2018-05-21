@@ -31,7 +31,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.Pair;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 
@@ -163,13 +165,6 @@ public class NewHomeRegistry extends AppCompatActivity{
     int cRatio;
 
 
-
-
-
-
-
-
-
     private boolean sentToSettings = false;
     private boolean isRecordUpdate = false;
     //private SharedPreferences permissionStatus;
@@ -193,12 +188,10 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         }
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            setImgURI(Uri.parse(mCurrentPhotoPath));
-            try {
-                carbsRegisterInputInterface.setImage(imgUri, this);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Uri imgUri = Uri.parse(mCurrentPhotoPath);
+            carbsRegisterInputInterface.setUri(imgUri);
+            setImgURI(imgUri);
+
         }if(requestCode == BLOOD_GLUCOSE && resultCode == RESULT_OK){
             glycaemiaRegisterInputInterface.updateObjective();
         }
@@ -380,7 +373,8 @@ public class NewHomeRegistry extends AppCompatActivity{
         insulinData = new InsulinRec();
         noteData = new Note();
 
-        carbsRegisterInputInterface = new CarbsRegister_Input_Interface(this, new NewHomeRegCallImpl());
+        Pair<Integer, Integer> displayM = getDisplayMetrics();
+        carbsRegisterInputInterface = new CarbsRegister_Input_Interface(this, new NewHomeRegCallImpl(),displayM.first, displayM.second);
         glycaemiaRegisterInputInterface = new GlycaemiaRegister_Input_Interface(this, registerDate, new NewHomeRegCallImpl());
         noteRegisterInputInterface = new NoteRegister_Input_Interface(this);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(false);
@@ -685,7 +679,9 @@ public class NewHomeRegistry extends AppCompatActivity{
                         addContentAt(new AdviceRegister(this, advice1),0);
                         //setAdviceText();
                     }*/
-        carbsRegisterInputInterface = new CarbsRegister_Input_Interface(this, carbsRegisterInputInterface.getCallBack());
+
+        Pair<Integer,Integer> displayM = getDisplayMetrics();
+        carbsRegisterInputInterface = new CarbsRegister_Input_Interface(this, carbsRegisterInputInterface.getCallBack(),displayM.first,displayM.second);
         addContent(carbsRegisterInputInterface);
         bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(true);
         buttons.add(0, CARBS);
@@ -869,6 +865,172 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void imageRemoved() {
         setImgURI(null);
     }
+
+    private void fill_recover(Bundle args) throws Exception {
+
+        DB_Read db_read = new DB_Read(this);
+
+        if(args.containsKey(ARG_CALENDAR)){
+
+            Calendar cal = Calendar.getInstance();
+            SimpleDateFormat sdf = new SimpleDateFormat(ISO8601_FORMAT_SECONDS);
+            try {
+                cal.setTime(sdf.parse(args.getString(ARG_CALENDAR)));// all done
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            registerDate = cal;
+            setDate(registerDate);
+            setTime(registerDate);
+        }
+
+        if (args.containsKey(ARG_CARBS)) {
+            carbsData = args.getParcelable(ARG_CARBS);
+            if (carbsData != null) {
+                buttons.add(CARBS);
+                insertCarbsMenu();
+                carbsRegisterInputInterface.fill_parameters(carbsData);
+
+                setNoteId(carbsData.getIdNote());
+                if(carbsData.getDateTime()!=null){
+                    registerDate = carbsData.getDateTime();
+                }
+            }
+        }
+        if (args.containsKey(ARG_BLOOD_GLUCOSE)) {
+            glycemiaData = args.getParcelable(ARG_BLOOD_GLUCOSE);
+            if (glycemiaData != null) {
+                buttons.add(GLICAEMIA);
+                insertGlicMenu();
+                glycaemiaRegisterInputInterface.fill_parameters(glycemiaData);
+
+                setNoteId(glycemiaData.getIdNote());
+                if(glycemiaData.getDateTime()!=null){
+                    registerDate = glycemiaData.getDateTime();
+                }
+            }
+        }
+        if (args.containsKey(ARG_INSULIN)) {
+            insulinData = args.getParcelable(ARG_INSULIN);
+            if (insulinData != null) {
+                buttons.add(INSULIN);
+                insertInsulinMenu(false);
+                insuRegisterInputInterface.fill_parameters(insulinData);
+                setNoteId(insulinData.getIdNote());
+                if(insulinData.getDateTime()!=null){
+                    registerDate = insulinData.getDateTime();
+                }
+            }
+        }
+        if (args.containsKey(ARG_NOTE)) {
+            noteData = args.getParcelable(ARG_NOTE);
+            if(noteData!=null){
+                buttons.add(NOTE);
+                insertNoteMenu();
+                noteRegisterInputInterface.fill_parameters(noteData.getNote());
+            }
+        }
+
+        insulinCalculator = new InsulinCalculator(this, registerDate);
+        insulinCalculator.setCarbs(carbsData != null ? carbsData.getCarbsValue() : 0);
+        insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);
+        insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
+
+        if (registerDate != null) {
+            insulinCalculator.setTime(this, registerDate);
+        }
+        hideBottomSheet();
+        hideKeyboard();
+        db_read.close();
+    }
+    private void fill_update(Bundle args) throws Exception {
+
+
+        DB_Read db_read = new DB_Read(this);
+
+        if(args.containsKey(ARG_RECORD_ID)){
+            recordId = args.getInt(ARG_RECORD_ID);
+        }
+
+        if (args.containsKey(ARG_CARBS)) {
+            carbsData = args.getParcelable(ARG_CARBS);
+            if (carbsData != null) {
+                carbsData = db_read.CarboHydrate_GetById(carbsData.getId());
+                if (carbsData != null) {
+                    //buttonsUpdate.add(CARBS);
+                    insertCarbsMenu();
+                    carbsRegisterInputInterface.fill_parameters(carbsData);
+                    String imgPath = carbsData.getPhotoPath();
+                    setNoteId(carbsData.getIdNote());
+                    registerDate = carbsData.getDateTime();
+                    //if(imgPath!=null){imgUri = Uri.parse(imgPath);}
+//                    try {
+//                        carbsRegisterInputInterface.setImage(imgUri);
+//                    } catch (Exception e) {
+//                        //couldnt access storage
+//                    }
+
+
+                }
+            }
+        }
+        if (args.containsKey(ARG_BLOOD_GLUCOSE)) {
+            glycemiaData = args.getParcelable(ARG_BLOOD_GLUCOSE);
+            if (glycemiaData != null) {
+                glycemiaData = db_read.Glycemia_GetById(glycemiaData.getId());
+                if (glycemiaData != null) {
+                    //buttonsUpdate.add(GLICAEMIA);
+                    insertGlicMenu();
+                    glycaemiaRegisterInputInterface.fill_parameters(glycemiaData);
+
+                    setNoteId(glycemiaData.getIdNote());
+                    registerDate = glycemiaData.getDateTime();
+                }
+            }
+        }
+        if (args.containsKey(ARG_INSULIN)) {
+            insulinData = args.getParcelable(ARG_INSULIN);
+            if (insulinData != null) {
+                insulinData = db_read.InsulinReg_GetById(insulinData.getId());
+                if (insulinData != null) {
+                    //buttonsUpdate.add(INSULIN);
+                    insertInsulinMenu(false);
+                    insuRegisterInputInterface.fill_parameters(insulinData);
+                    insuRegisterInputInterface.updateInsuCalc(insulinCalculator);
+                    setNoteId(insulinData.getIdNote());
+                    registerDate = insulinData.getDateTime();
+                }
+            }
+        }
+        if (noteId != -1) {
+            noteData = db_read.Note_GetById(noteId);
+            noteData.setId(noteId);//args.getParcelable(ARG_NOTE);
+            Log.i(TAG, "fillParameters: UPDATE "+noteData.toString());
+            if(noteData!=null){
+                //buttonsUpdate.add(NOTE);
+                insertNoteMenu();
+                noteRegisterInputInterface.fill_parameters(noteData.getNote());
+            }
+        }
+        db_read.close();
+        setDate(registerDate);
+        setTime(registerDate);
+
+        insulinCalculator = new InsulinCalculator(this, registerDate);
+        insulinCalculator.setCarbs(carbsData != null ? carbsData.getCarbsValue() : 0);
+        insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);
+        insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
+
+        if (registerDate != null) {
+            insulinCalculator.setTime(this, registerDate);
+        }
+        hideBottomSheet();
+        hideKeyboard();
+
+        db_read.close();
+
+    }
+
     private void fillParameters(Bundle args, boolean isUpdate){
 
 //        if (args.containsKey(ARG_BUTTONS_UPDATE_LIST)) {
@@ -888,172 +1050,18 @@ public class NewHomeRegistry extends AppCompatActivity{
                 spinner.setSelection(index);
             }
         }
-
-        DB_Read db_read = new DB_Read(this);
         if(isUpdate){
-
-            if(args.containsKey(ARG_RECORD_ID)){
-                recordId = args.getInt(ARG_RECORD_ID);
+            try {
+                fill_update(args);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            if (args.containsKey(ARG_CARBS)) {
-                carbsData = args.getParcelable(ARG_CARBS);
-                if (carbsData != null) {
-                    carbsData = db_read.CarboHydrate_GetById(carbsData.getId());
-                    if (carbsData != null) {
-                        //buttonsUpdate.add(CARBS);
-                        insertCarbsMenu();
-                        carbsRegisterInputInterface.fill_parameters(carbsData);
-                        String imgPath = carbsData.getPhotoPath();
-                        setNoteId(carbsData.getIdNote());
-                        registerDate = carbsData.getDateTime();
-                        if(imgPath!=null){imgUri = Uri.parse(imgPath);}
-                        try {
-                            carbsRegisterInputInterface.setImage(imgUri, this);
-                        } catch (Exception e) {
-                            //couldnt access storage
-                        }
-
-
-                    }
-                }
-            }
-            if (args.containsKey(ARG_BLOOD_GLUCOSE)) {
-                glycemiaData = args.getParcelable(ARG_BLOOD_GLUCOSE);
-                if (glycemiaData != null) {
-                    glycemiaData = db_read.Glycemia_GetById(glycemiaData.getId());
-                    if (glycemiaData != null) {
-                        //buttonsUpdate.add(GLICAEMIA);
-                        insertGlicMenu();
-                        glycaemiaRegisterInputInterface.fill_parameters(glycemiaData);
-
-                        setNoteId(glycemiaData.getIdNote());
-                        registerDate = glycemiaData.getDateTime();
-                    }
-                }
-            }
-            if (args.containsKey(ARG_INSULIN)) {
-                insulinData = args.getParcelable(ARG_INSULIN);
-                if (insulinData != null) {
-                    insulinData = db_read.InsulinReg_GetById(insulinData.getId());
-                    if (insulinData != null) {
-                        //buttonsUpdate.add(INSULIN);
-                        insertInsulinMenu(false);
-                        insuRegisterInputInterface.fill_parameters(insulinData);
-                        insuRegisterInputInterface.updateInsuCalc(insulinCalculator);
-                        setNoteId(insulinData.getIdNote());
-                        registerDate = insulinData.getDateTime();
-                    }
-                }
-            }
-            if (noteId != -1) {
-                noteData = db_read.Note_GetById(noteId);
-                noteData.setId(noteId);//args.getParcelable(ARG_NOTE);
-                Log.i(TAG, "fillParameters: UPDATE "+noteData.toString());
-                if(noteData!=null){
-                    //buttonsUpdate.add(NOTE);
-                    insertNoteMenu();
-                    noteRegisterInputInterface.fill_parameters(noteData.getNote());
-                }
-            }
-            db_read.close();
-            setDate(registerDate);
-            setTime(registerDate);
-
-            insulinCalculator = new InsulinCalculator(this, registerDate);
-            insulinCalculator.setCarbs(carbsData != null ? carbsData.getCarbsValue() : 0);
-            insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);
-            insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
-
-            if (registerDate != null) {
-                insulinCalculator.setTime(this, registerDate);
-            }
-            hideBottomSheet();
-            hideKeyboard();
         }else{
-
-            if(args.containsKey(ARG_CALENDAR)){
-
-                Calendar cal = Calendar.getInstance();
-                SimpleDateFormat sdf = new SimpleDateFormat(ISO8601_FORMAT_SECONDS);
-                try {
-                    cal.setTime(sdf.parse(args.getString(ARG_CALENDAR)));// all done
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                registerDate = cal;
-                setDate(registerDate);
-                setTime(registerDate);
+            try {
+                fill_recover(args);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            if (args.containsKey(ARG_CARBS)) {
-                carbsData = args.getParcelable(ARG_CARBS);
-                if (carbsData != null) {
-                    buttons.add(CARBS);
-                    insertCarbsMenu();
-
-                    String imgPath = carbsData.getPhotoPath();
-                    if(imgPath!=null){imgUri = Uri.parse(imgPath);}
-                    carbsRegisterInputInterface.fill_parameters(carbsData);
-                    try {
-                        carbsRegisterInputInterface.setImage(imgUri, this);
-                    } catch (Exception e) {
-                        //
-                    }
-
-                    setNoteId(carbsData.getIdNote());
-                    if(carbsData.getDateTime()!=null){
-                        registerDate = carbsData.getDateTime();
-                    }
-                }
-            }
-            if (args.containsKey(ARG_BLOOD_GLUCOSE)) {
-                glycemiaData = args.getParcelable(ARG_BLOOD_GLUCOSE);
-                if (glycemiaData != null) {
-                    buttons.add(GLICAEMIA);
-                    insertGlicMenu();
-                    glycaemiaRegisterInputInterface.fill_parameters(glycemiaData);
-
-                    setNoteId(glycemiaData.getIdNote());
-                    if(glycemiaData.getDateTime()!=null){
-                        registerDate = glycemiaData.getDateTime();
-                    }
-                }
-            }
-            if (args.containsKey(ARG_INSULIN)) {
-                insulinData = args.getParcelable(ARG_INSULIN);
-                if (insulinData != null) {
-                    buttons.add(INSULIN);
-                    insertInsulinMenu(false);
-                    insuRegisterInputInterface.fill_parameters(insulinData);
-                    setNoteId(insulinData.getIdNote());
-                    if(insulinData.getDateTime()!=null){
-                        registerDate = insulinData.getDateTime();
-                    }
-                }
-            }
-            db_read.close();
-
-            if (args.containsKey(ARG_NOTE)) {
-                noteData = args.getParcelable(ARG_NOTE);
-                if(noteData!=null){
-                    buttons.add(NOTE);
-                    insertNoteMenu();
-                    noteRegisterInputInterface.fill_parameters(noteData.getNote());
-                }
-            }
-
-
-            insulinCalculator = new InsulinCalculator(this, registerDate);
-            insulinCalculator.setCarbs(carbsData != null ? carbsData.getCarbsValue() : 0);
-            insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);
-            insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
-
-            if (registerDate != null) {
-                insulinCalculator.setTime(this, registerDate);
-            }
-            hideBottomSheet();
-            hideKeyboard();
         }
     }
 
@@ -1128,7 +1136,6 @@ public class NewHomeRegistry extends AppCompatActivity{
         File image;
         if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
             // Create an image file name
-
             File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
             if (!dir.exists()) {
                 if (dir.mkdir()) {
@@ -1478,34 +1485,11 @@ public class NewHomeRegistry extends AppCompatActivity{
             this.noteId = noteId;
         }
     }
-    private void deleteRegister(){
-        final Context c = this;
-        new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.deleteReading))
-                .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        //Falta verificar se não está associada a nenhuma entrada da DB
-                        //Rever porque não elimina o registo de glicemia
-                        DB_Write reg = new DB_Write(c);
-                        try {
-                            //Weight_Delete();
-                            if(glycemiaData!=null){setNoteId( glycemiaData.getIdNote() ); reg.Glycemia_Delete(glycemiaData.getId());}
-                            if(carbsData!=null){setNoteId( carbsData.getIdNote() ); reg.Carbs_Delete(carbsData.getId());}
-                            if(insulinData!=null){setNoteId( insulinData.getIdNote() ); reg.Insulin_Delete(insulinData.getId());}
-                            if(noteId != -1){reg.Note_Delete(noteId);}
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
-                        }
-                        reg.close();
-                        finish();
-                    }
-                })
-                .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        // Do nothing.
-                    }
-                }).show();
+    private Pair<Integer, Integer> getDisplayMetrics(){
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        int height = (int) (displaymetrics.heightPixels * 0.1);
+        int width = (int) (displaymetrics.widthPixels * 0.1);
+        return new Pair<>(height,width);
     }
 }
