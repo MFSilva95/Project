@@ -278,6 +278,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                         args.putString("ins", String.valueOf(insulin.getId())); //ins id
                         args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);
                     }
+                    if (logbookDataBinding.getNote_id() != -1) {
+                        args.putInt("note_id", logbookDataBinding.getNote_id()); //ins id
+                    }
                     intent.putExtras(args);
                     callBack.updateHomeList(intent);
                 }

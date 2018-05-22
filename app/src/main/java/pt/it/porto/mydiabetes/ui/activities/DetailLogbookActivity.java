@@ -36,6 +36,7 @@ public class DetailLogbookActivity{
 	public static final String ARG_CARBS = "ARG_CARBS";
 	public static final String ARG_INSULIN = "ARG_INSULIN";
 	public static final String ARG_BLOOD_GLUCOSE = "ARG_BLOOD_GLUCOSE";
+	public static final String ARG_NOTE = "ARG_BLOOD_GLUCOSE";
 	public static final String ARG_RECORD_ID = "ARG_RECORD_ID";
 
 	public static final String SAVE_SHOWING_ERROR = "SAVE_SHOWING_ERROR";

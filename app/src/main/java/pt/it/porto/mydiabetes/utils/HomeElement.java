@@ -26,11 +26,14 @@ public class HomeElement {
     private int carbsId;
     private int insulinId;
     private int glycemiaId;
+    private int note_id;
+
     private boolean isPressed = false;
 
     public boolean isPressed(){
         return isPressed;
     }
+    public int getNote_id(){return note_id;}
     public void setPressed(boolean pressed){
         isPressed = pressed;
     }
@@ -48,7 +51,7 @@ public class HomeElement {
         this.displayType = type;
         this.name = name;
     }
-    public HomeElement( int recordId, String dateTime, int tag, int carbs, float insulinVal, String insulinName, int glycemia, int carbsId, int insulinId, int glycemiaId) {
+    public HomeElement( int recordId, String dateTime, int tag, int carbs, float insulinVal, String insulinName, int glycemia, int carbsId, int insulinId, int glycemiaId, int note_id) {
         this.displayType = Type.LOGITEM;
 
         try {
@@ -65,6 +68,7 @@ public class HomeElement {
         this.carbsId = carbsId;
         this.insulinId = insulinId;
         this.glycemiaId = glycemiaId;
+        this.note_id = note_id;
     }
 
     public Type getDisplayType() {

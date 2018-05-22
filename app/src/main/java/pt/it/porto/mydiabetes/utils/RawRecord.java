@@ -13,6 +13,9 @@ public class RawRecord {
     private int id_carbs;
     private int id_insulin;
     private int id;
+    private int id_bloodglucose;
+    private int id_note;
+
 
     public int get_tag() {
         return tag;
@@ -35,8 +38,7 @@ public class RawRecord {
     }
     public int getId(){return id;}
 
-    private int id_bloodglucose;
-    private int id_note;
+
 
 
     public RawRecord(int id, String dateTime, int tag, int id_carbs, int id_insulin, int id_bloodglucose, int id_note) {

@@ -459,6 +459,8 @@ public class NewHomeRegistry extends AppCompatActivity{
             insulinData = null;
         }
 
+        reg.Record_Update(recordId,idUser, registerDate, idTag);
+
         for(String field:buttons){
             try {
                 switch (field){
@@ -479,6 +481,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                             } else {
                                 carbsData.setId(reg.Carbs_Save(carbsData));
                             }
+                            reg.Record_Update_Carbs(recordId, carbsData.getId());
                         }
                         break;
                     case GLICAEMIA:
@@ -497,6 +500,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                             } else {
                                 glycemiaData.setId(reg.Glycemia_Save(glycemiaData));
                             }
+                            reg.Record_Update_Glycaemia(recordId, glycemiaData.getId());
                         }
                         break;
                     case INSULIN:
@@ -515,6 +519,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                             }else{
                                 insulinData.setId(reg.Insulin_Save(insulinData));
                             }
+                            reg.Record_Update_Insulin(recordId,insulinData.getId());
                         }
                         break;
                     case NOTE:
@@ -524,7 +529,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                             }else{
                                 noteData.setId(reg.Note_Add(noteData));
                             }
-
+                            reg.Record_Update_Note(recordId,noteData.getId());
                         }
                         break;
                 }
@@ -534,17 +539,14 @@ public class NewHomeRegistry extends AppCompatActivity{
                 throw e;
             }
         }
-        reg.Record_Update(recordId,idUser, registerDate, idTag,carbsData.getId(),insulinData.getId(),glycemiaData.getId(),noteData.getId());
-        if(buttons.size()==1 && buttons.contains(NOTE)){
-            reg.Note_Delete(noteData.getId());
-        }
+        //reg.Record_Update(recordId,idUser, registerDate, idTag); carbsData.getId(),insulinData.getId(),glycemiaData.getId(),noteData.getId());
 
-        Log.i(TAG, "validateInfo_Save: BEGIN");
+        //Log.i(TAG, "validateInfo_Save: BEGIN");
         BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
         BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
         LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log", rdb);
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
-        Log.i(TAG, "validateInfo_Save: END");
+        //Log.i(TAG, "validateInfo_Save: END");
         rdb.close();
         reg.close();
     }
@@ -560,6 +562,8 @@ public class NewHomeRegistry extends AppCompatActivity{
         verify_carbs_conditions();
         verify_glucose_conditions();
         verify_insulin_conditions();
+
+        recordId = reg.Record_Add(idUser, registerDate, idTag);
 
         if(delete_buttons.contains(NOTE)){
             reg.Note_Delete(noteData.getId());
@@ -593,6 +597,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                                 carbsData.setIdNote(-1);
                             }
                             carbsData.setId(reg.Carbs_Save(carbsData));
+                            reg.Record_Update_Carbs(recordId, carbsData.getId());
                         }
                         break;
                     case GLICAEMIA:
@@ -607,6 +612,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                                 glycemiaData.setIdNote(-1);
                             }
                             glycemiaData.setId(reg.Glycemia_Save(glycemiaData));
+                            reg.Record_Update_Glycaemia(recordId, glycemiaData.getId());
                         }
                         break;
                     case INSULIN:
@@ -621,25 +627,23 @@ public class NewHomeRegistry extends AppCompatActivity{
                                 insulinData.setIdNote(-1);
                             }
                             insulinData.setId(reg.Insulin_Save(insulinData));
+                            reg.Record_Update_Insulin(recordId, insulinData.getId());
                         }
                         break;
                     case NOTE:
                         if (noteData != null) {
                             noteData.setId(reg.Note_Add(noteData));
+                            reg.Record_Update_Note(recordId,noteData.getId());
                         }
                         break;
                 }
-
-
             }catch (Exception e){
                 Log.i(TAG, "save_record: "+e.getMessage());
                 throw e;
             }
         }
-        reg.Record_Add(idUser, registerDate, idTag,carbsData.getId(),insulinData.getId(),glycemiaData.getId(),noteData.getId());
-        if(buttons.size()>=2 && buttons.contains(NOTE)){
-            reg.Note_Delete(noteData.getId());
-        }
+//        reg.Record_Add(idUser, registerDate, idTag,carbsData.getId());
+//        ,insulinData.getId(),glycemiaData.getId(), noteData.getId());
 
         Log.i(TAG, "validateInfo_Save: BEGIN");
         BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
@@ -1003,15 +1007,17 @@ public class NewHomeRegistry extends AppCompatActivity{
                 }
             }
         }
+        if(args.containsKey("note_id")){
+            noteId = args.getInt("note_id");
+        }
         if (noteId != -1) {
             noteData = db_read.Note_GetById(noteId);
-            noteData.setId(noteId);//args.getParcelable(ARG_NOTE);
-            Log.i(TAG, "fillParameters: UPDATE "+noteData.toString());
             if(noteData!=null){
-                //buttonsUpdate.add(NOTE);
+                noteData.setId(noteId);//args.getParcelable(ARG_NOTE);
                 insertNoteMenu();
                 noteRegisterInputInterface.fill_parameters(noteData.getNote());
             }
+
         }
         db_read.close();
         setDate(registerDate);

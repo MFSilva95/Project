@@ -17,8 +17,12 @@ public class PhotoSyncDb {
 
 	public void removePhoto(String photoPath) {
 		storage.delete(MyDiabetesContract.SyncImagesDiff.TABLE_NAME, MyDiabetesContract.SyncImagesDiff.COLUMN_NAME_FILE_NAME + "=?", new String[]{photoPath});
-		File file = new File(photoPath);
-		boolean deleted = file.delete();
+		if(photoPath!=null){
+			File file = new File(photoPath);
+			if(file!=null){
+				boolean deleted = file.delete();
+			}
+		}
 		//Log.i("TEMP", "removePhoto: success? "+deleted);
 	}
 

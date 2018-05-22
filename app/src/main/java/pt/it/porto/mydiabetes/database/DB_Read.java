@@ -2048,7 +2048,8 @@ public class DB_Read {
 									cursor.getInt(3),
 									record.getId_carbs(),
 									record.getId_insulin(),
-									record.getId_bloodglucose());
+									record.getId_bloodglucose(),
+									record.getId_note());
 							//insert id_note
 							logBookEntries.add(tmp);
 						}catch (Exception e){

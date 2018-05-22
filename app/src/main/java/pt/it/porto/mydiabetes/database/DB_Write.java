@@ -838,32 +838,76 @@ public class DB_Write {
 // Id_Insulin INTEGER,
 // Id_BloodGlucose INTEGER,
 // Id_Note INTEGER);
-	public void Record_Add(int user_id, Calendar datetimeC, int tag_id, int carbs_id, int insulin_id, int bloodgluc_id, int note_id) {
+	public int Record_Add(int user_id, Calendar datetimeC, int tag_id) {
 		String datetime = DateUtils.formatToDb(datetimeC);
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Id_User", user_id);
 		toInsert.put("DateTime", datetime);
 		toInsert.put("Id_Tag", tag_id);
-		toInsert.put("Id_Carbs", carbs_id);
-		toInsert.put("Id_Insulin", insulin_id);
-		toInsert.put("Id_BloodGlucose", bloodgluc_id);
-		toInsert.put("Id_Note", note_id);
-		myDB.insert("Record", null, toInsert);
+		toInsert.put("Id_Carbs", -1);
+		toInsert.put("Id_Insulin", -1);
+		toInsert.put("Id_BloodGlucose", -1);
+		toInsert.put("Id_Note", -1);
+		return (int) myDB.insert("Record", null, toInsert);
+	}
+	public void Record_Update_Carbs(int record_id, int carbs_id) {
+		ContentValues toUpdate = new ContentValues();
+		toUpdate.put("Id_Carbs", carbs_id);
+		myDB.update("Record", toUpdate, "Id="+record_id,null);
+	}
+	public void Record_Update_Insulin(int record_id, int insu_id) {
+		ContentValues toUpdate = new ContentValues();
+		toUpdate.put("Id_Insulin", insu_id);
+		myDB.update("Record", toUpdate, "Id="+record_id,null);
+	}
+	public void Record_Update_Glycaemia(int record_id, int glycaemia_id) {
+		ContentValues toUpdate = new ContentValues();
+		toUpdate.put("Id_BloodGlucose", glycaemia_id);
+		myDB.update("Record", toUpdate, "Id="+record_id,null);
+	}
+	public void Record_Update_Note(int record_id, int note_id) {
+		ContentValues toUpdate = new ContentValues();
+		toUpdate.put("Id_Note", note_id);
+		myDB.update("Record", toUpdate, "Id="+record_id,null);
 	}
 
-	public void Record_Update(int record_id, int user_id, Calendar datetimeC, int tag_id, int carbs_id, int insulin_id, int bloodgluc_id, int note_id) {
+
+
+//	public void Record_Add(int user_id, Calendar datetimeC, int tag_id, int carbs_id, int insulin_id, int bloodgluc_id, int note_id) {
+//		String datetime = DateUtils.formatToDb(datetimeC);
+//		ContentValues toInsert = new ContentValues();
+//		toInsert.put("Id_User", user_id);
+//		toInsert.put("DateTime", datetime);
+//		toInsert.put("Id_Tag", tag_id);
+//		toInsert.put("Id_Carbs", carbs_id);
+//		toInsert.put("Id_Insulin", insulin_id);
+//		toInsert.put("Id_BloodGlucose", bloodgluc_id);
+//		toInsert.put("Id_Note", note_id);
+//		myDB.insert("Record", null, toInsert);
+//	}
+
+	public void Record_Update(int record_id, int user_id, Calendar datetimeC, int tag_id) {
 		String datetime = DateUtils.formatToDb(datetimeC);
 		ContentValues toUpdate = new ContentValues();
 		toUpdate.put("Id_User", user_id);
 		toUpdate.put("DateTime", datetime);
 		toUpdate.put("Id_Tag", tag_id);
-		toUpdate.put("Id_Carbs", carbs_id);
-		toUpdate.put("Id_Insulin", insulin_id);
-		toUpdate.put("Id_BloodGlucose", bloodgluc_id);
-		toUpdate.put("Id_Note", note_id);
 		int res = myDB.update("Record", toUpdate, "Id=" + record_id, null);
-		//Log.i("debug", "Record_Update: -> "+res);
 	}
+
+//	public void Record_Update(int record_id, int user_id, Calendar datetimeC, int tag_id, int carbs_id, int insulin_id, int bloodgluc_id, int note_id) {
+//		String datetime = DateUtils.formatToDb(datetimeC);
+//		ContentValues toUpdate = new ContentValues();
+//		toUpdate.put("Id_User", user_id);
+//		toUpdate.put("DateTime", datetime);
+//		toUpdate.put("Id_Tag", tag_id);
+//		toUpdate.put("Id_Carbs", carbs_id);
+//		toUpdate.put("Id_Insulin", insulin_id);
+//		toUpdate.put("Id_BloodGlucose", bloodgluc_id);
+//		toUpdate.put("Id_Note", note_id);
+//		int res = myDB.update("Record", toUpdate, "Id=" + record_id, null);
+//		//Log.i("debug", "Record_Update: -> "+res);
+//	}
 
 	public void recoverSensitivity(){
 		try {
