@@ -81,11 +81,11 @@ public class InsuRegister_Input_Interface extends LinearLayout {
         fillInsulinSpinner();
         setInsulinListeners();
     }
-    public void updateInsuCalc(InsulinCalculator calculator){
+    public void updateInsuCalc(InsulinCalculator calculator, boolean manual){
         this.calc = calculator;
         this.fragmentInsulinCalcsFragment.setInsulinCalculator(calculator);
         float totalInsu = calculator.getInsulinTotalFloat(false, true);
-        if(!isManual){
+        if(!manual){
             insertInsulinData(totalInsu);
             if(totalInsu>0){
                 insuData.setInsulinUnits(totalInsu);
@@ -191,7 +191,7 @@ public class InsuRegister_Input_Interface extends LinearLayout {
         if (calcInsulinInfo != null) {
             calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_info_outline_grey_900_24dp));
             if(calc != null){
-                updateInsuCalc(calc);
+                updateInsuCalc(calc, true);
             }
         }
     }

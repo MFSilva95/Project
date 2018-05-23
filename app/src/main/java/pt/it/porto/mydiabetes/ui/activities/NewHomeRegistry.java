@@ -701,7 +701,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                     }*/
         insuRegisterInputInterface = new InsuRegister_Input_Interface(this, iRatio, cRatio);
         addContent(insuRegisterInputInterface);
-        insuRegisterInputInterface.updateInsuCalc(insulinCalculator);
+        insuRegisterInputInterface.updateInsuCalc(insulinCalculator, false);
         buttons.add(0, INSULIN);
         bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(true);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(true);
@@ -766,7 +766,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             insertInsulinMenu(false);
             bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(true);
             hideBottomSheet();
-            insuRegisterInputInterface.updateInsuCalc(insulinCalculator);
+            insuRegisterInputInterface.updateInsuCalc(insulinCalculator,false);
             if(field.equals(CARBS)){
                 carbsRegisterInputInterface.requestCarbsFocus();
             }else{
@@ -968,14 +968,6 @@ public class NewHomeRegistry extends AppCompatActivity{
                     String imgPath = carbsData.getPhotoPath();
                     setNoteId(carbsData.getIdNote());
                     registerDate = carbsData.getDateTime();
-                    //if(imgPath!=null){imgUri = Uri.parse(imgPath);}
-//                    try {
-//                        carbsRegisterInputInterface.setImage(imgUri);
-//                    } catch (Exception e) {
-//                        //couldnt access storage
-//                    }
-
-
                 }
             }
         }
@@ -1000,8 +992,8 @@ public class NewHomeRegistry extends AppCompatActivity{
                 if (insulinData != null) {
                     //buttonsUpdate.add(INSULIN);
                     insertInsulinMenu(false);
+                    insuRegisterInputInterface.updateInsuCalc(insulinCalculator,true);
                     insuRegisterInputInterface.fill_parameters(insulinData);
-                    insuRegisterInputInterface.updateInsuCalc(insulinCalculator);
                     setNoteId(insulinData.getIdNote());
                     registerDate = insulinData.getDateTime();
                 }
@@ -1225,7 +1217,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             insulinCalculator.setGlycemia(glycaemiaRegisterInputInterface !=null? glycaemiaRegisterInputInterface.getGlycemia():0);
             insulinCalculator.setGlycemiaTarget(glycaemiaRegisterInputInterface !=null? glycaemiaRegisterInputInterface.getGlycemiaTarget():0);
             if(insuRegisterInputInterface !=null)
-                insuRegisterInputInterface.updateInsuCalc(insulinCalculator);
+                insuRegisterInputInterface.updateInsuCalc(insulinCalculator,true);
         }
     }
     private void hideKeyboard() {
