@@ -48,6 +48,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.esafirm.imagepicker.features.ImagePicker;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -72,6 +74,7 @@ import pt.it.porto.mydiabetes.ui.charts.data.Carbs;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
+import pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.CarbsRegister_Input_Interface;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.GlycaemiaRegister_Input_Interface;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.InsuRegister_Input_Interface;
@@ -179,14 +182,19 @@ public class NewHomeRegistry extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_PERMISSION_SETTING) {
-            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                try {
-                    dispatchTakePictureIntent();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            dispatchTakePictureIntent();
         }
+
+//        if (requestCode == REQUEST_PERMISSION_SETTING) {
+//            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//                try {
+//                    dispatchTakePictureIntent();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             Uri imgUri = Uri.parse(mCurrentPhotoPath);
             carbsRegisterInputInterface.setUri(imgUri);
@@ -642,8 +650,6 @@ public class NewHomeRegistry extends AppCompatActivity{
                 throw e;
             }
         }
-//        reg.Record_Add(idUser, registerDate, idTag,carbsData.getId());
-//        ,insulinData.getId(),glycemiaData.getId(), noteData.getId());
 
         Log.i(TAG, "validateInfo_Save: BEGIN");
         BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
@@ -1075,33 +1081,41 @@ public class NewHomeRegistry extends AppCompatActivity{
     protected void onPostResume() {
         super.onPostResume();
         if (sentToSettings) {
-            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    //Got Permission
-                    try {
-                        dispatchTakePictureIntent();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+            dispatchTakePictureIntent();
+        }
     }
+//            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//                    //Got Permission
+//                    try {
+//                        dispatchTakePictureIntent();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//    }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                try {
-                    dispatchTakePictureIntent();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } else {
-                Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
-            }
-        }
+        dispatchTakePictureIntent();
     }
-    private void dispatchTakePictureIntent() throws IOException {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if (requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT) {
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                try {
+//                    dispatchTakePictureIntent();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            } else {
+//                Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+//            }
+//        }
+//    }
+
+
+    private void dispatchTakePictureIntent(){
+
+        Intent takePictureIntent = ImagePicker.cameraOnly().getIntent(this);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
@@ -1127,6 +1141,34 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         }
     }
+
+//    private void dispatchTakePictureIntent() throws IOException {
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        // Ensure that there's a camera activity to handle the intent
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//            // Create the File where the photo should go
+//            File photoFile = null;
+//            try {
+//                photoFile = createImageFile();
+//            } catch (IOException ex) {
+//                // Error occurred while creating the File
+//                return;
+//            }
+//            // Continue only if the File was successfully created
+//            if (photoFile != null) {
+//
+//                if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+//                    Uri photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,
+//                            BuildConfig.APPLICATION_ID + ".provider",
+//                            photoFile);
+//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                }else{
+//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+//                }
+//                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+//            }
+//        }
+//    }
 
     private File createImageFile() throws IOException {
 
@@ -1171,11 +1213,12 @@ public class NewHomeRegistry extends AppCompatActivity{
                     ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
                 }
             } else {
-                try {
-                    dispatchTakePictureIntent();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                dispatchTakePictureIntent();
+//                try {
+//                    dispatchTakePictureIntent();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
             }
         }
 
@@ -1389,11 +1432,8 @@ public class NewHomeRegistry extends AppCompatActivity{
         return otherCase;
     }
     private void goBack(){
-//        if(carbsRegisterInputInterface !=null){carbsData = carbsRegisterInputInterface.save_read();}
-//        if(insuRegisterInputInterface !=null){insulinData = insuRegisterInputInterface.save_read();}
-//        if(glycaemiaRegisterInputInterface !=null){glycemiaData = glycaemiaRegisterInputInterface.save_read();}
-        save_current_input_data();
 
+        save_current_input_data();
         if((carbsData != null && carbsData.getCarbsValue() > 0) || (insulinData != null && insulinData.getInsulinUnits() > 0) || (glycemiaData != null && glycemiaData.getValue() >  0)) {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(NewHomeRegistry.this);
             builder1.setTitle(getString(R.string.exit_dialog_title));

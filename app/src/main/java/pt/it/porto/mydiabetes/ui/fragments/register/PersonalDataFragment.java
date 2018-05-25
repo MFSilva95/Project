@@ -1,5 +1,6 @@
 package pt.it.porto.mydiabetes.ui.fragments.register;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,6 +36,7 @@ import android.widget.Toast;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.features.ImagePickerActivity;
 
+import com.esafirm.imagepicker.features.ReturnMode;
 import com.esafirm.imagepicker.model.Image;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -51,6 +54,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
@@ -67,7 +71,7 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 
 
 	private CircleImageView profileImage;
-	private ArrayList<Image> images = new ArrayList<>();
+	private List<Image> images = new ArrayList<>();
 	private String filename = "profilePhoto.png";
 	private View layout = null;
 	private EditText mNameView;
@@ -140,15 +144,34 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 			@Override
 			public void onClick(View view) {
 
-				Intent intent = new Intent(getContext(), ImagePickerActivity.class);
+				Intent intent = ImagePicker.create((Activity) view.getContext())
+						.returnMode(ReturnMode.ALL) // set whether pick and / or camera action should return immediate result or not.
+						.folderMode(true) // folder mode (false by default)
+						.toolbarFolderTitle("Album") // folder selection title
+						//.toolbarImageTitle("Tap to select") // image selection title
+						//.toolbarArrowColor(Color.BLACK) // Toolbar 'up' arrow color
+						.single() // single mode
+						//.multi() // multi mode (default mode)
+						.limit(1) // max images can be selected (99 by default)
+						.showCamera(true) // show camera or not (true by default)
+						.imageDirectory("Camera").getIntent(view.getContext()); // directory name for captured image  ("Camera" folder by default)
+						//.origin(images) // original selected images, used in multi mode
+						//.exclude(images) // exclude anything that in image.getPath()
+						//.excludeFiles(files) // same as exclude but using ArrayList<File>
+						//.theme(R.style.CustomImagePickerTheme) // must inherit ef_BaseTheme. please refer to sample
+						//.enableLog(false) // disabling log
+						//.imageLoader(new GrayscaleImageLoder()) // custom image loader, must be serializeable
+						//.start(); // start image picker activity with request code
 
-				intent.putExtra(ImagePicker.EXTRA_FOLDER_MODE, true);
-				intent.putExtra(ImagePicker.EXTRA_MODE, ImagePicker.MODE_SINGLE);
-				intent.putExtra(ImagePicker.EXTRA_SHOW_CAMERA, true);
-				intent.putExtra(ImagePicker.EXTRA_SELECTED_IMAGES, images);
-				intent.putExtra(ImagePicker.EXTRA_FOLDER_TITLE, "Album");
-				intent.putExtra(ImagePicker.EXTRA_IMAGE_TITLE, "Tap to select images");
-				intent.putExtra(ImagePicker.EXTRA_IMAGE_DIRECTORY, "Camera");
+//				Intent intent = new Intent(getContext(), ImagePickerActivity.class);
+
+//				intent.putExtra(ImagePicker.EXTRA_FOLDER_MODE, true);
+//				intent.putExtra(ImagePicker.EXTRA_MODE, ImagePicker.MODE_SINGLE);
+//				intent.putExtra(ImagePicker.EXTRA_SHOW_CAMERA, true);
+//				intent.putExtra(ImagePicker.EXTRA_SELECTED_IMAGES, images);
+//				intent.putExtra(ImagePicker.EXTRA_FOLDER_TITLE, "Album");
+//				intent.putExtra(ImagePicker.EXTRA_IMAGE_TITLE, "Tap to select images");
+//				intent.putExtra(ImagePicker.EXTRA_IMAGE_DIRECTORY, "Camera");
 
 				startActivityForResult(intent, RC_CODE_PICKER);
 			}
@@ -177,7 +200,7 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		final int THUMBSIZE = 350;
 		if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
-			images = data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
+			images = ImagePicker.getImages(data);//data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
 			bmp = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(images.get(0).getPath()), THUMBSIZE, THUMBSIZE);
 			ContextWrapper cw = new ContextWrapper(getContext());
 			// path to /data/data/yourapp/app_data/imageDir

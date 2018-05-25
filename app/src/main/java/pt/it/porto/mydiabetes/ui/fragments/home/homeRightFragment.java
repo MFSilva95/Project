@@ -27,6 +27,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.esafirm.imagepicker.features.ImagePicker;
 import com.esafirm.imagepicker.features.ImagePickerActivity;
+import com.esafirm.imagepicker.features.ReturnMode;
 import com.esafirm.imagepicker.model.Image;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.github.javiersantos.materialstyleddialogs.enums.Style;
@@ -37,6 +38,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
+import java.util.List;
 
 import info.abdolahi.CircularMusicProgressBar;
 import pt.it.porto.mydiabetes.R;
@@ -85,7 +87,7 @@ public class homeRightFragment extends Fragment  {
 
     private static final int RC_CODE_PICKER = 2000;
     private Bitmap bmp;
-    private ArrayList<Image> images = new ArrayList<>();
+    private List<Image> images = new ArrayList<>();
 
     public static pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment newInstance() {
         pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment fragment = new pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment();
@@ -210,7 +212,7 @@ public class homeRightFragment extends Fragment  {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         final int THUMBSIZE = 350;
         if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
-            images = data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
+            images = ImagePicker.getImages(data);//ImagePicker.EXTRA_SELECTED_IMAGES);
             bmp = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(images.get(0).getPath()), THUMBSIZE, THUMBSIZE);
             ContextWrapper cw = new ContextWrapper(getContext());
             // path to /data/data/yourapp/app_data/imageDir
@@ -303,12 +305,16 @@ public class homeRightFragment extends Fragment  {
             @Override
             public void onClick(View v) {
                 Intent intent=ImagePicker.create(homeRightFragment.this)
-                        .returnAfterFirst(true)
+                        //.returnAfterFirst(true)
+                        .returnMode(ReturnMode.ALL)
                         .folderMode(true)
                         .showCamera(true)
                         .limit(1)
-                        .folderTitle("Album")
-                        .imageTitle("Tap to select images")
+                        //.folderTitle("Album")
+                        .toolbarFolderTitle("Album")
+                        //.imageTitle("Tap to select images")
+                        //.toolbarImageTitle("")
+                        .single()
                         .imageDirectory("Camera")
                         .getIntent(homeRightFragment.this.getContext());
 
