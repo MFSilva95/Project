@@ -26,6 +26,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import pt.it.porto.mydiabetes.R;
@@ -117,13 +118,19 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         if (imgUri == null) {
             image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
         } else {
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            //getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-            int height = (int) (displaymetrics.heightPixels * 0.1);
-            int width = (int) (displaymetrics.widthPixels * 0.1);
-            b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
-            carbsData.setPhotoPath(imgUri.getPath());
-            image_button.setImageBitmap(b);
+            File temp = new File(imgUri.getPath());
+            if(temp.exists()){
+                DisplayMetrics displaymetrics = new DisplayMetrics();
+                //getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+                int height = (int) (displaymetrics.heightPixels * 0.1);
+                int width = (int) (displaymetrics.widthPixels * 0.1);
+                b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+                carbsData.setPhotoPath(imgUri.getPath());
+                image_button.setImageBitmap(b);
+            }else{
+                imgUri = null;
+                image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
+            }
         }
 
         image_button.setOnClickListener(new View.OnClickListener() {
@@ -213,12 +220,16 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         this.imgUri=imageUri;
         if (imgUri != null) {
 
-            try {
-                b = ImageUtils.decodeSampledBitmapFromPath(imageUri.getPath(),default_height, default_width);
-            }catch (Exception e){
-                throw new Exception("cant access file");
+            File temp = new File(imageUri.getPath());
+            if(temp.exists()){
+                try {
+                    b = ImageUtils.decodeSampledBitmapFromPath(imageUri.getPath(),default_height, default_width);
+                }catch (Exception e){
+                    e.printStackTrace();
+                    //throw new Exception("cant access file");
+                }
+                image_button.setImageBitmap(b);
             }
-            image_button.setImageBitmap(b);
         }
     }
 

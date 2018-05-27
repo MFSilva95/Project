@@ -4,6 +4,8 @@ package pt.it.porto.mydiabetes.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.File;
+
 public class CarbsRec extends DateTime implements Parcelable {
 
 	public static final Creator<CarbsRec> CREATOR = new Creator<CarbsRec>() {
@@ -75,6 +77,10 @@ public class CarbsRec extends DateTime implements Parcelable {
 	}
 
 	public String getPhotoPath() {
+		if(photopath!=null){
+			File temp = new File(photopath);
+			if(!temp.exists()){photopath=null; return null;}
+		}
 		return photopath;
 	}
 

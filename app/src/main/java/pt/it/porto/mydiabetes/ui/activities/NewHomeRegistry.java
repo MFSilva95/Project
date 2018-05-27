@@ -49,9 +49,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.features.ReturnMode;
+import com.esafirm.imagepicker.model.Image;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -182,7 +188,11 @@ public class NewHomeRegistry extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_PERMISSION_SETTING) {
-            dispatchTakePictureIntent();
+            try {
+                dispatchTakePictureIntent();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
 //        if (requestCode == REQUEST_PERMISSION_SETTING) {
@@ -196,6 +206,43 @@ public class NewHomeRegistry extends AppCompatActivity{
 //        }
 
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+
+            Image cameraImg = ImagePicker.getFirstImageOrNull(data);
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            if (photoFile != null) {
+                if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+                    try {
+                        copy19plus(cameraImg.getPath(), photoFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Uri photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,BuildConfig.APPLICATION_ID + ".provider", photoFile);
+                    carbsRegisterInputInterface.setUri(photoURI);
+                }else{
+                    try {
+                        copyUnder19(cameraImg.getPath(), photoFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    carbsRegisterInputInterface.setUri(Uri.fromFile(photoFile));
+                }
+            }
+            String cameraFileName = cameraImg.getPath();
+            File file = new File(cameraFileName);
+            //Log.i(TAG, "onActivityResult: "+cameraFileName);
+            boolean deleted = file.delete();
+
+
+
+
+            //getImages(data);
+
             Uri imgUri = Uri.parse(mCurrentPhotoPath);
             carbsRegisterInputInterface.setUri(imgUri);
             setImgURI(imgUri);
@@ -284,8 +331,6 @@ public class NewHomeRegistry extends AppCompatActivity{
 //            }
 //        }
     }
-
-
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -327,8 +372,6 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         }
     }
-
-
     private void init_vars(){
         setContentView(R.layout.activity_add_event);
         //FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(this));
@@ -387,7 +430,6 @@ public class NewHomeRegistry extends AppCompatActivity{
         noteRegisterInputInterface = new NoteRegister_Input_Interface(this);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(false);
     }
-
     private void save() {
         try{
             save_current_input_data();
@@ -403,7 +445,6 @@ public class NewHomeRegistry extends AppCompatActivity{
             return;
         }
     }
-
     private void verify_note_conditions()throws Exception{
         if(buttons.contains(NOTE)){
             if(buttons.size()<=2){
@@ -1069,7 +1110,6 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         }
     }
-
     @Nullable
     @Override
     public ActionMode startActionMode(ActionMode.Callback callback) {
@@ -1077,13 +1117,17 @@ public class NewHomeRegistry extends AppCompatActivity{
         return super.startActionMode(callback);
     }
 
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        if (sentToSettings) {
-            dispatchTakePictureIntent();
-        }
-    }
+///    @Override
+////    protected void onPostResume() {
+////        super.onPostResume();
+////        if (sentToSettings) {
+////            dispatchTakePictureIntent();
+////        }
+////    }
+
+
+
+
 //            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 //                    //Got Permission
 //                    try {
@@ -1097,49 +1141,46 @@ public class NewHomeRegistry extends AppCompatActivity{
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        dispatchTakePictureIntent();
-    }
-//        if (requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT) {
-//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                try {
-//                    dispatchTakePictureIntent();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            } else {
-//                Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
-//            }
-//        }
+//        dispatchTakePictureIntent();
 //    }
-
-
-    private void dispatchTakePictureIntent(){
-
-        Intent takePictureIntent = ImagePicker.cameraOnly().getIntent(this);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                return;
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-
-                if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
-                    Uri photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,
-                            BuildConfig.APPLICATION_ID + ".provider",
-                            photoFile);
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                }else{
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+        if (requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                try {
+                    dispatchTakePictureIntent();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+            } else {
+                Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+
+    private void dispatchTakePictureIntent() throws IOException {
+
+        Intent takePictureIntent = ImagePicker.cameraOnly().getIntent(this);
+
+        // Ensure that there's a camera activity to handle the intent
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//            // Create the File where the photo should go
+//            File photoFile = null;
+//            photoFile = createImageFile();
+//
+//            // Continue only if the File was successfully created
+//            if (photoFile != null) {
+//
+//                if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+//                    Uri photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,
+//                            BuildConfig.APPLICATION_ID + ".provider",
+//                            photoFile);
+//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                }else{
+//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+//                }
+                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+//            }
+//        }
     }
 
 //    private void dispatchTakePictureIntent() throws IOException {
@@ -1170,6 +1211,41 @@ public class NewHomeRegistry extends AppCompatActivity{
 //        }
 //    }
 
+
+    public static void copy19plus(String src_path, File dst) throws IOException {
+        File src = new File(src_path);
+        try (InputStream in = new FileInputStream(src)) {
+            try (OutputStream out = new FileOutputStream(dst)) {
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            }
+        }
+    }
+
+    public static void copyUnder19(String src_path, File dst) throws IOException {
+        File src = new File(src_path);
+        InputStream in = new FileInputStream(src);
+        try {
+            OutputStream out = new FileOutputStream(dst);
+            try {
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            } finally {
+                out.close();
+            }
+        } finally {
+            in.close();
+        }
+    }
+
     private File createImageFile() throws IOException {
 
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -1179,10 +1255,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             // Create an image file name
             File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
             if (!dir.exists()) {
-                if (dir.mkdir()) {
-                    // unable to create directory
-                    // todo report and recover
-                }
+                dir.mkdir();
             }
             image = File.createTempFile(
                     imageFileName,  /* prefix */
@@ -1208,17 +1281,19 @@ public class NewHomeRegistry extends AppCompatActivity{
 
         @Override
         public void checkPermissions() {
+            //dispatchTakePictureIntent();
+
+
             if (ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.CAMERA)) {
                     ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
                 }
             } else {
-                dispatchTakePictureIntent();
-//                try {
-//                    dispatchTakePictureIntent();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    dispatchTakePictureIntent();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
