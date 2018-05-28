@@ -237,6 +237,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             File file = new File(cameraFileName);
             //Log.i(TAG, "onActivityResult: "+cameraFileName);
             boolean deleted = file.delete();
+            Log.i(TAG, "onActivityResult: file deleted: "+deleted);
 
 
 
@@ -1284,10 +1285,10 @@ public class NewHomeRegistry extends AppCompatActivity{
             //dispatchTakePictureIntent();
 
 
-            if (ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) || ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.CAMERA)) {
-                    ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
-                }
+            if (ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+               // if (ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+                //}
             } else {
                 try {
                     dispatchTakePictureIntent();
