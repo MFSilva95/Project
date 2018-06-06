@@ -49,7 +49,7 @@ public class DB_Handler_old extends SQLiteOpenHelper {
     private SQLiteDatabase old_db;
 
 
-    public DB_Handler_old(Context context) {
+    public DB_Handler(Context context) {
 //        super(context, DATABASE_VERSION <= DATABASE_VERSION_V2 ? DATABASE_NAME_V2 : DATABASE_NAME, null, DATABASE_VERSION);
         super(context, DATABASE_NAME_V2, null, DATABASE_VERSION);
 
@@ -356,7 +356,7 @@ public class DB_Handler_old extends SQLiteOpenHelper {
 
     public void insertIntoDB(File inputFile) throws Exception{
         SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
-        DB_Handler_old dbwrite = new DB_Handler_old(this.myContext);
+        DB_Handler dbwrite = new DB_Handler(this.myContext);
         insertIntoDB(dbwrite.getWritableDatabase(),db);
         Log.i("cenas", "insertIntoDB: DONE");
     }
@@ -471,9 +471,9 @@ public class DB_Handler_old extends SQLiteOpenHelper {
 //			}
 //
 //		}
-//		if (oldVersion < DB_Handler_old.DATABASE_VERSION) {
+//		if (oldVersion < DB_Handler.DATABASE_VERSION) {
 //			initDatabaseTables(db); // creates new feature table and Db_Info and Badges and points
-//			if (oldVersion == DB_Handler_old.DATABASE_VERSION_USERID_BADGES) { //need to update BADGES
+//			if (oldVersion == DB_Handler.DATABASE_VERSION_USERID_BADGES) { //need to update BADGES
 //				//Log.i("DB Upgrade","Altering DB");
 //				String updateBadges = "ALTER TABLE Badges rename to badges_backup;\n" + //rename old table
 //						"CREATE TABLE IF NOT EXISTS Badges (Id INTEGER PRIMARY KEY AUTOINCREMENT, Id_User INTEGER NOT NULL, DateTime DATETIME NOT NULL, Type TEXT NOT NULL, Name TEXT NOT NULL, Medal TEXT NOT NULL, FOREIGN KEY(Id_User) REFERENCES UserInfo(Id));\n" + //create new one

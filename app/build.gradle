@@ -18,6 +18,7 @@ android {
         buildConfigField "boolean", "GLUCOMETER_AVAILABLE", "true"
         buildConfigField "boolean", "TASKS_AVAILABLE", "false"
         buildConfigField "boolean", "ADVICES_AVAILABLE", "false"
+        buildConfigField "boolean", "OLD_DB_VERSION", "false"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         buildConfigField "long", "BUILDDATE", System.currentTimeMillis() + "L"

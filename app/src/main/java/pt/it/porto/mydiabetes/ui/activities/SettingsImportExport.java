@@ -39,7 +39,7 @@ import java.util.List;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Handler_old;
+import pt.it.porto.mydiabetes.database.DB_Handler;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
@@ -119,8 +119,8 @@ public class SettingsImportExport extends BaseActivity {
 			File inputFile = new File(Environment.getExternalStorageDirectory()
 					+ "/MyDiabetes/backup/DB_Diabetes");
 			if(inputFile.exists()){
-				Log.i("cenas", "restoreBackup: RESTORING FROM: "+inputFile.getAbsolutePath());
-				DB_Handler_old handler = new DB_Handler_old(context);
+				//Log.i("cenas", "restoreBackup: RESTORING FROM: "+inputFile.getAbsolutePath());
+				DB_Handler handler = new DB_Handler(context);
 				try {
 					handler.insertIntoDB(inputFile);
 				} catch (Exception e) {

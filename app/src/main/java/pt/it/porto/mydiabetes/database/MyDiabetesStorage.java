@@ -16,10 +16,10 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 public class MyDiabetesStorage {
 
 	private static MyDiabetesStorage instance;
-	private DB_Handler_old mHandler;
+	private DB_Handler mHandler;
 
 	private MyDiabetesStorage(Context context) {
-		mHandler = new DB_Handler_old(context);
+		mHandler = new DB_Handler(context);
 	}
 
 

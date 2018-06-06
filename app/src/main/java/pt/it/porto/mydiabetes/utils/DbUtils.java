@@ -6,7 +6,7 @@ import android.os.Environment;
 
 import java.io.File;
 
-import pt.it.porto.mydiabetes.database.DB_Handler_old;
+import pt.it.porto.mydiabetes.database.DB_Handler;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.database.Usage;
 
@@ -31,6 +31,6 @@ public class DbUtils {
 			e.printStackTrace(); // this shouldn't happen :(
 		}
 
-		return new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases/"+ DB_Handler_old.getCurrentDbName());//DB_Diabetes");
+		return new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases/"+ DB_Handler.getCurrentDbName());//DB_Diabetes");
 	}
 }

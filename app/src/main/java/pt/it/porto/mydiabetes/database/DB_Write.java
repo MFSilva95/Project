@@ -42,7 +42,7 @@ public class DB_Write {
 	public DB_Write(Context context) {
 		super();
 		// TODO Auto-generated constructor stub
-		DB_Handler_old db = new DB_Handler_old(context);
+		DB_Handler db = new DB_Handler(context);
 		this.myContext = context;
 		this.myDB = db.getWritableDatabase();
 		this.myDB.execSQL("PRAGMA foreign_keys=ON;");
@@ -51,7 +51,7 @@ public class DB_Write {
 	public DB_Write(SQLiteDatabase newDb) {
 		super();
 		// TODO Auto-generated constructor stub
-		//DB_Handler_old db = new DB_Handler_old(context);
+		//DB_Handler db = new DB_Handler(context);
 		//this.myContext = context;
 		myContext = null;
 		this.myDB = newDb;//db.getWritableDatabase();

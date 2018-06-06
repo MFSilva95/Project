@@ -454,4 +454,7 @@
     <string name="exit_dialog_description">Tem certeza de que deseja sair sem salvar?</string>
     <string name="dependencies">Dependências</string>
 
+    <string name="db_depricated_dialog_title">Base de dados desatuaizada</string>
+    <string name="db_depricated_dialog_description">A sua base de dados está desatualizada, deseja criar uma copia de segurança da base de dados? Esta opção permite que, posteriormente, recupere os seus dados.</string>
+
 </resources>

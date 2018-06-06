@@ -45,7 +45,7 @@ public class DB_Read {
 
 	public DB_Read(Context context) {
 		super();
-		DB_Handler_old db = new DB_Handler_old(context);
+		DB_Handler db = new DB_Handler(context);
 		this.myContext = context;
 		SQLiteDatabase myDB1;
 		myDB1 = db.getReadableDatabase();

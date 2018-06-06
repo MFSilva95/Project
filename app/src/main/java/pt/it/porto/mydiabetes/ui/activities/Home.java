@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.Manifest;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -46,11 +47,13 @@ import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
 
 import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.PROJECT_MANAGER_EMAIL;
+import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.backup;
 
 
 public class Home extends BaseActivity {
 
 	public static final int CHANGES_OCCURRED = 1;
+	private static Boolean old_db = false;
 
 	private NavigationView navigationView;
 	private DrawerLayout drawerLayout;
@@ -64,6 +67,10 @@ public class Home extends BaseActivity {
 	private boolean sentToSettings = false;
 	private SharedPreferences permissionStatus;
 
+	public static void setOld_db(Boolean bool){
+		old_db = bool;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,33 +79,14 @@ public class Home extends BaseActivity {
 		permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
 
 		FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
+		if(old_db){
+			ShouldBackupDB();
+		}
+
 		if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
 			ShowDialogAddData();
 			return;
 		}
-
-//		DB_Write dbr = new DB_Write(this);
-//		dbr.recoverSensitivity();
-//		dbr.recoverRatio();
-//		dbr.close();
-
-//		DB_Read rdb = new DB_Read(this);
-//		int baseCarbsRatio = rdb.getCarbsRatio();
-//		int baseInsuRatio = rdb.getInsulinRatio();
-//
-//		ArrayList<CarbsRatioData> allCarbsTags = rdb.Ratio_GetAll();
-//		ArrayList<Sensitivity> allInsuTags = rdb.Sensitivity_GetAll();
-//
-//		if(allCarbsTags==null){
-//			MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
-//			storage.initRacioSens(baseCarbsRatio, "Ratio_Reg");
-//		}
-//		if(allInsuTags==null){
-//			MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
-//			storage.initRacioSens(baseInsuRatio, "Sensitivity_Reg");
-//		}
-//		rdb.close();
-
 
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -247,6 +235,66 @@ public class Home extends BaseActivity {
 		}
 	}
 
+	public void ShouldBackupDB(){
+		setOld_db(false);
+		android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(this);
+		builder1.setTitle(getString(R.string.db_depricated_dialog_title));
+		builder1.setMessage(getString(R.string.db_depricated_dialog_description));
+		builder1.setCancelable(true);
+
+		builder1.setPositiveButton(
+				getString(R.string.positiveButton),
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						backup(getBaseContext());
+						dialog.cancel();
+					}
+				});
+
+		builder1.setNegativeButton(
+
+
+				getString(R.string.negativeButton),
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+
+						android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(Home.this);
+						builder1.setTitle(getString(R.string.db_depricated_dialog_title));
+						builder1.setMessage(getString(R.string.backup_restore_confirmation_dialog_text));
+						builder1.setCancelable(true);
+
+						builder1.setPositiveButton(
+								getString(R.string.positiveButton),
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
+										backup(Home.this);
+										dialog.cancel();
+									}
+								});
+
+						builder1.setNegativeButton(
+								getString(R.string.negativeButton),
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
+										ShouldBackupDB();
+										dialog.cancel();
+									}
+								});
+
+						android.app.AlertDialog alert12 = builder1.create();
+						alert12.show();
+
+					}
+				});
+
+		android.app.AlertDialog alert11 = builder1.create();
+		alert11.show();
+
+
+//		FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
+//		db.changeFeatureStatus(FeaturesDB.OLD_DB_VERSION, false);
+
+	}
 
 	public void ShowDialogAddData() {
 		Intent intent = new Intent(this, WelcomeActivity.class);
