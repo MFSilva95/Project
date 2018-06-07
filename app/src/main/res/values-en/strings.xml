@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="advice">Advice</string>
     <string name="task">Task</string>
     <string name="tasks">Tasks</string>
@@ -320,4 +320,10 @@
     <string name="preferences_insulins">Insulins</string>
     <string name="preferences_factors">Factors and Ratio\'s</string>
     <string name="dependencies">Dependencies</string>
+
+    <string name="backup_restore_confirmation_dialog_text">This process will reset any other bakup made.\nDo you still want to proceed?</string>
+
+    <string name="db_depricated_dialog_title">Outdated data base</string>
+    <string name="db_depricated_dialog_description">Your database is outdated. Do you wish to export a copy of your database for future use?</string>
+    <string name="db_depricated_backup_cancel">All your previous data will be lost, are you sure you want to proceed?</string>
 </resources>

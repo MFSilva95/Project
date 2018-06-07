@@ -161,6 +161,29 @@ public class SettingsImportExport extends BaseActivity {
 		}
 	}
 
+	public static boolean backup_old_db(Context context) {
+		if (isSDWriteable()) {
+			File inputFile = DbUtils.export_old_Db(context);
+
+			File outputDir = new File(Environment.getExternalStorageDirectory()
+					+ "/MyDiabetes/backup");
+			outputDir.mkdirs();
+			if (inputFile.exists()) {
+				File fileBackup = new File(outputDir, "DB_Diabetes_oldDB");
+				try {
+					fileBackup.createNewFile();
+					copyFile(inputFile, fileBackup);
+					return true;
+				} catch (Exception exception) {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+		return false;
+	}
+
 	public static boolean backup(Context context) {
 		if (isSDWriteable()) {
 			File inputFile = DbUtils.exportDb(context);

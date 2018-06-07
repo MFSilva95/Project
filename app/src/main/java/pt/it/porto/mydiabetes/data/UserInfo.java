@@ -214,7 +214,7 @@ public class UserInfo {
 		contentValues.put("Gender", getGender().toString());
 		contentValues.put("Height", getHeight());
 		SimpleDateFormat now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		contentValues.put("DateTimeUpdate", now.format(Calendar.getInstance()));
+		contentValues.put("DateTimeUpdate", now.format(Calendar.getInstance().getTime()));
 		//contentValues.put("DateTimeUpdate", now.format("%Y-%m-%d %H:%M:%S"));
 		return contentValues;
 	}

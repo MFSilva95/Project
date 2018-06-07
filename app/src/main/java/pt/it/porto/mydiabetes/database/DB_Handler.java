@@ -63,6 +63,10 @@ public class DB_Handler extends SQLiteOpenHelper {
     public static String getCurrentDbName(){
         return currentDB_name;
     }
+
+    public static String getOldDbName(){
+        return DATABASE_NAME;
+    }
     @Override
     public void onConfigure(SQLiteDatabase db) {
         super.onConfigure(db);
@@ -76,6 +80,7 @@ public class DB_Handler extends SQLiteOpenHelper {
             DB_Read db_read = new DB_Read(old_db);
             if(db_read.isEmpty()){
                 initDatabaseTables(db);
+                initDayPhases(db);
             }else{
                 onUpgrade(db,db.getVersion(),DATABASE_VERSION);
             }
@@ -250,5 +255,75 @@ public class DB_Handler extends SQLiteOpenHelper {
         DB_Handler dbwrite = new DB_Handler(this.myContext);
         insertIntoDB(dbwrite.getWritableDatabase(),db);
         Log.i("cenas", "insertIntoDB: DONE");
+    }
+
+
+    private void initDayPhases(SQLiteDatabase db) {
+        Resources res = this.myContext.getResources();
+        String[] daytimes = res.getStringArray(R.array.daytimes);
+
+        ContentValues toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[0]);
+        toInsert.put("TimeStart", "06:00");
+        toInsert.put("TimeEnd", "07:30");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[1]);
+        toInsert.put("TimeStart", "07:30");
+        toInsert.put("TimeEnd", "09:00");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[2]);
+        toInsert.put("TimeStart", "09:00");
+        toInsert.put("TimeEnd", "10:30");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[3]);
+        toInsert.put("TimeStart", "10:30");
+        toInsert.put("TimeEnd", "13:00");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[4]);
+        toInsert.put("TimeStart", "13:00");
+        toInsert.put("TimeEnd", "15:30");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[5]);
+        toInsert.put("TimeStart", "15:30");
+        toInsert.put("TimeEnd", "18:00");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[6]);
+        toInsert.put("TimeStart", "18:00");
+        toInsert.put("TimeEnd", "20:30");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[7]);
+        toInsert.put("TimeStart", "20:30");
+        toInsert.put("TimeEnd", "22:00");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[8]);
+        toInsert.put("TimeStart", "22:00");
+        toInsert.put("TimeEnd", "00:00");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[9]);
+        toInsert.put("TimeStart", "00:00");
+        toInsert.put("TimeEnd", "06:00");
+        db.insert("Tag", null, toInsert);
+
+        toInsert = new ContentValues();
+        toInsert.put("Name", daytimes[10]);
+        db.insert("Tag", null, toInsert);
     }
 }
