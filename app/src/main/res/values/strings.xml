@@ -562,4 +562,17 @@
     <string name="exit_dialog_title">Sair sem Salvar</string>
     <string name="exit_dialog_description">Tem certeza de que deseja sair sem salvar?</string>
 
+
+    <string name="name_hint_2">Name for your meal</string>
+    <string name="photo_input">Take a photo</string>
+    <string name="list_info">Meal Items</string>
+    <string name="total_carbs">Total Carbs</string>
+    <string name="carbs">Carbs</string>
+    <string name="no_logged_meals">No Logged Meals</string>
+    <string name="build_meal_info">Click in the button to add items to your meal</string>
+    <string name="edit_button">"Edit"</string>
+    <string name="detail_button">"Detail"</string>
+    <string name="delete_button">"Delete"</string>
+    <string name="bullet">\u2022</string>
+
 </resources>

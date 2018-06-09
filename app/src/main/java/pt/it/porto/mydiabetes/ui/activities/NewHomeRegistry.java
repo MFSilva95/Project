@@ -67,6 +67,8 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
+import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
+import pt.it.porto.mydiabetes.ui.createMeal.activities.SelectMealActivity;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
@@ -108,6 +110,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         insulinManual = b;
     }
     private static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int REQUEST_CREATE_MEAL = 2;
     private Calendar registerDate;
     private TextView registerDateTextV;
     private TextView registerTimeTextV;
@@ -1140,6 +1143,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         void addGlycaemiaObjective(Context c);
         void addCarbsImage(Context context, Uri thisImgUri);
         void updateInsulinCalc();
+        void createCustomMeal(Context context);
     }
     class NewHomeRegCallImpl implements NewHomeRegCallBack{
 
@@ -1212,6 +1216,12 @@ public class NewHomeRegistry extends AppCompatActivity{
             insulinCalculator.setGlycemiaTarget(glycaemiaRegister!=null?glycaemiaRegister.getGlycemiaTarget():0);
 
             insuRegister.updateInsuCalc(insulinCalculator);
+        }
+
+        @Override
+        public void createCustomMeal(Context context) {
+            Intent intent = new Intent(context, CreateMealActivity.class);
+            startActivityForResult(intent,REQUEST_CREATE_MEAL);
         }
     }
     private void hideKeyboard() {

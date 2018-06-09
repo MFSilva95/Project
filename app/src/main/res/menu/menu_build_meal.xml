@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/delete_all"
+        android:title="Clear All"
+        android:icon="@drawable/ic_delete_all"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/take_photo"
+        android:title="Camera"
+        android:icon="@drawable/ic_camera"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/log_meal"
+        android:title="Done"
+        android:icon="@drawable/ic_save"
+        app:showAsAction="always" />
+
+
+</menu>

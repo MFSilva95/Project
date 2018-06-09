@@ -395,7 +395,7 @@
                 android:value="pt.it.porto.mydiabetes.ui.activities.Home"/>
         </activity>
 
-        0<activity
+        <activity
             android:name=".ui.activities.Badges"
             android:label="@string/badges"
             android:parentActivityName=".ui.activities.Home">
@@ -403,7 +403,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
         </activity>
-
+        <activity android:name=".ui.createMeal.activities.CreateMealActivity"
+            android:theme="@style/AppTheme"/>
+        <activity android:name=".ui.createMeal.activities.LoggedMealDetail" />
+        <activity android:name=".ui.createMeal.activities.SelectMealActivity" />
 
 
         <meta-data

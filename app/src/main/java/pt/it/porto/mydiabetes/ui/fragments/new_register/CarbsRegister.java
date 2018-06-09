@@ -32,6 +32,7 @@ import pt.it.porto.mydiabetes.utils.ImageUtils;
 public class CarbsRegister extends LinearLayout {
     private TextInputLayout carbs_input;
     private ImageButton image_button;
+    private ImageButton create_meal_button;
     private CarbsRec carbsData;
 
     public Uri getImgUri() {
@@ -58,6 +59,7 @@ public class CarbsRegister extends LinearLayout {
         inflate(getContext(), R.layout.meal_content_edit, this);
         this.carbs_input = (TextInputLayout) findViewById(R.id.meal_txt);
         this.image_button = (ImageButton) findViewById(R.id.iv_MealDetail_Photo);
+        this.create_meal_button = (ImageButton) findViewById(R.id.create_meal);
         setMealListeners();
         requestFocus();
     }
@@ -120,6 +122,13 @@ public class CarbsRegister extends LinearLayout {
             @Override
             public void onClick(View v) {
                 callBack.addCarbsImage(getContext(), imgUri);
+            }
+        });
+
+        create_meal_button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callBack.createCustomMeal(getContext());
             }
         });
 

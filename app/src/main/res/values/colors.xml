@@ -40,4 +40,12 @@
     <color name="green_selected">#97EEBA</color>
 
 
+    <!-- Create Meal new colors -->
+
+    <color name="colorSecondary">#edffb3</color>
+    <color name="colorTertiary">#f8ffe2</color>
+    <color name="colorTertiaryLight">#fdfff6</color>
+
+
+
 </resources>
