@@ -64,8 +64,8 @@ public class DB_Read {
 		Cursor cursor = myDB.rawQuery("SELECT Count(*) FROM sqlite_master", null);
 		cursor.moveToFirst();
 		boolean result = cursor.getInt(0) > 1;
-		Log.i("cenas", "isEmpty: "+cursor.getInt(0));
-		Log.i("cenas", "isEmpty: "+result);
+		//Log.i("cenas", "isEmpty: "+cursor.getInt(0));
+		//Log.i("cenas", "isEmpty: "+result);
 		cursor.close();
 		return !result;
 	}

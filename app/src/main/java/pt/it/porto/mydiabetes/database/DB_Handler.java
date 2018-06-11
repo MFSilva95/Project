@@ -76,14 +76,21 @@ public class DB_Handler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         if(db.getVersion()==0){// empty or in need of update
+            initDatabaseTables(db);//iniciar a nova bd
+            initDayPhases(db); //iniciar as tags na nova bd
+
+            //init new db, check if old db exists
             old_db = myContext.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
             DB_Read db_read = new DB_Read(old_db);
-            if(db_read.isEmpty()){
-                initDatabaseTables(db);
-                initDayPhases(db);
-            }else{
-                onUpgrade(db,db.getVersion(),DATABASE_VERSION);
+            if(!db_read.isEmpty()){//if an older database exists, run the backup popups
+
+                setOld_db(true);
+//                initDatabaseTables(db);
+//                initDayPhases(db);
             }
+            /*else{
+                onUpgrade(db,db.getVersion(),DATABASE_VERSION);
+            }*/
             db_read.close();
             old_db.close();
         }
@@ -101,12 +108,12 @@ public class DB_Handler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase myDB, int oldVersion, int newVersion) {
-        if(oldVersion<=18){
-            //change flag
-            setOld_db(true);
-//            FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(myContext));
-//            db.changeFeatureStatus(FeaturesDB.OLD_DB_VERSION, true);
-        }
+//        if(oldVersion<=18){
+//            //change flag
+//            setOld_db(true);
+////            FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(myContext));
+////            db.changeFeatureStatus(FeaturesDB.OLD_DB_VERSION, true);
+//        }
     }
 
     private void insertIntoDB(SQLiteDatabase myDB, SQLiteDatabase old) throws Exception{
