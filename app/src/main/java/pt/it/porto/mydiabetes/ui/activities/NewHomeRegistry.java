@@ -132,6 +132,8 @@ public class NewHomeRegistry extends AppCompatActivity{
     private Spinner spinner;
     private ArrayList<Tag> t;
 
+    private int mCurrentMealId = -1;
+
     int iRatio;
     int cRatio;
 
@@ -196,6 +198,11 @@ public class NewHomeRegistry extends AppCompatActivity{
             if (resultCode == -1) {
                 imageRemoved();
             }
+        } else if(requestCode == REQUEST_CREATE_MEAL && resultCode == RESULT_OK){
+            if(data.hasExtra("meal_id") && data.hasExtra("total_carbs")){
+                setCustomMeal(data.getExtras().getInt("meal_id"), data.getExtras().getFloat("total_carbs"));
+            }
+
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -872,6 +879,10 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void setImgURI(Uri newUri){
         carbsRegister.setUri(newUri);
         imgUri = newUri;}
+    private void setCustomMeal(int meal_id, float total_carbs){
+        carbsRegister.setMeal(meal_id,total_carbs);
+        mCurrentMealId = meal_id;
+    }
     private void imageRemoved() {
         setImgURI(null);
     }
@@ -904,7 +915,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                         String imgPath = carbsData.getPhotoPath();
                         if(imgPath!=null){imgUri = Uri.parse(imgPath);}
                         carbsRegister.setImage(imgUri, this);
-
+                        mCurrentMealId = carbsData.getMealId();
                         setNoteId(carbsData.getIdNote());
                         registerDate = carbsData.getDateTime();
                     }
@@ -988,7 +999,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                     if(imgPath!=null){imgUri = Uri.parse(imgPath);}
                     carbsRegister.fill_parameters(carbsData);
                     carbsRegister.setImage(imgUri, this);
-
+                    mCurrentMealId = carbsData.getMealId();
                     setNoteId(carbsData.getIdNote());
                     if(carbsData.getDateTime()!=null){
                         registerDate = carbsData.getDateTime();
@@ -1221,6 +1232,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         @Override
         public void createCustomMeal(Context context) {
             Intent intent = new Intent(context, CreateMealActivity.class);
+            intent.putExtra("meal_id", mCurrentMealId);
             startActivityForResult(intent,REQUEST_CREATE_MEAL);
         }
     }

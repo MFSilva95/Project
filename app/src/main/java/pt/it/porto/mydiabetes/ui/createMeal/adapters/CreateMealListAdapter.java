@@ -9,6 +9,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,14 +31,10 @@ import pt.it.porto.mydiabetes.ui.createMeal.utils.MealItem;
 public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAdapter.ViewHolder> {
     private List<MealItem> foodList;
     private Context context;
-    private TextView totalCarbs;
-    private TextView emptyMessage;
 
-    public CreateMealListAdapter(List<MealItem> foodList, Context context, TextView totalCarbs, TextView emptyMessage) {
+    public CreateMealListAdapter(List<MealItem> foodList, Context context) {
         this.foodList = foodList;
         this.context = context;
-        this.totalCarbs = totalCarbs;
-        this.emptyMessage = emptyMessage;
     }
 
 
@@ -59,11 +56,17 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
         holder.viewForeground.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if(holder.optionsView.getVisibility() == View.GONE)
-                   holder.optionsView.setVisibility(View.VISIBLE);
-               else{
-                   holder.optionsView.setVisibility(View.GONE);
-               }
+                if(holder.optionsView.getVisibility() == View.GONE) {
+                    holder.optionsView.setVisibility(View.VISIBLE);
+                    holder.foodName.setMaxLines(30);
+                    holder.foodName.setEllipsize(null);
+                }
+
+                else{
+                    holder.optionsView.setVisibility(View.GONE);
+                    holder.foodName.setMaxLines(1);
+                    holder.foodName.setEllipsize(TextUtils.TruncateAt.END);
+                }
             }
         });
 
@@ -100,52 +103,47 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
         return foodList.size();
     }
 
-    private void updateTotalCarbsDisplay(){
+    public float getTotalCarbsValue(){
         float total_carbs = 0;
         for(MealItem m : foodList)
             total_carbs = total_carbs + m.getCarbs();
 
-        totalCarbs.setText(new StringBuilder(String.format(Locale.US,"%.1f", total_carbs) + "g"));
-
-        if(foodList.size() > 0)
-            emptyMessage.setVisibility(View.GONE);
-        else
-            emptyMessage.setVisibility(View.VISIBLE);
+        return total_carbs;
     }
 
     public void addItem(MealItem item) {
         foodList.add(item);
-        updateTotalCarbsDisplay();
+        ((CreateMealActivity)context).updateTotalCarbsDisplay();
         notifyItemInserted(foodList.indexOf(item));
     }
 
     public void removeItem(int position) {
         foodList.remove(position);
-        updateTotalCarbsDisplay();
+        ((CreateMealActivity)context).updateTotalCarbsDisplay();
         notifyItemRemoved(position);
     }
 
     public void removeAll(){
         int n_items_removed = foodList.size();
         foodList.clear();
-        updateTotalCarbsDisplay();
+        ((CreateMealActivity)context).updateTotalCarbsDisplay();
         notifyItemRangeRemoved(0,n_items_removed);
     }
 
     public void restoreItem(MealItem item, int position) {
         foodList.add(position, item);
-        updateTotalCarbsDisplay();
+        ((CreateMealActivity)context).updateTotalCarbsDisplay();
         notifyItemInserted(position);
     }
 
     public void restoreAll(List<MealItem> itemList){
         foodList.addAll(itemList);
-        updateTotalCarbsDisplay();
+        ((CreateMealActivity)context).updateTotalCarbsDisplay();
         notifyItemRangeInserted(0, foodList.size());
     }
 
     public void updateItem(MealItem item){
-        updateTotalCarbsDisplay();
+        ((CreateMealActivity)context).updateTotalCarbsDisplay();
         notifyItemChanged(foodList.indexOf(item));
     }
 

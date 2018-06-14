@@ -28,7 +28,9 @@ import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 import static android.app.Activity.RESULT_OK;
 
 public class LoggedMealListFragment extends Fragment {
-    static final int REQUEST_MEAL = 1;
+    private static final int REQUEST_MEAL = 1;
+    private static final int FILTER_ALL = 0;
+    private static final int FILTER_FAVOURITE = 2;
 
     private SearchView searchView;
     private LoggedMealListAdapter mAdapter;
@@ -119,8 +121,10 @@ public class LoggedMealListFragment extends Fragment {
         // Handler dos cliques em cada menu
         switch (item.getItemId()) {
             case R.id.fav_meals:
+                mAdapter.filter(FILTER_FAVOURITE);
                 return true;
-            case R.id.recent_meals:
+            case R.id.all_logged_meals:
+                mAdapter.filter(FILTER_ALL);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

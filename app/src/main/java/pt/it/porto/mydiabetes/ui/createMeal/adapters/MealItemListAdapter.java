@@ -55,10 +55,6 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
         return itemList.size();
     }
 
-    public List<MealItem> getMealsList() {
-        return itemList;
-    }
-
     public void filter(String text) {
         itemList.clear();
         if(text.isEmpty()){

@@ -29,7 +29,9 @@ import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 
 
 public class LoggedMealListAdapter extends RecyclerView.Adapter<LoggedMealListAdapter.ViewHolder>{
-    static final int REQUEST_MEAL = 1;
+    private static final int REQUEST_MEAL = 1;
+    private static final int FILTER_ALL = 0;
+    private static final int FILTER_FAVOURITE = 2;
 
     private List<LoggedMeal> mealList;
     private List<LoggedMeal> mealListCopy;
@@ -53,7 +55,11 @@ public class LoggedMealListAdapter extends RecyclerView.Adapter<LoggedMealListAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final LoggedMeal meal = mealList.get(position);
 
-        holder.nameView.setText(meal.getName());
+        if(meal.getName() != null)
+            holder.nameView.setText(meal.getName());
+        else
+            holder.nameView.setText(setLogTime(meal.getTimestamp()));
+
         holder.carbsTextView.setText(String.format(Locale.US,"%.1f", meal.getTotalCarbs()));
         holder.mealNumItemsView.setText(String.valueOf(meal.getItemList().size()));
 
@@ -117,6 +123,23 @@ public class LoggedMealListAdapter extends RecyclerView.Adapter<LoggedMealListAd
 
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         mImageView.setImageBitmap(bitmap);
+    }
+
+    public void filter(int which) {
+        mealList.clear();
+
+        switch (which){
+            case FILTER_ALL:
+                mealList.addAll(mealListCopy);
+                notifyDataSetChanged();
+                break;
+            case FILTER_FAVOURITE:
+                for(LoggedMeal meal: mealListCopy)
+                    if(meal.isFavourite())
+                        mealList.add(meal);
+                notifyDataSetChanged();
+                break;
+        }
     }
 
     @Override

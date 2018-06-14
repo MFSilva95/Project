@@ -166,6 +166,12 @@ public class CarbsRegister extends LinearLayout {
         };
         return carbsTW;
     }
+    public void setMeal(int meal_id, float total_carbs){
+        carbsData.setMealId(meal_id);
+        carbsData.setCarbsValue(Math.round(total_carbs));
+        carbs_input.getEditText().setText(""+carbsData.getCarbsValue());
+        callBack.updateInsulinCalc();
+    }
 
     private void insertCarbsData(int carbValue){
         final ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);

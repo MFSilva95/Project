@@ -10,11 +10,13 @@ public class LoggedMeal implements Parcelable {
     private String timestamp;
     private List<MealItem> itemList;
     private String thumbnailPath;
-    private int id = -1;
+    private boolean favourite;
+    private int id;
 
 
     public LoggedMeal(List<MealItem> itemList){
         this.itemList = itemList;
+        this.id = -1;
     }
 
     public List<MealItem> getItemList(){
@@ -62,6 +64,14 @@ public class LoggedMeal implements Parcelable {
         this.name = name;
     }
 
+    public boolean isFavourite(){
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite){
+        this.favourite = favourite;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -81,6 +91,7 @@ public class LoggedMeal implements Parcelable {
         dest.writeString(this.timestamp);
         dest.writeTypedList(this.itemList);
         dest.writeString(this.thumbnailPath);
+        dest.writeByte(this.favourite ? (byte) 1 : (byte) 0);
         dest.writeInt(this.id);
     }
 
@@ -89,6 +100,7 @@ public class LoggedMeal implements Parcelable {
         this.timestamp = in.readString();
         this.itemList = in.createTypedArrayList(MealItem.CREATOR);
         this.thumbnailPath = in.readString();
+        this.favourite = in.readByte() != 0;
         this.id = in.readInt();
     }
 

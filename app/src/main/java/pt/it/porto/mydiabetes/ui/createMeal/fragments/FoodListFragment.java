@@ -23,6 +23,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 
+import java.util.List;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.SelectMealActivity;
 import pt.it.porto.mydiabetes.ui.createMeal.adapters.MealItemListAdapter;
@@ -36,6 +38,7 @@ public class FoodListFragment extends Fragment {
     private SearchView searchView;
     private MealItemListAdapter mAdapter;
 
+    private List<MealItem> foodList;
     private DataBaseHelper dbHelper;
 
     public FoodListFragment() {}
@@ -55,9 +58,10 @@ public class FoodListFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView)fragmentView.findViewById(R.id.food_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(((SelectMealActivity)getActivity())));
-        mAdapter = new MealItemListAdapter(dbHelper.getFoodList(), ((SelectMealActivity)getActivity()));
+
+        foodList = dbHelper.getFoodList();
+        mAdapter = new MealItemListAdapter(foodList, ((SelectMealActivity)getActivity()));
         recyclerView.setAdapter(mAdapter);
-        //recyclerView.addItemDecoration(new DividerItemDecoration(((SelectMealActivity)getActivity()), DividerItemDecoration.VERTICAL));
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(((SelectMealActivity)getActivity()), recyclerView, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, final int position) {
@@ -77,7 +81,7 @@ public class FoodListFragment extends Fragment {
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(((SelectMealActivity)getActivity()).getApplicationContext());
         View view = layoutInflaterAndroid.inflate(R.layout.select_portion_dialog, null);
 
-        final MealItem mealItem = mAdapter.getMealsList().get(position);
+        final MealItem mealItem = foodList.get(position);
 
         final NumberPicker numberPicker = view.findViewById(R.id.number_picker);
         numberPicker.setMinValue(1);

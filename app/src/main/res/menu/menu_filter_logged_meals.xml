@@ -10,10 +10,9 @@
 
         <menu>
             <item android:id="@+id/fav_meals"
-                android:title="Favourites"
-                />
-            <item android:id="@+id/recent_meals"
-                android:title="Recent" />
+                android:title="Favourites" />
+            <item android:id="@+id/all_logged_meals"
+                android:title="All" />
         </menu>
     </item>
 
