@@ -14,6 +14,8 @@ import java.io.InputStreamReader;
 
 import pt.it.porto.mydiabetes.R;
 
+import static pt.it.porto.mydiabetes.database.MyDiabetesContract.Regist.CarboHydrate.COLUMN_MEAL_ID;
+
 public class DB_Handler extends SQLiteOpenHelper {
 
 	// Database Version
@@ -131,11 +133,13 @@ public class DB_Handler extends SQLiteOpenHelper {
 					"DROP TABLE Usability_Flux;\n"
 					;
 
+
 			try {
 				db.execSQL(updateDATABASE_NOTE_BG_DEPENDENCY);
 				db.execSQL(updateDATABASE_NOTE_CARBS_DEPENDENCY);
 				db.execSQL(updateDATABASE_NOTE_INSU_DEPENDENCY);
 				db.execSQL(updateUSABILITY);
+
 				Log.i("DB Upgrade", "Finished altering DB");
 			} catch (SQLException sqlE) {
 				Log.e("DB Update adding column", sqlE.getLocalizedMessage());

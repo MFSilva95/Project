@@ -30,6 +30,8 @@ import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
+import static pt.it.porto.mydiabetes.database.MyDiabetesContract.Regist.CarboHydrate.COLUMN_MEAL_ID;
+
 
 public class DB_Write {
 
@@ -368,6 +370,7 @@ public class DB_Write {
 		if (obj.getIdNote() > 0) {
 			toInsert.put("Id_Note", obj.getIdNote());
 		}
+		toInsert.put("Id_Meal", obj.getMealId());
 		return (int) myDB.insert("Reg_CarboHydrate", null, toInsert);
 	}
 
@@ -397,6 +400,7 @@ public class DB_Write {
 		if (obj.getIdNote() > 0) {
 			toInsert.put("Id_Note", obj.getIdNote());
 		}
+		toInsert.put("Id_Meal", obj.getMealId());
 
 		Log.i("update", "Carbs_Update_obj: "+ obj.toString());
 		Log.i("update", "Carbs_Update_old: "+ old.toString());

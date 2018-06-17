@@ -105,6 +105,11 @@ public class LoggedMealDetail extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_meal_detail, menu);
 
+        if(meal.isRegistered()){
+            MenuItem item = menu.findItem(R.id.delete);
+            item.setVisible(false);
+        }
+
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);

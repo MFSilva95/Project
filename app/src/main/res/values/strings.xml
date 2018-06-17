@@ -563,16 +563,36 @@
     <string name="exit_dialog_description">Tem certeza de que deseja sair sem salvar?</string>
 
 
-    <string name="name_hint_2">Name for your meal</string>
-    <string name="photo_input">Take a photo</string>
-    <string name="list_info">Meal Items</string>
-    <string name="total_carbs">Total Carbs</string>
-    <string name="carbs">Carbs</string>
-    <string name="no_logged_meals">No Logged Meals</string>
-    <string name="build_meal_info">Click in the button to add items to your meal</string>
-    <string name="edit_button">"Edit"</string>
-    <string name="detail_button">"Detail"</string>
-    <string name="delete_button">"Delete"</string>
+    <string name="name_hint_2">Nome para a tua refeição</string>
+    <string name="save_it">Guardar</string>
+    <string name="take_photo">Tirar Foto</string>
+    <string name="clear_all">Remover Tudo</string>
+    <string name="favourites">Favoritas</string>
+    <string name="all_logged">Todas</string>
+    <string name="list_info">Itens da Refeição</string>
+    <string name="total_carbs">H.Carb Totais</string>
+    <string name="_total_of">Um total de</string>
+    <string name="_carbs_in">H.Carb em</string>
+    <string name="_items">itens</string>
+    <string name="carbs">H.Carb</string>
+    <string name="build_meal_info">Pressione o botão para adicionar alimentos</string>
+    <string name="edit_button">"Editar"</string>
+    <string name="delete_button">"Eliminar"</string>
     <string name="bullet">\u2022</string>
+
+    <string name="create_meal_title">Criar Refeição</string>
+    <string name="empty_list">Refeição sem alimentos!</string>
+    <string name="item_removed">Alimento(s) removido(s)</string>
+    <string name="save_meal">Guardar Refeição</string>
+    <string name="keyboard">Teclado</string>
+    <string name="cancel">Cancelar</string>
+    <string name="done">OK</string>
+    <string name="undo">DESFAZER</string>
+
+    <string name="select_meal_tittle">Seleciona Alimento</string>
+    <string name="tab1_title">Alimentos</string>
+    <string name="tab2_title">Refeições</string>
+    <string name="food_portion">porção</string>
+    <string name="food_grams">gramas</string>
 
 </resources>

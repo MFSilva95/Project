@@ -60,8 +60,15 @@ public class LoggedMealListAdapter extends RecyclerView.Adapter<LoggedMealListAd
         else
             holder.nameView.setText(setLogTime(meal.getTimestamp()));
 
-        holder.carbsTextView.setText(String.format(Locale.US,"%.1f", meal.getTotalCarbs()));
+        holder.carbsTextView.setText(new StringBuilder(String.format(Locale.US,"%.1f", meal.getTotalCarbs()) + "g"));
         holder.mealNumItemsView.setText(String.valueOf(meal.getItemList().size()));
+
+        if(meal.isFavourite())
+            holder.favReg.setVisibility(View.VISIBLE);
+        else if(meal.isRegistered())
+            holder.savedReg.setVisibility(View.VISIBLE);
+        else
+            holder.normalReg.setVisibility(View.VISIBLE);
 
         if(meal.getThumbnailPath() != null)
             setMealPhoto(holder.mealPhotoView, meal.getThumbnailPath());
@@ -166,6 +173,10 @@ public class LoggedMealListAdapter extends RecyclerView.Adapter<LoggedMealListAd
         TextView mealNumItemsView;
         ImageView addMealView;
 
+        ImageView normalReg;
+        ImageView favReg;
+        ImageView savedReg;
+
         public ViewHolder(View itemView) {
             super(itemView);
 
@@ -175,6 +186,10 @@ public class LoggedMealListAdapter extends RecyclerView.Adapter<LoggedMealListAd
             carbsTextView = itemView.findViewById(R.id.meal_carbs);
             mealNumItemsView = itemView.findViewById(R.id.meal_num_items);
             addMealView = itemView.findViewById(R.id.add_meal);
+
+            normalReg = itemView.findViewById(R.id.normal_reg);
+            favReg = itemView.findViewById(R.id.fav_reg);
+            savedReg = itemView.findViewById(R.id.saved_reg);
         }
 
 

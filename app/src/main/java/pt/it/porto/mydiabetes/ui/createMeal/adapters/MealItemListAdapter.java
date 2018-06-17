@@ -41,7 +41,7 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
         final MealItem meal = itemList.get(position);
 
         holder.nameTextView.setText(meal.getName());
-        holder.carbsTextView.setText(new StringBuilder(String.valueOf(meal.getCarbs()) + "g carbs"));
+        holder.carbsTextView.setText(new StringBuilder(String.valueOf(meal.getCarbs()) + "g " + context.getString(R.string.carbs)));
         holder.addMealItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

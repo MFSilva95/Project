@@ -772,6 +772,7 @@ public class DB_Read {
 		tmp.setDateTime(cursor.getString(4));
 		tmp.setIdTag(cursor.getInt(5));
 		tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
+		tmp.setMealId(cursor.getInt(7));
 		cursor.close();
 		return tmp;
 

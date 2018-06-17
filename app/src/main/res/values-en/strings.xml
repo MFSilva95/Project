@@ -369,4 +369,37 @@
     <string name="preferences_target">Glycemia Objectives</string>
     <string name="preferences_insulins">Insulins</string>
     <string name="preferences_factors">Factors and Ratio\'s</string>
+
+
+    <string name="name_hint_2">Name for your meal</string>
+    <string name="take_photo">Take a photo</string>
+    <string name="save_it">Save it</string>
+    <string name="clear_all">Clear All</string>
+    <string name="favourites">Favourites</string>
+    <string name="all_logged">All</string>
+    <string name="list_info">Meal Items</string>
+    <string name="total_carbs">Total Carbs</string>
+    <string name="carbs">Carbs</string>
+    <string name="_total_of">Total of</string>
+    <string name="_carbs_in">Carbs in</string>
+    <string name="_items">items</string>
+    <string name="build_meal_info">Click in the button to add items to your meal</string>
+    <string name="edit_button">"Edit"</string>
+    <string name="delete_button">"Delete"</string>
+    <string name="bullet">\u2022</string>
+
+    <string name="create_meal_title">Create Your Meal</string>
+    <string name="empty_list">Empty list!!</string>
+    <string name="item_removed">Item(s) removed</string>
+    <string name="save_meal">Save Meal</string>
+    <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="keyboard">Keyboard</string>
+    <string name="undo">UNDO</string>
+
+    <string name="select_meal_tittle">Select Food</string>
+    <string name="tab1_title">All Items</string>
+    <string name="tab2_title">Logged Meals</string>
+    <string name="food_portion">portion</string>
+    <string name="food_grams">grams</string>
 </resources>

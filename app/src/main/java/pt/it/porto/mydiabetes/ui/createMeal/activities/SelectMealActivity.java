@@ -77,9 +77,9 @@ public class SelectMealActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(new FoodListFragment(), "All Items");
+        adapter.addFragment(new FoodListFragment(), getString(R.string.tab1_title));
         mLoggedMealFragment = new LoggedMealListFragment();
-        adapter.addFragment(mLoggedMealFragment, "Logged Meals");
+        adapter.addFragment(mLoggedMealFragment, getString(R.string.tab2_title));
         viewPager.setAdapter(adapter);
     }
 
@@ -95,7 +95,7 @@ public class SelectMealActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle("Select Food");
+            actionBar.setTitle(getString(R.string.select_meal_tittle));
         }
 
         return super.onCreateOptionsMenu(menu);

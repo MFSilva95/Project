@@ -42,6 +42,8 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
+import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
+import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.HomeElement;
@@ -318,6 +320,8 @@ public class homeMiddleFragment extends Fragment {
                         //DB_Write reg = new DB_Write(c);
                         DB_Read db_read = new DB_Read(c);
                         DB_Write reg = new DB_Write(c);
+                        DataBaseHelper dbHelper = new DataBaseHelper(c);
+                        LoggedMeal meal;
                         try {
                             Log.i(TAG, "onClick: deleteSIZE:" + toDeleteList.size());
                             for (HomeElement elem : toDeleteList) {
@@ -337,6 +341,11 @@ public class homeMiddleFragment extends Fragment {
                                     if(carbsData!=null){
                                         setNoteId(carbsData.getIdNote());
                                         reg.Carbs_Delete(carbsID);
+                                        if(carbsData.getMealId() != -1) {
+                                            meal = dbHelper.getMeal(carbsData.getMealId());
+                                            meal.setRegistered(false);
+                                            dbHelper.updateMeal(meal,false);
+                                        }
                                     }
                                 }//}
                                 if ((insuID = elem.getInsulinId()) != -1) {

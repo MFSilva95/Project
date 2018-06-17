@@ -14,15 +14,15 @@
 
         <menu>
             <item android:id="@+id/save_meal"
-                android:title="Save it"
+                android:title="@string/save_it"
                 android:icon="@drawable/ic_save" />
 
             <item android:id="@+id/take_photo"
-                android:title="Take Photo"
+                android:title="@string/take_photo"
                 android:icon="@drawable/ic_camera" />
 
             <item android:id="@+id/delete_all"
-                android:title="Clear All"
+                android:title="@string/clear_all"
                 android:icon="@drawable/ic_delete_all" />
 
         </menu>

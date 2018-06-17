@@ -16,7 +16,6 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif"
-        android:text="@string/no_logged_meals"
         android:textSize="18sp"
         android:textStyle="italic"
         android:visibility="gone"

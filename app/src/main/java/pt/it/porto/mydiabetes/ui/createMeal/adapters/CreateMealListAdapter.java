@@ -113,37 +113,37 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
 
     public void addItem(MealItem item) {
         foodList.add(item);
-        ((CreateMealActivity)context).updateTotalCarbsDisplay();
+        ((CreateMealActivity)context).notitfyItemListChange();
         notifyItemInserted(foodList.indexOf(item));
     }
 
     public void removeItem(int position) {
         foodList.remove(position);
-        ((CreateMealActivity)context).updateTotalCarbsDisplay();
+        ((CreateMealActivity)context).notitfyItemListChange();
         notifyItemRemoved(position);
     }
 
     public void removeAll(){
         int n_items_removed = foodList.size();
         foodList.clear();
-        ((CreateMealActivity)context).updateTotalCarbsDisplay();
+        ((CreateMealActivity)context).notitfyItemListChange();
         notifyItemRangeRemoved(0,n_items_removed);
     }
 
     public void restoreItem(MealItem item, int position) {
         foodList.add(position, item);
-        ((CreateMealActivity)context).updateTotalCarbsDisplay();
+        ((CreateMealActivity)context).notitfyItemListChange();
         notifyItemInserted(position);
     }
 
     public void restoreAll(List<MealItem> itemList){
         foodList.addAll(itemList);
-        ((CreateMealActivity)context).updateTotalCarbsDisplay();
+        ((CreateMealActivity)context).notitfyItemListChange();
         notifyItemRangeInserted(0, foodList.size());
     }
 
     public void updateItem(MealItem item){
-        ((CreateMealActivity)context).updateTotalCarbsDisplay();
+        ((CreateMealActivity)context).notitfyItemListChange();
         notifyItemChanged(foodList.indexOf(item));
     }
 

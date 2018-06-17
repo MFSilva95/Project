@@ -132,6 +132,7 @@ public class CarbsRegister extends LinearLayout {
             }
         });
 
+
         TextView carbsTextView = (TextView) findViewById(R.id.meal);
         carbsTextView.addTextChangedListener(getCarbsTW());
     }
@@ -157,6 +158,7 @@ public class CarbsRegister extends LinearLayout {
                     try{
                         int carbs = Integer.parseInt(carbsS);
                         carbsData.setCarbsValue(carbs);
+                        //carbsData.setMealId(-1);
                     }catch (NumberFormatException e){
                         carbsData.setCarbsValue(0);
                     }
@@ -166,8 +168,7 @@ public class CarbsRegister extends LinearLayout {
         };
         return carbsTW;
     }
-    public void setMeal(int meal_id, float total_carbs){
-        carbsData.setMealId(meal_id);
+    public void setMealCarbs(float total_carbs){
         carbsData.setCarbsValue(Math.round(total_carbs));
         carbs_input.getEditText().setText(""+carbsData.getCarbsValue());
         callBack.updateInsulinCalc();

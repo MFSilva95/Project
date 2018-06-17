@@ -107,7 +107,7 @@ public class FoodListFragment extends Fragment {
         });
 
         final NumberPicker typePicker = view.findViewById(R.id.gram_or_portion_picker);
-        final String types[] = { "portion", "grams"};
+        final String types[] = { getString(R.string.food_portion), getString(R.string.food_grams)};
 
         typePicker.setMinValue(0);
         typePicker.setMaxValue(types.length - 1);
@@ -118,17 +118,17 @@ public class FoodListFragment extends Fragment {
         alertDialogBuilder
                 .setView(view)
                 .setTitle(mealItem.getName())
-                .setNeutralButton("Keyboard", new DialogInterface.OnClickListener() {
+                .setNeutralButton(getString(R.string.keyboard), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
                 })
-                .setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.done), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         int quantity;

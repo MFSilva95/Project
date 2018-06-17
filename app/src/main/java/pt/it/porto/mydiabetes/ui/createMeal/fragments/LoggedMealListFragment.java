@@ -80,7 +80,7 @@ public class LoggedMealListFragment extends Fragment {
                     mAdapter.removeMeal(deletedIndex);
 
                     Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.view_pager),"Meal removed", Snackbar.LENGTH_LONG);
-                    snackbar.setAction("UNDO", new View.OnClickListener() {
+                    snackbar.setAction(getString(R.string.undo), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
                             isUndo = true;

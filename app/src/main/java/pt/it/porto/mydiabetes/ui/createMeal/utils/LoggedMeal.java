@@ -11,6 +11,7 @@ public class LoggedMeal implements Parcelable {
     private List<MealItem> itemList;
     private String thumbnailPath;
     private boolean favourite;
+    private boolean registered;
     private int id;
 
 
@@ -80,6 +81,14 @@ public class LoggedMeal implements Parcelable {
         return id == that.id;
     }
 
+    public boolean isRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(boolean registered) {
+        this.registered = registered;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -92,6 +101,7 @@ public class LoggedMeal implements Parcelable {
         dest.writeTypedList(this.itemList);
         dest.writeString(this.thumbnailPath);
         dest.writeByte(this.favourite ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.registered ? (byte) 1 : (byte) 0);
         dest.writeInt(this.id);
     }
 
@@ -101,6 +111,7 @@ public class LoggedMeal implements Parcelable {
         this.itemList = in.createTypedArrayList(MealItem.CREATOR);
         this.thumbnailPath = in.readString();
         this.favourite = in.readByte() != 0;
+        this.registered = in.readByte() != 0;
         this.id = in.readInt();
     }
 

@@ -8,6 +8,7 @@ public class LoggedMealsTableHelper {
     public static final String COLUMN_TIMESTAMP = "meal_timestamp";
     public static final String COLUMN_PHOTO_PATH = "meal_photo";
     public static final String COLUMN_IS_FAVOURITE = "meal_is_favourite";
+    public static final String COLUMN_IS_REGISTERED = "meal_is_registered";
 
     // Create table SQL query
     public static final String CREATE_TABLE =
@@ -16,7 +17,8 @@ public class LoggedMealsTableHelper {
                     + COLUMN_NAME + " TEXT,"
                     + COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP,"
                     + COLUMN_PHOTO_PATH + " TEXT,"
-                    + COLUMN_IS_FAVOURITE + " INTEGER DEFAULT 0"
+                    + COLUMN_IS_FAVOURITE + " INTEGER DEFAULT 0,"
+                    + COLUMN_IS_REGISTERED + " INTEGER DEFAULT 0"
                     + ")";
 
     public LoggedMealsTableHelper() {}

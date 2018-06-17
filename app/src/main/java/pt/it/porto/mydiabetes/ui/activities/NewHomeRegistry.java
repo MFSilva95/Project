@@ -41,7 +41,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -68,7 +67,8 @@ import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
-import pt.it.porto.mydiabetes.ui.createMeal.activities.SelectMealActivity;
+import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
+import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
@@ -77,10 +77,8 @@ import pt.it.porto.mydiabetes.ui.fragments.new_register.GlycaemiaRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.InsuRegister;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.NoteRegister;
 import pt.it.porto.mydiabetes.ui.listAdapters.StringSpinnerAdapter;
-import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
-import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
@@ -132,7 +130,8 @@ public class NewHomeRegistry extends AppCompatActivity{
     private Spinner spinner;
     private ArrayList<Tag> t;
 
-    private int mCurrentMealId = -1;
+    private LoggedMeal mMeal = null;
+    private int associatedMealId = -1;
 
     int iRatio;
     int cRatio;
@@ -199,8 +198,9 @@ public class NewHomeRegistry extends AppCompatActivity{
                 imageRemoved();
             }
         } else if(requestCode == REQUEST_CREATE_MEAL && resultCode == RESULT_OK){
-            if(data.hasExtra("meal_id") && data.hasExtra("total_carbs")){
-                setCustomMeal(data.getExtras().getInt("meal_id"), data.getExtras().getFloat("total_carbs"));
+            if(data.hasExtra("meal")){
+                mMeal = data.getExtras().getParcelable("meal");
+                carbsRegister.setMealCarbs(mMeal.getTotalCarbs());
             }
 
         }
@@ -555,7 +555,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         int idUser = rdb.getId();
         int idTag = rdb.Tag_GetIdByName(tag);
 
-
+        DataBaseHelper dbHelper = new DataBaseHelper(this);
         DB_Write reg = new DB_Write(this);
 
         if(buttons.contains(NOTE)){
@@ -597,6 +597,15 @@ public class NewHomeRegistry extends AppCompatActivity{
                         carbsData.setIdTag(idTag);
                         carbsData.setIdUser(idUser);
                         carbsData.setDateTime(registerDate);
+                        if(mMeal != null && associatedMealId == -1){
+                            mMeal.setRegistered(true);
+                            if(mMeal.getId() == -1) {
+                                mMeal.setId(dbHelper.insertMeal(mMeal));
+                            } else{
+                                dbHelper.updateMeal(mMeal,false);
+                            }
+                            carbsData.setMealId(mMeal.getId());
+                        }
                         if(noteData != null) {
                             if(noteData.getNote()!= null && noteData.getId()!= -1){
                                 if (!noteData.getNote().equals("")) {
@@ -879,10 +888,6 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void setImgURI(Uri newUri){
         carbsRegister.setUri(newUri);
         imgUri = newUri;}
-    private void setCustomMeal(int meal_id, float total_carbs){
-        carbsRegister.setMeal(meal_id,total_carbs);
-        mCurrentMealId = meal_id;
-    }
     private void imageRemoved() {
         setImgURI(null);
     }
@@ -915,7 +920,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                         String imgPath = carbsData.getPhotoPath();
                         if(imgPath!=null){imgUri = Uri.parse(imgPath);}
                         carbsRegister.setImage(imgUri, this);
-                        mCurrentMealId = carbsData.getMealId();
+                        associatedMealId = carbsData.getMealId();
                         setNoteId(carbsData.getIdNote());
                         registerDate = carbsData.getDateTime();
                     }
@@ -999,7 +1004,7 @@ public class NewHomeRegistry extends AppCompatActivity{
                     if(imgPath!=null){imgUri = Uri.parse(imgPath);}
                     carbsRegister.fill_parameters(carbsData);
                     carbsRegister.setImage(imgUri, this);
-                    mCurrentMealId = carbsData.getMealId();
+                    associatedMealId = carbsData.getMealId();
                     setNoteId(carbsData.getIdNote());
                     if(carbsData.getDateTime()!=null){
                         registerDate = carbsData.getDateTime();
@@ -1232,7 +1237,12 @@ public class NewHomeRegistry extends AppCompatActivity{
         @Override
         public void createCustomMeal(Context context) {
             Intent intent = new Intent(context, CreateMealActivity.class);
-            intent.putExtra("meal_id", mCurrentMealId);
+
+            if (associatedMealId != -1) {
+                intent.putExtra("meal_id",associatedMealId);
+            }else if(mMeal != null)
+                intent.putExtra("meal_obj", mMeal);
+
             startActivityForResult(intent,REQUEST_CREATE_MEAL);
         }
     }
