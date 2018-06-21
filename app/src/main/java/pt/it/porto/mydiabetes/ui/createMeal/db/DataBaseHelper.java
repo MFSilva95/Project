@@ -108,8 +108,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         try {
             ContentValues contentValues = new ContentValues();
 
-            contentValues.put(LoggedMealsTableHelper.COLUMN_PHOTO_PATH, meal.getThumbnailPath());
             contentValues.put(LoggedMealsTableHelper.COLUMN_NAME, meal.getName());
+            contentValues.put(LoggedMealsTableHelper.COLUMN_EXTRA_CARBS, meal.getExtraCarbs());
+            contentValues.put(LoggedMealsTableHelper.COLUMN_PHOTO_PATH, meal.getThumbnailPath());
 
             if(meal.isFavourite())
                 contentValues.put(LoggedMealsTableHelper.COLUMN_IS_FAVOURITE, 1);
@@ -144,18 +145,18 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return (int)meal_id;
     }
 
-    public boolean deleteMeal(LoggedMeal meal){
+    public boolean deleteMeal(int meal_id){
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
 
         try{
-            if(meal.getId() != -1){
-                if(db.delete(LoggedMealsTableHelper.TABLE_NAME, LoggedMealsTableHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(meal.getId())}) == -1){
+            if(meal_id != -1){
+                if(db.delete(LoggedMealsTableHelper.TABLE_NAME, LoggedMealsTableHelper.COLUMN_ID + " = ?", new String[]{String.valueOf(meal_id)}) == -1){
                     db.endTransaction();
                     return false;
                 }
 
-                if(db.delete(MealItemsTableHelper.TABLE_NAME, MealItemsTableHelper.COLUMN_MEAL_ID + " = ?", new String[]{String.valueOf(meal.getId())}) == -1){
+                if(db.delete(MealItemsTableHelper.TABLE_NAME, MealItemsTableHelper.COLUMN_MEAL_ID + " = ?", new String[]{String.valueOf(meal_id)}) == -1){
                     db.endTransaction();
                     return false;
                 }
@@ -255,6 +256,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             do {
                 int meal_id = cursor.getInt(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_ID));
                 String name = cursor.getString(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_NAME));
+                int carbs = cursor.getInt(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_EXTRA_CARBS));
                 String timestamp = cursor.getString(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_TIMESTAMP));
                 String thumbnail_path = cursor.getString(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_PHOTO_PATH));
                 boolean favourite = (cursor.getInt(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_IS_FAVOURITE)) == 1);
@@ -263,6 +265,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 LoggedMeal meal = new LoggedMeal(getMealItemList(meal_id));
                 meal.setId(meal_id);
                 meal.setName(name);
+                meal.setExtraCarbs(carbs);
                 meal.setTimestamp(timestamp);
                 meal.setThumbnailPath(thumbnail_path);
                 meal.setFavourite(favourite);
@@ -282,7 +285,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(LoggedMealsTableHelper.TABLE_NAME,
-                new String[]{LoggedMealsTableHelper.COLUMN_ID, LoggedMealsTableHelper.COLUMN_NAME, LoggedMealsTableHelper.COLUMN_TIMESTAMP,LoggedMealsTableHelper.COLUMN_PHOTO_PATH,LoggedMealsTableHelper.COLUMN_IS_FAVOURITE,LoggedMealsTableHelper.COLUMN_IS_REGISTERED},
+                new String[]{LoggedMealsTableHelper.COLUMN_ID, LoggedMealsTableHelper.COLUMN_NAME, LoggedMealsTableHelper.COLUMN_EXTRA_CARBS, LoggedMealsTableHelper.COLUMN_TIMESTAMP,LoggedMealsTableHelper.COLUMN_PHOTO_PATH,LoggedMealsTableHelper.COLUMN_IS_FAVOURITE,LoggedMealsTableHelper.COLUMN_IS_REGISTERED},
                 LoggedMealsTableHelper.COLUMN_ID + "=?",
                 new String[]{String.valueOf(meal_id)}, null, null, null, null);
 
@@ -290,6 +293,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             cursor.moveToFirst();
 
         String name = cursor.getString(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_NAME));
+        int carbs = cursor.getInt(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_EXTRA_CARBS));
         String timestamp = cursor.getString(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_TIMESTAMP));
         String thumbnail_path = cursor.getString(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_PHOTO_PATH));
         boolean favourite = (cursor.getInt(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_IS_FAVOURITE)) == 1);
@@ -298,6 +302,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         LoggedMeal meal = new LoggedMeal(getMealItemList(meal_id));
         meal.setId(meal_id);
         meal.setName(name);
+        meal.setExtraCarbs(carbs);
         meal.setTimestamp(timestamp);
         meal.setThumbnailPath(thumbnail_path);
         meal.setFavourite(favourite);
@@ -309,7 +314,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return meal;
     }
 
-    public int updateMeal(LoggedMeal meal, boolean list){
+    public int updateMeal(LoggedMeal meal){
         SQLiteDatabase db = this.getWritableDatabase();
         db.beginTransaction();
 
@@ -318,6 +323,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
             contentValues.put(LoggedMealsTableHelper.COLUMN_PHOTO_PATH, meal.getThumbnailPath());
             contentValues.put(LoggedMealsTableHelper.COLUMN_NAME, meal.getName());
+            contentValues.put(LoggedMealsTableHelper.COLUMN_EXTRA_CARBS, meal.getExtraCarbs());
             if (meal.isRegistered())
                 contentValues.put(LoggedMealsTableHelper.COLUMN_IS_REGISTERED, 1);
             else
@@ -328,23 +334,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                     new String[]{String.valueOf(meal.getId())});
 
 
-            if(list) {
-                if (db.delete(MealItemsTableHelper.TABLE_NAME, MealItemsTableHelper.COLUMN_MEAL_ID + " = ?", new String[]{String.valueOf(meal.getId())}) == -1) {
+            if (db.delete(MealItemsTableHelper.TABLE_NAME, MealItemsTableHelper.COLUMN_MEAL_ID + " = ?", new String[]{String.valueOf(meal.getId())}) == -1) {
+                db.endTransaction();
+                return -1;
+            }
+
+
+            contentValues.clear();
+            for (MealItem item : meal.getItemList()) {
+                contentValues.put(MealItemsTableHelper.COLUMN_MEAL_ID, meal.getId());
+                contentValues.put(MealItemsTableHelper.COLUMN_FOOD_ID, item.getId());
+                contentValues.put(MealItemsTableHelper.COLUMN_QUANTITY, item.getQuantity());
+
+                if (db.insert(MealItemsTableHelper.TABLE_NAME, null, contentValues) == -1) {
                     db.endTransaction();
                     return -1;
-                }
-
-
-                contentValues.clear();
-                for (MealItem item : meal.getItemList()) {
-                    contentValues.put(MealItemsTableHelper.COLUMN_MEAL_ID, meal.getId());
-                    contentValues.put(MealItemsTableHelper.COLUMN_FOOD_ID, item.getId());
-                    contentValues.put(MealItemsTableHelper.COLUMN_QUANTITY, item.getQuantity());
-
-                    if (db.insert(MealItemsTableHelper.TABLE_NAME, null, contentValues) == -1) {
-                        db.endTransaction();
-                        return -1;
-                    }
                 }
             }
 

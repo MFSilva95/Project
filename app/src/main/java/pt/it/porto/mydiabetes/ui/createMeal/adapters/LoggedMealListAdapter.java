@@ -31,6 +31,7 @@ import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 public class LoggedMealListAdapter extends RecyclerView.Adapter<LoggedMealListAdapter.ViewHolder>{
     private static final int REQUEST_MEAL = 1;
     private static final int FILTER_ALL = 0;
+    private static final int FILTER_REGISTERED = 1;
     private static final int FILTER_FAVOURITE = 2;
 
     private List<LoggedMeal> mealList;
@@ -60,18 +61,29 @@ public class LoggedMealListAdapter extends RecyclerView.Adapter<LoggedMealListAd
         else
             holder.nameView.setText(setLogTime(meal.getTimestamp()));
 
-        holder.carbsTextView.setText(new StringBuilder(String.format(Locale.US,"%.1f", meal.getTotalCarbs()) + "g"));
+        holder.carbsTextView.setText(new StringBuilder(meal.getTotalCarbs(true) + "g"));
         holder.mealNumItemsView.setText(String.valueOf(meal.getItemList().size()));
 
-        if(meal.isFavourite())
+        if(meal.isFavourite()) {
             holder.favReg.setVisibility(View.VISIBLE);
-        else if(meal.isRegistered())
+            holder.savedReg.setVisibility(View.INVISIBLE);
+            holder.normalReg.setVisibility(View.INVISIBLE);
+        }
+        else if(meal.isRegistered()) {
             holder.savedReg.setVisibility(View.VISIBLE);
-        else
+            holder.favReg.setVisibility(View.INVISIBLE);
+            holder.normalReg.setVisibility(View.INVISIBLE);
+        }
+        else {
             holder.normalReg.setVisibility(View.VISIBLE);
+            holder.savedReg.setVisibility(View.INVISIBLE);
+            holder.favReg.setVisibility(View.INVISIBLE);
+        }
 
         if(meal.getThumbnailPath() != null)
             setMealPhoto(holder.mealPhotoView, meal.getThumbnailPath());
+        else
+            holder.mealPhotoView.setImageResource(R.drawable.ic_meal);
 
         holder.itemLayoutView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,15 +150,21 @@ public class LoggedMealListAdapter extends RecyclerView.Adapter<LoggedMealListAd
         switch (which){
             case FILTER_ALL:
                 mealList.addAll(mealListCopy);
-                notifyDataSetChanged();
                 break;
             case FILTER_FAVOURITE:
                 for(LoggedMeal meal: mealListCopy)
                     if(meal.isFavourite())
                         mealList.add(meal);
-                notifyDataSetChanged();
                 break;
+            case FILTER_REGISTERED:
+                for(LoggedMeal meal: mealListCopy)
+                    if(meal.isRegistered())
+                        mealList.add(meal);
+                break;
+
         }
+
+        notifyDataSetChanged();
     }
 
     @Override

@@ -158,7 +158,7 @@ public class CarbsRegister extends LinearLayout {
                     try{
                         int carbs = Integer.parseInt(carbsS);
                         carbsData.setCarbsValue(carbs);
-                        //carbsData.setMealId(-1);
+
                     }catch (NumberFormatException e){
                         carbsData.setCarbsValue(0);
                     }
@@ -168,8 +168,8 @@ public class CarbsRegister extends LinearLayout {
         };
         return carbsTW;
     }
-    public void setMealCarbs(float total_carbs){
-        carbsData.setCarbsValue(Math.round(total_carbs));
+    public void setMealCarbs(int total_carbs){
+        carbsData.setCarbsValue(total_carbs);
         carbs_input.getEditText().setText(""+carbsData.getCarbsValue());
         callBack.updateInsulinCalc();
     }

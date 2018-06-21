@@ -24,6 +24,10 @@ public class MealItem implements Parcelable {
         return portions * carbs;
     }
 
+    public void setCarbs(float carbs){
+        this.carbs = carbs;
+    }
+
     public int getId(){ return id; }
 
     public int getQuantity() {
@@ -54,7 +58,7 @@ public class MealItem implements Parcelable {
         this.quantity = in.readInt();
     }
 
-    public static final Parcelable.Creator<MealItem> CREATOR = new Parcelable.Creator<MealItem>() {
+    public static final Creator<MealItem> CREATOR = new Creator<MealItem>() {
         @Override
         public MealItem createFromParcel(Parcel source) {
             return new MealItem(source);

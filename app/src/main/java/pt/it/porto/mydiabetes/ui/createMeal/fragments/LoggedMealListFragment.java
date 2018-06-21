@@ -30,6 +30,7 @@ import static android.app.Activity.RESULT_OK;
 public class LoggedMealListFragment extends Fragment {
     private static final int REQUEST_MEAL = 1;
     private static final int FILTER_ALL = 0;
+    private static final int FILTER_REGISTERED = 1;
     private static final int FILTER_FAVOURITE = 2;
 
     private SearchView searchView;
@@ -79,7 +80,7 @@ public class LoggedMealListFragment extends Fragment {
                 if(data.getExtras().getBoolean("delete")){
                     mAdapter.removeMeal(deletedIndex);
 
-                    Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.view_pager),"Meal removed", Snackbar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(getActivity().findViewById(R.id.view_pager),getString(R.string.meal_removed), Snackbar.LENGTH_LONG);
                     snackbar.setAction(getString(R.string.undo), new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -92,7 +93,7 @@ public class LoggedMealListFragment extends Fragment {
                         @Override
                         public void onDismissed(Snackbar transientBottomBar, int event) {
                             if(!isUndo)
-                                dbHelper.deleteMeal(meal);
+                                dbHelper.deleteMeal(meal.getId());
                             else
                                 isUndo = false;
                         }
@@ -125,6 +126,9 @@ public class LoggedMealListFragment extends Fragment {
                 return true;
             case R.id.all_logged_meals:
                 mAdapter.filter(FILTER_ALL);
+                return true;
+            case R.id.reg_meals:
+                mAdapter.filter(FILTER_REGISTERED);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

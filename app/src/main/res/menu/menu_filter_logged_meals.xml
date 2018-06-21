@@ -11,6 +11,8 @@
         <menu>
             <item android:id="@+id/fav_meals"
                 android:title="@string/favourites" />
+            <item android:id="@+id/reg_meals"
+                android:title="@string/registered"/>
             <item android:id="@+id/all_logged_meals"
                 android:title="@string/all_logged" />
         </menu>

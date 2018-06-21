@@ -26,6 +26,7 @@ import android.widget.NumberPicker;
 import java.util.List;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.SelectMealActivity;
 import pt.it.porto.mydiabetes.ui.createMeal.adapters.MealItemListAdapter;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
@@ -166,6 +167,76 @@ public class FoodListFragment extends Fragment {
 
     }
 
+    private void showDialog2(){
+        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(((SelectMealActivity)getActivity()).getApplicationContext());
+        View view = layoutInflaterAndroid.inflate(R.layout.add_carbs_dialog, null);
+
+        final NumberPicker numberPicker = view.findViewById(R.id.number_picker);
+        numberPicker.setMinValue(1);
+        numberPicker.setMaxValue(5000);
+        numberPicker.setWrapSelectorWheel(false);
+        numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
+
+        final EditText editText = view.findViewById(R.id.number_input);
+        editText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() != 0)
+                    numberPicker.setValue(Integer.valueOf(s.toString()));
+            }
+        });
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(((SelectMealActivity)getActivity()));
+        alertDialogBuilder
+                .setView(view)
+                .setTitle(getString(R.string.add_extra_carbs))
+                .setNeutralButton(getString(R.string.keyboard), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                    }
+                })
+                .setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .setPositiveButton(getString(R.string.done), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent();
+                        intent.putExtra("meal_item", new MealItem(-1,getString(R.string.extra_carbs),(float)numberPicker.getValue()));
+                        ((SelectMealActivity)getActivity()).setResult(Activity.RESULT_OK, intent);
+                        ((SelectMealActivity)getActivity()).finish();
+                    }
+                });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+        alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(numberPicker.getVisibility() == View.INVISIBLE){
+                    hideSoftKeyboard(editText,((SelectMealActivity)getActivity()));
+                    numberPicker.setVisibility(View.VISIBLE);
+                    editText.setVisibility(View.GONE);
+                } else{
+                    numberPicker.setVisibility(View.INVISIBLE);
+                    editText.setVisibility(View.VISIBLE);
+                    showSoftKeyboard(editText,((SelectMealActivity)getActivity()));
+                }
+            }
+        });
+    }
+
     private void showSoftKeyboard(View view, Activity activity) {
         if (view.requestFocus()) {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -198,5 +269,16 @@ public class FoodListFragment extends Fragment {
                 return true;
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handler dos cliques em cada menu
+        switch (item.getItemId()) {
+            case R.id.add_carbs:
+                showDialog2();
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

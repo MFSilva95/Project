@@ -568,6 +568,7 @@
     <string name="take_photo">Tirar Foto</string>
     <string name="clear_all">Remover Tudo</string>
     <string name="favourites">Favoritas</string>
+    <string name="registered">Registadas</string>
     <string name="all_logged">Todas</string>
     <string name="list_info">Itens da Refeição</string>
     <string name="total_carbs">H.Carb Totais</string>
@@ -576,23 +577,28 @@
     <string name="_items">itens</string>
     <string name="carbs">H.Carb</string>
     <string name="build_meal_info">Pressione o botão para adicionar alimentos</string>
-    <string name="edit_button">"Editar"</string>
-    <string name="delete_button">"Eliminar"</string>
+    <string name="edit_button">Editar</string>
+    <string name="delete_button">Remover</string>
     <string name="bullet">\u2022</string>
 
     <string name="create_meal_title">Criar Refeição</string>
     <string name="empty_list">Refeição sem alimentos!</string>
     <string name="item_removed">Alimento(s) removido(s)</string>
+    <string name="meal_removed">Refeição removida</string>
+    <string name="meal_saved">Refeição adicionada aos favoritos</string>
     <string name="save_meal">Guardar Refeição</string>
     <string name="keyboard">Teclado</string>
     <string name="cancel">Cancelar</string>
     <string name="done">OK</string>
-    <string name="undo">DESFAZER</string>
+    <string name="undo">ANULAR</string>
 
     <string name="select_meal_tittle">Seleciona Alimento</string>
     <string name="tab1_title">Alimentos</string>
     <string name="tab2_title">Refeições</string>
     <string name="food_portion">porção</string>
     <string name="food_grams">gramas</string>
+
+    <string name="extra_carbs">H.Carbs Extra</string>
+    <string name="add_extra_carbs">Adicionar H.Carb extra</string>
 
 </resources>

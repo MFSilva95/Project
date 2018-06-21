@@ -19,7 +19,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,7 +32,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -60,16 +58,16 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
     static final int REQUEST_MEAL_ITEM = 0;
     static final int REQUEST_TAKE_PHOTO = 1;
 
+
     private TextView mealTotalCarbsTextView;
-    private TextView mealTotalCarbsTextView2;
     private TextView emptyListMessageView;
+    private ImageView cameraPlaceholder;
     private CircleImageView thumbnailPhotoView;
-    private ConstraintLayout totalCarbsView;
-    private ConstraintLayout totalCarbsView2;
 
     private FloatingActionButton addMealItemButton;
     private RecyclerView mealItemListView;
     private CreateMealListAdapter mAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
 
     private List<MealItem> currentMealItemList;
     private String currentMealPhotoPath;
@@ -89,48 +87,31 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
         currentMealId = -1;
 
         addMealItemButton = (FloatingActionButton)findViewById(R.id.add_item_fab);
-        addMealItemButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(v.getContext(), SelectMealActivity.class);
-                startActivityForResult(intent,REQUEST_MEAL_ITEM);
-            }
-        });
-
-        mealTotalCarbsTextView = (TextView)findViewById(R.id.meal_total_carbs);
-        mealTotalCarbsTextView2 = (TextView)findViewById(R.id.meal_total_carbs2);
+        mealTotalCarbsTextView = (TextView)findViewById(R.id.meal_total_carbs2);
         emptyListMessageView = (TextView)findViewById(R.id.empty_message);
         thumbnailPhotoView = (CircleImageView) findViewById(R.id.photo_view);
-        totalCarbsView = (ConstraintLayout) findViewById(R.id.total_carbs_layout);
-        totalCarbsView2 = (ConstraintLayout) findViewById(R.id.total_carbs_view_2);
+        cameraPlaceholder = (ImageView) findViewById(R.id.camera_placeholder);
 
-        thumbnailPhotoView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ViewPhoto.class);
-                Bundle argsToPhoto = new Bundle();
-                argsToPhoto.putString("Path", currentMealPhotoPath);
-                argsToPhoto.putInt("Id", -1);
-                intent.putExtras(argsToPhoto);
-                startActivityForResult(intent, IMAGE_VIEW);
-            }
-        });
-
-
-        if(getIntent().hasExtra("meal_id")){
-            int id = getIntent().getExtras().getInt("meal_id");
-            createMealById(id);
-        } else if(getIntent().hasExtra("meal_obj")) {
-            LoggedMeal meal = getIntent().getExtras().getParcelable("meal_obj");
-            createMeal(meal);
-        }
+        initListeneres();
 
         mAdapter = new CreateMealListAdapter(currentMealItemList, this);
         mealItemListView = (RecyclerView)findViewById(R.id.meal_items_list);
-        mealItemListView.setLayoutManager(new LinearLayoutManager(this));
+        mLinearLayoutManager = new LinearLayoutManager(this);
+        mealItemListView.setLayoutManager(mLinearLayoutManager);
         mealItemListView.setHasFixedSize(true);
         mealItemListView.setNestedScrollingEnabled(false);
         mealItemListView.setItemAnimator(new DefaultItemAnimator());
         mealItemListView.setAdapter(mAdapter);
+
+        int reg_carbs = getIntent().getExtras().getInt("reg_carbs");
+        if(getIntent().hasExtra("meal_obj")) {
+            LoggedMeal meal = getIntent().getExtras().getParcelable("meal_obj");
+
+            createMeal(meal,reg_carbs);
+        } else{
+            if(reg_carbs > 0)
+                mAdapter.addItem(new MealItem(-1, "H.Carb Extra", (float)reg_carbs));
+        }
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
         new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(mealItemListView);
@@ -152,31 +133,45 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
             case REQUEST_MEAL_ITEM:
                 if(resultCode == RESULT_OK && data.hasExtra("meal_item")){
                     MealItem item = data.getExtras().getParcelable("meal_item");
-                    mAdapter.addItem(item);
+                    if(item.getId() == -1){
+                        for(MealItem i : currentMealItemList){
+                            if(i.getId() == -1){
+                                float new_value = i.getCarbs() + item.getCarbs();
+                                i.setCarbs(new_value);
+                                mAdapter.updateItem(i);
+                                return;
+                            }
+                        }
+
+                        mAdapter.addItem(item);
+                    }
+                    else
+                        mAdapter.addItem(item);
                 } else if(resultCode == RESULT_OK && data.hasExtra("logged_meal")){
                     LoggedMeal meal = data.getExtras().getParcelable("logged_meal");
-
-                    if(currentMealItemList.size() == 0)
-                        currentMealId = meal.getId();
 
                     currentMealPhotoPath = meal.getThumbnailPath();
                     if(currentMealPhotoPath != null) {
                         setMealPhoto(null);
-                        setLayout(true);
                     }
                     currentMealName = meal.getName();
+
+                    if(meal.getExtraCarbs() > 0){
+                        currentMealItemList.add(new MealItem(-1, "H.Carb Extra", (float)meal.getExtraCarbs()));
+                    }
                     currentMealItemList.addAll(meal.getItemList());
                     mAdapter.notifyDataSetChanged();
                     updateTotalCarbsDisplay();
+
+                    if(!meal.isRegistered() && !meal.isFavourite()){
+                        currentMealId = meal.getId();
+                        isUpdate = true;
+                    }
                 }
                 break;
             case REQUEST_TAKE_PHOTO:
                 if(resultCode == RESULT_OK){
-                    if(!isUpdate)
-                        currentMealId = -1;
-
                     setMealPhoto(null);
-                    setLayout(true);
                     //Toast.makeText(this, "Photo attached", Toast.LENGTH_SHORT).show();
                 } else{
                     currentMealPhotoPath = null;
@@ -185,7 +180,8 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
             case IMAGE_VIEW:
                 if(resultCode == RESULT_OK){
                     currentMealPhotoPath = null;
-                    setLayout(false);
+                    thumbnailPhotoView.setVisibility(View.GONE);
+                    cameraPlaceholder.setVisibility(View.VISIBLE);
                 }
                 break;
         }
@@ -204,6 +200,7 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
         ActionBar actionBar = getSupportActionBar();
         if(actionBar != null) {
             actionBar.setTitle(getString(R.string.create_meal_title));
+            actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
         return super.onCreateOptionsMenu(menu);
@@ -231,37 +228,53 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
         return super.onOptionsItemSelected(item);
     }
 
-    private void createMealById(int meal_id){
-        if(meal_id != -1){
-            LoggedMeal meal = dbHelper.getMeal(meal_id);
-            currentMealName = meal.getName();
-            currentMealPhotoPath = meal.getThumbnailPath();
-            currentMealItemList.addAll(meal.getItemList());
-            updateTotalCarbsDisplay();
-            currentMealId = meal.getId();
-
-            if(currentMealPhotoPath != null){
-                setMealPhoto(null);
-                setLayout(true);
+    private void initListeneres(){
+        addMealItemButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), SelectMealActivity.class);
+                startActivityForResult(intent,REQUEST_MEAL_ITEM);
             }
+        });
 
-            isUpdate = true;
+        thumbnailPhotoView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ViewPhoto.class);
+                Bundle argsToPhoto = new Bundle();
+                argsToPhoto.putString("Path", currentMealPhotoPath);
+                argsToPhoto.putInt("Id", -1);
+                intent.putExtras(argsToPhoto);
+                startActivityForResult(intent, IMAGE_VIEW);
+            }
+        });
 
+        cameraPlaceholder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dispatchTakePictureIntent();
+            }
+        });
 
-        }
     }
 
-    private void createMeal(LoggedMeal meal){
+    private void createMeal(LoggedMeal meal, int reg_carbs){
         if(meal != null){
             currentMealName = meal.getName();
             currentMealPhotoPath = meal.getThumbnailPath();
-            currentMealItemList.addAll(meal.getItemList());
-            currentMealId = meal.getId();
-            updateTotalCarbsDisplay();
-
             if(currentMealPhotoPath != null) {
                 setMealPhoto(null);
-                setLayout(true);
+            }
+            int carbs_diff = reg_carbs - meal.getTotalCarbs(false);
+            if(carbs_diff > 0){
+                mAdapter.addItem(new MealItem(-1, getString(R.string.extra_carbs), (float)carbs_diff));
+            }
+            for(MealItem item : meal.getItemList()){
+                mAdapter.addItem(item);
+            }
+
+            if(meal.getId() != -1) {
+                currentMealId = meal.getId();
+                isUpdate = true;
             }
         }
     }
@@ -272,7 +285,6 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
             total_carbs = total_carbs + m.getCarbs();
 
         mealTotalCarbsTextView.setText(new StringBuilder(String.format(Locale.US,"%.1f", total_carbs) + "g"));
-        mealTotalCarbsTextView2.setText(new StringBuilder(String.format(Locale.US,"%.1f", total_carbs) + "g"));
 
         if(currentMealItemList.size() > 0)
             emptyListMessageView.setVisibility(View.GONE);
@@ -280,22 +292,12 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
             emptyListMessageView.setVisibility(View.VISIBLE);
     }
 
-    private void setLayout(boolean photo){
-        if(photo){
-            totalCarbsView.setVisibility(View.GONE);
-            thumbnailPhotoView.setVisibility(View.VISIBLE);
-            totalCarbsView2.setVisibility(View.VISIBLE);
-        } else{
-            thumbnailPhotoView.setVisibility(View.GONE);
-            totalCarbsView2.setVisibility(View.GONE);
-            totalCarbsView.setVisibility(View.VISIBLE);
-        }
+    public void scrollToPosition(int position){
+        mLinearLayoutManager.scrollToPosition(position);
     }
 
     public void notitfyItemListChange(){
         updateTotalCarbsDisplay();
-        if(!isUpdate)
-            currentMealId = -1;
     }
 
     private boolean validate(){
@@ -313,14 +315,26 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
         if(!validate())
             return;
 
-        LoggedMeal meal = new LoggedMeal(currentMealItemList);
+        List<MealItem> mealFoodList = new ArrayList<>();
+        int extra_carbs = 0;
+        for(MealItem item : currentMealItemList){
+            if(item.getId() == -1){
+                extra_carbs = (int)item.getCarbs();
+            } else{
+                mealFoodList.add(item);
+            }
+        }
+
+        LoggedMeal meal = new LoggedMeal(mealFoodList);
         meal.setThumbnailPath(currentMealPhotoPath);
         meal.setName(currentMealName);
+        meal.setExtraCarbs(extra_carbs);
         meal.setFavourite(true);
-        currentMealId = dbHelper.insertMeal(meal);
 
-        if(currentMealId != -1) {
-            Toast.makeText(this, "Meal has been saved and added to your favourites", Toast.LENGTH_SHORT).show();
+        if(dbHelper.insertMeal(meal) != -1) {
+            Snackbar snackbar = Snackbar.make(addMealItemButton,getString(R.string.meal_saved), Snackbar.LENGTH_LONG);
+            snackbar.getView().setBackgroundColor(this.getResources().getColor(R.color.primary));
+            snackbar.show();
         }
     }
 
@@ -330,27 +344,39 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
 
         LoggedMeal meal;
         if(isUpdate){
-            meal = new LoggedMeal(currentMealItemList);
-            meal.setRegistered(true);
+            List<MealItem> mealFoodList = new ArrayList<>();
+            int extra_carbs = 0;
+            for(MealItem item : currentMealItemList){
+                if(item.getId() == -1){
+                    extra_carbs = (int)item.getCarbs();
+                } else{
+                    mealFoodList.add(item);
+                }
+            }
+            meal = new LoggedMeal(mealFoodList);
             meal.setId(currentMealId);
-            meal.setName(currentMealName);
+            meal.setExtraCarbs(extra_carbs);
             meal.setThumbnailPath(currentMealPhotoPath);
 
-            dbHelper.updateMeal(meal,true);
-
         } else {
-            if (currentMealId == -1) {
-                meal = new LoggedMeal(currentMealItemList);
-                meal.setThumbnailPath(currentMealPhotoPath);
-            } else {
-                meal = dbHelper.getMeal(currentMealId);
+            List<MealItem> mealFoodList = new ArrayList<>();
+            int extra_carbs = 0;
+            for(MealItem item : currentMealItemList){
+                if(item.getId() == -1){
+                    extra_carbs = (int)item.getCarbs();
+                } else{
+                    mealFoodList.add(item);
+                }
             }
-
-            Intent intent = new Intent();
-            intent.putExtra("meal", meal);
-            setResult(RESULT_OK, intent);
-            finish();
+            meal = new LoggedMeal(mealFoodList);
+            meal.setExtraCarbs(extra_carbs);
+            meal.setThumbnailPath(currentMealPhotoPath);
         }
+
+        Intent intent = new Intent();
+        intent.putExtra("meal", meal);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     public void deleteItemFromMeal(int positon){
@@ -404,8 +430,15 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
 
         if(mPhotoView != null)
             mPhotoView.setImageBitmap(bitmap);
-        else
+        else{
             thumbnailPhotoView.setImageBitmap(bitmap);
+
+            if(thumbnailPhotoView.getVisibility() == View.GONE) {
+                cameraPlaceholder.setVisibility(View.GONE);
+                thumbnailPhotoView.setVisibility(View.VISIBLE);
+            }
+
+        }
     }
 
     private void deleteAll(){

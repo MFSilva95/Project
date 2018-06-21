@@ -130,7 +130,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     private Spinner spinner;
     private ArrayList<Tag> t;
 
-    private LoggedMeal mMeal = null;
+    private LoggedMeal mCurrentMeal = null;
     private int associatedMealId = -1;
 
     int iRatio;
@@ -199,8 +199,8 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         } else if(requestCode == REQUEST_CREATE_MEAL && resultCode == RESULT_OK){
             if(data.hasExtra("meal")){
-                mMeal = data.getExtras().getParcelable("meal");
-                carbsRegister.setMealCarbs(mMeal.getTotalCarbs());
+                mCurrentMeal = data.getExtras().getParcelable("meal");
+                carbsRegister.setMealCarbs(mCurrentMeal.getTotalCarbs(true));
             }
 
         }
@@ -597,14 +597,40 @@ public class NewHomeRegistry extends AppCompatActivity{
                         carbsData.setIdTag(idTag);
                         carbsData.setIdUser(idUser);
                         carbsData.setDateTime(registerDate);
-                        if(mMeal != null && associatedMealId == -1){
-                            mMeal.setRegistered(true);
-                            if(mMeal.getId() == -1) {
-                                mMeal.setId(dbHelper.insertMeal(mMeal));
-                            } else{
-                                dbHelper.updateMeal(mMeal,false);
+                        if(mCurrentMeal != null){
+                            if(carbsRegister.getCarbs() < mCurrentMeal.getTotalCarbs(false)){
+                                if(mCurrentMeal.getId() != -1){
+                                    if(mCurrentMeal.getThumbnailPath() != null){
+                                        mCurrentMeal.setRegistered(true);
+                                        mCurrentMeal.setExtraCarbs(carbsRegister.getCarbs());
+                                        mCurrentMeal.getItemList().clear();
+                                        dbHelper.updateMeal(mCurrentMeal);
+                                    } else{
+                                        mCurrentMeal.setRegistered(false);
+                                        dbHelper.updateMeal(mCurrentMeal);
+                                    }
+                                }
+                            } else {
+                                if((mCurrentMeal.getItemList().size() != 0) || (mCurrentMeal.getThumbnailPath() != null)){
+
+                                    mCurrentMeal.setRegistered(true);
+                                    mCurrentMeal.setExtraCarbs(carbsRegister.getCarbs() - mCurrentMeal.getTotalCarbs(false));
+
+                                    if (mCurrentMeal.getId() != -1) {
+                                        dbHelper.updateMeal(mCurrentMeal);
+                                    }
+                                    else {
+                                        mCurrentMeal.setId(dbHelper.insertMeal(mCurrentMeal));
+                                    }
+
+                                    carbsData.setMealId(mCurrentMeal.getId());
+                                } else{
+                                    if (mCurrentMeal.getId() != -1) {
+                                        dbHelper.deleteMeal(mCurrentMeal.getId());
+                                        carbsData.setMealId(-1);
+                                    }
+                                }
                             }
-                            carbsData.setMealId(mMeal.getId());
                         }
                         if(noteData != null) {
                             if(noteData.getNote()!= null && noteData.getId()!= -1){
@@ -907,6 +933,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         }
 
         DB_Read db_read = new DB_Read(this);
+        DataBaseHelper dbHelper = new DataBaseHelper(this);
         if(isUpdate){
 
             if (args.containsKey(ARG_CARBS)) {
@@ -920,7 +947,10 @@ public class NewHomeRegistry extends AppCompatActivity{
                         String imgPath = carbsData.getPhotoPath();
                         if(imgPath!=null){imgUri = Uri.parse(imgPath);}
                         carbsRegister.setImage(imgUri, this);
-                        associatedMealId = carbsData.getMealId();
+                        if(carbsData.getMealId() != -1) {
+                            mCurrentMeal = dbHelper.getMeal(carbsData.getMealId());
+                            //associatedMealId = carbsData.getMealId();
+                        }
                         setNoteId(carbsData.getIdNote());
                         registerDate = carbsData.getDateTime();
                     }
@@ -1004,7 +1034,10 @@ public class NewHomeRegistry extends AppCompatActivity{
                     if(imgPath!=null){imgUri = Uri.parse(imgPath);}
                     carbsRegister.fill_parameters(carbsData);
                     carbsRegister.setImage(imgUri, this);
-                    associatedMealId = carbsData.getMealId();
+                    if(carbsData.getMealId() != -1) {
+                        mCurrentMeal = dbHelper.getMeal(carbsData.getMealId());
+                        //associatedMealId = carbsData.getMealId();
+                    }
                     setNoteId(carbsData.getIdNote());
                     if(carbsData.getDateTime()!=null){
                         registerDate = carbsData.getDateTime();
@@ -1238,11 +1271,15 @@ public class NewHomeRegistry extends AppCompatActivity{
         public void createCustomMeal(Context context) {
             Intent intent = new Intent(context, CreateMealActivity.class);
 
-            if (associatedMealId != -1) {
-                intent.putExtra("meal_id",associatedMealId);
-            }else if(mMeal != null)
-                intent.putExtra("meal_obj", mMeal);
+            if(mCurrentMeal != null) {
+                if(carbsRegister.getCarbs() < mCurrentMeal.getTotalCarbs(false)){
+                    mCurrentMeal.getItemList().clear();
+                } else{
+                    intent.putExtra("meal_obj", mCurrentMeal);
+                }
+            }
 
+            intent.putExtra("reg_carbs", carbsRegister.getCarbs());
             startActivityForResult(intent,REQUEST_CREATE_MEAL);
         }
     }

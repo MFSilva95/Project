@@ -376,6 +376,7 @@
     <string name="save_it">Save it</string>
     <string name="clear_all">Clear All</string>
     <string name="favourites">Favourites</string>
+    <string name="registered">Registered</string>
     <string name="all_logged">All</string>
     <string name="list_info">Meal Items</string>
     <string name="total_carbs">Total Carbs</string>
@@ -391,7 +392,9 @@
     <string name="create_meal_title">Create Your Meal</string>
     <string name="empty_list">Empty list!!</string>
     <string name="item_removed">Item(s) removed</string>
+    <string name="meal_removed">Meal removed</string>
     <string name="save_meal">Save Meal</string>
+    <string name="meal_saved">Meal added to the favourites</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
     <string name="keyboard">Keyboard</string>
@@ -402,4 +405,7 @@
     <string name="tab2_title">Logged Meals</string>
     <string name="food_portion">portion</string>
     <string name="food_grams">grams</string>
+
+    <string name="extra_carbs">Extra carbs</string>
+    <string name="add_extra_carbs">Add extra carbs</string>
 </resources>

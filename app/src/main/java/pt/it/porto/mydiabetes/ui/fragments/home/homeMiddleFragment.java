@@ -342,9 +342,7 @@ public class homeMiddleFragment extends Fragment {
                                         setNoteId(carbsData.getIdNote());
                                         reg.Carbs_Delete(carbsID);
                                         if(carbsData.getMealId() != -1) {
-                                            meal = dbHelper.getMeal(carbsData.getMealId());
-                                            meal.setRegistered(false);
-                                            dbHelper.updateMeal(meal,false);
+                                            dbHelper.deleteMeal(carbsData.getMealId());
                                         }
                                     }
                                 }//}

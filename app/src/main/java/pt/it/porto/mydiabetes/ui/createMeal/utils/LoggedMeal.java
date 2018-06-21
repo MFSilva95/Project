@@ -7,6 +7,7 @@ import java.util.List;
 
 public class LoggedMeal implements Parcelable {
     private String name;
+    private int extra_carbs;
     private String timestamp;
     private List<MealItem> itemList;
     private String thumbnailPath;
@@ -20,17 +21,29 @@ public class LoggedMeal implements Parcelable {
         this.id = -1;
     }
 
+    public int getExtraCarbs() {
+        return extra_carbs;
+    }
+
+    public void setExtraCarbs(int extra_carbs) {
+        this.extra_carbs = extra_carbs;
+    }
+
     public List<MealItem> getItemList(){
         return itemList;
     }
 
-    public float getTotalCarbs() {
+    public int getTotalCarbs(boolean with_extra) {
         float total_carbs = 0;
 
         for(MealItem m : itemList)
             total_carbs = total_carbs + m.getCarbs();
 
-        return total_carbs;
+        if(with_extra)
+            return Math.round(total_carbs + extra_carbs);
+        else
+            return Math.round(total_carbs);
+
     }
 
     public String getThumbnailPath(){
@@ -97,6 +110,7 @@ public class LoggedMeal implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.name);
+        dest.writeInt(this.extra_carbs);
         dest.writeString(this.timestamp);
         dest.writeTypedList(this.itemList);
         dest.writeString(this.thumbnailPath);
@@ -107,6 +121,7 @@ public class LoggedMeal implements Parcelable {
 
     protected LoggedMeal(Parcel in) {
         this.name = in.readString();
+        this.extra_carbs = in.readInt();
         this.timestamp = in.readString();
         this.itemList = in.createTypedArrayList(MealItem.CREATOR);
         this.thumbnailPath = in.readString();

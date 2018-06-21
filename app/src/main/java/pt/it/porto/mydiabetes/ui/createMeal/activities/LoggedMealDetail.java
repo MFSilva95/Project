@@ -64,7 +64,7 @@ public class LoggedMealDetail extends AppCompatActivity {
         }
 
         mealDateView.setText(meal.getTimestamp());
-        mealTotalCarbsView.setText(String.valueOf(meal.getTotalCarbs()));
+        mealTotalCarbsView.setText(String.valueOf(meal.getTotalCarbs(true)));
 
         mealItemListView.setHasFixedSize(true);
         mealItemListView.setLayoutManager(new LinearLayoutManager(this));
