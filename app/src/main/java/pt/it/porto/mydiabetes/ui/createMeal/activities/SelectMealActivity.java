@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,7 +47,6 @@ public class SelectMealActivity extends AppCompatActivity {
         setContentView(R.layout.activity_select_meal);
 
         dbHelper = new DataBaseHelper(this);
-
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (prefs.getBoolean("firstTime", true)) {
             //Load CSV data to the Simple Meal Database when this activity is first created
@@ -72,6 +72,7 @@ public class SelectMealActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.addOnTabSelectedListener(onTabSelectedListener(viewPager));
     }
 
     private void setupViewPager(ViewPager viewPager) {
@@ -81,6 +82,29 @@ public class SelectMealActivity extends AppCompatActivity {
         mLoggedMealFragment = new LoggedMealListFragment();
         adapter.addFragment(mLoggedMealFragment, getString(R.string.tab2_title));
         viewPager.setAdapter(adapter);
+    }
+
+    private TabLayout.OnTabSelectedListener onTabSelectedListener(final ViewPager viewPager) {
+        return new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+
+                if(viewPager.getCurrentItem() == 1) {
+                    mLoggedMealFragment.loadFragmentData();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        };
     }
 
     private void resetData(){

@@ -117,10 +117,16 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
                         holder.optionsView.setVisibility(View.VISIBLE);
                         holder.foodName.setMaxLines(30);
                         holder.foodName.setEllipsize(null);
-                        for (int i = 0; i < foodList.size(); i++) {
-                            if (i != holder.getAdapterPosition())
-                                notifyItemChanged(i);
-                        }
+                        new android.os.Handler().postDelayed(
+                                new Runnable() {
+                                    public void run() {
+                                        for (int i = 0; i < foodList.size(); i++) {
+                                            if (i != holder.getAdapterPosition())
+                                                notifyItemChanged(i);
+                                        }
+                                    }
+                                },
+                                50);
 
                         ((CreateMealActivity) context).scrollToPosition(holder.getAdapterPosition());
 

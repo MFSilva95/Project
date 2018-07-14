@@ -74,6 +74,8 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
     private String currentMealName;
     private int currentMealId;     // -1 If is a new meal
 
+    private int editTextCarbsReg;
+
     private boolean isUpdate = false;
     private DataBaseHelper dbHelper;
 
@@ -103,14 +105,14 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
         mealItemListView.setItemAnimator(new DefaultItemAnimator());
         mealItemListView.setAdapter(mAdapter);
 
-        int reg_carbs = getIntent().getExtras().getInt("reg_carbs");
+        editTextCarbsReg = getIntent().getExtras().getInt("reg_carbs");
         if(getIntent().hasExtra("meal_obj")) {
             LoggedMeal meal = getIntent().getExtras().getParcelable("meal_obj");
 
-            createMeal(meal,reg_carbs);
+            createMeal(meal);
         } else{
-            if(reg_carbs > 0)
-                mAdapter.addItem(new MealItem(-1, "H.Carb Extra", (float)reg_carbs));
+            if(editTextCarbsReg > 0)
+                mAdapter.addItem(new MealItem(-1, getString(R.string.extra_carbs), (float)editTextCarbsReg));
         }
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
@@ -158,6 +160,8 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
 
                     if(meal.getExtraCarbs() > 0){
                         currentMealItemList.add(new MealItem(-1, "H.Carb Extra", (float)meal.getExtraCarbs()));
+                    } else if(meal.getExtraCarbs() < 0){
+                        messageToUser();
                     }
                     currentMealItemList.addAll(meal.getItemList());
                     mAdapter.notifyDataSetChanged();
@@ -257,19 +261,30 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
 
     }
 
-    private void createMeal(LoggedMeal meal, int reg_carbs){
+    private void messageToUser(){
+        mealTotalCarbsTextView.setTextColor(getResources().getColor(R.color.edittext_error_color));
+        Snackbar snackbar = Snackbar.make(addMealItemButton,"Valor de H.Carb introduzido para a refeição é menor do que o total de H.Carb dos itens!", 5000);
+        snackbar.getView().setBackgroundColor(this.getResources().getColor(R.color.primary));
+        snackbar.show();
+    }
+
+    private void createMeal(LoggedMeal meal){
         if(meal != null){
             currentMealName = meal.getName();
             currentMealPhotoPath = meal.getThumbnailPath();
             if(currentMealPhotoPath != null) {
                 setMealPhoto(null);
             }
-            int carbs_diff = reg_carbs - meal.getTotalCarbs(false);
-            if(carbs_diff > 0){
-                mAdapter.addItem(new MealItem(-1, getString(R.string.extra_carbs), (float)carbs_diff));
-            }
+
             for(MealItem item : meal.getItemList()){
                 mAdapter.addItem(item);
+            }
+
+            int carbs_diff = editTextCarbsReg - meal.getTotalCarbs(false);
+            if(carbs_diff > 0){
+                mAdapter.addItem(new MealItem(-1, getString(R.string.extra_carbs), (float)carbs_diff));
+            } else if(carbs_diff < 0){
+                messageToUser();
             }
 
             if(meal.getId() != -1) {
@@ -283,6 +298,9 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
         float total_carbs = 0;
         for(MealItem m : currentMealItemList)
             total_carbs = total_carbs + m.getCarbs();
+
+        if(total_carbs <= editTextCarbsReg)
+            mealTotalCarbsTextView.setTextColor(getResources().getColor(R.color.accent));
 
         mealTotalCarbsTextView.setText(new StringBuilder(String.format(Locale.US,"%.1f", total_carbs) + "g"));
 
@@ -339,8 +357,6 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
     }
 
     private void logMeal(){
-        if(!validate())
-            return;
 
         LoggedMeal meal;
         if(isUpdate){

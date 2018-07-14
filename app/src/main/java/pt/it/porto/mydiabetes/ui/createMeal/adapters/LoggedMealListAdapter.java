@@ -182,6 +182,12 @@ public class LoggedMealListAdapter extends RecyclerView.Adapter<LoggedMealListAd
         notifyItemInserted(position);
     }
 
+    public void addData(List<LoggedMeal> list){
+        mealList.addAll(list);
+        mealListCopy.addAll(mealList);
+        notifyItemRangeInserted(0,mealList.size());
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         ConstraintLayout itemLayoutView;

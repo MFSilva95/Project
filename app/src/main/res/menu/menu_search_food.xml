@@ -9,9 +9,4 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always" />
 
-    <item android:id="@+id/add_carbs"
-        android:title="Search"
-        android:icon="@drawable/ic_plus_2"
-        app:showAsAction="ifRoom" />
-
 </menu>

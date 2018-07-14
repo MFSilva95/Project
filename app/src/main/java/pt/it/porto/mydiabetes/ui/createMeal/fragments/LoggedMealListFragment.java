@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.ui.createMeal.fragments;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -16,7 +17,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import pt.it.porto.mydiabetes.R;
@@ -34,7 +38,9 @@ public class LoggedMealListFragment extends Fragment {
     private static final int FILTER_FAVOURITE = 2;
 
     private SearchView searchView;
+    private RecyclerView recyclerView;
     private LoggedMealListAdapter mAdapter;
+    private ProgressBar progressBarView;
 
     private DataBaseHelper dbHelper;
     private List<LoggedMeal> mealList;
@@ -53,20 +59,33 @@ public class LoggedMealListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_logged_meal_list, container, false);
 
-        isUndo = false;
-
-        dbHelper = new DataBaseHelper(((SelectMealActivity)getActivity()));
-        mealList = dbHelper.getLoggedMealList();
-
-        final RecyclerView recyclerView = (RecyclerView)fragmentView.findViewById(R.id.logged_meal_list);
+        recyclerView = (RecyclerView)fragmentView.findViewById(R.id.logged_meal_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(((SelectMealActivity)getActivity())));
-        //recyclerView.addItemDecoration(new DividerItemDecoration(((SelectMealActivity)getActivity()), DividerItemDecoration.VERTICAL));
+        progressBarView = (ProgressBar)fragmentView.findViewById(R.id.progress_bar);
+
+        mealList = new ArrayList<>();
         mAdapter = new LoggedMealListAdapter(mealList, ((SelectMealActivity)getActivity()));
         recyclerView.setAdapter(mAdapter);
 
-
         return fragmentView;
+    }
+
+    public void loadFragmentData(){
+        if(mealList.size() == 0) {
+            isUndo = false;
+
+            dbHelper = new DataBaseHelper(((SelectMealActivity) getActivity()));
+
+            progressBarView.setVisibility(View.VISIBLE);
+            new android.os.Handler().postDelayed(
+                    new Runnable() {
+                        public void run() {
+                            new LoadLoggedMealsTask().execute();
+                        }
+                    },
+                    300);
+        }
     }
 
     @Override
@@ -132,6 +151,21 @@ public class LoggedMealListFragment extends Fragment {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private class LoadLoggedMealsTask extends AsyncTask<Void,Void,Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            mAdapter.addData(dbHelper.getLoggedMealList());
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            progressBarView.setVisibility(View.GONE);
         }
     }
 }

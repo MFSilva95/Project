@@ -67,7 +67,10 @@ public class FoodListFragment extends Fragment {
             @Override
             public void onClick(View view, final int position) {
                 //Values are passing to activity & to fragment as well
-                showDialog(position);
+                if(foodList.get(position).getId() == -1)
+                    showDialog2();
+                else
+                    showDialog(position);
             }
 
             @Override
@@ -269,16 +272,5 @@ public class FoodListFragment extends Fragment {
                 return true;
             }
         });
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handler dos cliques em cada menu
-        switch (item.getItemId()) {
-            case R.id.add_carbs:
-                showDialog2();
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 }

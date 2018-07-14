@@ -598,37 +598,24 @@ public class NewHomeRegistry extends AppCompatActivity{
                         carbsData.setIdUser(idUser);
                         carbsData.setDateTime(registerDate);
                         if(mCurrentMeal != null){
-                            if(carbsRegister.getCarbs() < mCurrentMeal.getTotalCarbs(false)){
-                                if(mCurrentMeal.getId() != -1){
-                                    if(mCurrentMeal.getThumbnailPath() != null){
-                                        mCurrentMeal.setRegistered(true);
-                                        mCurrentMeal.setExtraCarbs(carbsRegister.getCarbs());
-                                        mCurrentMeal.getItemList().clear();
-                                        dbHelper.updateMeal(mCurrentMeal);
-                                    } else{
-                                        mCurrentMeal.setRegistered(false);
-                                        dbHelper.updateMeal(mCurrentMeal);
-                                    }
+                            if((mCurrentMeal.getItemList().size() != 0) || (mCurrentMeal.getThumbnailPath() != null)){
+                                mCurrentMeal.setRegistered(true);
+                                mCurrentMeal.setExtraCarbs(carbsRegister.getCarbs() - mCurrentMeal.getTotalCarbs(false));
+
+                                if (mCurrentMeal.getId() != -1) {
+                                    dbHelper.updateMeal(mCurrentMeal);
                                 }
-                            } else {
-                                if((mCurrentMeal.getItemList().size() != 0) || (mCurrentMeal.getThumbnailPath() != null)){
+                                else {
+                                    mCurrentMeal.setId(dbHelper.insertMeal(mCurrentMeal));
+                                }
 
-                                    mCurrentMeal.setRegistered(true);
-                                    mCurrentMeal.setExtraCarbs(carbsRegister.getCarbs() - mCurrentMeal.getTotalCarbs(false));
-
-                                    if (mCurrentMeal.getId() != -1) {
-                                        dbHelper.updateMeal(mCurrentMeal);
-                                    }
-                                    else {
-                                        mCurrentMeal.setId(dbHelper.insertMeal(mCurrentMeal));
-                                    }
-
-                                    carbsData.setMealId(mCurrentMeal.getId());
-                                } else{
-                                    if (mCurrentMeal.getId() != -1) {
-                                        dbHelper.deleteMeal(mCurrentMeal.getId());
-                                        carbsData.setMealId(-1);
-                                    }
+                                carbsData.setMealId(mCurrentMeal.getId());
+                            } else{
+                                if (mCurrentMeal.getId() != -1) {
+                                    LoggedMeal prev_meal = dbHelper.getMeal(mCurrentMeal.getId());
+                                    prev_meal.setRegistered(false);
+                                    dbHelper.updateMeal(prev_meal);
+                                    carbsData.setMealId(-1);
                                 }
                             }
                         }
@@ -1272,11 +1259,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             Intent intent = new Intent(context, CreateMealActivity.class);
 
             if(mCurrentMeal != null) {
-                if(carbsRegister.getCarbs() < mCurrentMeal.getTotalCarbs(false)){
-                    mCurrentMeal.getItemList().clear();
-                } else{
-                    intent.putExtra("meal_obj", mCurrentMeal);
-                }
+                intent.putExtra("meal_obj", mCurrentMeal);
             }
 
             intent.putExtra("reg_carbs", carbsRegister.getCarbs());

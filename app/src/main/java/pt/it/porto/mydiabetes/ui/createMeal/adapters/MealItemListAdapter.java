@@ -9,10 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.ui.createMeal.activities.SelectMealActivity;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.MealItem;
 
 
@@ -24,6 +27,7 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
 
     public MealItemListAdapter(List<MealItem> itemList, Context context) {
         this.itemList = itemList;
+        this.itemList.add(0, new MealItem(-1, context.getString(R.string.extra_carbs), 0));
         this.context = context;
         itemListCopy = new ArrayList<>();
         itemListCopy.addAll(itemList);
@@ -41,7 +45,13 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
         final MealItem meal = itemList.get(position);
 
         holder.nameTextView.setText(meal.getName());
-        holder.carbsTextView.setText(new StringBuilder(String.valueOf(meal.getCarbs()) + "g " + context.getString(R.string.carbs)));
+
+        if(meal.getId() == -1){
+            holder.carbsTextView.setVisibility(View.INVISIBLE);
+            holder.perPortionText.setVisibility(View.INVISIBLE);
+        } else
+            holder.carbsTextView.setText(new StringBuilder(String.valueOf(meal.getCarbs()) + "g " + context.getString(R.string.carbs)));
+
         holder.addMealItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,9 +70,10 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
         if(text.isEmpty()){
             itemList.addAll(itemListCopy);
         } else{
+            itemList.add(itemListCopy.get(0));
             text = text.toLowerCase();
             for(MealItem meal: itemListCopy){
-                if(meal.getName().toLowerCase().contains(text)){
+                if(meal.getName().toLowerCase().contains(text) && meal.getId() != -1){
                     itemList.add(meal);
                 }
             }
@@ -76,6 +87,7 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
 
         TextView nameTextView;
         TextView carbsTextView;
+        TextView perPortionText;
         ImageView addMealItemView;
 
         public ViewHolder(View itemView) {
@@ -83,6 +95,7 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
 
             nameTextView = itemView.findViewById(R.id.food_name);
             carbsTextView = itemView.findViewById(R.id.food_carbs);
+            perPortionText = itemView.findViewById(R.id.per_portion_text);
             addMealItemView = itemView.findViewById(R.id.add_meal_item);
         }
     }
