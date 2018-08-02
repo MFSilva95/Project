@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".ui.activities.SettingsGlycemia">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/toolbarbig"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:minHeight="?attr/actionBarSize"
+        android:orientation="vertical"
+        app:elevation="4dp"
+        app:theme="@style/ToolbarTheme">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/plus_btn"
+        app:elevation="6dp"
+        tools:layout_editor_absoluteX="312dp"
+        tools:layout_editor_absoluteY="116dp" />
+
+
+
+    <ListView
+        android:id="@+id/targetsRatiosFragmentList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbarbig"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:layout_weight="1"
+        android:paddingBottom="72dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/list_ratio_row"/>
+
+</RelativeLayout>

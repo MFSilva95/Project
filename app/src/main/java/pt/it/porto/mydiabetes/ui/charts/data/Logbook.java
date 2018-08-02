@@ -55,7 +55,8 @@ public class Logbook extends ChartData {
 
 	@Override
 	public int[] getIcons() {
-		return new int[]{R.drawable.carbs, R.drawable.glucose, R.drawable.insulin};
+//		return new int[]{R.drawable.carbs, R.drawable.glucose, R.drawable.insulin};
+		return new int[]{R.drawable.log};
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.Manifest;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,29 +29,36 @@ import android.widget.Toast;
 
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
-//import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
+
+import pt.it.porto.mydiabetes.data.CarbsRatioData;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
+import pt.it.porto.mydiabetes.data.Sensitivity;
+import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.database.FeaturesDB;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
 
 import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.PROJECT_MANAGER_EMAIL;
+import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.backup;
+import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.backup_old_db;
 
 
 public class Home extends BaseActivity {
 
 	public static final int CHANGES_OCCURRED = 1;
+	private static Boolean old_db = false;
 
 	private NavigationView navigationView;
 	private DrawerLayout drawerLayout;
-
-	//private YapDroid yapDroid;
 
 	private CustomViewPager mViewPager;
 	private PagerAdapter adapter;
@@ -58,8 +66,13 @@ public class Home extends BaseActivity {
 
 	private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
 	private static final int REQUEST_PERMISSION_SETTING = 101;
+	private static final int DB_OLD_PERMISSION_CONSTANT = 102;
 	private boolean sentToSettings = false;
 	private SharedPreferences permissionStatus;
+
+	public static void setOld_db(Boolean bool){
+		old_db = bool;
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +81,16 @@ public class Home extends BaseActivity {
 
 		permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
 
-		DB_Read read = new DB_Read(this);
+		FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
+		if(old_db){
+			ShouldBackupDB();
+		}
 
-		if (!read.MyData_HasData()) {
+		if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
 			ShowDialogAddData();
-			read.close();
 			return;
 		}
-		read.close();
+
 
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -98,8 +113,8 @@ public class Home extends BaseActivity {
 		adapter = new homePageAdapter(super.getSupportFragmentManager());
 		mViewPager.setAdapter(adapter);
 		mViewPager.setOffscreenPageLimit(1);
-		mViewPager.blockSwipeRight(true);
-		mViewPager.blockSwipeLeft(true);
+		//mViewPager.blockSwipeRight(true);
+		//mViewPager.blockSwipeLeft(true);
 		if (savedInstanceState == null) {
 			mViewPager.setCurrentItem(1);
 		}
@@ -113,10 +128,6 @@ public class Home extends BaseActivity {
 		//----------------------nav
 		navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
-        if(!BuildConfig.TASKS_AVAILABLE){
-			navigationView.getMenu().findItem(R.id.userTasks).setVisible(false);
-        }
-
 		navigationView.setItemIconTintList(null);
 		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 			// This method will trigger on item Click of navigation menu
@@ -126,10 +137,6 @@ public class Home extends BaseActivity {
 				Intent intent;
 
 				switch (menuItem.getItemId()) {
-					case R.id.userTasks:
-						intent = new Intent(getApplicationContext(), TaskListActivity.class);
-						startActivity(intent);
-						return true;
 					case R.id.userLogbook:
 						intent = new Intent(getApplicationContext(), LogbookChartList.class);
 						startActivity(intent);
@@ -139,7 +146,7 @@ public class Home extends BaseActivity {
 						startActivity(intent);
 						return true;
 					case R.id.importAndExport:
-						checkPermissions();
+						checkPermissions(EXTERNAL_STORAGE_PERMISSION_CONSTANT);
 						return true;
 					case R.id.info:
 						intent = new Intent(getApplicationContext(), Info.class);
@@ -158,30 +165,30 @@ public class Home extends BaseActivity {
 		setupBottomNavigationView();
 	}
 
-	public void checkPermissions(){
+	public void checkPermissions(int permission_need){
 		if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-			if (ActivityCompat.shouldShowRequestPermissionRationale(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-				ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
-			} else if (permissionStatus.getBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,false)) {
-						sentToSettings = true;
-						Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-						Uri uri = Uri.fromParts("package", getPackageName(), null);
-						intent.setData(uri);
-						startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-			} else {
-				//just request the permission
-				ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+//			if (ActivityCompat.shouldShowRequestPermissionRationale(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//				ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+//			} else if (permissionStatus.getBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,false)) {
+//						sentToSettings = true;
+//						Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+//						Uri uri = Uri.fromParts("package", getPackageName(), null);
+//						intent.setData(uri);
+//						startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
+//			} else {
+//				just request the permission
+				ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, permission_need);
 			}
 
-			SharedPreferences.Editor editor = permissionStatus.edit();
-			editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,true);
-			editor.commit();
+			//SharedPreferences.Editor editor = permissionStatus.edit();
+			//editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,true);
+			//editor.commit();
 
 
-		} else {
+		//}// else {
 			//You already have the permission, just go ahead.
-			proceedAfterPermission();
-		}
+		//	proceedAfterPermission();
+		//}
 	}
 
 	private void proceedAfterPermission() {
@@ -193,18 +200,36 @@ public class Home extends BaseActivity {
 	@Override
 	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		if (requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT) {
-			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-				//The External Storage Write Permission is granted to you... Continue your left job...
-				proceedAfterPermission();
-			} else {
-				if (ActivityCompat.shouldShowRequestPermissionRationale(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-					ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+
+		switch (requestCode){
+			case EXTERNAL_STORAGE_PERMISSION_CONSTANT:
+				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+					proceedAfterPermission();
 				} else {
 					Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
 				}
-			}
+				break;
+			case DB_OLD_PERMISSION_CONSTANT:
+				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+					backup_old_db(Home.this);
+				} else {
+					Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+				}
+				break;
 		}
+//		backup(Home.this);
+//		if (requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT) {
+//			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//				//The External Storage Write Permission is granted to you... Continue your left job...
+//				proceedAfterPermission();
+//			} else {
+////				if (ActivityCompat.shouldShowRequestPermissionRationale(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+////					ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+////				} else {
+//					Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+////				}
+//			}
+//		}
 	}
 
 
@@ -231,6 +256,66 @@ public class Home extends BaseActivity {
 		}
 	}
 
+	public void ShouldBackupDB(){
+		setOld_db(false);
+		android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(this);
+		builder1.setTitle(getString(R.string.db_depricated_dialog_title));
+		builder1.setMessage(getString(R.string.db_depricated_dialog_description));
+		builder1.setCancelable(true);
+
+		builder1.setPositiveButton(
+				getString(R.string.positiveButton),
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+						checkPermissions(DB_OLD_PERMISSION_CONSTANT);
+						dialog.cancel();
+					}
+				});
+
+		builder1.setNegativeButton(
+
+
+				getString(R.string.negativeButton),
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int id) {
+
+						android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(Home.this);
+						builder1.setTitle(getString(R.string.db_depricated_dialog_title));
+						builder1.setMessage(getString(R.string.db_depricated_backup_cancel));
+						builder1.setCancelable(true);
+
+						builder1.setPositiveButton(
+								getString(R.string.positiveButton),
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
+										checkPermissions(DB_OLD_PERMISSION_CONSTANT);
+										dialog.cancel();
+									}
+								});
+
+						builder1.setNegativeButton(
+								getString(R.string.negativeButton),
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
+										ShouldBackupDB();
+										dialog.cancel();
+									}
+								});
+
+						android.app.AlertDialog alert12 = builder1.create();
+						alert12.show();
+
+					}
+				});
+
+		android.app.AlertDialog alert11 = builder1.create();
+		alert11.show();
+
+
+//		FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
+//		db.changeFeatureStatus(FeaturesDB.OLD_DB_VERSION, false);
+
+	}
 
 	public void ShowDialogAddData() {
 		Intent intent = new Intent(this, WelcomeActivity.class);

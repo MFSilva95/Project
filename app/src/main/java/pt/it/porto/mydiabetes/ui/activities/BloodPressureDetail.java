@@ -172,7 +172,7 @@ public class BloodPressureDetail extends BaseActivity {
 
 	public void FillTagSpinner() {
 		Spinner spinner = (Spinner) findViewById(R.id.sp_BloodPressureDetail_Tag);
-		ArrayList<String> allTags = new ArrayList<String>();
+		ArrayList<String> allTags = new ArrayList<>();
 		DB_Read rdb = new DB_Read(this);
 		ArrayList<Tag> t = rdb.Tag_GetAll();
 		rdb.close();
@@ -184,7 +184,7 @@ public class BloodPressureDetail extends BaseActivity {
 			}
 		}
 
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.spinner_text_layout, allTags);
+		ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_text_layout, allTags);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinner.setAdapter(adapter);
 	}

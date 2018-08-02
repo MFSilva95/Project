@@ -3,7 +3,9 @@ package pt.it.porto.mydiabetes.data;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.text.format.Time;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 
@@ -211,9 +213,9 @@ public class UserInfo {
 		contentValues.put("BDate", getBirthday());
 		contentValues.put("Gender", getGender().toString());
 		contentValues.put("Height", getHeight());
-		Time now = new Time(Time.getCurrentTimezone());
-		now.setToNow();
-		contentValues.put("DateTimeUpdate", now.format("%Y-%m-%d %H:%M:%S"));
+		SimpleDateFormat now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		contentValues.put("DateTimeUpdate", now.format(Calendar.getInstance().getTime()));
+		//contentValues.put("DateTimeUpdate", now.format("%Y-%m-%d %H:%M:%S"));
 		return contentValues;
 	}
 

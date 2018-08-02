@@ -2,11 +2,7 @@ package pt.it.porto.mydiabetes.ui.fragments.register;
 
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,17 +13,16 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import java.io.File;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
-import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
 
 public class FactorsFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
@@ -66,6 +61,11 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 							 Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
+
+		DB_Read read = new DB_Read(this.getContext());
+		UserInfo user_info = read.MyData_Read();
+		read.close();
+
 		layout = inflater.inflate(R.layout.fragment_register_factors, container, false);
 		scrollView = (ScrollView) layout.findViewById(R.id.scrollview);
 
@@ -79,6 +79,18 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		carbsRatio = (EditText) layout.findViewById(R.id.carbs_ratio);
 		hypoglycemiaLimit = (EditText) layout.findViewById(R.id.hypoglycemia_limit);
 		hyperglycemiaLimit = (EditText) layout.findViewById(R.id.hyperglycemia_limit);
+
+
+		if(user_info!=null){
+			int carbsR;
+			if((carbsR = user_info.getCarbsRatio())!=-1){carbsRatio.setText(carbsR+"");}
+			int sensF;
+			if((sensF = user_info.getInsulinRatio())!=-1){sensibilityFactor.setText(sensF+"");}
+			int hypoV;
+			if((hypoV = user_info.getLowerRange())!=-1){hypoglycemiaLimit.setText(hypoV+"");}
+			int hyperV;
+			if((hyperV = user_info.getHigherRange())!=-1){hyperglycemiaLimit.setText(hyperV+"");}
+		}
 
 
 		sensibilityFactor.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -178,16 +190,24 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 	@Override
 	public void saveData(Bundle container) {
+
+		float height = Float.parseFloat(container.getString(WelcomeActivity.USER_DATA_HEIGHT));
+
+		if(height>100){height = height/100;}
+
+		int carbsR = Integer.parseInt(carbsRatio.getText().toString(), 10);
+		int sensR = Integer.parseInt(sensibilityFactor.getText().toString(), 10);
+
 		MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
 		boolean success = storage.addUserData(container.getString(WelcomeActivity.USER_DATA_NAME),
 				String.valueOf(diabetesType.getSelectedItemPosition()),
-				Integer.parseInt(sensibilityFactor.getText().toString(), 10),
-				Integer.parseInt(carbsRatio.getText().toString(), 10),
+				sensR,
+				carbsR,
 				Integer.parseInt(hypoglycemiaLimit.getText().toString(), 10),
 				Integer.parseInt(hyperglycemiaLimit.getText().toString(), 10),
 				container.getString(WelcomeActivity.USER_DATA_BIRTHDAY_DATE),
 				container.getString(WelcomeActivity.USER_DATA_GENDER),
-				Float.parseFloat(container.getString(WelcomeActivity.USER_DATA_HEIGHT)));
+				height);
 		if(!success){
 			Log.w(TAG, "Failed to save user data!");
 		}
@@ -195,6 +215,10 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
 		// Create imageDir
 		File mypath = new File(directory, userImgFileName);
+
+		storage.initRacioSens(sensR, "Sensitivity_Reg");
+		storage.initRacioSens(carbsR, "Ratio_Reg");
+
 		DB_Read read = new DB_Read(getContext());
 		if (mypath.exists()) {
 			BadgeUtils.addPhotoBadge(getContext(), read);

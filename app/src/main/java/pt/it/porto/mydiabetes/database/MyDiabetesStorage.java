@@ -5,16 +5,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.net.Uri;
-import android.util.Log;
-import android.widget.Spinner;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.CarbsRec;
-import pt.it.porto.mydiabetes.data.Note;
+import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
@@ -96,23 +91,37 @@ public class MyDiabetesStorage {
 		return db.insert(MyDiabetesContract.BG_Target.TABLE_NAME, null, toInsert) != -1;
 	}
 
-	/*public int getGlycemiaObjectives(String time) throws Exception{
-		//TODO pm am ou normal <- ver isto
-		SQLiteDatabase db = mHandler.getReadableDatabase();
-		Log.i("SQL", "getGlycemiaObjectives: "+time+"");
-		Cursor cursor = db.query(
-		        MyDiabetesContract.BG_Target.TABLE_NAME,
-                new String[]{MyDiabetesContract.BG_Target.COLUMN_NAME_VALUE},
-                MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_START + "<=? and "+MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_END + ">= ?",
-                new String[]{time,time},
-                null,
-                null,
-                null,
-                null);
+	public void initRacioSens(int value, String table){
 
-		cursor.moveToFirst();
-		return (int) cursor.getDouble(0);
-	}*/
+		SQLiteDatabase db = mHandler.getWritableDatabase();
+		DB_Read dbRead = new DB_Read(db);
+		ArrayList<Tag> tags = dbRead.Tag_GetAll();
+		int id_user = dbRead.getId();
+//		String TAG = "cenas";
+//		Log.i(TAG, "initRacioSens: USER_ID= "+id_user);
+//		Log.i(TAG, " TABLE : "+table);
+
+		for(int index=0;index<tags.size()-1;index++){
+//			Log.i(TAG, "- NEW TAG -");
+
+			ContentValues toInsert = new ContentValues();
+			toInsert.put("Id_User", id_user);
+//			toInsert.put("Id_Tag", tags.get(index).getId());
+			toInsert.put("Value", value);
+			toInsert.put("Name", tags.get(index).getName());
+			toInsert.put("TimeStart", tags.get(index).getStart());
+			toInsert.put("TimeEnd", tags.get(index).getEnd());
+
+//			Log.i(TAG, " TAG ID: "+tags.get(index).getId());
+//			Log.i(TAG, " TAG VALUE: "+value);
+//			Log.i(TAG, " TAG NAME: "+tags.get(index).getName());
+//			Log.i(TAG, " TAG : START"+tags.get(index).getStart());
+//			Log.i(TAG, " TAG END: "+tags.get(index).getEnd());
+
+			db.insert(table, null, toInsert);
+		}
+	}
+
 	public ArrayList<GlycemiaObjectivesData> getGlycemiaObjectives() throws Exception{
 		SQLiteDatabase db = mHandler.getReadableDatabase();
 		Cursor cursor = db.query(
@@ -128,8 +137,6 @@ public class MyDiabetesStorage {
 		cursor.moveToFirst();
         ArrayList<GlycemiaObjectivesData> objList = new ArrayList<>();
         for(int result = 0; result<cursor.getCount(); result++){
-            Log.i("rawr", "getGlycemiaObjectives: V:"+cursor.getFloat(0)+" H:"+cursor.getString(1)+" M:"+cursor.getString(2));
-
             GlycemiaObjectivesData gly = new GlycemiaObjectivesData((int) cursor.getFloat(0),cursor.getString(1),cursor.getString(2));
             objList.add(gly);
             cursor.moveToNext();
@@ -155,8 +162,11 @@ public class MyDiabetesStorage {
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_GENDER, gender);
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_HEIGHT, height);
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_LAST_UPDATE, DateUtils.formatToDb(Calendar.getInstance()));
+
 		return insertNewData(MyDiabetesContract.UserInfo.TABLE_NAME, toInsert) != -1;
 	}
+
+
 	public boolean editUserData(int id, ContentValues newData) {
 		SQLiteDatabase db = mHandler.getWritableDatabase();
 		return db.update(MyDiabetesContract.UserInfo.TABLE_NAME, newData, MyDiabetesContract.UserInfo.COLUMN_NAME_ID + " = ?", new String[]{String.valueOf(id)}) == 1;

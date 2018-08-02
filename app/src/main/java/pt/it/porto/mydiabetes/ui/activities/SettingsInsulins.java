@@ -66,7 +66,7 @@ public class SettingsInsulins extends BaseActivity {
 
 	public void fillListView(ListView lv) {
 
-		ArrayList<Insulin> allinsulins = new ArrayList<pt.it.porto.mydiabetes.data.Insulin>();
+		ArrayList<Insulin> allinsulins = new ArrayList<>();
 
 		DB_Read rdb = new DB_Read(this);
 		HashMap<Integer, String[]> val = rdb.Insulin_GetAll();

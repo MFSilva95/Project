@@ -140,7 +140,7 @@ public class BadgeUtils {
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("photo");
-            badge.setMedal("gold");
+            badge.setMedal("single");
             dbwrite.Badge_Save(badge);
 
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
@@ -170,7 +170,7 @@ public class BadgeUtils {
             badge.setDateTime(Calendar.getInstance());
             badge.setType("beginner");
             badge.setName("export");
-            badge.setMedal("gold");
+            badge.setMedal("single");
             dbwrite.Badge_Save(badge);
 
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
@@ -494,6 +494,7 @@ public class BadgeUtils {
         if(LevelsPointsUtils.getLevel(context, db) < LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
             PointsRec pnt = db.getFirstPointToReachLevel(0);
             exerciseEntries = db.getExerciseFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),EXERCISE_GOLD_RECORDS_B);
+
         }
         if(LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL && LevelsPointsUtils.getLevel(context, db) < LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
             int points = LevelsPointsUtils.getPointsInLevel(LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL);
@@ -1779,7 +1780,7 @@ public class BadgeUtils {
         LinkedList<WeightRec> weightList = db.getWeightByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
         LinkedList<HbA1cRec> hbA1cList = db.getHbA1cByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
         LinkedList<DiseaseRec> diseaseList = db.getDiseaseByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
-        LinkedList<HomeElement> logList = db.getLogBookByDate(DateUtils.getFormattedDate(Calendar.getInstance())); // this costs a lot
+        LinkedList<HomeElement> logList = db.getLogBookFromStartDate(DateUtils.getFormattedDate(Calendar.getInstance()));
         //
 
         int size = exerciseList.size() + bpList.size() + cholesterolList.size() + weightList.size() + hbA1cList.size() + diseaseList.size() + logList.size();
@@ -1788,7 +1789,7 @@ public class BadgeUtils {
             badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("daily");
-            badge.setName("all");
+            badge.setName("log");
             badge.setMedal("bronze");
             dbwrite.Badge_Save(badge);
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
@@ -1799,7 +1800,7 @@ public class BadgeUtils {
             badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("daily");
-            badge.setName("all");
+            badge.setName("log");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
             dbwrite.Badge_Remove(idBronze);
@@ -1811,7 +1812,7 @@ public class BadgeUtils {
             badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
             badge.setType("daily");
-            badge.setName("all");
+            badge.setName("log");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
             dbwrite.Badge_Remove(idSilver);

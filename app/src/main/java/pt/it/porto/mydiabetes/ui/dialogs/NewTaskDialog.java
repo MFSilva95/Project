@@ -55,7 +55,7 @@ public class NewTaskDialog extends DialogFragment {
 			timeEnd = (Calendar) args.getSerializable(ARG_TIME_END);
 			data = args.getParcelable(ARG_DATA);
 		}*/
-		daysOfWeek = new ArrayList();
+		daysOfWeek = new ArrayList<String>();
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		builder.setTitle("CRIAR NOVA TAREFA");
 		View layout = getActivity().getLayoutInflater().inflate(R.layout.dialog_create_task, null, false);

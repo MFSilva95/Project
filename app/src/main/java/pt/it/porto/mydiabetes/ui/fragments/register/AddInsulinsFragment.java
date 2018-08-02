@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.ui.fragments.register;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -20,8 +21,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.UserInfo;
+import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.ui.views.InsulinData;
@@ -79,7 +83,7 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 		list.setLayoutManager(new LinearLayoutManager(getContext()));
 		list.setItemAnimator(new DefaultItemAnimator());
 		if (savedInstanceState != null) {
-			items = (ArrayList) savedInstanceState.getSerializable(STATE_ITEMS);
+			items = (ArrayList<InsulinData>) savedInstanceState.getSerializable(STATE_ITEMS);
 		}
 
 		FloatingActionButton myFab = (FloatingActionButton) layout.findViewById(R.id.floatingActionButton);
@@ -88,6 +92,15 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 				addInsulin();
 			}
 		});
+		DB_Read read = new DB_Read(this.getContext());
+		HashMap<Integer, String[]> allInsulins =  read.Insulin_GetAll();
+		read.close();
+
+		if(allInsulins!=null){
+			for(String[] insu:allInsulins.values()){
+				addInsulin(insu);
+			}
+		}
 
 /*
 		ItemTouchHelper.Callback callback=new SwipeHelper(adapter);
@@ -100,6 +113,10 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 
 	private void addInsulin() {
 		items.add(new InsulinData(items.size()));
+		list.getAdapter().notifyItemInserted(items.size());
+	}
+	private void addInsulin(String[] in) {
+		items.add(new InsulinData(in, items.size()));
 		list.getAdapter().notifyItemInserted(items.size());
 	}
 
@@ -162,8 +179,8 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 
 		@Override
 		public Holder onCreateViewHolder(ViewGroup parent, int viewType) {
-			LayoutInflater layoutInflator = getLayoutInflater(null);
-			return new InsulinHolder(layoutInflator.inflate(R.layout.listitem_new_insulin, parent, false));
+			LayoutInflater layoutInflater = getLayoutInflater();
+			return new InsulinHolder(layoutInflater.inflate(R.layout.listitem_new_insulin, parent, false));
 		}
 
 		@Override

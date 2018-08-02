@@ -39,7 +39,8 @@ public class Exercise extends BaseListRangeActivity {
 	@Override
 	String getBaseStartDate() {
 		Calendar calendar = Calendar.getInstance();
-		calendar.add(Calendar.DAY_OF_YEAR, -8);
+//		calendar.add(Calendar.DAY_OF_YEAR, -8);
+		calendar.add(Calendar.YEAR, -10);
 		return DateUtils.getFormattedDate(calendar);
 	}
 

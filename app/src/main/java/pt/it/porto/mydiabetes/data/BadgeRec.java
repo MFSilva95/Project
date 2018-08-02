@@ -8,9 +8,20 @@ public class BadgeRec extends DateTime {
 
     private int id;
     private int idUser;
+
     private String type;
     private String name;
     private String medal;
+
+    // Type -> daily, [beginner, ...]
+    // Medal -> bronze, silver, gold
+    // ID -> randomID
+    // Name -> photo, BP, etc
+
+
+    public String getMedalID(){
+        return type+"_"+medal+"_"+name;
+    }
 
     public int getIdUser() {
         return idUser;

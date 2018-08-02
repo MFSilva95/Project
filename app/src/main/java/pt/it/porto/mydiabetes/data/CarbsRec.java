@@ -4,6 +4,8 @@ package pt.it.porto.mydiabetes.data;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.File;
+
 public class CarbsRec extends DateTime implements Parcelable {
 
 	public static final Creator<CarbsRec> CREATOR = new Creator<CarbsRec>() {
@@ -17,11 +19,11 @@ public class CarbsRec extends DateTime implements Parcelable {
 			return new CarbsRec[size];
 		}
 	};
-	private int id;
-	private int id_User;
-	private int value;
-	private String photopath;
-	private int idTag;
+	private int id = -1;
+	private int id_User = -1;
+	private int value = -1;
+	private String photopath = null;
+	private int idTag = -1;
 	private int idNote = -1;
 
 	public CarbsRec() {
@@ -75,6 +77,10 @@ public class CarbsRec extends DateTime implements Parcelable {
 	}
 
 	public String getPhotoPath() {
+		if(photopath!=null){
+			File temp = new File(photopath);
+			if(!temp.exists()){photopath=null; return null;}
+		}
 		return photopath;
 	}
 

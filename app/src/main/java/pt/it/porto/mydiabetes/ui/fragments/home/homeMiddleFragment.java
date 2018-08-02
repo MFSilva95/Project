@@ -24,20 +24,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
-//import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
-import pt.it.porto.mydiabetes.data.Advice;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
-import pt.it.porto.mydiabetes.data.Task;
+
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.activities.Home;
@@ -51,7 +47,7 @@ import pt.it.porto.mydiabetes.utils.HomeElement;
  */
 
 public class homeMiddleFragment extends Fragment {
-    //private YapDroid yapDroid;
+	
     final int WAIT_REGISTER = 123;
     //Number of last days shown
     final int NUMBER_OF_DAYS = 7;
@@ -63,8 +59,6 @@ public class homeMiddleFragment extends Fragment {
 
     private boolean deleteMode;
 
-    private ArrayList<Task> taskListFromYap = new ArrayList<>();
-    private ArrayList<Advice> receiverAdviceList = new ArrayList<>();
     private ArrayList<HomeElement> toDeleteList = new ArrayList<>();
 
     private RecyclerView homeRecyclerView;
@@ -119,7 +113,6 @@ public class homeMiddleFragment extends Fragment {
 
     private void updateHomeList() {
         logBookList = new LinkedList<>();
-        //fillTaskList();
         //fillAdviceList();
         fillDays();
         if (logBookList.size() == 0) {
@@ -161,13 +154,14 @@ public class homeMiddleFragment extends Fragment {
         DB_Read db = new DB_Read(getContext());
         String date = DateUtils.getFormattedDate(calendar);
         long currentTime = System.currentTimeMillis();
-        LinkedList<HomeElement> list;
-        if ((list = db.getLogBookFromStartDate(date)).size() > 0) {
+        LinkedList<HomeElement> list = db.getLogBookFromStartDate(date);
+        if (list !=null && list.size() > 0 ) {
             CharSequence dateText = "";
             for (HomeElement elem : list) {
 
                 CharSequence newDateText = android.text.format.DateUtils.getRelativeTimeSpanString(getDateInMillis(elem.getFormattedDate()), currentTime, android.text.format.DateUtils.DAY_IN_MILLIS);
                 if (dateText.equals(newDateText)) {
+                    elem.setTag_name(db.Tag_GetNameById(elem.getTag_id()));
                     this.logBookList.add(elem);
                 } else {
                     dateText = newDateText;
@@ -198,55 +192,6 @@ public class homeMiddleFragment extends Fragment {
 
     }
 
-    private void fillTaskList() {
-        //taskListFromYap = yapDroid.getYapMultipleTasks();
-        Task task1 = new Task();
-        task1.setSummaryText("Fazer exercicio hoje!");
-        task1.setExpText("Hoje fiquei de fazer exercicio. O gim está à minha espera!");
-        task1.setUrg(5);
-
-        Task task2 = new Task();
-        task2.setSummaryText("Actualizar dados!");
-        task2.setExpText("Fazer a sincronização da bomba com a aplicação!");
-        task2.setUrg(3);
-
-        taskListFromYap = new ArrayList<>();
-        taskListFromYap.add(task1);
-        taskListFromYap.add(task2);
-
-        if (taskListFromYap.size() > 0 && BuildConfig.TASKS_AVAILABLE) {
-            logBookList.add(new HomeElement(HomeElement.Type.HEADER, getContext().getString(R.string.tasks)));
-            logBookList.addAll(taskListFromYap);
-        }
-
-    }
-
-    public void fillAdviceList() {
-        //receiverAdviceList.addAll(yapDroid.getAllEndAdvices(getApplicationContext()));
-        Advice advice1 = new Advice();
-        advice1.setSummaryText("Low glycaemia value detected!");
-        advice1.setExpandedText("Your glycaemia values are low, you should ingest fast carbohydrates.");
-        advice1.setUrgency(5);
-        advice1.setType("NORMAL");
-
-        Advice advice2 = new Advice();
-        advice2.setSummaryText("");
-        advice2.setExpandedText("Fazer a sincronização da bomba com a aplicação!");
-        advice2.setUrgency(3);
-
-        ArrayList<Advice> adviceList = new ArrayList<>();
-        adviceList.add(advice1);
-        adviceList.add(advice2);
-
-        receiverAdviceList = new ArrayList<>();
-        receiverAdviceList.addAll(adviceList);
-        Collections.sort(receiverAdviceList);
-
-        if (receiverAdviceList.size() > 0) {//&& BuildConfig.ADVICES_AVAILABLE){
-            logBookList.add(new HomeElement(HomeElement.Type.HEADER, getContext().getString(R.string.advices)));
-            logBookList.addAll(receiverAdviceList);
-        }
-    }
 
 
     @Override
@@ -312,14 +257,10 @@ public class homeMiddleFragment extends Fragment {
                 .setTitle(getString(R.string.deleteReading))
                 .setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        //Falta verificar se não está associada a nenhuma entrada da DB
-                        //Rever porque não elimina o registo de glicemia
 
-                        //DB_Write reg = new DB_Write(c);
                         DB_Read db_read = new DB_Read(c);
                         DB_Write reg = new DB_Write(c);
                         try {
-                            Log.i(TAG, "onClick: deleteSIZE:" + toDeleteList.size());
                             for (HomeElement elem : toDeleteList) {
                                 int glyID;
                                 int carbsID;
@@ -331,21 +272,21 @@ public class homeMiddleFragment extends Fragment {
                                         setNoteId(glycemiaData.getIdNote());
                                         reg.Glycemia_Delete(glyID);
                                     }
-                                }//}
+                                }
                                 if ((carbsID = elem.getCarbsId()) != -1) {
                                     carbsData = db_read.CarboHydrate_GetById(carbsID);
                                     if(carbsData!=null){
                                         setNoteId(carbsData.getIdNote());
                                         reg.Carbs_Delete(carbsID);
                                     }
-                                }//}
+                                }
                                 if ((insuID = elem.getInsulinId()) != -1) {
                                     insulinData = db_read.InsulinReg_GetById(insuID);
                                     if(insulinData!=null){
                                         setNoteId(insulinData.getIdNote());
                                         reg.Insulin_Delete(insuID);
                                     }
-                                }//}
+                                }
                                 if ((noteId != -1)) {
                                     reg.Note_Delete(noteId);
                                 }
@@ -353,16 +294,6 @@ public class homeMiddleFragment extends Fragment {
                             }
                             reg.close();
                             db_read.close();
-//                            Log.i(TAG, "onClick: cenas -> " + logBookList.size());
-                           /* if (hasNoLogElements(logBookList)) {
-                                logBookList = new ArrayList<HomeElement>();
-                                listEmpty.setVisibility(View.VISIBLE);
-                                listEmpty.bringToFront();
-                            } else {
-                                listEmpty.setVisibility(View.GONE);
-                            }
-                            ((HomeAdapter) homeRecyclerView.getAdapter()).updateList(logBookList);
-                            homeRecyclerView.getAdapter().notifyDataSetChanged();*/
                             updateHomeList();
                             toDeleteList.clear();
                             setDeleteMode(false);
@@ -370,8 +301,6 @@ public class homeMiddleFragment extends Fragment {
                             e.printStackTrace();
                             Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
                         }
-                        //reg.close();
-                        //finish();
                     }
                 })
                 .setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {

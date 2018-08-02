@@ -29,7 +29,7 @@ public abstract class BodyOverlapHeaderGesture extends GestureDetector.SimpleOnG
 	private static final Property<View, Integer> VIEW_LAYOUT_HEIGHT = new Property<View, Integer>(Integer.class, "viewLayoutHeight") {
 
 		public void set(View object, Integer value) {
-			object.getLayoutParams().height = value.intValue();
+			object.getLayoutParams().height = value;
 			object.requestLayout();
 		}
 

@@ -40,7 +40,8 @@ public class BloodPressure extends BaseListRangeActivity {
 	@Override
 	String getBaseStartDate() {
 		Calendar c = Calendar.getInstance();
-		c.add(Calendar.DAY_OF_YEAR, -8);
+//		c.add(Calendar.DAY_OF_YEAR, -8);
+		c.add(Calendar.YEAR, -10);
 		return DateUtils.getFormattedDate(c);
 	}
 

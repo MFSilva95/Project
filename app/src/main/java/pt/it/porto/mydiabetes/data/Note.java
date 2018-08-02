@@ -24,7 +24,10 @@ public class Note implements Parcelable{
 		id = in.readInt();
 		note = in.readString();
 	}
-	public Note(){}
+	public Note(){
+		id = -1;
+		note = "";
+	}
 
 	public int getId() {
 		return id;

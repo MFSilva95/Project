@@ -27,6 +27,7 @@
                 android:weightSum="2">
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/layout1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
@@ -34,20 +35,12 @@
                     app:cardElevation="2dp"
                     app:cardUseCompatPadding="true">
 
-                    <LinearLayout
-                        android:id="@+id/layout1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
-                        <RelativeLayout
+                    <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:id="@+id/image"
+                                android:id="@+id/image1"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:layout_centerHorizontal="true"
@@ -57,22 +50,21 @@
                                 app:srcCompat="@drawable/ic_weight" />
 
                             <TextView
-                                android:id="@+id/title"
+                                android:id="@+id/title1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/image"
+                                android:layout_below="@+id/image1"
                                 android:layout_centerHorizontal="true"
                                 android:maxLines="1"
                                 android:text="@string/Exercise"
                                 android:textSize="18sp"
                                 android:textStyle="bold" />
 
-
                             <LinearLayout
-                                android:id="@+id/values"
+                                android:id="@+id/values1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/title"
+                                android:layout_below="@+id/title1"
                                 android:layout_centerHorizontal="true"
                                 android:orientation="horizontal">
 
@@ -95,12 +87,11 @@
 
                             </LinearLayout>
 
-
                             <TextView
                                 android:id="@+id/date1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/values"
+                                android:layout_below="@id/values1"
                                 android:layout_centerHorizontal="true"
                                 android:ellipsize="end"
                                 android:maxLines="1"
@@ -112,10 +103,9 @@
 
                         </RelativeLayout>
 
-                    </LinearLayout>
                 </android.support.v7.widget.CardView>
-
                 <android.support.v7.widget.CardView
+                    android:id="@+id/layout2"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -123,20 +113,12 @@
                     app:cardElevation="2dp"
                     app:cardUseCompatPadding="true">
 
-                    <LinearLayout
-                        android:id="@+id/layout2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:id="@+id/image"
+                                android:id="@+id/image2"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:layout_centerHorizontal="true"
@@ -146,10 +128,10 @@
                                 app:srcCompat="@drawable/ic_bed" />
 
                             <TextView
-                                android:id="@+id/title"
+                                android:id="@+id/title2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/image"
+                                android:layout_below="@+id/image2"
                                 android:layout_centerHorizontal="true"
                                 android:maxLines="1"
                                 android:text="@string/disease"
@@ -158,10 +140,10 @@
 
 
                             <LinearLayout
-                                android:id="@+id/values"
+                                android:id="@+id/values2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/title"
+                                android:layout_below="@+id/title2"
                                 android:layout_centerHorizontal="true"
                                 android:orientation="horizontal">
 
@@ -189,7 +171,7 @@
                                 android:id="@+id/date2"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/values"
+                                android:layout_below="@id/values2"
                                 android:layout_centerHorizontal="true"
                                 android:ellipsize="end"
                                 android:maxLines="1"
@@ -198,11 +180,10 @@
                                 android:textColor="@color/black"
                                 tools:text="xx-xx-xxxx" />
 
-
                         </RelativeLayout>
 
-                    </LinearLayout>
                 </android.support.v7.widget.CardView>
+
             </LinearLayout>
 
             <LinearLayout
@@ -213,6 +194,7 @@
                 android:weightSum="2">
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/layout3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
@@ -220,20 +202,12 @@
                     app:cardElevation="2dp"
                     app:cardUseCompatPadding="true">
 
-                    <LinearLayout
-                        android:id="@+id/layout3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:id="@+id/image"
+                                android:id="@+id/image3"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:layout_centerHorizontal="true"
@@ -243,10 +217,10 @@
                                 app:srcCompat="@drawable/ic_scale" />
 
                             <TextView
-                                android:id="@+id/title"
+                                android:id="@+id/title3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/image"
+                                android:layout_below="@+id/image3"
                                 android:layout_centerHorizontal="true"
                                 android:maxLines="1"
                                 android:text="@string/weight"
@@ -255,10 +229,10 @@
 
 
                             <LinearLayout
-                                android:id="@+id/values"
+                                android:id="@+id/values3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/title"
+                                android:layout_below="@+id/title3"
                                 android:layout_centerHorizontal="true"
                                 android:orientation="horizontal">
 
@@ -286,7 +260,7 @@
                                 android:id="@+id/date3"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/values"
+                                android:layout_below="@id/values3"
                                 android:layout_centerHorizontal="true"
                                 android:ellipsize="end"
                                 android:maxLines="1"
@@ -298,10 +272,10 @@
 
                         </RelativeLayout>
 
-                    </LinearLayout>
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/layout4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -309,20 +283,12 @@
                     app:cardElevation="2dp"
                     app:cardUseCompatPadding="true">
 
-                    <LinearLayout
-                        android:id="@+id/layout4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:id="@+id/image"
+                                android:id="@+id/image4"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:layout_alignParentTop="true"
@@ -333,10 +299,10 @@
                                 app:srcCompat="@drawable/ic_cardiogram" />
 
                             <TextView
-                                android:id="@+id/title"
+                                android:id="@+id/title4"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/image"
+                                android:layout_below="@+id/image4"
                                 android:layout_centerHorizontal="true"
                                 android:maxLines="1"
                                 android:text="@string/bloodpressure"
@@ -345,10 +311,10 @@
 
 
                             <LinearLayout
-                                android:id="@+id/values"
+                                android:id="@+id/values4"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/title"
+                                android:layout_below="@+id/title4"
                                 android:layout_centerHorizontal="true"
                                 android:orientation="horizontal">
 
@@ -376,7 +342,7 @@
                                 android:id="@+id/date4"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/values"
+                                android:layout_below="@id/values4"
                                 android:layout_centerHorizontal="true"
                                 android:ellipsize="end"
                                 android:maxLines="1"
@@ -388,11 +354,9 @@
 
                         </RelativeLayout>
 
-                    </LinearLayout>
                 </android.support.v7.widget.CardView>
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -402,6 +366,7 @@
                 android:weightSum="2">
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/layout5"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="5dp"
@@ -409,20 +374,12 @@
                     app:cardElevation="2dp"
                     app:cardUseCompatPadding="true">
 
-                    <LinearLayout
-                        android:id="@+id/layout5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:id="@+id/image"
+                                android:id="@+id/image5"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:layout_centerHorizontal="true"
@@ -432,10 +389,10 @@
                                 app:srcCompat="@drawable/ic_blood" />
 
                             <TextView
-                                android:id="@+id/title"
+                                android:id="@+id/title5"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/image"
+                                android:layout_below="@+id/image5"
                                 android:layout_centerHorizontal="true"
                                 android:maxLines="1"
                                 android:text="@string/cholesterol"
@@ -444,10 +401,10 @@
 
 
                             <LinearLayout
-                                android:id="@+id/values"
+                                android:id="@+id/values5"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/title"
+                                android:layout_below="@+id/title5"
                                 android:layout_centerHorizontal="true"
                                 android:orientation="horizontal">
 
@@ -475,7 +432,7 @@
                                 android:id="@+id/date5"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/values"
+                                android:layout_below="@id/values5"
                                 android:layout_centerHorizontal="true"
                                 android:ellipsize="end"
                                 android:maxLines="1"
@@ -486,11 +443,10 @@
 
 
                         </RelativeLayout>
-
-                    </LinearLayout>
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
+                    android:id="@+id/layout6"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
@@ -498,20 +454,12 @@
                     app:cardElevation="2dp"
                     app:cardUseCompatPadding="true">
 
-                    <LinearLayout
-                        android:id="@+id/layout6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="?attr/selectableItemBackground"
-                        android:gravity="center_horizontal"
-                        android:orientation="vertical">
-
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
                             <ImageView
-                                android:id="@+id/image"
+                                android:id="@+id/image6"
                                 android:layout_width="60dp"
                                 android:layout_height="60dp"
                                 android:layout_centerHorizontal="true"
@@ -521,10 +469,10 @@
                                 app:srcCompat="@drawable/ic_test_tube" />
 
                             <TextView
-                                android:id="@+id/title"
+                                android:id="@+id/title6"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/image"
+                                android:layout_below="@+id/image6"
                                 android:layout_centerHorizontal="true"
                                 android:maxLines="1"
                                 android:text="@string/HbA1c"
@@ -533,10 +481,10 @@
 
 
                             <LinearLayout
-                                android:id="@+id/values"
+                                android:id="@+id/values6"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/title"
+                                android:layout_below="@+id/title6"
                                 android:layout_centerHorizontal="true"
                                 android:orientation="horizontal">
 
@@ -551,7 +499,7 @@
                                 <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignBaseline="@id/value2"
+                                    android:layout_alignBaseline="@id/value6"
                                     android:paddingLeft="5dp"
                                     android:text="@string/percent"
                                     android:textAppearance="?android:attr/textAppearanceSmall"
@@ -564,7 +512,7 @@
                                 android:id="@+id/date6"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@id/values"
+                                android:layout_below="@id/values6"
                                 android:layout_centerHorizontal="true"
                                 android:ellipsize="end"
                                 android:maxLines="1"
@@ -575,8 +523,6 @@
 
 
                         </RelativeLayout>
-
-                    </LinearLayout>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
 

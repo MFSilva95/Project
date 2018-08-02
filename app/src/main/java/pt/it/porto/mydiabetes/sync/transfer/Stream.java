@@ -69,11 +69,11 @@ public class Stream extends Service{
 		}
 		return mBinder;
 	}
-	
+
 	public class SendFile extends AsyncTask<Bundle, Void, Bundle> {
 		@Override
 		protected Bundle doInBackground(Bundle... extras) {
-			
+
 			Messenger messenger = (Messenger) extras[0].get("PROGRESS");
 			Message msg = Message.obtain();
 			msg.arg2 = progress;
@@ -84,12 +84,11 @@ public class Stream extends Service{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-			
+
 			if (extras[0].getByte("cmd") == Transmission.PUT_CONTENTS) {
 				String host = "";
 				int port = 0;
 				byte[] key;
-				ArrayList<FileInfo> fil;
 				Transmission t;
 
 				try {
@@ -97,7 +96,9 @@ public class Stream extends Service{
 					port = extras[0].getInt("port");
 					key = extras[0].getByteArray("key").clone();
 					byte[] iv = extras[0].getByteArray("iv").clone();
-					fil = (ArrayList<FileInfo>) extras[0].get("files");
+                    @SuppressWarnings("unchecked")
+                    ArrayList<FileInfo> fil = (ArrayList<FileInfo>) extras[0].get("files");
+
 					socket = new Socket(host, port);
 					OutputStream out = socket.getOutputStream();
 					ObjectOutputStream oos = new ObjectOutputStream(out);

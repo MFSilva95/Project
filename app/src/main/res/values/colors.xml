@@ -2,7 +2,6 @@
 <resources>
     <color name="holo_blue_dark">@android:color/holo_blue_dark</color>
     <color name="background_holo_dark">#ff000000</color>
-    <color name="primary_text_holo_dark">#fff</color>
     <color name="transparent">@android:color/transparent</color>
     <!--<color name="primary_material_dark">#ba2a31</color>-->
     <!--<color name="primary_dark_material_dark">#661114</color>-->
@@ -10,34 +9,26 @@
     <color name="black">#000000</color>
 
     <color name="lineguide">#cacaca</color>
-    <color name="light_black_background">#131313</color>
 
     <color name="edittext_changed_color">#dddd66</color>
     <color name="edittext_error_color">#d8be1e2c</color>
     <!--<color name="background">#abbbcb</color>-->
     <color name="background">#eeeeee</color>
     <color name="activity_blue">#bbccff</color>
-    <color name="secondEtal">#2962ff</color>
 
 
     <color name="primary">#4CAF50</color>
     <color name="primary_dark">#388e3c</color>
     <color name="primary_light">#C8E6C9</color>
     <color name="accent">#ffc107</color>
-    <color name="primary_text">#212121</color>
-    <color name="secondary_text">#757575</color>
-    <color name="icons">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
 
     <color name="text_units">#5b5b5b</color>
 
     <color name="divider_grey">#ef636363</color>
     <!-- New Theme -->
-    <color name="green_background">#1ec864</color>
-    <color name="green_bar">#18a150</color>
     <color name="white_background">#FFFFFF</color>
     <color name="hint_grey">#6A6868</color>
-    <color name="green_selected">#97EEBA</color>
 
 
 </resources>

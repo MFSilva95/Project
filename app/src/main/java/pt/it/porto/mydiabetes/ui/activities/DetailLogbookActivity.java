@@ -36,6 +36,8 @@ public class DetailLogbookActivity{
 	public static final String ARG_CARBS = "ARG_CARBS";
 	public static final String ARG_INSULIN = "ARG_INSULIN";
 	public static final String ARG_BLOOD_GLUCOSE = "ARG_BLOOD_GLUCOSE";
+	public static final String ARG_NOTE = "ARG_BLOOD_GLUCOSE";
+	public static final String ARG_RECORD_ID = "ARG_RECORD_ID";
 
 	public static final String SAVE_SHOWING_ERROR = "SAVE_SHOWING_ERROR";
 	public static final String SAVE_AUTO_UPDATE = "SAVE_AUTO_UPDATE";
@@ -106,7 +108,7 @@ public class DetailLogbookActivity{
 //
 //			insulinCalculator = new InsulinCalculator(this);
 //
-//			insulinCalculator.setCarbs(carbsData != null ? carbsData.getCarbsValue() : 0);
+//			insulinCalculator.setCarbs(carbsData != null ? carbsData.getValue() : 0);
 //			insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);
 //			insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
 //			// get insulin before this one
@@ -264,7 +266,7 @@ public class DetailLogbookActivity{
 //		int newVal = !text.isEmpty() ? Integer.parseInt(text) : 0;
 //		boolean changed;
 //		if (carbsData != null) {
-//			changed = carbsData.getCarbsValue() != newVal;
+//			changed = carbsData.getValue() != newVal;
 //		} else {
 //			changed = newVal != 0;
 //		}
@@ -419,7 +421,7 @@ public class DetailLogbookActivity{
 //			if (carbsData.getPhotoPath() == null && getImgUri() != null) {
 //				return true;
 //			}
-//			if (carbsData.getCarbsValue() != insulinCalculator.getCarbs()) {
+//			if (carbsData.getValue() != insulinCalculator.getCarbs()) {
 //				return true;
 //			}
 //			if (carbsData.getIdNote() != -1 && note.isEmpty()) {

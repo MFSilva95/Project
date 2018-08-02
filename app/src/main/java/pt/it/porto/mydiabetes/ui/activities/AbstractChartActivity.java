@@ -55,10 +55,12 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 		}
 
 		timeStart = Calendar.getInstance();
-		timeStart.roll(Calendar.WEEK_OF_YEAR, false);
+//		timeStart.roll(Calendar.WEEK_OF_YEAR, false);
+		timeStart.roll(Calendar.YEAR, false);
 		timeEnd = Calendar.getInstance();
 
 		dateFrom = (EditText) findViewById(R.id.et_DataFrom);
+
 		dateFrom.setText(DateUtils.getFormattedDate(timeStart));
 		dateFrom.setOnClickListener(new View.OnClickListener() {
 			@Override

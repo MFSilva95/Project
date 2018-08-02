@@ -16,7 +16,9 @@ public class HomeElement {
     private String name;
 
     private Calendar dateTime;
-    private String tag;
+    private String tag_name;
+    private int tag_id;
+    private int recordID;
     private int carbs;
     private float insulinVal;
     private String insulinName;
@@ -24,13 +26,22 @@ public class HomeElement {
     private int carbsId;
     private int insulinId;
     private int glycemiaId;
+    private int note_id;
+
     private boolean isPressed = false;
 
     public boolean isPressed(){
         return isPressed;
     }
+    public int getNote_id(){return note_id;}
     public void setPressed(boolean pressed){
         isPressed = pressed;
+    }
+    public void setTag_id(int tag){
+        this.tag_id = tag;
+    }
+    public void setTag_name(String tag){
+        this.tag_name = tag;
     }
 
     public HomeElement(Type type){
@@ -40,7 +51,7 @@ public class HomeElement {
         this.displayType = type;
         this.name = name;
     }
-    public HomeElement(String dateTime, String tag, int carbs, float insulinVal, String insulinName, int glycemia, int carbsId, int insulinId, int glycemiaId) {
+    public HomeElement( int recordId, String dateTime, int tag, int carbs, float insulinVal, String insulinName, int glycemia, int carbsId, int insulinId, int glycemiaId, int note_id) {
         this.displayType = Type.LOGITEM;
 
         try {
@@ -48,7 +59,8 @@ public class HomeElement {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        this.tag = tag;
+        this.recordID = recordId;
+        this.tag_id = tag;
         this.carbs = carbs;
         this.insulinVal = insulinVal;
         this.insulinName = insulinName;
@@ -56,6 +68,7 @@ public class HomeElement {
         this.carbsId = carbsId;
         this.insulinId = insulinId;
         this.glycemiaId = glycemiaId;
+        this.note_id = note_id;
     }
 
     public Type getDisplayType() {
@@ -75,8 +88,12 @@ public class HomeElement {
         //return DateUtils.getFormattedTimeSec(dateTime);
     }
 
-    public String getTag() {
-        return tag;
+    public int getRecordID(){return recordID;}
+    public int getTag_id() {
+        return tag_id;
+    }
+    public String getTag_name() {
+        return tag_name;
     }
 
     public int getCarbs() {

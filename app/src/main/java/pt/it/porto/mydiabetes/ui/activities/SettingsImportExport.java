@@ -8,7 +8,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -23,24 +25,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.channels.FileChannel;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.database.DB_Handler;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DbUtils;
+import pt.it.porto.mydiabetes.utils.FileProvider;
 
 public class SettingsImportExport extends BaseActivity {
 
@@ -86,7 +91,6 @@ public class SettingsImportExport extends BaseActivity {
 			restore.setEnabled(false);
 			findViewById(R.id.share).setEnabled(false);
 		}
-
 	}
 
 
@@ -97,7 +101,6 @@ public class SettingsImportExport extends BaseActivity {
 		if (Environment.MEDIA_MOUNTED.equals(state)) {
 			rc = true;
 		}
-
 		return rc;
 	}
 
@@ -115,21 +118,32 @@ public class SettingsImportExport extends BaseActivity {
 		if (isSDWriteable()) {
 			File inputFile = new File(Environment.getExternalStorageDirectory()
 					+ "/MyDiabetes/backup/DB_Diabetes");
-
-			File outputDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases");
-			outputDir.mkdirs();
-			if (inputFile.exists()) {
-				File fileBackup = new File(outputDir, "DB_Diabetes");
+			if(inputFile.exists()){
+				//Log.i("cenas", "restoreBackup: RESTORING FROM: "+inputFile.getAbsolutePath());
+				DB_Handler handler = new DB_Handler(context);
 				try {
-					fileBackup.createNewFile();
-					copyFile(inputFile, fileBackup);
-					return true;
-				} catch (IOException ioException) {
-					return false;
-				} catch (Exception exception) {
+					handler.insertIntoDB(inputFile);
+				} catch (Exception e) {
+					e.printStackTrace();
 					return false;
 				}
+				return true;
 			}
+//
+//			File outputDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases");
+//			outputDir.mkdirs();
+//			if (inputFile.exists()) {
+//				File fileBackup = new File(outputDir, "DB_Diabetes");
+//				try {
+//					fileBackup.createNewFile();
+//					copyFile(inputFile, fileBackup);
+//					return true;
+//				} catch (IOException ioException) {
+//					return false;
+//				} catch (Exception exception) {
+//					return false;
+//				}
+//			}
 		}
 		return false;
 	}
@@ -145,6 +159,29 @@ public class SettingsImportExport extends BaseActivity {
 			if (outChannel != null)
 				outChannel.close();
 		}
+	}
+
+	public static boolean backup_old_db(Context context) {
+		if (isSDWriteable()) {
+			File inputFile = DbUtils.export_old_Db(context);
+
+			File outputDir = new File(Environment.getExternalStorageDirectory()
+					+ "/MyDiabetes/backup");
+			outputDir.mkdirs();
+			if (inputFile.exists()) {
+				File fileBackup = new File(outputDir, "DB_Diabetes_oldDB");
+				try {
+					fileBackup.createNewFile();
+					copyFile(inputFile, fileBackup);
+					return true;
+				} catch (Exception exception) {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+		return false;
 	}
 
 	public static boolean backup(Context context) {
@@ -286,14 +323,61 @@ public class SettingsImportExport extends BaseActivity {
 			return;
 		}
 		DB_Read read = new DB_Read(this);
+		File tempDatabase = null;
+		try {
+			File db_backup = new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION);
+			tempDatabase = File.createTempFile("temp_db", ".sqlite",new File(Environment.getExternalStorageDirectory() + "/MyDiabetes/backup/"));
+
+
+			InputStream in = new FileInputStream(db_backup);
+			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(tempDatabase));
+
+			byte data[] = new byte[1024];
+			int count;
+
+			while ((count = in.read(data)) != -1) {
+				out.write(data, 0, count);
+			}
+
+			out.flush();
+			out.close();
+			in.close();
+
+
+			SQLiteDatabase db = SQLiteDatabase.openDatabase(tempDatabase.getPath(), null, 0);
+			db.execSQL("UPDATE UserInfo SET Name=''");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		tempDatabase.deleteOnExit();
 		String patientName = read.MyData_Read().getUsername();
-		Intent intent = ShareCompat.IntentBuilder.from(this)
-				.setType("message/rfc822")
-				.addEmailTo(PROJECT_MANAGER_EMAIL)
-				.setSubject(String.format(getResources().getString(R.string.share_subject), patientName))
-				.setText(getResources().getString(R.string.share_text))
-				.setStream(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION)))
-				.getIntent();
+		Intent intent;
+		if(Build.VERSION.SDK_INT>=24){
+
+			Uri fileUri = FileProvider.getUriForFile(SettingsImportExport.this,
+					BuildConfig.APPLICATION_ID + ".provider",
+					tempDatabase);
+//					new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION));
+
+			intent= ShareCompat.IntentBuilder.from(this)
+					.setType("message/rfc822")
+					.addEmailTo(PROJECT_MANAGER_EMAIL)
+					.setSubject(String.format(getResources().getString(R.string.share_subject), patientName))
+					.setText(getResources().getString(R.string.share_text))
+					.setStream(fileUri)
+					.getIntent();
+
+		}else{
+			intent = ShareCompat.IntentBuilder.from(this)
+					.setType("message/rfc822")
+					.addEmailTo(PROJECT_MANAGER_EMAIL)
+					.setSubject(String.format(getResources().getString(R.string.share_subject), patientName))
+					.setText(getResources().getString(R.string.share_text))
+					.setStream(Uri.fromFile(tempDatabase))
+//					.setStream(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION)))
+					.getIntent();
+		}
+
 
 		// get apps that resolve email
 		Intent justEmailAppsIntent = new Intent(Intent.ACTION_SENDTO);

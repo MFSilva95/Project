@@ -19,9 +19,9 @@ public class Measure {
         unitId = -1;
         unitName = "unknown";
         timestamp = -1;
-        values = new ArrayList<Double>();
-        metricIds = new ArrayList<Integer>();
-        metricNames = new ArrayList<String>();
+        values = new ArrayList<>();
+        metricIds = new ArrayList<>();
+        metricNames = new ArrayList<>();
     }
 
 

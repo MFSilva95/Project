@@ -27,12 +27,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.Advice;
+
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
-import pt.it.porto.mydiabetes.data.Task;
+
 //import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
+import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
@@ -51,24 +52,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     private static int indexSelected;
     private homeMiddleFragment.MiddleFragRegCallBackImpl callBack;
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        Bundle args = getIntent().getExtras();
-//        if (args != null) {
-//            inflater.inflate(R.menu.weight_detail_delete, menu);
-//        }
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.menuItem_WeightDetail_Delete:
-//                deleteRegister();
-//                return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+
 
     public HomeElement getFromHomeList(int index) {
         return homeList.get(index);
@@ -204,14 +188,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 rowText.setText(currentView.getName());
                 break;
             case ADVICE:
-                Advice currentAdvice = (Advice) currentView;
+
                 textHolder = (LinearLayout) v.findViewById(R.id.adviceRowBackground);
                 myText = (TextView) v.findViewById(R.id.content);
                 //textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
-                if (currentAdvice.getUrgency() > 7) {
-                    myText.setTextColor(Color.RED);
-                }
-                myText.setText(currentAdvice.getSummaryText());
 //                holder.view.setOnClickListener(getAdviceClickListener(currentAdvice));
                 break;
             case LOGITEM:
@@ -221,17 +201,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 v.setOnLongClickListener(getLogItemLongClickListener());
                 break;
             case SPACE:
-                break;
-            case TASK:
-                final Task currentTask = (Task) currentView;
-//                textHolder = (LinearLayout) v.findViewById(R.id.taskRowBackground);
-                textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
-                myText = (TextView) v.findViewById(R.id.content);
-                if (currentTask.getUrgency() > 7) {
-                    myText.setTextColor(Color.RED);
-                }
-                myText.setText(currentTask.getSummaryText());
-//                holder.view.setOnClickListener(getTaskClickListener(currentTask));
                 break;
         }
     }
@@ -245,12 +214,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
                 HomeElement logbookDataBinding = ((ViewHolder) v.getTag()).item;
                 if(logbookDataBinding.isPressed()){
-                    Log.i("cenas", "onLongClick: NOT pressed");
+                    //Log.i("cenas", "onLongClick: NOT pressed");
                     logbookDataBinding.setPressed(false);
                     callBack.removeToDelete(logbookDataBinding);
 
                 }else{
-                    Log.i("cenas", "onLongClick: pressed");
+                    //Log.i("cenas", "onLongClick: pressed");
                     logbookDataBinding.setPressed(true);
                     callBack.addToDelete(logbookDataBinding);
                 }
@@ -283,8 +252,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 }else{
                     Intent intent = new Intent(v.getContext(), NewHomeRegistry.class);
                     Bundle args = new Bundle();
-                    if(logbookDataBinding.getTag() != null){
-                        args.putString("tag",logbookDataBinding.getTag());
+                    if(logbookDataBinding.getRecordID() != -1){
+                        args.putInt(DetailLogbookActivity.ARG_RECORD_ID, logbookDataBinding.getRecordID());
+                    }
+                    if(logbookDataBinding.getTag_id()!=-1){
+                        DB_Read read = new DB_Read(v.getContext());
+                        args.putString("tag",read.Tag_GetNameById(logbookDataBinding.getTag_id()));
+                        read.close();
                     }
                     if (logbookDataBinding.getGlycemiaId() != -1) {
                         GlycemiaRec glycemiaRec = new GlycemiaRec();
@@ -304,6 +278,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                         args.putString("ins", String.valueOf(insulin.getId())); //ins id
                         args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);
                     }
+                    if (logbookDataBinding.getNote_id() != -1) {
+                        args.putInt("note_id", logbookDataBinding.getNote_id()); //ins id
+                    }
                     intent.putExtras(args);
                     callBack.updateHomeList(intent);
                 }
@@ -318,7 +295,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         holder.item = currentView;
         holder.hora.setText(currentView.getFormattedTime());
-        holder.tag.setText(currentView.getTag());
+        if(currentView.getTag_id()!=-1){
+            DB_Read read = new DB_Read(holder.view.getContext());
+            holder.tag.setText(read.Tag_GetNameById(currentView.getTag_id()));
+            read.close();
+        }
+        //holder.tag.setText(currentView.getTag_name());
         LinearLayout imageTitleHolder = (LinearLayout) holder.view.findViewById(R.id.imageTitleHolder);
 
         holder.background.setBackgroundColor(!currentView.isPressed()?Color.TRANSPARENT:Color.LTGRAY);

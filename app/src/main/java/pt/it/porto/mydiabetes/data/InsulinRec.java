@@ -18,14 +18,14 @@ public class InsulinRec extends DateTime implements Parcelable {
 			return new InsulinRec[size];
 		}
 	};
-	private int id;
-	private int idUser;
+	private int id = -1;
+	private int idUser = -1;
 	private int idBloodGlucose = -1;
-	private int idInsulin;
-	private int targetGlycemia;
-	private float insulinUnits;
-	private int idTag;
-	private int idNote=-1;
+	private int idInsulin = -1;
+	private int targetGlycemia = -1;
+	private float insulinUnits = -1;
+	private int idTag = -1;
+	private int idNote = -1;
 
 
 	public InsulinRec() {

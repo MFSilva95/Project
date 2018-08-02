@@ -25,6 +25,8 @@ import android.widget.Toast;
 
 import pt.it.porto.mydiabetes.R;
 
+import pt.it.porto.mydiabetes.database.FeaturesDB;
+import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
 import pt.it.porto.mydiabetes.ui.listAdapters.welcomePageAdapter;
 
@@ -117,7 +119,7 @@ public class WelcomeActivity extends BaseActivity {
 			});
 		}
 
-		mViewPager.blockSwipeRight(true);
+		//mViewPager.blockSwipeRight(true);
 		mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 			@Override
 			public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -153,6 +155,8 @@ public class WelcomeActivity extends BaseActivity {
 		if (((RegistryFragmentPage) page).allFieldsAreValid()) {
 			((RegistryFragmentPage) page).saveData(data);
 			if (currentFragment + 1 == adapter.getCount()) {
+				FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
+				db.changeFeatureStatus(FeaturesDB.INITIAL_REG_DONE, true);
 				Intent intent = new Intent(this, Home.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(intent);
@@ -282,6 +286,8 @@ public class WelcomeActivity extends BaseActivity {
 		//We've got the permission, now we can proceed further
 		if (SettingsImportExport.restoreBackup(getApplicationContext())) {
 			// jump to home
+			FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
+			db.changeFeatureStatus(FeaturesDB.INITIAL_REG_DONE, true);
 			Intent intent = new Intent(getBaseContext(), Home.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 			startActivity(intent);

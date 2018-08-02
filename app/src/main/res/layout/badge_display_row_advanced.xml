@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    android:weightSum="3">
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="80dp"
+        android:layout_height="150dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/badge_background1"
+            android:layout_width="60dp"
+            android:layout_height="120dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/medal_locked_advanced"/>
+
+        <ImageView
+            android:id="@+id/badge_symbol1"
+            android:layout_width="26dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="34dp"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:id="@+id/badge_text1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            tools:text="@string/daily_bronze_log"
+            android:layout_alignParentBottom="true"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="80dp"
+        android:layout_height="150dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/badge_background2"
+            android:layout_width="60dp"
+            android:layout_height="120dp"
+            android:src="@drawable/medal_locked_advanced"
+            tools:src="@drawable/medal_gold_advanced"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:id="@+id/badge_symbol2"
+            android:layout_width="26dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="34dp"
+            tools:src="@drawable/bp"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:id="@+id/badge_text2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            tools:text="@string/daily_bronze_log"
+            android:layout_alignParentBottom="true"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="vertical"
+        android:layout_width="80dp"
+        android:layout_height="150dp"
+        android:layout_weight="1">
+
+        <ImageView
+            android:id="@+id/badge_background3"
+            android:layout_width="60dp"
+            android:layout_height="120dp"
+            android:src="@drawable/medal_locked_advanced"
+            tools:src="@drawable/medal_gold_advanced"
+            android:layout_centerHorizontal="true" />
+
+        <ImageView
+            android:id="@+id/badge_symbol3"
+            android:layout_width="26dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="34dp"
+            tools:src="@drawable/bp"
+            android:layout_centerHorizontal="true"/>
+        <TextView
+            android:id="@+id/badge_text3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:padding="10dp"
+            tools:text="@string/daily_bronze_log"
+            android:layout_alignParentBottom="true"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+</LinearLayout>
