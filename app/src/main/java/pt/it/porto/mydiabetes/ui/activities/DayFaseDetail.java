@@ -135,6 +135,8 @@ public class DayFaseDetail extends BaseActivity {
 	}
 
 	public void AddNewTag() {
+
+		//TODO verificar se valores derp
 		EditText name = (EditText) findViewById(R.id.et_FaseDia_Nome);
 		EditText hourFrom = (EditText) findViewById(R.id.et_FaseDia_HourFrom);
 		EditText hourTo = (EditText) findViewById(R.id.et_FaseDia_HourTo);
@@ -161,18 +163,14 @@ public class DayFaseDetail extends BaseActivity {
 		}
 
 
+		//save tag
 		DB_Write wdb = new DB_Write(this);
-
 		Tag tag = new Tag();
-
-
 		tag.setName(name.getText().toString());
-
 		if (!hourFrom.getText().toString().equals("") && !hourTo.getText().toString().equals("")) {
 			tag.setStart(hourFrom.getText().toString());
 			tag.setEnd(hourTo.getText().toString());
 		}
-
 		wdb.Tag_Add(tag);
 		wdb.close();
 		finish();

@@ -25,6 +25,17 @@ android {
         buildConfigField "long", "BUILDDATE", System.currentTimeMillis() + "L"
         buildConfigField "boolean", "USE_FABRIC", "false"
     }
+    flavorDimensions "prod", "devel"
+    productFlavors{
+        prod{
+            dimension "prod"
+            buildConfigField "boolean", "USE_FABRIC", "false"
+        }
+        devel{
+            dimension "devel"
+            buildConfigField "boolean", "USE_FABRIC", "false"
+        }
+    }
 
     buildTypes {
         release {
