@@ -1,39 +1,25 @@
 package pt.it.porto.mydiabetes.ui.fragments.new_register;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Calendar;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRec;
-import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
-import pt.it.porto.mydiabetes.ui.activities.ViewPhoto;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 
 
@@ -86,12 +72,12 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         try{
             carbsData.setCarbsValue( Integer.parseInt(carbs_input.getEditText().getText().toString()));
         }catch (Exception e){
-            carbs_input.setError(getContext().getString(R.string.glicInputError));
+            carbs_input.setError(getContext().getString(R.string.error_glicInput));
             carbs_input.requestFocus();
             return false;
         }
         if(carbsData.getCarbsValue()>900 || carbsData.getCarbsValue()<0){
-            carbs_input.setError(getContext().getString(R.string.glicInputError));
+            carbs_input.setError(getContext().getString(R.string.error_glicInput));
             carbs_input.requestFocus();
             return false;
         }

@@ -1,42 +1,23 @@
 package pt.it.porto.mydiabetes.ui.fragments.new_register;
 
 import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Point;
-import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.CarbsRec;
-import pt.it.porto.mydiabetes.data.DateTime;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
-import pt.it.porto.mydiabetes.data.InsulinRec;
-import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
-import pt.it.porto.mydiabetes.ui.activities.TargetBG_detail;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
 import pt.it.porto.mydiabetes.utils.DateUtils;
-import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 
 public class GlycaemiaRegister_Input_Interface extends LinearLayout {
@@ -82,19 +63,19 @@ public class GlycaemiaRegister_Input_Interface extends LinearLayout {
         try{
             glycaemiaData.setValue( Integer.parseInt(glycaemia_input.getEditText().getText().toString()));
         }catch (Exception e){
-            glycaemia_input.setError(getContext().getString(R.string.glicInputError));
+            glycaemia_input.setError(getContext().getString(R.string.error_glicInput));
             glycaemia_input.requestFocus();
             return false;
         }
         try{
             glycaemiaData.setObjective( Integer.parseInt(glycaemia_obj_input.getEditText().getText().toString()));
         }catch (Exception e){
-            glycaemia_obj_input.setError(getContext().getString(R.string.glicInputError));
+            glycaemia_obj_input.setError(getContext().getString(R.string.error_glicInput));
             glycaemia_obj_input.requestFocus();
             return false;
         }
         if(glycaemiaData.getValue()>900 || glycaemiaData.getValue()<30){
-            glycaemia_input.setError(getContext().getString(R.string.glicInputError));
+            glycaemia_input.setError(getContext().getString(R.string.error_glicInput));
             glycaemia_input.requestFocus();
             return false;
         }

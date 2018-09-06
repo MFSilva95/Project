@@ -143,7 +143,7 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		userDataPopUp.show();
 		TextView errorText = ((TextView) userDataPopUp.findViewById(R.id.error));
 		errorText.setVisibility(View.VISIBLE);
-		errorText.setText(R.string.login_no_internet_error);
+		errorText.setText(R.string.error_login_no_internet);
 		currentShowingDialog = userDataPopUp;
 		currentShowingDialog.setCancelable(true);
 	}

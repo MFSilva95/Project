@@ -2427,20 +2427,41 @@ public class DB_Read {
 	}
 
 	public String getNextSensTime(Sensitivity target) {
-		Cursor cursor = myDB.rawQuery("SELECT TimeEnd "+
+
+	    //search the starting time of the next tag
+        //we want the closest hour to our given starting hour
+        //if the clock starts before 00h and the next time is after 00h this query will return null
+        //in that case we're be searching for the starting hour
+
+		Cursor cursor = myDB.rawQuery("SELECT TimeStart "+ //"SELECT TimeEnd "+
 				"FROM Sensitivity_Reg "+
-				"WHERE TimeStart >'" + target.getEnd() + "' "+
+				"WHERE TimeStart >'" + target.getStart()+"' "+ //.getEnd() + "' "+
 				"ORDER BY TimeStart limit 1", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			Sensitivity t;
-			t = new Sensitivity();
-			t.setEnd(cursor.getString(0));
-			cursor.close();
-			return t.getEnd();
-		} else {
-			cursor.close();
-			return null;
+			//Sensitivity t;
+			//t = new Sensitivity();
+			//t.setEnd(cursor.getString(0));
+			//cursor.close();
+			//return t.getEnd();
+			return cursor.getString(0);
+		} else {//second attempt
+            cursor = myDB.rawQuery("SELECT TimeStart "+ //"SELECT TimeEnd "+
+                    "FROM Sensitivity_Reg "+
+                    //"WHERE TimeStart >'" + target.getStart()+"' "+ //.getEnd() + "' "+
+                    "ORDER BY TimeStart limit 1", null);
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                //Sensitivity t;
+                //t = new Sensitivity();
+                //t.setEnd(cursor.getString(0));
+                //cursor.close();
+                //return t.getEnd();
+                return cursor.getString(0);
+            } else {
+                cursor.close();
+                return null;
+            }
 		}
 	}
 

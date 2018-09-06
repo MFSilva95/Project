@@ -12,14 +12,11 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
@@ -49,7 +46,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.esafirm.imagepicker.features.ImagePicker;
-import com.esafirm.imagepicker.features.ReturnMode;
 import com.esafirm.imagepicker.model.Image;
 
 import java.io.File;
@@ -74,13 +70,9 @@ import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.database.FeaturesDB;
-import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
-import pt.it.porto.mydiabetes.ui.charts.data.Carbs;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
-import pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.CarbsRegister_Input_Interface;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.GlycaemiaRegister_Input_Interface;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.InsuRegister_Input_Interface;
@@ -449,7 +441,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void verify_note_conditions()throws Exception{
         if(buttons.contains(NOTE)){
             if(buttons.size()<=2){
-                noteRegisterInputInterface.setErrorMessage(getString(R.string.noteError));
+                noteRegisterInputInterface.setErrorMessage(getString(R.string.error_note));
                 throw new Exception();
             }
         }
@@ -457,14 +449,14 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void verify_carbs_conditions()throws Exception{
         if(buttons.contains(CARBS)){
             if(!carbsRegisterInputInterface.validate()){
-                carbsRegisterInputInterface.setErrorMessage(getString(R.string.carbsError));
+                carbsRegisterInputInterface.setErrorMessage(getString(R.string.error_carbs));
                 throw new Exception();}
         }
     }
     private void verify_glucose_conditions()throws Exception{
         if(buttons.contains(GLICAEMIA)){
             if(!glycaemiaRegisterInputInterface.validate()){
-                glycaemiaRegisterInputInterface.setErrorMessage(getString(R.string.glucError));
+                glycaemiaRegisterInputInterface.setErrorMessage(getString(R.string.error_glucose));
                 throw new Exception();
             }
         }
@@ -472,7 +464,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void verify_insulin_conditions()throws Exception{
         if(buttons.contains(INSULIN)){
             if(!insuRegisterInputInterface.validate()){
-                insuRegisterInputInterface.setErrorMessage(getString(R.string.insuError));
+                insuRegisterInputInterface.setErrorMessage(getString(R.string.error_insulin));
                 throw new Exception();
             }
         }

@@ -61,7 +61,7 @@
                     android:id="@+id/et_MyData_Name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="@string/hint_name"
+                    android:hint="@string/name_hint"
                     android:inputType="text"
                     android:textSize="18sp"></EditText>
             </LinearLayout>

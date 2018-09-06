@@ -1,16 +1,12 @@
 package pt.it.porto.mydiabetes.ui.fragments.new_register;
 
 import android.content.Context;
-import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.AttributeSet;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -22,7 +18,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
@@ -105,12 +100,12 @@ public class InsuRegister_Input_Interface extends LinearLayout {
             save_read();
             insuData.setInsulinUnits( Float.parseFloat(insulin_input.getEditText().getText().toString()));
         }catch (Exception e){
-            insulin_input.setError(getContext().getString(R.string.glicInputError));
+            insulin_input.setError(getContext().getString(R.string.error_glicInput));
             insulin_input.requestFocus();
             return false;
         }
         if(insuData.getInsulinUnits()>900 || insuData.getInsulinUnits()<0){
-            insulin_input.setError(getContext().getString(R.string.glicInputError));
+            insulin_input.setError(getContext().getString(R.string.error_glicInput));
             insulin_input.requestFocus();
             return false;
         }

@@ -1,6 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
@@ -19,10 +18,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.CheckedTextView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -436,7 +433,7 @@ public class TransferActivity extends BaseActivity {
 		}
 		else {
 			//TODO set in string
-			builder.setMessage(getString(R.string.transfer_error)+"\n"
+			builder.setMessage(getString(R.string.error_transfer)+"\n"
 					+getString(R.string.transfer_try_again) )
 			.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 				

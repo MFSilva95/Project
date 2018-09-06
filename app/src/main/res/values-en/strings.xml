@@ -4,46 +4,116 @@
     <string name="tasks">Tasks</string>
 
     <string name="targetOverlapError">A glicemic sensitivity is already defined at this time period</string>
-    <string name="glycemia_value">Glycaemia Value</string>
+
     <string name="navTask">My Tasks</string>
     <string name="navLog">My Logbook</string>
     <string name="navDiabetesTools">Diabetes options</string>
-    <string name="noteError">Please insert at least one record</string>
-    <string name="carbsError">Invalid value</string>
-    <string name="insuError">Invalid value</string>
-    <string name="glucError">Invalid value</string>
-    <string name="Carbs">Carbs</string>
-    <string name="Exercise">Exercise</string>
-    <string name="Glycemia">Glycaemia</string>
-    <string name="Insulin">Insulin</string>
-    <string name="Meal">Meal</string>
-    <string name="action_settings">Settings</string>
-    <string name="add_Carbs">Add Carbo-hydrates</string>
-    <string name="title_activity_blood_pressure">B.P. Registers</string>
-    <string name="title_activity_blood_pressure_detail">B.P. Register</string>
-    <string name="title_activity_view_photo">Photograph</string>
-    <string name="photoSaved">Stored in: </string>
-    <string name="action">Action</string>
-    <string name="height">Height</string>
-    <string name="gender">Gender</string>
-    <string name="flu">Flu</string>
-    <string name="information_about_developers">Developed by Diogo Machado, Ricardo Parra, Eduardo Soares, João Maia, João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
-    <string name="information_about_libraries">This application uses the AAkira/ExpandableLayout and Pierry/SimpleToast library.</string>
-    <string name="insulin">Insulin</string>
-    <string name="information_about_version">Version </string>
-    <string name="weight">Weight</string>
-    <string name="cholesterol">Cholesterol</string>
-    <string name="from">From</string>
-    <string name="to">To</string>
-    <string name="grams">grams</string>
-    <string name="hint_value3">e.g.: 45</string>
+
     <string name="app_name">myDiabetes</string>
-    <string name="hint_value4">e.g.: 10</string>
-    <string name="hint_value5">e.g.: 70</string>
-    <string name="hint_value6">e.g.: 150</string>
-    <string name="hint_value7">e.g.: 1.82</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
+    <string name="action_settings">Settings</string>
+
+
+    <string name="title_activity_my_data">My Data</string>
+    <string name="title_activity_exercise">Exercise Register</string>
+    <string name="title_activity_insulin">Insulin Register</string>
+    <string name="title_activity_logbook">LogBook</string>
+    <string name="title_activity_blood_pressure">B.P. Registers</string>
+    <string name="title_activity_carbo_hydrate">Carbohydrates Register</string>
+    <string name="title_activity_cholesterol">Cholesterol Register</string>
+    <string name="title_activity_disease">Disease Register</string>
+    <string name="title_activity_h1_a1c">HbA1c Register</string>
+    <string name="title_activity_weight">Weight Register</string>
+    <string name="title_activity_transfer">Transfer to PC</string>
+    <string name="title_activity_scan">Scan</string>
+    <string name="title_activity_exercise_detail">Exercise Register</string>
+    <string name="title_activity_carbo_hydrate_detail">Carbohydrates Register</string>
+    <string name="title_activity_blood_pressure_detail">B.P. Register</string>
+    <string name="title_activity_cholesterol_detail">Cholesterol Register</string>
+    <string name="title_activity_weight_detail">Weight Register</string>
+    <string name="title_activity_hb_a1c_detail">HbA1c Register</string>
+    <string name="title_activity_disease_detail">Disease Register</string>
+    <string name="title_activity_import_export">Import &amp; Export</string>
+    <string name="title_activity_tag_detail">Day Time</string>
+    <string name="title_activity_target_bg_detail">Glycemia Objective</string>
+    <string name="title_activity_insulins_detail">Insulin</string>
+    <string name="title_activity_info">Information</string>
+    <string name="title_activity_view_photo">Photograph</string>
+    <string name="title_activity_welcome">Record</string>
+
+
+    <string name="add_MedicinesFragment">Add Medicament</string>
+    <string name="add_Carbs">Add Carbo-hydrates</string>
+    <string name="add_more_registers">Add more Registers</string>
+    <string name="add_photo">Add Photo</string>
+
+
+    <string name="transf_WaitMesg">Wait Connection</string>
+    <string name="transf_WaitTitle">Atention</string>
+    <string name="transf_ConnOK">Connection Established</string>
+    <string name="transf_InfoTitle">Information</string>
+
+    <string name="delete_detail">Delete</string>
+    <string name="deleteReading">Delete Reading?</string>
+    <string name="deleteException">Cannot delete this Reading!</string>
+    <string name="delete_insulin" >Delete Insulin?</string>
+    <string name="delete_insulin_exception" >Cannot delete this insulin, it is associated with another record!</string>
+    <string name="delete_photo" >Delete photo?</string>
+    <string name="delete_MedicinesFragment">Delete Medicament?</string>
+    <string name="delete">Delete</string>
+    <string name="targetbg_delete_exception" >Cannot delete this object, it is associated with another record!</string>
+    <string name="tag_info_delete_exception" >Cannot delete this read, it is associated with another record!</string>
+
+    <string name="error_MedicinesFragment">You cannot delete this medicament, it is referred in the Register!</string>
+    <string name="error_glicInput">Not a valid Number</string>
+    <string name="error_login_auth" >Authentication error, please verify the username and password and try again.</string>
+    <string name="error_login_no_internet" >No connection to the Internet</string>
+    <string name="error_repeated_description" >Duplicated description</string>
+    <string name="error_start_time_overlaps" >Starting time is overlapping an existing time interval.</string>
+    <string name="error_end_time_overlaps" >Ending time is overlapping an existing time interval.</string>
+    <string name="error_end_time_before_start_time">End time must be after the time start</string>
+    <string name="error_dbcopy">Error during backup, please verify if there is enough disc space to save!</string>
+    <string name="error_transfer">An error has occurred!</string>
+    <string name="error_note">Please insert at least one record</string>
+    <string name="error_carbs">Invalid carbohydrate value</string>
+    <string name="error_insulin">Invalid insulin value</string>
+    <string name="error_glucose">Invalid glycaemia value</string>
+    <string name="error_invalid_height" >Invalid height. Height must be in meters. (is there maybe a point missing?)</string>
+    <string name="error_field_required" >Required field</string>
+    <string name="error_repeated_name" >The name field must be unique!</string>
+
+
+    <string-array name="Sex">
+        <item>@string/gender_male</item>
+        <item>@string/gender_female</item>
+    </string-array>
+    <string-array name="diabetes_Type">
+        <item>@string/diabetes_type_1</item>
+        <item>@string/diabetes_type_2</item>
+        <item>@string/diabetes_type_gestational</item>
+    </string-array>
+
+    <string name="diabetes_type_1">Type 1</string>
+    <string name="diabetes_type_2">Type 2</string>
+    <string name="diabetes_type_gestational">Gestational</string>
+
+
+    <string name="save_GlycemiaDetail">Save</string>
+    <string name="saveButton">Save</string>
+    <string name="photoSaved">Stored in: </string>
+    <string name="mydata_saved" >Saved</string>
+
+    <string name="positiveButton">Yes</string>
+    <string name="negativeButton">Cancel</string>
+
+
+    <string-array name="Effort">
+        <item>Very Light</item>
+        <item>Light</item>
+        <item>Moderate</item>
+        <item>Intense</item>
+        <item>Very Intense</item>
+    </string-array>
+
 
     <string-array name="daytimes">
         <item>Waking up</item>
@@ -60,68 +130,184 @@
     </string-array>
 
 
-    <string name="title_activity_my_data">My Data</string>
-    <string name="title_activity_exercise">Exercise Register</string>
-    <string name="title_activity_insulin">Insulin Register</string>
-    <string name="title_activity_logbook">LogBook</string>
-    <string name="title_activity_carbo_hydrate">Carbohydrates Register</string>
-    <string name="title_activity_cholesterol">Cholesterol Register</string>
-    <string name="title_activity_disease">Disease Register</string>
-    <string name="title_activity_h1_a1c">HbA1c Register</string>
-    <string name="title_activity_weight">Weight Register</string>
+    <string name="Meal">Meal</string>
+    <string name="Glycemia">Glycaemia</string>
+    <string name="Insulin">Insulin</string>
+    <string name="Carbs">Carbs</string>
+    <string name="Exercise">Exercise</string>
 
-    <string name="add_MedicinesFragment">Add Medicament</string>
-    <string name="delete_MedicinesFragment">Delete Medicament?</string>
-    <string name="error_MedicinesFragment">You cannot delete this medicament, it is referred in the Register!</string>
-    <string name="title_activity_transfer">Transfer to PC</string>
-    <string name="title_activity_scan">Scan</string>
-    <string name="transf_WaitMesg">Wait Connection</string>
-    <string name="transf_WaitTitle">Atention</string>
-    <string name="transf_ConnOK">Connection Established</string>
-    <string name="transf_InfoTitle">Information</string>
 
-    <string-array name="Sex">
-        <item>@string/gender_male</item>
-        <item>@string/gender_female</item>
+    <string name="information_about_using">The application is under development and for its use you should have signed the informed consent and have been informed about the methodology of the study.</string>
+    <string name="information_about_developers">Developed by Diogo Machado, Ricardo Parra, Eduardo Soares, João Maia, João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
+    <string name="information_about_libraries">This application uses the AAkira/ExpandableLayout and Pierry/SimpleToast library.</string>
+    <string name="information_about_version">Version </string>
+
+
+    <string name="preferences_target">Glycemia Objectives</string>
+    <string name="preferences_insulins">Insulins</string>
+    <string name="preferences_factors">Factors and Ratio\'s</string>
+
+
+    <string name="transfer_fail_connection" >Connection failed</string>
+    <string name="transfer_check_wifi" >Please verify your wi-fi connection</string>
+    <string name="transfer_correct_network" >or if you are in the right network.</string>
+    <string name="transfer_transfer" >Downloading. . .</string>
+    <string name="transfer_success" >Download successful</string>
+    <string name="transfer_try_again" >Please try again</string>
+    <string name="transfer_db" >Downloading Database</string>
+    <string name="transfer" >Downloading</string>
+
+
+    <string name="sync_with_pc" >Synchronization with the Computer</string>
+    <string name="sync">Synchronization</string>
+
+
+    <string name="qr" >Read QR code</string>
+    <string name="invalid_qr_code" >Invalid QR code</string>
+
+    <string name="targetbg_info" >Delete Glycaemia objective?</string>
+    <string name="tag_info" >Delete day time?</string>
+
+    <string name="cancel_read">Reading Cancelled</string>
+    <string name="mydata_before_saving" >Before saving, please fill all the data fields.</string>
+
+
+    <string name="dbcopy_success" >Database backup saved successfully!</string>
+
+
+    <string name="date_hour" >Date and Hour</string>
+    <string name="time_of_day" >Time of day</string>
+    <string name="label" >Label</string>
+
+    <string name="name_hint" >John Doe</string>
+    <string name="select_all" >Select all</string>
+    <string name="glycemia_value">Glycaemia Value</string>
+
+
+
+
+    <string name="restore_backup" >Restore backup</string>
+    <string name="restore_backup_success" >Backup restored!</string>
+    <string name="restore_backup_error" >An error occurred while restoring the backup, please verify if the applicaton has the needed permissions to access the memory!</string>
+    <string name="last_backup" >Last Backup</string>
+    <string name="new_medicine" >add new medicine</string>
+
+    <string name="gli_units" >mg/dl</string>
+    <string name="pills" >pills</string>
+    <string name="hint_exercise1" >Running</string>
+    <string name="send_to_cloud" >Upload to the Cloud</string>
+
+    <string name="weight_unit" >Kg</string>
+
+    <string name="photo_and_value" >Foto e Valor</string>
+    <string name="photo" >Foto</string>
+
+
+    <string name="insulin_action_rapid" >Quick</string>
+    <string name="insulin_action_short" >Short</string>
+    <string name="insulin_action_intermediate" >Intermediate</string>
+    <string name="insulin_action_long" >Long</string>
+
+
+    <string-array name="insulin_action">
+        <item>@string/insulin_action_rapid</item>
+        <item>@string/insulin_action_short</item>
+        <item>@string/insulin_action_intermediate</item>
+        <item>@string/insulin_action_long</item>
     </string-array>
-    <string-array name="diabetes_Type">
-        <item>@string/diabetes_type_1</item>
-        <item>@string/diabetes_type_2</item>
-        <item>@string/diabetes_type_gestational</item>
+
+    <string name="insulin_message_action" >Please select the administration means.</string>
+    <string name="insulin_message_name_exists" >Insulin names must be unique!</string>
+
+
+
+    <string name="gender_male" >Male</string>
+    <string name="gender_female" >Female</string>
+    <string name="glycemia_objective_time_start_end" >From %1$s to %2$s</string>
+    <string name="welcome" >Beginning</string>
+    <string name="backup_share" >Save backup and send it to the Project\'s manager</string>
+    <string name="share_subject" >Dados do paciente %1$s</string>
+    <string name="share_text" >Enviado da aplicação: A Minha Diabetes</string>
+    <string name="new_feature" >Nova funcionalidade</string>
+    <string name="new_feature_iob_text_1" >Quando toma uma insulina esta não actua de imediato, mas sim ao longo de algumas horas. Como pode ver na imagem acima.</string>
+    <string name="new_feature_iob_text_2" >Agora pode ter informação da insulina que ainda está activa no seu organismo quando for tomar uma nova insulina</string>
+    <string name="notification_sync_recurrent" >Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?</string>
+    <string name="notification_sync_first_time" >Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?</string>
+    <string name="notification_sync_text" >Envie os dados ao gestor do projecto</string>
+    <string name="list_empty_message" >Nenhum resultado encontrado\nAumente o intervalo de tempo</string>
+    <string name="show_labels" >Mostrar valores</string>
+    <string name="show_hiperglicemia_limit" >Mostrar limite de hiperglicemia</string>
+    <string name="show_hipoglicemia_limit" >Mostrar limite de hipoglicemia</string>
+    <string name="filterdialog_title" >Filtro</string>
+    <string name="filterdialog_subtitle_extras" >Extras</string>
+    <string name="filterdialog_subtitle_data" >Dados</string>
+    <string name="feature_cloud_sync" >Sincronizar com cloud</string>
+    <string name="feature_cloud_sync_description1" >Pode enviar para a cloud os seus dados de forma segura.</string>
+    <string name="feature_cloud_sync_description2" >A qualquer momento pode aceder aos dados em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="login_username" >Nome do utilizador</string>
+    <string name="login_password" >Palavra-passe</string>
+    <string name="login_extra_text" >Se não tiver uma conta, pode criar uma em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="login_try_later" >Tentar mais tarde</string>
+    <string name="login_try_again" >Tentar novamente</string>
+    <string name="cloudSync_edit_account" >Editar conta</string>
+
+
+
+
+
+
+    <string name="navigation_drawer_open" >open</string>
+    <string name="navigation_drawer_close" >close</string>
+
+
+    <string-array name="insulin_type">
+        <item>@string/insulin_type_pen</item>
+        <item>@string/insulin_type_pump</item>
     </string-array>
-    <string name="diabetes_type_1">Type 1</string>
-    <string name="diabetes_type_2">Type 2</string>
-    <string name="diabetes_type_gestational">Gestational</string>
-    <string name="save_GlycemiaDetail">Save</string>
-    <string name="title_activity_exercise_detail">Exercise Register</string>
-    <string name="delete_detail">Delete</string>
-    <string name="deleteReading">Delete Reading?</string>
-    <string name="positiveButton">Yes</string>
-    <string name="negativeButton">Cancel</string>
-    <string name="saveButton">Save</string>
-    <string name="deleteException">Cannot delete this Reading!</string>
 
-    <string-array name="Effort">
-        <item>Very Light</item>
-        <item>Light</item>
-        <item>Moderate</item>
-        <item>Intense</item>
-        <item>Very Intense</item>
-    </string-array>
+    <string name="action">Action</string>
+    <string name="height">Height</string>
+    <string name="gender">Gender</string>
+    <string name="flu">Flu</string>
 
-    <string name="title_activity_carbo_hydrate_detail">Carbohydrates Register</string>
-    <string name="title_activity_cholesterol_detail">Cholesterol Register</string>
-    <string name="title_activity_weight_detail">Weight Register</string>
-    <string name="title_activity_hb_a1c_detail">HbA1c Register</string>
-    <string name="title_activity_disease_detail">Disease Register</string>
-    <string name="title_activity_import_export">Import &amp; Export</string>
-    <string name="title_activity_tag_detail">Day Time</string>
-    <string name="title_activity_target_bg_detail">Glycemia Objective</string>
-    <string name="title_activity_insulins_detail">Insulin</string>
-    <string name="title_activity_info">Information</string>
+    <string name="insulin">Insulin</string>
+
+    <string name="weight">Weight</string>
+    <string name="cholesterol">Cholesterol</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="grams">grams</string>
+    <string name="hint_value3">e.g.: 45</string>
+
+    <string name="hint_value4">e.g.: 10</string>
+    <string name="hint_value5">e.g.: 70</string>
+    <string name="hint_value6">e.g.: 150</string>
+    <string name="hint_value7">e.g.: 1.82</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 
 
-    <string name="add_more_registers">Add more Registers</string>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <string-array name="task_period_list">
         <item>Every Day</item>
@@ -149,20 +335,20 @@
     <string name="insulin_intake">Insulin to Administrate</string>
     <string name="active_insulin">Insulin on Board</string>
     <string name="backup">Backup</string>
-    <string name="information_about_using">The application is under development and for its use you should have signed the informed consent and have been informed about the methodology of the study.</string>
+
     <string name="bloodglucose">Glycaemia</string>
     <string name="bloodpressure">Blood pressure</string>
     <string name="birth_date">Birth Date</string>
-    <string name="cancel_read">Reading Cancelled</string>
-    <string name="delete">Delete</string>
+
+
     <string name="diastolic">Diastolic</string>
     <string name="disease">Disease</string>
     <string name="systolic">Systolic</string>
-    <string name="sync">Synchronization</string>
+
     <string name="units">Units</string>
     <string name="use">Use</string>
     <string name="use_not">Don\'t Use</string>
-    <string name="glicInputError">Not a valid Number</string>
+
 
     <string name="badges">Badges</string>
     <string name="beginner">Beginner</string>
@@ -191,7 +377,7 @@
     <string name="medium">Medium</string>
     <string name="advanced">Advanced</string>
 
-    <string name="add_photo">Add Photo</string>
+
     <string name="create_backup">Create Backup</string>
 
     <string name="beginner_single_export">Create Backup</string>
@@ -316,9 +502,7 @@
     <string name="exit_dialog_description">Are you sure you want to leave without saving?</string>
     <string name="hc_units">uni</string>
 
-    <string name="preferences_target">Glycemia Objectives</string>
-    <string name="preferences_insulins">Insulins</string>
-    <string name="preferences_factors">Factors and Ratio\'s</string>
+
     <string name="dependencies">Dependencies</string>
 
     <string name="backup_restore_confirmation_dialog_text">This process will reset any other bakup made.\nDo you still want to proceed?</string>

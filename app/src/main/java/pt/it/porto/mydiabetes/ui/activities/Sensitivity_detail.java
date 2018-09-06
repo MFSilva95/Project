@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.Sensitivity;
@@ -49,8 +50,8 @@ public class Sensitivity_detail extends BaseActivity {
 		}
 		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
 		EditText from = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
-		EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
 		EditText to = (EditText) findViewById(R.id.et_TargetBG_HourTo);
+		EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
 		to.setEnabled(false);
 
 		Bundle args = getIntent().getExtras();
@@ -273,6 +274,7 @@ public class Sensitivity_detail extends BaseActivity {
 			return;
 		}
 
+		//^^^^ verification that every field is filled
 
 		target.setId(idTarget);
 
@@ -336,6 +338,8 @@ public class Sensitivity_detail extends BaseActivity {
 //            Sensitivity previous = read.getPreviousRatio(target);
 //            Sensitivity next = read.getNextRatio(target);
 		boolean sensExists = read.sensitivityTimeStartExists(target.getStart(),idTarget+"");//Sensitivity_exists(idTarget);
+		LinkedList overlapList = read.countSensOverlap(target.getStart(),target.getEnd(),target.getId());
+		boolean sensOverride = overlapList.size()>0;
 		read.close();
 
 		if(sensExists){
@@ -344,6 +348,40 @@ public class Sensitivity_detail extends BaseActivity {
 			errorLabel.setVisibility(View.VISIBLE);
 			return;
 		}
+		if(sensOverride){
+			final Context c = this;
+			new AlertDialog.Builder(this)
+					.setTitle(getString(R.string.targetbg_info))
+					.setPositiveButton(getString(R.string.positiveButton), new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							//Falta verificar se não está associada a nenhuma entrada da DB
+							//Rever porque não elimina o registo de glicemia
+							DB_Write wdb = new DB_Write(c);
+							try {
+								DB_Read read = new DB_Read(c);
+								target.setId(idTarget);
+								target = read.Sensitivity_GetByID(target.getId()+"");//get Base target
+//							Sensitivity previous = read.getPreviousRatio(target);
+//							Sensitivity next = read.getNextRatio(target);
+								read.close();
+								wdb.Sensitivity_Reg_Remove(idTarget);
+//							updateTarget(previous, next, wdb);
+								wdb.close();
+								goUp();
+							} catch (Exception e) {
+								Toast.makeText(c, getString(R.string.targetbg_delete_exception), Toast.LENGTH_LONG).show();
+							}
+							wdb.close();
+						}
+					})
+					.setNegativeButton(getString(R.string.negativeButton), new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							// Do nothing.
+						}
+					}).show();
+		}
+
+
 		DB_Write wdb = new DB_Write(this);
 		wdb.Sensitivity_Reg_Update(target);
 		wdb.close();

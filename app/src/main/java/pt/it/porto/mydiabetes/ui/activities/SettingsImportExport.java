@@ -214,7 +214,7 @@ public class SettingsImportExport extends BaseActivity {
 			BadgeUtils.addExportBadge(getBaseContext(), rdb);
 			rdb.close();
 		} else {
-			ShowDialogMsg(getString(R.string.dbcopy_error));
+			ShowDialogMsg(getString(R.string.error_dbcopy));
 		}
 	}
 
