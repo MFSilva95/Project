@@ -65,7 +65,7 @@ public class DB_Write {
 
 	public void MyData_Save(UserInfo obj) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM UserInfo WHERE Id=" + obj.getId(), null);
-		ContentValues contentValues =obj.getContentValues();
+		ContentValues contentValues =obj.getContentValues(this.myContext);
 		if (cursor.getCount() == 1) {
 			cursor.moveToFirst();
 			myDB.update("UserInfo", contentValues, "Id=" + Integer.parseInt(cursor.getString(0)), null);

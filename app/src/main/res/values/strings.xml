@@ -90,6 +90,8 @@
         <item>@string/gender_male</item>
         <item>@string/gender_female</item>
     </string-array>
+
+
     <string-array name="diabetes_Type">
         <item>@string/diabetes_type_1</item>
         <item>@string/diabetes_type_2</item>
@@ -174,6 +176,8 @@
     <string name="invalid_qr_code" >codigo QR inválido</string>
 
 
+    <string name="sensitivity_overlap">Tem a certeza que pretende eliminar os tempos: %1$s ?</string>
+
     <string name="targetbg_info" >Eliminar Objetivo de Glicemia?</string>
     <string name="tag_info" >Eliminar Fase do dia?</string>
 
@@ -230,10 +234,10 @@
     <string name="description">Descrição</string>
     <string name="cholesterol">Colesterol</string>
     <string name="HbA1c" translatable="false">HbA1c</string>
-    <string name="name_hint">Jorge Mendes</string>
     <string name="diabetes_type">Tipo de diabetes</string>
     <string name="sensivity_factor">Fator de sensibilidade</string>
     <string name="hint_value3">ex.: 45</string>
+    <string name="hint_value_bg_target" translatable="false">ex.: 100</string>
     <string name="carbs_racio">Rácio Hidratos de Carbono</string>
     <string name="hint_value4">ex.: 10</string>
     <string name="hypoglycemia_limit">Limite para hipoglicemia</string>

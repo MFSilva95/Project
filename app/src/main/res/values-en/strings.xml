@@ -106,6 +106,8 @@
     <string name="negativeButton">Cancel</string>
 
 
+    <string name="sensitivity_overlap">Do you wish to remove the labels: %1$s ?</string>
+
     <string-array name="Effort">
         <item>Very Light</item>
         <item>Light</item>
@@ -221,8 +223,8 @@
 
 
 
-    <string name="gender_male" >Male</string>
-    <string name="gender_female" >Female</string>
+    <string name="gender_male">Male</string>
+    <string name="gender_female">Female</string>
     <string name="glycemia_objective_time_start_end" >From %1$s to %2$s</string>
     <string name="welcome" >Beginning</string>
     <string name="backup_share" >Save backup and send it to the Project\'s manager</string>

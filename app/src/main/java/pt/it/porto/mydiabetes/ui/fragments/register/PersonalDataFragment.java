@@ -182,10 +182,15 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 
 		if(user_info!=null){
 			if(user_info.getUsername()!=null){mNameView.setText(user_info.getUsername());}
-			UserInfo.Gender gender;
-			if((gender = user_info.getGender())!=null){switch (gender){
-				case MAN:((RadioButton) layout.findViewById(R.id.radioButtonM)).setChecked(true);break;
-				case WOMAN:((RadioButton) layout.findViewById(R.id.radioButtonF)).setChecked(true);break;}}
+			String gender;
+			if((gender = user_info.getGender(this.getContext()))!=null){
+				switch (gender){
+					case "Male":((RadioButton) layout.findViewById(R.id.radioButtonM)).setChecked(true);break;
+					case "Female":((RadioButton) layout.findViewById(R.id.radioButtonF)).setChecked(true);break;
+					case "Masculino":((RadioButton) layout.findViewById(R.id.radioButtonM)).setChecked(true);break;
+					case "Feminino":((RadioButton) layout.findViewById(R.id.radioButtonF)).setChecked(true);break;
+				}
+			}
 			String date;
 			if((date = user_info.getBirthday())!=null){mDateView.setText(date);}
 			Double height;

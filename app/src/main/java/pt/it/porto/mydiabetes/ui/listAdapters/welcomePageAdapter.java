@@ -17,7 +17,7 @@ public class welcomePageAdapter extends FragmentPagerAdapter {
     private static final int FRAGMENT_THREE_POSITION = 2;
     private static final int FRAGMENT_FOUR_POSITION = 3;
     private static final int FRAGMENT_FIVE_POSITION = 4;
-    private static final int COUNT = 5;
+    private static final int COUNT = 4;
 
     public welcomePageAdapter(FragmentManager fm) {
         super(fm);
@@ -34,8 +34,8 @@ public class welcomePageAdapter extends FragmentPagerAdapter {
                 return new FactorsFragment();
             case FRAGMENT_FOUR_POSITION:
                 return new AddInsulinsFragment();
-            case FRAGMENT_FIVE_POSITION:
-                return new AddGlycemiaObjectivesFragment();
+//            case FRAGMENT_FIVE_POSITION:
+//                return new AddGlycemiaObjectivesFragment();
         }
         return null;
     }

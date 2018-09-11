@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.data;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -19,7 +20,7 @@ public class UserInfo {
 	private int lowerRange;
 	private int higherRange;
 	private String birthday;
-	private Gender gender;
+	private String gender;
 	private double height;
 	private String lastUpdate;
 
@@ -44,7 +45,7 @@ public class UserInfo {
 		//Birth Date
 		birthday = cursor.getString(7);
 		//Gender
-		gender = Gender.getEnum(cursor.getString(8));
+		gender = cursor.getString(8);
 		//Height
 		height = Double.parseDouble(cursor.getString(9));
 		//DateTimeUpdate
@@ -60,7 +61,7 @@ public class UserInfo {
 		this.lowerRange = lowerRange;
 		this.higherRange = higherRange;
 		this.birthday = birthday;
-		this.gender = Gender.getEnum(gender);
+		this.gender = gender;
 		this.height = height;
 		this.lastUpdate = lastedit;
 	}
@@ -133,11 +134,11 @@ public class UserInfo {
 		this.birthday = birthday;
 	}
 
-	public Gender getGender() {
-		return gender;
+	public String getGender(Context c) {
+		return Gender.getEnum(gender, c);
 	}
 
-	public void setGender(Gender gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 
@@ -202,7 +203,7 @@ public class UserInfo {
 
 	}
 
-	public ContentValues getContentValues() {
+	public ContentValues getContentValues(Context c) {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put("Name", getUsername());
 		contentValues.put("DType", getDiabetesType().toString());
@@ -211,7 +212,7 @@ public class UserInfo {
 		contentValues.put("LowerRange", getLowerRange());
 		contentValues.put("HigherRange", getHigherRange());
 		contentValues.put("BDate", getBirthday());
-		contentValues.put("Gender", getGender().toString());
+		contentValues.put("Gender", getGender(c).toString());
 		contentValues.put("Height", getHeight());
 		SimpleDateFormat now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		contentValues.put("DateTimeUpdate", now.format(Calendar.getInstance().getTime()));
@@ -220,30 +221,20 @@ public class UserInfo {
 	}
 
 	public enum Gender {
-		WOMAN("Feminino", R.string.gender_female), MAN("Masculino", R.string.gender_male);
+		WOMAN(R.string.gender_female), MAN(R.string.gender_male);
 
 		String value;
 		private int resource;
 
-		Gender(String value, int resource) {
-			this.value = value;
+		Gender(int resource) {
 			this.resource = resource;
 		}
 
-		public static Gender getEnum(String o) {
+		public static String getEnum(String o, Context context) {
 			for (Gender v : values()) {
-				if (v.getValue().equalsIgnoreCase(o)) {
-					return v;
-				}
-			}
-			throw new IllegalArgumentException();
-		}
-
-
-		public static Gender getEnum(String o, Context context) {
-			for (Gender v : values()) {
-				if (context.getString(v.resource).equalsIgnoreCase(o)) {
-					return v;
+				String target = context.getString(v.resource);
+				if (target.equalsIgnoreCase(o)) {
+					return target;
 				}
 			}
 			throw new IllegalArgumentException();
@@ -260,15 +251,13 @@ public class UserInfo {
 	}
 
 	public enum DiabetesType {
-		TYPE_1("Tipo 1", R.string.diabetes_type_1),
-		TYPE_2("Tipo 2", R.string.diabetes_type_2),
-		GESTATIONAL("Gestacional", R.string.diabetes_type_gestational);
+		TYPE_1(R.string.diabetes_type_1),
+		TYPE_2(R.string.diabetes_type_2),
+		GESTATIONAL(R.string.diabetes_type_gestational);
 
-		String value;
 		int resource;
 
-		DiabetesType(String value, int resource) {
-			this.value = value;
+		DiabetesType(int resource) {
 			this.resource = resource;
 		}
 
@@ -282,13 +271,14 @@ public class UserInfo {
 			}
 		}
 
-		public String getValue() {
-			return value;
-		}
-
-		@Override
-		public String toString() {
-			return value;
+		public String getValue(Context c, String o) {
+			for (DiabetesType v : values()) {
+				String target = c.getString(v.resource);
+				if (target.equalsIgnoreCase(o)) {
+					return target;
+				}
+			}
+			throw new IllegalArgumentException();
 		}
 
 		public String getValue(Context context) {

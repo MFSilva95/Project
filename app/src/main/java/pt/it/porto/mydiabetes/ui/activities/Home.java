@@ -185,10 +185,11 @@ public class Home extends BaseActivity {
 			//editor.commit();
 
 
-		//}// else {
-			//You already have the permission, just go ahead.
-		//	proceedAfterPermission();
 		//}
+		else {
+			//You already have the permission, just go ahead.
+		proceedAfterPermission();
+		}
 	}
 
 	private void proceedAfterPermission() {

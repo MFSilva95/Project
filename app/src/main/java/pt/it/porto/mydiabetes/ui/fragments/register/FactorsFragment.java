@@ -31,6 +31,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 	private static final String TAG = FactorsFragment.class.getCanonicalName();
 	private Spinner diabetesType;
 	private EditText sensibilityFactor;
+	private EditText bg_target_Factor;
 	private EditText carbsRatio;
 	private EditText hypoglycemiaLimit;
 	private EditText hyperglycemiaLimit;
@@ -76,6 +77,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		diabetesType.setAdapter(adapter);
 
 		sensibilityFactor = (EditText) layout.findViewById(R.id.sensibility_factor);
+		bg_target_Factor = (EditText) layout.findViewById(R.id.bg_target_Factor);
 		carbsRatio = (EditText) layout.findViewById(R.id.carbs_ratio);
 		hypoglycemiaLimit = (EditText) layout.findViewById(R.id.hypoglycemia_limit);
 		hyperglycemiaLimit = (EditText) layout.findViewById(R.id.hyperglycemia_limit);
@@ -197,6 +199,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 		int carbsR = Integer.parseInt(carbsRatio.getText().toString(), 10);
 		int sensR = Integer.parseInt(sensibilityFactor.getText().toString(), 10);
+		int bg_target = Integer.parseInt(bg_target_Factor.getText().toString(), 10);
 
 		MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
 		boolean success = storage.addUserData(container.getString(WelcomeActivity.USER_DATA_NAME),
@@ -218,6 +221,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 		storage.initRacioSens(sensR, "Sensitivity_Reg");
 		storage.initRacioSens(carbsR, "Ratio_Reg");
+		storage.initTarget_bg(bg_target);
 
 		DB_Read read = new DB_Read(getContext());
 		if (mypath.exists()) {

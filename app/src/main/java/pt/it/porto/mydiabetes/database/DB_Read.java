@@ -2384,17 +2384,17 @@ public class DB_Read {
 		}
 	}
 
-	public LinkedList<Integer> countSensOverlap(String start, String end, int id) {
-		Cursor cursor = myDB.rawQuery("SELECT Id, TimeStart, TimeEnd "+
+	public LinkedList<String> countSensOverlap(String start, String end, int id) {
+		Cursor cursor = myDB.rawQuery("SELECT Name, TimeStart, TimeEnd "+
 				"FROM Sensitivity_Reg "+
 				"WHERE TimeStart >= '" + start +"' and TimeEnd <= '"+end+"' and TimeStart < '"+end+"' and Id != "+id+" "+
 				"ORDER BY TimeStart", null);
 		cursor.moveToLast();
-		LinkedList<Integer> AllReads = new LinkedList<>();
+		LinkedList<String> AllReads = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			do {
-				AllReads.add(cursor.getInt(0));
+				AllReads.add(cursor.getString(0));
 				String TAG = "cenas";
 				Log.i(TAG, "countSensOverlap: Start: "+cursor.getString(1));
 				Log.i(TAG, "countSensOverlap: End: "+cursor.getString(2));

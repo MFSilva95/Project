@@ -118,18 +118,34 @@ public class GlycaemiaRegister_Input_Interface extends LinearLayout {
         updateObjective();
     }
 
+    /**
+     * Find out the current objective, given the current time
+     *
+     * @param objs
+     * @param currentTime
+     * @return
+     */
     public int GlicObjTimesOverlap(ArrayList<GlycemiaObjectivesData> objs, String currentTime){
 
         String[] temp;
         temp = currentTime.split(":");
-        int startTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+        int current_startTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
 
-        for(GlycemiaObjectivesData objData: objs){
+        for(int i=0;i<objs.size();i++){
+            GlycemiaObjectivesData objData = objs.get(i);
+            int next_index = (i+1)%objs.size();
+            GlycemiaObjectivesData next_objData = objs.get(next_index);
+
             temp = objData.getStartTime().split(":");
-            int startTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-            temp = objData.getEndTime().split(":");
-            int endTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-            if(CheckOverlap(startTime2, endTime2, startTime)){return objData.getObjective();}
+
+            int startTime_objective = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+
+            //temp = objData.getEndTime().split(":");
+            //int endTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+
+            temp = next_objData.getStartTime().split(":");
+            int endTime_objective = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+            if(CheckOverlap(startTime_objective, endTime_objective, current_startTime)){return objData.getObjective();}
         }
         return -1;
     }

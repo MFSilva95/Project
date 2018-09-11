@@ -103,9 +103,9 @@ public class GlycemiaObjectivesData implements Serializable, Parcelable {
 		return startTime;
 	}
 
-	public String getEndTime() {
-		return endTime;
-	}
+//	public String getEndTime() {
+//		return endTime;
+//	}
 
 	@Override
 	public int describeContents() {
@@ -137,17 +137,17 @@ public class GlycemiaObjectivesData implements Serializable, Parcelable {
 			error = ERROR_EMPTY_START_TIME;
 			errors[ERROR_EMPTY_START_TIME] = true;
 		}
-		if (TextUtils.isEmpty(endTime)) {
-			error = ERROR_EMPTY_END_TIME;
-			errors[ERROR_EMPTY_END_TIME] = true;
-		}
-		if(errors[ERROR_EMPTY_START_TIME] == false && errors[ERROR_EMPTY_END_TIME] == false){
-			int Oerror = GlicObjTimesOverlap(startTime,endTime);
-			if(Oerror != NO_ERROR){
-				error = Oerror;
-				errors[Oerror] = true;
-			}
-		}
+//		if (TextUtils.isEmpty(endTime)) {
+//			error = ERROR_EMPTY_END_TIME;
+//			errors[ERROR_EMPTY_END_TIME] = true;
+//		}
+//		if(errors[ERROR_EMPTY_START_TIME] == false && errors[ERROR_EMPTY_END_TIME] == false){
+//			int Oerror = GlicObjTimesOverlap(startTime,endTime);
+//			if(Oerror != NO_ERROR){
+//				error = Oerror;
+//				errors[Oerror] = true;
+//			}
+//		}
 		if (objective == -1) {
 			error = ERROR_EMPTY_OBJECTIVE;
 			errors[ERROR_EMPTY_OBJECTIVE] = true;
@@ -157,51 +157,51 @@ public class GlycemiaObjectivesData implements Serializable, Parcelable {
 	}
 
 
-	public int GlicObjTimesOverlap(String st,String et){
+//	public int GlicObjTimesOverlap(String st,String et){
+//
+//		String[] temp;
+//
+//		temp = st.split(":");
+//		int startTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+//		temp = et.split(":");
+//		int endTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+//
+//		for(int y=0;y<otherObjs.size();y++){
+//
+//			if(otherObjs.get(y)!=this){
+//				temp = otherObjs.get(y).getStartTime().split(":");
+//				int startTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+//				temp = otherObjs.get(y).getEndTime().split(":");
+//				int endTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+//				int error = CheckOverlap(startTime, startTime2, endTime, endTime2);
+//				if(error != NO_ERROR){return error;}}
+//		}
+//		return NO_ERROR;
+//	}
 
-		String[] temp;
+//	public int getDuration(int start, int end){
+//		if (start>end){return start-end;}
+//		return end-start;
+//	}
 
-		temp = st.split(":");
-		int startTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-		temp = et.split(":");
-		int endTime = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-
-		for(int y=0;y<otherObjs.size();y++){
-
-			if(otherObjs.get(y)!=this){
-				temp = otherObjs.get(y).getStartTime().split(":");
-				int startTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-				temp = otherObjs.get(y).getEndTime().split(":");
-				int endTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-				int error = CheckOverlap(startTime, startTime2, endTime, endTime2);
-				if(error != NO_ERROR){return error;}}
-		}
-		return NO_ERROR;
-	}
-
-	public int getDuration(int start, int end){
-		if (start>end){return start-end;}
-		return end-start;
-	}
-
-	public int CheckOverlap(int s0, int s1, int e0, int e1){
-		int d0 = getDuration(s0,e0);
-		int d1 = getDuration(s1,e1);
-
-		if (s0 <= s1 && s0 + d0 >= s1) {
-			// startTime inside a previews interval
-			return ERROR_START_TIME_OVERLAPS;
-		} else if (s0 <= e1 && s0 + d0 >= e1) {
-			// endTime inside a interval
-			return ERROR_END_TIME_OVERLAPS;
-		} else if (d1 <= 0 && s0 < e1) {
-			// endTime in the next day
-			// compares if endTime will be after a startTime of other interval
-			// if true than it should fail
-			return ERROR_START_TIME_OVERLAPS;
-		}
-		return NO_ERROR;
-	}
+//	public int CheckOverlap(int s0, int s1, int e0, int e1){
+//		int d0 = getDuration(s0,e0);
+//		int d1 = getDuration(s1,e1);
+//
+//		if (s0 <= s1 && s0 + d0 >= s1) {
+//			// startTime inside a previews interval
+//			return ERROR_START_TIME_OVERLAPS;
+//		} else if (s0 <= e1 && s0 + d0 >= e1) {
+//			// endTime inside a interval
+//			return ERROR_END_TIME_OVERLAPS;
+//		} else if (d1 <= 0 && s0 < e1) {
+//			// endTime in the next day
+//			// compares if endTime will be after a startTime of other interval
+//			// if true than it should fail
+//			return ERROR_START_TIME_OVERLAPS;
+//		}
+//		return NO_ERROR;
+//	}
 
 
 	public void setInvalid(int reason) {

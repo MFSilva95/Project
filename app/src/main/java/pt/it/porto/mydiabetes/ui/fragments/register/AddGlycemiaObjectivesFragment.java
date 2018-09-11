@@ -138,7 +138,7 @@ public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeAc
 	public void saveData(Bundle container) {
 		MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
 		for (int i = 0; i < items.size(); i++) {
-			boolean failed = storage.addGlycemiaObjective(items.get(i).getDescription(), items.get(i).getStartTime(), items.get(i).getEndTime(), items.get(i).getObjective());
+			boolean failed = storage.addGlycemiaObjective(items.get(i).getDescription(), items.get(i).getStartTime(), /*items.get(i).getEndTime(),*/ items.get(i).getObjective());
 			if (!failed) {
 				// Do something
 				// Or maybe not! This is used in welcome screen, in there it cannot fail since there arent repeated insulin names

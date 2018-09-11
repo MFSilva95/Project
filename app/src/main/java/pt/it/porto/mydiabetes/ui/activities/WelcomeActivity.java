@@ -154,6 +154,7 @@ public class WelcomeActivity extends BaseActivity {
 		Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.content_fragment + ":" + mViewPager.getCurrentItem());
 		if (((RegistryFragmentPage) page).allFieldsAreValid()) {
 			((RegistryFragmentPage) page).saveData(data);
+
 			if (currentFragment + 1 == adapter.getCount()) {
 				FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
 				db.changeFeatureStatus(FeaturesDB.INITIAL_REG_DONE, true);

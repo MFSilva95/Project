@@ -77,7 +77,7 @@ public class MyDiabetesStorage {
 		Cursor cursor = db.query(MyDiabetesContract.Insulin.TABLE_NAME, new String[]{MyDiabetesContract.Insulin.COLUMN_NAME_NAME}, MyDiabetesContract.Insulin.COLUMN_NAME_NAME + "==?", new String[]{name}, null, null, null, null);
 		return cursor.getCount() != 0;
 	}
-	public boolean addGlycemiaObjective(String description, String timeStart, String timeEnd, int objective) {
+	public boolean addGlycemiaObjective(String description, String timeStart, /*String timeEnd,*/ int objective) {
 		if (glycemiaObjectiveExists(description)) {
 			return false;
 		}
@@ -85,10 +85,27 @@ public class MyDiabetesStorage {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put(MyDiabetesContract.BG_Target.COLUMN_NAME_NAME, description);
 		toInsert.put(MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_START, timeStart);
-		toInsert.put(MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_END, timeEnd);
+		//toInsert.put(MyDiabetesContract.BG_Target.COLUMN_NAME_TIME_END, timeEnd);
 		toInsert.put(MyDiabetesContract.BG_Target.COLUMN_NAME_VALUE, objective);
 
 		return db.insert(MyDiabetesContract.BG_Target.TABLE_NAME, null, toInsert) != -1;
+	}
+
+	public void initTarget_bg(int value){
+
+		SQLiteDatabase db = mHandler.getWritableDatabase();
+		DB_Read dbRead = new DB_Read(db);
+		ArrayList<Tag> tags = dbRead.Tag_GetAll();
+		int id_user = dbRead.getId();
+		for(int index=0;index<tags.size()-1;index++){
+
+			ContentValues toInsert = new ContentValues();
+			toInsert.put("Name", tags.get(index).getName());
+			toInsert.put("Value", value);
+			toInsert.put("TimeStart", tags.get(index).getStart());
+
+			db.insert(MyDiabetesContract.BG_Target.TABLE_NAME, null, toInsert);
+		}
 	}
 
 	public void initRacioSens(int value, String table){

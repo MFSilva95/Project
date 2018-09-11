@@ -138,7 +138,7 @@ public class MyData extends BaseActivity {
 			name.setText(obj.getUsername());
 			bDate.setText(obj.getBirthday());
 
-			if (!gender.getSelectedItem().toString().equalsIgnoreCase(String.valueOf(obj.getGender()))) {
+			if (!gender.getSelectedItem().toString().equalsIgnoreCase(String.valueOf(obj.getGender(this.getBaseContext())))) {
 				if (gender.getSelectedItemId() == 0) {
 					gender.setSelection(1);
 				} else {
