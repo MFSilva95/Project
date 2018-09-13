@@ -145,7 +145,11 @@ public class GlycaemiaRegister_Input_Interface extends LinearLayout {
 
             temp = next_objData.getStartTime().split(":");
             int endTime_objective = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-            if(CheckOverlap(startTime_objective, endTime_objective, current_startTime)){return objData.getObjective();}
+            if(current_startTime >= startTime_objective && current_startTime <= endTime_objective){
+                return objData.getObjective();
+            }
+
+            //if(CheckOverlap(startTime_objective, endTime_objective, current_startTime)){return objData.getObjective();}
         }
         return -1;
     }

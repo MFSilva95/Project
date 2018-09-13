@@ -62,7 +62,7 @@ public class CarbsRatioListAdapter extends BaseAdapter {
 		TextView ratioValue = (TextView) v.findViewById(R.id.list_targetValue);
 		TextView tagName = (TextView) v.findViewById(R.id.list_targetName);
 		TextView tagStart = (TextView) v.findViewById(R.id.list_targetStart);
-		TextView tagEnd = (TextView) v.findViewById(R.id.list_targetEnd);
+		//TextView tagEnd = (TextView) v.findViewById(R.id.list_targetEnd);
 
 
 		CarbsRatioData tag = _data.get(position);

@@ -129,20 +129,20 @@
 
 
 
-                    <EditText
-                        android:id="@+id/et_FaseDia_HourTo"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_weight="1"
-                        android:background="@null"
-                        android:focusable="false"
-                        android:focusableInTouchMode="false"
-                        android:hint="@string/to"
-                        android:inputType="date"
-                        android:onClick="showTimePickerDialogTo"
-                        android:textSize="18sp" />
+                    <!--<EditText-->
+                        <!--android:id="@+id/et_FaseDia_HourTo"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:layout_marginLeft="20dp"-->
+                        <!--android:layout_marginRight="20dp"-->
+                        <!--android:layout_weight="1"-->
+                        <!--android:background="@null"-->
+                        <!--android:focusable="false"-->
+                        <!--android:focusableInTouchMode="false"-->
+                        <!--android:hint="@string/to"-->
+                        <!--android:inputType="date"-->
+                        <!--android:onClick="showTimePickerDialogTo"-->
+                        <!--android:textSize="18sp" />-->
 
 
 

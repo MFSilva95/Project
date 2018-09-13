@@ -57,14 +57,14 @@ public class DayFaseAdapter extends BaseAdapter {
 
 		TextView tagName = (TextView) v.findViewById(R.id.list_tagName);
 		TextView tagStart = (TextView) v.findViewById(R.id.list_tagStart);
-		TextView tagEnd = (TextView) v.findViewById(R.id.list_tagEnd);
+		//TextView tagEnd = (TextView) v.findViewById(R.id.list_tagEnd);
 
 
 		Tag tag = _data.get(position);
 		rLayout.setTag(tag);
 		tagName.setText(tag.getName());
 		tagStart.setText(tag.getStart());
-		tagEnd.setText(tag.getEnd());
+		//tagEnd.setText(tag.getEnd());
 
 
 		rLayout.setOnClickListener(new View.OnClickListener() {

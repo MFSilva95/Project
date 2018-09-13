@@ -55,7 +55,7 @@ public class GlycemiaAdapter extends BaseAdapter {
 
 		TextView targetName = (TextView) v.findViewById(R.id.list_targetName);
 		TextView targetStart = (TextView) v.findViewById(R.id.list_targetStart);
-		TextView targetEnd = (TextView) v.findViewById(R.id.list_targetEnd);
+		//TextView targetEnd = (TextView) v.findViewById(R.id.list_targetEnd);
 		TextView targetvalue = (TextView) v.findViewById(R.id.list_targetValue);
 
 
@@ -63,7 +63,7 @@ public class GlycemiaAdapter extends BaseAdapter {
 		rLayout.setTag(target);
 		targetName.setText(target.getName());
 		targetStart.setText(target.getStart());
-		targetEnd.setText(target.getEnd());
+		//targetEnd.setText(target.getEnd());
 
 		targetvalue.setText(String.valueOf((int) target.getTarget()));
 

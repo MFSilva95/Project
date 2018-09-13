@@ -329,8 +329,8 @@ public class DB_Handler extends SQLiteOpenHelper {
         toInsert.put("TimeEnd", "06:00");
         db.insert("Tag", null, toInsert);
 
-        toInsert = new ContentValues();
-        toInsert.put("Name", daytimes[10]);
-        db.insert("Tag", null, toInsert);
+//        toInsert = new ContentValues();
+//        toInsert.put("Name", daytimes[10]);
+//        db.insert("Tag", null, toInsert);
     }
 }

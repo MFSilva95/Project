@@ -281,7 +281,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         //if (spinner != null) {
             //tag = spinner.getSelectedItem().toString();
         //}
-        int idTag = (spinner.getSelectedItemPosition()+1);//rdb.Tag_GetIdByName(tag);
+        int idTag = (spinner.getSelectedItemPosition());//rdb.Tag_GetIdByName(tag);
         //int idUser = rdb.getId();
         //DB_Read rdb = new DB_Read(this);
         //rdb.close();
@@ -390,10 +390,14 @@ public class NewHomeRegistry extends AppCompatActivity{
 
         DB_Read rdb = new DB_Read(this);
         t = rdb.Tag_GetAll();
+
+        Log.i(TAG, "init_vars: "+t.toString());
         String[] allTags = new String[t.size()];
-        UserInfo obj = rdb.MyData_Read();
-        iRatio = obj.getInsulinRatio();
-        cRatio = obj.getCarbsRatio();
+        iRatio = rdb.Sensitivity_GetCurrent(DateUtils.getFormattedTimeSec(registerDate));
+        cRatio = rdb.Ratio_GetCurrent(DateUtils.getFormattedTimeSec(registerDate));
+        //UserInfo obj = rdb.MyData_Read();
+        //iRatio = obj.getInsulinRatio();
+        //cRatio = obj.getCarbsRatio();
         rdb.close();
 
         if (t != null) {
@@ -473,7 +477,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void update_record () throws Exception{
 
         spinner = findViewById(R.id.tag_spinner);
-        int idTag = (spinner.getSelectedItemPosition()+1);
+        int idTag = (spinner.getSelectedItemPosition());
 
         DB_Read rdb = new DB_Read(this);
         int idUser = rdb.getId();
@@ -594,7 +598,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
     private void save_record () throws Exception{
         spinner = findViewById(R.id.tag_spinner);
-        int idTag = (spinner.getSelectedItemPosition()+1);
+        int idTag = (spinner.getSelectedItemPosition());
 
         DB_Read rdb = new DB_Read(this);
         int idUser = rdb.getId();
@@ -1436,22 +1440,23 @@ public class NewHomeRegistry extends AppCompatActivity{
             button.setEnabled(false);
         }
     }
-    private boolean timeOverlaps(int t, int s0, int e0) {
-        if ( e0 < s0){
-            if(t < s0){
-                t = t +1440;
-            }
-            e0 = e0 + 1440;
-        }
-
-        if(s0 < t && t < e0) {
-            return true;
-        }else{
-            return false;
-        }
-    }
+//    private boolean timeOverlaps(int t, int s0, int e0) {
+//        if ( e0 < s0){
+//            if(t < s0){
+//                t = t +1440;
+//            }
+//            e0 = e0 + 1440;
+//        }
+//
+//        if(s0 < t && t < e0) {
+//            return true;
+//        }else{
+//            return false;
+//        }
+//    }
     private void save_current_input_data(){
-        int idTag = (spinner.getSelectedItemPosition()+1);
+        int idTag = (spinner.getSelectedItemPosition());
+        Log.i(TAG, "save_current_input_data: -> -> "+idTag);
 
         if (glycaemiaRegisterInputInterface != null ) {
             glycemiaData  = glycaemiaRegisterInputInterface.save_read();
@@ -1469,12 +1474,14 @@ public class NewHomeRegistry extends AppCompatActivity{
             noteData = noteRegisterInputInterface.save_read();
         }
     }
+
     private void updateTagSpinner() {
         Tag displayTag = getCurrentTag(t, registerDate);
         if(displayTag!=null){
             int index = ((StringSpinnerAdapter) spinner.getAdapter()).getItemPosition(displayTag.getName());
             if(index>=0){
                 spinner.setSelection(index);
+                Log.i(TAG, "save_current_input_data: -> -> "+index);
             }
         }
     }
@@ -1483,21 +1490,27 @@ public class NewHomeRegistry extends AppCompatActivity{
         String timeString[] = DateUtils.getFormattedTime(registerDate).split(":");
         int currentTime = Integer.parseInt(timeString[0], 10) * 60 + Integer.parseInt(timeString[1]);
 
-        Tag otherCase = null;
-        for(Tag tag: t){
+//        for(Tag tag: t){
+        for(int index = 0;index<t.size();index++){
+            Tag tag = t.get(index);
+            Tag nextTag = t.get((index+1)%t.size());
             if(tag.getStart()!=null) {
                 String[] temp_start = tag.getStart().split(":");
-                String[] temp_end = tag.getEnd().split(":");
+                String[] temp_end = nextTag.getStart().split(":");
+                //String[] temp_end = tag.getEnd().split(":");
                 int startTagTime = Integer.parseInt(temp_start[0], 10) * 60 + Integer.parseInt(temp_start[1]);
                 int endTagTime = Integer.parseInt(temp_end[0], 10) * 60 + Integer.parseInt(temp_end[1]);
-                if (timeOverlaps(currentTime, startTagTime, endTagTime)) {
+
+                if(currentTime>=startTagTime && currentTime<=endTagTime){
                     return tag;
                 }
-            }else{
-                otherCase=tag;
+                //int endTagTime = Integer.parseInt(temp_end[0], 10) * 60 + Integer.parseInt(temp_end[1]);
+//                if (timeOverlaps(currentTime, startTagTime, endTagTime)) {
+//                    return tag;
+//                }
             }
         }
-        return otherCase;
+        return null;
     }
     private void goBack(){
 

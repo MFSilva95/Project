@@ -90,8 +90,6 @@
         <item>@string/gender_male</item>
         <item>@string/gender_female</item>
     </string-array>
-
-
     <string-array name="diabetes_Type">
         <item>@string/diabetes_type_1</item>
         <item>@string/diabetes_type_2</item>
@@ -134,7 +132,7 @@
         <item>Depois jantar</item>
         <item>Deitar</item>
         <item>Noite</item>
-        <item>Outra</item>
+        <!--<item>Outra</item>-->
     </string-array>
 
 

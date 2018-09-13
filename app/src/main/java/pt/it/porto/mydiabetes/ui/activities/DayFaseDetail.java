@@ -14,7 +14,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
@@ -65,8 +68,8 @@ public class DayFaseDetail extends BaseActivity {
 			name.setText(toFill.getName());
 			EditText from = (EditText) findViewById(R.id.et_FaseDia_HourFrom);
 			from.setText(toFill.getStart());
-			EditText to = (EditText) findViewById(R.id.et_FaseDia_HourTo);
-			to.setText(toFill.getEnd());
+			//EditText to = (EditText) findViewById(R.id.et_FaseDia_HourTo);
+			//to.setText(toFill.getEnd());
 			if (idTag <= 9) {
 				name.setEnabled(false);
 			}
@@ -123,23 +126,32 @@ public class DayFaseDetail extends BaseActivity {
 
 
 	public void showTimePickerDialogFrom(View v) {
+
+		String currentTime = "";
+		if(((EditText) v).getText().toString().equals("")){
+			Calendar registerDate = Calendar.getInstance();
+			currentTime = DateUtils.getFormattedTimeSec(registerDate);
+		}
+		else{
+			currentTime = ((EditText) v).getText().toString();
+		}
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_FaseDia_HourFrom,
-				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
+				DateUtils.getTimeCalendar(currentTime));
 		newFragment.show(getFragmentManager(), "timePicker");
 	}
 
-	public void showTimePickerDialogTo(View v) {
-		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_FaseDia_HourTo,
-				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "timePicker");
-	}
+//	public void showTimePickerDialogTo(View v) {
+//		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_FaseDia_HourTo,
+//				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
+//		newFragment.show(getFragmentManager(), "timePicker");
+//	}
 
 	public void AddNewTag() {
 
 		//TODO verificar se valores derp
 		EditText name = (EditText) findViewById(R.id.et_FaseDia_Nome);
 		EditText hourFrom = (EditText) findViewById(R.id.et_FaseDia_HourFrom);
-		EditText hourTo = (EditText) findViewById(R.id.et_FaseDia_HourTo);
+		//EditText hourTo = (EditText) findViewById(R.id.et_FaseDia_HourTo);
 
 		//adicionado por zeornelas
 		//obriga a colocar os valores
@@ -155,22 +167,23 @@ public class DayFaseDetail extends BaseActivity {
 			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if (hourTo.getText().toString().equals("")) {
-			hourTo.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(hourTo, InputMethodManager.SHOW_IMPLICIT);
-			return;
-		}
+//		if (hourTo.getText().toString().equals("")) {
+//			hourTo.requestFocus();
+//			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//			imm.showSoftInput(hourTo, InputMethodManager.SHOW_IMPLICIT);
+//			return;
+//		}
 
 
 		//save tag
 		DB_Write wdb = new DB_Write(this);
 		Tag tag = new Tag();
 		tag.setName(name.getText().toString());
-		if (!hourFrom.getText().toString().equals("") && !hourTo.getText().toString().equals("")) {
-			tag.setStart(hourFrom.getText().toString());
-			tag.setEnd(hourTo.getText().toString());
-		}
+		//if (!hourFrom.getText().toString().equals("") && !hourTo.getText().toString().equals("")) {
+
+		tag.setStart(hourFrom.getText().toString());
+		//tag.setEnd(hourTo.getText().toString());
+
 		wdb.Tag_Add(tag);
 		wdb.close();
 		finish();
@@ -179,7 +192,7 @@ public class DayFaseDetail extends BaseActivity {
 	public void UpdateTag() {
 		EditText name = (EditText) findViewById(R.id.et_FaseDia_Nome);
 		EditText hourFrom = (EditText) findViewById(R.id.et_FaseDia_HourFrom);
-		EditText hourTo = (EditText) findViewById(R.id.et_FaseDia_HourTo);
+		//EditText hourTo = (EditText) findViewById(R.id.et_FaseDia_HourTo);
 
 		//adicionado por zeornelas
 		//obriga a colocar os valores
@@ -195,12 +208,12 @@ public class DayFaseDetail extends BaseActivity {
 			imm.showSoftInput(hourFrom, InputMethodManager.SHOW_IMPLICIT);
 			return;
 		}
-		if (hourTo.getText().toString().equals("")) {
-			hourTo.requestFocus();
-			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-			imm.showSoftInput(hourTo, InputMethodManager.SHOW_IMPLICIT);
-			return;
-		}
+//		if (hourTo.getText().toString().equals("")) {
+//			hourTo.requestFocus();
+//			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//			imm.showSoftInput(hourTo, InputMethodManager.SHOW_IMPLICIT);
+//			return;
+//		}
 
 		DB_Write wdb = new DB_Write(this);
 
@@ -209,9 +222,10 @@ public class DayFaseDetail extends BaseActivity {
 		tag.setId(idTag);
 		tag.setName(name.getText().toString());
 
-		if (!hourFrom.getText().toString().equals("") && !hourTo.getText().toString().equals("")) {
+//		if (!hourFrom.getText().toString().equals("") && !hourTo.getText().toString().equals("")) {
+		if (!hourFrom.getText().toString().equals("")) {
 			tag.setStart(hourFrom.getText().toString());
-			tag.setEnd(hourTo.getText().toString());
+//			tag.setEnd(hourTo.getText().toString());
 		}
 
 		wdb.Tag_Update(tag);

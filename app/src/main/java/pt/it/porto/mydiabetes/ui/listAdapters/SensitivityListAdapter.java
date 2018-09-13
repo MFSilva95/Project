@@ -60,7 +60,7 @@ public class SensitivityListAdapter extends BaseAdapter {
 		TextView insuRatio = (TextView) v.findViewById(R.id.list_targetValue);
 		TextView tagName = (TextView) v.findViewById(R.id.list_targetName);
 		TextView tagStart = (TextView) v.findViewById(R.id.list_targetStart);
-		TextView tagEnd = (TextView) v.findViewById(R.id.list_targetEnd);
+		//TextView tagEnd = (TextView) v.findViewById(R.id.list_targetEnd);
 
 
 		Sensitivity tag = _data.get(position);

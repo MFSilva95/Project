@@ -150,9 +150,24 @@ public class DB_Read {
 		return tag;
 	}
 
-	public String Tag_GetNameById(int id) {
-		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag where Id='" + id + "'", null);
+//	public String Tag_GetNameById(int id) {
+//		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag where Id='" + id + "'", null);
+//		cursor.moveToFirst();
+//		String name = cursor.getString(1);
+//		cursor.close();
+//		return name;
+//	}
+
+	/**
+	 * Not ID but rather the index on a list ordered by timestart
+	 * @param id
+	 * @return
+	 */
+		public String Tag_GetNameById(int id) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag ORDER BY TimeStart",null);
 		cursor.moveToFirst();
+		Log.i(TAG, "Tag_GetNameById: "+cursor.getCount());
+		cursor.move(id);
 		String name = cursor.getString(1);
 		cursor.close();
 		return name;
@@ -183,7 +198,7 @@ public class DB_Read {
 	}
 
 	public ArrayList<Tag> Tag_GetAll() {
-		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag", null);
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag ORDER BY TimeStart", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		ArrayList<Tag> tags = new ArrayList<>();
 		if (cursor.getCount() > 0) {
@@ -1876,7 +1891,7 @@ public class DB_Read {
 
 
 	public ArrayList<InsulinTarget> Target_GetAll() {
-		Cursor cursor = myDB.rawQuery("SELECT * FROM BG_Target", null);
+		Cursor cursor = myDB.rawQuery("SELECT * FROM BG_Target ORDER BY TimeStart", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		ArrayList<InsulinTarget> targets = new ArrayList<>();
 		if (cursor.getCount() > 0) {
@@ -2395,9 +2410,6 @@ public class DB_Read {
 			cursor.moveToFirst();
 			do {
 				AllReads.add(cursor.getString(0));
-				String TAG = "cenas";
-				Log.i(TAG, "countSensOverlap: Start: "+cursor.getString(1));
-				Log.i(TAG, "countSensOverlap: End: "+cursor.getString(2));
 				cursor.moveToNext();
 			} while (!cursor.isAfterLast());
 			cursor.close();
@@ -2524,9 +2536,6 @@ public class DB_Read {
 			cursor.moveToFirst();
 			do {
 				AllReads.add(cursor.getInt(0));
-				String TAG = "cenas";
-				Log.i(TAG, "countSensOverlap: Start: "+cursor.getString(1));
-				Log.i(TAG, "countSensOverlap: End: "+cursor.getString(2));
 				cursor.moveToNext();
 			} while (!cursor.isAfterLast());
 			cursor.close();

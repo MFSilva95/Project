@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 
 import pt.it.porto.mydiabetes.R;
@@ -141,17 +142,26 @@ public class Sensitivity_detail extends BaseActivity {
 
 	public void showTimePickerDialogFrom(View v) {
 
-		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourFrom, DateUtils.getTimeCalendar(((TextView) v).getText().toString()));
+		String currentTime = "";
+		if(((EditText) v).getText().toString().equals("")){
+			Calendar registerDate = Calendar.getInstance();
+			currentTime = DateUtils.getFormattedTimeSec(registerDate);
+		}
+		else{
+			currentTime = ((EditText) v).getText().toString();
+		}
+		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourFrom,
+				DateUtils.getTimeCalendar(currentTime));
 		newFragment.show(getFragmentManager(), "timePicker");
-		TextView errorLabel = ((TextView) findViewById(R.id.ratioError));
+		TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
 		errorLabel.setText("");
 		errorLabel.setVisibility(View.GONE);
 	}
 
-	public void showTimePickerDialogTo(View v) {
-		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourTo, DateUtils.getTimeCalendar(((TextView) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "timePicker");
-	}
+//	public void showTimePickerDialogTo(View v) {
+//		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourTo, DateUtils.getTimeCalendar(((TextView) v).getText().toString()));
+//		newFragment.show(getFragmentManager(), "timePicker");
+//	}
 
 	public void AddNewTarget() {
 
