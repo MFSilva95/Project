@@ -26,6 +26,7 @@ import pt.it.porto.mydiabetes.utils.ImageUtils;
 public class CarbsRegister_Input_Interface extends LinearLayout {
     private TextInputLayout carbs_input;
     private ImageButton image_button;
+    private ImageButton create_meal_button;
     private CarbsRec carbsData;
     private int default_height;
     private int default_width;
@@ -60,6 +61,7 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         inflate(getContext(), R.layout.meal_content_edit, this);
         this.carbs_input = (TextInputLayout) findViewById(R.id.meal_txt);
         this.image_button = (ImageButton) findViewById(R.id.iv_MealDetail_Photo);
+        this.create_meal_button = (ImageButton) findViewById(R.id.create_meal);
         setMealListeners();
         requestFocus();
     }
@@ -126,6 +128,14 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
             }
         });
 
+        create_meal_button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                callBack.createCustomMeal(getContext());
+            }
+        });
+
+
         TextView carbsTextView = (TextView) findViewById(R.id.meal);
         carbsTextView.addTextChangedListener(getCarbsTW());
     }
@@ -156,6 +166,7 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
                     try{
                         int carbs = Integer.parseInt(carbsS);
                         carbsData.setCarbsValue(carbs);
+
                     }catch (NumberFormatException e){
                         carbsData.setCarbsValue(0);
                     }
@@ -164,6 +175,11 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
             }
         };
         return carbsTW;
+    }
+    public void setMealCarbs(int total_carbs){
+        carbsData.setCarbsValue(total_carbs);
+        carbs_input.getEditText().setText(""+carbsData.getCarbsValue());
+        callBack.updateInsulinCalc();
     }
 
     private void insertCarbsData(int carbValue){

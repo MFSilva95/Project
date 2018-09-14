@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/log_meal"
+        android:title="Log"
+        android:icon="@drawable/ic_check"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/more_options"
+        android:title="More"
+        android:icon="@drawable/ic_dots_vertical"
+        app:showAsAction="always">
+
+        <menu>
+            <item android:id="@+id/save_meal"
+                android:title="@string/save_it"
+                android:icon="@drawable/ic_save" />
+
+            <item android:id="@+id/take_photo"
+                android:title="@string/take_photo"
+                android:icon="@drawable/ic_camera" />
+
+            <item android:id="@+id/delete_all"
+                android:title="@string/clear_all"
+                android:icon="@drawable/ic_delete_all" />
+
+        </menu>
+    </item>
+
+
+</menu>

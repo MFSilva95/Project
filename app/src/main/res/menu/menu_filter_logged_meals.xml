@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/meals_filter"
+        android:icon="@drawable/ic_filter"
+        android:title="Filter"
+        app:showAsAction="ifRoom">
+
+        <menu>
+            <item android:id="@+id/fav_meals"
+                android:title="@string/favourites" />
+            <item android:id="@+id/reg_meals"
+                android:title="@string/registered"/>
+            <item android:id="@+id/all_logged_meals"
+                android:title="@string/all_logged" />
+        </menu>
+    </item>
+
+</menu>

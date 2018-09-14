@@ -25,6 +25,7 @@ public class CarbsRec extends DateTime implements Parcelable {
 	private String photopath = null;
 	private int idTag = -1;
 	private int idNote = -1;
+	private int mealId = -1;
 
 	public CarbsRec() {
 	}
@@ -40,6 +41,7 @@ public class CarbsRec extends DateTime implements Parcelable {
 		photopath = oldCarbs.getPhotoPath();
 		idTag = oldCarbs.getIdTag();
 		idNote = oldCarbs.getIdNote();
+		mealId = oldCarbs.getMealId();
 	}
 
 	protected CarbsRec(Parcel in) {
@@ -50,6 +52,7 @@ public class CarbsRec extends DateTime implements Parcelable {
 		photopath = in.readString();
 		idTag = in.readInt();
 		idNote = in.readInt();
+		mealId = in.readInt();
 	}
 
 	public int getId() {
@@ -109,6 +112,14 @@ public class CarbsRec extends DateTime implements Parcelable {
 		this.idNote = id_Note;
 	}
 
+	public int getMealId() {
+		return mealId;
+	}
+
+	public void setMealId(int mealId) {
+		this.mealId = mealId;
+	}
+
 
 	@Override
 	public int describeContents() {
@@ -124,6 +135,7 @@ public class CarbsRec extends DateTime implements Parcelable {
 		dest.writeString(photopath);
 		dest.writeInt(idTag);
 		dest.writeInt(idNote);
+		dest.writeInt(mealId);
 	}
 
 	@Override
@@ -157,6 +169,7 @@ public class CarbsRec extends DateTime implements Parcelable {
 				", photopath='" + photopath + '\'' +
 				", idTag=" + idTag +
 				", idNote=" + idNote +
+				", mealID=" + mealId +
 				'}';
 	}
 }

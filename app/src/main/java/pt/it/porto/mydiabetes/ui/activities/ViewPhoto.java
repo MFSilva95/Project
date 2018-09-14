@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -26,9 +27,8 @@ import android.widget.Toast;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Write;
-
-
-
+import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
+import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 
 
 public class ViewPhoto extends BaseActivity {
@@ -202,11 +202,20 @@ public class ViewPhoto extends BaseActivity {
 
 					String path = args.getString("Path");
 					File file = new File(Uri.parse(path).getPath());
-					boolean deleted = file.delete();
-					if (deleted) {
-						Log.d("apagado", file.getAbsolutePath());
-					} else {
-						Log.d("não apagado", file.getAbsolutePath());
+					DataBaseHelper dbHelper = new DataBaseHelper(c);
+					List<LoggedMeal> mealList = dbHelper.getLoggedMealList();
+					boolean used = false;
+					for(LoggedMeal m : mealList){
+						if(path.equals(m.getThumbnailPath()))
+							used = true;
+					}
+					if(!used) {
+						boolean deleted = file.delete();
+						if (deleted) {
+							Log.d("apagado", file.getAbsolutePath());
+						} else {
+							Log.d("não apagado", file.getAbsolutePath());
+						}
 					}
 					setResult(RESULT_OK);
 					finish();

@@ -38,6 +38,8 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
+import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
+import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.HomeElement;
@@ -260,6 +262,8 @@ public class homeMiddleFragment extends Fragment {
 
                         DB_Read db_read = new DB_Read(c);
                         DB_Write reg = new DB_Write(c);
+                        DataBaseHelper dbHelper = new DataBaseHelper(c);
+                        LoggedMeal meal;
                         try {
                             for (HomeElement elem : toDeleteList) {
                                 int glyID;
@@ -278,6 +282,9 @@ public class homeMiddleFragment extends Fragment {
                                     if(carbsData!=null){
                                         setNoteId(carbsData.getIdNote());
                                         reg.Carbs_Delete(carbsID);
+                                        if(carbsData.getMealId() != -1) {
+                                            dbHelper.deleteMeal(carbsData.getMealId());
+                                        }
                                     }
                                 }
                                 if ((insuID = elem.getInsulinId()) != -1) {

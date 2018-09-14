@@ -133,6 +133,7 @@ public class MyDiabetesContract {
 			public static final String COLUMN_NAME_DATETIME = TABLE_NAME + "." + "DateTime";
 			public static final String COLUMN_NAME_TAG_ID = TABLE_NAME + "." + "Id_Tag";
 			public static final String COLUMN_NAME_NOTE_ID = TABLE_NAME + "." + "Id_Note";
+			public static final String COLUMN_MEAL_ID = TABLE_NAME + "." + "Id_Meal";
 		}
 
 		public static class BloodGlucose {

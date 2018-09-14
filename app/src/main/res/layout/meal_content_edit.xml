@@ -47,6 +47,18 @@
         android:layout_gravity="center_vertical"
         android:layout_marginRight="5dp"
         android:background="?selectableItemBackground"
-        android:src="@drawable/ic_photo_camera_grey_600_24dp" />
+        android:src="@drawable/ic_photo_camera_grey_600_24dp"
+        android:visibility="gone" />
+
+    <ImageButton
+        android:id="@+id/create_meal"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginRight="5dp"
+        android:background="?selectableItemBackground"
+        android:scaleType="center"
+        android:visibility="visible"
+        app:srcCompat="@drawable/ic_launch" />
 
 </LinearLayout>

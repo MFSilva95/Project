@@ -31,4 +31,12 @@
     <color name="hint_grey">#6A6868</color>
 
 
+    <!-- Create Meal new colors -->
+
+    <color name="colorSecondary">#edffb3</color>
+    <color name="colorTertiary">#f8ffe2</color>
+    <color name="colorTertiaryLight">#fdfff6</color>
+
+
+
 </resources>
