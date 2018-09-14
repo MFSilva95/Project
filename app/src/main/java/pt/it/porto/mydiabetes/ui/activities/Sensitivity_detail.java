@@ -51,9 +51,9 @@ public class Sensitivity_detail extends BaseActivity {
 		}
 		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
 		EditText from = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
-		EditText to = (EditText) findViewById(R.id.et_TargetBG_HourTo);
+		//EditText to = (EditText) findViewById(R.id.et_TargetBG_HourTo);
 		EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
-		to.setEnabled(false);
+		//to.setEnabled(false);
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
@@ -70,7 +70,7 @@ public class Sensitivity_detail extends BaseActivity {
 				toFill = rdb.Sensitivity_GetByID(""+Integer.parseInt(id));
 				if(toFill!=null){
 					lastTime = rdb.getNextSensTime(toFill);
-					if(lastTime!=null){to.setText(lastTime);}
+					//if(lastTime!=null){to.setText(lastTime);}
 				}
 //				Log.i("cenas", "onCreate: ID is -> -> "+id);
 				rdb.close();
@@ -91,7 +91,7 @@ public class Sensitivity_detail extends BaseActivity {
 			}
 
 		}else{
-			to.setVisibility(View.INVISIBLE);
+			//to.setVisibility(View.INVISIBLE);
 		}
 
 	}
@@ -153,7 +153,8 @@ public class Sensitivity_detail extends BaseActivity {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourFrom,
 				DateUtils.getTimeCalendar(currentTime));
 		newFragment.show(getFragmentManager(), "timePicker");
-		TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
+
+		TextView errorLabel = (TextView) findViewById(R.id.ratioError);
 		errorLabel.setText("");
 		errorLabel.setVisibility(View.GONE);
 	}
@@ -208,7 +209,7 @@ public class Sensitivity_detail extends BaseActivity {
 		read.close();
 		if(sensExists){
 			TextView errorLabel = ((TextView) findViewById(R.id.ratioError));
-			errorLabel.setText(R.string.error_end_time_overlaps);
+			errorLabel.setText(R.string.error_time_overlaps);
 			errorLabel.setVisibility(View.VISIBLE);
 			return;
 		}
@@ -353,7 +354,7 @@ public class Sensitivity_detail extends BaseActivity {
 
 		if(sensExists){
 			TextView errorLabel = ((TextView) findViewById(R.id.ratioError));
-			errorLabel.setText(R.string.error_end_time_overlaps);
+			errorLabel.setText(R.string.error_time_overlaps);
 			errorLabel.setVisibility(View.VISIBLE);
 			return;
 		}

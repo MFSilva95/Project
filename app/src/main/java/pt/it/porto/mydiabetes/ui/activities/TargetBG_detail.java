@@ -191,6 +191,15 @@ public class TargetBG_detail extends BaseActivity {
 			return;
 		}
 
+		boolean sensExists = GlicObjTimesOverlap(hourFrom.getText().toString(), idTarget+"");
+
+		if(sensExists){
+			TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
+			errorLabel.setText(R.string.error_time_overlaps);
+			errorLabel.setVisibility(View.VISIBLE);
+			return;
+		}
+
 //		if(GlicObjTimesOverlap(hourFrom.getText().toString(), hourTo.getText().toString())){
 //
 //			TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
@@ -212,6 +221,16 @@ public class TargetBG_detail extends BaseActivity {
 		wdb.close();
 		setResult(RESULT_OK);
 		finish();
+	}
+
+
+
+	public boolean GlicObjTimesOverlap(String st, String id){
+
+		DB_Read read = new DB_Read(this);
+		Boolean overlaps = read.targetBGTimeExists(st, id);
+		read.close();
+		return overlaps;
 	}
 
 //	public boolean GlicObjTimesOverlap(String st, String et){
@@ -270,7 +289,7 @@ public class TargetBG_detail extends BaseActivity {
 	public void UpdateTarget() {
 		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
 		EditText hourFrom = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
-		EditText hourTo = (EditText) findViewById(R.id.et_TargetBG_HourTo);
+		//EditText hourTo = (EditText) findViewById(R.id.et_TargetBG_HourTo);
 		EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
 
 		if (name.getText().toString().equals("")) {
@@ -295,6 +314,15 @@ public class TargetBG_detail extends BaseActivity {
 			value.requestFocus();
 			InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.showSoftInput(value, InputMethodManager.SHOW_IMPLICIT);
+			return;
+		}
+
+		boolean sensExists = GlicObjTimesOverlap(hourFrom.getText().toString(), idTarget+"");
+
+		if(sensExists){
+			TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
+			errorLabel.setText(R.string.error_time_overlaps);
+			errorLabel.setVisibility(View.VISIBLE);
 			return;
 		}
 

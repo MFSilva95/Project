@@ -72,8 +72,12 @@
     <string name="error_login_auth" >Erro na autenticação, verifique o nome de utilizador e password e tente novamente.</string>
     <string name="error_login_no_internet" >Sem ligação à Internet</string>
     <string name="error_repeated_description" >Descrição repetida</string>
+
+    <string name="error_time_overlaps" >Tempo coincide com outro intervalo</string>
+
     <string name="error_start_time_overlaps" >Tempo inicial coincide com outro intervalo</string>
     <string name="error_end_time_overlaps" >Tempo final coincide com outro intervalo</string>
+
     <string name="error_end_time_before_start_time" >Tempo de fim antes do tempo de inicio</string>
     <string name="error_dbcopy" >Ocorreu um erro durante a cópia de segurança, verifique se a memória externa está disponivel!</string>
     <string name="error_transfer" >Ocorreu um erro</string>

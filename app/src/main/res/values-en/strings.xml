@@ -68,8 +68,12 @@
     <string name="error_login_auth" >Authentication error, please verify the username and password and try again.</string>
     <string name="error_login_no_internet" >No connection to the Internet</string>
     <string name="error_repeated_description" >Duplicated description</string>
+
     <string name="error_start_time_overlaps" >Starting time is overlapping an existing time interval.</string>
     <string name="error_end_time_overlaps" >Ending time is overlapping an existing time interval.</string>
+
+    <string name="error_time_overlaps" >The chosen time already exists</string>
+
     <string name="error_end_time_before_start_time">End time must be after the time start</string>
     <string name="error_dbcopy">Error during backup, please verify if there is enough disc space to save!</string>
     <string name="error_transfer">An error has occurred!</string>

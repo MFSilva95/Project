@@ -44,11 +44,11 @@ public class Ratio_detail extends BaseActivity {
 		if (actionBar != null) {
 			actionBar.setDisplayHomeAsUpEnabled(true);
 		}
-		EditText to = (EditText) findViewById(R.id.et_TargetBG_HourTo);
+		//EditText to = (EditText) findViewById(R.id.et_TargetBG_HourTo);
 		EditText from = (EditText) findViewById(R.id.et_TargetBG_HourFrom);
 		EditText value = (EditText) findViewById(R.id.et_TargetBG_Glycemia);
 		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
-		to.setEnabled(false);
+		//to.setEnabled(false);
 
 		Bundle args = getIntent().getExtras();
 		if (args != null) {
@@ -63,10 +63,10 @@ public class Ratio_detail extends BaseActivity {
 				String id = args.getString("Id");
 				DB_Read rdb = new DB_Read(this);
 				toFill = rdb.Ratio_GetById(""+id);//Target_GetById(Integer.parseInt(id));
-				if(toFill!=null){
-					lastTime = rdb.getNextRatioTime(toFill);
-					if(lastTime!=null){to.setText(lastTime);}
-				}
+//				if(toFill!=null){
+//					lastTime = rdb.getNextRatioTime(toFill);
+//					if(lastTime!=null){to.setText(lastTime);}
+//				}
 				rdb.close();
 			}
 
@@ -88,7 +88,7 @@ public class Ratio_detail extends BaseActivity {
 				((EditText) findViewById(R.id.et_TargetBG_Glycemia)).setText(String.format(LocaleUtils.MY_LOCALE, "%d", (int) goal));
 			}
 		}else{
-			to.setVisibility(View.INVISIBLE);
+			//to.setVisibility(View.INVISIBLE);
 		}
 
 	}
@@ -141,19 +141,19 @@ public class Ratio_detail extends BaseActivity {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourFrom,
 				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
 		newFragment.show(getFragmentManager(), "timePicker");
-		TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
+		TextView errorLabel = (TextView) findViewById(R.id.ratioError);
 		errorLabel.setText("");
 		errorLabel.setVisibility(View.GONE);
 	}
 
-	public void showTimePickerDialogTo(View v) {
-		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourTo,
-				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "timePicker");
-		TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
-		errorLabel.setText("");
-		errorLabel.setVisibility(View.GONE);
-	}
+//	public void showTimePickerDialogTo(View v) {
+//		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourTo,
+//				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
+//		newFragment.show(getFragmentManager(), "timePicker");
+//		TextView errorLabel = (TextView) findViewById(R.id.targetGlicemiaErrorTV);
+//		errorLabel.setText("");
+//		errorLabel.setVisibility(View.GONE);
+//	}
 
 	public void AddNewTarget() {
 		EditText name = (EditText) findViewById(R.id.et_TargetBG_Nome);
@@ -195,7 +195,7 @@ public class Ratio_detail extends BaseActivity {
 		read.close();
 		if(sensExists){
 			TextView errorLabel = ((TextView) findViewById(R.id.ratioError));
-			errorLabel.setText(R.string.error_end_time_overlaps);
+			errorLabel.setText(R.string.error_time_overlaps);
 			errorLabel.setVisibility(View.VISIBLE);
 			return;
 		}
@@ -326,7 +326,7 @@ public class Ratio_detail extends BaseActivity {
 
 		if(sensExists){
 			TextView errorLabel = ((TextView) findViewById(R.id.ratioError));
-			errorLabel.setText(R.string.error_end_time_overlaps);
+			errorLabel.setText(R.string.error_time_overlaps);
 			errorLabel.setVisibility(View.VISIBLE);
 			return;
 		}

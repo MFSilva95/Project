@@ -1780,10 +1780,10 @@ public class BadgeUtils {
         LinkedList<WeightRec> weightList = db.getWeightByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
         LinkedList<HbA1cRec> hbA1cList = db.getHbA1cByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
         LinkedList<DiseaseRec> diseaseList = db.getDiseaseByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
-        LinkedList<HomeElement> logList = db.getLogBookFromStartDate(DateUtils.getFormattedDate(Calendar.getInstance()));
-        //
+        //LinkedList<HomeElement> logList = db.getLogBookFromStartDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        //String date = DateUtils.getFormattedDate(calendar);
 
-        int size = exerciseList.size() + bpList.size() + cholesterolList.size() + weightList.size() + hbA1cList.size() + diseaseList.size() + logList.size();
+        int size = exerciseList.size() + bpList.size() + cholesterolList.size() + weightList.size() + hbA1cList.size() + diseaseList.size(); //+ logList.size();
         if(size >= DAILY_BRONZE_RECORDS && !flagBronze && !flagSilver && !flagGold){
             BadgeRec badge = new BadgeRec();
             badge.setIdUser(idUser);

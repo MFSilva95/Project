@@ -138,6 +138,9 @@ public class DayFaseDetail extends BaseActivity {
 		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_FaseDia_HourFrom,
 				DateUtils.getTimeCalendar(currentTime));
 		newFragment.show(getFragmentManager(), "timePicker");
+		TextView errorLabel = (TextView) findViewById(R.id.day_phase_error);
+		errorLabel.setText("");
+		errorLabel.setVisibility(View.GONE);
 	}
 
 //	public void showTimePickerDialogTo(View v) {
@@ -175,6 +178,13 @@ public class DayFaseDetail extends BaseActivity {
 //		}
 
 
+		if(tag_time_exists(hourFrom.getText().toString(), idTag+"")){
+			TextView errorLabel = (TextView) findViewById(R.id.day_phase_error);
+			errorLabel.setText(R.string.error_time_overlaps);
+			errorLabel.setVisibility(View.VISIBLE);
+			return;
+		}
+
 		//save tag
 		DB_Write wdb = new DB_Write(this);
 		Tag tag = new Tag();
@@ -188,6 +198,15 @@ public class DayFaseDetail extends BaseActivity {
 		wdb.close();
 		finish();
 	}
+
+	public boolean tag_time_exists(String st, String id){
+
+		DB_Read read = new DB_Read(this);
+		Boolean overlaps = read.tagTimeStartExists(st, id);
+		read.close();
+		return overlaps;
+	}
+
 
 	public void UpdateTag() {
 		EditText name = (EditText) findViewById(R.id.et_FaseDia_Nome);
@@ -214,6 +233,13 @@ public class DayFaseDetail extends BaseActivity {
 //			imm.showSoftInput(hourTo, InputMethodManager.SHOW_IMPLICIT);
 //			return;
 //		}
+
+		if(tag_time_exists(hourFrom.getText().toString(), idTag+"")){
+			TextView errorLabel = (TextView) findViewById(R.id.day_phase_error);
+			errorLabel.setText(R.string.error_time_overlaps);
+			errorLabel.setVisibility(View.VISIBLE);
+			return;
+		}
 
 		DB_Write wdb = new DB_Write(this);
 
