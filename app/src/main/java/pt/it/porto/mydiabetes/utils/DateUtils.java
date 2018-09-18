@@ -22,12 +22,14 @@ public class DateUtils {
     public static Calendar parseDateTime(String dateTime) throws ParseException {
         Calendar calendar = Calendar.getInstance();
         Date date;
-        if (dateTime.length() == ISO8601_FORMAT.length()) {
-            date = iso8601Format.parse(dateTime);
-        } else {
-            date = iso8601FormatSeconds.parse(dateTime);
+        if(dateTime!=null){
+            if (dateTime.length() == ISO8601_FORMAT.length()) {
+                date = iso8601Format.parse(dateTime);
+            } else {
+                date = iso8601FormatSeconds.parse(dateTime);
+            }
+            calendar.setTime(date);
         }
-        calendar.setTime(date);
         return calendar;
     }
 

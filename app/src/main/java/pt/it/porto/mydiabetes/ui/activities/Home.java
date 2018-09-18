@@ -84,85 +84,85 @@ public class Home extends BaseActivity {
 		FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
 		if(old_db){
 			ShouldBackupDB();
-		}
-
-		if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
-			ShowDialogAddData();
-			return;
-		}
-
-
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-		setSupportActionBar(toolbar);
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-
-		ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
-				this, drawerLayout, toolbar,
-				R.string.navigation_drawer_open, R.string.navigation_drawer_close
-		);
-
-
-
-		drawerLayout.addDrawerListener(mDrawerToggle);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		getSupportActionBar().setHomeButtonEnabled(true);
-		mDrawerToggle.syncState();
-
-
-		mViewPager = (CustomViewPager) super.findViewById(R.id.content_home_fragment);
-		adapter = new homePageAdapter(super.getSupportFragmentManager());
-		mViewPager.setAdapter(adapter);
-		mViewPager.setOffscreenPageLimit(1);
-		//mViewPager.blockSwipeRight(true);
-		//mViewPager.blockSwipeLeft(true);
-		if (savedInstanceState == null) {
-			mViewPager.setCurrentItem(1);
-		}
-		else{
-			mViewPager.setCurrentItem(savedInstanceState.getInt("viewpager", 0));
-		}
-
-
-		bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-
-		//----------------------nav
-		navigationView = (NavigationView) findViewById(R.id.navigation_view);
-
-		navigationView.setItemIconTintList(null);
-		navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-			// This method will trigger on item Click of navigation menu
-			@Override
-			public boolean onNavigationItemSelected(MenuItem menuItem) {
-				drawerLayout.closeDrawers();
-				Intent intent;
-
-				switch (menuItem.getItemId()) {
-					case R.id.userLogbook:
-						intent = new Intent(getApplicationContext(), LogbookChartList.class);
-						startActivity(intent);
-						return true;
-					case R.id.diabetesData:
-						intent = new Intent(getApplicationContext(), Settings.class);
-						startActivity(intent);
-						return true;
-					case R.id.importAndExport:
-						checkPermissions(EXTERNAL_STORAGE_PERMISSION_CONSTANT);
-						return true;
-					case R.id.info:
-						intent = new Intent(getApplicationContext(), Info.class);
-						startActivity(intent);
-						return true;
-					case R.id.feedback:
-						feedback();
-						return true;
-					default:
-						Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
-						return true;
-				}
+		}else{
+			if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+				ShowDialogAddData();
+				return;
 			}
-		});
-		bottomNavigationView.getMenu().getItem(mViewPager.getCurrentItem()).setChecked(true);
-		setupBottomNavigationView();
+
+
+			Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+			setSupportActionBar(toolbar);
+			drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+
+			ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
+					this, drawerLayout, toolbar,
+					R.string.navigation_drawer_open, R.string.navigation_drawer_close
+			);
+
+
+
+			drawerLayout.addDrawerListener(mDrawerToggle);
+			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+			getSupportActionBar().setHomeButtonEnabled(true);
+			mDrawerToggle.syncState();
+
+
+			mViewPager = (CustomViewPager) super.findViewById(R.id.content_home_fragment);
+			adapter = new homePageAdapter(super.getSupportFragmentManager());
+			mViewPager.setAdapter(adapter);
+			mViewPager.setOffscreenPageLimit(1);
+			//mViewPager.blockSwipeRight(true);
+			//mViewPager.blockSwipeLeft(true);
+			if (savedInstanceState == null) {
+				mViewPager.setCurrentItem(1);
+			}
+			else{
+				mViewPager.setCurrentItem(savedInstanceState.getInt("viewpager", 0));
+			}
+
+
+			bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+
+			//----------------------nav
+			navigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+			navigationView.setItemIconTintList(null);
+			navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+				// This method will trigger on item Click of navigation menu
+				@Override
+				public boolean onNavigationItemSelected(MenuItem menuItem) {
+					drawerLayout.closeDrawers();
+					Intent intent;
+
+					switch (menuItem.getItemId()) {
+						case R.id.userLogbook:
+							intent = new Intent(getApplicationContext(), LogbookChartList.class);
+							startActivity(intent);
+							return true;
+						case R.id.diabetesData:
+							intent = new Intent(getApplicationContext(), Settings.class);
+							startActivity(intent);
+							return true;
+						case R.id.importAndExport:
+							checkPermissions(EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+							return true;
+						case R.id.info:
+							intent = new Intent(getApplicationContext(), Info.class);
+							startActivity(intent);
+							return true;
+						case R.id.feedback:
+							feedback();
+							return true;
+						default:
+							Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
+							return true;
+					}
+				}
+			});
+			bottomNavigationView.getMenu().getItem(mViewPager.getCurrentItem()).setChecked(true);
+			setupBottomNavigationView();
+		}
 	}
 
 	public void checkPermissions(int permission_need){
@@ -291,6 +291,7 @@ public class Home extends BaseActivity {
 									public void onClick(DialogInterface dialog, int id) {
 										checkPermissions(DB_OLD_PERMISSION_CONSTANT);
 										dialog.cancel();
+										dialog.dismiss();
 									}
 								});
 
@@ -300,6 +301,7 @@ public class Home extends BaseActivity {
 									public void onClick(DialogInterface dialog, int id) {
 										ShouldBackupDB();
 										dialog.cancel();
+										dialog.dismiss();
 									}
 								});
 

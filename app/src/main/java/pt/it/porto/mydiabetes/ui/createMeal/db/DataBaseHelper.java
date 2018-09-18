@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -241,6 +242,42 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         cursor.close();
 
         return mealItemList;
+    }
+
+
+    public LoggedMeal getLoggedMeal_by_id(int id){
+
+        String selectQuery = "SELECT * FROM " + LoggedMealsTableHelper.TABLE_NAME +
+                " WHERE " + LoggedMealsTableHelper.COLUMN_ID + " = '" + id + "'";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+
+            int meal_id = cursor.getInt(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_ID));
+            String name = cursor.getString(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_NAME));
+            int carbs = cursor.getInt(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_EXTRA_CARBS));
+            String timestamp = cursor.getString(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_TIMESTAMP));
+            String thumbnail_path = cursor.getString(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_PHOTO_PATH));
+            boolean favourite = (cursor.getInt(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_IS_FAVOURITE)) == 1);
+            boolean registered = (cursor.getInt(cursor.getColumnIndex(LoggedMealsTableHelper.COLUMN_IS_REGISTERED)) == 1);
+            LoggedMeal meal = new LoggedMeal(getMealItemList(meal_id));
+            meal.setId(meal_id);
+            meal.setName(name);
+            meal.setExtraCarbs(carbs);
+            meal.setTimestamp(timestamp);
+            meal.setThumbnailPath(thumbnail_path);
+            meal.setFavourite(favourite);
+            meal.setRegistered(registered);
+
+            return meal;
+
+        }
+
+        cursor.close();
+        db.close();
+        return null;
     }
 
     public List<LoggedMeal> getLoggedMealList(){

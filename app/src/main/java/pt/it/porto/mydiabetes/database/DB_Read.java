@@ -1963,9 +1963,8 @@ public class DB_Read {
 
 		public int getLogBookCount(String startDate) {
 		Cursor cursor = myDB.rawQuery("SELECT COUNT(*) " +
-				"FROM Record"+
-				"WHERE datetime >='" + startDate + "'" +
-				")",null);
+				"FROM Record "+
+				"WHERE datetime >='" + startDate + "'",null);
 
 			cursor.moveToFirst();
 			return cursor.getInt(0);

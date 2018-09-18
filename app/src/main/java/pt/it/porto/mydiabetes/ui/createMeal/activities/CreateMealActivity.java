@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -23,6 +24,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,8 +35,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.esafirm.imagepicker.features.ImagePicker;
+import com.esafirm.imagepicker.model.Image;
+
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,6 +53,7 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.ui.activities.ViewPhoto;
 import pt.it.porto.mydiabetes.ui.createMeal.adapters.CreateMealListAdapter;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
@@ -51,13 +61,12 @@ import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.MealItem;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.RecyclerItemTouchHelper;
 
-import static pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry.IMAGE_VIEW;
 
 
 public class CreateMealActivity extends AppCompatActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
-    static final int REQUEST_MEAL_ITEM = 0;
-    static final int REQUEST_TAKE_PHOTO = 1;
-
+    private static final int REQUEST_MEAL_ITEM = 0;
+    private static final int REQUEST_TAKE_PHOTO = 1;
+    private static final int IMAGE_VIEW = 3;
 
     private TextView mealTotalCarbsTextView;
     private TextView emptyListMessageView;
@@ -105,7 +114,10 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
         mealItemListView.setItemAnimator(new DefaultItemAnimator());
         mealItemListView.setAdapter(mAdapter);
 
-        editTextCarbsReg = getIntent().getExtras().getInt("reg_carbs");
+        if( getIntent().hasExtra("reg_carbs")){
+            editTextCarbsReg = getIntent().getExtras().getInt("reg_carbs");
+        }
+
         if(getIntent().hasExtra("meal_obj")) {
             LoggedMeal meal = getIntent().getExtras().getParcelable("meal_obj");
 
@@ -154,7 +166,7 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
 
                     currentMealPhotoPath = meal.getThumbnailPath();
                     if(currentMealPhotoPath != null) {
-                        setMealPhoto(null);
+                        displayImg(currentMealPhotoPath);
                     }
                     currentMealName = meal.getName();
 
@@ -175,7 +187,7 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
                 break;
             case REQUEST_TAKE_PHOTO:
                 if(resultCode == RESULT_OK){
-                    setMealPhoto(null);
+                    setMealPhoto(data);
                     //Toast.makeText(this, "Photo attached", Toast.LENGTH_SHORT).show();
                 } else{
                     currentMealPhotoPath = null;
@@ -273,7 +285,7 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
             currentMealName = meal.getName();
             currentMealPhotoPath = meal.getThumbnailPath();
             if(currentMealPhotoPath != null) {
-                setMealPhoto(null);
+                displayImg(currentMealPhotoPath);
             }
 
             for(MealItem item : meal.getItemList()){
@@ -414,47 +426,109 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
         snackbar.show();
     }
 
-    private void setMealPhoto(ImageView mPhotoView) {
-        // Get the dimensions of the View
-        int targetW, targetH;
+    private void setMealPhoto(Intent data) {
 
-        if(mPhotoView != null){
-            mPhotoView.measure(ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout.LayoutParams.MATCH_CONSTRAINT);
-            targetW = mPhotoView.getMeasuredWidth();
-            targetH = 180;
-        } else{
-            targetW = 140;
-            targetH = 140;
-        }
-
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(currentMealPhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-
-        // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-
-        Bitmap bitmap = BitmapFactory.decodeFile(currentMealPhotoPath, bmOptions);
-
-        if(mPhotoView != null)
-            mPhotoView.setImageBitmap(bitmap);
-        else{
-            thumbnailPhotoView.setImageBitmap(bitmap);
-
-            if(thumbnailPhotoView.getVisibility() == View.GONE) {
-                cameraPlaceholder.setVisibility(View.GONE);
-                thumbnailPhotoView.setVisibility(View.VISIBLE);
+            Image cameraImg = ImagePicker.getFirstImageOrNull(data);
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
-        }
+            if (photoFile != null) {
+                if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+                    try {
+                        copy19plus(cameraImg.getPath(), photoFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    //Uri photoURI = FileProvider.getUriForFile(CreateMealActivity.this,BuildConfig.APPLICATION_ID + ".provider", photoFile);
+                    currentMealPhotoPath = photoFile.getAbsolutePath();
+
+
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
+                    thumbnailPhotoView.setImageBitmap(bitmap);
+
+                    if(thumbnailPhotoView.getVisibility() == View.GONE) {
+                        cameraPlaceholder.setVisibility(View.GONE);
+                        thumbnailPhotoView.setVisibility(View.VISIBLE);
+                    }
+                }else{
+                    try {
+                        copyUnder19(cameraImg.getPath(), photoFile);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                    Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
+                    thumbnailPhotoView.setImageBitmap(bitmap);
+
+                    currentMealPhotoPath = photoFile.getAbsolutePath();
+
+                    if(thumbnailPhotoView.getVisibility() == View.GONE) {
+                        cameraPlaceholder.setVisibility(View.GONE);
+                        thumbnailPhotoView.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+            String cameraFileName = cameraImg.getPath();
+            File file = new File(cameraFileName);
+            //Log.i(TAG, "onActivityResult: "+cameraFileName);
+            boolean deleted = file.delete();
+            Log.i("CreateMeal", "onActivityResult: file deleted: "+deleted);
+
+
+
+
+
+
+//
+//
+//        // Get the dimensions of the View
+//        int targetW, targetH;
+//
+//        if(mPhotoView != null){
+//            mPhotoView.measure(ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout.LayoutParams.MATCH_CONSTRAINT);
+//            targetW = mPhotoView.getMeasuredWidth();
+//            targetH = 180;
+//        } else{
+//            targetW = 140;
+//            targetH = 140;
+//        }
+//
+//        // Get the dimensions of the bitmap
+//        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+//        bmOptions.inJustDecodeBounds = true;
+//        BitmapFactory.decodeFile(currentMealPhotoPath, bmOptions);
+//        int photoW = bmOptions.outWidth;
+//        int photoH = bmOptions.outHeight;
+//
+//        // Determine how much to scale down the image
+//        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+//
+//        // Decode the image file into a Bitmap sized to fill the View
+//        bmOptions.inJustDecodeBounds = false;
+//        bmOptions.inSampleSize = scaleFactor;
+//        bmOptions.inPurgeable = true;
+//
+//        Bitmap bitmap = BitmapFactory.decodeFile(currentMealPhotoPath, bmOptions);
+//
+//        if(mPhotoView != null)
+//            mPhotoView.setImageBitmap(bitmap);
+//        else{
+//            thumbnailPhotoView.setImageBitmap(bitmap);
+//
+//            if(thumbnailPhotoView.getVisibility() == View.GONE) {
+//                cameraPlaceholder.setVisibility(View.GONE);
+//                thumbnailPhotoView.setVisibility(View.VISIBLE);
+//            }
+//
+//        }
     }
 
     private void deleteAll(){
@@ -483,7 +557,8 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
         final EditText editText = view.findViewById(R.id.meal_name_edittext);
         final ImageView mealPhotoView = view.findViewById(R.id.photo_preview);
         if(currentMealPhotoPath != null){
-            setMealPhoto(mealPhotoView);
+            displayImg(currentMealPhotoPath);
+            //setMealPhoto(currentMealPhotoPath);
         } else{
             mealPhotoView.setVisibility(View.GONE);
         }
@@ -521,26 +596,48 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
         }
     }
 
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        BuildConfig.APPLICATION_ID + ".provider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
+    private void displayImg(String path){
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+        thumbnailPhotoView.setImageBitmap(bitmap);
+
+        if(thumbnailPhotoView.getVisibility() == View.GONE) {
+            cameraPlaceholder.setVisibility(View.GONE);
+            thumbnailPhotoView.setVisibility(View.VISIBLE);
         }
+    };
+
+    private void dispatchTakePictureIntent() {
+
+        if(currentMealPhotoPath!=null){
+            displayImg(currentMealPhotoPath);
+        }else{
+            Intent takePictureIntent = ImagePicker.cameraOnly().getIntent(this);
+            startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+        }
+
+
+
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        // Ensure that there's a camera activity to handle the intent
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//            // Create the File where the photo should go
+//            File photoFile = null;
+//            try {
+//                photoFile = createImageFile();
+//            } catch (IOException ex) {
+//                // Error occurred while creating the File
+//            }
+//            // Continue only if the File was successfully created
+//            if (photoFile != null) {
+//                Uri photoURI = FileProvider.getUriForFile(this,
+//                        BuildConfig.APPLICATION_ID + ".provider",
+//                        photoFile);
+//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+//            }
+//        }
     }
 
     private File createImageFile() throws IOException {
@@ -557,5 +654,39 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
         // Save a file: path for use with ACTION_VIEW intents
         currentMealPhotoPath = image.getAbsolutePath();
         return image;
+    }
+
+    public static void copy19plus(String src_path, File dst) throws IOException {
+        File src = new File(src_path);
+        try (InputStream in = new FileInputStream(src)) {
+            try (OutputStream out = new FileOutputStream(dst)) {
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            }
+        }
+    }
+
+    public static void copyUnder19(String src_path, File dst) throws IOException {
+        File src = new File(src_path);
+        InputStream in = new FileInputStream(src);
+        try {
+            OutputStream out = new FileOutputStream(dst);
+            try {
+                // Transfer bytes from in to out
+                byte[] buf = new byte[1024];
+                int len;
+                while ((len = in.read(buf)) > 0) {
+                    out.write(buf, 0, len);
+                }
+            } finally {
+                out.close();
+            }
+        } finally {
+            in.close();
+        }
     }
 }

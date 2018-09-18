@@ -54,6 +54,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,6 +71,10 @@ import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
+import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
+import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
+import pt.it.porto.mydiabetes.ui.createMeal.utils.MealItem;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
@@ -111,7 +116,8 @@ public class NewHomeRegistry extends AppCompatActivity{
     private static final String ARG_CALENDAR = "ARG_CALENDAR";
 
     private static final int REQUEST_TAKE_PHOTO = 1;
-    private static final int IMAGE_CAPTURE = 2;
+    //private static final int IMAGE_CAPTURE = 2;
+    private static final int REQUEST_CREATE_MEAL = 2;
     private static final int IMAGE_VIEW = 3;
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
     private static final int REQUEST_PERMISSION_SETTING = 101;
@@ -162,6 +168,9 @@ public class NewHomeRegistry extends AppCompatActivity{
     private Spinner spinner;
     private ArrayList<Tag> t;
 
+    private LoggedMeal mCurrentMeal = null;
+    private int associatedMealId = -1;
+
     int iRatio;
     int cRatio;
 
@@ -185,6 +194,15 @@ public class NewHomeRegistry extends AppCompatActivity{
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        if(requestCode == REQUEST_CREATE_MEAL && resultCode == RESULT_OK){
+            if(data.hasExtra("meal")){
+                mCurrentMeal = data.getExtras().getParcelable("meal");
+                //carbsRegisterInputInterface.setImage();
+                carbsRegisterInputInterface.setCarbsMealID(mCurrentMeal.getId());
+                carbsRegisterInputInterface.setMealCarbs(mCurrentMeal.getTotalCarbs(true));
+            }
+
         }
 
 //        if (requestCode == REQUEST_PERMISSION_SETTING) {
@@ -507,6 +525,8 @@ public class NewHomeRegistry extends AppCompatActivity{
 
         reg.Record_Update(recordId,idUser, registerDate, idTag);
 
+        DataBaseHelper dbHelper = new DataBaseHelper(this);
+
         for(String field:buttons){
             try {
                 switch (field){
@@ -515,6 +535,28 @@ public class NewHomeRegistry extends AppCompatActivity{
                             carbsData.setIdTag(idTag);
                             carbsData.setIdUser(idUser);
                             carbsData.setDateTime(registerDate);
+                            if(mCurrentMeal != null){
+                                if((mCurrentMeal.getItemList().size() != 0) || (mCurrentMeal.getThumbnailPath() != null)){
+                                    mCurrentMeal.setRegistered(true);
+                                    mCurrentMeal.setExtraCarbs(carbsRegisterInputInterface.getCarbs() - mCurrentMeal.getTotalCarbs(false));
+
+                                    if (mCurrentMeal.getId() != -1) {
+                                        dbHelper.updateMeal(mCurrentMeal);
+                                    }
+                                    else {
+                                        mCurrentMeal.setId(dbHelper.insertMeal(mCurrentMeal));
+                                    }
+
+                                    carbsData.setMealId(mCurrentMeal.getId());
+                                } else{
+                                    if (mCurrentMeal.getId() != -1) {
+                                        LoggedMeal prev_meal = dbHelper.getMeal(mCurrentMeal.getId());
+                                        prev_meal.setRegistered(false);
+                                        dbHelper.updateMeal(prev_meal);
+                                        carbsData.setMealId(-1);
+                                    }
+                                }
+                            }
 
                             if(noteData != null) {
                                 carbsData.setIdNote(noteData.getId());
@@ -611,6 +653,8 @@ public class NewHomeRegistry extends AppCompatActivity{
 
         recordId = reg.Record_Add(idUser, registerDate, idTag);
 
+        DataBaseHelper dbHelper = new DataBaseHelper(this);
+
         if(delete_buttons.contains(NOTE)){
             reg.Note_Delete(noteData.getId());
             noteData = null;
@@ -636,6 +680,28 @@ public class NewHomeRegistry extends AppCompatActivity{
                             carbsData.setIdTag(idTag);
                             carbsData.setIdUser(idUser);
                             carbsData.setDateTime(registerDate);
+                            if(mCurrentMeal != null){
+                                if((mCurrentMeal.getItemList().size() != 0) || (mCurrentMeal.getThumbnailPath() != null)){
+                                    mCurrentMeal.setRegistered(true);
+                                    mCurrentMeal.setExtraCarbs(carbsRegisterInputInterface.getCarbs() - mCurrentMeal.getTotalCarbs(false));
+
+                                    if (mCurrentMeal.getId() != -1) {
+                                        dbHelper.updateMeal(mCurrentMeal);
+                                    }
+                                    else {
+                                        mCurrentMeal.setId(dbHelper.insertMeal(mCurrentMeal));
+                                    }
+
+                                    carbsData.setMealId(mCurrentMeal.getId());
+                                } else{
+                                    if (mCurrentMeal.getId() != -1) {
+                                        LoggedMeal prev_meal = dbHelper.getMeal(mCurrentMeal.getId());
+                                        prev_meal.setRegistered(false);
+                                        dbHelper.updateMeal(prev_meal);
+                                        carbsData.setMealId(-1);
+                                    }
+                                }
+                            }
 
                             if(noteData != null) {
                                 carbsData.setIdNote(noteData.getId());
@@ -1012,6 +1078,8 @@ public class NewHomeRegistry extends AppCompatActivity{
                     String imgPath = carbsData.getPhotoPath();
                     setNoteId(carbsData.getIdNote());
                     registerDate = carbsData.getDateTime();
+                    DataBaseHelper dbHelper = new DataBaseHelper(this);
+                    mCurrentMeal = dbHelper.getLoggedMeal_by_id(carbsData.getMealId());
                 }
             }
         }
@@ -1273,6 +1341,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         void addGlycaemiaObjective(Context c);
         void addCarbsImage(Context context, Uri thisImgUri);
         void updateInsulinCalc();
+        void createCustomMeal(Context context);
     }
     class NewHomeRegCallImpl implements NewHomeRegCallBack{
 
@@ -1333,6 +1402,17 @@ public class NewHomeRegistry extends AppCompatActivity{
             insulinCalculator.setGlycemiaTarget(glycaemiaRegisterInputInterface !=null? glycaemiaRegisterInputInterface.getGlycemiaTarget():0);
             if(insuRegisterInputInterface !=null)
                 insuRegisterInputInterface.updateInsuCalc(insulinCalculator,true);
+        }
+        @Override
+        public void createCustomMeal(Context context) {
+            Intent intent = new Intent(context, CreateMealActivity.class);
+
+            if(mCurrentMeal != null) {
+                intent.putExtra("meal_obj", mCurrentMeal);
+            }
+
+            intent.putExtra("reg_carbs", carbsRegisterInputInterface.getCarbs());
+            startActivityForResult(intent, REQUEST_CREATE_MEAL);
         }
     }
     private void hideKeyboard() {

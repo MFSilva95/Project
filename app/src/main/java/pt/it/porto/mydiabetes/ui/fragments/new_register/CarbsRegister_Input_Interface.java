@@ -234,5 +234,8 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
             }
         }
     }
+    public void setCarbsMealID(int mealID){
+        this.carbsData.setMealId(mealID);
+    }
 
 }
