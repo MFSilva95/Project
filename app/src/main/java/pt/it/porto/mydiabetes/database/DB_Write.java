@@ -499,6 +499,11 @@ public class DB_Write {
 		myDB.update("Note", toInsert, "Id=" + note.getId(), null);
 	}
 
+	public void Record_Delete(int recordID) {
+
+		myDB.delete("Record", "id=" + recordID, null);
+	}
+
 	public void Note_Delete(int id) {
 		Log.i("BD", "Note_Delete: id:"+id);
 		myDB.delete("Note", "Id=" + id, null);

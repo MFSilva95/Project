@@ -7,6 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -2050,9 +2051,9 @@ public class DB_Read {
 						cursor.getInt(5),
 						cursor.getInt(6));
 				//insert id_note
-				Log.i(TAG, "--------------------------------");
-				Log.i(TAG, tmp.toString());
-				Log.i(TAG, "--------------------------------");
+//				Log.i(TAG, "--------------------------------");
+//				Log.i(TAG, tmp.toString());
+//				Log.i(TAG, "--------------------------------");
 				rawRecords.add(tmp);
 				cursor.moveToNext();
 			} while (!cursor.isAfterLast());
@@ -2060,30 +2061,40 @@ public class DB_Read {
 		} else {
 			cursor.close();
 		}
-		Log.i(TAG, "number records = "+rawRecords.size());
+//		Log.i(TAG, "number records = "+rawRecords.size());
 		if(!rawRecords.isEmpty()){
 
 			logBookEntries = new LinkedList<>();
 			for(RawRecord record:rawRecords){
 
-			    String sqlCommand = create_sql_string(record);
-                Log.i(TAG, "sql_command: "+sqlCommand);
+//			    String sqlCommand = create_sql_string(record);
+//                Log.i(TAG, "sql_command: "+sqlCommand);
 
-				cursor = myDB.rawQuery(sqlCommand,null);
+//				cursor = myDB.rawQuery(sqlCommand,null);
 
-				if (cursor.getCount() > 0) {
-					cursor.moveToFirst();
+//				if (cursor.getCount() > 0) {
+//					cursor.moveToFirst();
+
+				String insuName = null;
+				float insuValue = -1;
+
+				Pair insuNameValue = getInsuNameValueByID(record.getId_insulin());
+				if(insuNameValue!=null){
+					insuName = (String) insuNameValue.first;
+					insuValue = (float) insuNameValue.second;
+				}
+
 					HomeElement tmp;
-					do {
+//					do {
 						try{
 							tmp = new HomeElement(
 									record.getId(),
 									record.getFormattedDate(),
 									record.get_tag(),
-									cursor.getInt(0),
-									cursor.getFloat(1),
-									cursor.getString(2),
-									cursor.getInt(3),
+									getCarbsValByID(record.getId_carbs()),
+									insuValue,
+									insuName,
+									getGlycaemiaValByID(record.getId_bloodglucose()),
 									record.getId_carbs(),
 									record.getId_insulin(),
 									record.getId_bloodglucose(),
@@ -2093,16 +2104,79 @@ public class DB_Read {
 						}catch (Exception e){
 							e.printStackTrace();
 						}
-						cursor.moveToNext();
-					} while (!cursor.isAfterLast());
-					cursor.close();
-				} else {
-					cursor.close();
-				}
-				Log.i(TAG, "number records after = "+logBookEntries.size());
+//						cursor.moveToNext();
+//					} while (!cursor.isAfterLast());
+//					cursor.close();
+//				} else {
+//					cursor.close();
+//				}
+//				Log.i(TAG, "number records after = "+logBookEntries.size());
 			}
 		}
 		return logBookEntries;
+	}
+
+
+	private int getGlycaemiaValByID(int id_bloodglucose) {
+		int value = -1;
+
+		Cursor cursor = myDB.rawQuery("SELECT Value FROM Reg_CarboHydrate WHERE Id = "+id_bloodglucose+";", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			value = cursor.getInt(0);
+			cursor.close();
+			return value;
+		} else {
+			cursor.close();
+			return -1;
+		}
+	}
+
+
+	private int getCarbsValByID(int id_carbs) {
+
+		int value = -1;
+
+		Cursor cursor = myDB.rawQuery("SELECT Value FROM Reg_CarboHydrate WHERE Id = "+id_carbs+";", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			value = cursor.getInt(0);
+			cursor.close();
+			return value;
+		} else {
+			cursor.close();
+			return -1;
+		}
+	}
+
+	private Pair getInsuNameValueByID(int ID) {
+
+		int insu_ID = -1;
+		float insu_value = -1;
+		String name = null;
+
+		Cursor cursor = myDB.rawQuery("SELECT Id_Insulin, Value FROM Reg_Insulin WHERE Id = "+ID+";", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			insu_ID = cursor.getInt(0);
+			insu_value = cursor.getInt(1);
+
+			if(insu_ID!=-1){
+				cursor = myDB.rawQuery("SELECT Name FROM Insulin WHERE Id = "+insu_ID+";", null);
+				if (cursor.getCount() > 0) {
+					cursor.moveToFirst();
+					name = cursor.getString(0);
+					cursor.close();
+				}
+			}
+			cursor.close();
+			return new Pair(name, insu_value);
+		} else {
+			cursor.close();
+			return null;
+		}
+
+
 	}
 
 	public LinkedList<BadgeRec> Badges_GetAll_NONDAILY() {

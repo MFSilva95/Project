@@ -297,6 +297,9 @@ public class homeMiddleFragment extends Fragment {
                                 if ((noteId != -1)) {
                                     reg.Note_Delete(noteId);
                                 }
+                                if(elem.getRecordID()!=-1){
+                                    reg.Record_Delete(elem.getRecordID());
+                                }
                                 logBookList.remove(elem);
                             }
                             reg.close();
