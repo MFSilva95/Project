@@ -1401,7 +1401,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             insulinCalculator.setGlycemia(glycaemiaRegisterInputInterface !=null? glycaemiaRegisterInputInterface.getGlycemia():0);
             insulinCalculator.setGlycemiaTarget(glycaemiaRegisterInputInterface !=null? glycaemiaRegisterInputInterface.getGlycemiaTarget():0);
             if(insuRegisterInputInterface !=null)
-                insuRegisterInputInterface.updateInsuCalc(insulinCalculator,true);
+                insuRegisterInputInterface.updateInsuCalc(insulinCalculator,insuRegisterInputInterface.isManual());
         }
         @Override
         public void createCustomMeal(Context context) {

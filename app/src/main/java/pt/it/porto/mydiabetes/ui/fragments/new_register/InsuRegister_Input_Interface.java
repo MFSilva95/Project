@@ -43,7 +43,8 @@ public class InsuRegister_Input_Interface extends LinearLayout {
     private TextWatcher insuWatcher;
 
 
-
+    public boolean isManual(){  return isManual;
+    }
     public InsuRegister_Input_Interface(Context context, int iRatio, int cRatio) {
         super(context);
         this.iRatio = iRatio;
@@ -69,13 +70,15 @@ public class InsuRegister_Input_Interface extends LinearLayout {
         useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
         calcShowing = false;
         insuData = new InsulinRec();
-        isManual = false;
+
         insulin_input = (TextInputLayout) findViewById(R.id.insulin_admin);
         insuInfo = findViewById(R.id.bt_insulin_calc_info);
         insuInfoContent = (FrameLayout) findViewById(R.id.fragment_calcs);
         fillInsulinSpinner();
         setInsulinListeners();
+        isManual = false;
     }
+
     public void updateInsuCalc(InsulinCalculator calculator, boolean manual){
         this.calc = calculator;
         this.fragmentInsulinCalcsFragment.setInsulinCalculator(calculator);
@@ -208,6 +211,7 @@ public class InsuRegister_Input_Interface extends LinearLayout {
         insuTxt.removeTextChangedListener(insuWatcher);
         //insuTxt.requestFocus();
         insuTxt.setText(insulinUnits+"");
+        setIsManual(false);
         insuTxt.addTextChangedListener(getInsulinTW());
         //insuTxt.requestFocus();
     }
