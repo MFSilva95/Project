@@ -40,8 +40,8 @@ public class Badges extends BaseActivity {
         adapter = new BadgePageAdapter(super.getSupportFragmentManager());
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(1);
-        mViewPager.blockSwipeRight(true);
-        mViewPager.blockSwipeLeft(true);
+        //mViewPager.blockSwipeRight(true);
+        //mViewPager.blockSwipeLeft(true);
 
 //        DB_Read read = new DB_Read(this);
 //        BadgeRec lastDaily = read.getLastDailyMedal();
