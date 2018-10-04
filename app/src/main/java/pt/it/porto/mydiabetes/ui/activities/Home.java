@@ -111,6 +111,7 @@ public class Home extends BaseActivity {
 			mViewPager = (CustomViewPager) super.findViewById(R.id.content_home_fragment);
 			adapter = new homePageAdapter(super.getSupportFragmentManager());
 			mViewPager.setAdapter(adapter);
+
 			mViewPager.setOffscreenPageLimit(1);
 			//mViewPager.blockSwipeRight(true);
 			//mViewPager.blockSwipeLeft(true);
@@ -123,7 +124,7 @@ public class Home extends BaseActivity {
 
 
 			bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-
+			mViewPager.setBotNav(bottomNavigationView);
 			//----------------------nav
 			navigationView = (NavigationView) findViewById(R.id.navigation_view);
 

@@ -1,6 +1,7 @@
 package pt.it.porto.mydiabetes.utils;
 
 import android.content.Context;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -13,6 +14,7 @@ import android.widget.FrameLayout;
 public class CustomViewPager extends ViewPager {
 
     private float initialXValue;
+    private BottomNavigationView bottomNavigationView;
     private boolean right;
     private boolean left;
 
@@ -50,12 +52,14 @@ public class CustomViewPager extends ViewPager {
         if (event.getAction() == MotionEvent.ACTION_MOVE) {
             try {
                 float diffX = event.getX() - initialXValue;
-                if (diffX > 0 && right) {
+                if (diffX > 0) {
+                    bottomNavigationView.getMenu().getItem(this.getCurrentItem()-1).setChecked(true);
                     // swipe from left to right detected
-                    return false;
-                } else if (diffX < 0 && left) {
+                    return true;
+                } else if (diffX < 0) {
+                    bottomNavigationView.getMenu().getItem(this.getCurrentItem()+1).setChecked(true);
                     // swipe from right to left detected
-                    return false;
+                    return true;
                 }
             } catch (Exception exception) {
                 exception.printStackTrace();
@@ -72,5 +76,9 @@ public class CustomViewPager extends ViewPager {
 
     public void blockSwipeLeft(boolean right) {
         this.right = right;
+    }
+
+    public void setBotNav(BottomNavigationView botNav) {
+        this.bottomNavigationView = botNav;
     }
 }
