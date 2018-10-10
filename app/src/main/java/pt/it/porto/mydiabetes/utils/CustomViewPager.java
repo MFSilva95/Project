@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 
@@ -52,12 +53,14 @@ public class CustomViewPager extends ViewPager {
         if (event.getAction() == MotionEvent.ACTION_MOVE) {
             try {
                 float diffX = event.getX() - initialXValue;
-                if (diffX > 0) {
+                if (diffX > 20) {
                     bottomNavigationView.getMenu().getItem(this.getCurrentItem()-1).setChecked(true);
                     // swipe from left to right detected
+                    //Log.i("cenas", "DIF LEFT: "+diffX);
                     return true;
-                } else if (diffX < 0) {
+                } else if (diffX < -20) {
                     bottomNavigationView.getMenu().getItem(this.getCurrentItem()+1).setChecked(true);
+                    //Log.i("cenas", "DIF RIGHT: "+diffX);
                     // swipe from right to left detected
                     return true;
                 }
