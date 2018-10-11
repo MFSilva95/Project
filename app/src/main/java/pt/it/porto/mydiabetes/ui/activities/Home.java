@@ -17,6 +17,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -109,6 +110,8 @@ public class Home extends BaseActivity {
 
 
 			mViewPager = (CustomViewPager) super.findViewById(R.id.content_home_fragment);
+
+
 			adapter = new homePageAdapter(super.getSupportFragmentManager());
 			mViewPager.setAdapter(adapter);
 
@@ -124,7 +127,7 @@ public class Home extends BaseActivity {
 
 
 			bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-			mViewPager.setBotNav(bottomNavigationView);
+//			mViewPager.setBotNav(bottomNavigationView);
 			//----------------------nav
 			navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
@@ -163,6 +166,14 @@ public class Home extends BaseActivity {
 			});
 			bottomNavigationView.getMenu().getItem(mViewPager.getCurrentItem()).setChecked(true);
 			setupBottomNavigationView();
+            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                public void onPageScrollStateChanged(int state) {}
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+                public void onPageSelected(int position) {
+                    bottomNavigationView.getMenu().getItem(position).setChecked(true);
+                }
+            });
 		}
 	}
 
@@ -334,27 +345,30 @@ public class Home extends BaseActivity {
 				switch (item.getItemId()) {
 					case R.id.action_health:
 						mViewPager.setCurrentItem(0);
+                        bottomNavigationView.getMenu().getItem(0).setChecked(true);
 						break;
 					case R.id.action_register:
 						mViewPager.setCurrentItem(1);
+                        bottomNavigationView.getMenu().getItem(1).setChecked(true);
 						break;
 					case R.id.action_person:
 						mViewPager.setCurrentItem(2);
+                        bottomNavigationView.getMenu().getItem(2).setChecked(true);
 						break;
 				}
-				updateNavigationBarState(item.getItemId());
+				//updateNavigationBarState(item.getItemId());
 				return true;
 			}
 		});
 	}
 
-	private void updateNavigationBarState(int actionId){
-		Menu menu = bottomNavigationView.getMenu();
-		for (int i = 0, size = menu.size(); i < size; i++) {
-			MenuItem item = menu.getItem(i);
-			item.setChecked(item.getItemId() == actionId);
-		}
-	}
+//	private void updateNavigationBarState(int actionId){
+//		Menu menu = bottomNavigationView.getMenu();
+//		for (int i = 0, size = menu.size(); i < size; i++) {
+//			MenuItem item = menu.getItem(i);
+//			item.setChecked(item.getItemId() == actionId);
+//		}
+//	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {

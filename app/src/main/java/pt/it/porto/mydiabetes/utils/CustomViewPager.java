@@ -15,7 +15,7 @@ import android.widget.FrameLayout;
 public class CustomViewPager extends ViewPager {
 
     private float initialXValue;
-    private BottomNavigationView bottomNavigationView;
+//    private BottomNavigationView bottomNavigationView;
     private boolean right;
     private boolean left;
 
@@ -54,12 +54,12 @@ public class CustomViewPager extends ViewPager {
             try {
                 float diffX = event.getX() - initialXValue;
                 if (diffX > 20) {
-                    bottomNavigationView.getMenu().getItem(this.getCurrentItem()-1).setChecked(true);
+                    //bottomNavigationView.getMenu().getItem(this.getCurrentItem()-1).setChecked(true);
                     // swipe from left to right detected
                     //Log.i("cenas", "DIF LEFT: "+diffX);
                     return true;
                 } else if (diffX < -20) {
-                    bottomNavigationView.getMenu().getItem(this.getCurrentItem()+1).setChecked(true);
+                    //bottomNavigationView.getMenu().getItem(this.getCurrentItem()+1).setChecked(true);
                     //Log.i("cenas", "DIF RIGHT: "+diffX);
                     // swipe from right to left detected
                     return true;
@@ -81,7 +81,7 @@ public class CustomViewPager extends ViewPager {
         this.right = right;
     }
 
-    public void setBotNav(BottomNavigationView botNav) {
-        this.bottomNavigationView = botNav;
-    }
+//    public void setBotNav(BottomNavigationView botNav) {
+//        this.bottomNavigationView = botNav;
+//    }
 }
