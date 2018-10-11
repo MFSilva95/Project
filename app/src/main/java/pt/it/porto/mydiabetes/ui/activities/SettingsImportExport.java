@@ -277,10 +277,10 @@ public class SettingsImportExport extends BaseActivity {
 		}
 	}
 
-	public void syncPC(View view) {
-		Intent intent = new Intent(this, ScanActivity.class);
-		startActivity(intent);
-	}
+//	public void syncPC(View view) {
+//		Intent intent = new Intent(this, ScanActivity.class);
+//		startActivity(intent);
+//	}
 
 	public void syncCloud(View view) {
 		String username = pt.it.porto.mydiabetes.database.Preferences.getUsername(this);
@@ -303,7 +303,7 @@ public class SettingsImportExport extends BaseActivity {
 				if (dialog != null) {
 					dialog.hide();
 				}
-				Toast.makeText(getApplicationContext(), "Infelizmente falhou o envio, tente mais tarde.", Toast.LENGTH_SHORT).show();
+				Toast.makeText(getApplicationContext(), R.string.upload_failed, Toast.LENGTH_SHORT).show();
 			}
 
 			@Override

@@ -64,39 +64,25 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:layout_weight="1"
-                        android:orientation="horizontal"
-                        android:weightSum="2">
-
-                        <Button
-                            android:id="@+id/syncPC"
-                            style="@style/Widget.AppCompat.Button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_below="@+id/textView5"
-                            android:layout_centerHorizontal="true"
-                            android:layout_marginRight="10dp"
-                            android:layout_weight="1"
-                            android:backgroundTint="@android:color/white"
-                            android:elevation="2dp"
-                            android:onClick="syncPC"
-                            android:text="@string/sync_with_pc"
-                            android:textColor="@color/black" />
+                        android:layout_weight="1">
 
                         <Button
                             android:id="@+id/syncCloud"
                             style="@style/Widget.AppCompat.Button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/syncPC"
                             android:layout_marginLeft="10dp"
-                            android:layout_weight="1"
-                            android:backgroundTint="@android:color/white"
+                            android:layout_marginRight="10dp"
+                            android:elevation="2dp"
                             android:onClick="syncCloud"
+                            android:backgroundTint="@color/button_test"
                             android:text="@string/send_to_cloud"
                             android:textColor="@color/black" />
+                        <!--android:backgroundTint="@android:color/white"-->
                     </LinearLayout>
 
 
@@ -110,12 +96,13 @@
 
                         <Button
                             android:id="@+id/editAccount"
-                            style="@style/Widget.AppCompat.Button.Borderless"
+
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerHorizontal="true"
                             android:layout_weight="1"
                             android:onClick="editAccount"
+                            android:backgroundTint="@color/button_test"
                             android:text="@string/cloudSync_edit_account" />
                     </LinearLayout>
 
@@ -165,7 +152,7 @@
                         android:layout_marginLeft="50dp"
                         android:layout_marginRight="5dp"
                         android:layout_weight="1"
-                        android:backgroundTint="@android:color/white"
+                        android:backgroundTint="@color/button_test"
                         android:elevation="2dp"
                         android:onClick="backupButton"
                         android:text="@string/do_back"
@@ -180,7 +167,7 @@
                         android:layout_marginLeft="5dp"
                         android:layout_marginRight="50dp"
                         android:layout_weight="1"
-                        android:backgroundTint="@android:color/white"
+                        android:backgroundTint="@color/button_test"
                         android:elevation="2dp"
                         android:onClick="restore"
                         android:text="@string/restore_backup_button"
@@ -228,7 +215,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical|center_horizontal"
-                            android:backgroundTint="@android:color/white"
+                            android:backgroundTint="@color/button_test"
                             android:elevation="2dp"
                             android:enabled="true"
                             android:onClick="share"
