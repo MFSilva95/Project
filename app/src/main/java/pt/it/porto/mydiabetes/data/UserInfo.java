@@ -14,13 +14,13 @@ public class UserInfo {
 
 	private int id;
 	private String username;
-	private DiabetesType diabetesType;
+	private int diabetesType;
 	private int insulinRatio;
 	private int carbsRatio;
 	private int lowerRange;
 	private int higherRange;
 	private String birthday;
-	private String gender;
+	private int gender_index;
 	private double height;
 	private String lastUpdate;
 	private int bg_target_Factor;
@@ -34,7 +34,7 @@ public class UserInfo {
 		//Name
 		username = cursor.getString(1);
 		//Diabetes Type
-		diabetesType = DiabetesType.getEnum(cursor.getString(2));
+		diabetesType = cursor.getInt(2);
 		//Insulin Ratio
 		insulinRatio = (int) Double.parseDouble(cursor.getString(3));
 		//Carbs Ratio
@@ -46,7 +46,7 @@ public class UserInfo {
 		//Birth Date
 		birthday = cursor.getString(7);
 		//Gender
-		gender = cursor.getString(8);
+		gender_index = cursor.getInt(8);
 		//Height
 		height = Double.parseDouble(cursor.getString(9));
 		//DateTimeUpdate
@@ -55,16 +55,16 @@ public class UserInfo {
 		bg_target_Factor = cursor.getInt(11);
 	}
 
-	public UserInfo(int id, String username, String diabetesType, int insulinRatio, int carbsRatio, int lowerRange, int higherRange, String birthday, String gender, double height, String lastedit, int bg_t) {
+	public UserInfo(int id, String username, int diabetesType, int insulinRatio, int carbsRatio, int lowerRange, int higherRange, String birthday, int gender, double height, String lastedit, int bg_t) {
 		this.id = id;
 		this.username = username;
-		this.diabetesType = DiabetesType.getEnum(diabetesType);
+		this.diabetesType = diabetesType;
 		this.insulinRatio = insulinRatio;
 		this.carbsRatio = carbsRatio;
 		this.lowerRange = lowerRange;
 		this.higherRange = higherRange;
 		this.birthday = birthday;
-		this.gender = gender;
+		this.gender_index = gender;
 		this.height = height;
 		this.lastUpdate = lastedit;
 		this.bg_target_Factor = bg_t;
@@ -86,12 +86,23 @@ public class UserInfo {
 		this.username = username;
 	}
 
-	public DiabetesType getDiabetesType() {
-		return diabetesType;
-	}
+//	public String getDiabetesType(Context c) {
+//	    switch (diabetesType){
+//            case 0:
+//                return c.getString(R.string.diabetes_type_1);
+//            case 1:
+//                return c.getString(R.string.diabetes_type_2);
+//            case 2:
+//                return c.getString(R.string.diabetes_type_gestational);
+//        }
+//		return null;
+//	}
+    public int getDiabetesType() {
+        return diabetesType;
+    }
 
-	public void setDiabetesType(String diabetesType) {
-		this.diabetesType = DiabetesType.getEnum(diabetesType);
+	public void setDiabetesType(int diabetesType) {
+		this.diabetesType = diabetesType;
 	}
 
 	public int getTG() {
@@ -100,12 +111,6 @@ public class UserInfo {
 
 	public void setTG(int tg) {
 		this.bg_target_Factor = tg;
-	}
-
-
-
-	public void setDiabetesType(DiabetesType diabetesType) {
-		this.diabetesType = diabetesType;
 	}
 
 	public int getInsulinRatio() {
@@ -148,16 +153,22 @@ public class UserInfo {
 		this.birthday = birthday;
 	}
 
-	public String getGender(Context c) {
-		return Gender.getEnum(gender, c);
-	}
+//	public String getGender(Context c) {
+//	    switch (this.gender_index){
+//            case 0:
+//                return c.getString(R.string.gender_female);
+//            case 1:
+//                return c.getString(R.string.gender_male);
+//        }
+//		return c.getString(R.string.gender_unknown);
+//	}
 
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
+    public int getGender() {
+        return this.gender_index;
+    }
 
-	public void setGender(String gender, Context context) {
-		this.gender = Gender.getEnum(gender, context);
+	public void setGender(int g) {
+		this.gender_index = g;
 	}
 
 	public double getHeight() {
@@ -210,7 +221,7 @@ public class UserInfo {
 		if (!birthday.equals(userInfo.birthday)) {
 			return false;
 		}
-		if (gender != userInfo.gender) {
+		if (gender_index != userInfo.gender_index) {
 			return false;
 		}
 		if(bg_target_Factor != userInfo.bg_target_Factor){
@@ -223,13 +234,13 @@ public class UserInfo {
 	public ContentValues getContentValues(Context c) {
 		ContentValues contentValues = new ContentValues();
 		contentValues.put("Name", getUsername());
-		contentValues.put("DType", getDiabetesType().toString());
+		contentValues.put("DType", diabetesType);
 		contentValues.put("InsulinRatio", getInsulinRatio());
 		contentValues.put("CarbsRatio", getCarbsRatio());
 		contentValues.put("LowerRange", getLowerRange());
 		contentValues.put("HigherRange", getHigherRange());
 		contentValues.put("BDate", getBirthday());
-		contentValues.put("Gender", getGender(c).toString());
+		contentValues.put("Gender", gender_index);
 		contentValues.put("Height", getHeight());
 		SimpleDateFormat now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		contentValues.put("DateTimeUpdate", now.format(Calendar.getInstance().getTime()));
@@ -238,69 +249,4 @@ public class UserInfo {
 		return contentValues;
 	}
 
-	public enum Gender {
-		WOMAN(R.string.gender_female), MAN(R.string.gender_male);
-
-		String value;
-		private int resource;
-
-		Gender(int resource) {
-			this.resource = resource;
-		}
-
-		public static String getEnum(String o, Context context) {
-			for (Gender v : values()) {
-				String target = context.getString(v.resource);
-				if (target.equalsIgnoreCase(o)) {
-					return target;
-				}
-			}
-			throw new IllegalArgumentException();
-		}
-
-		public String getValue() {
-			return value;
-		}
-
-		@Override
-		public String toString() {
-			return value;
-		}
-	}
-
-	public enum DiabetesType {
-		TYPE_1(R.string.diabetes_type_1),
-		TYPE_2(R.string.diabetes_type_2),
-		GESTATIONAL(R.string.diabetes_type_gestational);
-
-		int resource;
-
-		DiabetesType(int resource) {
-			this.resource = resource;
-		}
-
-		public static DiabetesType getEnum(String o) {
-			if ((o.endsWith("1") && o.length()>1) || o.equals("0")) {
-				return TYPE_1;
-			} else if ((o.endsWith("2") && o.length()>1) || o.equals("1")) {
-				return TYPE_2;
-			} else {
-				return GESTATIONAL;
-			}
-		}
-
-		public String getValue(Context c, String o) {
-			for (DiabetesType v : values()) {
-				String target = c.getString(v.resource);
-				if (target.equalsIgnoreCase(o)) {
-					return target;
-				}
-			}
-			throw new IllegalArgumentException();
-		}
-
-		public String getValue(Context context) {
-			return context.getString(resource);
-		}
-	}
 }

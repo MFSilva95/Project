@@ -93,8 +93,8 @@
 
 
     <string-array name="Sex">
-        <item>@string/gender_male</item>
         <item>@string/gender_female</item>
+        <item>@string/gender_male</item>
     </string-array>
     <string-array name="diabetes_Type">
         <item>@string/diabetes_type_1</item>
@@ -283,6 +283,7 @@
     <string name="height_hint" translatable="false">1.65</string>
     <string name="gender_male" >Masculino</string>
     <string name="gender_female" >Feminino</string>
+    <string name="gender_unknown" >Outro</string>
     <string name="insulin_name">Nome para a Insulina</string>
     <string name="new_glycemia_objective">Novo Objectivo de Glicemia</string>
 

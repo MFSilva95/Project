@@ -34,7 +34,7 @@
     <string name="title_activity_disease_detail">Disease Register</string>
     <string name="title_activity_import_export">Import &amp; Export</string>
     <string name="title_activity_tag_detail">Day Time</string>
-    <string name="title_activity_target_bg_detail">Glycemia Objective</string>
+    <string name="title_activity_target_bg_detail">Glycaemia Goals</string>
     <string name="title_activity_insulins_detail">Insulin</string>
     <string name="title_activity_info">Information</string>
     <string name="title_activity_view_photo">Photograph</string>
@@ -87,8 +87,8 @@
 
 
     <string-array name="Sex">
-        <item>@string/gender_male</item>
         <item>@string/gender_female</item>
+        <item>@string/gender_male</item>
     </string-array>
     <string-array name="diabetes_Type">
         <item>@string/diabetes_type_1</item>
@@ -229,6 +229,7 @@
 
     <string name="gender_male">Male</string>
     <string name="gender_female">Female</string>
+    <string name="gender_unknown" >Other</string>
     <string name="glycemia_objective_time_start_end" >From %1$s to %2$s</string>
     <string name="welcome" >Beginning</string>
     <string name="backup_share" >Save backup and send it to the Project\'s manager</string>
@@ -495,7 +496,7 @@
     <string name="use_iob">Use Insulin On Board</string>
     <string name="settings_factors_ratio">Edit Factors and Ratio\'s</string>
     <string name="settings_edit_insulins">Edit Insulin\'s</string>
-    <string name="settings_edit_glicemia_targets">Edit Glucose Goals</string>
+    <string name="settings_edit_glicemia_targets">Edit Glycaemia Goals</string>
     <string name="new_note">New Note</string>
 
     <string name="badge_help_dialog_title">How to win Badges?</string>

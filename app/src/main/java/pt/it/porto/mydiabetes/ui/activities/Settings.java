@@ -104,27 +104,10 @@ public class Settings extends BaseActivity {
 		return super.onOptionsItemSelected(item);
 	}
 
-//	//corrige erro ao gravar
-//	// os spinners não são verificados porque incialmente têm sempre valor
-//	public boolean inputIsValid() {
-//		EditText[] obj = new EditText[4];
-//		obj[0] = (EditText) findViewById(R.id.et_MyData_InsulinRatio);
-//		obj[1] = (EditText) findViewById(R.id.et_MyData_CarbsRatio);
-//		obj[2] = (EditText) findViewById(R.id.et_MyData_LowerRange);
-//		obj[3] = (EditText) findViewById(R.id.et_MyData_HigherRange);
-//
-//		for (EditText aux : obj) {
-//			if (aux.getText().toString().trim().length() == 0) {
-//				aux.setError(getString(R.string.error_field_required));
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
 
 	public UserInfo getMyDataFromActivity() {
 		Spinner dType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
-		myData.setDiabetesType(dType.getSelectedItem().toString());
+		myData.setDiabetesType(dType.getSelectedItemPosition());
 
 		return myData;
 	}
@@ -133,17 +116,8 @@ public class Settings extends BaseActivity {
 		if (obj != null) {
 			Spinner dType = (Spinner) findViewById(R.id.sp_MyData_DiabetesType);
 
-			String diabetesType=obj.getDiabetesType().getValue(this);
-			try {
-				dType.setSelection(Integer.parseInt(diabetesType));
-			} catch (NumberFormatException e) {
-				for (int i = 0; i < dType.getAdapter().getCount(); i++) {
-					if (dType.getAdapter().getItem(i).toString().equalsIgnoreCase(diabetesType)) {
-						dType.setSelection(i);
-						break;
-					}
-				}
-			}
+			int diabetesType=obj.getDiabetesType();
+			dType.setSelection(diabetesType);
 		}
 	}
 

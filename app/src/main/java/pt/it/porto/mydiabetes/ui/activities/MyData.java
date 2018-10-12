@@ -121,7 +121,7 @@ public class MyData extends BaseActivity {
 			myData.setId(0);
 		myData.setUsername(name.getText().toString());
 		myData.setBirthday(bDate.getText().toString());
-		myData.setGender(gender.getSelectedItem().toString(), this);
+		myData.setGender(gender.getSelectedItemPosition());
 		myData.setHeight(Float.parseFloat(height.getText().toString()));
 
 		return myData;
@@ -138,13 +138,8 @@ public class MyData extends BaseActivity {
 			name.setText(obj.getUsername());
 			bDate.setText(obj.getBirthday());
 
-			if (!gender.getSelectedItem().toString().equalsIgnoreCase(String.valueOf(obj.getGender(this.getBaseContext())))) {
-				if (gender.getSelectedItemId() == 0) {
-					gender.setSelection(1);
-				} else {
-					gender.setSelection(0);
-				}
-			}
+
+			gender.setSelection(obj.getGender());
 			height.setText(String.format(LocaleUtils.ENGLISH_LOCALE, "%.2f", obj.getHeight()));
 		}
 	}

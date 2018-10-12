@@ -216,13 +216,13 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 		MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());
 		boolean success = storage.addUserData(container.getString(WelcomeActivity.USER_DATA_NAME),
-				String.valueOf(diabetesType.getSelectedItemPosition()),
+				diabetesType.getSelectedItemPosition(),
 				sensR,
 				carbsR,
 				Integer.parseInt(hypoglycemiaLimit.getText().toString(), 10),
 				Integer.parseInt(hyperglycemiaLimit.getText().toString(), 10),
 				container.getString(WelcomeActivity.USER_DATA_BIRTHDAY_DATE),
-				container.getString(WelcomeActivity.USER_DATA_GENDER),
+				container.getInt(WelcomeActivity.USER_DATA_GENDER),
 				height,bg_target);
 		if(!success){
 			Log.w(TAG, "Failed to save user data!");

@@ -5,9 +5,12 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import javax.security.auth.login.LoginException;
 
 import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
@@ -167,7 +170,7 @@ public class MyDiabetesStorage {
 		return cursor.getCount() != 0;
 	}
 
-	public boolean addUserData(String name, String diabetesType, int insulinRatio, int carbsRatio, float lowerRange, float higherRange, String birthday, String gender, float height, int bg_t) {
+	public boolean addUserData(String name, int diabetesType, int insulinRatio, int carbsRatio, float lowerRange, float higherRange, String birthday, int gender, float height, int bg_t) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_NAME, name);
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_DIABETES_TYPE, diabetesType);

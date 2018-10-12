@@ -182,13 +182,11 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 
 		if(user_info!=null){
 			if(user_info.getUsername()!=null){mNameView.setText(user_info.getUsername());}
-			String gender;
-			if((gender = user_info.getGender(this.getContext()))!=null){
+			int gender;
+			if((gender = user_info.getGender())!=-1){
 				switch (gender){
-					case "Male":((RadioButton) layout.findViewById(R.id.radioButtonM)).setChecked(true);break;
-					case "Female":((RadioButton) layout.findViewById(R.id.radioButtonF)).setChecked(true);break;
-					case "Masculino":((RadioButton) layout.findViewById(R.id.radioButtonM)).setChecked(true);break;
-					case "Feminino":((RadioButton) layout.findViewById(R.id.radioButtonF)).setChecked(true);break;
+					case 1:((RadioButton) layout.findViewById(R.id.radioButtonM)).setChecked(true);break;
+					case 0:((RadioButton) layout.findViewById(R.id.radioButtonF)).setChecked(true);break;
 				}
 			}
 			String date;
@@ -286,8 +284,13 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 
 	@Override
 	public void saveData(Bundle container) {
+
+        int radioButtonID = mGenderGroup.getCheckedRadioButtonId();
+        View radioButton = mGenderGroup.findViewById(radioButtonID);
+        int idx = mGenderGroup.indexOfChild(radioButton);
+
 		container.putString(WelcomeActivity.USER_DATA_NAME, mNameView.getText().toString());
-		container.putString(WelcomeActivity.USER_DATA_GENDER, ((RadioButton) mGenderGroup.findViewById(mGenderGroup.getCheckedRadioButtonId())).getText().toString().toLowerCase());
+		container.putInt(WelcomeActivity.USER_DATA_GENDER, idx);
 		container.putString(WelcomeActivity.USER_DATA_HEIGHT, mHeightView.getText().toString());
 		container.putString(WelcomeActivity.USER_DATA_BIRTHDAY_DATE, new StringBuilder(10).append(birthdayDate.get(Calendar.DAY_OF_MONTH))
 				.append('-').append(birthdayDate.get(Calendar.MONTH)+1).append('-').append(birthdayDate.get(Calendar.YEAR)).toString());
