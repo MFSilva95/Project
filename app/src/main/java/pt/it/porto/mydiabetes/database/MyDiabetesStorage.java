@@ -167,7 +167,7 @@ public class MyDiabetesStorage {
 		return cursor.getCount() != 0;
 	}
 
-	public boolean addUserData(String name, String diabetesType, int insulinRatio, int carbsRatio, float lowerRange, float higherRange, String birthday, String gender, float height) {
+	public boolean addUserData(String name, String diabetesType, int insulinRatio, int carbsRatio, float lowerRange, float higherRange, String birthday, String gender, float height, int bg_t) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_NAME, name);
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_DIABETES_TYPE, diabetesType);
@@ -179,6 +179,7 @@ public class MyDiabetesStorage {
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_GENDER, gender);
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_HEIGHT, height);
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_LAST_UPDATE, DateUtils.formatToDb(Calendar.getInstance()));
+		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_GLUCOSE_TARGET, bg_t);
 
 		return insertNewData(MyDiabetesContract.UserInfo.TABLE_NAME, toInsert) != -1;
 	}

@@ -23,6 +23,7 @@ public class UserInfo {
 	private String gender;
 	private double height;
 	private String lastUpdate;
+	private int bg_target_Factor;
 
 	public UserInfo(Cursor cursor) {
 		if (cursor.getCount() == 0) {
@@ -50,9 +51,11 @@ public class UserInfo {
 		height = Double.parseDouble(cursor.getString(9));
 		//DateTimeUpdate
 		lastUpdate = cursor.getString(10);
+		//Glicaemia target
+		bg_target_Factor = cursor.getInt(11);
 	}
 
-	public UserInfo(int id, String username, String diabetesType, int insulinRatio, int carbsRatio, int lowerRange, int higherRange, String birthday, String gender, double height, String lastedit) {
+	public UserInfo(int id, String username, String diabetesType, int insulinRatio, int carbsRatio, int lowerRange, int higherRange, String birthday, String gender, double height, String lastedit, int bg_t) {
 		this.id = id;
 		this.username = username;
 		this.diabetesType = DiabetesType.getEnum(diabetesType);
@@ -64,6 +67,7 @@ public class UserInfo {
 		this.gender = gender;
 		this.height = height;
 		this.lastUpdate = lastedit;
+		this.bg_target_Factor = bg_t;
 	}
 
 	public int getId() {
@@ -89,6 +93,16 @@ public class UserInfo {
 	public void setDiabetesType(String diabetesType) {
 		this.diabetesType = DiabetesType.getEnum(diabetesType);
 	}
+
+	public int getTG() {
+		return bg_target_Factor;
+	}
+
+	public void setTG(int tg) {
+		this.bg_target_Factor = tg;
+	}
+
+
 
 	public void setDiabetesType(DiabetesType diabetesType) {
 		this.diabetesType = diabetesType;
@@ -199,6 +213,9 @@ public class UserInfo {
 		if (gender != userInfo.gender) {
 			return false;
 		}
+		if(bg_target_Factor != userInfo.bg_target_Factor){
+			return false;
+		}
 		return lastUpdate.equals(userInfo.lastUpdate);
 
 	}
@@ -216,6 +233,7 @@ public class UserInfo {
 		contentValues.put("Height", getHeight());
 		SimpleDateFormat now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		contentValues.put("DateTimeUpdate", now.format(Calendar.getInstance().getTime()));
+		contentValues.put("BG_Target", getTG());
 		//contentValues.put("DateTimeUpdate", now.format("%Y-%m-%d %H:%M:%S"));
 		return contentValues;
 	}

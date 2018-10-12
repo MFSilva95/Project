@@ -92,6 +92,8 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 			if((hypoV = user_info.getLowerRange())!=-1){hypoglycemiaLimit.setText(hypoV+"");}
 			int hyperV;
 			if((hyperV = user_info.getHigherRange())!=-1){hyperglycemiaLimit.setText(hyperV+"");}
+			int bg;
+			if((bg=user_info.getTG())!=-1){bg_target_Factor.setText(bg+"");}
 		}
 
 
@@ -139,6 +141,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		carbsRatio.setError(null);
 		hypoglycemiaLimit.setError(null);
 		hyperglycemiaLimit.setError(null);
+		bg_target_Factor.setError(null);
 
 
 		// Store values at the time of the login attempt.
@@ -146,6 +149,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		String carbsRatioVal = carbsRatio.getText().toString();
 		String hypoglycemiaLimitVal = hypoglycemiaLimit.getText().toString();
 		String hyperglycemiaLimitVal = hyperglycemiaLimit.getText().toString();
+		String targetBGVal = bg_target_Factor.getText().toString();
 
 		boolean cancel = false;
 		View focusView = null;
@@ -181,6 +185,15 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 			focusView = hyperglycemiaLimit;
 			cancel = true;
 		}
+		val = getNumber(targetBGVal);
+		if (TextUtils.isEmpty(targetBGVal) && Float.compare(val, -1) <= 0) {
+			bg_target_Factor.setError(getString(R.string.error_field_required));
+			focusView = bg_target_Factor;
+			cancel = true;
+		}
+
+
+
 
 		if (cancel) {
 			// There was an error;
@@ -210,7 +223,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 				Integer.parseInt(hyperglycemiaLimit.getText().toString(), 10),
 				container.getString(WelcomeActivity.USER_DATA_BIRTHDAY_DATE),
 				container.getString(WelcomeActivity.USER_DATA_GENDER),
-				height);
+				height,bg_target);
 		if(!success){
 			Log.w(TAG, "Failed to save user data!");
 		}

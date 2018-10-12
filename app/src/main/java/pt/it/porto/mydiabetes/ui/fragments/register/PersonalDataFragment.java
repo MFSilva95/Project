@@ -144,17 +144,17 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 			@Override
 			public void onClick(View view) {
 
-				Intent intent = ImagePicker.create((Activity) view.getContext())
-						.returnMode(ReturnMode.ALL) // set whether pick and / or camera action should return immediate result or not.
-						.folderMode(true) // folder mode (false by default)
-						.toolbarFolderTitle("Album") // folder selection title
+				//Intent intent = ImagePicker.create((Activity) view.getContext())
+						//.returnMode(ReturnMode.ALL) // set whether pick and / or camera action should return immediate result or not.
+						//.folderMode(true) // folder mode (false by default)
+						//.toolbarFolderTitle("Album") // folder selection title
 						//.toolbarImageTitle("Tap to select") // image selection title
 						//.toolbarArrowColor(Color.BLACK) // Toolbar 'up' arrow color
-						.single() // single mode
+						//.single() // single mode
 						//.multi() // multi mode (default mode)
-						.limit(1) // max images can be selected (99 by default)
-						.showCamera(true) // show camera or not (true by default)
-						.imageDirectory("Camera").getIntent(view.getContext()); // directory name for captured image  ("Camera" folder by default)
+						//.limit(1) // max images can be selected (99 by default)
+						//.showCamera(true) // show camera or not (true by default)
+						//.imageDirectory("Camera").getIntent(view.getContext()); // directory name for captured image  ("Camera" folder by default)
 						//.origin(images) // original selected images, used in multi mode
 						//.exclude(images) // exclude anything that in image.getPath()
 						//.excludeFiles(files) // same as exclude but using ArrayList<File>
@@ -173,7 +173,7 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 //				intent.putExtra(ImagePicker.EXTRA_IMAGE_TITLE, "Tap to select images");
 //				intent.putExtra(ImagePicker.EXTRA_IMAGE_DIRECTORY, "Camera");
 
-				startActivityForResult(intent, RC_CODE_PICKER);
+				//startActivityForResult(intent, RC_CODE_PICKER);
 			}
 
 

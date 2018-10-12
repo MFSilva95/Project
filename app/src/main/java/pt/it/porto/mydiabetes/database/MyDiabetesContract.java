@@ -44,6 +44,7 @@ public class MyDiabetesContract {
 		public static final String COLUMN_NAME_GENDER = "Gender";
 		public static final String COLUMN_NAME_HEIGHT = "Height";
 		public static final String COLUMN_NAME_LAST_UPDATE = "DateTimeUpdate";
+		public static final String COLUMN_GLUCOSE_TARGET = "BG_Target";
 	}
 
 	public static class Tag {
