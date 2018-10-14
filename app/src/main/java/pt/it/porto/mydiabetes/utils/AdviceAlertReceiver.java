@@ -39,7 +39,7 @@ public class AdviceAlertReceiver extends BroadcastReceiver {
         String notificationText = "";
         Bundle extras = intent.getExtras();
 
-        Log.i("cenas", "onReceive:  -> IMA HERE");
+//        Log.i("cenas", "onReceive:  -> IMA HERE");
 
 
         if(extras == null) {

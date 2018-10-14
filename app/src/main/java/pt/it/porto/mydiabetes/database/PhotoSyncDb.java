@@ -31,7 +31,7 @@ public class PhotoSyncDb {
 		if (cursor.moveToFirst()) {
 			removePhoto(cursor.getString(0));
 		} else {
-			Log.d("PhotoSyncDb", "Photo not found when deleting");
+//			Log.d("PhotoSyncDb", "Photo not found when deleting");
 		}
 	}
 

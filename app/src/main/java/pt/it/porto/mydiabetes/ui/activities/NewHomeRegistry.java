@@ -17,6 +17,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
@@ -188,13 +189,13 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_PERMISSION_SETTING) {
-            try {
-                dispatchTakePictureIntent();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+//        if (requestCode == REQUEST_PERMISSION_SETTING) {
+//            try {
+//                dispatchTakePictureIntent();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
         if(requestCode == REQUEST_CREATE_MEAL && resultCode == RESULT_OK){
             if(data.hasExtra("meal")){
                 mCurrentMeal = data.getExtras().getParcelable("meal");
@@ -204,63 +205,70 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
 
         }
-
+        /**
+         * We asked for camera and storage permission, if we got it -> advance to camera intent
+         */
 //        if (requestCode == REQUEST_PERMISSION_SETTING) {
-//            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+//                    + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 //                try {
-//                    dispatchTakePictureIntent();
+//                   dispatchTakePictureIntent();
 //                } catch (IOException e) {
 //                    e.printStackTrace();
 //                }
 //            }
 //        }
 
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+//        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
+//
+//            //Image cameraImg = ImagePicker.getFirstImageOrNull(data);
+//            File photoFile = null;
+//            try {
+//                photoFile = createImageFile();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            if (photoFile != null) {
+//                if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+//                    try {
+//                        copy19plus(cameraImg.getPath(), photoFile);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    Uri photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,BuildConfig.APPLICATION_ID + ".provider", photoFile);
+//                    carbsRegisterInputInterface.setUri(photoURI);
+//                }else{
+//                    try {
+//                        copyUnder19(cameraImg.getPath(), photoFile);
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                    carbsRegisterInputInterface.setUri(Uri.fromFile(photoFile));
+//                }
+//            }
+//            String cameraFileName = cameraImg.getPath();
+//            File file = new File(cameraFileName);
+//            //Log.i(TAG, "onActivityResult: "+cameraFileName);
+//            boolean deleted = file.delete();
+//            Log.i(TAG, "onActivityResult: file deleted: "+deleted);
+//
+//
+//
+//
+//            //getImages(data);
+//
+//            Uri imgUri = Uri.parse(mCurrentPhotoPath);
+//            carbsRegisterInputInterface.setUri(imgUri);
+//            setImgURI(imgUri);
+//
+//        }
 
-            Image cameraImg = ImagePicker.getFirstImageOrNull(data);
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (photoFile != null) {
-                if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
-                    try {
-                        copy19plus(cameraImg.getPath(), photoFile);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    Uri photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,BuildConfig.APPLICATION_ID + ".provider", photoFile);
-                    carbsRegisterInputInterface.setUri(photoURI);
-                }else{
-                    try {
-                        copyUnder19(cameraImg.getPath(), photoFile);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    carbsRegisterInputInterface.setUri(Uri.fromFile(photoFile));
-                }
-            }
-            String cameraFileName = cameraImg.getPath();
-            File file = new File(cameraFileName);
-            //Log.i(TAG, "onActivityResult: "+cameraFileName);
-            boolean deleted = file.delete();
-            Log.i(TAG, "onActivityResult: file deleted: "+deleted);
-
-
-
-
-            //getImages(data);
-
-            Uri imgUri = Uri.parse(mCurrentPhotoPath);
-            carbsRegisterInputInterface.setUri(imgUri);
-            setImgURI(imgUri);
-
-        }if(requestCode == BLOOD_GLUCOSE && resultCode == RESULT_OK){
+        if(requestCode == BLOOD_GLUCOSE && resultCode == RESULT_OK){
             glycaemiaRegisterInputInterface.updateObjective();
         }
+
+
         else if (requestCode == IMAGE_VIEW) {
             //se tivermos apagado a foto dá result code -1
             //se voltarmos por um return por exemplo o resultcode é 0
@@ -640,7 +648,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
     private void save_record () throws Exception{
         spinner = findViewById(R.id.tag_spinner);
-        int idTag = (spinner.getSelectedItemPosition());
+        int idTag = (spinner.getSelectedItemPosition()+1);
 
         DB_Read rdb = new DB_Read(this);
         int idUser = rdb.getId();
@@ -1224,28 +1232,29 @@ public class NewHomeRegistry extends AppCompatActivity{
 
     private void dispatchTakePictureIntent() throws IOException {
 
-        Intent takePictureIntent = ImagePicker.cameraOnly().getIntent(this);
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //Intent takePictureIntent = ImagePicker.cameraOnly().getIntent(this);
 
-        // Ensure that there's a camera activity to handle the intent
-//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//            // Create the File where the photo should go
-//            File photoFile = null;
-//            photoFile = createImageFile();
-//
-//            // Continue only if the File was successfully created
-//            if (photoFile != null) {
-//
-//                if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
-//                    Uri photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,
-//                            BuildConfig.APPLICATION_ID + ".provider",
-//                            photoFile);
-//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//                }else{
-//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-//                }
+        //Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            photoFile = createImageFile();
+
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+
+                if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
+                    Uri photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,
+                            BuildConfig.APPLICATION_ID + ".provider",
+                            photoFile);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                }else{
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                }
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-//            }
-//        }
+            }
+        }
     }
 
 //    private void dispatchTakePictureIntent() throws IOException {
@@ -1536,7 +1545,7 @@ public class NewHomeRegistry extends AppCompatActivity{
 //    }
     private void save_current_input_data(){
         int idTag = (spinner.getSelectedItemPosition());
-        Log.i(TAG, "save_current_input_data: -> -> "+idTag);
+//        Log.i(TAG, "save_current_input_data: -> -> "+idTag);
 
         if (glycaemiaRegisterInputInterface != null ) {
             glycemiaData  = glycaemiaRegisterInputInterface.save_read();
@@ -1561,7 +1570,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             int index = ((StringSpinnerAdapter) spinner.getAdapter()).getItemPosition(displayTag.getName());
             if(index>=0){
                 spinner.setSelection(index);
-                Log.i(TAG, "save_current_input_data: -> -> "+index);
+//                Log.i(TAG, "save_current_input_data: -> -> "+index);
             }
         }
     }
@@ -1579,9 +1588,11 @@ public class NewHomeRegistry extends AppCompatActivity{
                 String[] temp_end = nextTag.getStart().split(":");
                 //String[] temp_end = tag.getEnd().split(":");
                 int startTagTime = Integer.parseInt(temp_start[0], 10) * 60 + Integer.parseInt(temp_start[1]);
-                int endTagTime = Integer.parseInt(temp_end[0], 10) * 60 + Integer.parseInt(temp_end[1]);
+                int h = Integer.parseInt(temp_end[0],10);
+                if(h==0){ h = 24;}
+                int endTagTime = h * 60 + Integer.parseInt(temp_end[1]);
 
-                if(currentTime>=startTagTime && currentTime<=endTagTime){
+                if(currentTime >= startTagTime && currentTime <= endTagTime){
                     return tag;
                 }
                 //int endTagTime = Integer.parseInt(temp_end[0], 10) * 60 + Integer.parseInt(temp_end[1]);

@@ -96,7 +96,7 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
             convertView = layoutInflater.inflate(R.layout.badge_display_row, null);
         }
 
-        Log.i(TAG, "CLICKED ON: POS: "+listPosition+" inside: " +expandedListPosition);
+//        Log.i(TAG, "CLICKED ON: POS: "+listPosition+" inside: " +expandedListPosition);
 
         //Log.i(TAG, "-----------------------------getChildView: "+badgeRow.keySet());
 
@@ -104,7 +104,7 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
             TextView badgeTextHolder = null;
             ImageView badgeBackGroundHolder = null;
             ImageView badgeIcon = null;
-            Log.i(TAG, "getChildView: -----------------------------> "+obj.getMark());
+//            Log.i(TAG, "getChildView: -----------------------------> "+obj.getMark());
             switch (obj.getMark()){
                 case bronze:
                     badgeTextHolder = (TextView) convertView.findViewById(R.id.badge_text1);
@@ -145,7 +145,7 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
             }
 
             String test = obj.getMyStringPath();
-            Log.i(TAG, "test: "+test);
+//            Log.i(TAG, "test: "+test);
 
             badgeTextHolder.setText(con.getResources().getIdentifier(obj.getMyStringPath(),"string", con.getPackageName()));
             if(!obj.isLocked()){

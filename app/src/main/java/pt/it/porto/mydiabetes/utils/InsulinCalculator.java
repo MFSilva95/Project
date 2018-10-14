@@ -39,7 +39,7 @@ public class InsulinCalculator  implements Cloneable {
 		int defaultInsuratio = rdb.getInsulinRatio();
 
 		String d = DateUtils.formatTimeToDb(c);
-		Log.i("cenas", "InsulinCalculator: !!!! "+d);
+//		Log.i("cenas", "InsulinCalculator: !!!! "+d);
 
 		glycemiaRatio = rdb.Sensitivity_GetCurrent(d);
 		carbsRatio = rdb.Ratio_GetCurrent(d);
@@ -109,7 +109,7 @@ public class InsulinCalculator  implements Cloneable {
 		if(insulinTotal<0){
 			insulinTotal = 0.0f;
 		}
-		Log.i("cenas", "  -> getInsulinTotal: "+insulinTotal);
+//		Log.i("cenas", "  -> getInsulinTotal: "+insulinTotal);
 		return insulinTotal;
 	}
 

@@ -62,7 +62,7 @@ public class DB_Write {
 
 	public void close() {
 		myDB.close();
-		Log.d("Close", "DB_Write");
+//		Log.d("Close", "DB_Write");
 	}
 
 	public void MyData_Save(UserInfo obj) {

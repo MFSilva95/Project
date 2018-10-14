@@ -180,7 +180,7 @@ public class DiseaseDetail extends BaseActivity {
 
 		//Get id of selected exercise
 		String disease = diseaseSpinner.getText().toString();
-		Log.d("selected disease", disease);
+//		Log.d("selected disease", disease);
 		DB_Write reg = new DB_Write(this);
 		if (!rdb.Disease_ExistName(diseaseSpinner.getText().toString())) {
 			reg.Disease_Add(diseaseSpinner.getText().toString());

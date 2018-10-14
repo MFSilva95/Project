@@ -181,7 +181,7 @@ public class BadgeUtils {
 
     public static void addLogBadge(Context context, DB_Read db, DB_Write dbwrite) {
 
-        Log.i("rawr", "addLogBadge:  BEGIN");
+//        Log.i("rawr", "addLogBadge:  BEGIN");
 
         int idUser = db.getId();
         //LinkedList<HomeElement> logBookEntries = new LinkedList<>();
@@ -299,7 +299,7 @@ public class BadgeUtils {
                 }
             }
         }
-        Log.i("rawr", "addLogBadge:                 - > "+numberReg);
+//        Log.i("rawr", "addLogBadge:                 - > "+numberReg);
 
         //BEGINNER
         //if(logBookEntries.size()>=LOG_BRONZE_RECORDS_B && !flagBronzeB){
@@ -412,7 +412,7 @@ public class BadgeUtils {
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
             SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
         }
-        Log.i("rawr", "addLogBadge:  END");
+//        Log.i("rawr", "addLogBadge:  END");
     }
 
     public static void addExerciseBadge(Context context, DB_Read db) {

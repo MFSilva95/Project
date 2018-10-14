@@ -176,10 +176,10 @@ public class DB_Read {
 	 * @return
 	 */
 		public String Tag_GetNameById(int id) {
-		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag ORDER BY TimeStart",null);
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag ORDER BY Id",null);
 		cursor.moveToFirst();
 		Log.i(TAG, "Tag_GetNameById: "+cursor.getCount());
-		cursor.move(id);
+		cursor.move(id-1);
 		String name = cursor.getString(1);
 		cursor.close();
 		return name;
@@ -210,7 +210,7 @@ public class DB_Read {
 	}
 
 	public ArrayList<Tag> Tag_GetAll() {
-		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag ORDER BY TimeStart", null);
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Tag ORDER BY Id", null);
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		ArrayList<Tag> tags = new ArrayList<>();
 		if (cursor.getCount() > 0) {
@@ -404,7 +404,7 @@ public class DB_Read {
 
 	public ArrayList<Insulin> Insulins_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Insulin", null);
-		Log.i("cenas", "Insulins_GetAll-> ->: "+DatabaseUtils.dumpCursorToString(cursor));
+//		Log.i("cenas", "Insulins_GetAll-> ->: "+DatabaseUtils.dumpCursorToString(cursor));
 
 		Log.d("Cursor", String.valueOf(cursor.getCount()));
 		ArrayList<Insulin> insulinRecs = new ArrayList<>();
@@ -1790,7 +1790,7 @@ public class DB_Read {
 		Cursor cursor = myDB.rawQuery("SELECT Value FROM Sensitivity_Reg Where TimeStart <= '"+currentTime+ "' ORDER BY TimeStart DESC limit 1", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			Log.i("cenas", "Sensitivity_GetCurrent: ->>>>>> "+currentTime+ " with value: "+cursor.getString(0));
+//			Log.i("cenas", "Sensitivity_GetCurrent: ->>>>>> "+currentTime+ " with value: "+cursor.getString(0));
 			return Integer.parseInt(cursor.getString(0));
 		} else {
 			cursor.close();
@@ -1801,7 +1801,7 @@ public class DB_Read {
 		Cursor cursor = myDB.rawQuery("SELECT Value FROM Ratio_Reg Where TimeStart <= '"+currentTime+ "' ORDER BY TimeStart DESC limit 1", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			Log.i("cenas", "RATIO_GetCurrent: ->>>>>> "+currentTime+ " with value: "+cursor.getString(0));
+//			Log.i("cenas", "RATIO_GetCurrent: ->>>>>> "+currentTime+ " with value: "+cursor.getString(0));
 			return Integer.parseInt(cursor.getString(0));
 		} else {
 			cursor.close();

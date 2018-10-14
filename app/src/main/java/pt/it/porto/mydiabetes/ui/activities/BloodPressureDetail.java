@@ -238,7 +238,7 @@ public class BloodPressureDetail extends BaseActivity {
 
 		//Get id of selected tag
 		String tag = tagSpinner.getSelectedItem().toString();
-		Log.d("selected Spinner", tag);
+//		Log.d("selected Spinner", tag);
 		int idTag = rdb.Tag_GetIdByName(tag);
 
 		BloodPressureRec bp = new BloodPressureRec();
@@ -255,7 +255,7 @@ public class BloodPressureDetail extends BaseActivity {
 		bp.setDiastolic(Integer.parseInt(diastolic.getText().toString()));
 		// Add the current seconds to differentiate (and correctly order) entries on the same minute
 		bp.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
-		Log.e("REG TIME FINAL", hora.getText().toString()+":"+Calendar.getInstance().get(Calendar.SECOND));
+//		Log.e("REG TIME FINAL", hora.getText().toString()+":"+Calendar.getInstance().get(Calendar.SECOND));
 		bp.setIdTag(idTag);
 
 		wdb.BloodPressure_Save(bp);
@@ -298,7 +298,7 @@ public class BloodPressureDetail extends BaseActivity {
 		int idUser = rdb.getId();
 		//Get id of selected tag
 		String tag = tagSpinner.getSelectedItem().toString();
-		Log.d("selected Spinner", tag);
+//		Log.d("selected Spinner", tag);
 		int idTag = rdb.Tag_GetIdByName(tag);
 
 		BloodPressureRec bp = new BloodPressureRec();
