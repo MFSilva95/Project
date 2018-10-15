@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.ui.fragments.register;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Log;
@@ -36,7 +37,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 	private EditText hypoglycemiaLimit;
 	private EditText hyperglycemiaLimit;
 	private View layout = null;
-	private String userImgFileName = "profilePhoto.png";
+	private String userImgFileName = "profilePhoto";
 	private ScrollView scrollView;
 
 	/**
@@ -227,21 +228,20 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		if(!success){
 			Log.w(TAG, "Failed to save user data!");
 		}
-		ContextWrapper cw = new ContextWrapper(getContext());
-		File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-		// Create imageDir
-		File mypath = new File(directory, userImgFileName);
+
+		File profile_img = new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg");
+		DB_Read read = new DB_Read(getContext());
+		if(profile_img.exists()){
+				BadgeUtils.addPhotoBadge(getContext(), read);
+		}
 
 		storage.initRacioSens(sensR, "Sensitivity_Reg");
 		storage.initRacioSens(carbsR, "Ratio_Reg");
 		storage.initTarget_bg(bg_target);
 
-		DB_Read read = new DB_Read(getContext());
-		if (mypath.exists()) {
-			BadgeUtils.addPhotoBadge(getContext(), read);
-		}
 		LevelsPointsUtils.addPoints(getContext(),0,"first", read);
 		read.close();
+
 	}
 
 	private float getNumber(String val) {

@@ -1,19 +1,28 @@
 package pt.it.porto.mydiabetes.ui.fragments.register;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 
 import android.text.TextUtils;
@@ -49,8 +58,10 @@ import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -65,8 +76,13 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 	public static final int DEFAULT_BIRTHDAY_YEAR = 1980;
 	public static final int DEFAULT_BIRTHDAY_MONTH = 5;
 	public static final int DEFAULT_BIRTHDAY_DAY = 15;
+	private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 10;
 
 	private static final int RC_CODE_PICKER = 2000;
+	private static final int REQUEST_TAKE_PHOTO = 6;
+
+	private int THUMBSIZE = 350;
+
 
 
 
@@ -80,6 +96,8 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 	private GregorianCalendar birthdayDate;
 	private RadioGroup mGenderGroup;
 	private Bitmap bmp;
+	private String userImgFileName = "profilePhoto";
+	private Uri currentImageUri;
 
 	private ScrollView scrollView;
 
@@ -98,6 +116,92 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 
 	public PersonalDataFragment() {
 	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+		if(requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT){
+			if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+					+ ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+				dispatchTakePictureIntent();
+			}else{
+				Toast.makeText(getContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+			}
+		}
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(resultCode == RESULT_OK){
+            setProfilePhoto();
+        }
+
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	private void setProfilePhoto() {
+
+		try {
+
+			InputStream input = this.getContext().getContentResolver().openInputStream(currentImageUri);
+			if (input == null) {
+				Toast.makeText(getContext(),"Unable to save photo",Toast.LENGTH_LONG).show();
+			}
+			Bitmap pic_bitmap = BitmapFactory.decodeStream(input);
+			File photoFile = null;
+			try {
+				photoFile = createImageFile();
+				try (FileOutputStream out = new FileOutputStream(photoFile)) {
+					pic_bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+					out.flush();
+					out.close();
+
+					displayImg(photoFile.getAbsolutePath());
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+			Toast.makeText(getContext(),"Unable to save photo",Toast.LENGTH_LONG).show();
+		}
+	}
+
+
+	private File createImageFile() throws IOException {
+		// Create an image file name
+		//String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		String imageFileName = userImgFileName;
+		File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+		File image = File.createTempFile(
+				imageFileName,  /* prefix */
+				".jpg",         /* suffix */
+				storageDir      /* directory */
+		);
+
+		return image;
+	}
+
+
+
+	private void displayImg(String path){
+
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inPreferredConfig = Bitmap.Config.RGB_565;
+		Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+		profileImage.setImageBitmap(Bitmap.createScaledBitmap(bitmap, THUMBSIZE, THUMBSIZE, false));
+
+	}
+
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -144,36 +248,12 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 			@Override
 			public void onClick(View view) {
 
-				//Intent intent = ImagePicker.create((Activity) view.getContext())
-						//.returnMode(ReturnMode.ALL) // set whether pick and / or camera action should return immediate result or not.
-						//.folderMode(true) // folder mode (false by default)
-						//.toolbarFolderTitle("Album") // folder selection title
-						//.toolbarImageTitle("Tap to select") // image selection title
-						//.toolbarArrowColor(Color.BLACK) // Toolbar 'up' arrow color
-						//.single() // single mode
-						//.multi() // multi mode (default mode)
-						//.limit(1) // max images can be selected (99 by default)
-						//.showCamera(true) // show camera or not (true by default)
-						//.imageDirectory("Camera").getIntent(view.getContext()); // directory name for captured image  ("Camera" folder by default)
-						//.origin(images) // original selected images, used in multi mode
-						//.exclude(images) // exclude anything that in image.getPath()
-						//.excludeFiles(files) // same as exclude but using ArrayList<File>
-						//.theme(R.style.CustomImagePickerTheme) // must inherit ef_BaseTheme. please refer to sample
-						//.enableLog(false) // disabling log
-						//.imageLoader(new GrayscaleImageLoder()) // custom image loader, must be serializeable
-						//.start(); // start image picker activity with request code
-
-//				Intent intent = new Intent(getContext(), ImagePickerActivity.class);
-
-//				intent.putExtra(ImagePicker.EXTRA_FOLDER_MODE, true);
-//				intent.putExtra(ImagePicker.EXTRA_MODE, ImagePicker.MODE_SINGLE);
-//				intent.putExtra(ImagePicker.EXTRA_SHOW_CAMERA, true);
-//				intent.putExtra(ImagePicker.EXTRA_SELECTED_IMAGES, images);
-//				intent.putExtra(ImagePicker.EXTRA_FOLDER_TITLE, "Album");
-//				intent.putExtra(ImagePicker.EXTRA_IMAGE_TITLE, "Tap to select images");
-//				intent.putExtra(ImagePicker.EXTRA_IMAGE_DIRECTORY, "Camera");
-
-				//startActivityForResult(intent, RC_CODE_PICKER);
+				if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA + Manifest.permission.WRITE_EXTERNAL_STORAGE + Manifest.permission.READ_EXTERNAL_STORAGE)
+						== PackageManager.PERMISSION_GRANTED) {
+					dispatchTakePictureIntent();
+				}else{
+					requestPermissions( new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+				}
 			}
 
 
@@ -199,35 +279,14 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 		return layout;
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-		final int THUMBSIZE = 350;
-		if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
-			images = ImagePicker.getImages(data);//data.getParcelableArrayListExtra(ImagePicker.EXTRA_SELECTED_IMAGES);
-			bmp = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(images.get(0).getPath()), THUMBSIZE, THUMBSIZE);
-			ContextWrapper cw = new ContextWrapper(getContext());
-			// path to /data/data/yourapp/app_data/imageDir
-			File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-			// Create imageDir
-			File mypath=new File(directory,filename);
-			FileOutputStream fos = null;
-			try {
-				fos = new FileOutputStream(mypath);
-				// Use the compress method on the BitMap object to write image to the OutputStream
-				bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
-			} catch (Exception e) {
-				e.printStackTrace();
-			} finally {
-				try {
-					fos.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-			profileImage.setImageURI(Uri.parse(mypath.getAbsolutePath()));
-		}
-
+	private void dispatchTakePictureIntent(){
+		currentImageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg"));
+		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+		takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentImageUri);
+		startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
 	}
+
+
 
 
 	@Override
@@ -330,6 +389,8 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 		displayDate.append(birthdayDate.get(Calendar.YEAR));
 		mDateView.setText(displayDate.toString());
 	}
+
+
 
 	@Override
 	public int getSubtitle() {

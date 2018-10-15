@@ -31,13 +31,15 @@
             android:textSize="26sp"
             android:textStyle="bold|italic" />
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                      android:id="@+id/profile_image"
-                                                      android:layout_width="100dp"
-                                                      android:layout_height="100dp"
-                                                      app:srcCompat="@drawable/ic_add_photo"
-                                                      app:civ_border_color="@android:color/white"
-                                                      app:civ_border_width="2dp" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_add_photo"
+            app:civ_border_color="@android:color/white"
+            android:visibility="visible"
+            app:civ_border_width="2dp" />
 
         <TextView
             android:layout_width="match_parent"

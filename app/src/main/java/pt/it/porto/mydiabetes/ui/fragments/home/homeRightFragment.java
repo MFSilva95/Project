@@ -14,6 +14,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -77,7 +78,6 @@ public class homeRightFragment extends Fragment  {
     private UserInfo myData;
     //private CircleImageView userImg;
     private String userImgFileName = "profilePhoto";
-    private SharedPreferences mPrefs;
     private String imgUriString;
     private View layout;
     final int THUMBSIZE = 350;
@@ -144,8 +144,6 @@ public class homeRightFragment extends Fragment  {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.fragment_home_right, container, false);
-        mPrefs = getContext().getSharedPreferences("label", 0);
-        imgUriString = mPrefs.getString("userImgUri", null);
 
 
         DB_Read read = new DB_Read(getContext());
@@ -250,6 +248,11 @@ public class homeRightFragment extends Fragment  {
 
         if(resultCode == RESULT_OK){
             setProfilePhoto();
+
+            DB_Read rdb = new DB_Read(getContext());
+            BadgeUtils.addPhotoBadge(getContext(), rdb);
+            rdb.close();
+            updateMedals();
             //Toast.makeText(this, "Photo attached", Toast.LENGTH_SHORT).show();
         }
 
@@ -303,10 +306,7 @@ public class homeRightFragment extends Fragment  {
 
 
 
-                DB_Read rdb = new DB_Read(getContext());
-                BadgeUtils.addPhotoBadge(getContext(), rdb);
-                rdb.close();
-                updateMedals();
+
 
             //}
 
@@ -381,14 +381,10 @@ public class homeRightFragment extends Fragment  {
 
     private void setImage() {
         mCircleView = (CircularMusicProgressBar) layout.findViewById(R.id.circleView);
-
-        ContextWrapper cw = new ContextWrapper(getContext());
-        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        File mypath = new File(directory, userImgFileName);
-        if (mypath.exists()) {
-            Bitmap bmp = BitmapFactory.decodeFile(mypath.getPath());
-            mCircleView.setImageBitmap(bmp);
+        File profile_img = new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg");
+        if(profile_img.exists()){
+            Bitmap bmp = BitmapFactory.decodeFile(profile_img.getAbsolutePath());
+            mCircleView.setImageBitmap(Bitmap.createScaledBitmap(bmp, THUMBSIZE, THUMBSIZE, false));
         }
 
         mCircleView.setOnClickListener(new View.OnClickListener() {
@@ -396,7 +392,7 @@ public class homeRightFragment extends Fragment  {
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA + Manifest.permission.WRITE_EXTERNAL_STORAGE + Manifest.permission.READ_EXTERNAL_STORAGE)
                         == PackageManager.PERMISSION_GRANTED) {
-
+                    dispatchTakePictureIntent();
                 }else{
                     requestPermissions( new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
                 }
@@ -467,6 +463,9 @@ public class homeRightFragment extends Fragment  {
                     out.close();
 
                     displayImg(photoFile.getAbsolutePath());
+
+                    Log.i("cenas", "setProfilePhoto: -> "+photoFile.getAbsolutePath());
+
 
 
                 } catch (IOException e) {
