@@ -1,18 +1,26 @@
 package pt.it.porto.mydiabetes.ui.fragments.home;
 
+import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.ThumbnailUtils;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -33,10 +42,14 @@ import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.github.javiersantos.materialstyleddialogs.enums.Style;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,8 +60,10 @@ import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.Badges;
 import pt.it.porto.mydiabetes.ui.activities.MyData;
+import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 import static android.app.Activity.RESULT_OK;
@@ -61,10 +76,13 @@ public class homeRightFragment extends Fragment  {
 
     private UserInfo myData;
     //private CircleImageView userImg;
-    private String userImgFileName = "profilePhoto.png";
+    private String userImgFileName = "profilePhoto";
     private SharedPreferences mPrefs;
     private String imgUriString;
     private View layout;
+    final int THUMBSIZE = 350;
+
+    private int EXTERNAL_CAMERA_PERMISSION_CONSTANT = 991;
 
     private ImageButton helpButton;
     private ImageView beginnerBadge;
@@ -74,6 +92,8 @@ public class homeRightFragment extends Fragment  {
     private ImageView advancedBadge;
     private TextView advancedBadgesText;
     private ImageView currentBadge;
+
+    private Uri currentImageUri;
 
     private TextView levelText;
     private TextView pointsText;
@@ -85,7 +105,9 @@ public class homeRightFragment extends Fragment  {
     //private int countDaily;
     private BadgeRec dailyBadge;
 
-    private static final int RC_CODE_PICKER = 2000;
+    private static final int REQUEST_TAKE_PHOTO = 6;
+    private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 7;
+
     private Bitmap bmp;
     private List<Image> images = new ArrayList<>();
 
@@ -95,6 +117,20 @@ public class homeRightFragment extends Fragment  {
     }
 
     public homeRightFragment() {
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if(requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT){
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    + ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent();
+            }else{
+                Toast.makeText(getContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -116,7 +152,7 @@ public class homeRightFragment extends Fragment  {
 
         int points = LevelsPointsUtils.getPercentageLevels(getContext(),read);
         int lvl = LevelsPointsUtils.getLevel(getContext(),read);
-        Log.i("cenas", "LEVEL: "+lvl);
+        //Log.i("cenas", "LEVEL: "+lvl);
         int nextLvlPoints = LevelsPointsUtils.getPointsNextLevel(getContext(),read);
         int totalPoints = LevelsPointsUtils.getTotalPoints(getContext(), read);
 
@@ -210,37 +246,91 @@ public class homeRightFragment extends Fragment  {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        final int THUMBSIZE = 350;
-        if (requestCode == RC_CODE_PICKER && resultCode == RESULT_OK && data != null) {
-            images = ImagePicker.getImages(data);//ImagePicker.EXTRA_SELECTED_IMAGES);
-            bmp = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(images.get(0).getPath()), THUMBSIZE, THUMBSIZE);
-            ContextWrapper cw = new ContextWrapper(getContext());
-            // path to /data/data/yourapp/app_data/imageDir
-            File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-            // Create imageDir
-            File mypath = new File(directory, userImgFileName);
-            FileOutputStream fos = null;
 
-            try {
-                fos = new FileOutputStream(mypath);
-                // Use the compress method on the BitMap object to write image to the OutputStream
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            mCircleView.setImageBitmap(bmp);
-            DB_Read rdb = new DB_Read(getContext());
-            BadgeUtils.addPhotoBadge(getContext(), rdb);
-            rdb.close();
-            updateMedals();
+
+        if(resultCode == RESULT_OK){
+            setProfilePhoto();
+            //Toast.makeText(this, "Photo attached", Toast.LENGTH_SHORT).show();
         }
+
+        //
+        //if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK && data != null) {
+
+
+
+            //File profileImg = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes", userImgFileName);
+
+//            if(images.size()>0){
+            //if(profileImg.exists()){
+
+//                bmp = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(images.get(0).getPath()), THUMBSIZE, THUMBSIZE);
+                //bmp = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(profileImg.getPath()), THUMBSIZE, THUMBSIZE);
+//                ContextWrapper cw = new ContextWrapper(getContext());
+//                // path to /data/data/yourapp/app_data/imageDir
+//
+//                //File directory = cw.getDir(Environment.getExternalStorageDirectory()+"/MyDiabetes/imageDir",Context.MODE_PRIVATE);
+//                File directory = new File(Environment.getExternalStorageDirectory()+"/MyDiabetes");
+//                if(!directory.exists()){
+//                    directory.mkdirs();
+//                }
+//
+//                //File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+//                // Create imageDir
+//                File mypath = new File(directory, userImgFileName);
+//                FileOutputStream fos = null;
+//
+//                try {
+//                    fos = new FileOutputStream(mypath);
+//                    // Use the compress method on the BitMap object to write image to the OutputStream
+//                    bmp.compress(Bitmap.CompressFormat.PNG, 100, fos);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                } finally {
+//                    try {
+//                        fos.close();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                bmp = BitmapFactory.decodeFile(mypath.getPath());
+//
+//                for(Image img: images){
+//                    //File file = new File(images.get(0).getPath());
+//                    File file = new File(img.getPath());
+//                    deleteFileFromMediaStore(this.getContext().getContentResolver(), file);
+//                    //boolean deleted = file.delete();
+//                }
+
+
+
+                DB_Read rdb = new DB_Read(getContext());
+                BadgeUtils.addPhotoBadge(getContext(), rdb);
+                rdb.close();
+                updateMedals();
+
+            //}
+
+        //}
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    public  void deleteFileFromMediaStore(final ContentResolver contentResolver, final File file) {
+        String canonicalPath;
+        try {
+            canonicalPath = file.getCanonicalPath();
+        } catch (IOException e) {
+            canonicalPath = file.getAbsolutePath();
+        }
+        final Uri uri = MediaStore.Files.getContentUri("external");
+        final int result = contentResolver.delete(uri,
+                MediaStore.Files.FileColumns.DATA + "=?", new String[] {canonicalPath});
+        if (result == 0) {
+            final String absolutePath = file.getAbsolutePath();
+            if (!absolutePath.equals(canonicalPath)) {
+                contentResolver.delete(uri,
+                        MediaStore.Files.FileColumns.DATA + "=?", new String[]{absolutePath});
+            }
+        }
     }
 
 
@@ -304,23 +394,34 @@ public class homeRightFragment extends Fragment  {
         mCircleView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=ImagePicker.create(homeRightFragment.this)
-                        //.returnAfterFirst(true)
-                        .returnMode(ReturnMode.ALL)
-                        .folderMode(true)
-                        .showCamera(true)
-                        .limit(1)
-                        //.folderTitle("Album")
-                        .toolbarFolderTitle("Album")
-                        //.imageTitle("Tap to select images")
-                        //.toolbarImageTitle("")
-                        .single()
-                        .imageDirectory("Camera")
-                        .getIntent(homeRightFragment.this.getContext());
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA + Manifest.permission.WRITE_EXTERNAL_STORAGE + Manifest.permission.READ_EXTERNAL_STORAGE)
+                        == PackageManager.PERMISSION_GRANTED) {
 
-                startActivityForResult(intent, RC_CODE_PICKER);
+                }else{
+                    requestPermissions( new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+                }
+
             }
         });
+    }
+    private void dispatchTakePictureIntent(){
+        currentImageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg"));
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentImageUri);
+        startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+    }
+
+    private Uri getImgURI(){
+            File file = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes", userImgFileName);
+            File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
+            if (!dir.exists()) {
+                if (dir.mkdir()) {
+                // unable to create directory
+                // todo report and recover
+                }
+            }
+        Uri generatedImageUri = Uri.fromFile(file);
+        return generatedImageUri;
     }
 
     public void setMyDataFromDB(UserInfo obj) {
@@ -332,5 +433,69 @@ public class homeRightFragment extends Fragment  {
             name.setText(obj.getUsername()+", "+age);
         }
     }
+
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        //String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = userImgFileName;
+        File storageDir = getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        return image;
+    }
+
+    private void setProfilePhoto() {
+
+        try {
+
+            InputStream input = this.getContext().getContentResolver().openInputStream(currentImageUri);
+            if (input == null) {
+                Toast.makeText(getContext(),"Unable to save photo",Toast.LENGTH_LONG).show();
+            }
+            Bitmap pic_bitmap = BitmapFactory.decodeStream(input);
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+                try (FileOutputStream out = new FileOutputStream(photoFile)) {
+                    pic_bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+                    out.flush();
+                    out.close();
+
+                    displayImg(photoFile.getAbsolutePath());
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+            Toast.makeText(getContext(),"Unable to save photo",Toast.LENGTH_LONG).show();
+        }
+    }
+    private void displayImg(String path){
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+        mCircleView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, THUMBSIZE, THUMBSIZE, false));
+
+//        if(thumbnailPhotoView.getVisibility() == View.GONE) {
+//            cameraPlaceholder.setVisibility(View.GONE);
+//            thumbnailPhotoView.setVisibility(View.VISIBLE);
+//        }
+    }
+
 
 }

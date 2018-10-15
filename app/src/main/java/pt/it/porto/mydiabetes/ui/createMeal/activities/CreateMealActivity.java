@@ -18,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -140,6 +141,20 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if(requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT){
+            if (ActivityCompat.checkSelfPermission(CreateMealActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    + ActivityCompat.checkSelfPermission(CreateMealActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent();
+            }else{
+                Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    @Override
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
         if (viewHolder instanceof CreateMealListAdapter.ViewHolder) {
 
@@ -147,15 +162,17 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
         }
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
 
         switch(requestCode){
 
             case EXTERNAL_STORAGE_PERMISSION_CONSTANT:
                 if (ActivityCompat.checkSelfPermission(CreateMealActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    + ActivityCompat.checkSelfPermission(CreateMealActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    + ActivityCompat.checkSelfPermission(CreateMealActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     dispatchTakePictureIntent();
                 }else{
                     Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
