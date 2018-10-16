@@ -97,7 +97,7 @@
         </activity>
         <activity
             android:name=".ui.activities.Settings"
-            android:label="Definições"
+            android:label="@string/action_settings"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

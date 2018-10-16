@@ -11,7 +11,7 @@
     <string name="navDiabetesTools">Definições Gestão Diabetes</string>
 
     <string name="app_name">myDiabetes</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Definições</string>
 
 
     <string name="upload_failed">Infelizmente falhou o envio, tente mais tarde.</string>
@@ -153,7 +153,7 @@
     <string name="information_about_developers">Aplicação desenvolvida por Diogo Machado, Ricardo Parra, Eduardo Soares, João Maia, João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
     <string name="information_about_libraries">Esta aplicação utiliza as bibliotecas AAkira/ExpandableLayout, e Pierry/SimpleToast.</string>
     <string name="information_about_version">Versão </string>
-    <string name="information_about_contact" translatable="false">mydiabetes@dcc.fc.up.pt\n\nhttp://mydiabetes.dcc.fc.up.pt/</string>
+    <string name="information_about_contact" translatable="false">mydiabetes@dcc.fc.up.pt\n\n https://mydiabetes.dcc.fc.up.pt/</string>
 
 
     <string name="preferences_target">Objetivos Glicemia</string>
