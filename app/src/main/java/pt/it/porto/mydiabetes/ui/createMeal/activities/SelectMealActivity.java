@@ -30,9 +30,9 @@ import pt.it.porto.mydiabetes.ui.createMeal.fragments.LoggedMealListFragment;
 public class SelectMealActivity extends AppCompatActivity {
     private static final String TAG = "SelectMealActivity";
 
-    private RecyclerView recyclerView;
-    private MealItemListAdapter mAdapter;
-    private SearchView searchView;
+//    private RecyclerView recyclerView;
+//    private MealItemListAdapter mAdapter;
+//    private SearchView searchView;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;

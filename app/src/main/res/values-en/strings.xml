@@ -17,7 +17,7 @@
     <string name="title_activity_exercise">Exercise Register</string>
     <string name="title_activity_insulin">Insulin Register</string>
     <string name="title_activity_logbook">LogBook</string>
-    <string name="title_activity_blood_pressure">B.P. Registers</string>
+    <string name="title_activity_blood_pressure">B.P. Register</string>
     <string name="title_activity_carbo_hydrate">Carbohydrates Register</string>
     <string name="title_activity_cholesterol">Cholesterol Register</string>
     <string name="title_activity_disease">Disease Register</string>
@@ -43,7 +43,7 @@
 
     <string name="add_MedicinesFragment">Add Medicament</string>
     <string name="add_Carbs">Add Carbo-hydrates</string>
-    <string name="add_more_registers">Add more Registers</string>
+    <string name="add_more_registers">Add more Entries</string>
     <string name="add_photo">Add Photo</string>
 
 
@@ -209,10 +209,10 @@
     <string name="photo" >Foto</string>
 
 
-    <string name="insulin_action_rapid" >Quick</string>
-    <string name="insulin_action_short" >Short</string>
-    <string name="insulin_action_intermediate" >Intermediate</string>
-    <string name="insulin_action_long" >Long</string>
+    <string name="insulin_action_rapid" >Quick Acting</string>
+    <string name="insulin_action_short" >Short Acting</string>
+    <string name="insulin_action_intermediate" >Intermediate Acting</string>
+    <string name="insulin_action_long" >Long Acting</string>
 
 
     <string-array name="insulin_action">
@@ -233,30 +233,33 @@
     <string name="glycemia_objective_time_start_end" >From %1$s to %2$s</string>
     <string name="welcome" >Beginning</string>
     <string name="backup_share" >Save backup and send it to the Project\'s manager</string>
-    <string name="share_subject" >Dados do paciente %1$s</string>
-    <string name="share_text" >Enviado da aplicação: A Minha Diabetes</string>
-    <string name="new_feature" >Nova funcionalidade</string>
-    <string name="new_feature_iob_text_1" >Quando toma uma insulina esta não actua de imediato, mas sim ao longo de algumas horas. Como pode ver na imagem acima.</string>
-    <string name="new_feature_iob_text_2" >Agora pode ter informação da insulina que ainda está activa no seu organismo quando for tomar uma nova insulina</string>
-    <string name="notification_sync_recurrent" >Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?</string>
-    <string name="notification_sync_first_time" >Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?</string>
-    <string name="notification_sync_text" >Envie os dados ao gestor do projecto</string>
-    <string name="list_empty_message" >Nenhum resultado encontrado\nAumente o intervalo de tempo</string>
-    <string name="show_labels" >Mostrar valores</string>
-    <string name="show_hiperglicemia_limit" >Mostrar limite de hiperglicemia</string>
-    <string name="show_hipoglicemia_limit" >Mostrar limite de hipoglicemia</string>
-    <string name="filterdialog_title" >Filtro</string>
+
+    <string name="share_subject" >Pacient\'s data %1$s</string>
+    <string name="share_text" >Sent from: MyDiabetes</string>
+    <string name="new_feature" >New feature</string>
+    <string name="new_feature_iob_text_1" >When you administrate insulin it does not act immediately. Instead its action lasts hours as you can see in the image above.</string>
+    <string name="new_feature_iob_text_2" >Now, you can have information about the insulin still active on your system, when recording a new insulin dosage.</string>
+    <string name="notification_sync_recurrent" >It has been 7 days since you have sent data to the project\'s management. Want to send the data now?</string>
+    <string name="notification_sync_first_time" >It has been 7 days since you first started using the application. Do you wish to send your data to the project\'s manager?</string>
+    <string name="notification_sync_text" >Send data to the project\'s manager</string>
+    <string name="list_empty_message" >No result found. Please increase the time interval.</string>
+    <string name="show_labels" >Show values</string>
+    <string name="show_hiperglicemia_limit" >Show Hyperglycaemia limit</string>
+    <string name="show_hipoglicemia_limit" >Show Hypoglycaemia limit</string>
+    <string name="filterdialog_title" >Filter</string>
     <string name="filterdialog_subtitle_extras" >Extras</string>
-    <string name="filterdialog_subtitle_data" >Dados</string>
-    <string name="feature_cloud_sync" >Sincronizar com cloud</string>
-    <string name="feature_cloud_sync_description1" >Pode enviar para a cloud os seus dados de forma segura.</string>
-    <string name="feature_cloud_sync_description2" >A qualquer momento pode aceder aos dados em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
-    <string name="login_username" >Nome do utilizador</string>
-    <string name="login_password" >Palavra-passe</string>
-    <string name="login_extra_text" >Se não tiver uma conta, pode criar uma em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
-    <string name="login_try_later" >Tentar mais tarde</string>
-    <string name="login_try_again" >Tentar novamente</string>
-    <string name="cloudSync_edit_account" >Editar conta</string>
+    <string name="filterdialog_subtitle_data" >Data</string>
+    <string name="feature_cloud_sync" >Sync with cloud</string>
+    <string name="feature_cloud_sync_description1" >You can send your data safely to the cloud.</string>
+    <string name="feature_cloud_sync_description2" >You can access your data at any moment at<a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="login_username" >Username</string>
+    <string name="login_password" >Password</string>
+    <string name="login_extra_text" >If you dont have an account you can create a new accont at <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="login_try_later" >Please try again later</string>
+    <string name="login_try_again" >Try again?</string>
+    <string name="cloudSync_edit_account" >Edit account</string>
+
+
 
 
 
@@ -361,7 +364,7 @@
     <string name="beginner">Beginner</string>
     <string name="daily">Daily</string>
     <string name="list_badge_empty_message">Has not received any medals yet</string>
-    <string name="ainda_n_o_tem_registos_precione_o_simbolo_para_fazer_novo_registo">No registers this week\n Press \'+\' to do a new register.</string>
+    <string name="ainda_n_o_tem_registos_precione_o_simbolo_para_fazer_novo_registo">No entries this week\n Press \'+\' to do a new register.</string>
 
     <string name="notes">Notes</string>
 
