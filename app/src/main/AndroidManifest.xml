@@ -47,7 +47,7 @@
             android:theme="@style/AppTheme"
             android:parentActivityName=".ui.activities.NewHomeRegistry"/>
         <activity android:name=".ui.createMeal.activities.LoggedMealDetail" />
-        <activity android:name=".ui.createMeal.activities.SelectMealActivity" />
+        <activity android:name=".ui.createMeal.activities.SelectMealActivity"/>
 
 
 

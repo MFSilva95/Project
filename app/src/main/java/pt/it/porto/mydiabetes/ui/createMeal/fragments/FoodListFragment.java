@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -82,8 +83,11 @@ public class FoodListFragment extends Fragment {
     }
 
     private void showDialog(final int position) {
+
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AlertDialogCustom);
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(((SelectMealActivity)getActivity()).getApplicationContext());
         View view = layoutInflaterAndroid.inflate(R.layout.select_portion_dialog, null);
+
 
         final MealItem mealItem = foodList.get(position);
 
@@ -118,7 +122,10 @@ public class FoodListFragment extends Fragment {
         typePicker.setDisplayedValues(types);
         typePicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(((SelectMealActivity)getActivity()));
+
+//        AlertDialog.Builder builder = new AlertDialog.Builder(contextThemeWrapper);
+//        builder.setView(view);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(contextThemeWrapper);//new AlertDialog.Builder(((SelectMealActivity)getActivity()));
         alertDialogBuilder
                 .setView(view)
                 .setTitle(mealItem.getName())
@@ -171,6 +178,8 @@ public class FoodListFragment extends Fragment {
     }
 
     private void showDialog2(){
+
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(getActivity(), R.style.AlertDialogCustom);
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(((SelectMealActivity)getActivity()).getApplicationContext());
         View view = layoutInflaterAndroid.inflate(R.layout.add_carbs_dialog, null);
 
@@ -197,7 +206,7 @@ public class FoodListFragment extends Fragment {
             }
         });
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(((SelectMealActivity)getActivity()));
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(contextThemeWrapper);//new AlertDialog.Builder(((SelectMealActivity)getActivity()));
         alertDialogBuilder
                 .setView(view)
                 .setTitle(getString(R.string.add_extra_carbs))
