@@ -52,6 +52,9 @@
     <string name="transf_ConnOK">Connection Established</string>
     <string name="transf_InfoTitle">Information</string>
 
+    <string name="restore_backup_deprecated_db_error">Your old database data is not compatible with this application\'s version.</string>
+    <string name="information">Information.</string>
+
     <string name="delete_detail">Delete</string>
     <string name="deleteReading">Delete Reading?</string>
     <string name="deleteException">Cannot delete this Reading!</string>

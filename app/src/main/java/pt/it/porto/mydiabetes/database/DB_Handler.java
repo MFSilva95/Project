@@ -3,33 +3,17 @@ package pt.it.porto.mydiabetes.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.BadgeRec;
-import pt.it.porto.mydiabetes.data.BloodPressureRec;
-import pt.it.porto.mydiabetes.data.CarbsRec;
-import pt.it.porto.mydiabetes.data.CholesterolRec;
-import pt.it.porto.mydiabetes.data.DiseaseRec;
-import pt.it.porto.mydiabetes.data.ExerciseRec;
-import pt.it.porto.mydiabetes.data.GlycemiaRec;
-import pt.it.porto.mydiabetes.data.Insulin;
-import pt.it.porto.mydiabetes.data.InsulinRec;
-import pt.it.porto.mydiabetes.data.PointsRec;
-import pt.it.porto.mydiabetes.data.Tag;
-import pt.it.porto.mydiabetes.data.TargetBGRec;
-import pt.it.porto.mydiabetes.data.UserInfo;
-import pt.it.porto.mydiabetes.data.WeightRec;
-import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
-import static pt.it.porto.mydiabetes.ui.activities.Home.setOld_db;
 
 public class DB_Handler extends SQLiteOpenHelper {
 
@@ -82,18 +66,37 @@ public class DB_Handler extends SQLiteOpenHelper {
             //init new db, check if old db exists
             old_db = myContext.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
             DB_Read db_read = new DB_Read(old_db);
-            if(!db_read.isEmpty()){//if an older database exists, run the backup popups
-
-                setOld_db(true);
-//                initDatabaseTables(db);
-//                initDayPhases(db);
-            }
-            /*else{
-                onUpgrade(db,db.getVersion(),DATABASE_VERSION);
-            }*/
             db_read.close();
             old_db.close();
         }
+    }
+    public Boolean hasBackupableOldDb(){
+        File inputFile = new File(Environment.getExternalStorageDirectory()
+                + "/MyDiabetes/backup/DB_Diabetes");
+        if (inputFile.exists()) {
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
+            if (db.getVersion() >= getReadableDatabase().getVersion()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Boolean hasDepricatedDb(){
+
+        File inputFile = new File(Environment.getExternalStorageDirectory()
+                    + "/MyDiabetes/backup/DB_Diabetes");
+        if (inputFile.exists()) {
+            try{
+                SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
+                if (db.getVersion() < getReadableDatabase().getVersion()) {
+                    return true;
+                }
+            }catch (SQLiteCantOpenDatabaseException e){
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -116,126 +119,126 @@ public class DB_Handler extends SQLiteOpenHelper {
 //        }
     }
 
-    private void insertIntoDB(SQLiteDatabase myDB, SQLiteDatabase old) throws Exception{
-        String TAG = "cenas";
-        if(old==null){
-            Log.i(TAG, "onUpgrade: -> old is null");
-            old = myContext.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null); //old database
-        }
-
-
-        DB_Read oldReads = new DB_Read(old);
-        UserInfo basic_info = oldReads.MyData_Read();
-        ArrayList<Insulin> old_insulins = oldReads.Insulins_GetAll();
-        ArrayList<InsulinRec> old_insu_recs = oldReads.InsulinRec_GetAll();
-        ArrayList<CarbsRec> old_carbs_recs = oldReads.CarbsRec_GetAll();
-        ArrayList<GlycemiaRec> old_gly_recs = oldReads.GlycemiaRec_GetAll();
-        ArrayList<TargetBGRec> old_targetBG_recs = oldReads.TargetBG_GetAll();
-        ArrayList<BadgeRec> old_medals_recs = oldReads.getAllMedals();
-
-        ArrayList<PointsRec> old_points_recs = oldReads.PointsReg_GetAll();
-
-        ArrayList<WeightRec> old_weight_recs = oldReads.Weight_GetAll();
-        ArrayList<ExerciseRec> old_exercise_recs = oldReads.ExerciseReg_GetAll();
-        ArrayList<BloodPressureRec> old_BP_recs = oldReads.BloodPressure_GetAll();
-        ArrayList<CholesterolRec> old_chol_recs = oldReads.Cholesterol_GetAll();
-        ArrayList<DiseaseRec> old_disease_recs = oldReads.DiseaseReg_GetAll();
-
-
-
-        oldReads.close();
-        old.close();
-
-
-
-        DB_Read db_read = new DB_Read(myDB);
-        if(db_read.isEmpty()){
-            Log.i(TAG, "DATABASE EMPTY");
-            initDatabaseTables(myDB);//initialize new database
-        }
-
-
-        DB_Write newWrites = new DB_Write(myDB);
-        if (basic_info != null) {
-            newWrites.MyData_Save(basic_info);
-        }
-
-        if (old_points_recs != null) {
-            for (PointsRec rec : old_points_recs) {
-                newWrites.Point_Save(rec);
-            }
-        }
-
-        //            verify if points were initialized
-        if( db_read.Points_get_num_reg()<=0){
-            LevelsPointsUtils.addPoints(myContext,0,"first", db_read);
-        }
-
-        if (old_insulins != null) {
-            for (Insulin rec : old_insulins) {
-                newWrites.Insulin_Add(rec);
-            }
-        }
-        if (old_targetBG_recs != null) {
-            for (TargetBGRec rec : old_targetBG_recs) {
-                newWrites.TargetBG_Add(rec);
-            }
-        }
-        if (old_gly_recs != null) {
-            for (GlycemiaRec rec : old_gly_recs) {
-                newWrites.Glycemia_Save(rec);
-            }
-        }
-        if (old_insu_recs != null) {
-            for (InsulinRec rec : old_insu_recs) {
-                newWrites.Insulin_Save(rec);
-            }
-        }
-
-        if (old_carbs_recs != null) {
-            for (CarbsRec rec : old_carbs_recs) {
-                newWrites.Carbs_Save(rec);
-            }
-        }
-        if (old_medals_recs != null) {
-            for (BadgeRec rec : old_medals_recs) {
-                newWrites.Badge_Save(rec);
-            }
-        }
-        if (old_BP_recs != null) {
-            for (BloodPressureRec rec : old_BP_recs) {
-                newWrites.BloodPressure_Save(rec);
-            }
-        }
-        if (old_weight_recs != null) {
-            for (WeightRec rec : old_weight_recs) {
-                newWrites.Weight_Save(rec);
-            }
-        }
-        if (old_exercise_recs != null) {
-            for (ExerciseRec rec : old_exercise_recs) {
-                newWrites.Exercise_Save(rec);
-            }
-        }
-        if (old_chol_recs != null) {
-            for (CholesterolRec rec : old_chol_recs) {
-                newWrites.Cholesterol_Save(rec);
-            }
-        }
-        if (old_disease_recs != null) {
-            for (DiseaseRec rec : old_disease_recs) {
-                newWrites.DiseaseReg_Save(rec);
-            }
-        }
-
-
-        ContentValues toInsert = new ContentValues();
-        toInsert.put("Name", FeaturesDB.INITIAL_REG_DONE);
-        toInsert.put("Activated", 1);
-        newWrites.addFeature(toInsert);
-        newWrites.close();
-        myContext.deleteDatabase(DATABASE_NAME);
-    }
+//    private void insertIntoDB(SQLiteDatabase myDB, SQLiteDatabase old) throws Exception{
+//        String TAG = "cenas";
+//        if(old==null){
+//            Log.i(TAG, "onUpgrade: -> old is null");
+//            old = myContext.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null); //old database
+//        }
+//
+//
+//        DB_Read oldReads = new DB_Read(old);
+//        UserInfo basic_info = oldReads.MyData_Read();
+//        ArrayList<Insulin> old_insulins = oldReads.Insulins_GetAll();
+//        ArrayList<InsulinRec> old_insu_recs = oldReads.InsulinRec_GetAll();
+//        ArrayList<CarbsRec> old_carbs_recs = oldReads.CarbsRec_GetAll();
+//        ArrayList<GlycemiaRec> old_gly_recs = oldReads.GlycemiaRec_GetAll();
+//        ArrayList<TargetBGRec> old_targetBG_recs = oldReads.TargetBG_GetAll();
+//        ArrayList<BadgeRec> old_medals_recs = oldReads.getAllMedals();
+//
+//        ArrayList<PointsRec> old_points_recs = oldReads.PointsReg_GetAll();
+//
+//        ArrayList<WeightRec> old_weight_recs = oldReads.Weight_GetAll();
+//        ArrayList<ExerciseRec> old_exercise_recs = oldReads.ExerciseReg_GetAll();
+//        ArrayList<BloodPressureRec> old_BP_recs = oldReads.BloodPressure_GetAll();
+//        ArrayList<CholesterolRec> old_chol_recs = oldReads.Cholesterol_GetAll();
+//        ArrayList<DiseaseRec> old_disease_recs = oldReads.DiseaseReg_GetAll();
+//
+//
+//
+//        oldReads.close();
+//        old.close();
+//
+//
+//
+//        DB_Read db_read = new DB_Read(myDB);
+//        if(db_read.isEmpty()){
+//            Log.i(TAG, "DATABASE EMPTY");
+//            initDatabaseTables(myDB);//initialize new database
+//        }
+//
+//
+//        DB_Write newWrites = new DB_Write(myDB);
+//        if (basic_info != null) {
+//            newWrites.MyData_Save(basic_info);
+//        }
+//
+//        if (old_points_recs != null) {
+//            for (PointsRec rec : old_points_recs) {
+//                newWrites.Point_Save(rec);
+//            }
+//        }
+//
+//        //            verify if points were initialized
+//        if( db_read.Points_get_num_reg()<=0){
+//            LevelsPointsUtils.addPoints(myContext,0,"first", db_read);
+//        }
+//
+//        if (old_insulins != null) {
+//            for (Insulin rec : old_insulins) {
+//                newWrites.Insulin_Add(rec);
+//            }
+//        }
+//        if (old_targetBG_recs != null) {
+//            for (TargetBGRec rec : old_targetBG_recs) {
+//                newWrites.TargetBG_Add(rec);
+//            }
+//        }
+//        if (old_gly_recs != null) {
+//            for (GlycemiaRec rec : old_gly_recs) {
+//                newWrites.Glycemia_Save(rec);
+//            }
+//        }
+//        if (old_insu_recs != null) {
+//            for (InsulinRec rec : old_insu_recs) {
+//                newWrites.Insulin_Save(rec);
+//            }
+//        }
+//
+//        if (old_carbs_recs != null) {
+//            for (CarbsRec rec : old_carbs_recs) {
+//                newWrites.Carbs_Save(rec);
+//            }
+//        }
+//        if (old_medals_recs != null) {
+//            for (BadgeRec rec : old_medals_recs) {
+//                newWrites.Badge_Save(rec);
+//            }
+//        }
+//        if (old_BP_recs != null) {
+//            for (BloodPressureRec rec : old_BP_recs) {
+//                newWrites.BloodPressure_Save(rec);
+//            }
+//        }
+//        if (old_weight_recs != null) {
+//            for (WeightRec rec : old_weight_recs) {
+//                newWrites.Weight_Save(rec);
+//            }
+//        }
+//        if (old_exercise_recs != null) {
+//            for (ExerciseRec rec : old_exercise_recs) {
+//                newWrites.Exercise_Save(rec);
+//            }
+//        }
+//        if (old_chol_recs != null) {
+//            for (CholesterolRec rec : old_chol_recs) {
+//                newWrites.Cholesterol_Save(rec);
+//            }
+//        }
+//        if (old_disease_recs != null) {
+//            for (DiseaseRec rec : old_disease_recs) {
+//                newWrites.DiseaseReg_Save(rec);
+//            }
+//        }
+//
+//
+//        ContentValues toInsert = new ContentValues();
+//        toInsert.put("Name", FeaturesDB.INITIAL_REG_DONE);
+//        toInsert.put("Activated", 1);
+//        newWrites.addFeature(toInsert);
+//        newWrites.close();
+//        myContext.deleteDatabase(DATABASE_NAME);
+//    }
 
     private void initDatabaseTables(SQLiteDatabase db) {
         try {
@@ -257,12 +260,12 @@ public class DB_Handler extends SQLiteOpenHelper {
     }
 
 
-    public void insertIntoDB(File inputFile) throws Exception{
-        SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
-        DB_Handler dbwrite = new DB_Handler(this.myContext);
-        insertIntoDB(dbwrite.getWritableDatabase(),db);
-        Log.i("cenas", "insertIntoDB: DONE");
-    }
+//    public void insertIntoDB(File inputFile) throws Exception{
+//        SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
+//        DB_Handler dbwrite = new DB_Handler(this.myContext);
+//        insertIntoDB(dbwrite.getWritableDatabase(),db);
+//        Log.i("cenas", "insertIntoDB: DONE");
+//    }
 
 
     private void initDayPhases(SQLiteDatabase db) {

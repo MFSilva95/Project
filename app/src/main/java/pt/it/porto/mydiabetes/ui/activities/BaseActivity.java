@@ -35,20 +35,21 @@ public abstract class BaseActivity extends AppCompatActivity {
 		//if(getRegType()!=null){activityAdvice = YapDroid.newInstance(getApplicationContext()).getSingleAdvice("start", getRegType(), this.getApplicationContext());}
 	}
 
+
 	public String getRegType() {
 		return null;
 	}
 
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
-		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-			Log.d("BaseActivity", ev.toString());
-			if(!this.getComponentName().getClassName().equals("pt.it.porto.mydiabetes.ui.activities.WelcomeActivity")){
-				DB_Write dbwrite = new DB_Write(getBaseContext());
-				dbwrite.Clicks_Save(idUser,this.getComponentName().getClassName(),ev.getX(),ev.getY());
-				dbwrite.close();
+			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+				Log.d("BaseActivity", ev.toString());
+				if(!this.getComponentName().getClassName().equals("pt.it.porto.mydiabetes.ui.activities.WelcomeActivity")){
+					DB_Write dbwrite = new DB_Write(getBaseContext());
+					dbwrite.Clicks_Save(idUser,this.getComponentName().getClassName(),ev.getX(),ev.getY());
+					dbwrite.close();
+				}
 			}
-		}
 		return super.dispatchTouchEvent(ev);
 	}
 
@@ -62,9 +63,11 @@ public abstract class BaseActivity extends AppCompatActivity {
 	protected void onResume() {
 		super.onResume();
 		if(!this.getComponentName().getClassName().equals("pt.it.porto.mydiabetes.ui.activities.WelcomeActivity")){
-			DB_Write dbwrite = new DB_Write(getBaseContext());
-			dbwrite.Log_Save(idUser,this.getComponentName().getClassName());
-			dbwrite.close();
+			if(idUser != -1){
+				DB_Write dbwrite = new DB_Write(getBaseContext());
+				dbwrite.Log_Save(idUser,this.getComponentName().getClassName());
+				dbwrite.close();
+			}
 		}
 		Log.d("BaseActivity", "Enter activity: " + this.getComponentName().getClassName());
 	}

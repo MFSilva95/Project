@@ -14,6 +14,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -115,36 +117,34 @@ public class SettingsImportExport extends BaseActivity {
 		return false;
 	}
 
-	public static boolean restoreBackup(Context context) {
+	public static boolean restoreBackup(Context context) throws Exception{
 		if (isSDWriteable()) {
 			File inputFile = new File(Environment.getExternalStorageDirectory()
 					+ "/MyDiabetes/backup/DB_Diabetes");
 			if(inputFile.exists()){
-				//Log.i("cenas", "restoreBackup: RESTORING FROM: "+inputFile.getAbsolutePath());
+				SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
 				DB_Handler handler = new DB_Handler(context);
+				if(db.getVersion()<handler.getReadableDatabase().getVersion()){
+					throw new Exception("OLD DB VERSION");
+				}
 				try {
-					handler.insertIntoDB(inputFile);
+					File outputDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases");
+					outputDir.mkdirs();
+					File fileBackup = new File(outputDir, "DB_Diabetes");
+					try {
+						fileBackup.createNewFile();
+						copyFile(inputFile, fileBackup);
+						return true;
+					} catch (IOException ioException) {
+						return false;
+					} catch (Exception exception) {
+						return false;
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 					return false;
 				}
-				return true;
 			}
-//
-//			File outputDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases");
-//			outputDir.mkdirs();
-//			if (inputFile.exists()) {
-//				File fileBackup = new File(outputDir, "DB_Diabetes");
-//				try {
-//					fileBackup.createNewFile();
-//					copyFile(inputFile, fileBackup);
-//					return true;
-//				} catch (IOException ioException) {
-//					return false;
-//				} catch (Exception exception) {
-//					return false;
-//				}
-//			}
 		}
 		return false;
 	}
@@ -164,7 +164,8 @@ public class SettingsImportExport extends BaseActivity {
 
 	public static boolean backup_old_db(Context context) {
 		if (isSDWriteable()) {
-			File inputFile = DbUtils.export_old_Db(context);
+			File inputFile = new File(Environment.getExternalStorageDirectory()
+					+ "/MyDiabetes/backup/DB_Diabetes");//DbUtils.export_old_Db(context);
 
 			File outputDir = new File(Environment.getExternalStorageDirectory()
 					+ "/MyDiabetes/backup");
@@ -174,6 +175,7 @@ public class SettingsImportExport extends BaseActivity {
 				try {
 					fileBackup.createNewFile();
 					copyFile(inputFile, fileBackup);
+					inputFile.delete();
 					return true;
 				} catch (Exception exception) {
 					return false;
@@ -220,15 +222,21 @@ public class SettingsImportExport extends BaseActivity {
 	}
 
 	public void restore(View v) {
+
 		Dialog dialog = new AlertDialog.Builder(this).setTitle(R.string.restore_backup)
 				.setMessage(R.string.backup_restore_confirmation_dialog_text)
 				.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						if (restoreBackup(getApplicationContext())) {
-							ShowDialogMsg(getString(R.string.restore_backup_success));
-						} else {
-							ShowDialogMsg(getString(R.string.restore_backup_error));
+						try {
+							if (restoreBackup(getApplicationContext())) {
+								ShowDialogMsg(getString(R.string.restore_backup_success));
+								fillBackup();
+							} else {
+								ShowDialogMsg(getString(R.string.restore_backup_error));
+							}
+						} catch (Exception e) {
+							ShowDialogMsg(getString(R.string.restore_backup_deprecated_db_error));
 						}
 					}
 				})
@@ -243,14 +251,7 @@ public class SettingsImportExport extends BaseActivity {
 	}
 
 	public void ShowDialogMsg(String msg) {
-		// final Context c = this;
-		new AlertDialog.Builder(this).setTitle("Informação").setMessage(msg).setPositiveButton("OK", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton) {
-				//Falta verificar se não está associada a nenhuma entrada da DB
-				// Rever porque não elimina o registo de glicemia
-				fillBackup();
-			}
-		}).show();
+		new android.app.AlertDialog.Builder(this).setTitle(R.string.information).setMessage(msg).show();
 	}
 
 	public boolean fillBackup() {
@@ -410,7 +411,8 @@ public class SettingsImportExport extends BaseActivity {
 
 	public void editAccount(View view) {
 		FeatureWebSyncDialog webSyncDialog = new FeatureWebSyncDialog();
-		webSyncDialog.show(getFragmentManager(), "editAccount");
+//		webSyncDialog.show(getFragmentManager(), "editAccount");
+		webSyncDialog.show(getSupportFragmentManager(), "editAccount");
 		webSyncDialog.dismiss();
 		webSyncDialog.getUserDataPopUp(this, -1, -1);
 	}

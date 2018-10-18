@@ -2043,13 +2043,13 @@ public class DB_Read {
 			RawRecord tmp;
 			do {
 				tmp = new RawRecord(
-						cursor.getInt(0),
-						cursor.getString(1),
-						cursor.getInt(2),
-						cursor.getInt(3),
-						cursor.getInt(4),
-						cursor.getInt(5),
-						cursor.getInt(6));
+						cursor.getInt(0),//ID
+						cursor.getString(1),//DATETIME
+						cursor.getInt(2),//ID TAG
+						cursor.getInt(3),//CARBS
+						cursor.getInt(4),//INSULIN
+						cursor.getInt(5),//GLUCOSE
+						cursor.getInt(6));//NOTE
 				//insert id_note
 //				Log.i(TAG, "--------------------------------");
 //				Log.i(TAG, tmp.toString());
@@ -2087,6 +2087,7 @@ public class DB_Read {
 					HomeElement tmp;
 //					do {
 						try{
+							//int recordId, String dateTime, int tag, int carbs, float insulinVal, String insulinName, int glycemia, int carbsId, int insulinId, int glycemiaId, int note_id
 							tmp = new HomeElement(
 									record.getId(),
 									record.getFormattedDate(),
@@ -2120,7 +2121,7 @@ public class DB_Read {
 	private int getGlycaemiaValByID(int id_bloodglucose) {
 		int value = -1;
 
-		Cursor cursor = myDB.rawQuery("SELECT Value FROM Reg_CarboHydrate WHERE Id = "+id_bloodglucose+";", null);
+		Cursor cursor = myDB.rawQuery("SELECT Value FROM Reg_BloodGlucose WHERE Id = '"+id_bloodglucose+"';", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			value = cursor.getInt(0);

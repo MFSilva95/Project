@@ -285,17 +285,25 @@ public class WelcomeActivity extends BaseActivity {
 
 	private void proceedAfterPermission() {
 		//We've got the permission, now we can proceed further
-		if (SettingsImportExport.restoreBackup(getApplicationContext())) {
-			// jump to home
-			FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
-			db.changeFeatureStatus(FeaturesDB.INITIAL_REG_DONE, true);
-			Intent intent = new Intent(getBaseContext(), Home.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-			startActivity(intent);
-			finish();
-		} else {
-			Toast.makeText(getApplicationContext(), R.string.restore_backup_error, Toast.LENGTH_LONG).show();
+		try {
+			if (SettingsImportExport.restoreBackup(getApplicationContext())) {
+				// jump to home
+				FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
+				db.changeFeatureStatus(FeaturesDB.INITIAL_REG_DONE, true);
+				Intent intent = new Intent(getBaseContext(), Home.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+				startActivity(intent);
+				finish();
+			} else {
+				Toast.makeText(getApplicationContext(), R.string.restore_backup_error, Toast.LENGTH_LONG).show();
+			}
+		} catch (Exception e) {
+			ShowDialogMsg(getString(R.string.restore_backup_deprecated_db_error));
 		}
+	}
+	public void ShowDialogMsg(String msg) {
+		// final Context c = this;
+		new android.app.AlertDialog.Builder(this).setTitle(R.string.information).setMessage(msg).show();
 	}
 
 	@Override

@@ -766,7 +766,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         Log.i(TAG, "validateInfo_Save: BEGIN");
         BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
         BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
-        LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log", rdb);
+        LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log", rdb);//bug here
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
         Log.i(TAG, "validateInfo_Save: END");
         rdb.close();

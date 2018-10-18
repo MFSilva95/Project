@@ -229,6 +229,10 @@
     <string name="hint_medicine" translatable="false" >Ben u Ron 1000</string>
     <string name="units">unidades</string>
 
+    <string name="restore_backup_deprecated_db_error">A sua antiga base de dados é incompativel com esta versão da aplicação.</string>
+
+    <string name="information">Informação.</string>
+
     <string name="hc_units">uni</string>
     <string name="gli_units" >mg/dl</string>
     <string name="pills" >comprimidos</string>

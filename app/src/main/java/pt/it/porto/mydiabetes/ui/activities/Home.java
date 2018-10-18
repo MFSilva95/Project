@@ -41,6 +41,7 @@ import pt.it.porto.mydiabetes.data.CarbsRatioData;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.Sensitivity;
 import pt.it.porto.mydiabetes.data.UserInfo;
+import pt.it.porto.mydiabetes.database.DB_Handler;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
@@ -66,14 +67,10 @@ public class Home extends BaseActivity {
 	private BottomNavigationView bottomNavigationView;
 
 	private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
-	private static final int REQUEST_PERMISSION_SETTING = 101;
 	private static final int DB_OLD_PERMISSION_CONSTANT = 102;
-	private boolean sentToSettings = false;
 	private SharedPreferences permissionStatus;
+    FeaturesDB db;
 
-	public static void setOld_db(Boolean bool){
-		old_db = bool;
-	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -82,129 +79,125 @@ public class Home extends BaseActivity {
 
 		permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
 
-		FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
-		if(old_db){
-			ShouldBackupDB();
-		}else{
+		db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
+		if(ShouldBackupDB()){
+            showBackupDialog();
+
+        }else{
 			if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
 				ShowDialogAddData();
 				return;
-			}
-
-
-			Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-			setSupportActionBar(toolbar);
-			drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
-
-			ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
-					this, drawerLayout, toolbar,
-					R.string.navigation_drawer_open, R.string.navigation_drawer_close
-			);
-
-
-
-			drawerLayout.addDrawerListener(mDrawerToggle);
-			getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-			getSupportActionBar().setHomeButtonEnabled(true);
-			mDrawerToggle.syncState();
-
-
-			mViewPager = (CustomViewPager) super.findViewById(R.id.content_home_fragment);
-
-
-			adapter = new homePageAdapter(super.getSupportFragmentManager());
-			mViewPager.setAdapter(adapter);
-
-			mViewPager.setOffscreenPageLimit(1);
-			//mViewPager.blockSwipeRight(true);
-			//mViewPager.blockSwipeLeft(true);
-			if (savedInstanceState == null) {
-				mViewPager.setCurrentItem(1);
-			}
-			else{
-				mViewPager.setCurrentItem(savedInstanceState.getInt("viewpager", 0));
-			}
-
-
-			bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-//			mViewPager.setBotNav(bottomNavigationView);
-			//----------------------nav
-			navigationView = (NavigationView) findViewById(R.id.navigation_view);
-
-			navigationView.setItemIconTintList(null);
-			navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-				// This method will trigger on item Click of navigation menu
-				@Override
-				public boolean onNavigationItemSelected(MenuItem menuItem) {
-					drawerLayout.closeDrawers();
-					Intent intent;
-
-					switch (menuItem.getItemId()) {
-						case R.id.userLogbook:
-							intent = new Intent(getApplicationContext(), LogbookChartList.class);
-							startActivity(intent);
-							return true;
-						case R.id.diabetesData:
-							intent = new Intent(getApplicationContext(), Settings.class);
-							startActivity(intent);
-							return true;
-						case R.id.importAndExport:
-							checkPermissions(EXTERNAL_STORAGE_PERMISSION_CONSTANT);
-							return true;
-						case R.id.info:
-							intent = new Intent(getApplicationContext(), Info.class);
-							startActivity(intent);
-							return true;
-						case R.id.feedback:
-							feedback();
-							return true;
-						default:
-							Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
-							return true;
-					}
-				}
-			});
-			bottomNavigationView.getMenu().getItem(mViewPager.getCurrentItem()).setChecked(true);
-			setupBottomNavigationView();
-            mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-                public void onPageScrollStateChanged(int state) {}
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-                public void onPageSelected(int position) {
-                    bottomNavigationView.getMenu().getItem(position).setChecked(true);
-                }
-            });
+			}else{
+                setMainView(savedInstanceState);
+            }
 		}
 	}
+
+	public void setMainView(Bundle savedInstanceState){
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer);
+
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close
+        );
+
+
+
+        drawerLayout.addDrawerListener(mDrawerToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        mDrawerToggle.syncState();
+
+
+        mViewPager = (CustomViewPager) super.findViewById(R.id.content_home_fragment);
+
+
+        adapter = new homePageAdapter(super.getSupportFragmentManager());
+        mViewPager.setAdapter(adapter);
+
+        mViewPager.setOffscreenPageLimit(1);
+        //mViewPager.blockSwipeRight(true);
+        //mViewPager.blockSwipeLeft(true);
+        if (savedInstanceState == null) {
+            mViewPager.setCurrentItem(1);
+        }
+        else{
+            mViewPager.setCurrentItem(savedInstanceState.getInt("viewpager", 0));
+        }
+
+
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+//			mViewPager.setBotNav(bottomNavigationView);
+        //----------------------nav
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+        navigationView.setItemIconTintList(null);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            // This method will trigger on item Click of navigation menu
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                drawerLayout.closeDrawers();
+                Intent intent;
+
+                switch (menuItem.getItemId()) {
+                    case R.id.userLogbook:
+                        intent = new Intent(getApplicationContext(), LogbookChartList.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.diabetesData:
+                        intent = new Intent(getApplicationContext(), Settings.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.importAndExport:
+                        checkPermissions(EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+                        return true;
+                    case R.id.info:
+                        intent = new Intent(getApplicationContext(), Info.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.feedback:
+                        feedback();
+                        return true;
+                    default:
+                        Toast.makeText(getApplicationContext(), "Somethings Wrong", Toast.LENGTH_SHORT).show();
+                        return true;
+                }
+            }
+        });
+        bottomNavigationView.getMenu().getItem(mViewPager.getCurrentItem()).setChecked(true);
+        setupBottomNavigationView();
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            public void onPageSelected(int position) {
+                bottomNavigationView.getMenu().getItem(position).setChecked(true);
+            }
+        });
+    }
 
 	public void checkPermissions(int permission_need){
 		if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-//			if (ActivityCompat.shouldShowRequestPermissionRationale(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-//				ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
-//			} else if (permissionStatus.getBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,false)) {
-//						sentToSettings = true;
-//						Intent intent = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-//						Uri uri = Uri.fromParts("package", getPackageName(), null);
-//						intent.setData(uri);
-//						startActivityForResult(intent, REQUEST_PERMISSION_SETTING);
-//			} else {
-//				just request the permission
 				ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, permission_need);
-			}
-
-			//SharedPreferences.Editor editor = permissionStatus.edit();
-			//editor.putBoolean(Manifest.permission.WRITE_EXTERNAL_STORAGE,true);
-			//editor.commit();
-
-
-		//}
-		else {
-			//You already have the permission, just go ahead.
-		proceedAfterPermission();
+		} else {
+		    if(permission_need == EXTERNAL_STORAGE_PERMISSION_CONSTANT){
+                goToImportExportActivity();
+            }else{
+                backup_old_db(Home.this);
+                if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                    ShowDialogAddData();
+                    return;
+                }else{
+                    setMainView(null);
+                }
+            }
 		}
 	}
 
-	private void proceedAfterPermission() {
+	private void goToImportExportActivity() {
 		//We've got the permission, now we can proceed further
 		Intent intent = new Intent(getApplicationContext(), SettingsImportExport.class);
 		startActivity(intent);
@@ -217,7 +210,7 @@ public class Home extends BaseActivity {
 		switch (requestCode){
 			case EXTERNAL_STORAGE_PERMISSION_CONSTANT:
 				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-					proceedAfterPermission();
+					goToImportExportActivity();
 				} else {
 					Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
 				}
@@ -225,111 +218,26 @@ public class Home extends BaseActivity {
 			case DB_OLD_PERMISSION_CONSTANT:
 				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 					backup_old_db(Home.this);
+                    if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                        ShowDialogAddData();
+                        return;
+                    }else{
+                        setMainView(null);
+                    }
 				} else {
 					Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
 				}
 				break;
 		}
-//		backup(Home.this);
-//		if (requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT) {
-//			if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//				//The External Storage Write Permission is granted to you... Continue your left job...
-//				proceedAfterPermission();
-//			} else {
-////				if (ActivityCompat.shouldShowRequestPermissionRationale(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-////					ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
-////				} else {
-//					Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
-////				}
-//			}
-//		}
 	}
 
+	public Boolean ShouldBackupDB(){
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == REQUEST_PERMISSION_SETTING) {
-			if (ActivityCompat.checkSelfPermission(Home.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-				//Got Permission
-				proceedAfterPermission();
-			}
-		}
-	}
-
-
-	@Override
-	protected void onPostResume() {
-		super.onPostResume();
-		if (sentToSettings) {
-			if (ActivityCompat.checkSelfPermission(Home.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-				//Got Permission
-				proceedAfterPermission();
-			}
-		}
-	}
-
-	public void ShouldBackupDB(){
-		setOld_db(false);
-		android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(this);
-		builder1.setTitle(getString(R.string.db_depricated_dialog_title));
-		builder1.setMessage(getString(R.string.db_depricated_dialog_description));
-		builder1.setCancelable(true);
-
-		builder1.setPositiveButton(
-				getString(R.string.positiveButton),
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-						checkPermissions(DB_OLD_PERMISSION_CONSTANT);
-						dialog.cancel();
-					}
-				});
-
-		builder1.setNegativeButton(
-
-
-				getString(R.string.negativeButton),
-				new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int id) {
-
-						android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(Home.this);
-						builder1.setTitle(getString(R.string.db_depricated_dialog_title));
-						builder1.setMessage(getString(R.string.db_depricated_backup_cancel));
-						builder1.setCancelable(true);
-
-						builder1.setPositiveButton(
-								getString(R.string.positiveButton),
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int id) {
-										checkPermissions(DB_OLD_PERMISSION_CONSTANT);
-										dialog.cancel();
-										dialog.dismiss();
-									}
-								});
-
-						builder1.setNegativeButton(
-								getString(R.string.negativeButton),
-								new DialogInterface.OnClickListener() {
-									public void onClick(DialogInterface dialog, int id) {
-										ShouldBackupDB();
-										dialog.cancel();
-										dialog.dismiss();
-									}
-								});
-
-						android.app.AlertDialog alert12 = builder1.create();
-						alert12.show();
-
-					}
-				});
-
-		android.app.AlertDialog alert11 = builder1.create();
-		alert11.show();
-
-
-//		FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
-//		db.changeFeatureStatus(FeaturesDB.OLD_DB_VERSION, false);
-
+        DB_Handler handler = new DB_Handler(this);
+        if(handler.hasDepricatedDb()){
+            return true;
+        }
+        return false;
 	}
 
 	public void ShowDialogAddData() {
@@ -356,26 +264,20 @@ public class Home extends BaseActivity {
                         bottomNavigationView.getMenu().getItem(2).setChecked(true);
 						break;
 				}
-				//updateNavigationBarState(item.getItemId());
 				return true;
 			}
 		});
 	}
 
-//	private void updateNavigationBarState(int actionId){
-//		Menu menu = bottomNavigationView.getMenu();
-//		for (int i = 0, size = menu.size(); i < size; i++) {
-//			MenuItem item = menu.getItem(i);
-//			item.setChecked(item.getItemId() == actionId);
-//		}
-//	}
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt("viewpager", mViewPager.getCurrentItem());
-		// do this for each or your Spinner
-		// You might consider using Bundle.putStringArray() instead
+		if(mViewPager != null){
+		    if(mViewPager.getCurrentItem()!=-1){
+                outState.putInt("viewpager", mViewPager.getCurrentItem());
+            }
+        }
 	}
 
 	public void feedback() {
@@ -414,6 +316,68 @@ public class Home extends BaseActivity {
 			//TODO do something to show the error
 		}
 	}
+
+	private void showBackupDialog(){
+        android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(this);
+        builder1.setTitle(getString(R.string.db_depricated_dialog_title));
+        builder1.setMessage(getString(R.string.db_depricated_dialog_description));
+        builder1.setCancelable(true);
+
+        builder1.setPositiveButton(
+                getString(R.string.positiveButton),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        checkPermissions(DB_OLD_PERMISSION_CONSTANT);
+                        dialog.cancel();
+                    }
+                });
+
+        builder1.setNegativeButton(
+
+
+                getString(R.string.negativeButton),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(Home.this);
+                        builder1.setTitle(getString(R.string.db_depricated_dialog_title));
+                        builder1.setMessage(getString(R.string.db_depricated_backup_cancel));
+                        builder1.setCancelable(true);
+
+                        builder1.setPositiveButton(
+                                getString(R.string.positiveButton),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                                            ShowDialogAddData();
+                                            return;
+                                        }else{
+                                            setMainView(null);
+                                        }
+                                        dialog.cancel();
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                        builder1.setNegativeButton(
+                                getString(R.string.negativeButton),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        showBackupDialog();
+                                        dialog.cancel();
+                                        dialog.dismiss();
+                                    }
+                                });
+
+                        android.app.AlertDialog alert12 = builder1.create();
+                        alert12.show();
+
+                    }
+                });
+
+        android.app.AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
 
 
 
