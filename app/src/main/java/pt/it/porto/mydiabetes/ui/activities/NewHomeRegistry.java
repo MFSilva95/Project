@@ -1010,47 +1010,55 @@ public class NewHomeRegistry extends AppCompatActivity{
         if (args.containsKey(ARG_CARBS)) {
             carbsData = args.getParcelable(ARG_CARBS);
             if (carbsData != null) {
-                buttons.add(CARBS);
-                insertCarbsMenu();
-                carbsRegisterInputInterface.fill_parameters(carbsData);
+                if(carbsData.getCarbsValue()>0){
+                    buttons.add(CARBS);
+                    insertCarbsMenu();
+                    carbsRegisterInputInterface.fill_parameters(carbsData);
 
-                setNoteId(carbsData.getIdNote());
-                if(carbsData.getDateTime()!=null){
-                    registerDate = carbsData.getDateTime();
+                    setNoteId(carbsData.getIdNote());
+                    if(carbsData.getDateTime()!=null){
+                        registerDate = carbsData.getDateTime();
+                    }
                 }
             }
         }
         if (args.containsKey(ARG_BLOOD_GLUCOSE)) {
             glycemiaData = args.getParcelable(ARG_BLOOD_GLUCOSE);
             if (glycemiaData != null) {
-                buttons.add(GLICAEMIA);
-                insertGlicMenu();
-                glycaemiaRegisterInputInterface.fill_parameters(glycemiaData);
+                if(glycemiaData.getValue()>0){
+                    buttons.add(GLICAEMIA);
+                    insertGlicMenu();
+                    glycaemiaRegisterInputInterface.fill_parameters(glycemiaData);
 
-                setNoteId(glycemiaData.getIdNote());
-                if(glycemiaData.getDateTime()!=null){
-                    registerDate = glycemiaData.getDateTime();
+                    setNoteId(glycemiaData.getIdNote());
+                    if(glycemiaData.getDateTime()!=null){
+                        registerDate = glycemiaData.getDateTime();
+                    }
                 }
             }
         }
         if (args.containsKey(ARG_INSULIN)) {
             insulinData = args.getParcelable(ARG_INSULIN);
             if (insulinData != null) {
-                buttons.add(INSULIN);
-                insertInsulinMenu(false);
-                insuRegisterInputInterface.fill_parameters(insulinData);
-                setNoteId(insulinData.getIdNote());
-                if(insulinData.getDateTime()!=null){
-                    registerDate = insulinData.getDateTime();
+                if(insulinData.getInsulinUnits()>0){
+                    buttons.add(INSULIN);
+                    insertInsulinMenu(false);
+                    insuRegisterInputInterface.fill_parameters(insulinData);
+                    setNoteId(insulinData.getIdNote());
+                    if(insulinData.getDateTime()!=null){
+                        registerDate = insulinData.getDateTime();
+                    }
                 }
             }
         }
         if (args.containsKey(ARG_NOTE)) {
             noteData = args.getParcelable(ARG_NOTE);
             if(noteData!=null){
-                buttons.add(NOTE);
-                insertNoteMenu();
-                noteRegisterInputInterface.fill_parameters(noteData.getNote());
+                if(!noteData.getNote().equals("")){
+                    buttons.add(NOTE);
+                    insertNoteMenu();
+                    noteRegisterInputInterface.fill_parameters(noteData.getNote());
+                }
             }
         }
 
@@ -1151,6 +1159,9 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
 
     private void fillParameters(Bundle args, boolean isUpdate){
+
+
+        //CALLED UPON ROTATION
 
 //        if (args.containsKey(ARG_BUTTONS_UPDATE_LIST)) {
 //            this.buttonsUpdate = args.getStringArrayList(ARG_BUTTONS_UPDATE_LIST);
