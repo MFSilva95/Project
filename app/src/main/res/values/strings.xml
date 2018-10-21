@@ -77,8 +77,14 @@
 
     <string name="error_time_overlaps" >Tempo coincide com outro intervalo</string>
 
+    <string name="error_email" >Email do utilizador, não encotrado!</string>
+    <string name="permissions" >A aplicação necessita de permissões de %1$s.</string>
+    <string name="all_permissions" >A aplicação requer permissões para continuar.</string>
+
     <string name="error_start_time_overlaps" >Tempo inicial coincide com outro intervalo</string>
     <string name="error_end_time_overlaps" >Tempo final coincide com outro intervalo</string>
+
+    <string name="storage" >Memória</string>
 
     <string name="error_end_time_before_start_time" >Tempo de fim antes do tempo de inicio</string>
     <string name="error_dbcopy" >Ocorreu um erro durante a cópia de segurança, verifique se a memória externa está disponivel!</string>

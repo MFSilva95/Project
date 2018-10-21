@@ -107,6 +107,8 @@ public class homeRightFragment extends Fragment  {
 
     private static final int REQUEST_TAKE_PHOTO = 6;
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 7;
+    private static final int RIGHT_FRAGMENT_PICTURE = 8;
+
 
     private Bitmap bmp;
     private List<Image> images = new ArrayList<>();
@@ -127,25 +129,24 @@ public class homeRightFragment extends Fragment  {
                     + ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 dispatchTakePictureIntent();
             }else{
-                Toast.makeText(getContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+                Toast.makeText(this.getContext(),R.string.all_permissions,Toast.LENGTH_LONG).show();
+            }
+        }
+        if(requestCode == RIGHT_FRAGMENT_PICTURE){
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    + ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                File profile_img = new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg");
+                if(profile_img.exists()){
+                    Bitmap bmp = BitmapFactory.decodeFile(profile_img.getAbsolutePath());
+                    mCircleView.setImageBitmap(Bitmap.createScaledBitmap(bmp, THUMBSIZE, THUMBSIZE, false));
+                }
+            }else{
+                Toast.makeText(this.getContext(),R.string.all_permissions,Toast.LENGTH_LONG).show();
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        layout = inflater.inflate(R.layout.fragment_home_right, container, false);
-
-
+    public void medals_display_init(){
         DB_Read read = new DB_Read(getContext());
 
         int points = LevelsPointsUtils.getPercentageLevels(getContext(),read);
@@ -164,7 +165,6 @@ public class homeRightFragment extends Fragment  {
         dailyBadge = read.getLastDailyMedal();
 
         read.close();
-
 
         mCircleView = (CircularMusicProgressBar) layout.findViewById(R.id.circleView);
         mCircleView.setValue(points);
@@ -195,9 +195,24 @@ public class homeRightFragment extends Fragment  {
                 advancedBadgesText = (TextView) layout.findViewById(R.id.advancedBadgesText);
             }
         }
-
         helpButton = (ImageButton) layout.findViewById(R.id.helpButton);
         currentBadge = (ImageView) layout.findViewById(R.id.currentBadge);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        layout = inflater.inflate(R.layout.fragment_home_right, container, false);
+
+
+        medals_display_init();
 
         setImage();
         setMyDataFromDB(myData);
@@ -381,11 +396,19 @@ public class homeRightFragment extends Fragment  {
 
     private void setImage() {
         mCircleView = (CircularMusicProgressBar) layout.findViewById(R.id.circleView);
-        File profile_img = new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg");
-        if(profile_img.exists()){
-            Bitmap bmp = BitmapFactory.decodeFile(profile_img.getAbsolutePath());
-            mCircleView.setImageBitmap(Bitmap.createScaledBitmap(bmp, THUMBSIZE, THUMBSIZE, false));
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                + ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            File profile_img = new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg");
+            if(profile_img.exists()){
+                Bitmap bmp = BitmapFactory.decodeFile(profile_img.getAbsolutePath());
+                mCircleView.setImageBitmap(Bitmap.createScaledBitmap(bmp, THUMBSIZE, THUMBSIZE, false));
+            }
+        }else{
+            requestPermissions( new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, RIGHT_FRAGMENT_PICTURE);
         }
+
+
 
         mCircleView.setOnClickListener(new View.OnClickListener() {
             @Override

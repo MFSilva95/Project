@@ -125,7 +125,7 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 					+ ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
 				dispatchTakePictureIntent();
 			}else{
-				Toast.makeText(getContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+				Toast.makeText(this.getContext(),R.string.all_permissions,Toast.LENGTH_LONG).show();
 			}
 		}
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);

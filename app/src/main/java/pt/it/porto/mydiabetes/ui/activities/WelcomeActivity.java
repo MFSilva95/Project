@@ -338,7 +338,7 @@ public class WelcomeActivity extends BaseActivity {
 					});
 					builder.show();
 				} else {
-					Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+					Toast.makeText(getBaseContext(),R.string.all_permissions,Toast.LENGTH_LONG).show();
 				}
 			}
 		}

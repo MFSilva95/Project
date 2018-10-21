@@ -82,7 +82,6 @@ public class Home extends BaseActivity {
 		db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
 		if(ShouldBackupDB()){
             showBackupDialog();
-
         }else{
 			if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
 				ShowDialogAddData();
@@ -212,7 +211,7 @@ public class Home extends BaseActivity {
 				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 					goToImportExportActivity();
 				} else {
-					Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(),R.string.all_permissions,Toast.LENGTH_LONG).show();
 				}
 				break;
 			case DB_OLD_PERMISSION_CONSTANT:
@@ -225,17 +224,18 @@ public class Home extends BaseActivity {
                         setMainView(null);
                     }
 				} else {
-					Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+					Toast.makeText(getBaseContext(),R.string.all_permissions,Toast.LENGTH_LONG).show();
 				}
 				break;
 		}
 	}
 
 	public Boolean ShouldBackupDB(){
-
-        DB_Handler handler = new DB_Handler(this);
-        if(handler.hasDepricatedDb()){
-            return true;
+        if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+            DB_Handler handler = new DB_Handler(this);
+            if(handler.hasDepricatedDb()){
+                return true;
+            }
         }
         return false;
 	}
@@ -312,8 +312,7 @@ public class Home extends BaseActivity {
 				startActivity(openInChooser);
 			}
 		} else {
-			Log.e("Share", "No email client found!");
-			//TODO do something to show the error
+            Toast.makeText(getApplicationContext(), R.string.error_email, Toast.LENGTH_SHORT).show();
 		}
 	}
 

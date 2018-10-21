@@ -87,7 +87,11 @@
     <string name="error_invalid_height" >Invalid height. Height must be in meters. (is there maybe a point missing?)</string>
     <string name="error_field_required" >Required field</string>
     <string name="error_repeated_name" >The name field must be unique!</string>
+    <string name="error_email" >No email client found!</string>
+    <string name="permissions" >The application lacks %1$s permissions!</string>
+    <string name="all_permissions" >The application requires further permissions to proceed.</string>
 
+    <string name="storage" >Storage</string>
 
     <string-array name="Sex">
         <item>@string/gender_female</item>

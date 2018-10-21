@@ -148,7 +148,7 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
                     + ActivityCompat.checkSelfPermission(CreateMealActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 dispatchTakePictureIntent();
             }else{
-                Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(),R.string.all_permissions,Toast.LENGTH_LONG).show();
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -175,7 +175,7 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
                     + ActivityCompat.checkSelfPermission(CreateMealActivity.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                     dispatchTakePictureIntent();
                 }else{
-                    Toast.makeText(getBaseContext(),"Unable to get Permission",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getBaseContext(),R.string.all_permissions,Toast.LENGTH_LONG).show();
                 }
                 break;
             case REQUEST_MEAL_ITEM:
