@@ -107,12 +107,12 @@ public class SelectMealActivity extends AppCompatActivity {
         };
     }
 
-    private void resetData(){
-        deleteDatabase(dbHelper.DATABASE_NAME);
-        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
-        editor.putBoolean("firstTime", true);
-        editor.commit();
-    }
+//    private void resetData(){
+//        deleteDatabase(dbHelper.DATABASE_NAME);
+//        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
+//        editor.putBoolean("firstTime", true);
+//        editor.commit();
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

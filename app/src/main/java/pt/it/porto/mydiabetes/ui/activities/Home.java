@@ -50,8 +50,6 @@ import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
 
 import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.PROJECT_MANAGER_EMAIL;
-import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.backup;
-import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.backup_old_db;
 
 
 public class Home extends BaseActivity {
@@ -68,6 +66,8 @@ public class Home extends BaseActivity {
 
 	private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
 	private static final int DB_OLD_PERMISSION_CONSTANT = 102;
+    private static final int INIT_PERMISSION_REQUEST = 103;
+
 	private SharedPreferences permissionStatus;
     FeaturesDB db;
 
@@ -80,16 +80,21 @@ public class Home extends BaseActivity {
 		permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
 
 		db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
-		if(ShouldBackupDB()){
-            showBackupDialog();
+        if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, INIT_PERMISSION_REQUEST);
         }else{
-			if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
-				ShowDialogAddData();
-				return;
-			}else{
-                setMainView(savedInstanceState);
+            if(ShouldBackupDB()){
+                //ask permissions
+                showBackupDialog();
+            }else{
+                if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                    ShowDialogAddData();
+                    return;
+                }else{
+                    setMainView(savedInstanceState);
+                }
             }
-		}
+        }
 	}
 
 	public void setMainView(Bundle savedInstanceState){
@@ -181,19 +186,20 @@ public class Home extends BaseActivity {
 	public void checkPermissions(int permission_need){
 		if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 				ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, permission_need);
-		} else {
-		    if(permission_need == EXTERNAL_STORAGE_PERMISSION_CONSTANT){
-                goToImportExportActivity();
-            }else{
-                backup_old_db(Home.this);
-                if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
-                    ShowDialogAddData();
-                    return;
-                }else{
-                    setMainView(null);
-                }
-            }
 		}
+		if(permission_need == EXTERNAL_STORAGE_PERMISSION_CONSTANT){
+		    goToImportExportActivity();
+		}
+//      else{
+//		    backup_old_db(Home.this);
+//		    if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+//		        ShowDialogAddData();
+//		        return;
+//		    }else{
+//		        setMainView(null);
+//		    }
+//		}
+
 	}
 
 	private void goToImportExportActivity() {
@@ -216,7 +222,7 @@ public class Home extends BaseActivity {
 				break;
 			case DB_OLD_PERMISSION_CONSTANT:
 				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-					backup_old_db(Home.this);
+					//backup_old_db(Home.this);
                     if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
                         ShowDialogAddData();
                         return;
@@ -227,17 +233,38 @@ public class Home extends BaseActivity {
 					Toast.makeText(getBaseContext(),R.string.all_permissions,Toast.LENGTH_LONG).show();
 				}
 				break;
+            case INIT_PERMISSION_REQUEST:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if(ShouldBackupDB()){
+                        showBackupDialog();
+
+                    }else{
+                        if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                            ShowDialogAddData();
+                            return;
+                        }else{
+                            setMainView(null);
+                        }
+                    }
+                } else {
+                    Toast.makeText(getBaseContext(),R.string.all_permissions,Toast.LENGTH_LONG).show();
+                    if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                        ShowDialogAddData();
+                        return;
+                    }else{
+                        setMainView(null);
+                    }
+                }
+                break;
 		}
 	}
 
 	public Boolean ShouldBackupDB(){
-        if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
-            DB_Handler handler = new DB_Handler(this);
-            if(handler.hasDepricatedDb()){
-                return true;
-            }
-        }
-        return false;
+
+	    DB_Handler handler = new DB_Handler(this);
+        Boolean deprecated = !handler.notDBdeprecated(handler.getReadableDatabase());
+        handler.close();
+        return deprecated;
 	}
 
 	public void ShowDialogAddData() {
@@ -326,7 +353,12 @@ public class Home extends BaseActivity {
                 getString(R.string.positiveButton),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        checkPermissions(DB_OLD_PERMISSION_CONSTANT);
+                        if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                            ShowDialogAddData();
+                            return;
+                        }else{
+                            setMainView(null);
+                        }
                         dialog.cancel();
                     }
                 });
@@ -348,9 +380,15 @@ public class Home extends BaseActivity {
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                                            DB_Handler h = new DB_Handler(Home.this);
+                                            h.deleteOldBackup();
+                                            h.close();
                                             ShowDialogAddData();
                                             return;
                                         }else{
+                                            DB_Handler h = new DB_Handler(Home.this);
+                                            h.deleteOldBackup();
+                                            h.close();
                                             setMainView(null);
                                         }
                                         dialog.cancel();

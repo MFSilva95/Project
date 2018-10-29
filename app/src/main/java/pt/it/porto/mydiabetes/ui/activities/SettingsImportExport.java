@@ -76,14 +76,23 @@ public class SettingsImportExport extends BaseActivity {
 		if(isSDWriteable()){
 			File inputFile = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes/backup/DB_Diabetes");
 			if (inputFile.exists()) {
-				Calendar cal = Calendar.getInstance();
-				cal.setTimeInMillis(inputFile.lastModified());
-				Date newDate = cal.getTime();
-				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				String dateString = formatter.format(newDate);
+				SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
+				if(isDeprecated(this, db)){
+					db.close();
+					Calendar cal = Calendar.getInstance();
+					cal.setTimeInMillis(inputFile.lastModified());
+					Date newDate = cal.getTime();
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					String dateString = formatter.format(newDate);
 
-				TextView lastbackup = (TextView) findViewById(R.id.tv_lastBackup);
-				lastbackup.setText(dateString);
+					TextView lastbackup = (TextView) findViewById(R.id.tv_lastBackup);
+					lastbackup.setText(dateString);
+				}else{
+					db.close();
+					Button restore = (Button) findViewById(R.id.bt_Restore);
+					restore.setEnabled(false);
+					findViewById(R.id.share).setEnabled(false);
+				}
 			} else {
 				Button restore = (Button) findViewById(R.id.bt_Restore);
 				restore.setEnabled(false);
@@ -107,17 +116,42 @@ public class SettingsImportExport extends BaseActivity {
 		return rc;
 	}
 
-	public static boolean hasBackup(){
+	public static boolean hasBackup(Context c){
 		if(isSDWriteable()){
 			File inputFile = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes/backup/DB_Diabetes");
 			if (inputFile.exists()) {
-				return true;
+                SQLiteDatabase db;
+			    try{
+			        db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
+                    if (isDeprecated(c, db)) {
+                    	db.close();
+                        return false;
+                    }else{
+                    	db.close();
+                    	return true;
+					}
+                }catch (Exception e) {
+                    return false;
+                }
 			}
 		}
 		return false;
 	}
 
-	public static boolean restoreBackup(Context context) throws Exception{
+
+	public static Boolean isDeprecated(Context c, SQLiteDatabase db){
+
+		DB_Handler handler = new DB_Handler(c);
+//            if(handler.hasDepricatedDb()){
+//                return true;
+//            }
+		Boolean deprecated = !handler.notDBdeprecated(db);
+		handler.close();
+		return deprecated;
+	}
+
+
+	public static boolean restoreBackup(Context context) throws Exception{//todo
 		if (isSDWriteable()) {
 			File inputFile = new File(Environment.getExternalStorageDirectory()
 					+ "/MyDiabetes/backup/DB_Diabetes");
@@ -125,6 +159,7 @@ public class SettingsImportExport extends BaseActivity {
 				SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
 				DB_Handler handler = new DB_Handler(context);
 				if(db.getVersion()<handler.getReadableDatabase().getVersion()){
+					db.close();
 					throw new Exception("OLD DB VERSION");
 				}
 				try {
@@ -160,31 +195,6 @@ public class SettingsImportExport extends BaseActivity {
 			if (outChannel != null)
 				outChannel.close();
 		}
-	}
-
-	public static boolean backup_old_db(Context context) {
-		if (isSDWriteable()) {
-			File inputFile = new File(Environment.getExternalStorageDirectory()
-					+ "/MyDiabetes/backup/DB_Diabetes");//DbUtils.export_old_Db(context);
-
-			File outputDir = new File(Environment.getExternalStorageDirectory()
-					+ "/MyDiabetes/backup");
-			outputDir.mkdirs();
-			if (inputFile.exists()) {
-				File fileBackup = new File(outputDir, "DB_Diabetes_oldDB");
-				try {
-					fileBackup.createNewFile();
-					copyFile(inputFile, fileBackup);
-					inputFile.delete();
-					return true;
-				} catch (Exception exception) {
-					return false;
-				}
-			}
-		} else {
-			return false;
-		}
-		return false;
 	}
 
 	public static boolean backup(Context context) {
@@ -348,6 +358,7 @@ public class SettingsImportExport extends BaseActivity {
 
 			SQLiteDatabase db = SQLiteDatabase.openDatabase(tempDatabase.getPath(), null, 0);
 			db.execSQL("UPDATE UserInfo SET Name=''");
+			db.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -2,17 +2,29 @@ package pt.it.porto.mydiabetes.database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteCantOpenDatabaseException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
 
+import com.esafirm.imagepicker.view.SquareFrameLayout;
+
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.channels.FileChannel;
+import java.util.Calendar;
+
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
 public class DB_Handler extends SQLiteOpenHelper {
@@ -23,29 +35,27 @@ public class DB_Handler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION_TARGET_BG = 10;
     private static final int DATABASE_VERSION_TAG = 17;
     private static final int DATABASE_VERSION_V2 = 18;
+    private static boolean could_not_backup = false;
 
 
     // Database Name
     private static final String DATABASE_NAME = "DB_Diabetes";
-    private static final String DATABASE_NAME_V2 = "DB_Diabetes_v2";
-    private static String currentDB_name;
+
 
     // Context to be accessible from any method
     private Context myContext;
-    private SQLiteDatabase old_db;
 
 
     public DB_Handler(Context context) {
-//        super(context, DATABASE_VERSION <= DATABASE_VERSION_V2 ? DATABASE_NAME_V2 : DATABASE_NAME, null, DATABASE_VERSION);
-        super(context, DATABASE_NAME_V2, null, DATABASE_VERSION);
-
-        currentDB_name = DATABASE_NAME_V2;
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.myContext = context;
-        //Log.i(TAG, "-------------DB_HANDLE!: NAME: "+getDatabaseName());
     }
 
     public static String getCurrentDbName(){
-        return currentDB_name;
+        return DATABASE_NAME;
+    }
+    public static int getCurrentDbVersion(){
+        return DATABASE_VERSION;
     }
 
     public static String getOldDbName(){
@@ -63,40 +73,44 @@ public class DB_Handler extends SQLiteOpenHelper {
             initDatabaseTables(db);//iniciar a nova bd
             initDayPhases(db); //iniciar as tags na nova bd
 
-            //init new db, check if old db exists
-            old_db = myContext.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null);
-            DB_Read db_read = new DB_Read(old_db);
-            db_read.close();
-            old_db.close();
-        }
-    }
-    public Boolean hasBackupableOldDb(){
-        File inputFile = new File(Environment.getExternalStorageDirectory()
-                + "/MyDiabetes/backup/DB_Diabetes");
-        if (inputFile.exists()) {
-            SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
-            if (db.getVersion() >= getReadableDatabase().getVersion()) {
-                return true;
-            }
-        }
-        return false;
-    }
 
-    public Boolean hasDepricatedDb(){
-
-        File inputFile = new File(Environment.getExternalStorageDirectory()
-                    + "/MyDiabetes/backup/DB_Diabetes");
-        if (inputFile.exists()) {
-            try{
-                SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
-                if (db.getVersion() < getReadableDatabase().getVersion()) {
-                    return true;
+            try {
+                Cursor cursor = db.rawQuery("SELECT NotDeprecated FROM Db_Info ", null);
+                cursor.moveToFirst();
+                ContentValues toInsert;
+                String version;
+                switch (cursor.getColumnIndex("NotDeprecated")) {
+                    case -1: //column does not exist
+                        db.execSQL("ALTER TABLE Db_Info ADD COLUMN NotDeprecated INTEGER");
+                        version = myContext.getPackageManager().getPackageInfo(myContext.getPackageName(), 0).versionName;
+                        toInsert = new ContentValues();
+                        toInsert.put("NotDeprecated", 1);
+                        toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_VERSION, version);
+                        toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_DATETIME, DateUtils.formatToDb(Calendar.getInstance()));
+                        db.insert("Db_Info", null, toInsert);
+                        break;
+                    case 0: //column exists but has no values
+                        switch (cursor.getCount()){
+                            case 0:
+                                version = myContext.getPackageManager().getPackageInfo(myContext.getPackageName(), 0).versionName;
+                                toInsert = new ContentValues();
+                                toInsert.put("NotDeprecated", 1);
+                                toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_VERSION, version);
+                                toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_DATETIME, DateUtils.formatToDb(Calendar.getInstance()));
+                                db.insert("Db_Info", null, toInsert);
+                                break;
+                            case 1:
+                                ContentValues toUpdate = new ContentValues();
+                                toUpdate.put("NotDeprecated", 1);
+                                db.update("Db_Info", toUpdate, null, null);
+                                break;
+                        }
+                        break;
                 }
-            }catch (SQLiteCantOpenDatabaseException e){
-                return true;
+            }catch (Exception e){
+                Log.i("rawr", "onCreate: BOOM!");
             }
         }
-        return false;
     }
 
     @Override
@@ -111,134 +125,124 @@ public class DB_Handler extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase myDB, int oldVersion, int newVersion) {
-//        if(oldVersion<=18){
-//            //change flag
-//            setOld_db(true);
-////            FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(myContext));
-////            db.changeFeatureStatus(FeaturesDB.OLD_DB_VERSION, true);
-//        }
+        if(oldVersion<=18){
+            //old database
+            //get database
+            File db_file = new File(Environment.getDataDirectory() + "/data/" + myContext.getPackageName() + "/databases/"+ DB_Handler.getCurrentDbName());
+            if(db_file.exists()) {
+
+                try {
+                    Cursor cursor = myDB.rawQuery("SELECT NotDeprecated FROM Db_Info ", null);
+                    cursor.moveToFirst();
+                    ContentValues toInsert;
+                    String version;
+                    switch (cursor.getColumnIndex("NotDeprecated")) {
+                        case -1: //column does not exist
+                            myDB.execSQL("ALTER TABLE Db_Info ADD COLUMN NotDeprecated INTEGER");
+                            version = myContext.getPackageManager().getPackageInfo(myContext.getPackageName(), 0).versionName;
+                            toInsert = new ContentValues();
+                            toInsert.put("NotDeprecated", 0);
+                            toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_VERSION, version);
+                            toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_DATETIME, DateUtils.formatToDb(Calendar.getInstance()));
+                            myDB.insert("Db_Info", null, toInsert);
+                            break;
+                        case 0: //column exists but has no values
+                            switch (cursor.getCount()){
+                                case 0:
+                                    version = myContext.getPackageManager().getPackageInfo(myContext.getPackageName(), 0).versionName;
+                                    toInsert = new ContentValues();
+                                    toInsert.put("NotDeprecated", 0);
+                                    toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_VERSION, version);
+                                    toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_DATETIME, DateUtils.formatToDb(Calendar.getInstance()));
+                                    myDB.insert("Db_Info", null, toInsert);
+                                    break;
+                                case 1:
+                                    ContentValues toUpdate = new ContentValues();
+                                    toUpdate.put("NotDeprecated", 0);
+                                    myDB.update("Db_Info", toUpdate, null, null);
+                                    break;
+                            }
+                            break;
+                    }
+                    File outputDir = new File(Environment.getDataDirectory() + "/data/" + myContext.getPackageName() + "/databases/old_db_backup");
+                    outputDir.mkdirs();
+                    try {
+                        copyFile(db_file, outputDir);
+                    } catch (IOException e) {
+                        could_not_backup = true;
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+        }else{
+            could_not_backup = true;
+        }
+        myContext.deleteDatabase(DATABASE_NAME);
     }
 
-//    private void insertIntoDB(SQLiteDatabase myDB, SQLiteDatabase old) throws Exception{
-//        String TAG = "cenas";
-//        if(old==null){
-//            Log.i(TAG, "onUpgrade: -> old is null");
-//            old = myContext.openOrCreateDatabase(DATABASE_NAME, Context.MODE_PRIVATE, null); //old database
-//        }
-//
-//
-//        DB_Read oldReads = new DB_Read(old);
-//        UserInfo basic_info = oldReads.MyData_Read();
-//        ArrayList<Insulin> old_insulins = oldReads.Insulins_GetAll();
-//        ArrayList<InsulinRec> old_insu_recs = oldReads.InsulinRec_GetAll();
-//        ArrayList<CarbsRec> old_carbs_recs = oldReads.CarbsRec_GetAll();
-//        ArrayList<GlycemiaRec> old_gly_recs = oldReads.GlycemiaRec_GetAll();
-//        ArrayList<TargetBGRec> old_targetBG_recs = oldReads.TargetBG_GetAll();
-//        ArrayList<BadgeRec> old_medals_recs = oldReads.getAllMedals();
-//
-//        ArrayList<PointsRec> old_points_recs = oldReads.PointsReg_GetAll();
-//
-//        ArrayList<WeightRec> old_weight_recs = oldReads.Weight_GetAll();
-//        ArrayList<ExerciseRec> old_exercise_recs = oldReads.ExerciseReg_GetAll();
-//        ArrayList<BloodPressureRec> old_BP_recs = oldReads.BloodPressure_GetAll();
-//        ArrayList<CholesterolRec> old_chol_recs = oldReads.Cholesterol_GetAll();
-//        ArrayList<DiseaseRec> old_disease_recs = oldReads.DiseaseReg_GetAll();
-//
-//
-//
-//        oldReads.close();
-//        old.close();
-//
-//
-//
-//        DB_Read db_read = new DB_Read(myDB);
-//        if(db_read.isEmpty()){
-//            Log.i(TAG, "DATABASE EMPTY");
-//            initDatabaseTables(myDB);//initialize new database
-//        }
-//
-//
-//        DB_Write newWrites = new DB_Write(myDB);
-//        if (basic_info != null) {
-//            newWrites.MyData_Save(basic_info);
-//        }
-//
-//        if (old_points_recs != null) {
-//            for (PointsRec rec : old_points_recs) {
-//                newWrites.Point_Save(rec);
-//            }
-//        }
-//
-//        //            verify if points were initialized
-//        if( db_read.Points_get_num_reg()<=0){
-//            LevelsPointsUtils.addPoints(myContext,0,"first", db_read);
-//        }
-//
-//        if (old_insulins != null) {
-//            for (Insulin rec : old_insulins) {
-//                newWrites.Insulin_Add(rec);
-//            }
-//        }
-//        if (old_targetBG_recs != null) {
-//            for (TargetBGRec rec : old_targetBG_recs) {
-//                newWrites.TargetBG_Add(rec);
-//            }
-//        }
-//        if (old_gly_recs != null) {
-//            for (GlycemiaRec rec : old_gly_recs) {
-//                newWrites.Glycemia_Save(rec);
-//            }
-//        }
-//        if (old_insu_recs != null) {
-//            for (InsulinRec rec : old_insu_recs) {
-//                newWrites.Insulin_Save(rec);
-//            }
-//        }
-//
-//        if (old_carbs_recs != null) {
-//            for (CarbsRec rec : old_carbs_recs) {
-//                newWrites.Carbs_Save(rec);
-//            }
-//        }
-//        if (old_medals_recs != null) {
-//            for (BadgeRec rec : old_medals_recs) {
-//                newWrites.Badge_Save(rec);
-//            }
-//        }
-//        if (old_BP_recs != null) {
-//            for (BloodPressureRec rec : old_BP_recs) {
-//                newWrites.BloodPressure_Save(rec);
-//            }
-//        }
-//        if (old_weight_recs != null) {
-//            for (WeightRec rec : old_weight_recs) {
-//                newWrites.Weight_Save(rec);
-//            }
-//        }
-//        if (old_exercise_recs != null) {
-//            for (ExerciseRec rec : old_exercise_recs) {
-//                newWrites.Exercise_Save(rec);
-//            }
-//        }
-//        if (old_chol_recs != null) {
-//            for (CholesterolRec rec : old_chol_recs) {
-//                newWrites.Cholesterol_Save(rec);
-//            }
-//        }
-//        if (old_disease_recs != null) {
-//            for (DiseaseRec rec : old_disease_recs) {
-//                newWrites.DiseaseReg_Save(rec);
-//            }
-//        }
-//
-//
-//        ContentValues toInsert = new ContentValues();
-//        toInsert.put("Name", FeaturesDB.INITIAL_REG_DONE);
-//        toInsert.put("Activated", 1);
-//        newWrites.addFeature(toInsert);
-//        newWrites.close();
-//        myContext.deleteDatabase(DATABASE_NAME);
-//    }
+    public Boolean notDBdeprecated(SQLiteDatabase db){
+
+        try{
+            boolean deprecated;
+            Cursor cursor = db.rawQuery("SELECT NotDeprecated FROM Db_Info", null);
+            cursor.moveToFirst();
+            ContentValues toInsert;
+            String version;
+            switch (cursor.getColumnIndex("NotDeprecated")) {
+                case -1: //column does not exist
+                    db.execSQL("ALTER TABLE Db_Info ADD COLUMN NotDeprecated INTEGER");
+                    version = myContext.getPackageManager().getPackageInfo(myContext.getPackageName(), 0).versionName;
+                    toInsert = new ContentValues();
+                    toInsert.put("NotDeprecated", 0);
+                    toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_VERSION, version);
+                    toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_DATETIME, DateUtils.formatToDb(Calendar.getInstance()));
+                    db.insert("Db_Info", null, toInsert);
+                    return false;
+                case 0: //column exists but has no values
+                    switch (cursor.getCount()){
+                        case 0:
+                            version = myContext.getPackageManager().getPackageInfo(myContext.getPackageName(), 0).versionName;
+                            toInsert = new ContentValues();
+                            toInsert.put("NotDeprecated", 0);
+                            toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_VERSION, version);
+                            toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_DATETIME, DateUtils.formatToDb(Calendar.getInstance()));
+                            db.insert("Db_Info", null, toInsert);
+                            return false;
+                        case 1:
+                            deprecated = (cursor.getInt(cursor.getColumnIndex("NotDeprecated")) == 1);
+                            cursor.close();
+                            return deprecated;
+                    }
+                    break;
+            }
+        }catch (Exception e){
+            return false;
+        }
+        return false;
+    }
+
+    private static void copyFile(File src, File dst) throws IOException {
+        FileChannel inChannel = new FileInputStream(src).getChannel();
+        FileChannel outChannel = new FileOutputStream(dst).getChannel();
+        try {
+            inChannel.transferTo(0, inChannel.size(), outChannel);
+        } finally {
+            if (inChannel != null)
+                inChannel.close();
+            if (outChannel != null)
+                outChannel.close();
+        }
+    }
+    public void deleteOldBackup(){
+        File backup = new File(Environment.getDataDirectory() + "/data/" + myContext.getPackageName() + "/databases/old_db_backup");
+        Log.i("RAWR", "deleteOldBackup_PATH: "+ Environment.getDataDirectory() + "/data/" + myContext.getPackageName() + "/databases/old_db_backup");
+        if(backup.exists()){
+            backup.delete();
+        }
+    }
+
+
 
     private void initDatabaseTables(SQLiteDatabase db) {
         try {
@@ -258,16 +262,6 @@ public class DB_Handler extends SQLiteOpenHelper {
             e.printStackTrace();
         }
     }
-
-
-//    public void insertIntoDB(File inputFile) throws Exception{
-//        SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
-//        DB_Handler dbwrite = new DB_Handler(this.myContext);
-//        insertIntoDB(dbwrite.getWritableDatabase(),db);
-//        Log.i("cenas", "insertIntoDB: DONE");
-//    }
-
-
     private void initDayPhases(SQLiteDatabase db) {
         Resources res = this.myContext.getResources();
         String[] daytimes = res.getStringArray(R.array.daytimes);

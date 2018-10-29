@@ -107,7 +107,7 @@ public class WelcomeActivity extends BaseActivity {
 			}
 		});
 
-		if (SettingsImportExport.hasBackup()) {
+		if (SettingsImportExport.hasBackup(WelcomeActivity.this)) {
 			Button button = (Button) findViewById(R.id.restoreDb);
 			button.setVisibility(View.VISIBLE);
 			button.setOnClickListener(new View.OnClickListener() {
