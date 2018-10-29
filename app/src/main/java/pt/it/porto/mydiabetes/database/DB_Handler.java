@@ -200,21 +200,19 @@ public class DB_Handler extends SQLiteOpenHelper {
                     db.insert("Db_Info", null, toInsert);
                     return false;
                 case 0: //column exists but has no values
-                    switch (cursor.getCount()){
-                        case 0:
-                            version = myContext.getPackageManager().getPackageInfo(myContext.getPackageName(), 0).versionName;
-                            toInsert = new ContentValues();
-                            toInsert.put("NotDeprecated", 0);
-                            toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_VERSION, version);
-                            toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_DATETIME, DateUtils.formatToDb(Calendar.getInstance()));
-                            db.insert("Db_Info", null, toInsert);
-                            return false;
-                        case 1:
-                            deprecated = (cursor.getInt(cursor.getColumnIndex("NotDeprecated")) == 1);
-                            cursor.close();
-                            return deprecated;
+                    if(cursor.getCount()==0){
+                        version = myContext.getPackageManager().getPackageInfo(myContext.getPackageName(), 0).versionName;
+                        toInsert = new ContentValues();
+                        toInsert.put("NotDeprecated", 0);
+                        toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_VERSION, version);
+                        toInsert.put(MyDiabetesContract.DbInfo.COLUMN_NAME_DATETIME, DateUtils.formatToDb(Calendar.getInstance()));
+                        db.insert("Db_Info", null, toInsert);
+                        return false;
+                    }else{
+                        deprecated = (cursor.getInt(cursor.getColumnIndex("NotDeprecated")) == 1);
+                        cursor.close();
+                        return deprecated;
                     }
-                    break;
             }
         }catch (Exception e){
             return false;

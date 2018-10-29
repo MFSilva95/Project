@@ -28,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 			Fabric.with(this, new Crashlytics());
 		}
 		if(!this.getComponentName().getClassName().equals("pt.it.porto.mydiabetes.ui.activities.WelcomeActivity")){
-			DB_Read db = new DB_Read(getBaseContext());
+			DB_Read db = new DB_Read(this);//getBaseContext());
 			idUser = db.getId();
 			db.close();
 		}
@@ -45,7 +45,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 				Log.d("BaseActivity", ev.toString());
 				if(!this.getComponentName().getClassName().equals("pt.it.porto.mydiabetes.ui.activities.WelcomeActivity")){
-					DB_Write dbwrite = new DB_Write(getBaseContext());
+					DB_Write dbwrite = new DB_Write(this);//getBaseContext());
 					dbwrite.Clicks_Save(idUser,this.getComponentName().getClassName(),ev.getX(),ev.getY());
 					dbwrite.close();
 				}
@@ -64,7 +64,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 		super.onResume();
 		if(!this.getComponentName().getClassName().equals("pt.it.porto.mydiabetes.ui.activities.WelcomeActivity")){
 			if(idUser != -1){
-				DB_Write dbwrite = new DB_Write(getBaseContext());
+				DB_Write dbwrite = new DB_Write(this);//getBaseContext());
 				dbwrite.Log_Save(idUser,this.getComponentName().getClassName());
 				dbwrite.close();
 			}

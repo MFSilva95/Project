@@ -77,7 +77,7 @@ public class SettingsImportExport extends BaseActivity {
 			File inputFile = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes/backup/DB_Diabetes");
 			if (inputFile.exists()) {
 				SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
-				if(isDeprecated(this, db)){
+				if(!isDeprecated(this, db)){
 					db.close();
 					Calendar cal = Calendar.getInstance();
 					cal.setTimeInMillis(inputFile.lastModified());
@@ -87,21 +87,34 @@ public class SettingsImportExport extends BaseActivity {
 
 					TextView lastbackup = (TextView) findViewById(R.id.tv_lastBackup);
 					lastbackup.setText(dateString);
+
+					Button restore = (Button) findViewById(R.id.bt_Restore);
+					restore.setEnabled(true);
+					findViewById(R.id.share).setEnabled(true);
+					restore.setVisibility(View.VISIBLE);
+					findViewById(R.id.share).setVisibility(View.VISIBLE);
+
 				}else{
 					db.close();
 					Button restore = (Button) findViewById(R.id.bt_Restore);
 					restore.setEnabled(false);
 					findViewById(R.id.share).setEnabled(false);
+					restore.setVisibility(View.GONE);
+					findViewById(R.id.share).setVisibility(View.GONE);
 				}
 			} else {
 				Button restore = (Button) findViewById(R.id.bt_Restore);
 				restore.setEnabled(false);
 				findViewById(R.id.share).setEnabled(false);
+				restore.setVisibility(View.GONE);
+				findViewById(R.id.share).setVisibility(View.GONE);
 			}
 		}else{
 			Button restore = (Button) findViewById(R.id.bt_Restore);
 			restore.setEnabled(false);
 			findViewById(R.id.share).setEnabled(false);
+			restore.setVisibility(View.GONE);
+			findViewById(R.id.share).setVisibility(View.GONE);
 		}
 	}
 
@@ -158,27 +171,28 @@ public class SettingsImportExport extends BaseActivity {
 			if(inputFile.exists()){
 				SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
 				DB_Handler handler = new DB_Handler(context);
-				if(db.getVersion()<handler.getReadableDatabase().getVersion()){
-					db.close();
-					throw new Exception("OLD DB VERSION");
-				}
-				try {
-					File outputDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases");
-					outputDir.mkdirs();
-					File fileBackup = new File(outputDir, "DB_Diabetes");
+				if(handler.notDBdeprecated(db)){
+					handler.close();
 					try {
-						fileBackup.createNewFile();
-						copyFile(inputFile, fileBackup);
-						return true;
-					} catch (IOException ioException) {
-						return false;
-					} catch (Exception exception) {
+						File outputDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases");
+						outputDir.mkdirs();
+						File fileBackup = new File(outputDir, "DB_Diabetes");
+						try {
+							fileBackup.createNewFile();
+							copyFile(inputFile, fileBackup);
+							return true;
+						} catch (IOException ioException) {
+							return false;
+						} catch (Exception exception) {
+							return false;
+						}
+					} catch (Exception e) {
+						handler.close();
+						e.printStackTrace();
 						return false;
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					return false;
 				}
+				handler.close();
 			}
 		}
 		return false;
@@ -264,22 +278,28 @@ public class SettingsImportExport extends BaseActivity {
 		new android.app.AlertDialog.Builder(this).setTitle(R.string.information).setMessage(msg).show();
 	}
 
-	public boolean fillBackup() {
+	public boolean fillBackup() {// todo
 		if (isSDWriteable()) {
 			File inputFile = new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION);
 			if (inputFile.exists()) {
-				Calendar cal = Calendar.getInstance();
-				cal.setTimeInMillis(inputFile.lastModified());
-				Date newDate = cal.getTime();
-				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-				String dateString = formatter.format(newDate);
+				SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
+				DB_Handler handler = new DB_Handler(this);
+				if(handler.notDBdeprecated(db)){
+					Calendar cal = Calendar.getInstance();
+					cal.setTimeInMillis(inputFile.lastModified());
+					Date newDate = cal.getTime();
+					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+					String dateString = formatter.format(newDate);
 
-				TextView lastbackup = (TextView) findViewById(R.id.tv_lastBackup);
-				lastbackup.setText(dateString);
-				Button restore = (Button) findViewById(R.id.bt_Restore);
-				restore.setEnabled(true);
-				findViewById(R.id.share).setEnabled(true);
-				return true;
+					TextView lastbackup = (TextView) findViewById(R.id.tv_lastBackup);
+					lastbackup.setText(dateString);
+					Button restore = (Button) findViewById(R.id.bt_Restore);
+					restore.setEnabled(true);
+					findViewById(R.id.share).setEnabled(true);
+					return true;
+				}else{
+					return false;
+				}
 			} else {
 				return false;
 			}
