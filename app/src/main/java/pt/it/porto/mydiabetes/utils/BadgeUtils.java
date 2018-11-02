@@ -122,16 +122,6 @@ public class BadgeUtils {
 
         int idUser = db.getId();
         boolean flag = db.hasMedal("photo");
-        
-
-        /*LinkedList<BadgeRec> list = db.Badges_GetAll();
-        
-        boolean flag = false;
-        for (BadgeRec rec : list) {
-            if (rec.getName().equals("photo")) {
-                flag = true;
-            }
-        }*/
 
         if (!flag) {
             DB_Write dbwrite = new DB_Write(context);
@@ -152,14 +142,7 @@ public class BadgeUtils {
     public static void addExportBadge(Context context, DB_Read db) {
 
         int idUser = db.getId();
-        /*LinkedList<BadgeRec> list = db.Badges_GetAll();
-        
-        boolean flag = false;
-        for (BadgeRec rec : list) {
-            if (rec.getName().equals("export")) {
-                flag = true;
-            }
-        }*/
+
         boolean flag = db.hasMedal("export");
         
 

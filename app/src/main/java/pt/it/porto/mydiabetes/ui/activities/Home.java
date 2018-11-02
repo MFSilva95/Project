@@ -2,12 +2,15 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.Manifest;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -45,6 +48,7 @@ import pt.it.porto.mydiabetes.database.DB_Handler;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
+import pt.it.porto.mydiabetes.database.MyDiabetesContract;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
@@ -74,25 +78,30 @@ public class Home extends BaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+
 
 		permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
 
 		db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
-        if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, INIT_PERMISSION_REQUEST);
-        }else{
-            if(ShouldBackupDB()){
-                //ask permissions
-                showBackupDialog();
+
+        if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+            if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, INIT_PERMISSION_REQUEST);
             }else{
-                if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                if(ShouldBackupDB()){
+                    showBackupDialog();
+                }else{
                     ShowDialogAddData();
                     return;
-                }else{
-                    setMainView(savedInstanceState);
                 }
+            }
+        }else{
+            if(ShouldBackupDB()){
+                showBackupDialog();
+            }else{
+                setMainView(savedInstanceState);
             }
         }
 	}
@@ -185,21 +194,12 @@ public class Home extends BaseActivity {
 
 	public void checkPermissions(int permission_need){
 		if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-				ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, permission_need);
-		}
-		if(permission_need == EXTERNAL_STORAGE_PERMISSION_CONSTANT){
-		    goToImportExportActivity();
-		}
-//      else{
-//		    backup_old_db(Home.this);
-//		    if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
-//		        ShowDialogAddData();
-//		        return;
-//		    }else{
-//		        setMainView(null);
-//		    }
-//		}
-
+                ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, permission_need);
+		}else{
+            if(permission_need == EXTERNAL_STORAGE_PERMISSION_CONSTANT){
+                goToImportExportActivity();
+            }
+        }
 	}
 
 	private void goToImportExportActivity() {
@@ -262,7 +262,7 @@ public class Home extends BaseActivity {
 	public Boolean ShouldBackupDB(){
 
 	    DB_Handler handler = new DB_Handler(this);
-        Boolean deprecated = !handler.notDBdeprecated(handler.getReadableDatabase());
+        Boolean deprecated = handler.isDBdeprecated(handler.getReadableDatabase());
         handler.close();
         return deprecated;
 	}
@@ -343,7 +343,23 @@ public class Home extends BaseActivity {
 		}
 	}
 
+	private void removeDepricate(){
+	    DB_Handler h = new DB_Handler(this);
+	    SQLiteDatabase db = h.getWritableDatabase();
+        Cursor result = db.query(MyDiabetesContract.Feature.TABLE_NAME, new String[]{MyDiabetesContract.Feature.COLUMN_NAME_NAME},
+                MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{"db_deprecated"}, null, null, null, "1");
+        if(result.getCount()==0){
+            return;
+        }
+        ContentValues toInsert = new ContentValues();
+        toInsert.put(MyDiabetesContract.Feature.COLUMN_NAME_ACTIVATED, 0);
+        db.update(MyDiabetesContract.Feature.TABLE_NAME, toInsert, MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{"db_deprecated"});
+        db.close();
+        h.close();
+    }
+
 	private void showBackupDialog(){
+        removeDepricate();
         android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(this);
         builder1.setTitle(getString(R.string.db_depricated_dialog_title));
         builder1.setMessage(getString(R.string.db_depricated_dialog_description));

@@ -155,10 +155,7 @@ public class SettingsImportExport extends BaseActivity {
 	public static Boolean isDeprecated(Context c, SQLiteDatabase db){
 
 		DB_Handler handler = new DB_Handler(c);
-//            if(handler.hasDepricatedDb()){
-//                return true;
-//            }
-		Boolean deprecated = !handler.notDBdeprecated(db);
+		Boolean deprecated = handler.isDBdeprecated(db);
 		handler.close();
 		return deprecated;
 	}
@@ -170,9 +167,8 @@ public class SettingsImportExport extends BaseActivity {
 					+ "/MyDiabetes/backup/DB_Diabetes");
 			if(inputFile.exists()){
 				SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
-				DB_Handler handler = new DB_Handler(context);
-				if(handler.notDBdeprecated(db)){
-					handler.close();
+				if(!isDeprecated(context, db)){
+					db.close();
 					try {
 						File outputDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases");
 						outputDir.mkdirs();
@@ -187,12 +183,10 @@ public class SettingsImportExport extends BaseActivity {
 							return false;
 						}
 					} catch (Exception e) {
-						handler.close();
 						e.printStackTrace();
 						return false;
 					}
 				}
-				handler.close();
 			}
 		}
 		return false;
@@ -255,7 +249,7 @@ public class SettingsImportExport extends BaseActivity {
 						try {
 							if (restoreBackup(getApplicationContext())) {
 								ShowDialogMsg(getString(R.string.restore_backup_success));
-								fillBackup();
+								fillBackup(SettingsImportExport.this);
 							} else {
 								ShowDialogMsg(getString(R.string.restore_backup_error));
 							}
@@ -278,13 +272,13 @@ public class SettingsImportExport extends BaseActivity {
 		new android.app.AlertDialog.Builder(this).setTitle(R.string.information).setMessage(msg).show();
 	}
 
-	public boolean fillBackup() {// todo
+	public boolean fillBackup(Context c) {
 		if (isSDWriteable()) {
 			File inputFile = new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION);
 			if (inputFile.exists()) {
 				SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
-				DB_Handler handler = new DB_Handler(this);
-				if(handler.notDBdeprecated(db)){
+				if(!isDeprecated(c,db)){
+				    db.close();
 					Calendar cal = Calendar.getInstance();
 					cal.setTimeInMillis(inputFile.lastModified());
 					Date newDate = cal.getTime();
@@ -298,6 +292,7 @@ public class SettingsImportExport extends BaseActivity {
 					findViewById(R.id.share).setEnabled(true);
 					return true;
 				}else{
+				    db.close();
 					return false;
 				}
 			} else {
