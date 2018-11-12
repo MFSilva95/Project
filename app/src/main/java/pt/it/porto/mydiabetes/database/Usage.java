@@ -34,7 +34,6 @@ public class Usage {
 		ContentValues values = new ContentValues();
 		values.put(MyDiabetesContract.DbInfo.COLUMN_NAME_VERSION, appVersion);
 		values.put(MyDiabetesContract.DbInfo.COLUMN_NAME_DATETIME, DateUtils.formatToDb(Calendar.getInstance()));
-		values.put("NotDeprecated", true);
 		storage.insertNewData(MyDiabetesContract.DbInfo.TABLE_NAME, values);
 	}
 

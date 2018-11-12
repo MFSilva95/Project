@@ -158,6 +158,7 @@ public class WelcomeActivity extends BaseActivity {
 			if (currentFragment + 1 == adapter.getCount()) {
 				FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
 				db.changeFeatureStatus(FeaturesDB.INITIAL_REG_DONE, true);
+				db.changeFeatureStatus(FeaturesDB.DEPRECATED, false);
 				Intent intent = new Intent(this, Home.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(intent);

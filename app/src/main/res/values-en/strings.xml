@@ -12,6 +12,8 @@
     <string name="app_name">myDiabetes</string>
     <string name="action_settings">Settings</string>
 
+    <string name="failed_import_img">Could not access the image.</string>
+
     <string name="upload_failed">Upload failed, please try later.</string>
     <string name="title_activity_my_data">My Data</string>
     <string name="title_activity_exercise">Exercise Register</string>

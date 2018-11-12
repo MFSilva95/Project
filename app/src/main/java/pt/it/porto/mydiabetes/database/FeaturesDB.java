@@ -10,6 +10,7 @@ public class FeaturesDB {
 	public static final String FEATURE_CLOUD_SYNC = "feature_cloud_sync/2";
 	public static final String INITIAL_REG_DONE = "initial_reg_done";
 	public static final String OLD_DB_VERSION = "old_db_version";
+	public static final String DEPRECATED = "db_deprecated";
 
 	private MyDiabetesStorage storage;
 

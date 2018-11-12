@@ -322,7 +322,8 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
             currentMealName = meal.getName();
             currentMealPhotoPath = meal.getThumbnailPath();
             if(currentMealPhotoPath != null) {
-                displayImg(currentMealPhotoPath);
+                File img = new File(currentMealPhotoPath);
+                if(img.exists()){displayImg(currentMealPhotoPath);}else{currentMealPhotoPath = null;}
             }
 
             for(MealItem item : meal.getItemList()){
@@ -529,7 +530,7 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
             try {
                 photoFile = createImageFile();
                 try (FileOutputStream out = new FileOutputStream(photoFile)) {
-                    pic_bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out); // bmp is your Bitmap instance
+                    pic_bitmap.compress(Bitmap.CompressFormat.JPEG, 50, out); // bmp is your Bitmap instance
                     // PNG is a lossless format, the compression factor (100) is ignored
                     out.flush();
                     out.close();
@@ -762,12 +763,17 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.RGB_565;
-        Bitmap bitmap = BitmapFactory.decodeFile(path, options);
-        thumbnailPhotoView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 120, 120, false));
+        File img = new File(path);
+        if(img.exists()){
+            Bitmap bitmap = BitmapFactory.decodeFile(path, options);
+            if(bitmap!=null){
+                thumbnailPhotoView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, 120, 120, false));
 
-        if(thumbnailPhotoView.getVisibility() == View.GONE) {
-            cameraPlaceholder.setVisibility(View.GONE);
-            thumbnailPhotoView.setVisibility(View.VISIBLE);
+                if(thumbnailPhotoView.getVisibility() == View.GONE) {
+                    cameraPlaceholder.setVisibility(View.GONE);
+                    thumbnailPhotoView.setVisibility(View.VISIBLE);
+                }
+            }
         }
     }
 
@@ -811,10 +817,26 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
             else {
                 //we have permissions
                 // File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-                currentImageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/image"+ Calendar.getInstance().getTime()+".jpg"));
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//ImagePicker.cameraOnly().getIntent(this);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentImageUri);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                File imgLocation = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/MyDiabetes/");
+
+                if (!imgLocation.exists()) {
+                    imgLocation.mkdirs();
+                }
+                File f = new File(imgLocation + "image"+ Calendar.getInstance().getTime()+".jpg");
+                if (f.exists()) {
+                    f.delete();
+                }
+                try {
+                    f.createNewFile();
+
+                    currentImageUri = Uri.fromFile(f);
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//ImagePicker.cameraOnly().getIntent(this);
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentImageUri);
+                    startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getBaseContext(),R.string.failed_import_img,Toast.LENGTH_LONG).show();
+                }
             }
         }else{
             //show imgs

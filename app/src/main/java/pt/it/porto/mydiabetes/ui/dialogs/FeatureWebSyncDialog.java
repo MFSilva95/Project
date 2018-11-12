@@ -58,6 +58,13 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		return builder.create();
 	}
 
+	/**
+	 * LOGIN ONE
+	 * @param context
+	 * @param okButtonMessage
+	 * @param cancelButtonMessage
+	 * @return
+	 */
 	public Dialog getUserDataPopUp(final Context context, int okButtonMessage, int cancelButtonMessage) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		password = Preferences.getPassword(context);

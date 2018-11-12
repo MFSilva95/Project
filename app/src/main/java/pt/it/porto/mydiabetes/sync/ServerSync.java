@@ -3,10 +3,25 @@ package pt.it.porto.mydiabetes.sync;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Handler;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.net.UnknownHostException;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -24,7 +39,7 @@ import pt.it.porto.mydiabetes.utils.DbUtils;
 public class ServerSync {
 
 	public static final MediaType MEDIA_TYPE_BINARY = MediaType.parse("application/octet-stream");
-	private static final String BASE_URL = "https://mydiabetes.dcc.fc.up.pt/newsite/";
+	private static final String BASE_URL = "https://mydiabetes.dcc.fc.up.pt/";
 	private static ServerSync instance;
 	private String username;
 	private String password;
@@ -52,7 +67,22 @@ public class ServerSync {
 
 	public void send(final ServerSyncListener listener) {
 		this.listener = listener;
-		client = new OkHttpClient();
+		try {
+			client = new OkHttpClient.Builder()
+					.sslSocketFactory(getCert())
+					.build();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (KeyManagementException e) {
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		} catch (KeyStoreException e) {
+			e.printStackTrace();
+		} catch (CertificateException e) {
+			e.printStackTrace();
+		}
+
 		mainHandler = new Handler(context.getMainLooper());
 
 		username = Preferences.getUsername(context);
@@ -62,16 +92,58 @@ public class ServerSync {
 
 			@Override
 			public void onFailure(Call call, IOException e) {
+				e.printStackTrace();
 				ServerSync.this.onFailure();
 			}
 
 			@Override
 			public void onResponse(Call call, Response response) throws IOException {
+                Log.i("RAWR", "onResponse: "+response);
 				// now sends the images
 				photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(context));
 				processNextPhoto();
 			}
 		});
+
+	}
+	private SSLSocketFactory getCert() throws IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException, CertificateException {
+
+		// Load CAs from an InputStream
+		// (could be from a resource or ByteArrayInputStream or ...)
+		CertificateFactory cf = CertificateFactory.getInstance("X.509");
+
+		InputStream caInput = this.context.getAssets().open("certMyDiabetes.crt");//new BufferedInputStream(new FileInputStream());
+		Certificate ca;
+		try {
+			ca = cf.generateCertificate(caInput);
+			//System.out.println("ca=" + ((X509Certificate) ca).getSubjectDN());
+		} finally {
+			caInput.close();
+		}
+
+// Create a KeyStore containing our trusted CAs
+		String keyStoreType = KeyStore.getDefaultType();
+		KeyStore keyStore = KeyStore.getInstance(keyStoreType);
+		keyStore.load(null, null);
+		keyStore.setCertificateEntry("ca", ca);
+
+// Create a TrustManager that trusts the CAs in our KeyStore
+		String tmfAlgorithm = TrustManagerFactory.getDefaultAlgorithm();
+		TrustManagerFactory tmf = TrustManagerFactory.getInstance(tmfAlgorithm);
+		tmf.init(keyStore);
+
+// Create an SSLContext that uses our TrustManager
+		SSLContext context = SSLContext.getInstance("TLS");
+		context.init(null, tmf.getTrustManagers(), null);
+
+// Tell the URLConnection to use a SocketFactory from our SSLContext
+		URL url = new URL(BASE_URL + "transfer_db.php");
+		HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
+
+		return context.getSocketFactory();
+		//urlConnection.setSSLSocketFactory(context.getSocketFactory());
+		//InputStream in = urlConnection.getInputStream();
+		//copyInputStreamToOutputStream(in, System.out);
 
 	}
 
@@ -84,7 +156,7 @@ public class ServerSync {
 														  .build();
 
 
-		Request request = new Request.Builder().url(BASE_URL + "transfer_db.php").post(formBody).build();
+		Request request = new Request.Builder() .url(BASE_URL + "transfer_db.php").post(formBody).build();
 
 		client.newCall(request).enqueue(callback);
 	}
@@ -150,8 +222,26 @@ public class ServerSync {
 	}
 
 	public void testCredentials(ServerSyncListener listener) {
+
 		this.listener = listener;
-		client = new OkHttpClient();
+		//client = new OkHttpClient();
+
+        try {
+            client = new OkHttpClient.Builder()
+                    .sslSocketFactory(getCert())
+                    .build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        }
+
 		mainHandler = new Handler(context.getMainLooper());
 
 		username = Preferences.getUsername(context);
@@ -161,6 +251,7 @@ public class ServerSync {
 
 			@Override
 			public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
 				if(e!=null && e instanceof UnknownHostException){
 					ServerSync.this.onNoNetworkAvailable();
 				} else {
@@ -170,8 +261,11 @@ public class ServerSync {
 
 			@Override
 			public void onResponse(Call call, Response response) throws IOException {
+//				response.body().string() to get the server's response
+				String responseTxt = response.body().string();
+				Log.i("RAWR", "onResponse: IMA HERE LOL-> "+responseTxt);
 				if (ServerSync.this.listener != null) {
-					if (response.body().string().contains("invalid user or password")) {
+					if (responseTxt.contains("invalid user or password")) {
 						ServerSync.this.listener.onSyncUnSuccessful();
 					} else {
 						ServerSync.this.listener.onSyncSuccessful();

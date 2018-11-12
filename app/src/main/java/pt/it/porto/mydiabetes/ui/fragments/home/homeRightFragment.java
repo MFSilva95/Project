@@ -268,25 +268,6 @@ public class homeRightFragment extends Fragment  {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-//    public  void deleteFileFromMediaStore(final ContentResolver contentResolver, final File file) {
-//        String canonicalPath;
-//        try {
-//            canonicalPath = file.getCanonicalPath();
-//        } catch (IOException e) {
-//            canonicalPath = file.getAbsolutePath();
-//        }
-//        final Uri uri = MediaStore.Files.getContentUri("external");
-//        final int result = contentResolver.delete(uri,
-//                MediaStore.Files.FileColumns.DATA + "=?", new String[] {canonicalPath});
-//        if (result == 0) {
-//            final String absolutePath = file.getAbsolutePath();
-//            if (!absolutePath.equals(canonicalPath)) {
-//                contentResolver.delete(uri,
-//                        MediaStore.Files.FileColumns.DATA + "=?", new String[]{absolutePath});
-//            }
-//        }
-//    }
-
 
     @Override
     public void onResume() {
@@ -420,7 +401,7 @@ public class homeRightFragment extends Fragment  {
             try {
                 photoFile = createImageFile();
                 try (FileOutputStream out = new FileOutputStream(photoFile)) {
-                    pic_bitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+                    pic_bitmap.compress(Bitmap.CompressFormat.JPEG, 50, out);
                     out.flush();
                     out.close();
 

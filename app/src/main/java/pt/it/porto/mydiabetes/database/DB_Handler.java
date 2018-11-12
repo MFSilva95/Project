@@ -63,11 +63,19 @@ public class DB_Handler extends SQLiteOpenHelper {
         if(db.getVersion()==0) {// empty or in need of update
             initDatabaseTables(db);//iniciar a nova bd
             initDayPhases(db); //iniciar as tags na nova bd
-            ContentValues toInsert = new ContentValues();
-            toInsert.put(MyDiabetesContract.Feature.COLUMN_NAME_ACTIVATED, 0);
-            db.update(MyDiabetesContract.Feature.TABLE_NAME, toInsert, MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{"db_deprecated"});
-
+            insertDepricated(db,false);
         }
+    }
+
+    public void insertDepricated(SQLiteDatabase db, Boolean activated){
+        Cursor result = db.query(MyDiabetesContract.Feature.TABLE_NAME, new String[]{MyDiabetesContract.Feature.COLUMN_NAME_NAME},
+                MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{FeaturesDB.DEPRECATED}, null, null, null);
+        if(result.getCount()==0){
+            createFeature(db,FeaturesDB.DEPRECATED);
+        }
+        ContentValues toInsert = new ContentValues();
+        toInsert.put(MyDiabetesContract.Feature.COLUMN_NAME_ACTIVATED, activated ? 1 : 0);
+        db.update(MyDiabetesContract.Feature.TABLE_NAME, toInsert, MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{FeaturesDB.DEPRECATED});
     }
 
     private boolean old_backup_exists() {
@@ -121,18 +129,18 @@ public class DB_Handler extends SQLiteOpenHelper {
                 // deprecated to the home activity know that it needs to ask the user if it is their will to save the backup
                 // checks is feature created
                 Cursor result = myDB.query(MyDiabetesContract.Feature.TABLE_NAME, new String[]{MyDiabetesContract.Feature.COLUMN_NAME_NAME},
-                        MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{"db_deprecated"}, null, null, null, "1");
+                        MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{FeaturesDB.DEPRECATED}, null, null, null, "1");
                 if(result.getCount()==0){
-                    createFeature(myDB, "db_deprecated");
+                    createFeature(myDB, FeaturesDB.DEPRECATED);
                 }
                 ContentValues toInsert = new ContentValues();
                 toInsert.put(MyDiabetesContract.Feature.COLUMN_NAME_ACTIVATED, 1);
-                myDB.update(MyDiabetesContract.Feature.TABLE_NAME, toInsert, MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{"db_deprecated"});
+                myDB.update(MyDiabetesContract.Feature.TABLE_NAME, toInsert, MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{FeaturesDB.DEPRECATED});
             }
         }else{
             ContentValues toInsert = new ContentValues();
             toInsert.put(MyDiabetesContract.Feature.COLUMN_NAME_ACTIVATED, 0);
-            myDB.update(MyDiabetesContract.Feature.TABLE_NAME, toInsert, MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{"db_deprecated"});
+            myDB.update(MyDiabetesContract.Feature.TABLE_NAME, toInsert, MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{FeaturesDB.DEPRECATED});
 
         }
 
@@ -165,7 +173,7 @@ public class DB_Handler extends SQLiteOpenHelper {
 
     public Boolean isDBdeprecated(SQLiteDatabase db){
             Cursor result = db.query(MyDiabetesContract.Feature.TABLE_NAME, new String[]{MyDiabetesContract.Feature.COLUMN_NAME_ACTIVATED},
-                    MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{"db_deprecated"}, null, null, null, "1");
+                    MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{FeaturesDB.DEPRECATED}, null, null, null, "1");
             if(result.getCount()==0){
                 return true;
             }

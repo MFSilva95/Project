@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.utils;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.File;
 
@@ -30,8 +31,13 @@ public class DbUtils {
 		} catch (PackageManager.NameNotFoundException e) {
 			e.printStackTrace(); // this shouldn't happen :(
 		}
-
-		return new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases/"+ DB_Handler.getCurrentDbName());//DB_Diabetes");
+		File db = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases/"+ DB_Handler.getCurrentDbName());
+		//Log.i("RAWR", "exportDb: "+db.getAbsolutePath());
+		if(db.exists()){
+			return db;
+		}else{
+			return null;
+		}//DB_Diabetes");
 	}
 
 //	public static File export_old_Db(Context context) {

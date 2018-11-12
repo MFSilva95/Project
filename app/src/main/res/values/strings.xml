@@ -13,6 +13,8 @@
     <string name="app_name">myDiabetes</string>
     <string name="action_settings">Definições</string>
 
+    <string name="failed_import_img">Não foi possivel aceder à imagem.</string>
+
 
     <string name="upload_failed">Infelizmente falhou o envio, tente mais tarde.</string>
 
