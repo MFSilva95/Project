@@ -1,12 +1,15 @@
 package pt.it.porto.mydiabetes.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
 
+import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.database.DB_Handler;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.database.Usage;
@@ -34,7 +37,17 @@ public class DbUtils {
 		File db = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases/"+ DB_Handler.getCurrentDbName());
 		//Log.i("RAWR", "exportDb: "+db.getAbsolutePath());
 		if(db.exists()){
-			return db;
+			//"clean" database
+
+			SQLiteDatabase clean_db = SQLiteDatabase.openDatabase(db.getAbsolutePath(), null, 0);
+
+            ContentValues toUpdate = new ContentValues();
+            toUpdate.put("Name", "");
+            toUpdate.put("Gender", -1);
+
+            clean_db.update("UserInfo", toUpdate, null, null);
+            clean_db.close();
+            return db;
 		}else{
 			return null;
 		}//DB_Diabetes");

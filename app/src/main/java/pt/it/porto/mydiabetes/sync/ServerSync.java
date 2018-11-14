@@ -39,7 +39,7 @@ import pt.it.porto.mydiabetes.utils.DbUtils;
 public class ServerSync {
 
 	public static final MediaType MEDIA_TYPE_BINARY = MediaType.parse("application/octet-stream");
-	private static final String BASE_URL = "https://mydiabetes.dcc.fc.up.pt/";
+	private static final String BASE_URL = "https://mydiabetes.dcc.fc.up.pt/newsite/";
 	private static ServerSync instance;
 	private String username;
 	private String password;
@@ -98,7 +98,7 @@ public class ServerSync {
 
 			@Override
 			public void onResponse(Call call, Response response) throws IOException {
-                Log.i("RAWR", "onResponse: "+response);
+                //Log.i("RAWR", "onResponse: "+response);
 				// now sends the images
 				photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(context));
 				processNextPhoto();
@@ -263,7 +263,7 @@ public class ServerSync {
 			public void onResponse(Call call, Response response) throws IOException {
 //				response.body().string() to get the server's response
 				String responseTxt = response.body().string();
-				Log.i("RAWR", "onResponse: IMA HERE LOL-> "+responseTxt);
+				//Log.i("RAWR", "onResponse: IMA HERE LOL-> "+responseTxt);
 				if (ServerSync.this.listener != null) {
 					if (responseTxt.contains("invalid user or password")) {
 						ServerSync.this.listener.onSyncUnSuccessful();
