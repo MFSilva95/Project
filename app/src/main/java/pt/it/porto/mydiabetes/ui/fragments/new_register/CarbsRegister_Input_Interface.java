@@ -9,6 +9,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -90,43 +91,44 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         carbsData = carbData;
         carbs_input.getEditText().setText(""+carbsData.getCarbsValue());
         if(carbsData.getPhotoPath()!= null){
+            //Log.i("RAWRAWR", "fill_parameters:              ->"+carbData.getPhotoPath());
             imgUri = Uri.parse(carbsData.getPhotoPath());
         }
-        ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
-        if (imgUri == null) {
-            imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
-        } else {
-            setImage(imgUri);
-        }
+//        ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
+//        if (imgUri == null) {
+//            imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
+//        } else {
+//            setImage(imgUri);
+//        }
     }
     private void setMealListeners(){
-        if (image_button == null) {
-            return;
-        }
-        if (imgUri == null) {
-            image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
-        } else {
-            File temp = new File(imgUri.getPath());
-            if(temp.exists()){
-                DisplayMetrics displaymetrics = new DisplayMetrics();
-                //getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-                int height = (int) (displaymetrics.heightPixels * 0.1);
-                int width = (int) (displaymetrics.widthPixels * 0.1);
-                b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
-                carbsData.setPhotoPath(imgUri.getPath());
-                image_button.setImageBitmap(b);
-            }else{
-                imgUri = null;
-                image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
-            }
-        }
-
-        image_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callBack.addCarbsImage(getContext(), imgUri);
-            }
-        });
+//        if (image_button == null) {
+//            return;
+//        }
+//        if (imgUri == null) {
+//            image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
+//        } else {
+//            File temp = new File(imgUri.getPath());
+//            if(temp.exists()){
+//                DisplayMetrics displaymetrics = new DisplayMetrics();
+//                //getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+//                int height = (int) (displaymetrics.heightPixels * 0.1);
+//                int width = (int) (displaymetrics.widthPixels * 0.1);
+//                b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
+//                carbsData.setPhotoPath(imgUri.getPath());
+//                image_button.setImageBitmap(b);
+//            }else{
+//                imgUri = null;
+//                image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
+//            }
+//        }
+//
+//        image_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                callBack.addCarbsImage(getContext(), imgUri);
+//            }
+//        });
 
         create_meal_button.setOnClickListener(new OnClickListener() {
             @Override
@@ -140,19 +142,19 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         carbsTextView.addTextChangedListener(getCarbsTW());
     }
 
-    public void setUri(Uri u){
-        this.imgUri = u;
-        if(u==null) {
-            image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
-        } else {
-            this.carbsData.setPhotoPath(imgUri.getPath());
-            try {
-                setImage(imgUri);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+//    public void setUri(Uri u){
+//        this.imgUri = u;
+//        if(u==null) {
+//            image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
+//        } else {
+//            this.carbsData.setPhotoPath(imgUri.getPath());
+//            try {
+//                setImage(imgUri);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
     private TextWatcher getCarbsTW(){
         TextWatcher carbsTW = new TextWatcher() {
             @Override
@@ -201,12 +203,12 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         carbsTextView.setText(carbValue+"");
         carbsTextView.addTextChangedListener(getCarbsTW());
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                callBack.addCarbsImage(getContext(), imgUri);
-            }
-        });
+//        imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                callBack.addCarbsImage(getContext(), imgUri);
+//            }
+//        });
     }
 
     public CarbsRec save_read(){
@@ -217,22 +219,22 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         return carbsData.getCarbsValue();
     }
 
-    public void setImage(Uri imageUri)throws Exception{
-        this.carbsData.setPhotoPath(imageUri.getPath());
-        this.imgUri=imageUri;
-        if (imgUri != null) {
-
-            File temp = new File(imageUri.getPath());
-            if(temp.exists()){
-                try {
-                    b = ImageUtils.decodeSampledBitmapFromPath(imageUri.getPath(),default_height, default_width);
-                }catch (Exception e){
-                    e.printStackTrace();
-                    //throw new Exception("cant access file");
-                }
-                image_button.setImageBitmap(b);
-            }
-        }
+    public void setImage(String imageUri){
+        this.carbsData.setPhotoPath(imageUri);
+        //this.imgUri=imageUri;
+//        if (imgUri != null) {
+//
+//            File temp = new File(imageUri.getPath());
+//            if(temp.exists()){
+//                try {
+//                    b = ImageUtils.decodeSampledBitmapFromPath(imageUri.getPath(),default_height, default_width);
+//                }catch (Exception e){
+//                    e.printStackTrace();
+//                    //throw new Exception("cant access file");
+//                }
+//                image_button.setImageBitmap(b);
+//            }
+//        }
     }
     public void setCarbsMealID(int mealID){
         this.carbsData.setMealId(mealID);

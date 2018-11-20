@@ -199,6 +199,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         if(requestCode == REQUEST_CREATE_MEAL && resultCode == RESULT_OK){
             if(data.hasExtra("meal")){
                 mCurrentMeal = data.getExtras().getParcelable("meal");
+                carbsRegisterInputInterface.setImage(mCurrentMeal.getThumbnailPath());
                 //carbsRegisterInputInterface.setImage();
                 carbsRegisterInputInterface.setCarbsMealID(mCurrentMeal.getId());
                 carbsRegisterInputInterface.setMealCarbs(mCurrentMeal.getTotalCarbs(true));
@@ -273,7 +274,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             //se tivermos apagado a foto dá result code -1
             //se voltarmos por um return por exemplo o resultcode é 0
             if (resultCode == -1) {
-                imageRemoved();
+                //imageRemoved();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -303,14 +304,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         outState.putString(ARG_CALENDAR, date);
 
         spinner = findViewById(R.id.tag_spinner);
-        //String tag = null;
-        //if (spinner != null) {
-            //tag = spinner.getSelectedItem().toString();
-        //}
         int idTag = (spinner.getSelectedItemPosition());//rdb.Tag_GetIdByName(tag);
-        //int idUser = rdb.getId();
-        //DB_Read rdb = new DB_Read(this);
-        //rdb.close();
 
         outState.putParcelable(ARG_BLOOD_GLUCOSE, glycemiaData);
         outState.putParcelable(ARG_INSULIN, insulinData);
@@ -318,37 +312,6 @@ public class NewHomeRegistry extends AppCompatActivity{
         outState.putParcelable(ARG_NOTE, noteData);
         outState.putInt(ARG_TAG_INDEX, idTag);
         outState.putInt(ARG_RECORD_ID, recordId);
-
-//        if (glycaemiaRegisterInputInterface != null ) {
-//            glycemiaData  = glycaemiaRegisterInputInterface.save_read();
-//            glycemiaData.setIdTag(idTag);
-//            if(glycemiaData.getValue()!=0){
-//                outState.putParcelable(ARG_BLOOD_GLUCOSE, glycemiaData);
-//            }
-//        }
-//        if (insuRegisterInputInterface != null ) {
-//            insulinData = insuRegisterInputInterface.save_read();
-//            insulinData.setIdTag(idTag);
-//            if(insulinData.getInsulinUnits()!=0){
-//                outState.putParcelable(ARG_INSULIN, insulinData);
-//            }
-//        }
-//        if (carbsRegisterInputInterface != null ) {
-//            carbsData = carbsRegisterInputInterface.save_read();
-//            carbsData.setIdTag(idTag);
-//            if(carbsData.getCarbsValue()!=0){
-//                outState.putParcelable(ARG_CARBS, carbsData);
-//            }
-//
-//        }
-//        if(noteRegisterInputInterface != null){
-//            noteData = noteRegisterInputInterface.save_read();
-//            if(noteData.getNote()!=null){
-//                if(!noteData.getNote().equals("")){
-//                    outState.putParcelable(ARG_NOTE, noteData);
-//                }
-//            }
-//        }
     }
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -981,13 +944,13 @@ public class NewHomeRegistry extends AppCompatActivity{
     public String getTime() {
         return registerTimeTextV.getText().toString();
     }
-    private void setImgURI(Uri newUri){
-        carbsRegisterInputInterface.setUri(newUri);
-        //imgUri = newUri;
-    }
-    private void imageRemoved() {
-        setImgURI(null);
-    }
+//    private void setImgURI(Uri newUri){
+//        carbsRegisterInputInterface.setUri(newUri);
+//        //imgUri = newUri;
+//    }
+//    private void imageRemoved() {
+//        setImgURI(null);
+//    }
 
     private void fill_recover(Bundle args) throws Exception {
 
@@ -1540,20 +1503,7 @@ public class NewHomeRegistry extends AppCompatActivity{
             button.setEnabled(false);
         }
     }
-//    private boolean timeOverlaps(int t, int s0, int e0) {
-//        if ( e0 < s0){
-//            if(t < s0){
-//                t = t +1440;
-//            }
-//            e0 = e0 + 1440;
-//        }
-//
-//        if(s0 < t && t < e0) {
-//            return true;
-//        }else{
-//            return false;
-//        }
-//    }
+
     private void save_current_input_data(){
         int idTag = (spinner.getSelectedItemPosition());
 //        Log.i(TAG, "save_current_input_data: -> -> "+idTag);
