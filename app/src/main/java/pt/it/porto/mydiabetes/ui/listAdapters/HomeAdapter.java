@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -296,9 +297,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.item = currentView;
         holder.hora.setText(currentView.getFormattedTime());
         if(currentView.getTag_id()!=-1){
-            DB_Read read = new DB_Read(holder.view.getContext());
-            holder.tag.setText(read.Tag_GetNameById(currentView.getTag_id()));
-            read.close();
+//            DB_Read read = new DB_Read(holder.view.getContext());
+//            holder.tag.setText(read.Tag_GetNameById(currentView.getTag_id()));
+//            read.close();
+
+            Resources res = holder.view.getContext().getResources(); //assuming in an activity for example, otherwise you can provide a context.
+            String[] dayTimes = res.getStringArray(R.array.daytimes);
+            holder.tag.setText(dayTimes[currentView.getTag_id()-1]);
         }
         //holder.tag.setText(currentView.getTag_name());
         LinearLayout imageTitleHolder = (LinearLayout) holder.view.findViewById(R.id.imageTitleHolder);

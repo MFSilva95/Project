@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -380,8 +381,8 @@ public class NewHomeRegistry extends AppCompatActivity{
         DB_Read rdb = new DB_Read(this);
         t = rdb.Tag_GetAll();
 
-        Log.i(TAG, "init_vars: "+t.toString());
-        String[] allTags = new String[t.size()];
+        //Log.i(TAG, "init_vars: "+t.toString());
+        //String[] allTags = new String[t.size()];
         iRatio = rdb.Sensitivity_GetCurrent(DateUtils.getFormattedTimeSec(registerDate));
         cRatio = rdb.Ratio_GetCurrent(DateUtils.getFormattedTimeSec(registerDate));
         //UserInfo obj = rdb.MyData_Read();
@@ -389,11 +390,15 @@ public class NewHomeRegistry extends AppCompatActivity{
         //cRatio = obj.getCarbsRatio();
         rdb.close();
 
-        if (t != null) {
-            for (int x=0;x<t.size();x++) {
-                allTags[x] = t.get(x).getName();
-            }
-        }
+//        if (t != null) {
+//            for (int x=0;x<t.size();x++) {
+//                allTags[x] = t.get(x).getName();
+//            }
+//        }
+
+        Resources res = getResources(); //assuming in an activity for example, otherwise you can provide a context.
+        String[] allTags = res.getStringArray(R.array.daytimes);
+
         spinner.setAdapter(new StringSpinnerAdapter(this, allTags));
         updateTagSpinner();
 
@@ -416,6 +421,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         noteRegisterInputInterface = new NoteRegister_Input_Interface(this);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(false);
     }
+
     private void save() {
         try{
             save_current_input_data();
@@ -1528,7 +1534,8 @@ public class NewHomeRegistry extends AppCompatActivity{
     private void updateTagSpinner() {
         Tag displayTag = getCurrentTag(t, registerDate);
         if(displayTag!=null){
-            int index = ((StringSpinnerAdapter) spinner.getAdapter()).getItemPosition(displayTag.getName());
+            int index = displayTag.getId()-1;
+            //int index = ((StringSpinnerAdapter) spinner.getAdapter()).getItemPosition(displayTag.getName());
             if(index>=0){
                 spinner.setSelection(index);
 //                Log.i(TAG, "save_current_input_data: -> -> "+index);
