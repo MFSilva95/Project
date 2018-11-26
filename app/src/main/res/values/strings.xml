@@ -158,8 +158,9 @@
 
 
     <string name="information_about_using">Esta aplicação está em desenvolvimento e para a usar deve ter assinado o Consentimento Informado e ter sido informado sobre a metodologia do estudo.</string>
-    <string name="information_about_developers">Aplicação desenvolvida por Diogo Machado, Ricardo Parra, Eduardo Soares, João Maia, João Graça, José Ornelas, Ana Azevedo, Artur Ferreira.</string>
+    <string name="information_about_developers">Aplicação desenvolvida por Diogo Machado, Eduardo Soares, João Maia, João Graça, José Ornelas, Ricardo Parra, Ana Azevedo, Artur Ferreira, André Diegues.</string>
     <string name="information_about_libraries">Esta aplicação utiliza as bibliotecas AAkira/ExpandableLayout, e Pierry/SimpleToast.</string>
+    <string name="information_about_food_db_info">A informação contida na base de dados dos alimentos inserida neste sistema foi extraida da Plataforma Portuguesa de Informação Alimentar (PortFIR)</string>
     <string name="information_about_version">Versão </string>
     <string name="information_about_contact" translatable="false">mydiabetes@dcc.fc.up.pt\n\n https://mydiabetes.dcc.fc.up.pt/</string>
 
