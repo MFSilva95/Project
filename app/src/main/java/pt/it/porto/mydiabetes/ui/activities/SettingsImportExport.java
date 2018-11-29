@@ -90,31 +90,31 @@ public class SettingsImportExport extends BaseActivity {
 
 					Button restore = (Button) findViewById(R.id.bt_Restore);
 					restore.setEnabled(true);
-					findViewById(R.id.share).setEnabled(true);
+					//findViewById(R.id.share).setEnabled(true);
 					restore.setVisibility(View.VISIBLE);
-					findViewById(R.id.share).setVisibility(View.VISIBLE);
+					//findViewById(R.id.share).setVisibility(View.VISIBLE);
 
 				}else{
 					db.close();
 					Button restore = (Button) findViewById(R.id.bt_Restore);
 					restore.setEnabled(false);
-					findViewById(R.id.share).setEnabled(false);
+					//findViewById(R.id.share).setEnabled(false);
 					restore.setVisibility(View.GONE);
-					findViewById(R.id.share).setVisibility(View.GONE);
+					//findViewById(R.id.share).setVisibility(View.GONE);
 				}
 			} else {
 				Button restore = (Button) findViewById(R.id.bt_Restore);
 				restore.setEnabled(false);
-				findViewById(R.id.share).setEnabled(false);
+				//findViewById(R.id.share).setEnabled(false);
 				restore.setVisibility(View.GONE);
-				findViewById(R.id.share).setVisibility(View.GONE);
+				//findViewById(R.id.share).setVisibility(View.GONE);
 			}
 		}else{
 			Button restore = (Button) findViewById(R.id.bt_Restore);
 			restore.setEnabled(false);
-			findViewById(R.id.share).setEnabled(false);
+			//findViewById(R.id.share).setEnabled(false);
 			restore.setVisibility(View.GONE);
-			findViewById(R.id.share).setVisibility(View.GONE);
+			//findViewById(R.id.share).setVisibility(View.GONE);
 		}
 	}
 
@@ -289,7 +289,7 @@ public class SettingsImportExport extends BaseActivity {
 					lastbackup.setText(dateString);
 					Button restore = (Button) findViewById(R.id.bt_Restore);
 					restore.setEnabled(true);
-					findViewById(R.id.share).setEnabled(true);
+					//findViewById(R.id.share).setEnabled(true);
 					return true;
 				}else{
 				    db.close();

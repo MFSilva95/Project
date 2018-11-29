@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.util.Log;
@@ -41,17 +42,29 @@ public class DbUtils {
 
 			SQLiteDatabase clean_db = SQLiteDatabase.openDatabase(db.getAbsolutePath(), null, 0);
 
-            ContentValues toUpdate = new ContentValues();
-            toUpdate.put("Name", "");
-            toUpdate.put("Gender", -1);
+			Cursor cursor = clean_db.rawQuery("SELECT BDate FROM UserInfo", null);
+			if (cursor.getCount() > 0) {
+				cursor.moveToFirst();
+				String bdate = cursor.getString(0);
+				cursor.close();
 
-            clean_db.update("UserInfo", toUpdate, null, null);
-            clean_db.close();
-            return db;
+				String[] birthday = bdate.split("-");
+				String byear = birthday[2];
+
+            	ContentValues toUpdate = new ContentValues();
+            	toUpdate.put("Name", "");
+            	toUpdate.put("Gender", -1);
+            	toUpdate.put("BDate", "00-00-"+byear);
+
+            	clean_db.update("UserInfo", toUpdate, null, null);
+            	clean_db.close();
+            	return db;
+			}else{return null;}
 		}else{
 			return null;
 		}//DB_Diabetes");
 	}
+
 
 //	public static File export_old_Db(Context context) {
 //		try {
