@@ -322,6 +322,7 @@ public class SettingsImportExport extends BaseActivity {
 				if (dialog != null) {
 					dialog.hide();
 				}
+				Toast.makeText(getApplicationContext(), R.string.upload_successful, Toast.LENGTH_SHORT).show();
 			}
 
 			@Override

@@ -3,8 +3,7 @@ apply plugin: 'io.fabric'
 //apply plugin: 'com.google.gms.oss.licenses.plugin'
 
 android {
-    signingConfigs {
-    }
+
     flavorDimensions "default"
     compileSdkVersion 28
 
@@ -15,25 +14,27 @@ android {
         targetSdkVersion 28
         // vars to enable new features
         buildConfigField "boolean", "IOB_AVAILABLE", "false"
-        buildConfigField "boolean", "SYNC_AVAILABLE", "false"
+        buildConfigField "boolean", "SYNC_AVAILABLE", "true"
         buildConfigField "boolean", "GLUCOMETER_AVAILABLE", "true"
         buildConfigField "boolean", "TASKS_AVAILABLE", "false"
         buildConfigField "boolean", "ADVICES_AVAILABLE", "false"
         buildConfigField "boolean", "OLD_DB_VERSION", "false"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
         buildConfigField "long", "BUILDDATE", System.currentTimeMillis() + "L"
         buildConfigField "boolean", "USE_FABRIC", "false"
+
     }
     flavorDimensions "prod", "devel"
-    productFlavors{
-        prod{
+    productFlavors {
+        prod {
             dimension "prod"
             buildConfigField "boolean", "USE_FABRIC", "false"
+
         }
-        devel{
+        devel {
             dimension "devel"
             buildConfigField "boolean", "USE_FABRIC", "false"
+
         }
     }
     configurations.all {
@@ -51,12 +52,14 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+
         }
         debug {
             applicationIdSuffix ".debug"
             buildConfigField "boolean", "IOB_AVAILABLE", "true"
             buildConfigField "boolean", "SYNC_AVAILABLE", "true"
             buildConfigField "boolean", "GLUCOMETER_AVAILABLE", "true"
+
         }
     }
     dataBinding {
@@ -80,7 +83,6 @@ repositories {
 }
 
 dependencies {
-
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:cardview-v7:28.0.0'
@@ -104,15 +106,12 @@ dependencies {
     androidTestImplementation 'org.hamcrest:hamcrest-library:1.3'
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-
     implementation 'com.github.javiersantos:MaterialStyledDialogs:2.1'
     implementation 'com.github.aliab:circular-music-progressbar:v1.2.0'
     implementation 'com.github.Pierry:SimpleToast:v1.7'
     implementation 'com.github.aakira:expandable-layout:1.6.0@aar'
-
-    implementation ('com.github.florent37:androidparallax:1.0.1@aar'){
-        transitive=true
+    implementation('com.github.florent37:androidparallax:1.0.1@aar') {
+        transitive = true
     }
     implementation 'com.github.javiersantos:MaterialStyledDialogs:2.1'
-
 }

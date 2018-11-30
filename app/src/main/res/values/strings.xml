@@ -15,6 +15,9 @@
 
     <string name="failed_import_img">Não foi possivel aceder à imagem.</string>
 
+    <string name="upload_successful">Envio feito com sucesso.</string>
+
+
 
     <string name="upload_failed">Infelizmente falhou o envio, tente mais tarde.</string>
 
