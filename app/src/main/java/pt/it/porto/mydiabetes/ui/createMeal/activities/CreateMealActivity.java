@@ -67,7 +67,7 @@ import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.MealItem;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.RecyclerItemTouchHelper;
-
+import pt.it.porto.mydiabetes.utils.FileProvider;
 
 
 public class CreateMealActivity extends AppCompatActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
@@ -829,7 +829,13 @@ public class CreateMealActivity extends AppCompatActivity implements RecyclerIte
                 try {
                     f.createNewFile();
 
-                    currentImageUri = Uri.fromFile(f);
+                    if(android.os.Build.VERSION.SDK_INT>=24){
+                        currentImageUri = FileProvider.getUriForFile(this, BuildConfig.APPLICATION_ID+".provider", f);
+                    }else{
+                        currentImageUri = Uri.fromFile(f);
+                    }
+
+//                    currentImageUri = Uri.fromFile(f);
                     Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//ImagePicker.cameraOnly().getIntent(this);
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentImageUri);
                     startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);

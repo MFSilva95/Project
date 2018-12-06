@@ -55,6 +55,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import info.abdolahi.CircularMusicProgressBar;
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
@@ -64,6 +65,7 @@ import pt.it.porto.mydiabetes.ui.activities.MyData;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.FileProvider;
 import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
@@ -344,7 +346,12 @@ public class homeRightFragment extends Fragment  {
         });
     }
     private void dispatchTakePictureIntent(){
-        currentImageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg"));
+        if(android.os.Build.VERSION.SDK_INT>=24){
+            currentImageUri = FileProvider.getUriForFile(this.getContext(), BuildConfig.APPLICATION_ID+".provider", new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg"));
+        }else{
+            currentImageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg"));
+        }
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentImageUri);
         startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);

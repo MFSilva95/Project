@@ -49,6 +49,7 @@ import com.esafirm.imagepicker.features.ReturnMode;
 import com.esafirm.imagepicker.model.Image;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
@@ -56,6 +57,7 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.FileProvider;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -280,7 +282,13 @@ public class PersonalDataFragment extends Fragment implements WelcomeActivity.Re
 	}
 
 	private void dispatchTakePictureIntent(){
-		currentImageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg"));
+		if(android.os.Build.VERSION.SDK_INT>=24){
+			currentImageUri = FileProvider.getUriForFile(this.getContext(), BuildConfig.APPLICATION_ID+".provider", new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg"));
+		}else{
+			currentImageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg"));
+		}
+
+		//currentImageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg"));
 		Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentImageUri);
 		startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
