@@ -25,6 +25,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -80,30 +81,37 @@ public class Home extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+        permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
+        db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
 
 
-		permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
-
-		db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
-
-        if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
-            if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, INIT_PERMISSION_REQUEST);
+        if(!db.isFeatureActive(FeaturesDB.ACCEPTED_TERMS)){
+            showTermsOfService();
+        }else{
+            if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, INIT_PERMISSION_REQUEST);
+                }else{
+                    if(ShouldBackupDB()){
+                        showBackupDialog();
+                    }else{
+                        ShowDialogAddData();
+                        return;
+                    }
+                }
             }else{
                 if(ShouldBackupDB()){
                     showBackupDialog();
                 }else{
-                    ShowDialogAddData();
-                    return;
+                    setMainView(savedInstanceState);
                 }
             }
-        }else{
-            if(ShouldBackupDB()){
-                showBackupDialog();
-            }else{
-                setMainView(savedInstanceState);
-            }
         }
+
+
+
+
+
 	}
 
 	public void setMainView(Bundle savedInstanceState){
@@ -432,6 +440,47 @@ public class Home extends BaseActivity {
         alert11.show();
     }
 
+
+
+    private void showTermsOfService(){
+
+        android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(this);
+        builder1.setTitle(getString(R.string.terms_of_service_title));
+        builder1.setMessage(getText(R.string.terms_of_service_description));
+        builder1.setCancelable(false);
+
+        builder1.setPositiveButton(
+                getString(R.string.positiveButton),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        db.changeFeatureStatus(FeaturesDB.ACCEPTED_TERMS,true);
+
+                        if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                            if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, INIT_PERMISSION_REQUEST);
+                            }else{
+                                if(ShouldBackupDB()){
+                                    showBackupDialog();
+                                }else{
+                                    ShowDialogAddData();
+                                    return;
+                                }
+                            }
+                        }else{
+                            if(ShouldBackupDB()){
+                                showBackupDialog();
+                            }else{
+                                setMainView(null);
+                            }
+                        }
+                        dialog.cancel();
+                    }
+                });
+
+        android.app.AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
 
 
 }

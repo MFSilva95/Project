@@ -6,6 +6,7 @@ import android.database.Cursor;
 import pt.it.porto.mydiabetes.BuildConfig;
 
 public class FeaturesDB {
+	public static final String ACCEPTED_TERMS = "accepted_terms";
 	public static final String FEATURE_INSULIN_ON_BOARD = "feature_insulin_on_board";
 	public static final String FEATURE_CLOUD_SYNC = "feature_cloud_sync/2";
 	public static final String INITIAL_REG_DONE = "initial_reg_done";

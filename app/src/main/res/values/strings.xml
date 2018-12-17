@@ -517,7 +517,7 @@
     <string name="db_depricated_dialog_description">A sua base de dados está desatualizada. Deseja criar uma copia de segurança da base de dados? Esta opção permite que, posteriormente, recupere os seus dados.</string>
 
 
-    <string name="name_hint_2">Nome para a tua refeição</string>
+    <string name="name_hint_2">Nome para a sua refeição</string>
     <string name="save_it">Guardar</string>
     <string name="take_photo">Tirar Foto</string>
     <string name="clear_all">Remover Tudo</string>
@@ -554,5 +554,37 @@
 
     <string name="extra_carbs">H.Carbs Extra</string>
     <string name="add_extra_carbs">Adicionar H.Carb extra</string>
+
+    <string name="terms_of_service_title">Politica de Privacidade</string>
+    <string name="terms_of_service_description">A aplicação MyDiabetes não recolhe autónomamente informações dos seus utilizadores. A aplicação permite que os seus utilizadores carreguem para uma "nuvem" segura todos os seus dados. Se o fizer, a equipa da MyDiabetes terá acesso aos seus dados sobre:\n
+
+        <small>
+            <ul>
+            \n<li>Tipo de diabetes;</li>
+            \n<li>Limites de Hipoglicemia e Hiperglicemia;</li>
+            \n<li>Ano de nascimento;</li>
+            \n<li>Altura;</li>
+            \n<li>Atividades visitadas na aplicação;</li>
+            \n<li>Cliques feitos na aplicação;</li>
+            \n<li>Medalhas conseguidas;</li>
+            \n<li>Pontos conseguidos;</li>
+            \n<li>Informação sobre Insulina;</li>
+            \n<li>Registos de Glicemia;</li>
+            \n<li>Registos de Insulina;</li>
+            \n<li>Registos de Hidratos de Carbono;</li>
+            \n<li>Notas dos Registos;</li>
+            \n<li>Fotos das refeições;</li>
+            \n<li>Exercicios registados;</li>
+            \n<li>Registos de HbA1c;</li>
+            \n<li>Registos de Pressão arterial;</li>
+            \n<li>Registos de Colesterol;</li>
+            \n<li>Registos de doença;</li>
+            \n<li>Registos de Peso;</li>
+            \n<li>Racio de Hidratos de Carbono;</li>
+            \n<li>Sensibilidade à Insulina;</li>
+            \n<li>Objectivos Glicemicos.</li>
+            </ul>
+        </small>
+        \n\nToda a informação disponibilizada será para utilização exclusivamente académica!\nA equipa do MyDiabetes irá usar esta informação de forma a melhorar o seu sistema de aconselhamento de forma a conseguir ajudar os seus utilizadores.\n<b>\nAceita os termos apresentados?</b></string>
 
 </resources>
