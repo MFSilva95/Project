@@ -309,36 +309,41 @@ public class SettingsImportExport extends BaseActivity {
 //	}
 
 	public void syncCloud(View view) {
-		String username = pt.it.porto.mydiabetes.database.Preferences.getUsername(this);
-		if(username==null){
-			editAccount(null);
-			return;
+		if(!BuildConfig.SYNC_AVAILABLE){
+
+			String username = pt.it.porto.mydiabetes.database.Preferences.getUsername(this);
+			if(username==null){
+				editAccount(null);
+				return;
+			}
+			dialog = new ProgressDialog(this);
+			dialog.show();
+			ServerSync.getInstance(this).send(new ServerSync.ServerSyncListener() {
+				@Override
+				public void onSyncSuccessful() {
+					if (dialog != null) {
+						dialog.hide();
+					}
+					Toast.makeText(getApplicationContext(), R.string.upload_successful, Toast.LENGTH_SHORT).show();
+				}
+
+				@Override
+				public void onSyncUnSuccessful() {
+					if (dialog != null) {
+						dialog.hide();
+					}
+					Toast.makeText(getApplicationContext(), R.string.upload_failed, Toast.LENGTH_SHORT).show();
+				}
+
+				@Override
+				public void noNetworkAvailable() {
+					onSyncUnSuccessful();
+				}
+			});
+
+
+
 		}
-		dialog = new ProgressDialog(this);
-		dialog.show();
-		ServerSync.getInstance(this).send(new ServerSync.ServerSyncListener() {
-			@Override
-			public void onSyncSuccessful() {
-				if (dialog != null) {
-					dialog.hide();
-				}
-				Toast.makeText(getApplicationContext(), R.string.upload_successful, Toast.LENGTH_SHORT).show();
-			}
-
-			@Override
-			public void onSyncUnSuccessful() {
-				if (dialog != null) {
-					dialog.hide();
-				}
-				Toast.makeText(getApplicationContext(), R.string.upload_failed, Toast.LENGTH_SHORT).show();
-			}
-
-			@Override
-			public void noNetworkAvailable() {
-				onSyncUnSuccessful();
-			}
-		});
-
 
 	}
 
