@@ -3,7 +3,6 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.Manifest;
 import android.content.ComponentName;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +12,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -22,29 +20,19 @@ import android.support.v4.app.ShareCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 
-import pt.it.porto.mydiabetes.data.CarbsRatioData;
-import pt.it.porto.mydiabetes.data.GlycemiaRec;
-import pt.it.porto.mydiabetes.data.Sensitivity;
-import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Handler;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
@@ -72,9 +60,10 @@ public class Home extends BaseActivity {
 	private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
 	private static final int DB_OLD_PERMISSION_CONSTANT = 102;
     private static final int INIT_PERMISSION_REQUEST = 103;
+    private static int idUser;
 
 	private SharedPreferences permissionStatus;
-    FeaturesDB db;
+    FeaturesDB db_features;
 
 
 	@Override
@@ -82,13 +71,18 @@ public class Home extends BaseActivity {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
         permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
-        db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
+
+        DB_Read db = new DB_Read(this);//getBaseContext());
+        idUser = db.getId();
+        db.close();
+
+        db_features = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
 
 
-        if(!db.isFeatureActive(FeaturesDB.ACCEPTED_TERMS)){
+        if(!db_features.isFeatureActive(FeaturesDB.ACCEPTED_TERMS)){
             showTermsOfService();
         }else{
-            if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+            if(!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
                 if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, INIT_PERMISSION_REQUEST);
                 }else{
@@ -124,10 +118,52 @@ public class Home extends BaseActivity {
                 this, drawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close
         );
-
-
-
         drawerLayout.addDrawerListener(mDrawerToggle);
+
+        drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                //Called when a drawer's position changes.
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                //Called when a drawer has settled in a completely open state.
+                //The drawer is interactive at this point.
+                // If you have 2 drawers (left and right) you can distinguish
+                // them by using id of the drawerView. int id = drawerView.getId();
+                // id will be your layout's id: for example R.id.left_drawer
+                DB_Write dbwrite = new DB_Write(drawerView.getContext());//getBaseContext());
+                dbwrite.Clicks_Save(idUser,"drawer_open",-1,-1);
+                dbwrite.close();
+                //Log.i("test", "onDrawerOPEN: ");
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                // Called when a drawer has settled in a completely closed state.
+                DB_Write dbwrite = new DB_Write(drawerView.getContext());//getBaseContext());
+                dbwrite.Clicks_Save(idUser,"drawer_closed",-1,-1);
+                dbwrite.close();
+                //Log.i("test", "onDrawerClosed: ");
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                // Called when the drawer motion state changes. The new state will be one of STATE_IDLE, STATE_DRAGGING or STATE_SETTLING.
+            }
+        });
+
+
+
+
+
+
+
+
+
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         mDrawerToggle.syncState();
@@ -188,6 +224,10 @@ public class Home extends BaseActivity {
                 }
             }
         });
+
+
+
+
         bottomNavigationView.getMenu().getItem(mViewPager.getCurrentItem()).setChecked(true);
         setupBottomNavigationView();
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -231,7 +271,7 @@ public class Home extends BaseActivity {
 			case DB_OLD_PERMISSION_CONSTANT:
 				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 					//backup_old_db(Home.this);
-                    if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                    if(!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
                         ShowDialogAddData();
                         return;
                     }else{
@@ -247,7 +287,7 @@ public class Home extends BaseActivity {
                         showBackupDialog();
 
                     }else{
-                        if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                        if(!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
                             ShowDialogAddData();
                             return;
                         }else{
@@ -256,7 +296,7 @@ public class Home extends BaseActivity {
                     }
                 } else {
                     Toast.makeText(getBaseContext(),R.string.all_permissions,Toast.LENGTH_LONG).show();
-                    if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                    if(!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
                         ShowDialogAddData();
                         return;
                     }else{
@@ -285,16 +325,26 @@ public class Home extends BaseActivity {
 		bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
 			@Override
 			public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                DB_Write dbwrite = new DB_Write(getBaseContext());//getBaseContext());
 				switch (item.getItemId()) {
 					case R.id.action_health:
+                        dbwrite.Clicks_Save(idUser,"leftHomePage",-1,-1);
+                        dbwrite.close();
+                        //Log.i("cenas", "getItem: 1");
 						mViewPager.setCurrentItem(0);
                         bottomNavigationView.getMenu().getItem(0).setChecked(true);
 						break;
 					case R.id.action_register:
+                        dbwrite.Clicks_Save(idUser,"middleHomePage",-1,-1);
+                        dbwrite.close();
+                        //Log.i("cenas", "getItem: 2");
 						mViewPager.setCurrentItem(1);
                         bottomNavigationView.getMenu().getItem(1).setChecked(true);
 						break;
 					case R.id.action_person:
+                        dbwrite.Clicks_Save(idUser,"rightHomePage",-1,-1);
+                        dbwrite.close();
+                        //Log.i("cenas", "getItem: 3");
 						mViewPager.setCurrentItem(2);
                         bottomNavigationView.getMenu().getItem(2).setChecked(true);
 						break;
@@ -377,7 +427,7 @@ public class Home extends BaseActivity {
                 getString(R.string.positiveButton),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                        if(!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
                             ShowDialogAddData();
                             return;
                         }else{
@@ -403,7 +453,7 @@ public class Home extends BaseActivity {
                                 getString(R.string.positiveButton),
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                                        if(!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
                                             DB_Handler h = new DB_Handler(Home.this);
                                             h.deleteOldBackup();
                                             h.close();
@@ -454,9 +504,9 @@ public class Home extends BaseActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        db.changeFeatureStatus(FeaturesDB.ACCEPTED_TERMS,true);
+                        db_features.changeFeatureStatus(FeaturesDB.ACCEPTED_TERMS,true);
 
-                        if(!db.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                        if(!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
                             if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, INIT_PERMISSION_REQUEST);
                             }else{
