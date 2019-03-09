@@ -24,7 +24,7 @@ import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 
 
-public class BadgeBoard extends Fragment{
+public class BadgeBoard extends Fragment {
     public enum BadgeName {photo, export, bp, log, hba1c, cholesterol, weight, disease, exercise}//send_data_badge,
     public enum Difficulty {daily, beginner, medium, advanced}
     public enum Marks {single, bronze, silver, gold}

@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -176,7 +175,7 @@ public class DiseaseDetail extends BaseActivity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		int idUser = rdb.getId();
+		int idUser = rdb.getUserId();
 
 		//Get id of selected exercise
 		String disease = diseaseSpinner.getText().toString();
@@ -255,7 +254,7 @@ public class DiseaseDetail extends BaseActivity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		int idUser = rdb.getId();
+		int idUser = rdb.getUserId();
 
 		DiseaseRec dis = new DiseaseRec();
 

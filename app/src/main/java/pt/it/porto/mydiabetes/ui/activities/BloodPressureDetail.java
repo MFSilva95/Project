@@ -10,7 +10,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -234,7 +233,7 @@ public class BloodPressureDetail extends BaseActivity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		int idUser = rdb.getId();
+		int idUser = rdb.getUserId();
 
 		//Get id of selected tag
 		String tag = tagSpinner.getSelectedItem().toString();
@@ -295,7 +294,7 @@ public class BloodPressureDetail extends BaseActivity {
 		DB_Write wdb = new DB_Write(this);
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		int idUser = rdb.getId();
+		int idUser = rdb.getUserId();
 		//Get id of selected tag
 		String tag = tagSpinner.getSelectedItem().toString();
 //		Log.d("selected Spinner", tag);

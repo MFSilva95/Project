@@ -187,7 +187,7 @@ public class Ratio_detail extends BaseActivity {
 		target.setEnd(target.getStart(), 30);
 		//target.setEnd(hourTo.getText().toString());
 		DB_Read read = new DB_Read(this);
-		target.setUser_id(read.getId());
+		target.setUser_id(read.getUserId());
 //		ArrayList<CarbsRatioData> all_sensitivities = read.Ratio_GetAll();
 
 //		boolean sensExists = read.Ratio_exists(idTarget);
@@ -398,7 +398,7 @@ public class Ratio_detail extends BaseActivity {
 //		CarbsRatioData target = new CarbsRatioData();
 //
 //		DB_Read read = new DB_Read(this);
-//		target.setUser_id(read.getId());
+//		target.setUser_id(read.getUserId());
 //		read.close();
 //		target.setId(idTarget);
 //		target.setName(name.getText().toString());

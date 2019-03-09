@@ -7,11 +7,8 @@ import android.view.MotionEvent;
 
 import com.crashlytics.android.Crashlytics;
 
-import java.util.LinkedList;
-
 import io.fabric.sdk.android.Fabric;
 import pt.it.porto.mydiabetes.BuildConfig;
-import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 
@@ -29,7 +26,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 		}
 		if(!this.getComponentName().getClassName().equals("pt.it.porto.mydiabetes.ui.activities.WelcomeActivity")){
 			DB_Read db = new DB_Read(this);//getBaseContext());
-			idUser = db.getId();
+			idUser = db.getUserId();
 			db.close();
 		}
 		//if(getRegType()!=null){activityAdvice = YapDroid.newInstance(getApplicationContext()).getSingleAdvice("start", getRegType(), this.getApplicationContext());}
@@ -44,7 +41,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 	public boolean dispatchTouchEvent(MotionEvent ev) {
 			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 				Log.d("BaseActivity", ev.toString());
-				if(!this.getComponentName().getClassName().equals("pt.it.porto.mydiabetes.ui.activities.WelcomeActivity")){
+				if(!this.getComponentName().getClassName().equals("pt.it.porto.mydiabetes.ui.activities.WelcomeActivity")){//welcome activity can crash because it may start with no DB
 					DB_Write dbwrite = new DB_Write(this);//getBaseContext());
 					dbwrite.Clicks_Save(idUser,this.getComponentName().getClassName(),ev.getX(),ev.getY());
 					dbwrite.close();

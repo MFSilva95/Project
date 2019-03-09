@@ -152,7 +152,7 @@ public class HbA1cDetail extends BaseActivity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		int idUser = rdb.getId();
+		int idUser = rdb.getUserId();
 
 		HbA1cRec hba1c = new HbA1cRec();
 
@@ -195,7 +195,7 @@ public class HbA1cDetail extends BaseActivity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		int idUser = rdb.getId();
+		int idUser = rdb.getUserId();
 
 		HbA1cRec hba1c = new HbA1cRec();
 

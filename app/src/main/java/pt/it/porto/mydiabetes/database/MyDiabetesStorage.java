@@ -5,12 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-
-import javax.security.auth.login.LoginException;
 
 import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
@@ -99,7 +96,7 @@ public class MyDiabetesStorage {
 		SQLiteDatabase db = mHandler.getWritableDatabase();
 		DB_Read dbRead = new DB_Read(db);
 		ArrayList<Tag> tags = dbRead.Tag_GetAll();
-		int id_user = dbRead.getId();
+		int id_user = dbRead.getUserId();
 		for(int index=0;index<tags.size()-1;index++){
 
 			ContentValues toInsert = new ContentValues();
@@ -116,7 +113,7 @@ public class MyDiabetesStorage {
 		SQLiteDatabase db = mHandler.getWritableDatabase();
 		DB_Read dbRead = new DB_Read(db);
 		ArrayList<Tag> tags = dbRead.Tag_GetAll();
-		int id_user = dbRead.getId();
+		int id_user = dbRead.getUserId();
 //		String TAG = "cenas";
 //		Log.i(TAG, "initRacioSens: USER_ID= "+id_user);
 //		Log.i(TAG, " TABLE : "+table);
@@ -126,13 +123,13 @@ public class MyDiabetesStorage {
 
 			ContentValues toInsert = new ContentValues();
 			toInsert.put("Id_User", id_user);
-//			toInsert.put("Id_Tag", tags.get(index).getId());
+//			toInsert.put("Id_Tag", tags.get(index).getUserId());
 			toInsert.put("Value", value);
 			toInsert.put("Name", tags.get(index).getName());
 			toInsert.put("TimeStart", tags.get(index).getStart());
 			toInsert.put("TimeEnd", tags.get(index).getEnd());
 
-//			Log.i(TAG, " TAG ID: "+tags.get(index).getId());
+//			Log.i(TAG, " TAG ID: "+tags.get(index).getUserId());
 //			Log.i(TAG, " TAG VALUE: "+value);
 //			Log.i(TAG, " TAG NAME: "+tags.get(index).getName());
 //			Log.i(TAG, " TAG : START"+tags.get(index).getStart());

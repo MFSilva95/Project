@@ -5,16 +5,13 @@ import android.util.Log;
 
 import com.github.pierry.simpletoast.SimpleToast;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.LinkedList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.BloodPressureRec;
 import pt.it.porto.mydiabetes.data.CholesterolRec;
-import pt.it.porto.mydiabetes.data.Disease;
 import pt.it.porto.mydiabetes.data.DiseaseRec;
 import pt.it.porto.mydiabetes.data.ExerciseRec;
 import pt.it.porto.mydiabetes.data.HbA1cRec;
@@ -120,7 +117,7 @@ public class BadgeUtils {
 
     public static void addPhotoBadge(Context context, DB_Read db) {
 
-        int idUser = db.getId();
+        int idUser = db.getUserId();
         boolean flag = db.hasMedal("photo");
 
         if (!flag) {
@@ -141,7 +138,7 @@ public class BadgeUtils {
 
     public static void addExportBadge(Context context, DB_Read db) {
 
-        int idUser = db.getId();
+        int idUser = db.getUserId();
 
         boolean flag = db.hasMedal("export");
         
@@ -166,7 +163,7 @@ public class BadgeUtils {
 
 //        Log.i("rawr", "addLogBadge:  BEGIN");
 
-        int idUser = db.getId();
+        int idUser = db.getUserId();
         //LinkedList<HomeElement> logBookEntries = new LinkedList<>();
         int numberElements;
         //LinkedList<BadgeRec> list = db.Badges_GetAll();
@@ -403,7 +400,7 @@ public class BadgeUtils {
         LinkedList<ExerciseRec> exerciseEntries = new LinkedList<>();
         //LinkedList<BadgeRec> list = db.Badges_GetAll();
         LinkedList<BadgeRec> list = db.getAllMedals("exercise");
-        int idUser = db.getId();
+        int idUser = db.getUserId();
 
         boolean flagBronzeB = false;
         boolean flagSilverB = false;
@@ -624,7 +621,7 @@ public class BadgeUtils {
 
     public static void addDiseaseBadge(Context context, DB_Read db) {
 
-        int idUser = db.getId();
+        int idUser = db.getUserId();
         //LinkedList<BadgeRec> list = db.Badges_GetAll();
         LinkedList<BadgeRec> list = db.getAllMedals("disease");
 
@@ -841,7 +838,7 @@ public class BadgeUtils {
         //LinkedList<BadgeRec> list = db.Badges_GetAll();
         LinkedList<BadgeRec> list = db.getAllMedals("weight");
 
-        int idUser = db.getId();
+        int idUser = db.getUserId();
         boolean flagBronzeB = false;
         boolean flagSilverB = false;
         boolean flagGoldB = false;
@@ -1061,7 +1058,7 @@ public class BadgeUtils {
 //        LinkedList<BadgeRec> list = db.Badges_GetAll();
         LinkedList<BadgeRec> list = db.getAllMedals("bp");
 
-        int idUser = db.getId();
+        int idUser = db.getUserId();
         boolean flagBronzeB = false;
         boolean flagSilverB = false;
         boolean flagGoldB = false;
@@ -1283,7 +1280,7 @@ public class BadgeUtils {
 
 //        LinkedList<BadgeRec> list = db.Badges_GetAll();
         LinkedList<BadgeRec> list = db.getAllMedals("cholesterol");
-        int idUser = db.getId();
+        int idUser = db.getUserId();
         boolean flagBronzeB = false;
         boolean flagSilverB = false;
         boolean flagGoldB = false;
@@ -1503,7 +1500,7 @@ public class BadgeUtils {
 
 //        LinkedList<BadgeRec> list = db.Badges_GetAll();
         LinkedList<BadgeRec> list = db.getAllMedals("hba1c");
-        int idUser = db.getId();
+        int idUser = db.getUserId();
         boolean flagBronzeB = false;
         boolean flagSilverB = false;
         boolean flagGoldB = false;
@@ -1722,52 +1719,22 @@ public class BadgeUtils {
     }
 
     public static void addDailyBadge(Context context, DB_Read db, DB_Write dbwrite) {
-        LinkedList<BadgeRec> list = db.getBadgesByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
-        int idUser = db.getId();
-        boolean flagBronze = false;
-        int idBronze = 0;
-        boolean flagSilver = false;
-        int idSilver = 0;
-        boolean flagGold = false;
-        for (BadgeRec rec : list) {
-            if(rec.getMedal().equals("bronze")){
-                flagBronze = true;
-                idBronze = rec.getId();
-            }
-            if(rec.getMedal().equals("silver")){
-                flagSilver = true;
-                idSilver = rec.getId();
-            }
-            if(rec.getMedal().equals("gold")){
-                flagGold = true;
-            }
-        }
-//        for (BadgeRec rec : list) {
-//            if (rec.getType().equals("daily")) {
-//                if(rec.getMedal().equals("bronze")){
-//                    flagBronze = true;
-//                    idBronze = rec.getId();
-//                }
-//                if(rec.getMedal().equals("silver")){
-//                    flagSilver = true;
-//                    idSilver = rec.getId();
-//                }
-//                if(rec.getMedal().equals("gold")){
-//                    flagGold = true;
-//                }
-//            }
-//        }
-        LinkedList<ExerciseRec> exerciseList = db.getExerciceByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
-        LinkedList<BloodPressureRec> bpList = db.getBloodPressureByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
-        LinkedList<CholesterolRec> cholesterolList = db.getCholesterolByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
-        LinkedList<WeightRec> weightList = db.getWeightByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
-        LinkedList<HbA1cRec> hbA1cList = db.getHbA1cByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
-        LinkedList<DiseaseRec> diseaseList = db.getDiseaseByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
-        //LinkedList<HomeElement> logList = db.getLogBookFromStartDate(DateUtils.getFormattedDate(Calendar.getInstance()));
-        //String date = DateUtils.getFormattedDate(calendar);
 
-        int size = exerciseList.size() + bpList.size() + cholesterolList.size() + weightList.size() + hbA1cList.size() + diseaseList.size(); //+ logList.size();
-        if(size >= DAILY_BRONZE_RECORDS && !flagBronze && !flagSilver && !flagGold){
+        int idUser = db.getUserId();
+
+        int numberOfDailyMedalsToday = db.getNumberOfAllDailyBadgesByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+
+        int recordListNumber = db.getRecordsByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        int exerciseList = db.getNumberExerciceByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        int bpList = db.getNumberBloodPressureByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        int cholesterolList = db.getNumberCholesterolByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        int weightList = db.getNumberWeightByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        int hbA1cList = db.getNumberHbA1cByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        int diseaseList = db.getNumberDiseaseByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+
+        int size = exerciseList + bpList + cholesterolList + weightList + hbA1cList + diseaseList + recordListNumber; //+ logList.size();
+        //Log.i("rawr", "addDailyBadge: "+size);
+        if(size >= DAILY_BRONZE_RECORDS && numberOfDailyMedalsToday<1){
             BadgeRec badge = new BadgeRec();
             badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
@@ -1778,7 +1745,7 @@ public class BadgeUtils {
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
             SimpleToast.info(context, context.getString(R.string.received_a_daily_medal), "{fa-trophy}");
         }
-        if(size >= DAILY_SILVER_RECORDS && !flagSilver && !flagGold){
+        if(size >= DAILY_SILVER_RECORDS && numberOfDailyMedalsToday<2){
             BadgeRec badge = new BadgeRec();
             badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
@@ -1786,11 +1753,10 @@ public class BadgeUtils {
             badge.setName("log");
             badge.setMedal("silver");
             dbwrite.Badge_Save(badge);
-            dbwrite.Badge_Remove(idBronze);
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
             SimpleToast.info(context, context.getString(R.string.received_a_daily_medal), "{fa-trophy}");
         }
-        if(size >= DAILY_GOLD_RECORDS && !flagGold){
+        if(size >= DAILY_GOLD_RECORDS && numberOfDailyMedalsToday<3){
             BadgeRec badge = new BadgeRec();
             badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
@@ -1798,7 +1764,6 @@ public class BadgeUtils {
             badge.setName("log");
             badge.setMedal("gold");
             dbwrite.Badge_Save(badge);
-            dbwrite.Badge_Remove(idSilver);
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
             SimpleToast.info(context, context.getString(R.string.received_a_daily_medal), "{fa-trophy}");
         }

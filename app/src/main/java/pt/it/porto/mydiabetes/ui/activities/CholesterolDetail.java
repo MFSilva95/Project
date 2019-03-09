@@ -153,7 +153,7 @@ public class CholesterolDetail extends BaseActivity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		int idUser = rdb.getId();
+		int idUser = rdb.getUserId();
 
 		CholesterolRec cho = new CholesterolRec();
 
@@ -197,7 +197,7 @@ public class CholesterolDetail extends BaseActivity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		int idUser = rdb.getId();
+		int idUser = rdb.getUserId();
 
 		CholesterolRec cho = new CholesterolRec();
 

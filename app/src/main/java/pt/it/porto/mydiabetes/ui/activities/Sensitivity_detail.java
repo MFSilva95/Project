@@ -20,7 +20,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.LinkedList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.Sensitivity;
@@ -202,7 +201,7 @@ public class Sensitivity_detail extends BaseActivity {
 		target.setEnd(target.getStart(), 30);
 		//target.setEnd(hourTo.getText().toString());
 		DB_Read read = new DB_Read(this);
-		target.setUser_id(read.getId());
+		target.setUser_id(read.getUserId());
 		//ArrayList<Sensitivity> all_sensitivities = read.Sensitivity_GetAll();
 //		boolean sensExists = read.Sensitivity_exists(idTarget);
 		boolean sensExists = read.sensitivityTimeStartExists(target.getStart(),idTarget+"");
@@ -349,7 +348,7 @@ public class Sensitivity_detail extends BaseActivity {
 //            Sensitivity previous = read.getPreviousRatio(target);
 //            Sensitivity next = read.getNextRatio(target);
 		boolean sensExists = read.sensitivityTimeStartExists(target.getStart(),idTarget+"");//Sensitivity_exists(idTarget);
-		//LinkedList overlapList = read.countSensOverlap(target.getStart(),target.getEnd(),target.getId());
+		//LinkedList overlapList = read.countSensOverlap(target.getStart(),target.getEnd(),target.getUserId());
 		read.close();
 
 		if(sensExists){
@@ -370,7 +369,7 @@ public class Sensitivity_detail extends BaseActivity {
 //							try {
 //								DB_Read read = new DB_Read(c);
 //								target.setId(idTarget);
-//								target = read.Sensitivity_GetByID(target.getId()+"");//get Base target
+//								target = read.Sensitivity_GetByID(target.getUserId()+"");//get Base target
 ////							Sensitivity previous = read.getPreviousRatio(target);
 ////							Sensitivity next = read.getNextRatio(target);
 //								read.close();

@@ -20,10 +20,8 @@ import android.support.v4.app.ShareCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -73,7 +71,7 @@ public class Home extends BaseActivity {
         permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
 
         DB_Read db = new DB_Read(this);//getBaseContext());
-        idUser = db.getId();
+        idUser = db.getUserId();
         db.close();
 
         db_features = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
@@ -132,7 +130,7 @@ public class Home extends BaseActivity {
                 //Called when a drawer has settled in a completely open state.
                 //The drawer is interactive at this point.
                 // If you have 2 drawers (left and right) you can distinguish
-                // them by using id of the drawerView. int id = drawerView.getId();
+                // them by using id of the drawerView. int id = drawerView.getUserId();
                 // id will be your layout's id: for example R.id.left_drawer
                 DB_Write dbwrite = new DB_Write(drawerView.getContext());//getBaseContext());
                 dbwrite.Clicks_Save(idUser,"drawer_open",-1,-1);

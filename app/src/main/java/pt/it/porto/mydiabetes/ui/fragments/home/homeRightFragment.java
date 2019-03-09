@@ -75,7 +75,7 @@ import static android.app.Activity.RESULT_OK;
  * Created by parra on 21/02/2017.
  */
 
-public class homeRightFragment extends Fragment  {
+public class homeRightFragment extends Fragment {
 
     private UserInfo myData;
     private String userImgFileName = "profilePhoto";

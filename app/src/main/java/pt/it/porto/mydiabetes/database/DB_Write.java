@@ -33,8 +33,6 @@ import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
-import static pt.it.porto.mydiabetes.database.MyDiabetesContract.Regist.CarboHydrate.COLUMN_MEAL_ID;
-
 
 public class DB_Write {
 
@@ -393,7 +391,7 @@ public class DB_Write {
 		toInsert.put("Id_User", obj.getIdUser());
 		toInsert.put("Value", obj.getCarbsValue());
 		toInsert.put("PhotoPath", obj.getPhotoPath());
-		//Log.i("update", "Carbs_Update: "+obj.getId());
+		//Log.i("update", "Carbs_Update: "+obj.getUserId());
 
 		DB_Read read = new DB_Read(myContext);
 		CarbsRec old = read.CarboHydrate_GetById(obj.getId());
@@ -946,7 +944,7 @@ public class DB_Write {
 
 		DB_Read dbRead = new DB_Read(db);
 		ArrayList<Tag> tags = dbRead.Tag_GetAll();
-		int id_user = dbRead.getId();
+		int id_user = dbRead.getUserId();
 		int value = dbRead.getInsulinRatio();
 		for(int index=0;index<tags.size()-1;index++){
 
@@ -965,7 +963,7 @@ public class DB_Write {
 
 		DB_Read dbRead = new DB_Read(db);
 		ArrayList<Tag> tags = dbRead.Tag_GetAll();
-		int id_user = dbRead.getId();
+		int id_user = dbRead.getUserId();
 		int value = dbRead.getInsulinRatio();
 		for(int index=0;index<tags.size()-1;index++){
 

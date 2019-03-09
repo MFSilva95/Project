@@ -18,7 +18,7 @@ import pt.it.porto.mydiabetes.ui.listAdapters.BadgeListAdapter_old;
  * Created by parra on 21/02/2017.
  */
 
-public class badgesList extends Fragment  {
+public class badgesList extends Fragment {
     private View layout;
     private ListView list;
 

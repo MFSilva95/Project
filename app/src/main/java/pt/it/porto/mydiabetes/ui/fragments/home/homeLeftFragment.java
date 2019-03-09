@@ -1,43 +1,19 @@
 package pt.it.porto.mydiabetes.ui.fragments.home;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.app.Activity;
-import android.app.DialogFragment;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
-
-
-import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
@@ -48,30 +24,22 @@ import pt.it.porto.mydiabetes.data.DiseaseRec;
 import pt.it.porto.mydiabetes.data.ExerciseRec;
 import pt.it.porto.mydiabetes.data.HbA1cRec;
 import pt.it.porto.mydiabetes.data.WeightRec;
-import pt.it.porto.mydiabetes.database.ListsDataDb;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.BloodPressure;
-import pt.it.porto.mydiabetes.ui.activities.BloodPressureDetail;
 import pt.it.porto.mydiabetes.ui.activities.Cholesterol;
-import pt.it.porto.mydiabetes.ui.activities.CholesterolDetail;
 import pt.it.porto.mydiabetes.ui.activities.Disease;
-import pt.it.porto.mydiabetes.ui.activities.DiseaseDetail;
 import pt.it.porto.mydiabetes.ui.activities.Exercise;
-import pt.it.porto.mydiabetes.ui.activities.ExerciseDetail;
 import pt.it.porto.mydiabetes.ui.activities.HbA1c;
-import pt.it.porto.mydiabetes.ui.activities.HbA1cDetail;
 import pt.it.porto.mydiabetes.ui.activities.WeightChartList;
-import pt.it.porto.mydiabetes.ui.activities.WeightDetail;
 
-import static android.app.Activity.RESULT_OK;
+
 
 
 /**
  * Created by parra on 21/02/2017.
  */
 
-public class homeLeftFragment extends Fragment  {
+public class homeLeftFragment extends Fragment {
 
 
     private WeightRec weightRec;

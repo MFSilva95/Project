@@ -47,16 +47,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.esafirm.imagepicker.features.ImagePicker;
-import com.esafirm.imagepicker.model.Image;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URI;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -70,13 +66,11 @@ import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Tag;
-import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
-import pt.it.porto.mydiabetes.ui.createMeal.utils.MealItem;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
@@ -475,7 +469,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         int idTag = (spinner.getSelectedItemPosition());
 
         DB_Read rdb = new DB_Read(this);
-        int idUser = rdb.getId();
+        int idUser = rdb.getUserId();
         DB_Write reg = new DB_Write(this);
 
         verify_note_conditions();
@@ -604,12 +598,12 @@ public class NewHomeRegistry extends AppCompatActivity{
                 throw e;
             }
         }
-        //reg.Record_Update(recordId,idUser, registerDate, idTag); carbsData.getId(),insulinData.getId(),glycemiaData.getId(),noteData.getId());
+        //reg.Record_Update(recordId,idUser, registerDate, idTag); carbsData.getUserId(),insulinData.getUserId(),glycemiaData.getUserId(),noteData.getUserId());
 
         //Log.i(TAG, "validateInfo_Save: BEGIN");
-        BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
-        BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
-        LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log", rdb);
+        //BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
+        //BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
+        //LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log", rdb);
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
         //Log.i(TAG, "validateInfo_Save: END");
         rdb.close();
@@ -620,7 +614,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         int idTag = (spinner.getSelectedItemPosition()+1);
 
         DB_Read rdb = new DB_Read(this);
-        int idUser = rdb.getId();
+        int idUser = rdb.getUserId();
         DB_Write reg = new DB_Write(this);
 
         verify_note_conditions();

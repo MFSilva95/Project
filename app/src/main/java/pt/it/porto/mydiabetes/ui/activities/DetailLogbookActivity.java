@@ -187,7 +187,7 @@ public class DetailLogbookActivity{
 //						public void onClick(DialogInterface dialog, int whichButton) {
 //							DB_Write wdb = new DB_Write(c);
 //							try {
-//								wdb.Logbook_Delete(carbsData != null ? carbsData.getId() : -1, insulinData != null ? insulinData.getId() : -1, glycemiaData != null ? glycemiaData.getId() : -1, noteId);
+//								wdb.Logbook_Delete(carbsData != null ? carbsData.getUserId() : -1, insulinData != null ? insulinData.getUserId() : -1, glycemiaData != null ? glycemiaData.getUserId() : -1, noteId);
 //								setResult(DetailLogbookActivity.RESULT_SAVED_CHANGES);
 //								finish();
 //							} catch (Exception e) {

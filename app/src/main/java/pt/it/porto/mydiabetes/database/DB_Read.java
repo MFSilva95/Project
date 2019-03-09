@@ -90,7 +90,7 @@ public class DB_Read {
 		}
 	}
 
-	public int getId() {
+	public int getUserId() {
 		Cursor cursor = myDB.rawQuery("SELECT " + MyDiabetesContract.UserInfo.COLUMN_NAME_ID + " FROM UserInfo", null);
 		int val = -1;
 		if (cursor.getCount() > 0) {
@@ -833,34 +833,37 @@ public class DB_Read {
 
 	}
 
-	@Nullable
-	public LinkedList<ExerciseRec> getExerciceByDate(String day) {
-		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Exercise WHERE StartDateTime LIKE '%" + day + "%' ORDER BY StartDateTime DESC;", null);
-		LinkedList<ExerciseRec> exs = new LinkedList<>();
-		if (cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			ExerciseRec tmp;
-			do {
+    @Nullable
+    public int getNumberExerciceByDate(String day) {
+        Cursor cursor = myDB.rawQuery("SELECT COUNT(*) FROM Reg_Exercise WHERE StartDateTime LIKE '%" + day + "%' ORDER BY StartDateTime DESC;", null);
+        LinkedList<ExerciseRec> exs = new LinkedList<>();
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            int number = cursor.getInt(0);
+            cursor.close();
+            return number;
+        } else {
+            cursor.close();
+            return 0;
+        }
+    }
 
-				tmp = new ExerciseRec();
-				tmp.setId(cursor.getInt(0));
-				tmp.setIdUser(cursor.getInt(1));
-				tmp.setExercise(cursor.getString(2));
-				tmp.setDuration(cursor.getInt(3));
-				tmp.setEffort(cursor.getInt(4));
-				tmp.setDateTime(cursor.getString(5));
-				tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
-				exs.add(tmp);
+    @Nullable
+    public int getRecordsByDate(String day) {
 
-				cursor.moveToNext();
-			} while (!cursor.isAfterLast());
-			cursor.close();
-			return exs;
-		} else {
-			cursor.close();
-			return exs;
-		}
-	}
+        Log.i(TAG, "query: "+"SELECT count(*) FROM Record WHERE DateTime LIKE '%" + day + "%';");
+
+        Cursor cursor = myDB.rawQuery("SELECT count(*) FROM Record WHERE DateTime LIKE '%" + day + "%';", null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            int nRecords = cursor.getInt(0);
+            cursor.close();
+            return nRecords;
+        } else {
+            cursor.close();
+            return 0;
+        }
+    }
 
     @Nullable
     public LinkedList<ExerciseRec> getExerciseFromStartDate(String startDate, int limit) {
@@ -1113,30 +1116,17 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public LinkedList<BloodPressureRec> getBloodPressureByDate(String day) {
-		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
+	public int getNumberBloodPressureByDate(String day) {
+		Cursor cursor = myDB.rawQuery("SELECT COUNT(*) FROM Reg_BloodPressure WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
 		LinkedList<BloodPressureRec> bloodPressureRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			BloodPressureRec tmp;
-			do {
-				tmp = new BloodPressureRec();
-				tmp.setId(cursor.getInt(0));
-				tmp.setIdUser(cursor.getInt(1));
-				tmp.setSystolic(cursor.getInt(2));
-				tmp.setDiastolic(cursor.getInt(3));
-				tmp.setDateTime(cursor.getString(4));
-				tmp.setIdTag(cursor.getInt(5));
-				tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
-				bloodPressureRecs.add(tmp);
-
-				cursor.moveToNext();
-			} while (!cursor.isAfterLast());
+			int number = cursor.getInt(0);
 			cursor.close();
-			return bloodPressureRecs;
+			return number;
 		} else {
 			cursor.close();
-			return bloodPressureRecs;
+			return 0;
 		}
 	}
 
@@ -1262,28 +1252,17 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public LinkedList<CholesterolRec> getCholesterolByDate(String day) {
+	public int getNumberCholesterolByDate(String day) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
 		LinkedList<CholesterolRec> cholesterolRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			CholesterolRec tmp;
-			do {
-				tmp = new CholesterolRec();
-				tmp.setId(cursor.getInt(0));
-				tmp.setIdUser(cursor.getInt(1));
-				tmp.setValue(cursor.getDouble(2));
-				tmp.setDateTime(cursor.getString(3));
-				tmp.setIdNote((!cursor.isNull(4)) ? cursor.getInt(4) : -1);
-				cholesterolRecs.add(tmp);
-
-				cursor.moveToNext();
-			} while (!cursor.isAfterLast());
+			int number = cursor.getInt(0);
 			cursor.close();
-			return cholesterolRecs;
+			return number;
 		} else {
 			cursor.close();
-			return cholesterolRecs;
+			return 0;
 		}
 	}
 
@@ -1405,28 +1384,17 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public LinkedList<WeightRec> getWeightByDate(String day) {
+	public int getNumberWeightByDate(String day) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Weight WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
 		LinkedList<WeightRec> weightRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			WeightRec tmp;
-			do {
-				tmp = new WeightRec();
-				tmp.setId(cursor.getInt(0));
-				tmp.setIdUser(cursor.getInt(1));
-				tmp.setValue(cursor.getDouble(2));
-				tmp.setDateTime(cursor.getString(3));
-				tmp.setIdNote((!cursor.isNull(4)) ? cursor.getInt(4) : -1);
-				weightRecs.add(tmp);
-
-				cursor.moveToNext();
-			} while (!cursor.isAfterLast());
+            int number = cursor.getInt(0);
 			cursor.close();
-			return weightRecs;
+			return number;
 		} else {
 			cursor.close();
-			return weightRecs;
+			return 0;
 		}
 	}
 
@@ -1548,28 +1516,17 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public LinkedList<HbA1cRec> getHbA1cByDate(String day) {
+	public int getNumberHbA1cByDate(String day) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_A1c WHERE DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
 		LinkedList<HbA1cRec> hbA1cRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			HbA1cRec tmp;
-			do {
-				tmp = new HbA1cRec();
-				tmp.setId(cursor.getInt(0));
-				tmp.setIdUser(cursor.getInt(1));
-				tmp.setValue(cursor.getDouble(2));
-				tmp.setDateTime(cursor.getString(3));
-				tmp.setIdNote((!cursor.isNull(4)) ? cursor.getInt(4) : -1);
-				hbA1cRecs.add(tmp);
-
-				cursor.moveToNext();
-			} while (!cursor.isAfterLast());
+            int number = cursor.getInt(0);
 			cursor.close();
-			return hbA1cRecs;
+			return number;
 		} else {
 			cursor.close();
-			return hbA1cRecs;
+			return 0;
 		}
 	}
 
@@ -1668,29 +1625,17 @@ public class DB_Read {
 	}
 
 	@Nullable
-	public LinkedList<DiseaseRec> getDiseaseByDate(String day) {
+	public int getNumberDiseaseByDate(String day) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_Disease WHERE StartDate LIKE '%" + day + "%' ORDER BY StartDate DESC;", null);
 		LinkedList<DiseaseRec> diseaseRecs = new LinkedList<>();
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
-			DiseaseRec tmp;
-			do {
-				tmp = new DiseaseRec();
-				tmp.setId(cursor.getInt(0));
-				tmp.setIdUser(cursor.getInt(1));
-				tmp.setDisease(cursor.getString(2));
-				tmp.setDateTime(cursor.getString(3));
-				tmp.setEndDate(cursor.getString(4));
-				tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
-				diseaseRecs.add(tmp);
-
-				cursor.moveToNext();
-			} while (!cursor.isAfterLast());
+            int number = cursor.getInt(0);
 			cursor.close();
-			return diseaseRecs;
+			return number;
 		} else {
 			cursor.close();
-			return diseaseRecs;
+			return 0;
 		}
 	}
 
@@ -2379,8 +2324,23 @@ public class DB_Read {
 		return cursor.getCount() != 0;
 	}
 
+    @Nullable
+    public int getNumberOfAllDailyBadgesByDate(String day) {
+        Cursor cursor = myDB.rawQuery("SELECT COUNT(*) FROM Badges WHERE Type = 'daily' AND DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
+        LinkedList<BadgeRec> AllReads = new LinkedList<>();
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            int number = cursor.getInt(0);
+            cursor.close();
+            return number;
+        } else {
+            cursor.close();
+            return 0;
+        }
+    }
+
 	@Nullable
-	public LinkedList<BadgeRec> getBadgesByDate(String day) {
+	public LinkedList<BadgeRec> getAllDailyBadgesByDate(String day) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges WHERE Type = 'daily' AND DateTime LIKE '%" + day + "%' ORDER BY DateTime DESC;", null);
 		LinkedList<BadgeRec> AllReads = new LinkedList<>();
 		if (cursor.getCount() > 0) {

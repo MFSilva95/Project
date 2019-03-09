@@ -1,11 +1,9 @@
 package pt.it.porto.mydiabetes.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.Calendar;
 
-import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.PointsRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
@@ -90,7 +88,7 @@ public class LevelsPointsUtils {
 
     public static void addPoints(Context context, int points, String origin, DB_Read db) {
         //DB_Read db = new DB_Read(context);
-        int idUser = db.getId();
+        int idUser = db.getUserId();
         int userPoints = db.getTotalPoints();
         //db.close();
         int index = getLevel(context, db);

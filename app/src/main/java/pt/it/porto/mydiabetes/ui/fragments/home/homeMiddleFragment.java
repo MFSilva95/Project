@@ -77,10 +77,10 @@ public class homeMiddleFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-    public static homeMiddleFragment newInstance() {
-        homeMiddleFragment fragment = new homeMiddleFragment();
-        return fragment;
-    }
+//    public static homeMiddleFragment newInstance() {
+//        homeMiddleFragment fragment = new homeMiddleFragment();
+//        return fragment;
+//    }
 
     public homeMiddleFragment() {
     }
@@ -167,7 +167,7 @@ public class homeMiddleFragment extends Fragment {
                     //elem.setTag_name(db.Tag_GetNameById(elem.getTag_id()));
                     Resources res = getResources(); //assuming in an activity for example, otherwise you can provide a context.
                     String[] dayTimes = res.getStringArray(R.array.daytimes);
-                    elem.setTag_name(dayTimes[elem.getTag_id()]);
+                    elem.setTag_name(dayTimes[elem.getTag_id()-1]);
                     this.logBookList.add(elem);
                 } else {
                     dateText = newDateText;

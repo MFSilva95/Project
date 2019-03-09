@@ -149,7 +149,7 @@ public class WeightDetail extends BaseActivity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		int idUser = rdb.getId();
+		int idUser = rdb.getUserId();
 
 		WeightRec weight = new WeightRec();
 
@@ -192,7 +192,7 @@ public class WeightDetail extends BaseActivity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		int idUser = rdb.getId();
+		int idUser = rdb.getUserId();
 
 		WeightRec cho = new WeightRec();
 

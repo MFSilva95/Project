@@ -203,7 +203,7 @@ public class ExerciseDetail extends BaseActivity {
 
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
-		int idUser = rdb.getId();
+		int idUser = rdb.getUserId();
 
 		DB_Write reg = new DB_Write(this);
 		ExerciseRec ex = new ExerciseRec();
@@ -307,7 +307,7 @@ public class ExerciseDetail extends BaseActivity {
 		//Get id of user 
 		DB_Read rdb = new DB_Read(this);
 		DB_Write wdb = new DB_Write(this);
-		int idUser = rdb.getId();
+		int idUser = rdb.getUserId();
 		if (!rdb.Exercise_ExistName(exerciseSpinner.getText().toString())) {
 			wdb.Exercise_Add(exerciseSpinner.getText().toString());
 		}
