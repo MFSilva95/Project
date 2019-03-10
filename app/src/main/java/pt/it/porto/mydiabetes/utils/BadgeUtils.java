@@ -1723,6 +1723,9 @@ public class BadgeUtils {
         int idUser = db.getUserId();
 
         int numberOfDailyMedalsToday = db.getNumberOfAllDailyBadgesByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
+        //boolean hasDailyBronze = db.hasDailyMedal(DateUtils.getFormattedDate(Calendar.getInstance()),"bronze");
+        //boolean hasDailySilver = db.hasDailyMedal(DateUtils.getFormattedDate(Calendar.getInstance()),"silver");
+        //boolean hasDailyGold  = db.hasDailyMedal(DateUtils.getFormattedDate(Calendar.getInstance()),"gold");
 
         int recordListNumber = db.getRecordsByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
         int exerciseList = db.getNumberExerciceByDate(DateUtils.getFormattedDate(Calendar.getInstance()));
@@ -1734,7 +1737,7 @@ public class BadgeUtils {
 
         int size = exerciseList + bpList + cholesterolList + weightList + hbA1cList + diseaseList + recordListNumber; //+ logList.size();
         //Log.i("rawr", "addDailyBadge: "+size);
-        if(size >= DAILY_BRONZE_RECORDS && numberOfDailyMedalsToday<1){
+        if(size >= DAILY_BRONZE_RECORDS && numberOfDailyMedalsToday<=0){//!hasDailyBronze){
             BadgeRec badge = new BadgeRec();
             badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
@@ -1745,7 +1748,7 @@ public class BadgeUtils {
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
             SimpleToast.info(context, context.getString(R.string.received_a_daily_medal), "{fa-trophy}");
         }
-        if(size >= DAILY_SILVER_RECORDS && numberOfDailyMedalsToday<2){
+        if(size >= DAILY_SILVER_RECORDS && numberOfDailyMedalsToday<=1){//!hasDailySilver){
             BadgeRec badge = new BadgeRec();
             badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
@@ -1756,7 +1759,7 @@ public class BadgeUtils {
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
             SimpleToast.info(context, context.getString(R.string.received_a_daily_medal), "{fa-trophy}");
         }
-        if(size >= DAILY_GOLD_RECORDS && numberOfDailyMedalsToday<3){
+        if(size >= DAILY_GOLD_RECORDS && numberOfDailyMedalsToday<=2){//!hasDailyGold){
             BadgeRec badge = new BadgeRec();
             badge.setIdUser(idUser);
             badge.setDateTime(Calendar.getInstance());
@@ -1767,7 +1770,6 @@ public class BadgeUtils {
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
             SimpleToast.info(context, context.getString(R.string.received_a_daily_medal), "{fa-trophy}");
         }
-        
     }
 
 }

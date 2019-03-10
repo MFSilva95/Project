@@ -10,6 +10,7 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -33,6 +34,7 @@ import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.data.TargetBGRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.data.WeightRec;
+import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 import pt.it.porto.mydiabetes.utils.RawRecord;
 
@@ -848,10 +850,29 @@ public class DB_Read {
         }
     }
 
+
+	@Nullable
+	public boolean hasDailyMedal(String day, String type) {
+
+		Log.i(TAG, "query: "+"SELECT count(*) FROM Record WHERE DateTime LIKE '%" + day + "%';");
+
+		Cursor cursor = myDB.rawQuery("SELECT count(*) FROM Badges WHERE Type = 'daily' AND Medal = '"+type+"' LIKE '%" + day + "%';", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			int nRecords = cursor.getInt(0);
+			cursor.close();
+			return nRecords>0;
+		} else {
+			cursor.close();
+			return false;
+		}
+	}
+
+
     @Nullable
     public int getRecordsByDate(String day) {
 
-        Log.i(TAG, "query: "+"SELECT count(*) FROM Record WHERE DateTime LIKE '%" + day + "%';");
+        //Log.i(TAG, "query: "+"SELECT count(*) FROM Record WHERE DateTime LIKE '%" + day + "%';");
 
         Cursor cursor = myDB.rawQuery("SELECT count(*) FROM Record WHERE DateTime LIKE '%" + day + "%';", null);
         if (cursor.getCount() > 0) {
@@ -2151,29 +2172,39 @@ public class DB_Read {
 	}
 
 	public LinkedList<BadgeRec> Badges_GetAll() {
-		LinkedList<BadgeRec> AllReads = new LinkedList<>();
-		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges ORDER BY DateTime DESC;", null);
-		if (cursor.getCount() > 0) {
-			cursor.moveToFirst();
-			BadgeRec tmp;
-			do {
-				tmp = new BadgeRec();
-				tmp.setId(cursor.getInt(0));
-				tmp.setIdUser(cursor.getInt(1));
-				tmp.setDateTime(cursor.getString(2));
-				tmp.setType(cursor.getString(3));
-				tmp.setName(cursor.getString(4));
-				tmp.setMedal(cursor.getString(5));
-				AllReads.add(tmp);
-				cursor.moveToNext();
-			} while (!cursor.isAfterLast());
-			cursor.close();
-			return AllReads;
-		} else {
-			cursor.close();
-			return AllReads;
-		}
+
+		String now = DateUtils.getFormattedDate(Calendar.getInstance());
+		LinkedList<BadgeRec> non_daily = Badges_GetAll_NONDAILY();
+		LinkedList<BadgeRec> current_daily = getAllDailyBadgesByDate(now);
+
+		non_daily.addAll(current_daily);
+		return non_daily;
+
+//		LinkedList<BadgeRec> AllReads = new LinkedList<>();
+//		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges ORDER BY DateTime DESC;", null);
+//		if (cursor.getCount() > 0) {
+//			cursor.moveToFirst();
+//			BadgeRec tmp;
+//			do {
+//				tmp = new BadgeRec();
+//				tmp.setId(cursor.getInt(0));
+//				tmp.setIdUser(cursor.getInt(1));
+//				tmp.setDateTime(cursor.getString(2));
+//				tmp.setType(cursor.getString(3));
+//				tmp.setName(cursor.getString(4));
+//				tmp.setMedal(cursor.getString(5));
+//				AllReads.add(tmp);
+//				cursor.moveToNext();
+//			} while (!cursor.isAfterLast());
+//			cursor.close();
+//			return AllReads;
+//		} else {
+//			cursor.close();
+//			return AllReads;
+//		}
 	}
+
+
 	public ArrayList<BadgeRec> getAllMedals() {
 		ArrayList<BadgeRec> AllReads = new ArrayList<>();
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges;", null);
@@ -2224,7 +2255,9 @@ public class DB_Read {
 	}
 
 	public BadgeRec getLastDailyMedal(){
-		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges WHERE TYPE = 'daily' and DATETIME >= date('now');", null);
+		//Cursor cursor = myDB.rawQuery("SELECT * FROM Badges WHERE TYPE = 'daily' and DATETIME >= date('now');", null);
+		String now = DateUtils.getFormattedDate(Calendar.getInstance());
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Badges WHERE TYPE = 'daily' AND DateTime LIKE '%" + now + "%' ORDER BY DateTime DESC;", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			BadgeRec tmp;
