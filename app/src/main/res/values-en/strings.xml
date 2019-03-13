@@ -613,4 +613,5 @@
         </ul>
         </small>
         \n\nAll the uploaded data will be used for academic purposes only!\nThe MyDiabetes team uses this data in order to improve its advising system and further help its users.\n<b>Do you accept the presented terms?</b></string>
+    <string name="notification_channel_sync_description">Reminder to send your data to the project manager</string>
 </resources>

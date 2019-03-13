@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="pt.it.porto.mydiabetes"
-    android:versionCode="16"
+    android:versionCode="17"
     android:versionName="2.0">
 
     <uses-permission android:name="android.permission.CAMERA" />
@@ -351,10 +351,15 @@
         <activity
             android:name=".ui.activities.Badges"
             android:label="@string/badges"
+            android:exported="true"
             android:parentActivityName=".ui.activities.Home">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.activities.Home"/>
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
 
@@ -369,11 +374,11 @@
             android:exported="true">
         </receiver>
 
-        <receiver
-            android:name=".utils.AdviceAlertReceiver"
-            android:enabled="true"
-            android:exported="true">
-        </receiver>
+        <!--<receiver-->
+            <!--android:name=".utils.AdviceAlertReceiver"-->
+            <!--android:enabled="true"-->
+            <!--android:exported="true">-->
+        <!--</receiver>-->
 
         <!--<meta-data-->
             <!--android:name="com.google.android.gms.version"-->

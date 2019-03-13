@@ -1,8 +1,11 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +13,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ParseException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -27,6 +31,7 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import java.util.Calendar;
 import java.util.List;
 
 import pt.it.porto.mydiabetes.R;
@@ -37,8 +42,11 @@ import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesContract;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
+import pt.it.porto.mydiabetes.database.Usage;
 import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
+import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.SyncAlarm;
 
 import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.PROJECT_MANAGER_EMAIL;
 
@@ -69,6 +77,16 @@ public class Home extends BaseActivity {
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
         permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
+
+
+
+
+        AlarmManager alm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, SyncAlarm.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_ONE_SHOT); // one oportunity
+        alm.set(AlarmManager.RTC, 3*1000+System.currentTimeMillis(), alarmIntent);
+
+
 
         DB_Read db = new DB_Read(this);//getBaseContext());
         idUser = db.getUserId();
@@ -106,7 +124,36 @@ public class Home extends BaseActivity {
 
 	}
 
-	public void setMainView(Bundle savedInstanceState){
+    private void setupSyncAlarm() {
+        SharedPreferences preferences = pt.it.porto.mydiabetes.database.Preferences.getPreferences(this);
+        if (!preferences.contains(SyncAlarm.SYNC_ALARM_PREFERENCE)) { // only sets it if needed
+            AlarmManager alm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(this, SyncAlarm.class);
+            PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+
+            Calendar calendar = Calendar.getInstance();
+            if (preferences.contains(SyncAlarm.SYNC_ALARM_LAST_SYNC)) {
+                calendar.setTimeInMillis(preferences.getLong(SyncAlarm.SYNC_ALARM_LAST_SYNC, System.currentTimeMillis()));
+            } else {
+                Usage usage = new Usage(MyDiabetesStorage.getInstance(this));
+                String date = usage.getOldestRegist();
+                try {
+//                    calendar.setTime(DateUtils.parseDate(date)); // todo finish
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return;
+                }
+            }
+            calendar.roll(Calendar.DAY_OF_YEAR, 7);
+            calendar.set(Calendar.HOUR_OF_DAY, 21); // Maybe change later?
+
+            alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
+
+            preferences.edit().putInt(SyncAlarm.SYNC_ALARM_PREFERENCE, 1).apply();
+        }
+    }
+
+        public void setMainView(Bundle savedInstanceState){
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

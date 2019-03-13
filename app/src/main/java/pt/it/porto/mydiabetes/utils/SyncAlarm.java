@@ -1,11 +1,13 @@
 package pt.it.porto.mydiabetes.utils;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -18,15 +20,15 @@ public class SyncAlarm extends BroadcastReceiver {
 
 	public static final String SYNC_ALARM_PREFERENCE = "sync_alarm";
 	public static final String SYNC_ALARM_LAST_SYNC = "sync_alarm_last";
-
+	public static final String CHANNEL_ID="sync_notification_id";
 
 	public SyncAlarm() {
 	}
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-//		builder.setSmallIcon(R.drawable.gota_white);
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(context,CHANNEL_ID);
+		builder.setSmallIcon(R.drawable.gota_white);
 		builder.setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.logo_v2));
 		builder.setContentTitle(context.getString(R.string.app_name));
 		NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
@@ -37,7 +39,7 @@ public class SyncAlarm extends BroadcastReceiver {
 			bigTextStyle.bigText(context.getString(R.string.notification_sync_first_time));
 		}
 
-		builder.setPriority(NotificationCompat.PRIORITY_LOW);
+		builder.setPriority(NotificationCompat.PRIORITY_MIN);
 		builder.setStyle(bigTextStyle);
 		builder.setAutoCancel(true);
 
@@ -52,6 +54,12 @@ public class SyncAlarm extends BroadcastReceiver {
 		builder.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
 
 		NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+			NotificationChannel channel = new NotificationChannel(CHANNEL_ID, context.getString(R.string.notification_channel_sync_description), NotificationManager.IMPORTANCE_LOW);
+			mNotificationManager.createNotificationChannel(channel);
+			builder.setChannelId(CHANNEL_ID);
+		}
+
 		mNotificationManager.notify(0, builder.build());
 
 		// alarm fired, remove setting and sets time of the sync

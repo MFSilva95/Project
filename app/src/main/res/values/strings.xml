@@ -586,5 +586,6 @@
             </ul>
         </small>
         \n\nToda a informação disponibilizada será para utilização exclusivamente académica!\nA equipa do MyDiabetes irá usar esta informação de forma a melhorar o seu sistema de aconselhamento de forma a conseguir ajudar os seus utilizadores.\n<b>\nAceita os termos apresentados?</b></string>
+    <string name="notification_channel_sync_description">Lembrete para envio dos dados para o gestor do projecto</string>
 
 </resources>
