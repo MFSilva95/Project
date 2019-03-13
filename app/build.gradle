@@ -7,7 +7,7 @@ android {
     flavorDimensions "default"
     compileSdkVersion 28
 
-    buildToolsVersion '28.0.2'
+    buildToolsVersion '28.0.3'
     defaultConfig {
         applicationId "pt.it.porto.mydiabetes"
         minSdkVersion 19
@@ -22,7 +22,6 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "long", "BUILDDATE", System.currentTimeMillis() + "L"
         buildConfigField "boolean", "USE_FABRIC", "false"
-
     }
     flavorDimensions "prod", "devel"
     productFlavors {
@@ -33,7 +32,6 @@ android {
         devel {
             dimension "devel"
             buildConfigField "boolean", "USE_FABRIC", "false"
-
         }
     }
     configurations.all {
@@ -51,14 +49,12 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-
         }
         debug {
             applicationIdSuffix ".debug"
             buildConfigField "boolean", "IOB_AVAILABLE", "true"
             buildConfigField "boolean", "SYNC_AVAILABLE", "true"
             buildConfigField "boolean", "GLUCOMETER_AVAILABLE", "true"
-
         }
     }
     dataBinding {

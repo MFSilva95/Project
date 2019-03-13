@@ -10,8 +10,10 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.ImageDecoder;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
@@ -125,7 +127,11 @@ public class homeRightFragment extends Fragment {
         if(requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT){
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     + ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-                dispatchTakePictureIntent();
+                try {
+                    dispatchTakePictureIntent();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }else{
                 Toast.makeText(this.getContext(),R.string.all_permissions,Toast.LENGTH_LONG).show();
             }
@@ -337,7 +343,11 @@ public class homeRightFragment extends Fragment {
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA + Manifest.permission.WRITE_EXTERNAL_STORAGE + Manifest.permission.READ_EXTERNAL_STORAGE)
                         == PackageManager.PERMISSION_GRANTED) {
-                    dispatchTakePictureIntent();
+                    try {
+                        dispatchTakePictureIntent();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }else{
                     requestPermissions( new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
                 }
@@ -345,14 +355,17 @@ public class homeRightFragment extends Fragment {
             }
         });
     }
-    private void dispatchTakePictureIntent(){
+    private void dispatchTakePictureIntent() throws IOException {
+        File picFile = new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg");
+        picFile.createNewFile(); // Eduardo was here :c
         if(android.os.Build.VERSION.SDK_INT>=24){
-            currentImageUri = FileProvider.getUriForFile(this.getContext(), BuildConfig.APPLICATION_ID+".provider", new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg"));
+            currentImageUri = FileProvider.getUriForFile(this.getContext(), BuildConfig.APPLICATION_ID+".provider", picFile);
         }else{
-            currentImageUri = Uri.fromFile(new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg"));
+            currentImageUri = Uri.fromFile(picFile);
         }
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, currentImageUri);
         startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
     }
@@ -399,11 +412,20 @@ public class homeRightFragment extends Fragment {
 
         try {
 
-            InputStream input = this.getContext().getContentResolver().openInputStream(currentImageUri);
-            if (input == null) {
-                Toast.makeText(getContext(),"Unable to save photo",Toast.LENGTH_LONG).show();
+
+            Bitmap pic_bitmap;
+            if(android.os.Build.VERSION.SDK_INT>=28){
+                ImageDecoder.Source source = ImageDecoder.createSource(this.getContext().getContentResolver(), currentImageUri);
+                pic_bitmap = ImageDecoder.decodeBitmap(source);
+            }else{
+                InputStream input = this.getContext().getContentResolver().openInputStream(currentImageUri);
+                if (input == null) {
+                    Toast.makeText(getContext(),"Unable to save photo",Toast.LENGTH_LONG).show();
+                    return;
+                }
+                pic_bitmap = BitmapFactory.decodeStream(input);
             }
-            Bitmap pic_bitmap = BitmapFactory.decodeStream(input);
+
             File photoFile = null;
             try {
                 photoFile = createImageFile();
@@ -414,10 +436,7 @@ public class homeRightFragment extends Fragment {
 
                     displayImg(photoFile.getAbsolutePath());
 
-                    Log.i("cenas", "setProfilePhoto: -> "+photoFile.getAbsolutePath());
-
-
-
+                    //Log.i("cenas", "setProfilePhoto: -> "+photoFile.getAbsolutePath());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -431,6 +450,8 @@ public class homeRightFragment extends Fragment {
         {
             e.printStackTrace();
             Toast.makeText(getContext(),"Unable to save photo",Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
     private void displayImg(String path){

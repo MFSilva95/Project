@@ -1,10 +1,14 @@
 package pt.it.porto.mydiabetes.ui.listAdapters;
 
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.fragments.home.homeLeftFragment;
 import pt.it.porto.mydiabetes.ui.fragments.home.homeMiddleFragment;
 import pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment;
