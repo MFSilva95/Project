@@ -138,13 +138,17 @@ public class Home extends BaseActivity {
                 Usage usage = new Usage(MyDiabetesStorage.getInstance(this));
                 String date = usage.getOldestRegist();
                 try {
-//                    calendar.setTime(DateUtils.parseDate(date)); // todo finish
+                    try {
+                        calendar.setTime(DateUtils.parseDate(date).getTime());
+                    } catch (java.text.ParseException e) {
+                        e.printStackTrace();
+                    }
                 } catch (ParseException e) {
                     e.printStackTrace();
                     return;
                 }
             }
-            calendar.roll(Calendar.DAY_OF_YEAR, 7);
+            calendar.roll(Calendar.DAY_OF_YEAR, 0);
             calendar.set(Calendar.HOUR_OF_DAY, 21); // Maybe change later?
 
             alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
