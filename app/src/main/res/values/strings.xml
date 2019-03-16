@@ -549,7 +549,7 @@
     <string name="select_meal_tittle">Seleciona Alimento</string>
     <string name="tab1_title">Alimentos</string>
     <string name="tab2_title">Refeições</string>
-    <string name="food_portion">porção</string>
+    <string name="food_portion">porção (100g)</string>
     <string name="food_grams">gramas</string>
 
     <string name="extra_carbs">H.Carbs Extra</string>

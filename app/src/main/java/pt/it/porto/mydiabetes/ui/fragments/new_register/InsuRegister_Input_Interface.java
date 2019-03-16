@@ -20,6 +20,7 @@ import java.util.HashMap;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
@@ -187,6 +188,7 @@ public class InsuRegister_Input_Interface extends LinearLayout {
         calcShowing = true;
         ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
         if (calcInsulinInfo != null) {
+            logSave("Open:InsulinCalcView");
             calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_info_outline_grey_900_24dp));
             if(calc != null){
                 updateInsuCalc(calc, true);
@@ -200,10 +202,22 @@ public class InsuRegister_Input_Interface extends LinearLayout {
 
         ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
         if (calcInsulinInfo != null) {
+            logSave("Close:InsulinCalcView");
             calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_information_outline_grey600_24dp));
         }
-
     }
+
+    public void logSave (String activity) {
+        DB_Read db = new DB_Read(getContext());
+        int idUser = db.getUserId();
+        db.close();
+        if(idUser != -1){
+            DB_Write dbwrite = new DB_Write(getContext());
+            dbwrite.Log_Save(idUser,activity);
+            dbwrite.close();
+        }
+    }
+
     private void insertInsulinData(float insulinUnits){
 
         insulin_input.setHintEnabled(true);
@@ -225,6 +239,4 @@ public class InsuRegister_Input_Interface extends LinearLayout {
         insuData.setIdInsulin(idInsulin);
         return insuData;
     }
-
-
 }

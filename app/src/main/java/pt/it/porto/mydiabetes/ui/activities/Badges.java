@@ -14,6 +14,7 @@ import android.widget.TextView;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.listAdapters.BadgePageAdapter;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
@@ -82,7 +83,7 @@ public class Badges extends BaseActivity {
 //            daily_gold_text.setText(R.string.daily_gold_all);
 
 
-       setupNavigationView();
+        setupNavigationView();
     }
 
     @Override
@@ -98,7 +99,6 @@ public class Badges extends BaseActivity {
     private void setupNavigationView() {
         final ImageView buttonGrid = (ImageView) findViewById(R.id.button_grid);
         final ImageView buttonList = (ImageView) findViewById(R.id.button_list);
-
         mViewPager.setCurrentItem(0);
         buttonGrid.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.primary_dark));
 
@@ -108,6 +108,7 @@ public class Badges extends BaseActivity {
                 mViewPager.setCurrentItem(0);
                 buttonGrid.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.primary_dark));
                 buttonList.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.ef_grey));
+                logSave("Badges:BadgesBoard");
             }
         });
 
@@ -117,13 +118,30 @@ public class Badges extends BaseActivity {
                 mViewPager.setCurrentItem(1);
                 buttonGrid.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.ef_grey));
                 buttonList.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.primary_dark));
+                logSave("Badges:BadgesList");
             }
         });
-
-
-
     }
 
+    public void logSave (String activity) {
+        DB_Read db = new DB_Read(getBaseContext());
+        int idUser = db.getUserId();
+        db.close();
+        if(idUser != -1){
+            DB_Write dbwrite = new DB_Write(getBaseContext());
+            dbwrite.Log_Save(idUser,activity);
+            dbwrite.close();
+        }
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        //if (bottomNavigationView.getMenu().getItem(0).isEnabled()) logSave("homeLeftFragment");
+        //else if (bottomNavigationView.getMenu().getItem(1).isEnabled()) logSave("homeMiddleFragment");
+        //else if (bottomNavigationView.getMenu().getItem(2).isEnabled()) logSave("homeRightFragment");
+        if (mViewPager.getCurrentItem()==0) logSave("Badges:BadgeBoard");
+        else if (mViewPager.getCurrentItem()==1) logSave("Badges:BadgeList");
+    }
 }
-
-

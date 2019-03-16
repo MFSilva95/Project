@@ -382,6 +382,7 @@ public class Home extends BaseActivity {
                         //Log.i("cenas", "getItem: 1");
 						mViewPager.setCurrentItem(0);
                         bottomNavigationView.getMenu().getItem(0).setChecked(true);
+                        logSave("Home:homeLeftFragment");
 						break;
 					case R.id.action_register:
                         dbwrite.Clicks_Save(idUser,"middleHomePage",-1,-1);
@@ -389,6 +390,7 @@ public class Home extends BaseActivity {
                         //Log.i("cenas", "getItem: 2");
 						mViewPager.setCurrentItem(1);
                         bottomNavigationView.getMenu().getItem(1).setChecked(true);
+                        logSave("Home:homeMiddleFragment");
 						break;
 					case R.id.action_person:
                         dbwrite.Clicks_Save(idUser,"rightHomePage",-1,-1);
@@ -396,6 +398,7 @@ public class Home extends BaseActivity {
                         //Log.i("cenas", "getItem: 3");
 						mViewPager.setCurrentItem(2);
                         bottomNavigationView.getMenu().getItem(2).setChecked(true);
+                        logSave("Home:homeRightFragment");
 						break;
 				}
 				return true;
@@ -541,7 +544,7 @@ public class Home extends BaseActivity {
 
 
 
-    private void showTermsOfService(){
+    private void showTermsOfService() {
 
         android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(this);
         builder1.setTitle(getString(R.string.terms_of_service_title));
@@ -553,23 +556,23 @@ public class Home extends BaseActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        db_features.changeFeatureStatus(FeaturesDB.ACCEPTED_TERMS,true);
+                        db_features.changeFeatureStatus(FeaturesDB.ACCEPTED_TERMS, true);
 
-                        if(!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                        if (!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)) {
                             if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, INIT_PERMISSION_REQUEST);
-                            }else{
-                                if(ShouldBackupDB()){
+                            } else {
+                                if (ShouldBackupDB()) {
                                     showBackupDialog();
-                                }else{
+                                } else {
                                     ShowDialogAddData();
                                     return;
                                 }
                             }
-                        }else{
-                            if(ShouldBackupDB()){
+                        } else {
+                            if (ShouldBackupDB()) {
                                 showBackupDialog();
-                            }else{
+                            } else {
                                 setMainView(null);
                             }
                         }
@@ -581,7 +584,25 @@ public class Home extends BaseActivity {
         alert11.show();
     }
 
+    public void logSave (String activity) {
+        DB_Read db = new DB_Read(getBaseContext());
+        int idUser = db.getUserId();
+        db.close();
+        if(idUser != -1){
+            DB_Write dbwrite = new DB_Write(getBaseContext());
+            dbwrite.Log_Save(idUser,activity);
+            dbwrite.close();
+        }
+    }
 
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if (mViewPager.getCurrentItem()==0) logSave("Home:homeLeftFragment");
+        else if (mViewPager.getCurrentItem()==1) logSave("Home:homeMiddleFragment");
+        else if (mViewPager.getCurrentItem()==2) logSave("Home:homeRightFragment");
+    }
 }
 
 

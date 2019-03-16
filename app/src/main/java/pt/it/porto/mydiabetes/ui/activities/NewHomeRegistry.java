@@ -86,7 +86,7 @@ import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 import static pt.it.porto.mydiabetes.utils.DateUtils.ISO8601_FORMAT_SECONDS;
 
-public class NewHomeRegistry extends AppCompatActivity{
+public class NewHomeRegistry extends BaseActivity{
 
     private String TAG = "newREG";
 
@@ -280,8 +280,8 @@ public class NewHomeRegistry extends AppCompatActivity{
         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             hideBottomSheet();
         } else {
-                goBack();
-            }
+            goBack();
+        }
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -864,6 +864,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                logSave("NewHomeRegistry:Notes");
                 if (buttons.contains(NOTE)) {
                     if(isRecordUpdate){
                         delete_buttons.add(NOTE);
@@ -884,6 +885,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                logSave("NewHomeRegistry:Glycaemia");
                 if (buttons.contains(GLICAEMIA)) {
                     if(isRecordUpdate){
                         delete_buttons.add(GLICAEMIA);
@@ -902,6 +904,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         bottomSheetViewgroup.findViewById(R.id.bs_meal).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                logSave("NewHomeRegistry:Carbs");
                 if (buttons.contains(CARBS)) {
                     if(isRecordUpdate){
                         delete_buttons.add(CARBS);
@@ -921,6 +924,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         bottomSheetViewgroup.findViewById(R.id.bs_insulin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                logSave("NewHomeRegistry:Insulin");
                 if (buttons.contains(INSULIN)) {
                     if(isRecordUpdate){
                         delete_buttons.add(INSULIN);
@@ -936,6 +940,17 @@ public class NewHomeRegistry extends AppCompatActivity{
                 }
             }
         });
+    }
+
+    public void logSave (String activity) {
+        DB_Read db = new DB_Read(getBaseContext());
+        int idUser = db.getUserId();
+        db.close();
+        if(idUser != -1){
+            DB_Write dbwrite = new DB_Write(getBaseContext());
+            dbwrite.Log_Save(idUser,activity);
+            dbwrite.close();
+        }
     }
 
     public String getDate() {
@@ -1175,7 +1190,7 @@ public class NewHomeRegistry extends AppCompatActivity{
 
 
 
-//            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+    //            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 //                    //Got Permission
 //                    try {
 //                        dispatchTakePictureIntent();
@@ -1334,8 +1349,8 @@ public class NewHomeRegistry extends AppCompatActivity{
 
 
             if (ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-               // if (ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+                // if (ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
                 //}
             } else {
                 try {
@@ -1649,5 +1664,12 @@ public class NewHomeRegistry extends AppCompatActivity{
         int height = (int) (displaymetrics.heightPixels * 0.1);
         int width = (int) (displaymetrics.widthPixels * 0.1);
         return new Pair<>(height,width);
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        //logSave("NewHomeRegistry");
     }
 }

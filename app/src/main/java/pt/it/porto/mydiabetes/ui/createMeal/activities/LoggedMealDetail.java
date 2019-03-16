@@ -20,11 +20,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.ui.activities.BaseActivity;
 import pt.it.porto.mydiabetes.ui.createMeal.adapters.MealDetailListAdapter;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 
 
-public class LoggedMealDetail extends AppCompatActivity {
+public class LoggedMealDetail extends BaseActivity {
     private Toolbar toolbar;
     private AppBarLayout collapseToolbar;
     private NestedScrollView scrollView;
