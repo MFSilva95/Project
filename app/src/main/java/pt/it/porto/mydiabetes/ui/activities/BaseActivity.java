@@ -56,7 +56,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 		if(!this.getComponentName().getClassName().equals("pt.it.porto.mydiabetes.ui.activities.WelcomeActivity")){
 			if(idUser != -1){
 				DB_Write dbwrite = new DB_Write(this);//getBaseContext());
-				dbwrite.Log_Save(idUser,"EXIT ACTIVITY:"+this.getComponentName().getClassName().substring(37));
+				if (this.getComponentName().getClassName().contains("pt.it.porto.mydiabetes.ui.createMeal.activities"))
+					dbwrite.Log_Save(idUser,"EXIT ACTIVITY:"+this.getComponentName().getClassName().substring(48));
+				else
+					dbwrite.Log_Save(idUser,"EXIT ACTIVITY:"+this.getComponentName().getClassName().substring(37));
 				dbwrite.close();
 			}
 		}
@@ -68,7 +71,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 		if(!this.getComponentName().getClassName().equals("pt.it.porto.mydiabetes.ui.activities.WelcomeActivity")){
 			if(idUser != -1){
 				DB_Write dbwrite = new DB_Write(this);//getBaseContext());
-				dbwrite.Log_Save(idUser,"ENTER ACTIVITY:"+this.getComponentName().getClassName().substring(37));
+				if (this.getComponentName().getClassName().contains("pt.it.porto.mydiabetes.ui.createMeal.activities"))
+					dbwrite.Log_Save(idUser,"ENTER ACTIVITY:"+this.getComponentName().getClassName().substring(48));
+				else
+					dbwrite.Log_Save(idUser,"ENTER ACTIVITY:"+this.getComponentName().getClassName().substring(37));
 				dbwrite.close();
 			}
 		}
