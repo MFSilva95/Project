@@ -575,7 +575,7 @@
     <string name="select_meal_tittle">Select food</string>
     <string name="tab1_title">Food</string>
     <string name="tab2_title">Meals</string>
-    <string name="food_portion">portion</string>
+    <string name="food_portion">portion (100g)</string>
     <string name="food_grams">grams</string>
 
     <string name="extra_carbs">Extra Carbohydrates</string>

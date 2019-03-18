@@ -86,7 +86,7 @@ import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 import static pt.it.porto.mydiabetes.utils.DateUtils.ISO8601_FORMAT_SECONDS;
 
-public class NewHomeRegistry extends AppCompatActivity{
+public class NewHomeRegistry extends BaseActivity{
 
     private String TAG = "newREG";
 
@@ -165,16 +165,13 @@ public class NewHomeRegistry extends AppCompatActivity{
     private ArrayList<Tag> t;
 
     private LoggedMeal mCurrentMeal = null;
-    private int associatedMealId = -1;
 
     int iRatio;
     int cRatio;
 
 
-    private boolean sentToSettings = false;
     private boolean isRecordUpdate = false;
-    //private SharedPreferences permissionStatus;
-    //private boolean useIOB = false;
+
 
 
     @Override
@@ -184,13 +181,7 @@ public class NewHomeRegistry extends AppCompatActivity{
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == REQUEST_PERMISSION_SETTING) {
-//            try {
-//                dispatchTakePictureIntent();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
+
         if(requestCode == REQUEST_CREATE_MEAL && resultCode == RESULT_OK){
             if(data.hasExtra("meal")){
                 mCurrentMeal = data.getExtras().getParcelable("meal");
@@ -201,65 +192,6 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
 
         }
-        /**
-         * We asked for camera and storage permission, if we got it -> advance to camera intent
-         */
-//        if (requestCode == REQUEST_PERMISSION_SETTING) {
-//            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-//                    + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//                try {
-//                   dispatchTakePictureIntent();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-
-//        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-//
-//            //Image cameraImg = ImagePicker.getFirstImageOrNull(data);
-//            File photoFile = null;
-//            try {
-//                photoFile = createImageFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            if (photoFile != null) {
-//                if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
-//                    try {
-//                        copy19plus(cameraImg.getPath(), photoFile);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                    Uri photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,BuildConfig.APPLICATION_ID + ".provider", photoFile);
-//                    carbsRegisterInputInterface.setUri(photoURI);
-//                }else{
-//                    try {
-//                        copyUnder19(cameraImg.getPath(), photoFile);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                    carbsRegisterInputInterface.setUri(Uri.fromFile(photoFile));
-//                }
-//            }
-//            String cameraFileName = cameraImg.getPath();
-//            File file = new File(cameraFileName);
-//            //Log.i(TAG, "onActivityResult: "+cameraFileName);
-//            boolean deleted = file.delete();
-//            Log.i(TAG, "onActivityResult: file deleted: "+deleted);
-//
-//
-//
-//
-//            //getImages(data);
-//
-//            Uri imgUri = Uri.parse(mCurrentPhotoPath);
-//            carbsRegisterInputInterface.setUri(imgUri);
-//            setImgURI(imgUri);
-//
-//        }
-
         if(requestCode == BLOOD_GLUCOSE && resultCode == RESULT_OK){
             glycaemiaRegisterInputInterface.updateObjective();
         }
@@ -308,6 +240,14 @@ public class NewHomeRegistry extends AppCompatActivity{
         outState.putInt(ARG_TAG_INDEX, idTag);
         outState.putInt(ARG_RECORD_ID, recordId);
     }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        //logSave("NewHomeRegistry");
+    }
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -864,6 +804,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                logSave("NewHomeRegistry:Notes");
                 if (buttons.contains(NOTE)) {
                     if(isRecordUpdate){
                         delete_buttons.add(NOTE);
@@ -884,6 +825,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                logSave("NewHomeRegistry:Glycaemia");
                 if (buttons.contains(GLICAEMIA)) {
                     if(isRecordUpdate){
                         delete_buttons.add(GLICAEMIA);
@@ -902,6 +844,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         bottomSheetViewgroup.findViewById(R.id.bs_meal).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                logSave("NewHomeRegistry:Carbs");
                 if (buttons.contains(CARBS)) {
                     if(isRecordUpdate){
                         delete_buttons.add(CARBS);
@@ -921,6 +864,7 @@ public class NewHomeRegistry extends AppCompatActivity{
         bottomSheetViewgroup.findViewById(R.id.bs_insulin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                logSave("NewHomeRegistry:Insulin");
                 if (buttons.contains(INSULIN)) {
                     if(isRecordUpdate){
                         delete_buttons.add(INSULIN);
@@ -937,6 +881,18 @@ public class NewHomeRegistry extends AppCompatActivity{
             }
         });
     }
+
+    public void logSave (String activity) {
+        DB_Read db = new DB_Read(getBaseContext());
+        int idUser = db.getUserId();
+        db.close();
+        if(idUser != -1){
+            DB_Write dbwrite = new DB_Write(getBaseContext());
+            dbwrite.Log_Save(idUser,activity);
+            dbwrite.close();
+        }
+    }
+
 
     public String getDate() {
         return registerDateTextV.getText().toString();

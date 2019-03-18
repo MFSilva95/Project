@@ -20,6 +20,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.ui.activities.BaseActivity;
 import pt.it.porto.mydiabetes.ui.createMeal.adapters.MealItemListAdapter;
 import pt.it.porto.mydiabetes.ui.createMeal.adapters.ViewPagerAdapter;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
@@ -27,7 +30,7 @@ import pt.it.porto.mydiabetes.ui.createMeal.fragments.FoodListFragment;
 import pt.it.porto.mydiabetes.ui.createMeal.fragments.LoggedMealListFragment;
 
 
-public class SelectMealActivity extends AppCompatActivity {
+public class SelectMealActivity extends BaseActivity {
     private static final String TAG = "SelectMealActivity";
 
 //    private RecyclerView recyclerView;
@@ -90,8 +93,15 @@ public class SelectMealActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
 
+                if(viewPager.getCurrentItem() == 0) {
+                    mLoggedMealFragment.loadFragmentData();
+                    logSave("SelectMealActivity:Food");
+                }
+
+
                 if(viewPager.getCurrentItem() == 1) {
                     mLoggedMealFragment.loadFragmentData();
+                    logSave("SelectMealActivity:Meal");
                 }
             }
 
@@ -141,4 +151,23 @@ public class SelectMealActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    public void logSave (String activity) {
+        DB_Read db = new DB_Read(getBaseContext());
+        int idUser = db.getUserId();
+        db.close();
+        if(idUser != -1){
+            DB_Write dbwrite = new DB_Write(getBaseContext());
+            dbwrite.Log_Save(idUser,activity);
+            dbwrite.close();
+        }
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if (viewPager.getCurrentItem() == 0) logSave("SelectMealActivity:Food");
+        else if (viewPager.getCurrentItem() == 1) logSave("SelectMealActivity:Meal");
+    }
+
 }

@@ -14,6 +14,7 @@ import android.widget.TextView;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.listAdapters.BadgePageAdapter;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
@@ -40,49 +41,7 @@ public class Badges extends BaseActivity {
         adapter = new BadgePageAdapter(super.getSupportFragmentManager());
         mViewPager.setAdapter(adapter);
         mViewPager.setOffscreenPageLimit(1);
-        //mViewPager.blockSwipeRight(true);
-        //mViewPager.blockSwipeLeft(true);
-
-//        DB_Read read = new DB_Read(this);
-//        BadgeRec lastDaily = read.getLastDailyMedal();
-//        read.close();
-
-//        TextView daily_bronze_text = (TextView) findViewById(R.id.daily_bronze_text);
-//        TextView daily_silver_text = (TextView) findViewById(R.id.daily_silver_text);
-//        TextView daily_gold_text = (TextView) findViewById(R.id.daily_gold_text);
-//        if(lastDaily != null){
-//
-//            ImageView daily_bronze_background = (ImageView) findViewById(R.id.daily_bronze_background);
-//            ImageView daily_bronze_symbol = (ImageView) findViewById(R.id.daily_bronze_symbol);
-//
-//            ImageView daily_silver_background = (ImageView) findViewById(R.id.daily_silver_background);
-//            ImageView daily_silver_symbol = (ImageView) findViewById(R.id.daily_silver_symbol);
-//
-//            ImageView daily_gold_background = (ImageView) findViewById(R.id.daily_gold_background);
-//            ImageView daily_gold_symbol = (ImageView) findViewById(R.id.daily_gold_symbol);
-//
-//
-//            switch (lastDaily.getMedal()){
-//                case "bronze":
-//                    daily_bronze_background.setImageResource(R.drawable.medal_bronze_daily);
-//                    daily_bronze_symbol.setImageResource(R.drawable.log);
-//                    break;
-//                case "silver":
-//                    daily_silver_background.setImageResource(R.drawable.medal_silver_daily);
-//                    daily_silver_symbol.setImageResource(R.drawable.log);
-//                    break;
-//                case "gold":
-//                    daily_gold_background.setImageResource(R.drawable.medal_gold_daily);
-//                    daily_gold_symbol.setImageResource(R.drawable.log);
-//                    break;
-//            }
-//        }
-//            daily_bronze_text.setText(R.string.daily_bronze_all);
-//            daily_silver_text.setText(R.string.daily_silver_all);
-//            daily_gold_text.setText(R.string.daily_gold_all);
-
-
-       setupNavigationView();
+        setupNavigationView();
     }
 
     @Override
@@ -108,6 +67,7 @@ public class Badges extends BaseActivity {
                 mViewPager.setCurrentItem(0);
                 buttonGrid.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.primary_dark));
                 buttonList.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.ef_grey));
+                logSave("Badges:BadgesBoard");
             }
         });
 
@@ -117,13 +77,27 @@ public class Badges extends BaseActivity {
                 mViewPager.setCurrentItem(1);
                 buttonGrid.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.ef_grey));
                 buttonList.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.primary_dark));
+                logSave("Badges:BadgesList");
             }
         });
-
-
-
     }
-
+    public void logSave (String activity) {
+        DB_Read db = new DB_Read(getBaseContext());
+        int idUser = db.getUserId();
+        db.close();
+        if(idUser != -1){
+            DB_Write dbwrite = new DB_Write(getBaseContext());
+            dbwrite.Log_Save(idUser,activity);
+            dbwrite.close();
+        }
+    }
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if (mViewPager.getCurrentItem()==0) logSave("Badges:BadgeBoard");
+        else if (mViewPager.getCurrentItem()==1) logSave("Badges:BadgeList");
+    }
 }
 
 

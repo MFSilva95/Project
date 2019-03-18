@@ -34,6 +34,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 import java.util.List;
 
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 
 import pt.it.porto.mydiabetes.database.DB_Handler;
@@ -80,11 +81,13 @@ public class Home extends BaseActivity {
 
 
 
+        if(BuildConfig.SYNC_AVAILABLE){
+            AlarmManager alm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(this, SyncAlarm.class);
+            PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_ONE_SHOT); // one oportunity
+            alm.set(AlarmManager.RTC, 3*1000+System.currentTimeMillis(), alarmIntent);
+        }
 
-        AlarmManager alm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(this, SyncAlarm.class);
-        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_ONE_SHOT); // one oportunity
-        alm.set(AlarmManager.RTC, 3*1000+System.currentTimeMillis(), alarmIntent);
 
 
 
@@ -382,21 +385,26 @@ public class Home extends BaseActivity {
                         //Log.i("cenas", "getItem: 1");
 						mViewPager.setCurrentItem(0);
                         bottomNavigationView.getMenu().getItem(0).setChecked(true);
-						break;
+                        logSave("Home:homeLeftFragment");
+                        break;
 					case R.id.action_register:
                         dbwrite.Clicks_Save(idUser,"middleHomePage",-1,-1);
                         dbwrite.close();
                         //Log.i("cenas", "getItem: 2");
 						mViewPager.setCurrentItem(1);
                         bottomNavigationView.getMenu().getItem(1).setChecked(true);
-						break;
+                        logSave("Home:homeMiddleFragment");
+
+                        break;
 					case R.id.action_person:
                         dbwrite.Clicks_Save(idUser,"rightHomePage",-1,-1);
                         dbwrite.close();
                         //Log.i("cenas", "getItem: 3");
 						mViewPager.setCurrentItem(2);
                         bottomNavigationView.getMenu().getItem(2).setChecked(true);
-						break;
+                        logSave("Home:homeRightFragment");
+
+                        break;
 				}
 				return true;
 			}
@@ -580,6 +588,27 @@ public class Home extends BaseActivity {
         android.app.AlertDialog alert11 = builder1.create();
         alert11.show();
     }
+
+
+    public void logSave (String activity) {
+        DB_Read db = new DB_Read(getBaseContext());
+        int idUser = db.getUserId();
+        db.close();
+        if(idUser != -1){
+            DB_Write dbwrite = new DB_Write(getBaseContext());
+            dbwrite.Log_Save(idUser,activity);
+            dbwrite.close();
+        }
+    }
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if (mViewPager.getCurrentItem()==0) logSave("Home:homeLeftFragment");
+        else if (mViewPager.getCurrentItem()==1) logSave("Home:homeMiddleFragment");
+        else if (mViewPager.getCurrentItem()==2) logSave("Home:homeRightFragment");
+    }
+
 
 
 }

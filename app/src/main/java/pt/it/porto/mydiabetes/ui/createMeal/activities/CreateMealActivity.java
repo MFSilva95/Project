@@ -60,6 +60,7 @@ import java.util.Locale;
 import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.ui.activities.BaseActivity;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.ui.activities.ViewPhoto;
 import pt.it.porto.mydiabetes.ui.createMeal.adapters.CreateMealListAdapter;
@@ -70,7 +71,7 @@ import pt.it.porto.mydiabetes.ui.createMeal.utils.RecyclerItemTouchHelper;
 import pt.it.porto.mydiabetes.utils.FileProvider;
 
 
-public class CreateMealActivity extends AppCompatActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
+public class CreateMealActivity extends BaseActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
     private static final int REQUEST_MEAL_ITEM = 0;
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int IMAGE_VIEW = 3;
