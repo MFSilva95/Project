@@ -79,14 +79,19 @@ public class Home extends BaseActivity {
 		setContentView(R.layout.activity_home);
         permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
 
-
-
-        if(BuildConfig.SYNC_AVAILABLE){
-            AlarmManager alm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-            Intent intent = new Intent(this, SyncAlarm.class);
-            PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_ONE_SHOT); // one oportunity
-            alm.set(AlarmManager.RTC, 3*1000+System.currentTimeMillis(), alarmIntent);
+        if(BuildConfig.SYNC_AVAILABLE) {
+            try {
+                setupAlarm();
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+            }
         }
+//        if(BuildConfig.SYNC_AVAILABLE){
+//            AlarmManager alm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+//            Intent intent = new Intent(this, SyncAlarm.class);
+//            PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_ONE_SHOT); // one oportunity
+//
+//        }
 
 
 
@@ -187,7 +192,7 @@ public class Home extends BaseActivity {
                 // them by using id of the drawerView. int id = drawerView.getUserId();
                 // id will be your layout's id: for example R.id.left_drawer
                 DB_Write dbwrite = new DB_Write(drawerView.getContext());//getBaseContext());
-                dbwrite.Clicks_Save(idUser,"drawer_open",-1,-1);
+                dbwrite.Log_Save(idUser,"Drawer_opened");
                 dbwrite.close();
                 //Log.i("test", "onDrawerOPEN: ");
             }
@@ -196,7 +201,7 @@ public class Home extends BaseActivity {
             public void onDrawerClosed(View drawerView) {
                 // Called when a drawer has settled in a completely closed state.
                 DB_Write dbwrite = new DB_Write(drawerView.getContext());//getBaseContext());
-                dbwrite.Clicks_Save(idUser,"drawer_closed",-1,-1);
+                dbwrite.Log_Save(idUser,"Drawer_closed");
                 dbwrite.close();
                 //Log.i("test", "onDrawerClosed: ");
             }
@@ -604,10 +609,54 @@ public class Home extends BaseActivity {
     protected void onResume()
     {
         super.onResume();
-        if (mViewPager.getCurrentItem()==0) logSave("Home:homeLeftFragment");
-        else if (mViewPager.getCurrentItem()==1) logSave("Home:homeMiddleFragment");
-        else if (mViewPager.getCurrentItem()==2) logSave("Home:homeRightFragment");
+        if(mViewPager!=null){
+            if (mViewPager.getCurrentItem()==0) logSave("Home:homeLeftFragment");
+            else if (mViewPager.getCurrentItem()==1) logSave("Home:homeMiddleFragment");
+            else if (mViewPager.getCurrentItem()==2) logSave("Home:homeRightFragment");
+        }
     }
+
+
+
+    private void setupAlarm() throws java.text.ParseException {
+
+        SharedPreferences preferences = pt.it.porto.mydiabetes.database.Preferences.getPreferences(this);
+
+        Calendar calendar = Calendar.getInstance();
+        AlarmManager alm = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, SyncAlarm.class);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+        if (!preferences.contains(SyncAlarm.SYNC_ALARM_LAST_SYNC)) { // only sets it if needed
+            Usage usage = new Usage(MyDiabetesStorage.getInstance(this));
+            String date = usage.getOldestRegist();
+            try {
+                calendar.setTime(DateUtils.iso8601Format.parse(date));
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return;
+            }
+            calendar.roll(Calendar.DAY_OF_YEAR, 7);
+            calendar.set(Calendar.HOUR_OF_DAY, 21); // Maybe change later?
+            alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
+            preferences.edit().putInt(SyncAlarm.SYNC_ALARM_PREFERENCE, 1).apply();
+        } else {
+            calendar.setTimeInMillis(preferences.getLong(SyncAlarm.SYNC_ALARM_LAST_SYNC, System.currentTimeMillis()));
+            calendar.roll(Calendar.DAY_OF_YEAR, 7);
+            calendar.set(Calendar.HOUR_OF_DAY, 21); // Maybe change later?
+            if (calendar.before(Calendar.getInstance())) {
+                alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
+            } else if (!preferences.contains(SyncAlarm.SYNC_ALARM_PREFERENCE)) {
+                preferences.edit().putInt(SyncAlarm.SYNC_ALARM_PREFERENCE, 1).apply();
+                alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
+            }
+        }
+    }
+
+
+
+
+
+
 
 
 

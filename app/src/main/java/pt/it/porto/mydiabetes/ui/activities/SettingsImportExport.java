@@ -34,6 +34,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.FileChannel;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -161,7 +164,7 @@ public class SettingsImportExport extends BaseActivity {
 	}
 
 
-	public static boolean restoreBackup(Context context) throws Exception{//todo
+	public static boolean restoreBackup(Context context){
 		if (isSDWriteable()) {
 			File inputFile = new File(Environment.getExternalStorageDirectory()
 					+ "/MyDiabetes/backup/DB_Diabetes");
@@ -173,8 +176,13 @@ public class SettingsImportExport extends BaseActivity {
 						File outputDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases");
 						outputDir.mkdirs();
 						File fileBackup = new File(outputDir, "DB_Diabetes");
+						if(fileBackup.exists()){
+							//fileBackup.delete();
+						}
 						try {
-							fileBackup.createNewFile();
+							if(!fileBackup.createNewFile()){
+								//return false;
+							};
 							copyFile(inputFile, fileBackup);
 							return true;
 						} catch (IOException ioException) {
@@ -183,7 +191,6 @@ public class SettingsImportExport extends BaseActivity {
 							return false;
 						}
 					} catch (Exception e) {
-						e.printStackTrace();
 						return false;
 					}
 				}
@@ -194,14 +201,17 @@ public class SettingsImportExport extends BaseActivity {
 
 	private static void copyFile(File src, File dst) throws IOException {
 		FileChannel inChannel = new FileInputStream(src).getChannel();
-		FileChannel outChannel = new FileOutputStream(dst).getChannel();
+		FileOutputStream outStream = new FileOutputStream(dst);
+		FileChannel outChannel = outStream.getChannel();
 		try {
 			inChannel.transferTo(0, inChannel.size(), outChannel);
+			outStream.flush();
 		} finally {
 			if (inChannel != null)
 				inChannel.close();
 			if (outChannel != null)
 				outChannel.close();
+
 		}
 	}
 
@@ -308,8 +318,8 @@ public class SettingsImportExport extends BaseActivity {
 //		startActivity(intent);
 //	}
 
-	public void syncCloud(View view) {
-		if(!BuildConfig.SYNC_AVAILABLE){
+	public void syncCloud(View view) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
+		if(BuildConfig.SYNC_AVAILABLE){
 
 			String username = pt.it.porto.mydiabetes.database.Preferences.getUsername(this);
 			if(username==null){
@@ -333,6 +343,7 @@ public class SettingsImportExport extends BaseActivity {
 						dialog.hide();
 					}
 					Toast.makeText(getApplicationContext(), R.string.upload_failed, Toast.LENGTH_SHORT).show();
+					editAccount(null);
 				}
 
 				@Override

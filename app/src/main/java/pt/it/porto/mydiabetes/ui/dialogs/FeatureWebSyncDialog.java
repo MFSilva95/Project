@@ -16,6 +16,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.sync.ServerSync;
@@ -87,7 +91,15 @@ public class FeatureWebSyncDialog extends DialogFragment {
 						   @Override
 						   protected void onPostExecute(Void aVoid) {
 							   super.onPostExecute(aVoid);
-							   testCredentials(FeatureWebSyncDialog.this.context).show();
+							   try {
+								   testCredentials(FeatureWebSyncDialog.this.context).show();
+							   } catch (NoSuchAlgorithmException e) {
+								   e.printStackTrace();
+							   } catch (KeyStoreException e) {
+								   e.printStackTrace();
+							   } catch (KeyManagementException e) {
+								   e.printStackTrace();
+							   }
 						   }
 					   };
 					   saveTask.execute();
@@ -103,7 +115,7 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		return dialog;
 	}
 
-	public Dialog testCredentials(Context context) {
+	public Dialog testCredentials(Context context) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
 		ProgressDialog progressDialog = new ProgressDialog(context);
 		ServerSync.getInstance(context).testCredentials(new ServerSync.ServerSyncListener() {
 			@Override

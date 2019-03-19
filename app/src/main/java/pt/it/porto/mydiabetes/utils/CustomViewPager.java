@@ -81,6 +81,9 @@ public class CustomViewPager extends ViewPager {
         this.right = right;
     }
 
+    public void setOnNavigationItemSelectedListener() {
+    }
+
 //    public void setBotNav(BottomNavigationView botNav) {
 //        this.bottomNavigationView = botNav;
 //    }

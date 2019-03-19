@@ -370,19 +370,6 @@ public class homeRightFragment extends Fragment {
         startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
     }
 
-    private Uri getImgURI(){
-            File file = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes", userImgFileName);
-            File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
-            if (!dir.exists()) {
-                if (dir.mkdir()) {
-                // unable to create directory
-                // todo report and recover
-                }
-            }
-        Uri generatedImageUri = Uri.fromFile(file);
-        return generatedImageUri;
-    }
-
     public void setMyDataFromDB(UserInfo obj) {
         if (obj != null) {
             TextView name = (TextView) layout.findViewById(R.id.name);

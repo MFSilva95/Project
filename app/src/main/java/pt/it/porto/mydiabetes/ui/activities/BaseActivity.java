@@ -41,10 +41,13 @@ public abstract class BaseActivity extends AppCompatActivity {
 	public boolean dispatchTouchEvent(MotionEvent ev) {
 			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 				Log.d("BaseActivity", ev.toString());
-				if(!this.getComponentName().getClassName().equals("pt.it.porto.mydiabetes.ui.activities.WelcomeActivity")){//welcome activity can crash because it may start with no DB
-					DB_Write dbwrite = new DB_Write(this);//getBaseContext());
-					dbwrite.Clicks_Save(idUser,this.getComponentName().getClassName(),ev.getX(),ev.getY());
-					dbwrite.close();
+				if(!this.getComponentName().getClassName().equals("pt.it.porto.mydiabetes.ui.activities.WelcomeActivity"))
+				{//welcome activity can crash because it may start with no DB
+					if(idUser!=-1){
+						DB_Write dbwrite = new DB_Write(this);//getBaseContext());
+						dbwrite.Clicks_Save(idUser,this.getComponentName().getClassName(),ev.getX(),ev.getY());
+						dbwrite.close();
+					}
 				}
 			}
 		return super.dispatchTouchEvent(ev);

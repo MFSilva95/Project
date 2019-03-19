@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -58,6 +59,26 @@ public class Badges extends BaseActivity {
         final ImageView buttonGrid = (ImageView) findViewById(R.id.button_grid);
         final ImageView buttonList = (ImageView) findViewById(R.id.button_list);
 
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            public void onPageScrollStateChanged(int state) {}
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            public void onPageSelected(int position) {
+                if(position==0){
+                    mViewPager.setCurrentItem(0);
+                    buttonGrid.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.primary_dark));
+                    buttonList.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.ef_grey));
+                    logSave("Badges:BadgesBoard");
+                }
+                else{
+                    mViewPager.setCurrentItem(1);
+                    buttonGrid.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.ef_grey));
+                    buttonList.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.primary_dark));
+                    logSave("Badges:BadgesList");
+                }
+            }
+        });
+
         mViewPager.setCurrentItem(0);
         buttonGrid.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.primary_dark));
 
@@ -65,9 +86,7 @@ public class Badges extends BaseActivity {
             @Override
             public void onClick(View view) {
                 mViewPager.setCurrentItem(0);
-                buttonGrid.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.primary_dark));
-                buttonList.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.ef_grey));
-                logSave("Badges:BadgesBoard");
+                //
             }
         });
 
@@ -75,9 +94,7 @@ public class Badges extends BaseActivity {
             @Override
             public void onClick(View view) {
                 mViewPager.setCurrentItem(1);
-                buttonGrid.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.ef_grey));
-                buttonList.setColorFilter(ContextCompat.getColor(getBaseContext(),R.color.primary_dark));
-                logSave("Badges:BadgesList");
+                //
             }
         });
     }
