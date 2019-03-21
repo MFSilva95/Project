@@ -79,6 +79,7 @@
     <string name="error_login_auth" >Erro na autenticação, verifique o nome de utilizador e password e tente novamente.</string>
     <string name="error_login_no_internet" >Sem ligação à Internet</string>
     <string name="error_repeated_description" >Descrição repetida</string>
+    <string name="error_could_not_send_data" >Não foi possivel enviar a sua base de dados.</string>
 
     <string name="error_time_overlaps" >Tempo coincide com outro intervalo</string>
 

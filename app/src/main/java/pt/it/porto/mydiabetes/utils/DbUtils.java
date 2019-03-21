@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
+import java.io.IOException;
 
 import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.database.DB_Handler;
@@ -28,43 +29,22 @@ public class DbUtils {
 	}
 
 
-	public static File exportDb(Context context) {
+	public static File get_database_file(Context context) throws IOException {
 		try {
 			String version = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
 			new Usage(MyDiabetesStorage.getInstance(context)).setAppVersion(version);
 		} catch (PackageManager.NameNotFoundException e) {
 			e.printStackTrace(); // this shouldn't happen :(
 		}
-		File db = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases/"+ DB_Handler.getCurrentDbName());
-		//Log.i("RAWR", "exportDb: "+db.getAbsolutePath());
-		if(db.exists()){
-			//"clean" database
-
-			SQLiteDatabase clean_db = SQLiteDatabase.openDatabase(db.getAbsolutePath(), null, 0);
-
-			Cursor cursor = clean_db.rawQuery("SELECT BDate FROM UserInfo", null);
-			if (cursor.getCount() > 0) {
-				cursor.moveToFirst();
-				String bdate = cursor.getString(0);
-				cursor.close();
-
-				String[] birthday = bdate.split("-");
-				String byear = birthday[2];
-
-            	ContentValues toUpdate = new ContentValues();
-            	toUpdate.put("Name", "");
-            	toUpdate.put("Gender", -1);
-            	toUpdate.put("BDate", "00-00-"+byear);
-
-            	clean_db.update("UserInfo", toUpdate, null, null);
-            	clean_db.close();
-            	return db;
-			}else{return null;}
+		File db_file;
+		db_file = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases/"+ DB_Handler.getCurrentDbName());
+		if(db_file.exists()){
+			return db_file;
 		}else{
-			return null;
-		}//DB_Diabetes");
+			db_file.createNewFile();
+			return db_file;
+		}
 	}
-
 
 //	public static File export_old_Db(Context context) {
 //		try {

@@ -302,6 +302,8 @@ public class WelcomeActivity extends BaseActivity {
 			ShowDialogMsg(getString(R.string.restore_backup_deprecated_db_error));
 		}
 	}
+
+
 	public void ShowDialogMsg(String msg) {
 		// final Context c = this;
 		new android.app.AlertDialog.Builder(this).setTitle(R.string.information).setMessage(msg).show();

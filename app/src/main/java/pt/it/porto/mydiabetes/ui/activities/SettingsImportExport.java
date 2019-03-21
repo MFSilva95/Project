@@ -4,18 +4,18 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -205,41 +205,85 @@ public class SettingsImportExport extends BaseActivity {
 		FileChannel outChannel = outStream.getChannel();
 		try {
 			inChannel.transferTo(0, inChannel.size(), outChannel);
+		}finally {
 			outStream.flush();
-		} finally {
 			if (inChannel != null)
 				inChannel.close();
 			if (outChannel != null)
 				outChannel.close();
-
 		}
 	}
 
-	public static boolean backup(Context context) {
+	public static File backup(Context context, Boolean to_export)throws Exception {
 		if (isSDWriteable()) {
-			File inputFile = DbUtils.exportDb(context);
+			File inputFile = null;
+			inputFile = DbUtils.get_database_file(context);
+            //make backup dirs
+            File outputDir = new File(Environment.getExternalStorageDirectory()
+                    + "/MyDiabetes/backup");
+            outputDir.mkdirs();
+			if(inputFile!=null){
+				if (inputFile.exists()) {
 
-			File outputDir = new File(Environment.getExternalStorageDirectory()
-					+ "/MyDiabetes/backup");
-			outputDir.mkdirs();
-			if (inputFile.exists()) {
-				File fileBackup = new File(outputDir, "DB_Diabetes");
-				try {
-					fileBackup.createNewFile();
-					copyFile(inputFile, fileBackup);
-					return true;
-				} catch (Exception exception) {
-					return false;
+                    File fileBackup;
+                    if(to_export){
+                        fileBackup = new File(outputDir, "DB_Diabetes_to_export");
+                    }else{
+                        fileBackup = new File(outputDir, "DB_Diabetes");
+                    }
+
+					if(fileBackup.exists()){
+                        copyFile(inputFile, fileBackup);
+                    }else{
+                        fileBackup.createNewFile();
+                        copyFile(inputFile, fileBackup);
+                    }
+
+                    if(to_export){
+                        fileBackup = get_anonymized_db(fileBackup);
+                    }
+
+                    return fileBackup;
 				}
 			}
-		} else {
-			return false;
 		}
-		return false;
+        throw new Exception();
+
 	}
 
+
+    public static File get_anonymized_db(File dbFile){
+        SQLiteDatabase clean_db = SQLiteDatabase.openDatabase(dbFile.getAbsolutePath(), null, 0);
+
+        Cursor cursor = clean_db.rawQuery("SELECT BDate FROM UserInfo", null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            String bdate = cursor.getString(0);
+            cursor.close();
+
+            String[] birthday = bdate.split("-");
+            String byear = birthday[2];
+
+            ContentValues toUpdate = new ContentValues();
+            toUpdate.put("Name", "");
+            toUpdate.put("Gender", -1);
+            toUpdate.put("BDate", "00-00-"+byear);
+
+            clean_db.update("UserInfo", toUpdate, null, null);
+        }
+        clean_db.close();
+        return dbFile;
+    }
+
 	public void backupButton(View v) {
-		if (backup(getApplicationContext())) {
+        File backup_file;
+        try {
+            backup_file = backup(this.getBaseContext(),false);
+        } catch (Exception e) {
+            ShowDialogMsg(getString(R.string.error_dbcopy));
+            return;
+        }
+        if (backup_file != null) {
 			ShowDialogMsg(getString(R.string.dbcopy_success));
 			DB_Read rdb = new DB_Read(v.getContext());
 			BadgeUtils.addExportBadge(getBaseContext(), rdb);
@@ -328,128 +372,40 @@ public class SettingsImportExport extends BaseActivity {
 			}
 			dialog = new ProgressDialog(this);
 			dialog.show();
-			ServerSync.getInstance(this).send(new ServerSync.ServerSyncListener() {
-				@Override
-				public void onSyncSuccessful() {
-					if (dialog != null) {
-						dialog.hide();
-					}
-					Toast.makeText(getApplicationContext(), R.string.upload_successful, Toast.LENGTH_SHORT).show();
-				}
+            try {
+                ServerSync.getInstance(this).send(new ServerSync.ServerSyncListener() {
+                    @Override
+                    public void onSyncSuccessful() {
+                        if (dialog != null) {
+                            dialog.hide();
+                        }
+                        Toast.makeText(getApplicationContext(), R.string.upload_successful, Toast.LENGTH_SHORT).show();
+                    }
 
-				@Override
-				public void onSyncUnSuccessful() {
-					if (dialog != null) {
-						dialog.hide();
-					}
-					Toast.makeText(getApplicationContext(), R.string.upload_failed, Toast.LENGTH_SHORT).show();
-					editAccount(null);
-				}
+                    @Override
+                    public void onSyncUnSuccessful() {
+                        if (dialog != null) {
+                            dialog.hide();
+                        }
+                        Toast.makeText(getApplicationContext(), R.string.upload_failed, Toast.LENGTH_SHORT).show();
+                        editAccount(null);
+                    }
 
-				@Override
-				public void noNetworkAvailable() {
-					onSyncUnSuccessful();
-				}
-			});
-
-
-
-		}
-
-	}
-
-	public void share(View view) {
-		backup(getApplicationContext());
-		File backupFile = new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION);
-		if (backupFile.exists()) {
-			backupFile.setReadable(true, false); // making sure that other apps can read the file
-		} else {
-			return;
-		}
-		DB_Read read = new DB_Read(this);
-		File tempDatabase = null;
-		try {
-			File db_backup = new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION);
-			tempDatabase = File.createTempFile("temp_db", ".sqlite",new File(Environment.getExternalStorageDirectory() + "/MyDiabetes/backup/"));
+                    @Override
+                    public void noNetworkAvailable() {
+                        onSyncUnSuccessful();
+                    }
+                });
+            } catch (Exception e) {
+                if (dialog != null) {
+                    dialog.hide();
+                }
+                Toast.makeText(getApplicationContext(), R.string.error_could_not_send_data, Toast.LENGTH_SHORT).show();
+            }
 
 
-			InputStream in = new FileInputStream(db_backup);
-			BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(tempDatabase));
+        }
 
-			byte data[] = new byte[1024];
-			int count;
-
-			while ((count = in.read(data)) != -1) {
-				out.write(data, 0, count);
-			}
-
-			out.flush();
-			out.close();
-			in.close();
-
-
-			SQLiteDatabase db = SQLiteDatabase.openDatabase(tempDatabase.getPath(), null, 0);
-			db.execSQL("UPDATE UserInfo SET Name=''");
-			db.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		tempDatabase.deleteOnExit();
-		String patientName = read.MyData_Read().getUsername();
-		Intent intent;
-		if(Build.VERSION.SDK_INT>=24){
-
-			Uri fileUri = FileProvider.getUriForFile(SettingsImportExport.this,
-					BuildConfig.APPLICATION_ID + ".provider",
-					tempDatabase);
-//					new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION));
-
-			intent= ShareCompat.IntentBuilder.from(this)
-					.setType("message/rfc822")
-					.addEmailTo(PROJECT_MANAGER_EMAIL)
-					.setSubject(String.format(getResources().getString(R.string.share_subject), patientName))
-					.setText(getResources().getString(R.string.share_text))
-					.setStream(fileUri)
-					.getIntent();
-
-		}else{
-			intent = ShareCompat.IntentBuilder.from(this)
-					.setType("message/rfc822")
-					.addEmailTo(PROJECT_MANAGER_EMAIL)
-					.setSubject(String.format(getResources().getString(R.string.share_subject), patientName))
-					.setText(getResources().getString(R.string.share_text))
-					.setStream(Uri.fromFile(tempDatabase))
-//					.setStream(Uri.fromFile(new File(Environment.getExternalStorageDirectory() + BACKUP_LOCATION)))
-					.getIntent();
-		}
-
-
-		// get apps that resolve email
-		Intent justEmailAppsIntent = new Intent(Intent.ACTION_SENDTO);
-		justEmailAppsIntent.setType("text/plain");
-		justEmailAppsIntent.setData(Uri.parse("mailto:"));
-		List<ResolveInfo> activities = getPackageManager().queryIntentActivities(justEmailAppsIntent, 0);
-
-		Intent[] extraIntents = new Intent[activities.size() - 1];
-		for (int i = 0; i < activities.size() - 1; i++) {
-			extraIntents[i] = (Intent) intent.clone();
-			extraIntents[i].setClassName(activities.get(i).activityInfo.packageName, activities.get(i).activityInfo.name);
-		}
-		Intent one = (Intent) intent.clone();
-		one.setClassName(activities.get(activities.size() - 1).activityInfo.packageName, activities.get(activities.size() - 1).activityInfo.name);
-
-		Intent openInChooser = Intent.createChooser(one, null);
-		openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
-
-		ComponentName activityResolved = openInChooser.resolveActivity(getPackageManager());
-		if (activityResolved != null) {
-			if (intent.resolveActivity(getPackageManager()) != null) {
-				startActivity(openInChooser);
-			}
-		} else {
-			Log.e("Share", "No email client found!");
-			//TODO do something to show the error
-		}
 	}
 
 	public void editAccount(View view) {

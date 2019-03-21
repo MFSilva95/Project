@@ -117,34 +117,38 @@ public class FeatureWebSyncDialog extends DialogFragment {
 
 	public Dialog testCredentials(Context context) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
 		ProgressDialog progressDialog = new ProgressDialog(context);
-		ServerSync.getInstance(context).testCredentials(new ServerSync.ServerSyncListener() {
-			@Override
-			public void onSyncSuccessful() {
-				currentShowingDialog.dismiss();
-			}
+		try {
+			ServerSync.getInstance(context).testCredentials(new ServerSync.ServerSyncListener() {
+				@Override
+				public void onSyncSuccessful() {
+					currentShowingDialog.dismiss();
+				}
 
-			@Override
-			public void onSyncUnSuccessful() {
-				((Activity) FeatureWebSyncDialog.this.context).runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						currentShowingDialog.dismiss();
-						showLoginError();
-					}
-				});
-			}
+				@Override
+				public void onSyncUnSuccessful() {
+					((Activity) FeatureWebSyncDialog.this.context).runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							currentShowingDialog.dismiss();
+							showLoginError();
+						}
+					});
+				}
 
-			@Override
-			public void noNetworkAvailable() {
-				((Activity) FeatureWebSyncDialog.this.context).runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						currentShowingDialog.dismiss();
-						showNoNetwork();
-					}
-				});
-			}
-		});
+				@Override
+				public void noNetworkAvailable() {
+					((Activity) FeatureWebSyncDialog.this.context).runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							currentShowingDialog.dismiss();
+							showNoNetwork();
+						}
+					});
+				}
+			});
+		} catch (Exception e) {
+			showError();
+		}
 		progressDialog.setCancelable(false);
 		currentShowingDialog = progressDialog;
 		return progressDialog;
@@ -156,6 +160,16 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		TextView errorText = ((TextView) userDataPopUp.findViewById(R.id.error));
 		errorText.setVisibility(View.VISIBLE);
 		currentShowingDialog = userDataPopUp;
+	}
+
+	private void showError() {
+		Dialog userDataPopUp = getUserDataPopUp(context, R.string.login_try_again, R.string.login_try_later);
+		userDataPopUp.show();
+		TextView errorText = ((TextView) userDataPopUp.findViewById(R.id.error));
+		errorText.setVisibility(View.VISIBLE);
+		errorText.setText(R.string.error_could_not_send_data);
+		currentShowingDialog = userDataPopUp;
+		currentShowingDialog.setCancelable(true);
 	}
 
 	private void showNoNetwork() {

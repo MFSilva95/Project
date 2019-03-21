@@ -3,7 +3,6 @@ package pt.it.porto.mydiabetes.sync;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Handler;
-import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,6 +38,8 @@ import pt.it.porto.mydiabetes.database.PhotoSyncDb;
 import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.utils.DbUtils;
 
+import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.backup;
+
 public class ServerSync {
 
 	public static final MediaType MEDIA_TYPE_BINARY = MediaType.parse("application/octet-stream");
@@ -68,7 +69,7 @@ public class ServerSync {
 		return instance;
 	}
 
-	public void send(final ServerSyncListener listener) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
+	public void send(final ServerSyncListener listener) throws Exception {
 		this.listener = listener;
 
 
@@ -84,21 +85,11 @@ public class ServerSync {
 		sslContext.init(null, new TrustManager[] { trustManager }, null);
 		SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
-		try {
-			client = new OkHttpClient.Builder()
-					.sslSocketFactory(getCert(),trustManager)
-					.build();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (KeyManagementException e) {
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		} catch (KeyStoreException e) {
-			e.printStackTrace();
-		} catch (CertificateException e) {
-			e.printStackTrace();
-		}
+
+		client = new OkHttpClient.Builder()
+                .sslSocketFactory(getCert(),trustManager)
+                .build();
+
 
 		mainHandler = new Handler(context.getMainLooper());
 
@@ -164,18 +155,22 @@ public class ServerSync {
 
 	}
 
-	private void sendDb(Callback callback) {
-		File file = DbUtils.exportDb(context);
-		RequestBody formBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
-														  .addFormDataPart("user", username)
-														  .addFormDataPart("password", password)
-														  .addFormDataPart("db", "db", RequestBody.create(MEDIA_TYPE_BINARY, file))
-														  .build();
+	private void sendDb(Callback callback) throws Exception {
+		File file = backup(context,true);//DbUtils.get_database_file(context, true);
+
+		if(file!=null){
+            RequestBody formBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+                    .addFormDataPart("user", username)
+                    .addFormDataPart("password", password)
+                    .addFormDataPart("db", "db", RequestBody.create(MEDIA_TYPE_BINARY, file))
+                    .build();
 
 
-		Request request = new Request.Builder() .url(BASE_URL + "transfer_db.php").post(formBody).build();
+            Request request = new Request.Builder() .url(BASE_URL + "transfer_db.php").post(formBody).build();
 
-		client.newCall(request).enqueue(callback);
+            client.newCall(request).enqueue(callback);
+        }else{throw new Exception("could not export DB");}
+
 	}
 
 	//
@@ -238,7 +233,7 @@ public class ServerSync {
 		}
 	}
 
-	public void testCredentials(ServerSyncListener listener) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
+	public void testCredentials(ServerSyncListener listener) throws Exception {
 
 		this.listener = listener;
 		//client = new OkHttpClient();
@@ -254,21 +249,11 @@ public class ServerSync {
 		sslContext.init(null, new TrustManager[] { trustManager }, null);
 		SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
 
-        try {
-            client = new OkHttpClient.Builder()
-                    .sslSocketFactory(getCert(),trustManager)
-                    .build();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        } catch (CertificateException e) {
-            e.printStackTrace();
-        }
+
+		client = new OkHttpClient.Builder()
+                .sslSocketFactory(getCert(),trustManager)
+                .build();
+
 
 		mainHandler = new Handler(context.getMainLooper());
 

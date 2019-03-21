@@ -581,6 +581,8 @@
     <string name="extra_carbs">Extra Carbohydrates</string>
     <string name="add_extra_carbs">Add extra Carbohydrates</string>
 
+    <string name="error_could_not_send_data" >Failed to send the database.</string>
+
 
     <string name="terms_of_service_title">Privacy Policy</string>
     <string name="terms_of_service_description">The MyDiabetes application does not collect automatically any data from its users. The application allows its users to upload their data to a safe cloud. Here the MyDiabetes team will have access to your:\n

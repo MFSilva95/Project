@@ -191,18 +191,21 @@ public class Home extends BaseActivity {
                 // If you have 2 drawers (left and right) you can distinguish
                 // them by using id of the drawerView. int id = drawerView.getUserId();
                 // id will be your layout's id: for example R.id.left_drawer
-                DB_Write dbwrite = new DB_Write(drawerView.getContext());//getBaseContext());
-                dbwrite.Log_Save(idUser,"Drawer_opened");
-                dbwrite.close();
-                //Log.i("test", "onDrawerOPEN: ");
+                if(idUser!=-1){
+                    DB_Write dbwrite = new DB_Write(drawerView.getContext());//getBaseContext());
+                    dbwrite.Log_Save(idUser,"Drawer_opened");
+                    dbwrite.close();
+                }
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 // Called when a drawer has settled in a completely closed state.
-                DB_Write dbwrite = new DB_Write(drawerView.getContext());//getBaseContext());
-                dbwrite.Log_Save(idUser,"Drawer_closed");
-                dbwrite.close();
+                if(idUser!=-1){
+                    DB_Write dbwrite = new DB_Write(drawerView.getContext());//getBaseContext());
+                    dbwrite.Log_Save(idUser,"Drawer_closed");
+                    dbwrite.close();
+                }
                 //Log.i("test", "onDrawerClosed: ");
             }
 
