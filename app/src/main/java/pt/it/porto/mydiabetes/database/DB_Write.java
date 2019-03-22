@@ -757,6 +757,7 @@ public class DB_Write {
 		toInsert.put("Id_User", id_user);
 		toInsert.put("DateTime", datetime);
 		toInsert.put("Activity", activity);
+		System.out.println(activity);
 		myDB.insert("Activity_Log", null, toInsert);
 	}
 

@@ -212,8 +212,8 @@ public class NewHomeRegistry extends BaseActivity{
         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
             hideBottomSheet();
         } else {
-                goBack();
-            }
+            goBack();
+        }
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -1131,7 +1131,7 @@ public class NewHomeRegistry extends BaseActivity{
 
 
 
-//            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+    //            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
 //                    //Got Permission
 //                    try {
 //                        dispatchTakePictureIntent();
@@ -1290,8 +1290,8 @@ public class NewHomeRegistry extends BaseActivity{
 
 
             if (ContextCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-               // if (ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+                // if (ActivityCompat.shouldShowRequestPermissionRationale(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                ActivityCompat.requestPermissions(NewHomeRegistry.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, EXTERNAL_STORAGE_PERMISSION_CONSTANT);
                 //}
             } else {
                 try {
@@ -1605,5 +1605,12 @@ public class NewHomeRegistry extends BaseActivity{
         int height = (int) (displaymetrics.heightPixels * 0.1);
         int width = (int) (displaymetrics.widthPixels * 0.1);
         return new Pair<>(height,width);
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        //logSave("NewHomeRegistry");
     }
 }

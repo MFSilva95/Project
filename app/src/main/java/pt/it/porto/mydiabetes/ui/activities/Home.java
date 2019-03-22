@@ -86,15 +86,6 @@ public class Home extends BaseActivity {
                 e.printStackTrace();
             }
         }
-//        if(BuildConfig.SYNC_AVAILABLE){
-//            AlarmManager alm = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-//            Intent intent = new Intent(this, SyncAlarm.class);
-//            PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_ONE_SHOT); // one oportunity
-//
-//        }
-
-
-
 
         DB_Read db = new DB_Read(this);//getBaseContext());
         idUser = db.getUserId();
@@ -394,7 +385,7 @@ public class Home extends BaseActivity {
 						mViewPager.setCurrentItem(0);
                         bottomNavigationView.getMenu().getItem(0).setChecked(true);
                         logSave("Home:homeLeftFragment");
-                        break;
+						break;
 					case R.id.action_register:
                         dbwrite.Clicks_Save(idUser,"middleHomePage",-1,-1);
                         dbwrite.close();
@@ -402,8 +393,7 @@ public class Home extends BaseActivity {
 						mViewPager.setCurrentItem(1);
                         bottomNavigationView.getMenu().getItem(1).setChecked(true);
                         logSave("Home:homeMiddleFragment");
-
-                        break;
+						break;
 					case R.id.action_person:
                         dbwrite.Clicks_Save(idUser,"rightHomePage",-1,-1);
                         dbwrite.close();
@@ -411,8 +401,7 @@ public class Home extends BaseActivity {
 						mViewPager.setCurrentItem(2);
                         bottomNavigationView.getMenu().getItem(2).setChecked(true);
                         logSave("Home:homeRightFragment");
-
-                        break;
+						break;
 				}
 				return true;
 			}
@@ -557,7 +546,7 @@ public class Home extends BaseActivity {
 
 
 
-    private void showTermsOfService(){
+    private void showTermsOfService() {
 
         android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(this);
         builder1.setTitle(getString(R.string.terms_of_service_title));
@@ -569,23 +558,23 @@ public class Home extends BaseActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        db_features.changeFeatureStatus(FeaturesDB.ACCEPTED_TERMS,true);
+                        db_features.changeFeatureStatus(FeaturesDB.ACCEPTED_TERMS, true);
 
-                        if(!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+                        if (!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)) {
                             if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                                 ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, INIT_PERMISSION_REQUEST);
-                            }else{
-                                if(ShouldBackupDB()){
+                            } else {
+                                if (ShouldBackupDB()) {
                                     showBackupDialog();
-                                }else{
+                                } else {
                                     ShowDialogAddData();
                                     return;
                                 }
                             }
-                        }else{
-                            if(ShouldBackupDB()){
+                        } else {
+                            if (ShouldBackupDB()) {
                                 showBackupDialog();
-                            }else{
+                            } else {
                                 setMainView(null);
                             }
                         }
@@ -597,6 +586,16 @@ public class Home extends BaseActivity {
         alert11.show();
     }
 
+    public void logSave (String activity) {
+        DB_Read db = new DB_Read(getBaseContext());
+        int idUser = db.getUserId();
+        db.close();
+        if(idUser != -1){
+            DB_Write dbwrite = new DB_Write(getBaseContext());
+            dbwrite.Log_Save(idUser,activity);
+            dbwrite.close();
+        }
+    }
 
     public void logSave (String activity) {
         DB_Read db = new DB_Read(getBaseContext());
@@ -608,6 +607,7 @@ public class Home extends BaseActivity {
             dbwrite.close();
         }
     }
+
     @Override
     protected void onResume()
     {
@@ -654,15 +654,6 @@ public class Home extends BaseActivity {
             }
         }
     }
-
-
-
-
-
-
-
-
-
 }
 
 

@@ -98,7 +98,6 @@ public class SelectMealActivity extends BaseActivity {
                     logSave("SelectMealActivity:Food");
                 }
 
-
                 if(viewPager.getCurrentItem() == 1) {
                     mLoggedMealFragment.loadFragmentData();
                     logSave("SelectMealActivity:Meal");
@@ -115,6 +114,25 @@ public class SelectMealActivity extends BaseActivity {
 
             }
         };
+    }
+
+    public void logSave (String activity) {
+        DB_Read db = new DB_Read(getBaseContext());
+        int idUser = db.getUserId();
+        db.close();
+        if(idUser != -1){
+            DB_Write dbwrite = new DB_Write(getBaseContext());
+            dbwrite.Log_Save(idUser,activity);
+            dbwrite.close();
+        }
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        if (viewPager.getCurrentItem() == 0) logSave("SelectMealActivity:Food");
+        else if (viewPager.getCurrentItem() == 1) logSave("SelectMealActivity:Meal");
     }
 
 //    private void resetData(){
