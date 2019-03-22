@@ -1607,10 +1607,4 @@ public class NewHomeRegistry extends BaseActivity{
         return new Pair<>(height,width);
     }
 
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        //logSave("NewHomeRegistry");
-    }
 }

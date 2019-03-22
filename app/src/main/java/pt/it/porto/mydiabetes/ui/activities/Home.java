@@ -597,16 +597,6 @@ public class Home extends BaseActivity {
         }
     }
 
-    public void logSave (String activity) {
-        DB_Read db = new DB_Read(getBaseContext());
-        int idUser = db.getUserId();
-        db.close();
-        if(idUser != -1){
-            DB_Write dbwrite = new DB_Write(getBaseContext());
-            dbwrite.Log_Save(idUser,activity);
-            dbwrite.close();
-        }
-    }
 
     @Override
     protected void onResume()

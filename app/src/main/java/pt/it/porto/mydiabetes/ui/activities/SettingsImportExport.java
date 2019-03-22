@@ -175,21 +175,16 @@ public class SettingsImportExport extends BaseActivity {
 					try {
 						File outputDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases");
 						outputDir.mkdirs();
+
 						File fileBackup = new File(outputDir, "DB_Diabetes");
-						if(fileBackup.exists()){
-							//fileBackup.delete();
-						}
-						try {
-							if(!fileBackup.createNewFile()){
-								//return false;
-							};
-							copyFile(inputFile, fileBackup);
-							return true;
-						} catch (IOException ioException) {
-							return false;
-						} catch (Exception exception) {
-							return false;
-						}
+						if(fileBackup.exists()){//overwrite
+                            copyFile(inputFile, fileBackup);
+                            return true;
+						}else{
+                            fileBackup.createNewFile();
+                            copyFile(inputFile, fileBackup);
+                            return true;
+                        }
 					} catch (Exception e) {
 						return false;
 					}
@@ -288,6 +283,12 @@ public class SettingsImportExport extends BaseActivity {
 			DB_Read rdb = new DB_Read(v.getContext());
 			BadgeUtils.addExportBadge(getBaseContext(), rdb);
 			rdb.close();
+            //just created backup - make restore available
+            Button restore = (Button) findViewById(R.id.bt_Restore);
+            restore.setEnabled(true);
+            //findViewById(R.id.share).setEnabled(true);
+            restore.setVisibility(View.VISIBLE);
+
 		} else {
 			ShowDialogMsg(getString(R.string.error_dbcopy));
 		}
