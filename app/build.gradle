@@ -13,7 +13,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         // vars to enable new features
-        buildConfigField "boolean", "SYNC_AVAILABLE", "false"
+        buildConfigField "boolean", "SYNC_AVAILABLE", "true"
         buildConfigField "boolean", "IOB_AVAILABLE", "false"
         buildConfigField "boolean", "GLUCOMETER_AVAILABLE", "true"
         buildConfigField "boolean", "TASKS_AVAILABLE", "false"

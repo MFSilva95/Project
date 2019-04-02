@@ -42,9 +42,9 @@
         android:inputType="textPassword"
         android:maxLines="1"/>
 
-    <TextView
+    <Button
+        android:id="@+id/webViewButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:autoLink="web"
         android:text="@string/login_extra_text"/>
 </LinearLayout>

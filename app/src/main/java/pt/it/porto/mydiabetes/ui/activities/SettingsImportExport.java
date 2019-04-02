@@ -363,7 +363,7 @@ public class SettingsImportExport extends BaseActivity {
 //		startActivity(intent);
 //	}
 
-	public void syncCloud(View view) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
+	public void syncCloud(View view){
 		if(BuildConfig.SYNC_AVAILABLE){
 
 			String username = pt.it.porto.mydiabetes.database.Preferences.getUsername(this);

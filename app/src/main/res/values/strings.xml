@@ -346,7 +346,10 @@
     <string name="feature_cloud_sync_description2" >A qualquer momento pode aceder aos dados em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
     <string name="login_username" >Nome do utilizador</string>
     <string name="login_password" >Palavra-passe</string>
-    <string name="login_extra_text" >Se não tiver uma conta, pode criar uma em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="login_extra_text" >Criar nova conta.</string>
+    <!--<a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a>-->
+
+    <string name="webview_title">MyDiabetes</string>
 
     <string name="login_try_later" >Tentar mais tarde</string>
     <string name="login_try_again" >Tentar novamente</string>

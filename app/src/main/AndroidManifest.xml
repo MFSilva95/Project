@@ -3,12 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="pt.it.porto.mydiabetes"
-    android:versionCode="17"
+    android:versionCode="18"
     android:versionName="2.0">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -41,11 +43,19 @@
             android:windowSoftInputMode="adjustResize">
         </activity>
 
+        <activity
+            android:name=".ui.activities.MyDiabetesWebViewActivity"
+            android:label="@string/webview_title"
+            android:theme="@style/welcomeTheme"
+            android:parentActivityName=".ui.activities.SettingsImportExport">
+        </activity>
+
 
 
         <activity android:name=".ui.createMeal.activities.CreateMealActivity"
             android:theme="@style/AppTheme"
             android:parentActivityName=".ui.activities.NewHomeRegistry"/>
+
         <activity android:name=".ui.createMeal.activities.LoggedMealDetail" />
         <activity android:name=".ui.createMeal.activities.SelectMealActivity"/>
 

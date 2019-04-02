@@ -265,14 +265,14 @@
     <string name="feature_cloud_sync_description2" >You can access your data at any moment at<a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
     <string name="login_username" >Username</string>
     <string name="login_password" >Password</string>
-    <string name="login_extra_text" >If you dont have an account you can create a new accont at <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="login_extra_text" >Create new account.</string>
     <string name="login_try_later" >Please try again later</string>
     <string name="login_try_again" >Try again?</string>
     <string name="cloudSync_edit_account" >Edit account</string>
 
+    <string name="webview_title">MyDiabetes</string>
 
-
-
+    <!--<a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a>-->
 
     <string name="navigation_drawer_open" >open</string>
     <string name="navigation_drawer_close" >close</string>

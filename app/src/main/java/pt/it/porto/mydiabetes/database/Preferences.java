@@ -118,8 +118,12 @@ public class Preferences {
 		if (keyStore == null) {
 			keyStore = initKeyStore(context);
 		}
-		KeyStore.PrivateKeyEntry keys = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEYSTORE_PK_ALIAS, null);
-		return keys.getPrivateKey();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+			return  (PrivateKey) keyStore.getKey(KEYSTORE_PK_ALIAS, null);
+		} else {
+			KeyStore.PrivateKeyEntry keys = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEYSTORE_PK_ALIAS, null);
+			return keys.getPrivateKey();
+		}
 	}
 
 
@@ -128,8 +132,13 @@ public class Preferences {
 		if (keyStore == null) {
 			keyStore = initKeyStore(context);
 		}
-		KeyStore.PrivateKeyEntry keys = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEYSTORE_PK_ALIAS, null);
-		return (RSAPublicKey) keys.getCertificate().getPublicKey();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+			return (RSAPublicKey) keyStore.getCertificate(KEYSTORE_PK_ALIAS).getPublicKey();
+		}else {
+
+			KeyStore.PrivateKeyEntry keys = (KeyStore.PrivateKeyEntry) keyStore.getEntry(KEYSTORE_PK_ALIAS, null);
+			return (RSAPublicKey) keys.getCertificate().getPublicKey();
+		}
 	}
 
 

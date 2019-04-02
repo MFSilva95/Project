@@ -7,12 +7,15 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,6 +26,7 @@ import java.security.NoSuchAlgorithmException;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.sync.ServerSync;
+import pt.it.porto.mydiabetes.ui.activities.MyDiabetesWebViewActivity;
 
 public class FeatureWebSyncDialog extends DialogFragment {
 
@@ -79,8 +83,9 @@ public class FeatureWebSyncDialog extends DialogFragment {
 				.setPositiveButton(okButtonMessage > 0 ? okButtonMessage : android.R.string.ok, new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						username = ((EditText) ((Dialog) dialog).findViewById(R.id.username)).getText().toString();
-					   password = ((EditText) ((Dialog) dialog).findViewById(R.id.password)).getText().toString();
+					    username = ((EditText) ((Dialog) dialog).findViewById(R.id.username)).getText().toString();
+					    password = ((EditText) ((Dialog) dialog).findViewById(R.id.password)).getText().toString();
+
 					   AsyncTask<Void, Void, Void> saveTask = new AsyncTask<Void, Void, Void>() {
 						   @Override
 						   protected Void doInBackground(Void... params) {
@@ -110,6 +115,14 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		Dialog dialog = builder.create();
 		currentShowingDialog = dialog;
 		dialog.show();
+
+		dialog.findViewById(R.id.webViewButton).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				Intent intent = new Intent(view.getContext(), MyDiabetesWebViewActivity.class);
+				view.getContext().startActivity(intent);
+			}
+		});
 		((EditText) dialog.findViewById(R.id.username)).setText(username);
 		((EditText) dialog.findViewById(R.id.password)).setText(password);
 		return dialog;
