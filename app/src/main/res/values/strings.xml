@@ -347,6 +347,8 @@
     <string name="login_username" >Nome do utilizador</string>
     <string name="login_password" >Palavra-passe</string>
     <string name="login_extra_text" >Criar nova conta.</string>
+
+    <string name="privacyPolicyLink">Ao criar uma nova conta está a aceitar a política de privacidade disponível em <a href="https://mydiabetes.dcc.fc.up.pt/newsite/privacidade.php">mydiabetes.dcc.fc.up.pt</a></string>
     <!--<a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a>-->
 
     <string name="webview_title">MyDiabetes</string>

@@ -272,6 +272,8 @@
 
     <string name="webview_title">MyDiabetes</string>
 
+    <string name="privacyPolicyLink">By creating a new account, you accept the privacy policy available at <a href="https://mydiabetes.dcc.fc.up.pt/newsite/privacidade.php">mydiabetes.dcc.fc.up.pt</a></string>
+
     <!--<a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a>-->
 
     <string name="navigation_drawer_open" >open</string>

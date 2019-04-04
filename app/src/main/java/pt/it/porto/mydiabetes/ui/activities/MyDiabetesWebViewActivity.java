@@ -2,7 +2,6 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -29,14 +28,19 @@ public class MyDiabetesWebViewActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webview_activity);
+        setMainView();
+    }
+
+    private void setMainView(){
 
         if(isNetworkStatusAvialable(this)){
             MyWebViewClient webC = new MyWebViewClient();
 
+            findViewById(R.id.backSync).setVisibility(View.GONE);
+            findViewById(R.id.reSync).setVisibility(View.GONE);
             findViewById(R.id.errorConnection).setVisibility(View.GONE);
             findViewById(R.id.myDiabetesWebView).setVisibility(View.VISIBLE);
             findViewById(R.id.loading).setVisibility(View.GONE);
-
 
             webView = findViewById(R.id.myDiabetesWebView);
             webView.getSettings().setJavaScriptEnabled(true);
@@ -48,6 +52,20 @@ public class MyDiabetesWebViewActivity extends Activity {
             findViewById(R.id.errorConnection).setVisibility(View.VISIBLE);
             findViewById(R.id.myDiabetesWebView).setVisibility(View.GONE);
             findViewById(R.id.loading).setVisibility(View.GONE);
+            findViewById(R.id.reSync).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setMainView();
+                }
+            });
+            findViewById(R.id.backSync).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    finish();
+                }
+            });
+
+
         }
     }
     public static boolean isNetworkStatusAvialable (Context context) {
@@ -104,8 +122,8 @@ public class MyDiabetesWebViewActivity extends Activity {
 
                         if(name !=null && pass != null){
                             pt.it.porto.mydiabetes.database.Preferences.saveCloudSyncCredentials(view.getContext(), name, pass);
-
-                            Log.i("cenas", "onReceiveValue: -> "+name+" "+pass);
+                            setResult(1);
+                            //Log.i("cenas", "onReceiveValue: -> "+name+" "+pass);
                         }
 
                         //arranjar o loading
@@ -119,12 +137,13 @@ public class MyDiabetesWebViewActivity extends Activity {
 
 
             if(url.contains("exit")){
-                try {
-                    this.finalize();
+                //try {
+                    //this.finalize();
+                    setResult(1);
                     finish();
-                } catch (Throwable throwable) {
-                    throwable.printStackTrace();
-                }
+                //} catch (Throwable throwable) {
+                //    throwable.printStackTrace();
+               // }
             }else{
                 if (Uri.parse(url).getHost().contains("mydiabetes.dcc.fc.up.pt")) {
                     // This is my website, so do not override; let my WebView load the page

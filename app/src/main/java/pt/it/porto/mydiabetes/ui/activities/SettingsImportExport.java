@@ -57,6 +57,8 @@ public class SettingsImportExport extends BaseActivity {
 	public static final String BACKUP_LOCATION = "/MyDiabetes/backup/DB_Diabetes";
 	public static final String PROJECT_MANAGER_EMAIL = "mydiabetes@dcc.fc.up.pt";
 
+	final private int WEBVIEW = 332;
+
 	@Nullable
 	ProgressDialog dialog;
 
@@ -75,6 +77,10 @@ public class SettingsImportExport extends BaseActivity {
 		if(!BuildConfig.SYNC_AVAILABLE){
 			findViewById(R.id.sync).setVisibility(View.GONE);
 		}
+		String username = pt.it.porto.mydiabetes.database.Preferences.getUsername(this);
+		if(username!=null && !username.equals("")){
+		    findViewById(R.id.syncCloud).setVisibility(View.VISIBLE);
+        }
 
 		if(isSDWriteable()){
 			File inputFile = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes/backup/DB_Diabetes");
@@ -408,9 +414,23 @@ public class SettingsImportExport extends BaseActivity {
         }
 
 	}
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
+        if(webSyncDialog!=null){
+        	if(requestCode==WEBVIEW && resultCode == 1){
+            	webSyncDialog.updateDialog();
+                syncCloud(null);
+        	}
+		}
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+	FeatureWebSyncDialog webSyncDialog;
 	public void editAccount(View view) {
-		FeatureWebSyncDialog webSyncDialog = new FeatureWebSyncDialog();
+		webSyncDialog = new FeatureWebSyncDialog();
 //		webSyncDialog.show(getFragmentManager(), "editAccount");
 		webSyncDialog.show(getSupportFragmentManager(), "editAccount");
 		webSyncDialog.dismiss();

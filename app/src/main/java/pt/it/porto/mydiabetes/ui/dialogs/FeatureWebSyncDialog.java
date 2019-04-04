@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
@@ -35,6 +37,9 @@ public class FeatureWebSyncDialog extends DialogFragment {
 	Dialog currentShowingDialog;
 	String username;
 	String password;
+	final private int WEBVIEW = 332;
+	View v;
+
 
 	@NonNull
 	@Override
@@ -46,7 +51,8 @@ public class FeatureWebSyncDialog extends DialogFragment {
 
 		// Inflate and set the layout for the dialog
 		// Pass null as the parent view because its going in the dialog layout
-		builder.setView(inflater.inflate(R.layout.dialog_new_feature_websync, null))
+		v = inflater.inflate(R.layout.dialog_new_feature_websync, null);
+		builder.setView(v)
 			   // Add action buttons
 			   .setPositiveButton(R.string.use, new DialogInterface.OnClickListener() {
 				   @Override
@@ -64,6 +70,32 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		});
 		setCancelable(false);
 		return builder.create();
+	}
+
+	public void updateDialog(){
+
+
+		currentShowingDialog.dismiss();
+//		Dialog userDataPopUp = getUserDataPopUp(context, -1, -1);
+//		userDataPopUp.show();
+
+//		TextView user = ((TextView) userDataPopUp.findViewById(R.id.username));
+//		if(user!=null){
+//			user.setText(username);
+//		}
+//		TextView pass = ((TextView) userDataPopUp.findViewById(R.id.password));
+//		if(pass!=null){
+//			pass.setText(password);
+//		}
+//
+//		currentShowingDialog = userDataPopUp;
+//		currentShowingDialog.setCancelable(true);
+
+		//password = Preferences.getPassword(context);
+		//username = Preferences.getUsername(context);
+
+		//((EditText) ((Activity) context).findViewById(R.id.username)).setText(username);
+		//((EditText) ((Activity) context).findViewById(R.id.password)).setText(password);
 	}
 
 	/**
@@ -119,8 +151,11 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		dialog.findViewById(R.id.webViewButton).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				Intent intent = new Intent(view.getContext(), MyDiabetesWebViewActivity.class);
-				view.getContext().startActivity(intent);
+				//Intent intent = new Intent(view.getContext(), MyDiabetesWebViewActivity.class);
+				Intent intent = new Intent(context, MyDiabetesWebViewActivity.class);
+				//((Activity) view.getContext()).startActivityForResult(intent, WEBVIEW);
+				((Activity) context).startActivityForResult(intent, WEBVIEW);
+				//((Activity) FeatureWebSyncDialog.this.context).startActivityForResult(intent, WEBVIEW);
 			}
 		});
 		((EditText) dialog.findViewById(R.id.username)).setText(username);
