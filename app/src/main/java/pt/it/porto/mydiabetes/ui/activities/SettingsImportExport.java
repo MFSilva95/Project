@@ -440,7 +440,6 @@ public class SettingsImportExport extends BaseActivity {
 	FeatureWebSyncDialog webSyncDialog;
 	public void editAccount(View view) {
 		webSyncDialog = new FeatureWebSyncDialog();
-//		webSyncDialog.show(getFragmentManager(), "editAccount");
 		webSyncDialog.show(getSupportFragmentManager(), "editAccount");
 		webSyncDialog.dismiss();
 		webSyncDialog.getUserDataPopUp(this, -1, -1);
