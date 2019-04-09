@@ -43,7 +43,7 @@ import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.backup;
 public class ServerSync {
 
 	public static final MediaType MEDIA_TYPE_BINARY = MediaType.parse("application/octet-stream");
-	private static final String BASE_URL = "https://mydiabetes.dcc.fc.up.pt/newsite/";
+	private static final String BASE_URL = "https://mydiabetes.dcc.fc.up.pt/";
 	private static ServerSync instance;
 	private String username;
 	private String password;

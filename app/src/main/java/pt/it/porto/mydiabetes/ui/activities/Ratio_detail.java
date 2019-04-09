@@ -138,9 +138,9 @@ public class Ratio_detail extends BaseActivity {
 
 
 	public void showTimePickerDialogFrom(View v) {
-		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourFrom,
+		android.support.v4.app.DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourFrom,
 				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "timePicker");
+		newFragment.show(getSupportFragmentManager(), "timePicker");
 		TextView errorLabel = (TextView) findViewById(R.id.ratioError);
 		errorLabel.setText("");
 		errorLabel.setVisibility(View.GONE);

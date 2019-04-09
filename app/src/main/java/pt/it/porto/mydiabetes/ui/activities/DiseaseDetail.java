@@ -126,15 +126,15 @@ public class DiseaseDetail extends BaseActivity {
 	}
 
 	public void showDatePickerDialogFrom(View v) {
-		DialogFragment newFragment =  DatePickerFragment.getDatePickerFragment(R.id.et_DiseaseRegDetail_DataFrom,
+		android.support.v4.app.DialogFragment newFragment =  DatePickerFragment.getDatePickerFragment(R.id.et_DiseaseRegDetail_DataFrom,
 				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "DatePicker");
+		newFragment.show(getSupportFragmentManager(), "DatePicker");
 	}
 
 	public void showDatePickerDialogTo(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_DiseaseRegDetail_DataTo,
+		android.support.v4.app.DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_DiseaseRegDetail_DataTo,
 				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "DatePicker");
+		newFragment.show(getSupportFragmentManager(), "DatePicker");
 	}
 
 	public void FillDiseaseAC() {

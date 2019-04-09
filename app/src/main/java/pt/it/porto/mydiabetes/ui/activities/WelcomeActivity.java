@@ -159,6 +159,8 @@ public class WelcomeActivity extends BaseActivity {
 				FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
 				db.changeFeatureStatus(FeaturesDB.INITIAL_REG_DONE, true);
 				db.changeFeatureStatus(FeaturesDB.DEPRECATED, false);
+                MyDiabetesStorage.getInstance(getBaseContext()).close_handler();
+
 				Intent intent = new Intent(this, Home.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(intent);
@@ -291,6 +293,8 @@ public class WelcomeActivity extends BaseActivity {
 				// jump to home
 				FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
 				db.changeFeatureStatus(FeaturesDB.INITIAL_REG_DONE, true);
+				MyDiabetesStorage.getInstance(getBaseContext()).close_handler();
+
 				Intent intent = new Intent(getBaseContext(), Home.class);
 				intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 				startActivity(intent);

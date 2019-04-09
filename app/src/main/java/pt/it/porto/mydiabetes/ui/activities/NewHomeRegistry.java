@@ -1376,7 +1376,7 @@ public class NewHomeRegistry extends BaseActivity{
     }
     private void showTimePickerDialog(View v) {
 
-        DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.registerTime, DateUtils.getTimeCalendar(((TextView) v).getText().toString()));
+        android.support.v4.app.DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.registerTime, DateUtils.getTimeCalendar(((TextView) v).getText().toString()));
         ((TimePickerFragment) newFragment).setListener(new TimePickerFragment.TimePickerChangeListener() {
             @Override
             public void onTimeSet(String time) {
@@ -1396,10 +1396,10 @@ public class NewHomeRegistry extends BaseActivity{
                 }
             }
         });
-        newFragment.show(getFragmentManager(), "timePicker");
+        newFragment.show(getSupportFragmentManager(), "timePicker");
     }
     private void showDatePickerDialog(View v) {
-        DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(
+        android.support.v4.app.DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(
                 R.id.registryDate,
                 new DatePickerDialog.OnDateSetListener(){
 
@@ -1408,7 +1408,7 @@ public class NewHomeRegistry extends BaseActivity{
                         setDate(year, month, day);
                     }
                 }, DateUtils.getDateCalendar(((TextView) v).getText().toString()));
-        newFragment.show(getFragmentManager(), "DatePicker");
+        newFragment.show(getSupportFragmentManager(), "DatePicker");
     }
     private void setDate(Calendar c) {
         registerDate.set(Calendar.YEAR,c.get(Calendar.YEAR));

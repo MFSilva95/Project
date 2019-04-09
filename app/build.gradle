@@ -20,6 +20,11 @@ android {
         buildConfigField "boolean", "ADVICES_AVAILABLE", "false"
         buildConfigField "boolean", "OLD_DB_VERSION", "false"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        useLibrary 'android.test.runner'
+        useLibrary 'android.test.base'
+        useLibrary 'android.test.mock'
+
         buildConfigField "long", "BUILDDATE", System.currentTimeMillis() + "L"
         buildConfigField "boolean", "USE_FABRIC", "false"
     }

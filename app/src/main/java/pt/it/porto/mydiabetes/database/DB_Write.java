@@ -846,6 +846,21 @@ public class DB_Write {
 // Id_Insulin INTEGER,
 // Id_BloodGlucose INTEGER,
 // Id_Note INTEGER);
+
+	public int Record_Add(int user_id, Calendar datetimeC, int tag_id, int id_carbs, int id_glic, int id_insu) {
+		String datetime = DateUtils.formatToDb(datetimeC);
+		ContentValues toInsert = new ContentValues();
+		toInsert.put("Id_User", user_id);
+		toInsert.put("DateTime", datetime);
+		toInsert.put("Id_Tag", tag_id);
+		toInsert.put("Id_Carbs", id_carbs);
+		toInsert.put("Id_Insulin", id_insu);
+		toInsert.put("Id_BloodGlucose", id_glic);
+		toInsert.put("Id_Note", -1);
+		return (int) myDB.insert("Record", null, toInsert);
+	}
+
+
 	public int Record_Add(int user_id, Calendar datetimeC, int tag_id) {
 		String datetime = DateUtils.formatToDb(datetimeC);
 		ContentValues toInsert = new ContentValues();

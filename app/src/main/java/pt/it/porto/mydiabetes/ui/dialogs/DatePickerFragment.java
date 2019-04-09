@@ -14,7 +14,7 @@ import java.util.Calendar;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 
 
-public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
+public class DatePickerFragment extends android.support.v4.app.DialogFragment implements DatePickerDialog.OnDateSetListener {
 	public static final String ARG_DATE = "date";
 	public static final String ARG_TEXT_BOX = "textbox";
 	private DatePickerDialog.OnDateSetListener listener;
@@ -89,8 +89,8 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		dismiss();
 	}
 
-	public static DialogFragment getDatePickerFragment(int textbox, @Nullable Calendar date) {
-		DialogFragment newFragment = new DatePickerFragment();
+	public static android.support.v4.app.DialogFragment getDatePickerFragment(int textbox, @Nullable Calendar date) {
+		android.support.v4.app.DialogFragment newFragment = new DatePickerFragment();
 		Bundle args = new Bundle();
 		args.putInt(ARG_TEXT_BOX, textbox);
 		if (date != null) {
@@ -100,7 +100,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 		return newFragment;
 	}
 
-	public static DialogFragment getDatePickerFragment(int textbox, DatePickerDialog.OnDateSetListener lis, @Nullable Calendar date) {
+	public static android.support.v4.app.DialogFragment getDatePickerFragment(int textbox, DatePickerDialog.OnDateSetListener lis, @Nullable Calendar date) {
 		DatePickerFragment newFragment = new DatePickerFragment();
 		Bundle args = new Bundle();
 		args.putInt(ARG_TEXT_BOX, textbox);

@@ -92,12 +92,14 @@ public class Home extends BaseActivity {
         db.close();
 
         db_features = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
+        boolean accepted_terms = db_features.isFeatureActive(FeaturesDB.ACCEPTED_TERMS);
+        boolean initial_reg_done = db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE);
+        MyDiabetesStorage.getInstance(getBaseContext()).close_handler();
 
-
-        if(!db_features.isFeatureActive(FeaturesDB.ACCEPTED_TERMS)){
+        if(!accepted_terms){
             showTermsOfService();
         }else{
-            if(!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
+            if(!initial_reg_done){
                 if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, INIT_PERMISSION_REQUEST);
                 }else{

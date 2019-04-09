@@ -45,7 +45,7 @@ public class DB_LogbookEntries {
 				glycemia.setValue(100 + new Random().nextInt(20) - 5);
 				glycemia.setIdTag(1);
 				glycemia.setDateTime(calendar);
-				dbWrite.Glycemia_Save(glycemia);
+				int glic_id = dbWrite.Glycemia_Save(glycemia);
 
 				InsulinRec insulinRec = new InsulinRec();
 				insulinRec.setIdUser(1);
@@ -56,7 +56,7 @@ public class DB_LogbookEntries {
 				insulinRec.setInsulinUnits(3f + (new Random().nextInt(10) / 10f) - 2f);
 				insulinRec.setTargetGlycemia(insulin_targets[j]);
 
-				dbWrite.Insulin_Save(insulinRec);
+				int insu_id = dbWrite.Insulin_Save(insulinRec);
 
 
 				CarbsRec carbsRec = new CarbsRec();
@@ -67,7 +67,9 @@ public class DB_LogbookEntries {
 				carbsRec.setIdTag(1);
 				carbsRec.setIdNote(-1);
 				carbsRec.setDateTime(calendar);
-				dbWrite.Carbs_Save(carbsRec);
+				int carbs_id = dbWrite.Carbs_Save(carbsRec);
+
+				dbWrite.Record_Add(1,calendar,1,carbs_id,glic_id,insu_id);
 			}
 		}
 

@@ -149,9 +149,9 @@ public class Sensitivity_detail extends BaseActivity {
 		else{
 			currentTime = ((EditText) v).getText().toString();
 		}
-		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourFrom,
+		android.support.v4.app.DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_TargetBG_HourFrom,
 				DateUtils.getTimeCalendar(currentTime));
-		newFragment.show(getFragmentManager(), "timePicker");
+		newFragment.show(getSupportFragmentManager(), "timePicker");
 
 		TextView errorLabel = (TextView) findViewById(R.id.ratioError);
 		errorLabel.setText("");

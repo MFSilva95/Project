@@ -1,11 +1,11 @@
 package pt.it.porto.mydiabetes.ui.dialogs;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.EditText;
@@ -65,7 +65,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
 		c.set(Calendar.MINUTE, min);
 
 		String timeString = DateUtils.getFormattedTime(c);
-		Log.d("time", timeString);
+		//Log.d("time", timeString);
 		if (item != null) {
 			item.setText(timeString);
 		}

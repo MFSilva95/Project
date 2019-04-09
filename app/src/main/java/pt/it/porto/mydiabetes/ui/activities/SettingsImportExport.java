@@ -176,8 +176,9 @@ public class SettingsImportExport extends BaseActivity {
 					+ "/MyDiabetes/backup/DB_Diabetes");
 			if(inputFile.exists()){
 				SQLiteDatabase db = SQLiteDatabase.openDatabase(inputFile.getPath(), null, 0);
-				if(!isDeprecated(context, db)){
-					db.close();
+				boolean isDeprecated = isDeprecated(context, db);
+                db.close();
+				if(!isDeprecated){
 					try {
 						File outputDir = new File(Environment.getDataDirectory() + "/data/" + context.getPackageName() + "/databases");
 						outputDir.mkdirs();
@@ -194,8 +195,12 @@ public class SettingsImportExport extends BaseActivity {
 					} catch (Exception e) {
 						return false;
 					}
-				}
-			}
+				}else{
+				    return false;
+                }
+			}else{
+			    return false;
+            }
 		}
 		return false;
 	}
@@ -206,7 +211,11 @@ public class SettingsImportExport extends BaseActivity {
 		FileChannel outChannel = outStream.getChannel();
 		try {
 			inChannel.transferTo(0, inChannel.size(), outChannel);
+		}catch (Exception e){
+            Log.i("COPY_FILE", "copyFile: ERROR!!!");
+		    e.printStackTrace();
 		}finally {
+		    outStream.close();
 			outStream.flush();
 			if (inChannel != null)
 				inChannel.close();

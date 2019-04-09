@@ -135,9 +135,9 @@ public class DayFaseDetail extends BaseActivity {
 		else{
 			currentTime = ((EditText) v).getText().toString();
 		}
-		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_FaseDia_HourFrom,
+		android.support.v4.app.DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_FaseDia_HourFrom,
 				DateUtils.getTimeCalendar(currentTime));
-		newFragment.show(getFragmentManager(), "timePicker");
+		newFragment.show(getSupportFragmentManager(), "timePicker");
 		TextView errorLabel = (TextView) findViewById(R.id.day_phase_error);
 		errorLabel.setText("");
 		errorLabel.setVisibility(View.GONE);

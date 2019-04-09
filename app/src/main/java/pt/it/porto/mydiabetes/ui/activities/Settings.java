@@ -83,11 +83,13 @@ public class Settings extends BaseActivity {
 			public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
 				FeaturesDB db = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
 				db.changeFeatureStatus(FeaturesDB.FEATURE_INSULIN_ON_BOARD, useActiveInsulin.isChecked());
+				MyDiabetesStorage.getInstance(getBaseContext()).close_handler();
 			}
 		});
 
 		FeaturesDB features = new FeaturesDB(MyDiabetesStorage.getInstance(this));
 		useActiveInsulin.setChecked(features.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD));
+		MyDiabetesStorage.getInstance(getBaseContext()).close_handler();
 
 		if(!BuildConfig.IOB_AVAILABLE){
 			findViewById(R.id.block_iob).setVisibility(View.GONE);

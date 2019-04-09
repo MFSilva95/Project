@@ -50,7 +50,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:background="@color/primary_dark"
-                        android:text="Dia"
+                        android:text="@string/day"
                         android:textSize="14sp" />
 
                     <EditText
@@ -84,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
                         android:background="@color/primary_dark"
-                        android:text="Hora"
+                        android:text="@string/time"
                         android:textSize="14sp" />
 
                     <EditText

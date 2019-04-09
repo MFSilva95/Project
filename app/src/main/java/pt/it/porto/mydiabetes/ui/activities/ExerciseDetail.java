@@ -142,15 +142,15 @@ public class ExerciseDetail extends BaseActivity {
 	}
 
 	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_ExerciseDetail_Data,
+		android.support.v4.app.DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_ExerciseDetail_Data,
 				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "DatePicker");
+		newFragment.show(getSupportFragmentManager(), "DatePicker");
 	}
 
 	public void showTimePickerDialog(View v) {
-		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_ExerciseDetail_Hora,
+		android.support.v4.app.DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_ExerciseDetail_Hora,
 				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "timePicker");
+		newFragment.show(getSupportFragmentManager(), "timePicker");
 
 	}
 

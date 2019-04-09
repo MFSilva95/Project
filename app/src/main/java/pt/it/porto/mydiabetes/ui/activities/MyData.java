@@ -84,9 +84,9 @@ public class MyData extends BaseActivity {
 	}
 
 	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MyData_BirthDate,
+		android.support.v4.app.DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_MyData_BirthDate,
 				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "DatePicker");
+		newFragment.show(getSupportFragmentManager(), "DatePicker");
 	}
 
 	public Boolean inputIsValid() {

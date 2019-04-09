@@ -22,7 +22,7 @@ import pt.it.porto.mydiabetes.R;
 
 public class MyDiabetesWebViewActivity extends Activity {
 
-    private String site = "https://mydiabetes.dcc.fc.up.pt/newsite/register_mobile.php";
+    private String site = "https://mydiabetes.dcc.fc.up.pt/register_mobile.php";
     private WebView webView;
 
     public void onCreate(Bundle savedInstanceState) {

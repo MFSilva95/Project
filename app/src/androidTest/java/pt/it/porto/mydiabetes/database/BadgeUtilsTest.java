@@ -71,7 +71,7 @@ public class BadgeUtilsTest {
 
 	static UserInfo getMockUserData() {
 		Calendar calendar = Calendar.getInstance();
-		return new UserInfo(1, "Nome", "Tipo 1", 45, 50, 50, 150, "11-01-2011", "Masculino", 1.85, DateUtils.formatToDb(calendar));
+		return new UserInfo(1, "Nome", 1, 45, 50, 50, 150, "11-01-2011", 1, 1.85, DateUtils.formatToDb(calendar),100);
 	}
 
 

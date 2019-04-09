@@ -158,15 +158,15 @@ public class BloodPressureDetail extends BaseActivity {
 	}
 
 	public void showDatePickerDialog(View v) {
-		DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_BloodPressureDetail_Data,
+		android.support.v4.app.DialogFragment newFragment = DatePickerFragment.getDatePickerFragment(R.id.et_BloodPressureDetail_Data,
 				DateUtils.getDateCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "DatePicker");
+		newFragment.show(getSupportFragmentManager(), "DatePicker");
 	}
 
 	public void showTimePickerDialog(View v) {
-		DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_BloodPressureDetail_Hora,
+		android.support.v4.app.DialogFragment newFragment = TimePickerFragment.getTimePickerFragment(R.id.et_BloodPressureDetail_Hora,
 				DateUtils.getTimeCalendar(((EditText) v).getText().toString()));
-		newFragment.show(getFragmentManager(), "timePicker");
+		newFragment.show(getSupportFragmentManager(), "timePicker");
 	}
 
 	public void FillTagSpinner() {

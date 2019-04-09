@@ -271,6 +271,8 @@
     <string name="cloudSync_edit_account" >Edit account</string>
 
     <string name="webview_title">MyDiabetes</string>
+    <string name="day" >Day</string>
+    <string name="time" >Time</string>
 
     <string name="privacyPolicyLink">By creating a new account, you accept the privacy policy available at <a href="https://mydiabetes.dcc.fc.up.pt/newsite/privacidade.php">mydiabetes.dcc.fc.up.pt</a></string>
 

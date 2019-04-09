@@ -207,6 +207,8 @@
 
     <string name="date_hour" >Data e Hora</string>
     <string name="time_of_day" >Altura do Dia</string>
+    <string name="day" >Dia</string>
+    <string name="time" >Hora</string>
     <string name="bloodpressure">Pressão Arterial</string>
     <string name="systolic">Sistólica</string>
     <string name="diastolic">Diastólica</string>
