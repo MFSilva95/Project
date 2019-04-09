@@ -30,11 +30,11 @@ public class MyDiabetesStorage {
 		return instance;
 	}
 
-	public void close_handler(){
-		this.mHandler.close();
-		this.mHandler = null;
-		MyDiabetesStorage.instance = null;
-	}
+//	public void close_handler(){
+//		this.mHandler.close();
+//		this.mHandler = null;
+//		MyDiabetesStorage.instance = null;
+//	}
 
 
 	public Cursor getWeightRegist(int id) {
