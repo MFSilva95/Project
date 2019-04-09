@@ -142,7 +142,7 @@ public class homeRightFragment extends Fragment {
                 File profile_img = new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg");
                 if(profile_img.exists()){
                     Bitmap bmp = BitmapFactory.decodeFile(profile_img.getAbsolutePath());
-                    mCircleView.setImageBitmap(Bitmap.createScaledBitmap(bmp, THUMBSIZE, THUMBSIZE, false));
+                    if(bmp!=null){mCircleView.setImageBitmap(Bitmap.createScaledBitmap(bmp, THUMBSIZE, THUMBSIZE, false));}
                 }
             }else{
                 Toast.makeText(this.getContext(),R.string.all_permissions,Toast.LENGTH_LONG).show();
@@ -218,9 +218,10 @@ public class homeRightFragment extends Fragment {
 
         medals_display_init();
 
-        setImage();
+
         setMyDataFromDB(myData);
         updateMedals();
+        setImage();
 
         CardView personalInfo = (CardView) layout.findViewById(R.id.personalInfo);
         CardView badgesInfo = (CardView) layout.findViewById(R.id.badgesInfo);
@@ -356,8 +357,13 @@ public class homeRightFragment extends Fragment {
         });
     }
     private void dispatchTakePictureIntent() throws IOException {
-        File picFile = new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg");
+
+        File outputDir = new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes");
+        outputDir.mkdirs();
+
+        File picFile = new File(outputDir+"/"+ userImgFileName+".jpg");
         picFile.createNewFile(); // Eduardo was here :c
+
         if(android.os.Build.VERSION.SDK_INT>=24){
             currentImageUri = FileProvider.getUriForFile(this.getContext(), BuildConfig.APPLICATION_ID+".provider", picFile);
         }else{
