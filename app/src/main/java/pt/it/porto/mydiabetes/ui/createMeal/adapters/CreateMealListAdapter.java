@@ -7,20 +7,21 @@ import android.content.DialogInterface;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.Locale;
@@ -51,7 +52,8 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final MealItem meal = foodList.get(position);
 
-        holder.optionsView.setVisibility(View.GONE);
+        holder.editView.setVisibility(View.GONE);
+        holder.deleteView.setVisibility(View.GONE);
 
         holder.deleteItemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,101 +61,78 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
 
                 ((CreateMealActivity) context).deleteItemFromMeal(holder.getAdapterPosition());
 
-                holder.optionsView.setVisibility(View.GONE);
+                holder.editView.setVisibility(View.GONE);
+                holder.deleteView.setVisibility(View.GONE);
+
+            }
+        });
+        holder.foodName.setText(meal.getName());
+        holder.foodCarbs.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getCarbs()) + "g"));
+        if(meal.getId()==-1){
+            holder.foodPortion.setText(new StringBuilder(String.valueOf(meal.getQuantity()) + "g"));
+
+            holder.weightIcon_img.setVisibility(View.INVISIBLE);
+            holder.foodPortion.setVisibility(View.INVISIBLE);
+
+        }else{
+
+            holder.foodPortion.setText(new StringBuilder(String.valueOf(meal.getQuantity()) + "g"));
+            holder.weightIcon_img.setVisibility(View.VISIBLE);
+            holder.foodPortion.setVisibility(View.VISIBLE);
+        }
+
+
+        holder.viewForeground.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (holder.deleteView.getVisibility() == View.GONE || holder.editView.getVisibility() == View.GONE) {
+
+                    holder.deleteView.setVisibility(View.VISIBLE);
+                    holder.editView.setVisibility(View.VISIBLE);
+
+                    holder.foodName.setMaxLines(30);
+                    holder.foodName.setEllipsize(null);
+                    new android.os.Handler().postDelayed(
+                            new Runnable() {
+                                public void run() {
+                                    for (int i = 0; i < foodList.size(); i++) {
+                                        if (i != holder.getAdapterPosition())
+                                            notifyItemChanged(i);
+                                    }
+                                }
+                            },
+                            50);
+
+                    ((CreateMealActivity) context).scrollToPosition(holder.getAdapterPosition());
+
+                } else {
+
+                    holder.deleteView.setVisibility(View.GONE);
+                    holder.editView.setVisibility(View.GONE);
+
+                    holder.foodName.setMaxLines(1);
+                    holder.foodName.setEllipsize(TextUtils.TruncateAt.END);
+                }
             }
         });
 
-        if(meal.getId() == -1){
-            holder.itemLayout.setVisibility(View.INVISIBLE);
-            holder.itemLayout2.setVisibility(View.VISIBLE);
-            holder.foodName2.setText(meal.getName());
-            holder.foodCarbs2.setText(new StringBuilder(meal.getCarbs() + "g"));
+        holder.viewForeground.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                showDialog(meal);
+                holder.deleteView.setVisibility(View.GONE);
+                holder.editView.setVisibility(View.GONE);
+                return true;
+            }
+        });
 
-            holder.viewForeground.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (holder.optionsView.getVisibility() == View.GONE) {
-                        holder.optionsView.setVisibility(View.VISIBLE);
-                        for (int i = 0; i < foodList.size(); i++) {
-                            if (i != holder.getAdapterPosition())
-                                notifyItemChanged(i);
-                        }
-
-                        ((CreateMealActivity) context).scrollToPosition(holder.getAdapterPosition());
-
-                    } else {
-                        holder.optionsView.setVisibility(View.GONE);
-                    }
-                }
-            });
-
-            holder.viewForeground.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    showDialog2(meal);
-                    holder.optionsView.setVisibility(View.GONE);
-                    return true;
-                }
-            });
-
-            holder.editItemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showDialog2(meal);
-                }
-            });
-
-        } else {
-            holder.itemLayout.setVisibility(View.VISIBLE);
-            holder.itemLayout2.setVisibility(View.GONE);
-            holder.foodName.setText(meal.getName());
-            holder.foodPortion.setText(new StringBuilder(String.valueOf(meal.getQuantity()) + "g"));
-            holder.foodCarbs.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getCarbs()) + "g"));
-
-            holder.viewForeground.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (holder.optionsView.getVisibility() == View.GONE) {
-                        holder.optionsView.setVisibility(View.VISIBLE);
-                        holder.foodName.setMaxLines(30);
-                        holder.foodName.setEllipsize(null);
-                        new android.os.Handler().postDelayed(
-                                new Runnable() {
-                                    public void run() {
-                                        for (int i = 0; i < foodList.size(); i++) {
-                                            if (i != holder.getAdapterPosition())
-                                                notifyItemChanged(i);
-                                        }
-                                    }
-                                },
-                                50);
-
-                        ((CreateMealActivity) context).scrollToPosition(holder.getAdapterPosition());
-
-                    } else {
-                        holder.optionsView.setVisibility(View.GONE);
-                        holder.foodName.setMaxLines(1);
-                        holder.foodName.setEllipsize(TextUtils.TruncateAt.END);
-                    }
-                }
-            });
-
-            holder.viewForeground.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    showDialog(meal);
-                    holder.optionsView.setVisibility(View.GONE);
-                    return true;
-                }
-            });
-
-            holder.editItemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showDialog(meal);
-                }
-            });
-        }
+        holder.editItemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(meal);
+            }
+        });
     }
 
     @Override
@@ -206,6 +185,8 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
     }
 
     private void showDialog(final MealItem mealItem) {
+
+        ContextThemeWrapper contextThemeWrapper = new ContextThemeWrapper(context, R.style.AlertDialogCustom);
         LayoutInflater layoutInflaterAndroid = LayoutInflater.from(context.getApplicationContext());
         View view = layoutInflaterAndroid.inflate(R.layout.select_portion_dialog, null);
 
@@ -213,7 +194,8 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
         numberPicker.setMinValue(1);
         numberPicker.setMaxValue(5000);
         numberPicker.setWrapSelectorWheel(false);
-        numberPicker.setValue(mealItem.getQuantity());
+        if(mealItem.getId()==-1){numberPicker.setValue((int) mealItem.getCarbs());}else{numberPicker.setValue(mealItem.getQuantity());}
+
         numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 
         final EditText editText = view.findViewById(R.id.number_input);
@@ -254,12 +236,13 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
 
         typePicker.setOnValueChangedListener(typePickerListener);
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(contextThemeWrapper);
         alertDialogBuilder
                 .setView(view)
                 .setTitle(mealItem.getName())
                 .setNeutralButton(context.getString(R.string.keyboard), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        //turns keyboard on
                     }
                 })
                 .setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -271,85 +254,25 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
                 .setPositiveButton(context.getString(R.string.done), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        int quantity;
-                        if(typePicker.getValue() == 0)
-                            quantity = numberPicker.getValue();
-                        else{
-                            quantity = numberPicker.getValue() * 100;
+                        if(mealItem.getId()==-1){
+                            int quantity;
+                            if(typePicker.getValue() == 0)
+                                quantity = numberPicker.getValue();
+                            else{
+                                quantity = numberPicker.getValue() * 100;
+                            }
+                            mealItem.setCarbs(quantity);//setQuantity(quantity);
+
+                        }else{
+                            int quantity;
+                            if(typePicker.getValue() == 0)
+                                quantity = numberPicker.getValue();
+                            else{
+                                quantity = numberPicker.getValue() * 100;
+                            }
+                            mealItem.setQuantity(quantity);
+
                         }
-                        mealItem.setQuantity(quantity);
-
-                        updateItem(mealItem);
-
-                    }
-                });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-
-        alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(numberPicker.getVisibility() == View.INVISIBLE){
-                    hideSoftKeyboard(editText,(CreateMealActivity)context);
-                    numberPicker.setVisibility(View.VISIBLE);
-                    editText.setVisibility(View.GONE);
-                } else{
-                    numberPicker.setVisibility(View.INVISIBLE);
-                    editText.setVisibility(View.VISIBLE);
-                    showSoftKeyboard(editText,(CreateMealActivity)context);
-                }
-            }
-        });
-    }
-
-    private void showDialog2(final MealItem mealItem){
-        LayoutInflater layoutInflaterAndroid = LayoutInflater.from(context.getApplicationContext());
-        View view = layoutInflaterAndroid.inflate(R.layout.add_carbs_dialog, null);
-
-        final NumberPicker numberPicker = view.findViewById(R.id.number_picker);
-        numberPicker.setMinValue(1);
-        numberPicker.setMaxValue(5000);
-        numberPicker.setWrapSelectorWheel(false);
-        numberPicker.setValue((int)mealItem.getCarbs());
-        numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
-
-        final EditText editText = view.findViewById(R.id.number_input);
-        editText.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() != 0)
-                    numberPicker.setValue(Integer.valueOf(s.toString()));
-            }
-        });
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-        alertDialogBuilder
-                .setView(view)
-                .setTitle(mealItem.getName())
-                .setNeutralButton(context.getString(R.string.keyboard), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                    }
-                })
-                .setNegativeButton(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .setPositiveButton(context.getString(R.string.done), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        mealItem.setCarbs(numberPicker.getValue());
-
                         updateItem(mealItem);
 
                     }
@@ -388,18 +311,15 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        public ConstraintLayout viewBackground;
-        public FrameLayout viewForeground;
-
-        ConstraintLayout itemLayout, itemLayout2;
+        public CardView viewForeground;
         TextView foodName;
         TextView foodPortion;
         TextView foodCarbs;
-        TextView foodName2;
-        TextView foodCarbs2;
-        LinearLayout optionsView;
+        CardView editView;
+        CardView deleteView;
         LinearLayout deleteItemView;
         LinearLayout editItemView;
+        ImageView weightIcon_img;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -407,17 +327,12 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
             foodName = itemView.findViewById(R.id.food_name);
             foodPortion = itemView.findViewById(R.id.food_portion);
             foodCarbs = itemView.findViewById(R.id.food_carbs);
-            foodName2 = itemView.findViewById(R.id.food_name_2);
-            foodCarbs2 = itemView.findViewById(R.id.food_carbs_2);
-            viewBackground = itemView.findViewById(R.id.view_background);
-            viewForeground = itemView.findViewById(R.id.view_foreground);
-            optionsView = itemView.findViewById(R.id.item_options_buttons_layout);
+            viewForeground = itemView.findViewById(R.id.foodCardView);
+            deleteView = itemView.findViewById(R.id.cardViewEdit);
+            editView = itemView.findViewById(R.id.cardViewRemove);
             deleteItemView = itemView.findViewById(R.id.delete_item);
             editItemView = itemView.findViewById(R.id.edit_item);
-
-            itemLayout = itemView.findViewById(R.id.layout1);
-            itemLayout2 = itemView.findViewById(R.id.layout2);
-
+            weightIcon_img = itemView.findViewById(R.id.weight_icon);
         }
     }
 }

@@ -27,27 +27,22 @@
 
             <TextView
                 android:id="@+id/food_name"
-                android:layout_width="0dp"
-                android:layout_height="28dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
-                android:text="Arroz com frango"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Arroz com frango com pedaços de cenas e cenas ayy limao"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textColor="@color/primary_text"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/add_meal_item"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:paddingStart="8dp"
+                android:paddingEnd="40dp"
+                android:textSize="18sp"/>
 
             <ImageView
                 android:id="@+id/add_meal_item"
                 android:layout_width="32dp"
                 android:layout_height="0dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginRight="24dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
                 android:clickable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

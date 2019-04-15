@@ -331,7 +331,7 @@ public class homeRightFragment extends Fragment {
             File profile_img = new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg");
             if(profile_img.exists()){
                 Bitmap bmp = BitmapFactory.decodeFile(profile_img.getAbsolutePath());
-                mCircleView.setImageBitmap(Bitmap.createScaledBitmap(bmp, THUMBSIZE, THUMBSIZE, false));
+                if(bmp!=null){mCircleView.setImageBitmap(Bitmap.createScaledBitmap(bmp, THUMBSIZE, THUMBSIZE, false));}
             }
         }else{
             //requestPermissions( new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, RIGHT_FRAGMENT_PICTURE);

@@ -88,8 +88,8 @@ public class homeLeftFragment extends Fragment {
         // Inflate the layout for this fragment
         View layout = inflater.inflate(R.layout.fragment_home_left, container, false);
 
-        layout1 = (CardView) layout.findViewById(R.id.layout1);
-        layout2 = (CardView) layout.findViewById(R.id.layout2);
+        layout1 = (CardView) layout.findViewById(R.id.foodConstrainLayout);
+        layout2 = (CardView) layout.findViewById(R.id.DiseaseCardView);
         layout3 = (CardView) layout.findViewById(R.id.layout3);
         layout4 = (CardView) layout.findViewById(R.id.layout4);
         layout5 = (CardView) layout.findViewById(R.id.layout5);

@@ -7,14 +7,10 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,7 +19,6 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.activities.BaseActivity;
-import pt.it.porto.mydiabetes.ui.createMeal.adapters.MealItemListAdapter;
 import pt.it.porto.mydiabetes.ui.createMeal.adapters.ViewPagerAdapter;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
 import pt.it.porto.mydiabetes.ui.createMeal.fragments.FoodListFragment;
@@ -32,10 +27,6 @@ import pt.it.porto.mydiabetes.ui.createMeal.fragments.LoggedMealListFragment;
 
 public class SelectMealActivity extends BaseActivity {
     private static final String TAG = "SelectMealActivity";
-
-//    private RecyclerView recyclerView;
-//    private MealItemListAdapter mAdapter;
-//    private SearchView searchView;
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -144,6 +135,7 @@ public class SelectMealActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void logSave (String activity) {
         DB_Read db = new DB_Read(getBaseContext());
         int idUser = db.getUserId();

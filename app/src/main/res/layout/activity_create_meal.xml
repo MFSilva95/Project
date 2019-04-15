@@ -14,9 +14,9 @@
         android:layout_height="140dp"
         android:layout_centerInParent="true"
         android:layout_gravity="center"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="8dp"
         android:clickable="true"
         android:innerRadius="0dp"
         android:shape="ring"
@@ -58,10 +58,10 @@
                     android:id="@+id/meal_total_carbs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
                     android:fontFamily="sans-serif-condensed"
                     android:gravity="center"
                     android:text="0.0g"
@@ -94,7 +94,7 @@
 
     </android.support.v7.widget.CardView>
 
-    <android.support.constraint.ConstraintLayout
+    <LinearLayout
         android:id="@+id/total_carbs_view_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -106,18 +106,17 @@
 
         <TextView
             android:id="@+id/textView19"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_gravity="center_vertical"
             android:layout_marginStart="24dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_weight="1"
             android:text="@string/total_carbs"
             android:textAllCaps="false"
             android:textColor="@color/secondary_text"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/meal_total_carbs2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/meal_total_carbs2" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/meal_total_carbs2"
@@ -125,26 +124,23 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
             android:fontFamily="sans-serif-condensed"
-            android:gravity="center"
+            android:gravity="bottom"
             android:text="0.0g"
             android:textAllCaps="false"
             android:textColor="@color/accent"
             android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </android.support.constraint.ConstraintLayout>
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/empty_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/build_meal_info"
         android:textColor="@color/secondary_text"
@@ -159,7 +155,6 @@
         android:id="@+id/meal_items_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="78dp"
         android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -168,32 +163,33 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/total_carbs_view_2" />
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <!--<android.support.design.widget.CoordinatorLayout-->
+    <!--android:id="@+id/coordinatorLayout"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="0dp"-->
+    <!-->-->
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_item_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="@color/accent"
+        app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/ic_plus_2" />
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/add_item_fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:backgroundTint="@color/accent"
-            app:fabSize="normal"
-            app:srcCompat="@drawable/ic_plus_2" />
-
-    </android.support.design.widget.CoordinatorLayout>
+    <!--</android.support.design.widget.CoordinatorLayout>-->
 
 
 </android.support.constraint.ConstraintLayout>

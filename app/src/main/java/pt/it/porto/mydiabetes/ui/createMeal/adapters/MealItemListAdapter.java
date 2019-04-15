@@ -27,7 +27,7 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
 
     public MealItemListAdapter(List<MealItem> itemList, Context context) {
         this.itemList = itemList;
-        this.itemList.add(0, new MealItem(-1, context.getString(R.string.extra_carbs), 0));
+        this.itemList.add(0, new MealItem(-1, context.getString(R.string.extra_carbs), 100));
         this.context = context;
         itemListCopy = new ArrayList<>();
         itemListCopy.addAll(itemList);
@@ -42,22 +42,18 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final MealItem meal = itemList.get(position);
+        MealItem meal = itemList.get(position);
 
         holder.nameTextView.setText(meal.getName());
 
         if(meal.getId() == -1){
             holder.carbsTextView.setVisibility(View.INVISIBLE);
             holder.perPortionText.setVisibility(View.INVISIBLE);
-        } else
+        } else{
             holder.carbsTextView.setText(new StringBuilder(String.valueOf(meal.getCarbs()) + "g " + context.getString(R.string.carbs)));
-
-        holder.addMealItemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+            holder.carbsTextView.setVisibility(View.VISIBLE);
+            holder.perPortionText.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

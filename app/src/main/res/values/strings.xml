@@ -17,6 +17,10 @@
 
     <string name="upload_successful">Envio feito com sucesso.</string>
 
+    <string name="error_meal_act">"Valor de H.Carb introduzido para a refeição é menor do que o total de H.Carb dos itens!"</string>
+
+
+
 
 
     <string name="upload_failed">Infelizmente falhou o envio, tente mais tarde.</string>

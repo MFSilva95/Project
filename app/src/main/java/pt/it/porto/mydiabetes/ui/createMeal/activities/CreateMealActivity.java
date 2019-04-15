@@ -107,16 +107,16 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
         currentMealItemList = new ArrayList<>();
         currentMealId = -1;
 
-        addMealItemButton = (FloatingActionButton)findViewById(R.id.add_item_fab);
-        mealTotalCarbsTextView = (TextView)findViewById(R.id.meal_total_carbs2);
-        emptyListMessageView = (TextView)findViewById(R.id.empty_message);
-        thumbnailPhotoView = (CircleImageView) findViewById(R.id.photo_view);
-        cameraPlaceholder = (ImageView) findViewById(R.id.camera_placeholder);
+        addMealItemButton = findViewById(R.id.add_item_fab);
+        mealTotalCarbsTextView = findViewById(R.id.meal_total_carbs2);
+        emptyListMessageView = findViewById(R.id.empty_message);
+        thumbnailPhotoView = findViewById(R.id.photo_view);
+        cameraPlaceholder = findViewById(R.id.camera_placeholder);
 
         initListeneres();
 
         mAdapter = new CreateMealListAdapter(currentMealItemList, this);
-        mealItemListView = (RecyclerView)findViewById(R.id.meal_items_list);
+        mealItemListView = findViewById(R.id.meal_items_list);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mealItemListView.setLayoutManager(mLinearLayoutManager);
         mealItemListView.setHasFixedSize(true);
@@ -179,6 +179,7 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
                     Toast.makeText(getBaseContext(),R.string.all_permissions,Toast.LENGTH_LONG).show();
                 }
                 break;
+
             case REQUEST_MEAL_ITEM:
                 if(resultCode == RESULT_OK && data.hasExtra("meal_item")){
                     MealItem item = data.getExtras().getParcelable("meal_item");
@@ -224,11 +225,7 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
             case REQUEST_TAKE_PHOTO:
                 if(resultCode == RESULT_OK){
                     setMealPhoto(data);
-                    //Toast.makeText(this, "Photo attached", Toast.LENGTH_SHORT).show();
                 }
-//                else{
-//                    currentMealPhotoPath = null;
-//                }
                 break;
 
             case IMAGE_VIEW:
@@ -313,7 +310,7 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
 
     private void messageToUser(){
         mealTotalCarbsTextView.setTextColor(getResources().getColor(R.color.edittext_error_color));
-        Snackbar snackbar = Snackbar.make(addMealItemButton,"Valor de H.Carb introduzido para a refeição é menor do que o total de H.Carb dos itens!", 5000);
+        Snackbar snackbar = Snackbar.make(addMealItemButton,R.string.error_meal_act, 5000);
         snackbar.getView().setBackgroundColor(this.getResources().getColor(R.color.primary));
         snackbar.show();
     }

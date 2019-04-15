@@ -135,7 +135,7 @@
                 android:padding="15dp">
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/edit_item_image"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
                     android:tint="@android:color/darker_gray"

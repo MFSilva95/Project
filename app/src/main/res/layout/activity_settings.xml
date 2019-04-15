@@ -160,7 +160,7 @@
                     android:background="?android:attr/dividerVertical" />
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/carbs_def_textView"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_weight="1"
@@ -185,7 +185,7 @@
                     android:background="?android:attr/dividerVertical" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/edit_item_textView"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_weight="1"
