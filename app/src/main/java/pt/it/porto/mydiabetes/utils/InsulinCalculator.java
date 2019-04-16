@@ -19,8 +19,8 @@ public class InsulinCalculator  implements Cloneable {
 	 */
 	public final float IOB_LINE_DECLINE = 0.125f;
 	InsulinCalculatorListener listener;
-	private int glycemiaRatio;
-	private int carbsRatio;
+	private float glycemiaRatio;
+	private float carbsRatio;
 	private int insulinTarget;
 	private int carbs;
 	private int glycemia;
@@ -169,10 +169,10 @@ public class InsulinCalculator  implements Cloneable {
 		this.glycemiaRatio = glycemiaRatio;
 	}
 
-	public int getCarbsRatio() {
+	public float getCarbsRatio() {
 		return carbsRatio;
 	}
-	public int getInsulinRatio() {
+	public float getInsulinRatio() {
 		return glycemiaRatio;
 	}
 

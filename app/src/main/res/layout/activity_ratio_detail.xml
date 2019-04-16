@@ -188,8 +188,8 @@
 					android:width="100dp"
 					android:background="@android:color/transparent"
 					android:hint="@string/mg_dl"
-					android:inputType="number"
-					android:maxLength="3"
+					android:inputType="numberDecimal"
+					android:maxLength="5"
 					android:textSize="18sp" />
 
 			</LinearLayout>

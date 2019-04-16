@@ -166,8 +166,8 @@ public class NewHomeRegistry extends BaseActivity{
 
     private LoggedMeal mCurrentMeal = null;
 
-    int iRatio;
-    int cRatio;
+    float iRatio;
+    float cRatio;
 
 
     private boolean isRecordUpdate = false;

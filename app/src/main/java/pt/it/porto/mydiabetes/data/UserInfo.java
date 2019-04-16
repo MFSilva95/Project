@@ -15,8 +15,8 @@ public class UserInfo {
 	private int id;
 	private String username;
 	private int diabetesType;
-	private int insulinRatio;
-	private int carbsRatio;
+	private float insulinRatio;
+	private float carbsRatio;
 	private int lowerRange;
 	private int higherRange;
 	private String birthday;
@@ -113,19 +113,19 @@ public class UserInfo {
 		this.bg_target_Factor = tg;
 	}
 
-	public int getInsulinRatio() {
+	public float getInsulinRatio() {
 		return insulinRatio;
 	}
 
-	public void setInsulinRatio(int insulinRatio) {
+	public void setInsulinRatio(float insulinRatio) {
 		this.insulinRatio = insulinRatio;
 	}
 
-	public int getCarbsRatio() {
+	public float getCarbsRatio() {
 		return carbsRatio;
 	}
 
-	public void setCarbsRatio(int carbsRatio) {
+	public void setCarbsRatio(float carbsRatio) {
 		this.carbsRatio = carbsRatio;
 	}
 

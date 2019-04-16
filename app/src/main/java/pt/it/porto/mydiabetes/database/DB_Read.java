@@ -1752,23 +1752,23 @@ public class DB_Read {
 			return false;
 		}
 	}
-	public int Sensitivity_GetCurrent(String currentTime) {
+	public float Sensitivity_GetCurrent(String currentTime) {
 		Cursor cursor = myDB.rawQuery("SELECT Value FROM Sensitivity_Reg Where TimeStart <= '"+currentTime+ "' ORDER BY TimeStart DESC limit 1", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 //			Log.i("cenas", "Sensitivity_GetCurrent: ->>>>>> "+currentTime+ " with value: "+cursor.getString(0));
-			return Integer.parseInt(cursor.getString(0));
+			return Float.parseFloat(cursor.getString(0));
 		} else {
 			cursor.close();
 			return -1;
 		}
 	}
-	public int Ratio_GetCurrent(String currentTime) {
+	public float Ratio_GetCurrent(String currentTime) {
 		Cursor cursor = myDB.rawQuery("SELECT Value FROM Ratio_Reg Where TimeStart <= '"+currentTime+ "' ORDER BY TimeStart DESC limit 1", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 //			Log.i("cenas", "RATIO_GetCurrent: ->>>>>> "+currentTime+ " with value: "+cursor.getString(0));
-			return Integer.parseInt(cursor.getString(0));
+			return Float.parseFloat(cursor.getString(0));
 		} else {
 			cursor.close();
 			return -1;

@@ -104,6 +104,7 @@
     <string name="error_insulin">O valor inserido não é válido</string>
     <string name="error_glucose">O valor inserido não é válido</string>
     <string name="error_invalid_height" >Altura errada, tem de ser em metros. (Falta um ponto algures?)</string>
+    <string name="error_invalid_parameter">Valor fora dos padrões normais</string>
     <string name="error_field_required" >Campo necessário</string>
     <string name="error_repeated_name" >O Nome não pode ser repetido</string>
 
@@ -263,10 +264,10 @@
     <string name="HbA1c" translatable="false">HbA1c</string>
     <string name="diabetes_type">Tipo de diabetes</string>
     <string name="sensivity_factor">Fator de sensibilidade</string>
-    <string name="hint_value3">ex.: 45</string>
+    <string name="hint_value3">ex.: 45.0</string>
     <string name="hint_value_bg_target" translatable="false">ex.: 100</string>
     <string name="carbs_racio">Rácio Hidratos de Carbono</string>
-    <string name="hint_value4">ex.: 10</string>
+    <string name="hint_value4">ex.: 10.0</string>
     <string name="hypoglycemia_limit">Limite para hipoglicemia</string>
     <string name="hint_value5">ex.: 70</string>
     <string name="hyperglycemia_limit">Limite para hiperglicemia</string>

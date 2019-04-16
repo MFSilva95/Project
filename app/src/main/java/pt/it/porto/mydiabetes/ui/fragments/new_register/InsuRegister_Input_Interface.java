@@ -37,8 +37,8 @@ public class InsuRegister_Input_Interface extends LinearLayout {
     protected InsulinCalcView fragmentInsulinCalcsFragment;
     private boolean calcShowing;
     private boolean useIOB;
-    private int iRatio;
-    private int cRatio;
+    private float iRatio;
+    private float cRatio;
     private Spinner insu_spinner;
     private InsulinCalculator calc;
     private TextWatcher insuWatcher;
@@ -46,7 +46,7 @@ public class InsuRegister_Input_Interface extends LinearLayout {
 
     public boolean isManual(){  return isManual;
     }
-    public InsuRegister_Input_Interface(Context context, int iRatio, int cRatio) {
+    public InsuRegister_Input_Interface(Context context, float iRatio, float cRatio) {
         super(context);
         this.iRatio = iRatio;
         this.cRatio = cRatio;

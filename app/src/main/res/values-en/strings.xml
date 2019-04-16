@@ -14,6 +14,8 @@
 
     <string name="error_meal_act">The inserted meal\'s carbohydrate value is below the items\' carbohydrate value sum!</string>
 
+    <string name="error_invalid_parameter">Invalid abnormal value</string>
+
     <string name="failed_import_img">Could not access the image.</string>
     <string name="upload_successful">Upload completed successfully.</string>
 

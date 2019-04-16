@@ -85,9 +85,9 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 
 		if(user_info!=null){
-			int carbsR;
+			float carbsR;
 			if((carbsR = user_info.getCarbsRatio())!=-1){carbsRatio.setText(carbsR+"");}
-			int sensF;
+			float sensF;
 			if((sensF = user_info.getInsulinRatio())!=-1){sensibilityFactor.setText(sensF+"");}
 			int hypoV;
 			if((hypoV = user_info.getLowerRange())!=-1){hypoglycemiaLimit.setText(hypoV+"");}
@@ -157,7 +157,8 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 		// Checks if sensibility Factor is valid
 		float val = getNumber(sensibilityFactorVal);
-		if (TextUtils.isEmpty(sensibilityFactorVal) && Float.compare(val, -1) <= 0) {
+
+		if (TextUtils.isEmpty(sensibilityFactorVal) || Float.compare(val, -1) <= 0) {
 			sensibilityFactor.setError(getString(R.string.error_field_required));
 			focusView = sensibilityFactor;
 			cancel = true;
@@ -165,7 +166,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 		// Checks if carbs Ratio is valid
 		val = getNumber(carbsRatioVal);
-		if (TextUtils.isEmpty(carbsRatioVal) && Float.compare(val, -1) <= 0) {
+		if (TextUtils.isEmpty(carbsRatioVal) || Float.compare(val, -1) <= 0) {
 			carbsRatio.setError(getString(R.string.error_field_required));
 			focusView = carbsRatio;
 			cancel = true;
@@ -173,24 +174,43 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 		// Checks if hypoglycemia limit is valid
 		val = getNumber(hypoglycemiaLimitVal);
-		if (TextUtils.isEmpty(hypoglycemiaLimitVal) && Float.compare(val, -1) <= 0) {
+		if (TextUtils.isEmpty(hypoglycemiaLimitVal) || Float.compare(val, -1) <= 0) {
 			hypoglycemiaLimit.setError(getString(R.string.error_field_required));
 			focusView = hypoglycemiaLimit;
 			cancel = true;
+		}else {
+			if (val <= 40 || val >= 500) {
+				hypoglycemiaLimit.setError(getString(R.string.error_invalid_parameter));
+				focusView = hypoglycemiaLimit;
+				cancel = true;
+			}
 		}
 
 		// Checks if hyperglycemia limit is valid
 		val = getNumber(hyperglycemiaLimitVal);
-		if (TextUtils.isEmpty(hyperglycemiaLimitVal) && Float.compare(val, -1) <= 0) {
+		if (TextUtils.isEmpty(hyperglycemiaLimitVal) || Float.compare(val, -1) <= 0) {
 			hyperglycemiaLimit.setError(getString(R.string.error_field_required));
 			focusView = hyperglycemiaLimit;
 			cancel = true;
+		}else{
+			if(val<=40 || val >= 500){
+				hyperglycemiaLimit.setError(getString(R.string.error_invalid_parameter));
+				focusView = hyperglycemiaLimit;
+				cancel = true;
+			}
 		}
+
 		val = getNumber(targetBGVal);
-		if (TextUtils.isEmpty(targetBGVal) && Float.compare(val, -1) <= 0) {
+		if (TextUtils.isEmpty(targetBGVal) || Float.compare(val, -1) <= 0) {
 			bg_target_Factor.setError(getString(R.string.error_field_required));
 			focusView = bg_target_Factor;
 			cancel = true;
+		}else{
+			if(val<=40 || val >= 500){
+			bg_target_Factor.setError(getString(R.string.error_invalid_parameter));
+			focusView = bg_target_Factor;
+			cancel = true;
+			}
 		}
 
 
@@ -211,8 +231,8 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 		if(height>100){height = height/100;}
 
-		int carbsR = Integer.parseInt(carbsRatio.getText().toString(), 10);
-		int sensR = Integer.parseInt(sensibilityFactor.getText().toString(), 10);
+		float carbsR = Float.parseFloat(carbsRatio.getText().toString());
+		float sensR = Float.parseFloat(sensibilityFactor.getText().toString());
 		int bg_target = Integer.parseInt(bg_target_Factor.getText().toString(), 10);
 
 		MyDiabetesStorage storage = MyDiabetesStorage.getInstance(getContext());

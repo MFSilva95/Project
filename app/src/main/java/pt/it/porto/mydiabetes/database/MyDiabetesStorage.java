@@ -114,7 +114,7 @@ public class MyDiabetesStorage {
 		}
 	}
 
-	public void initRacioSens(int value, String table){
+	public void initRacioSens(float value, String table){
 
 		SQLiteDatabase db = mHandler.getWritableDatabase();
 		DB_Read dbRead = new DB_Read(db);
@@ -173,7 +173,7 @@ public class MyDiabetesStorage {
 		return cursor.getCount() != 0;
 	}
 
-	public boolean addUserData(String name, int diabetesType, int insulinRatio, int carbsRatio, float lowerRange, float higherRange, String birthday, int gender, float height, int bg_t) {
+	public boolean addUserData(String name, int diabetesType, float insulinRatio, float carbsRatio, float lowerRange, float higherRange, String birthday, int gender, float height, int bg_t) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_NAME, name);
 		toInsert.put(MyDiabetesContract.UserInfo.COLUMN_NAME_DIABETES_TYPE, diabetesType);
