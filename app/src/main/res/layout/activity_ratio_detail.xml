@@ -187,13 +187,13 @@
 					android:layout_weight="1"
 					android:width="100dp"
 					android:background="@android:color/transparent"
-					android:hint="@string/mg_dl"
+
 					android:inputType="numberDecimal"
 					android:maxLength="5"
 					android:textSize="18sp" />
 
 			</LinearLayout>
-
+			<!--android:hint="@string/mg_dl"-->
 
 		</LinearLayout>
 	</ScrollView>
