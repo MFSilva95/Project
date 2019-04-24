@@ -1,7 +1,9 @@
 package pt.it.porto.mydiabetes.ui.fragments.home;
 
 import android.app.AlertDialog;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -44,6 +46,7 @@ import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.HomeElement;
+import pt.it.porto.mydiabetes.widget;
 
 /**
  * Created by parra on 21/02/2017.
@@ -94,15 +97,16 @@ public class homeMiddleFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("onActivityResult");
         if (requestCode == WAIT_REGISTER && resultCode == Home.CHANGES_OCCURRED) {
             updateHomeList();
         }
-        updateHomeList();
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        System.out.println("onCreateView");
         View layout = inflater.inflate(R.layout.fragment_home_middle, container, false);
         //yapDroid = YapDroid.newInstance(this);
         homeRecyclerView = (RecyclerView) layout.findViewById(R.id.HomeListDisplay);
@@ -111,10 +115,12 @@ public class homeMiddleFragment extends Fragment {
 
         setFabClickListeners();
         fillHomeList();
+        updateHomeList();
         return layout;
     }
 
     private void updateHomeList() {
+        System.out.println("updateHomeList()");
         logBookList = new LinkedList<>();
         //fillAdviceList();
         fillDays();
@@ -124,12 +130,26 @@ public class homeMiddleFragment extends Fragment {
             listEmpty.bringToFront();
         } else {
             listEmpty.setVisibility(View.GONE);
+
+            // Widget update section
+            triggerWidget();
         }
 
         logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
         logBookList.add(new HomeElement(HomeElement.Type.SPACE, ""));
         ((HomeAdapter) homeRecyclerView.getAdapter()).updateList(logBookList);
         homeRecyclerView.getAdapter().notifyDataSetChanged();
+    }
+
+    private void triggerWidget() {
+        Intent intent = new Intent(getContext(), widget.class);
+
+        // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+        // since it seems the onUpdate() is only fired on that:
+        intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
+        int ids[] = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), widget.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+        getContext().sendBroadcast(intent);
     }
 
     private void fillHomeList() {
@@ -203,7 +223,7 @@ public class homeMiddleFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        //updateHomeList();
+        updateHomeList();
     }
 
     public static long getDateInMillis(String srcDate) {

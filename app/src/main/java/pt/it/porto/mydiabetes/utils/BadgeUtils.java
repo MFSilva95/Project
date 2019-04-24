@@ -474,6 +474,7 @@ public class BadgeUtils {
         if(LevelsPointsUtils.getLevel(context, db) < LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
             PointsRec pnt = db.getFirstPointToReachLevel(0);
             exerciseEntries = db.getExerciseFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),EXERCISE_GOLD_RECORDS_B);
+            exerciseEntries = db.getExerciseFromStartDate(pnt.getFormattedDate()+" "+pnt.getFormattedTime(),EXERCISE_GOLD_RECORDS_B);
 
         }
         if(LevelsPointsUtils.getLevel(context, db) >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL && LevelsPointsUtils.getLevel(context, db) < LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){

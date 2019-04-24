@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.Pair;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -19,6 +20,7 @@ import pt.it.porto.mydiabetes.data.BloodPressureRec;
 import pt.it.porto.mydiabetes.data.CarbsRatioData;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.CholesterolRec;
+import pt.it.porto.mydiabetes.data.DateTime;
 import pt.it.porto.mydiabetes.data.Disease;
 import pt.it.porto.mydiabetes.data.DiseaseRec;
 import pt.it.porto.mydiabetes.data.ExerciseRec;
@@ -885,6 +887,29 @@ public class DB_Read {
             return 0;
         }
     }
+
+    public LinkedList<String> getLastRecord(int userId) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Record WHERE Id_User = "+ userId +" ORDER BY DateTime DESC LIMIT 1;", null);
+		LinkedList<String> ll = null;
+
+		if (cursor.getCount() > 0) {
+			ll = new LinkedList<>();
+			cursor.moveToFirst();
+			int carbVal = getCarbsValByID(cursor.getInt(4));
+			float insuVal = getInsuValByID(cursor.getInt(5));
+			int glycVal = getGlycaemiaValByID(cursor.getInt(6));
+
+			ll.add(cursor.getString(2));
+			ll.add(String.valueOf(carbVal));
+			ll.add(String.valueOf(insuVal));
+			ll.add(String.valueOf(glycVal));
+
+			return ll;
+		} else {
+			cursor.close();
+			return ll;
+		}
+	}
 
     @Nullable
     public LinkedList<ExerciseRec> getExerciseFromStartDate(String startDate, int limit) {
@@ -2105,6 +2130,22 @@ public class DB_Read {
 		int value = -1;
 
 		Cursor cursor = myDB.rawQuery("SELECT Value FROM Reg_CarboHydrate WHERE Id = "+id_carbs+";", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			value = cursor.getInt(0);
+			cursor.close();
+			return value;
+		} else {
+			cursor.close();
+			return -1;
+		}
+	}
+
+	private int getInsuValByID(int id_insulin) {
+
+		int value = -1;
+
+		Cursor cursor = myDB.rawQuery("SELECT Value FROM Reg_Insulin WHERE Id = "+id_insulin+";", null);
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			value = cursor.getInt(0);
