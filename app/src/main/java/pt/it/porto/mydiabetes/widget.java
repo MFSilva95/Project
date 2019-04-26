@@ -1,40 +1,59 @@
 package pt.it.porto.mydiabetes;
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import java.util.Calendar;
+
 import android.os.Bundle;
 import android.content.Intent;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.RemoteViews;
-import android.widget.TextView;
+
 
 import com.github.mikephil.charting.charts.LineChart;
+
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
-import org.w3c.dom.Text;
 
 import java.util.LinkedList;
 
+import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.activities.Badges;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.LogbookChartList;
-import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
-import pt.it.porto.mydiabetes.ui.fragments.home.homeMiddleFragment;
-import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
-import pt.it.porto.mydiabetes.database.DB_Read;
+
+
+
+
+
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+
+
+
+
+
 
 /**
  * Implementation of App Widget functionality.
@@ -42,6 +61,10 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 public class widget extends AppWidgetProvider {
 
     private static final String FROM_WIDGET = "FROM_WIDGET";
+    private static final int WIDGET_HEIGHT = 300;
+    private static final int WIDTH_PADDING = 0;
+    private static final int N_REG = 5;
+
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -67,6 +90,8 @@ public class widget extends AppWidgetProvider {
         LinkedList<String> recordValues;
         int userId = db.getUserId();
         recordValues = db.getLastRecord(userId);
+        LinkedList<GlycemiaRec> lastXGlicaemias = db.getLastXGlycaemias(userId,N_REG);
+        db.close();
 
         // call method to set values
         if (recordValues != null) {
@@ -76,46 +101,15 @@ public class widget extends AppWidgetProvider {
             setText(remoteViews, R.id.widget_i_val, recordValues.get(2));
             setText(remoteViews, R.id.widget_g_val, recordValues.get(3));
         }
-        db.close();
 
 
-        LayoutInflater inflater = LayoutInflater.from(context);
-        View rowView = inflater.inflate(R.layout.widget, null, true);
-        LineChart chart = (LineChart) rowView.findViewById(R.id.chart);
-        chart.getDescription().setEnabled(false);
 
-
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
-        xAxis.setGranularity(1f);
-
-        YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setEnabled(false);
-
-        YAxis rightAxis = chart.getAxisRight();
-        rightAxis.setEnabled(false);
-
-        LinkedList<Entry> entries = new LinkedList<>();
-
-        entries.add(new BarEntry(1, 100));
-        entries.add(new BarEntry(2, 120));
-        entries.add(new BarEntry(3, 110));
-        entries.add(new BarEntry(4, 90));
-
-        LineDataSet set1 = new LineDataSet(entries, "");
-        set1.setColor(Color.GREEN);
-        set1.setLineWidth(3f);
-        set1.setValueTextSize(15f);
-        set1.setCubicIntensity(0.2f);
-        set1.setDrawCircles(true);
-        set1.setCircleRadius(5f);
-        set1.setCircleColor(Color.GREEN);
-        set1.setHighLightColor(Color.rgb(244, 117, 117));
-
-        LineData lineData = new LineData(set1);
-        chart.setData(lineData);
-        chart.invalidate();
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        Bitmap b = drawToBitmap(context,R.layout.chart_widget, metrics.widthPixels-WIDTH_PADDING, WIDGET_HEIGHT, lastXGlicaemias);
+        //Log.i("rawr", "updateAppWidget: W: "+ metrics.widthPixels+" H: "+metrics.heightPixels);
+        if(b!=null){
+            remoteViews.setImageViewBitmap(R.id.graph_img, b);
+        }
 
 
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
@@ -149,6 +143,146 @@ public class widget extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+public static class  MyXAxisValueFormatter extends IndexAxisValueFormatter {
+
+
+    private long referenceTimestamp; // minimum timestamp in your data set
+    private DateFormat mDataFormat;
+    private Date mDate;
+
+    /**
+     * An empty constructor.
+     * Use `setValues` to set the axis labels.
+     */
+    public MyXAxisValueFormatter(long referenceTimestamp) {
+        this.referenceTimestamp = referenceTimestamp;
+        this.mDataFormat = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+        this.mDate = new Date();
+    }
+
+    private String getHour(long timestamp){
+        try{
+            mDate.setTime(timestamp*1000);
+            return mDataFormat.format(mDate);
+        }
+        catch(Exception ex){
+            return "xx";
+        }
+    }
+
+
+    @Override
+    public String getFormattedValue(float value) {
+        // convertedTimestamp = originalTimestamp - referenceTimestamp
+        long convertedTimestamp = (long) value;
+
+        // Retrieve original timestamp
+        long originalTimestamp = referenceTimestamp + convertedTimestamp;
+
+        // Convert timestamp to hour:minute
+        return getHour(originalTimestamp);
+    }
+}
+
+
+
+
+    public static class MyValueFormatter extends ValueFormatter {
+
+        @Override
+        public String getFormattedValue(float value) {
+            // write your logic here
+            return (int) value+"";
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+    public static void setChart(Context context, LineChart chart, LinkedList<GlycemiaRec> glicData){
+
+        long firstTime = glicData.get(0).getDateTime().getTimeInMillis();
+
+        chart.getDescription().setEnabled(false);
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        MyXAxisValueFormatter xForm = new MyXAxisValueFormatter(firstTime);
+        xAxis.setValueFormatter(xForm);
+
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setEnabled(false);
+        YAxis rightAxis = chart.getAxisRight();
+        rightAxis.setEnabled(false);
+
+        LinkedList<Entry> entries = new LinkedList<>();
+
+        for(GlycemiaRec rec: glicData){
+            Calendar recC = rec.getDateTime();
+            long timeStamp = recC.getTimeInMillis();
+            long newTime = timeStamp-firstTime;
+            entries.add(new BarEntry(newTime, rec.getValue()));
+
+        }
+
+        LineDataSet set1 = new LineDataSet(entries, context.getString(R.string.glycemia_value));
+        set1.setColor(Color.GREEN);
+        set1.setLineWidth(3f);
+        set1.setValueTextSize(15f);
+        set1.setCubicIntensity(0.2f);
+        set1.setDrawCircles(true);
+        set1.setCircleRadius(5f);
+        set1.setCircleColor(Color.GREEN);
+        set1.setHighLightColor(Color.rgb(244, 117, 117));
+
+        LineData lineData = new LineData(set1);
+        lineData.setValueFormatter(new MyValueFormatter());
+        chart.setData(lineData);
+        chart.invalidate();
+    }
+
+    public static Bitmap drawToBitmap(Context context, int layoutResId, int width, int height, LinkedList<GlycemiaRec> glicData)
+    {
+        Bitmap drawing = Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
+
+        Canvas canvas = new Canvas(drawing);
+        LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(layoutResId,null);
+        LineChart chart = layout.findViewById(R.id.chart);
+        setChart(context, chart, glicData);
+
+        layout.setDrawingCacheEnabled(true);
+        layout.measure(
+                View.MeasureSpec.makeMeasureSpec(canvas.getWidth(),View.MeasureSpec.EXACTLY),
+                View.MeasureSpec.makeMeasureSpec(canvas.getHeight(),View.MeasureSpec.EXACTLY));
+        layout.layout(0,0,width,height);
+
+        layout.draw(canvas);
+
+        if(drawing != null){
+            canvas.drawBitmap(drawing,0,0,new Paint());
+        }
+        return drawing;
     }
 }
 

@@ -888,6 +888,33 @@ public class DB_Read {
         }
     }
 
+
+	public LinkedList<GlycemiaRec> getLastXGlycaemias(int userId, int nRec) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE Id_User = "+ userId +" AND DateTime >= datetime('now', '-3 Hour')  ORDER BY DateTime LIMIT "+nRec+";", null);
+		LinkedList<GlycemiaRec> exs = new LinkedList<>();
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			GlycemiaRec tmp;
+			do {
+
+				tmp = new GlycemiaRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setValue(cursor.getInt(2));
+				tmp.setDateTime(cursor.getString(3));
+				tmp.setObjective(cursor.getInt(6));
+				exs.add(tmp);
+
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return exs;
+		} else {
+			cursor.close();
+			return exs;
+		}
+	}
+
     public LinkedList<String> getLastRecord(int userId) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Record WHERE Id_User = "+ userId +" ORDER BY DateTime DESC LIMIT 1;", null);
 		LinkedList<String> ll = null;
