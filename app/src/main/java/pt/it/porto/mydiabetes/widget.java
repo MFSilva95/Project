@@ -175,8 +175,11 @@ public static class  MyXAxisValueFormatter extends IndexAxisValueFormatter {
 
     private String getHour(long timestamp){
         try{
-            mDate.setTime(timestamp*1000);
-            return mDataFormat.format(mDate);
+            mDate.setTime(timestamp);
+            String time_formated = mDataFormat.format(mDate);
+//            Log.i("rawr", "getHour: Timestamp: "+timestamp);
+//            Log.i("rawr", "getHour: "+time_formated);
+            return time_formated;
         }
         catch(Exception ex){
             return "xx";
