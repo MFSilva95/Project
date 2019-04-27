@@ -222,6 +222,7 @@ public static class  MyXAxisValueFormatter extends IndexAxisValueFormatter {
     public static void setChart(Context context, LineChart chart, LinkedList<GlycemiaRec> glicData){
 
         if(glicData==null){return;}
+        if(glicData.size()<=0){return;}
 
         long firstTime = glicData.get(0).getDateTime().getTimeInMillis();
 
