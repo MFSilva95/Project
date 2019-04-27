@@ -529,6 +529,10 @@
     <string name="total_carbs">H.Carb Totais</string>
     <string name="_total_of">Um total de</string>
     <string name="_carbs_in">H.Carb em</string>
+
+    <string name="widget_missing_data">Não existem registos recentes.</string>
+
+
     <string name="_items">itens</string>
     <string name="carbs">H.Carb</string>
     <string name="build_meal_info">Pressione o botão para adicionar alimentos</string>

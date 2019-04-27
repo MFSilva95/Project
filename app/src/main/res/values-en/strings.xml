@@ -563,6 +563,8 @@
     <string name="delete_button">Remove</string>
     <string name="bullet">\u2022</string>
 
+    <string name="widget_missing_data">No recent records.</string>
+
     <string name="create_meal_title">Create Meal</string>
     <string name="empty_list">Meal without any food!</string>
     <string name="item_removed">Food removed</string>

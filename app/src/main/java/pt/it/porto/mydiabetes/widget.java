@@ -13,7 +13,6 @@ import java.util.Calendar;
 import android.os.Bundle;
 import android.content.Intent;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RemoteViews;
@@ -27,7 +26,6 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 
@@ -105,7 +103,7 @@ public class widget extends AppWidgetProvider {
 
 
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        Bitmap b = drawToBitmap(context,R.layout.chart_widget, metrics.widthPixels-WIDTH_PADDING, WIDGET_HEIGHT, lastXGlicaemias);
+        Bitmap b = drawToBitmap(context, metrics.widthPixels-WIDTH_PADDING, WIDGET_HEIGHT, lastXGlicaemias);
         //Log.i("rawr", "updateAppWidget: W: "+ metrics.widthPixels+" H: "+metrics.heightPixels);
         if(b!=null){
             remoteViews.setImageViewBitmap(R.id.graph_img, b);
@@ -223,6 +221,8 @@ public static class  MyXAxisValueFormatter extends IndexAxisValueFormatter {
 
     public static void setChart(Context context, LineChart chart, LinkedList<GlycemiaRec> glicData){
 
+        if(glicData==null){return;}
+
         long firstTime = glicData.get(0).getDateTime().getTimeInMillis();
 
         chart.getDescription().setEnabled(false);
@@ -264,15 +264,20 @@ public static class  MyXAxisValueFormatter extends IndexAxisValueFormatter {
         chart.invalidate();
     }
 
-    public static Bitmap drawToBitmap(Context context, int layoutResId, int width, int height, LinkedList<GlycemiaRec> glicData)
+    public static Bitmap drawToBitmap(Context context, int width, int height, LinkedList<GlycemiaRec> glicData)
     {
         Bitmap drawing = Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888);
 
         Canvas canvas = new Canvas(drawing);
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(layoutResId,null);
-        LineChart chart = layout.findViewById(R.id.chart);
-        setChart(context, chart, glicData);
+        View layout;
+        if(glicData!=null){
+            layout = inflater.inflate(R.layout.chart_widget,null);
+            LineChart chart = layout.findViewById(R.id.chart);
+            setChart(context, chart, glicData);
+        }else{
+            layout = inflater.inflate(R.layout.chart_widget_error,null);
+        }
 
         layout.setDrawingCacheEnabled(true);
         layout.measure(

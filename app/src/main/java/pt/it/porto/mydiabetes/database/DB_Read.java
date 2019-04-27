@@ -891,8 +891,10 @@ public class DB_Read {
 
 	public LinkedList<GlycemiaRec> getLastXGlycaemias(int userId, int nRec) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE Id_User = "+ userId +" AND DateTime >= datetime('now', '-3 Hour')  ORDER BY DateTime LIMIT "+nRec+";", null);
-		LinkedList<GlycemiaRec> exs = new LinkedList<>();
+		LinkedList<GlycemiaRec> exs = null;
+
 		if (cursor.getCount() > 0) {
+			exs = new LinkedList<>();
 			cursor.moveToFirst();
 			GlycemiaRec tmp;
 			do {
