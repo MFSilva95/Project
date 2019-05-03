@@ -543,6 +543,8 @@
     <string name="_carbs_in">H.Carb em</string>
     <string name="_items">itens</string>
     <string name="carbs">H.Carb</string>
+    <string name="lipids">Lipidos</string>
+    <string name="protein">Proteina</string>
     <string name="build_meal_info">Pressione o botão para adicionar alimentos</string>
     <string name="edit_button">Editar</string>
     <string name="delete_button">Remover</string>

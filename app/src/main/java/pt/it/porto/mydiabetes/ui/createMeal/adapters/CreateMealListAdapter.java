@@ -44,17 +44,41 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_create_meal_item,parent,false);
+        if(viewType!=-1){
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_create_meal_item,parent,false);
+            return new ViewHolder(view);
+        }
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_create_meal_extra_carbs_item,parent,false);
         return new ViewHolder(view);
     }
 
     @Override
+    public int getItemViewType(int position) {
+        MealItem meal = foodList.get(position);
+        if(meal.getId()== -1){ return -1;}
+        return 0;
+    }
+
+
+
+    @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final MealItem meal = foodList.get(position);
+        holder.foodName.setText(meal.getName());
+
+
+        if(meal.getId()==-1){//carbs
+            holder.foodCarbs.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getCarbs()) + "g"));
+        }else{//meal
+            holder.foodPortion.setText(new StringBuilder(String.valueOf(meal.getQuantity()) + "g"));
+            holder.foodCarbs.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getCarbs()) + "g"));
+            holder.foodLipids.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getLipids()) + "g"));
+            holder.foodProtein.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getProtein()) + "g"));
+        }
+
 
         holder.editView.setVisibility(View.GONE);
         holder.deleteView.setVisibility(View.GONE);
-
         holder.deleteItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,20 +90,6 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
 
             }
         });
-        holder.foodName.setText(meal.getName());
-        holder.foodCarbs.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getCarbs()) + "g"));
-        if(meal.getId()==-1){
-            holder.foodPortion.setText(new StringBuilder(String.valueOf(meal.getQuantity()) + "g"));
-
-            holder.weightIcon_img.setVisibility(View.INVISIBLE);
-            holder.foodPortion.setVisibility(View.INVISIBLE);
-
-        }else{
-
-            holder.foodPortion.setText(new StringBuilder(String.valueOf(meal.getQuantity()) + "g"));
-            holder.weightIcon_img.setVisibility(View.VISIBLE);
-            holder.foodPortion.setVisibility(View.VISIBLE);
-        }
 
 
         holder.viewForeground.setOnClickListener(new View.OnClickListener() {
@@ -315,6 +325,9 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
         TextView foodName;
         TextView foodPortion;
         TextView foodCarbs;
+        TextView foodLipids;
+        TextView foodProtein;
+
         CardView editView;
         CardView deleteView;
         LinearLayout deleteItemView;
@@ -327,6 +340,9 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
             foodName = itemView.findViewById(R.id.food_name);
             foodPortion = itemView.findViewById(R.id.food_portion);
             foodCarbs = itemView.findViewById(R.id.food_carbs);
+            foodLipids = itemView.findViewById(R.id.food_lipids);
+            foodProtein = itemView.findViewById(R.id.food_protein);
+
             viewForeground = itemView.findViewById(R.id.foodCardView);
             deleteView = itemView.findViewById(R.id.cardViewEdit);
             editView = itemView.findViewById(R.id.cardViewRemove);

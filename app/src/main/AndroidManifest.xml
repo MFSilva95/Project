@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="pt.it.porto.mydiabetes"
-    android:versionCode="20"
+    android:versionCode="21"
     android:versionName="2.0">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

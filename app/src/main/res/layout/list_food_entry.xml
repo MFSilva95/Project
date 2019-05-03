@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -27,47 +28,78 @@
 
             <TextView
                 android:id="@+id/food_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Arroz com frango com pedaços de cenas e cenas ayy limao"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textColor="@color/primary_text"
-                android:paddingStart="8dp"
-                android:paddingEnd="40dp"
-                android:textSize="18sp"/>
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/add_meal_item"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Arroz com frango com pedaços de cenas e cenas ayy limao.............................................................................." />
 
             <ImageView
                 android:id="@+id/add_meal_item"
                 android:layout_width="32dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="8dp"
                 android:clickable="true"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/food_name"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_plus_box" />
+
 
             <TextView
                 android:id="@+id/food_carbs"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif-condensed"
-                android:text="10.5g carbs"
                 android:textColor="@color/secondary_text"
                 android:textSize="16sp"
                 android:textStyle="bold|italic"
                 android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="@+id/food_name"
-                app:layout_constraintTop_toBottomOf="@+id/food_name" />
+                app:layout_constraintTop_toBottomOf="@+id/food_name"
+                tools:text="10.5g carbs" />
 
             <TextView
                 android:id="@+id/per_portion_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text=" / 100g"
+                android:textAllCaps="false"
+                android:textColor="@color/secondary_text"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                app:layout_constraintStart_toEndOf="@+id/food_carbs"
+                app:layout_constraintTop_toBottomOf="@+id/food_name" />
+
+            <TextView
+                android:id="@+id/food_lipids"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:fontFamily="sans-serif-condensed"
+                tools:text="10.5g lipids"
+                android:textColor="@color/secondary_text"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"
+                android:visibility="visible"
+                app:layout_constraintStart_toStartOf="@+id/food_carbs"
+                app:layout_constraintTop_toBottomOf="@+id/food_carbs" />
+
+            <TextView
+                android:id="@+id/per_portion_lipids"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-condensed"
@@ -76,12 +108,40 @@
                 android:textColor="@color/secondary_text"
                 android:textSize="16sp"
                 android:textStyle="italic"
-                app:layout_constraintBottom_toBottomOf="@+id/food_carbs"
-                app:layout_constraintStart_toEndOf="@+id/food_carbs"
-                app:layout_constraintTop_toTopOf="@+id/food_carbs" />
+                app:layout_constraintStart_toEndOf="@+id/food_lipids"
+                app:layout_constraintTop_toBottomOf="@+id/food_carbs" />
+
+            <TextView
+                android:id="@+id/food_protein"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:fontFamily="sans-serif-condensed"
+                android:textColor="@color/secondary_text"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/food_lipids"
+                app:layout_constraintTop_toBottomOf="@+id/food_lipids"
+                tools:text="10.5g protein" />
+
+            <TextView
+                android:id="@+id/per_portion_text_protein"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed"
+                android:text=" / 100g"
+                android:textAllCaps="false"
+                android:textColor="@color/secondary_text"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                app:layout_constraintStart_toEndOf="@+id/food_protein"
+                app:layout_constraintTop_toBottomOf="@+id/food_lipids" />
+
 
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 
 
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>

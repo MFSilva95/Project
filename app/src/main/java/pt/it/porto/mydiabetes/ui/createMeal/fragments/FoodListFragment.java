@@ -224,7 +224,7 @@ public class FoodListFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent();
-                        intent.putExtra("meal_item", new MealItem(-1,getString(R.string.extra_carbs),(float)numberPicker.getValue()));
+                        intent.putExtra("meal_item", new MealItem(-1,getString(R.string.extra_carbs),(float)numberPicker.getValue(),0,0));
                         ((SelectMealActivity)getActivity()).setResult(Activity.RESULT_OK, intent);
                         ((SelectMealActivity)getActivity()).finish();
                     }

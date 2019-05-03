@@ -27,7 +27,7 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
 
     public MealItemListAdapter(List<MealItem> itemList, Context context) {
         this.itemList = itemList;
-        this.itemList.add(0, new MealItem(-1, context.getString(R.string.extra_carbs), 100));
+        this.itemList.add(0, new MealItem(-1, context.getString(R.string.extra_carbs), 100, 0,0));
         this.context = context;
         itemListCopy = new ArrayList<>();
         itemListCopy.addAll(itemList);
@@ -36,7 +36,11 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_food_entry,parent,false);
+        if(viewType != -1){
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_food_entry,parent,false);
+            return new ViewHolder(view);
+        }
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_extra_carbs_entry,parent,false);
         return new ViewHolder(view);
     }
 
@@ -46,13 +50,10 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
 
         holder.nameTextView.setText(meal.getName());
 
-        if(meal.getId() == -1){
-            holder.carbsTextView.setVisibility(View.INVISIBLE);
-            holder.perPortionText.setVisibility(View.INVISIBLE);
-        } else{
+        if(meal.getId() != -1){//not extra CARBS
             holder.carbsTextView.setText(new StringBuilder(String.valueOf(meal.getCarbs()) + "g " + context.getString(R.string.carbs)));
-            holder.carbsTextView.setVisibility(View.VISIBLE);
-            holder.perPortionText.setVisibility(View.VISIBLE);
+            holder.lipidsTextView.setText(new StringBuilder(String.valueOf(meal.getLipids()) + "g " + context.getString(R.string.lipids)));
+            holder.proteinTextView.setText(new StringBuilder(String.valueOf(meal.getProtein()) + "g " + context.getString(R.string.protein)));
         }
     }
 
@@ -78,13 +79,24 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
         notifyDataSetChanged();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        MealItem meal = itemList.get(position);
+        if(meal.getId()== -1){ return -1;}
+        return 0;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView nameTextView;
         TextView carbsTextView;
         TextView perPortionText;
+        TextView lipidsTextView;
+        TextView proteinTextView;
         ImageView addMealItemView;
+        TextView perPortionText_lipids;
+        TextView perPortionText_protein;
+
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -93,6 +105,11 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
             carbsTextView = itemView.findViewById(R.id.food_carbs);
             perPortionText = itemView.findViewById(R.id.per_portion_text);
             addMealItemView = itemView.findViewById(R.id.add_meal_item);
+
+            lipidsTextView = itemView.findViewById(R.id.food_lipids);
+            proteinTextView = itemView.findViewById(R.id.food_protein);
+            perPortionText_lipids = itemView.findViewById(R.id.per_portion_lipids);
+            perPortionText_protein = itemView.findViewById(R.id.per_portion_text_protein);
         }
     }
 }

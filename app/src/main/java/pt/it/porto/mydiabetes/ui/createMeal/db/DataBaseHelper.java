@@ -190,7 +190,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 int food_id = cursor.getInt(cursor.getColumnIndex(FoodsTableHelper.COLUMN_ID));
                 String food_name = cursor.getString(cursor.getColumnIndex(FoodsTableHelper.COLUMN_NAME));
                 Float food_carbs = Float.valueOf(cursor.getString(cursor.getColumnIndex(FoodsTableHelper.COLUMN_CH)).replaceAll("[^.0-9]", ""));
-                foodList.add(new MealItem(food_id,food_name, food_carbs));
+
+                Float food_lipids = Float.valueOf(cursor.getString(cursor.getColumnIndex(FoodsTableHelper.COLUMN_LIPIDS)).replaceAll("[^.0-9]", ""));
+                Float food_protein = Float.valueOf(cursor.getString(cursor.getColumnIndex(FoodsTableHelper.COLUMN_PROT)).replaceAll("[^.0-9]", ""));
+
+                foodList.add(new MealItem(food_id,food_name, food_carbs, food_lipids, food_protein));
             } while (cursor.moveToNext());
         }
 
@@ -204,7 +208,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(FoodsTableHelper.TABLE_NAME,
-                new String[]{FoodsTableHelper.COLUMN_ID, FoodsTableHelper.COLUMN_NAME, FoodsTableHelper.COLUMN_CH},
+                new String[]{FoodsTableHelper.COLUMN_ID, FoodsTableHelper.COLUMN_NAME, FoodsTableHelper.COLUMN_CH, FoodsTableHelper.COLUMN_LIPIDS, FoodsTableHelper.COLUMN_PROT},
                 FoodsTableHelper.COLUMN_ID + "=?",
                 new String[]{String.valueOf(item_id)}, null, null, null, null);
 
@@ -214,10 +218,12 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         int food_id = cursor.getInt(cursor.getColumnIndex(FoodsTableHelper.COLUMN_ID));
         String food_name = cursor.getString(cursor.getColumnIndex(FoodsTableHelper.COLUMN_NAME));
         Float food_carbs = Float.valueOf(cursor.getString(cursor.getColumnIndex(FoodsTableHelper.COLUMN_CH)).replaceAll("[^.0-9]", ""));
+        Float food_lipids = Float.valueOf(cursor.getString(cursor.getColumnIndex(FoodsTableHelper.COLUMN_LIPIDS)).replaceAll("[^.0-9]", ""));
+        Float food_protein = Float.valueOf(cursor.getString(cursor.getColumnIndex(FoodsTableHelper.COLUMN_PROT)).replaceAll("[^.0-9]", ""));
 
         cursor.close();
 
-        return new MealItem(food_id, food_name, food_carbs);
+        return new MealItem(food_id, food_name, food_carbs,food_lipids,food_protein);
     }
 
     private List<MealItem> getMealItemList(long meal_id){

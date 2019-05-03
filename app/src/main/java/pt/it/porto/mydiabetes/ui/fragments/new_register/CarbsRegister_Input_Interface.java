@@ -102,33 +102,6 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
 //        }
     }
     private void setMealListeners(){
-//        if (image_button == null) {
-//            return;
-//        }
-//        if (imgUri == null) {
-//            image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
-//        } else {
-//            File temp = new File(imgUri.getPath());
-//            if(temp.exists()){
-//                DisplayMetrics displaymetrics = new DisplayMetrics();
-//                //getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-//                int height = (int) (displaymetrics.heightPixels * 0.1);
-//                int width = (int) (displaymetrics.widthPixels * 0.1);
-//                b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
-//                carbsData.setPhotoPath(imgUri.getPath());
-//                image_button.setImageBitmap(b);
-//            }else{
-//                imgUri = null;
-//                image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
-//            }
-//        }
-//
-//        image_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                callBack.addCarbsImage(getContext(), imgUri);
-//            }
-//        });
 
         create_meal_button.setOnClickListener(new OnClickListener() {
             @Override

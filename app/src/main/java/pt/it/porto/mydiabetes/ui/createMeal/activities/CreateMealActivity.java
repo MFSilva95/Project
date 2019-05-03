@@ -134,7 +134,7 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
             createMeal(meal);
         } else{
             if(editTextCarbsReg > 0)
-                mAdapter.addItem(new MealItem(-1, getString(R.string.extra_carbs), (float)editTextCarbsReg));
+                mAdapter.addItem(new MealItem(-1, getString(R.string.extra_carbs), (float)editTextCarbsReg,0,0));
         }
 
         ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT, this);
@@ -207,7 +207,7 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
                     currentMealName = meal.getName();
 
                     if(meal.getExtraCarbs() > 0){
-                        currentMealItemList.add(new MealItem(-1, "H.Carb Extra", (float)meal.getExtraCarbs()));
+                        currentMealItemList.add(new MealItem(-1, "H.Carb Extra", (float)meal.getExtraCarbs(),0,0));
                     } else if(meal.getExtraCarbs() < 0){
                         messageToUser();
                     }
@@ -330,7 +330,7 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
 
             int carbs_diff = editTextCarbsReg - meal.getTotalCarbs(false);
             if(carbs_diff > 0){
-                mAdapter.addItem(new MealItem(-1, getString(R.string.extra_carbs), (float)carbs_diff));
+                mAdapter.addItem(new MealItem(-1, getString(R.string.extra_carbs), (float)carbs_diff,0,0));
             } else if(carbs_diff < 0){
                 messageToUser();
             }
