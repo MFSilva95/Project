@@ -518,6 +518,10 @@
     <string name="badge_help_dialog_desc">Para ganhar medalhas deve completar os registos necessários a cada. O nível intermédio e avançado são desbloqueáveis a níveis 10 e 30 respetivamente.
         Por cada registo inserido ganha 100 pontos e por medalha 200. Junte pontos para subir de nível.</string>
 
+    <string name="meal_lipids_explain">A sua refeição contém um nível elevado de Lipidos. É esperado que o seu nível glicémico continue a subir nas próximas %1$d horas. No caso de usar bomba deve definir um bolus quadrado. No caso de usar \'caneta\' deve fazer a verificação do seu valor glicémico regularmente e se necessário, administrar insulina para corrigir o valor glicémico.</string>
+
+
+    <string name="meal_lipids_description">Refeição rica em Lipidos</string>
 
     <string name="email_feedback_subject">Opinião e Comentários sobre a myDiabetes</string>
 
@@ -539,6 +543,8 @@
     <string name="all_logged">Todas</string>
     <string name="list_info">Itens da Refeição</string>
     <string name="total_carbs">H.Carb Totais</string>
+    <string name="total_lipids">Lipidos Totais</string>
+    <string name="total_protein">Proteina Total</string>
     <string name="_total_of">Um total de</string>
     <string name="_carbs_in">H.Carb em</string>
     <string name="_items">itens</string>

@@ -39,10 +39,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
+import com.github.javiersantos.materialstyleddialogs.enums.Style;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -78,6 +82,9 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 4;
 
     private TextView mealTotalCarbsTextView;
+    private TextView mealTotalLipidsTextView;
+    private TextView mealTotalProteinTextView;
+
     private TextView emptyListMessageView;
     private ImageView cameraPlaceholder;
     private CircleImageView thumbnailPhotoView;
@@ -108,7 +115,9 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
         currentMealId = -1;
 
         addMealItemButton = findViewById(R.id.add_item_fab);
-        mealTotalCarbsTextView = findViewById(R.id.meal_total_carbs2);
+        mealTotalCarbsTextView = findViewById(R.id.meal_total_carbs);
+        mealTotalLipidsTextView = findViewById(R.id.meal_total_lipids);
+        mealTotalProteinTextView = findViewById(R.id.meal_total_protein);
         emptyListMessageView = findViewById(R.id.empty_message);
         thumbnailPhotoView = findViewById(R.id.photo_view);
         cameraPlaceholder = findViewById(R.id.camera_placeholder);
@@ -343,14 +352,84 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
     }
 
     private void updateTotalCarbsDisplay(){
+        ImageView info_lipids;
+        info_lipids = findViewById(R.id.info_lipids);
+        ImageView info_protein;
+        info_protein = findViewById(R.id.info_protein);
+        info_lipids.setVisibility(View.INVISIBLE);
+        info_protein.setVisibility(View.INVISIBLE);
+
         float total_carbs = 0;
-        for(MealItem m : currentMealItemList)
+        float total_lipids = 0;
+        float total_protein = 0;
+
+        for(MealItem m : currentMealItemList){
             total_carbs = total_carbs + m.getCarbs();
+            total_lipids = total_lipids + m.getLipids();
+            total_protein = total_protein + m.getProtein();
+        }
 
-        if(total_carbs <= editTextCarbsReg)
+        final float FPU = (total_protein* 4 + total_lipids * 9)/100;
+        float CU = total_carbs/10;
+
+        if(FPU >= 1){
+
+            //if(total_lipids>total_protein){
+                mealTotalLipidsTextView.setTextColor(getResources().getColor(R.color.md_edittext_error));
+                info_lipids.setVisibility(View.VISIBLE);
+                info_lipids.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int hours_check = 3;
+                        if(FPU>=2){hours_check = 4;}
+                        if(FPU>=3){hours_check = 5;}
+                        if(FPU>=4){hours_check = 8;}
+
+                        String descriptionTxt = getResources().getString(R.string.meal_lipids_explain, hours_check);
+                        new MaterialStyledDialog.Builder(view.getContext())
+                                .setTitle(getString(R.string.meal_lipids_description))
+                                .setDescription(descriptionTxt)
+                                .setStyle(Style.HEADER_WITH_ICON)
+                                .setIcon(R.drawable.ic_meal)
+                                .withDialogAnimation(true)
+                                .withDarkerOverlay(true)
+                                .withIconAnimation(false)
+                                .setCancelable(true)
+                                .setPositiveText(R.string.okButton)
+                                .show();
+                    }
+                });
+//            }else{
+//                mealTotalProteinTextView.setTextColor(getResources().getColor(R.color.md_edittext_error));
+//                info_protein.setVisibility(View.VISIBLE);
+//                info_protein.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        new MaterialStyledDialog.Builder(view.getContext())
+//                                .setTitle(getString(R.string.meal_lipids_description))
+//                                .setDescription(getString(R.string.meal_lipids_explain))
+//                                .setStyle(Style.HEADER_WITH_ICON)
+////                        .setIcon(R.drawable.medal_gold_record_a)
+//                                .withDialogAnimation(true)
+//                                .withDarkerOverlay(true)
+//                                .withIconAnimation(false)
+//                                .setCancelable(true)
+//                                .setPositiveText(R.string.okButton)
+//                                .show();
+//                    }
+//                });
+//            }
+
+
+        }
+
+        if(total_carbs <= editTextCarbsReg) {
             mealTotalCarbsTextView.setTextColor(getResources().getColor(R.color.accent));
+        }
 
-        mealTotalCarbsTextView.setText(new StringBuilder(String.format(Locale.US,"%.1f", total_carbs) + "g"));
+        mealTotalCarbsTextView.setText(new StringBuilder(String.format(Locale.US,"%.2f", total_carbs) + "g"));
+        mealTotalLipidsTextView.setText(new StringBuilder(String.format(Locale.US,"%.2f", total_lipids) + "g"));
+        mealTotalProteinTextView.setText(new StringBuilder(String.format(Locale.US,"%.2f", total_protein) + "g"));
 
         if(currentMealItemList.size() > 0)
             emptyListMessageView.setVisibility(View.GONE);
@@ -463,35 +542,6 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
     }
 
 
-//    public Bitmap getScreenshotBmp() {
-//
-//
-//        FileOutputStream fileOutputStream = null;
-//
-//        File path = Environment
-//                .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-//
-//        String uniqueID = UUID.randomUUID().toString();
-//
-//        File file = new File(path, uniqueID + ".jpg");
-//        try {
-//            fileOutputStream = new FileOutputStream(file);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//
-//        screenshot.compress(Bitmap.CompressFormat.JPEG, 30, fileOutputStream);
-//
-//        try {
-//            fileOutputStream.flush();
-//            fileOutputStream.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return screenshot;
-//    }
-
-
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
@@ -554,142 +604,6 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
             e.printStackTrace();
             Toast.makeText(getBaseContext(),"Unable to save photo",Toast.LENGTH_LONG).show();
         }
-
-
-        //Bitmap photo;
-        //byte[] image;
-
-//        Bundle extras = data.getExtras();
-//        if (extras != null) {
-//            photo = extras.getParcelable("data");
-            //ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            //photo.compress(Bitmap.CompressFormat.PNG, 100, bos);
-            //image = bos.toByteArray();
-
-
-
-
-
-        //Image cameraImg = //ImagePicker.getFirstImageOrNull(data);
-        //Bitmap cameraImg = (Bitmap) data.getExtras().get("data");
-
-        // CALL THIS METHOD TO GET THE URI FROM THE BITMAP
-        //Uri tempUri = getImageUri(getApplicationContext(), cameraImg);
-
-        // CALL THIS METHOD TO GET THE ACTUAL PATH
-        //File finalFile = new File(getRealPathFromURI(tempUri));
-
-        //String img_path =
-        //Image cameraImg =
-//        File photoFile = null;
-//            try {
-//                photoFile = createImageFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        Log.i("cenas", "setMealPhoto: "+currentImageUri);
-//
-//            if (photoFile != null) {
-//                if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
-//                    try {
-//                        //copy19plus(finalFile.getPath(), photoFile);
-//                        copy19plus(currentImageUri.getPath(), photoFile);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                    currentMealPhotoPath = photoFile.getAbsolutePath();
-//
-//                    BitmapFactory.Options options = new BitmapFactory.Options();
-//                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-//                    Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
-//                    thumbnailPhotoView.setImageBitmap(bitmap);
-//
-//                    if(thumbnailPhotoView.getVisibility() == View.GONE) {
-//                        cameraPlaceholder.setVisibility(View.GONE);
-//                        thumbnailPhotoView.setVisibility(View.VISIBLE);
-//                    }
-//                }else{
-//                    try {
-//                        //copyUnder19(finalFile.getPath(), photoFile);
-//                        copyUnder19(currentImageUri.getPath(), photoFile);
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    BitmapFactory.Options options = new BitmapFactory.Options();
-//                    options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-//                    Bitmap bitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath(), options);
-//                    thumbnailPhotoView.setImageBitmap(bitmap);
-//
-//                    currentMealPhotoPath = photoFile.getAbsolutePath();
-//
-//                    if(thumbnailPhotoView.getVisibility() == View.GONE) {
-//                        cameraPlaceholder.setVisibility(View.GONE);
-//                        thumbnailPhotoView.setVisibility(View.VISIBLE);
-//                    }
-//                }
-//            }
-//
-
-            //String cameraFileName = finalFile.getPath();
-
-            //String cameraFileName = currentImageUri.getPath();
-
-            //File file = new File(cameraFileName);
-            //Log.i(TAG, "onActivityResult: "+cameraFileName);
-            //boolean deleted = file.delete();
-            //Log.i("CreateMeal", "onActivityResult: file deleted: "+deleted);
-
-            //File f = new File(currentImageUri.getPath());
-            //if (f.exists()) f.delete();
-//        }
-
-
-
-
-
-//
-//
-//        // Get the dimensions of the View
-//        int targetW, targetH;
-//
-//        if(mPhotoView != null){
-//            mPhotoView.measure(ConstraintLayout.LayoutParams.MATCH_CONSTRAINT, ConstraintLayout.LayoutParams.MATCH_CONSTRAINT);
-//            targetW = mPhotoView.getMeasuredWidth();
-//            targetH = 180;
-//        } else{
-//            targetW = 140;
-//            targetH = 140;
-//        }
-//
-//        // Get the dimensions of the bitmap
-//        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-//        bmOptions.inJustDecodeBounds = true;
-//        BitmapFactory.decodeFile(currentMealPhotoPath, bmOptions);
-//        int photoW = bmOptions.outWidth;
-//        int photoH = bmOptions.outHeight;
-//
-//        // Determine how much to scale down the image
-//        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-//
-//        // Decode the image file into a Bitmap sized to fill the View
-//        bmOptions.inJustDecodeBounds = false;
-//        bmOptions.inSampleSize = scaleFactor;
-//        bmOptions.inPurgeable = true;
-//
-//        Bitmap bitmap = BitmapFactory.decodeFile(currentMealPhotoPath, bmOptions);
-//
-//        if(mPhotoView != null)
-//            mPhotoView.setImageBitmap(bitmap);
-//        else{
-//            thumbnailPhotoView.setImageBitmap(bitmap);
-//
-//            if(thumbnailPhotoView.getVisibility() == View.GONE) {
-//                cameraPlaceholder.setVisibility(View.GONE);
-//                thumbnailPhotoView.setVisibility(View.VISIBLE);
-//            }
-//
-//        }
     }
 
     private void deleteAll(){
@@ -776,33 +690,6 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
     }
 
 
-//    private File createImageFile() throws IOException {
-//
-//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-//        String imageFileName = "JPEG_" + timeStamp + "_";
-//        File image;
-//        if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
-//            // Create an image file name
-//            File dir = new File(Environment.getExternalStorageDirectory() + "/MyDiabetes");
-//            if (!dir.exists()) {
-//                dir.mkdir();
-//            }
-//            image = File.createTempFile(
-//                    imageFileName,  /* prefix */
-//                    ".jpg",         /* suffix */
-//                    dir      /* directory */
-//            );
-//            mCurrentPhotoPath = "file:" + image.getAbsolutePath();
-//        }else{
-//            //File file = new File(Environment.getExternalStorageDirectory()+ "/MyDiabetes", new Date().getTime() + ".jpg");
-//            image  = new File(Environment.getExternalStorageDirectory()+"/MyDiabetes", imageFileName+".jpg");
-//            mCurrentPhotoPath = image.getAbsolutePath();
-//        }
-//        return image;
-//    }
-
-
-
     private void dispatchTakePictureIntent() {
 
         if(currentMealPhotoPath==null){
@@ -846,28 +733,6 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
             //show imgs
             displayImg(currentMealPhotoPath);
         }
-
-
-
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        // Ensure that there's a camera activity to handle the intent
-//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//            // Create the File where the photo should go
-//            File photoFile = null;
-//            try {
-//                photoFile = createImageFile();
-//            } catch (IOException ex) {
-//                // Error occurred while creating the File
-//            }
-//            // Continue only if the File was successfully created
-//            if (photoFile != null) {
-//                Uri photoURI = FileProvider.getUriForFile(this,
-//                        BuildConfig.APPLICATION_ID + ".provider",
-//                        photoFile);
-//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-//            }
-//        }
     }
 
     private File createImageFile() throws IOException {

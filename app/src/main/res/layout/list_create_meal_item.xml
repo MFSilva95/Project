@@ -32,7 +32,7 @@
             <TextView
                 android:id="@+id/food_protein"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="sans-serif"
@@ -48,10 +48,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/protein"
                 android:textColor="@color/primary_text"
                 android:textStyle="italic"
-                app:layout_constraintEnd_toEndOf="@+id/lipids_def_textView"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lipids_def_textView2" />
 
             <TextView
@@ -123,10 +124,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="@string/lipids"
                 android:textColor="@color/primary_text"
                 android:textStyle="italic"
-                app:layout_constraintEnd_toEndOf="@+id/lipids_def_textView"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lipids_def_textView" />
 
             <TextView

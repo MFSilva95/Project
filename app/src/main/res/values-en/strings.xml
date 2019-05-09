@@ -560,16 +560,21 @@
     <string name="all_logged">All</string>
     <string name="list_info">Meal items</string>
     <string name="total_carbs">Total of Carbohydrates</string>
+    <string name="total_lipids">Total of Lipids</string>
+    <string name="total_protein">Total of Protein</string>
     <string name="_total_of">A total of</string>
     <string name="_carbs_in">Carbohydrates in</string>
     <string name="_items">items</string>
     <string name="carbs">Carbs</string>
-    <string name="lipids">Lipido</string>
+    <string name="lipids">Lipids</string>
     <string name="protein">Protein</string>
     <string name="build_meal_info">Press the button to add foods</string>
     <string name="edit_button">Edit</string>
     <string name="delete_button">Remove</string>
     <string name="bullet">\u2022</string>
+
+    <string name="meal_lipids_description">Lipid-rich meal</string>
+    <string name="meal_lipids_explain">Your current meal has an high lipids level. It is expected that your glicemic level continues to increase in the next %1$d hours. If you possess an insulin pump, you should define a squared bolus. If you use a pen, you should regularly verify your glicemic values and, if necessary, administrate insulin to correct your glicemic values.</string>
 
     <string name="create_meal_title">Create Meal</string>
     <string name="empty_list">Meal without any food!</string>

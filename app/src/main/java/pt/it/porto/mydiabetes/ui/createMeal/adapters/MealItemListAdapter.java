@@ -13,6 +13,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.SelectMealActivity;
@@ -51,9 +52,13 @@ public class MealItemListAdapter extends RecyclerView.Adapter<MealItemListAdapte
         holder.nameTextView.setText(meal.getName());
 
         if(meal.getId() != -1){//not extra CARBS
-            holder.carbsTextView.setText(new StringBuilder(String.valueOf(meal.getCarbs()) + "g " + context.getString(R.string.carbs)));
-            holder.lipidsTextView.setText(new StringBuilder(String.valueOf(meal.getLipids()) + "g " + context.getString(R.string.lipids)));
-            holder.proteinTextView.setText(new StringBuilder(String.valueOf(meal.getProtein()) + "g " + context.getString(R.string.protein)));
+            holder.carbsTextView.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getCarbs()) + "g " + context.getString(R.string.carbs)));
+            holder.lipidsTextView.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getLipids()) + "g " + context.getString(R.string.lipids)));
+            holder.proteinTextView.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getProtein()) + "g " + context.getString(R.string.protein)));
+
+            //holder.carbsTextView.setText(new StringBuilder(String.valueOf(meal.getCarbs()) + "g " + context.getString(R.string.carbs)));
+            //holder.lipidsTextView.setText(new StringBuilder(String.valueOf(meal.getLipids()) + "g " + context.getString(R.string.lipids)));
+            //holder.proteinTextView.setText(new StringBuilder(String.valueOf(meal.getProtein()) + "g " + context.getString(R.string.protein)));
         }
     }
 
