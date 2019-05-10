@@ -80,6 +80,7 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
     private static final int REQUEST_TAKE_PHOTO = 1;
     private static final int IMAGE_VIEW = 3;
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 4;
+    private float FPU = 0;
 
     private TextView mealTotalCarbsTextView;
     private TextView mealTotalLipidsTextView;
@@ -351,11 +352,20 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
         }
     }
 
+    public int getLipidHours(){
+        int hours_check = 3;
+        if(FPU>=2){hours_check = 4;}
+        if(FPU>=3){hours_check = 5;}
+        if(FPU>=4){hours_check = 8;}
+        return hours_check;
+    }
+
     private void updateTotalCarbsDisplay(){
         ImageView info_lipids;
         info_lipids = findViewById(R.id.info_lipids);
         ImageView info_protein;
         info_protein = findViewById(R.id.info_protein);
+
         info_lipids.setVisibility(View.INVISIBLE);
         info_protein.setVisibility(View.INVISIBLE);
 
@@ -369,7 +379,7 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
             total_protein = total_protein + m.getProtein();
         }
 
-        final float FPU = (total_protein* 4 + total_lipids * 9)/100;
+        FPU = (total_protein* 4 + total_lipids * 9)/100;
         float CU = total_carbs/10;
 
         if(FPU >= 1){
@@ -377,15 +387,15 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
             //if(total_lipids>total_protein){
                 mealTotalLipidsTextView.setTextColor(getResources().getColor(R.color.md_edittext_error));
                 info_lipids.setVisibility(View.VISIBLE);
+
+
+
                 mealTotalLipidsTextView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    int hours_check = 3;
-                    if(FPU>=2){hours_check = 4;}
-                    if(FPU>=3){hours_check = 5;}
-                    if(FPU>=4){hours_check = 8;}
 
-                    String descriptionTxt = getResources().getString(R.string.meal_lipids_explain, hours_check);
+
+                    String descriptionTxt = getResources().getString(R.string.meal_lipids_explain, getLipidHours());
                     new MaterialStyledDialog.Builder(view.getContext())
                             .setTitle(getString(R.string.meal_lipids_description))
                             .setDescription(descriptionTxt)
@@ -402,12 +412,8 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
                 info_lipids.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int hours_check = 3;
-                        if(FPU>=2){hours_check = 4;}
-                        if(FPU>=3){hours_check = 5;}
-                        if(FPU>=4){hours_check = 8;}
 
-                        String descriptionTxt = getResources().getString(R.string.meal_lipids_explain, hours_check);
+                        String descriptionTxt = getResources().getString(R.string.meal_lipids_explain, getLipidHours());
                         new MaterialStyledDialog.Builder(view.getContext())
                                 .setTitle(getString(R.string.meal_lipids_description))
                                 .setDescription(descriptionTxt)
@@ -443,6 +449,11 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
 //            }
 
 
+        }else{
+            mealTotalLipidsTextView.setTextColor(getResources().getColor(R.color.accent));
+            mealTotalProteinTextView.setTextColor(getResources().getColor(R.color.accent));
+            mealTotalLipidsTextView.setOnClickListener(null);
+            mealTotalProteinTextView.setOnClickListener(null);
         }
 
         if(total_carbs <= editTextCarbsReg) {
