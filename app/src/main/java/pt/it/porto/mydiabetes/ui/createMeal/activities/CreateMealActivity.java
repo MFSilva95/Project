@@ -377,6 +377,28 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
             //if(total_lipids>total_protein){
                 mealTotalLipidsTextView.setTextColor(getResources().getColor(R.color.md_edittext_error));
                 info_lipids.setVisibility(View.VISIBLE);
+                mealTotalLipidsTextView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    int hours_check = 3;
+                    if(FPU>=2){hours_check = 4;}
+                    if(FPU>=3){hours_check = 5;}
+                    if(FPU>=4){hours_check = 8;}
+
+                    String descriptionTxt = getResources().getString(R.string.meal_lipids_explain, hours_check);
+                    new MaterialStyledDialog.Builder(view.getContext())
+                            .setTitle(getString(R.string.meal_lipids_description))
+                            .setDescription(descriptionTxt)
+                            .setStyle(Style.HEADER_WITH_ICON)
+                            .setIcon(R.drawable.ic_meal)
+                            .withDialogAnimation(true)
+                            .withDarkerOverlay(true)
+                            .withIconAnimation(false)
+                            .setCancelable(true)
+                            .setPositiveText(R.string.okButton)
+                            .show();
+                }
+            });
                 info_lipids.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
