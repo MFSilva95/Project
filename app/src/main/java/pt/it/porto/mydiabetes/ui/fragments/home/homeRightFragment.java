@@ -44,6 +44,8 @@ import com.esafirm.imagepicker.model.Image;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.github.javiersantos.materialstyleddialogs.enums.Style;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -63,6 +65,7 @@ import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.Badges;
+import pt.it.porto.mydiabetes.ui.activities.ChartSection;
 import pt.it.porto.mydiabetes.ui.activities.MyData;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
@@ -104,6 +107,8 @@ public class homeRightFragment extends Fragment {
     private int countAdvanced;
     //private int countDaily;
     private BadgeRec dailyBadge;
+
+    private TextView graphSection;
 
     private static final int REQUEST_TAKE_PHOTO = 6;
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 7;
@@ -224,6 +229,7 @@ public class homeRightFragment extends Fragment {
 
         CardView personalInfo = (CardView) layout.findViewById(R.id.personalInfo);
         CardView badgesInfo = (CardView) layout.findViewById(R.id.badgesInfo);
+        graphSection = (TextView) layout.findViewById(R.id.graphSection);
 
         personalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,6 +261,14 @@ public class homeRightFragment extends Fragment {
                         .setCancelable(true)
                         .setPositiveText(R.string.okButton)
                         .show();
+            }
+        });
+
+        graphSection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ChartSection.class);
+                startActivity(intent);
             }
         });
 

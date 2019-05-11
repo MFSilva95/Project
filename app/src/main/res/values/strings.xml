@@ -596,5 +596,6 @@
     <string name="add_widget">Add widget</string>
     <string name="title_activity_ranking_chart">RankingChart</string>
     <string name="title_activity_widget">Activity_widget</string>
+    <string name="title_activity_chart_section">ChartSection</string>
 
 </resources>

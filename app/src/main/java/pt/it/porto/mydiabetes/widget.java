@@ -101,7 +101,6 @@ public class widget extends AppWidgetProvider {
         }
 
 
-
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         Bitmap b = drawToBitmap(context, metrics.widthPixels-WIDTH_PADDING, WIDGET_HEIGHT, lastXGlicaemias);
         //Log.i("rawr", "updateAppWidget: W: "+ metrics.widthPixels+" H: "+metrics.heightPixels);
@@ -225,6 +224,8 @@ public static class  MyXAxisValueFormatter extends IndexAxisValueFormatter {
         if(glicData.size()<=0){return;}
 
         long firstTime = glicData.get(0).getDateTime().getTimeInMillis();
+
+        if(glicData.size()<=0){return;}
 
         chart.getDescription().setEnabled(false);
 

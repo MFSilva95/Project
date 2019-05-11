@@ -9,6 +9,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.Pair;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -890,7 +892,7 @@ public class DB_Read {
 
 
 	public LinkedList<GlycemiaRec> getLastXGlycaemias(int userId, int nRec) {
-		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE Id_User = "+ userId +" AND DateTime >= datetime('now', '-3 Hour')  ORDER BY DateTime LIMIT "+nRec+";", null);
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE Id_User = "+ userId +" AND DateTime >= datetime('now', '-24 Hour')  ORDER BY DateTime LIMIT "+nRec+";", null);
 		LinkedList<GlycemiaRec> exs = null;
 
 		if (cursor.getCount() > 0) {
@@ -2467,6 +2469,7 @@ public class DB_Read {
 			return AllReads;
 		}
 	}
+
 	public int getTotalPoints() {
 		Cursor cursor = myDB.rawQuery("SELECT SUM(Value) FROM Points;", null);
 		cursor.moveToLast();
@@ -2858,5 +2861,28 @@ public class DB_Read {
         return sqlCommand;
     }
 
+    //Get last day registers for each register parameter
+	public Integer[] getLastDayNumberOfRecords() {
+		Integer[] nRecords = new Integer[8];
+		int i=0;
+		while (i<8) {
+			Cursor cursor = null;
+			if (i==0) cursor = myDB.rawQuery("SELECT * FROM Reg_CarboHydrate WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
+			if (i==1) cursor = myDB.rawQuery("SELECT * FROM Reg_Insulin WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
+			if (i==2) cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
+			if (i==3) cursor = myDB.rawQuery("SELECT * FROM Reg_Exercise WHERE StartDateTime > DateTime('now','start of day','-24 HOURS') AND StartDateTime < DateTime('now','start of day');", null);
+			if (i==4) cursor = myDB.rawQuery("SELECT * FROM Reg_Disease WHERE StartDate > DateTime('now','start of day','-24 HOURS') AND StartDate < DateTime('now','start of day');", null);
+			if (i==5) cursor = myDB.rawQuery("SELECT * FROM Reg_Weight WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
+			if (i==6) cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
+			if (i==7) cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
 
+			if (cursor.getCount() > 0) {
+				nRecords[i] = cursor.getCount();
+			}
+			else nRecords[i] = 0;
+			cursor.close();
+			i++;
+		}
+		return nRecords;
+	}
 }
