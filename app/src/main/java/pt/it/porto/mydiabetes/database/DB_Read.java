@@ -2885,4 +2885,24 @@ public class DB_Read {
 		}
 		return nRecords;
 	}
+
+	public ArrayList<Integer> getLastGlycaemias() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE DateTime > DateTime('now','start of day') AND DateTime < DateTime('now','start of day','+24 HOURS');", null);
+		ArrayList<Integer> glycemiaList = new ArrayList<>();
+
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			do {
+				glycemiaList.add(Integer.valueOf(cursor.getString(2)));
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return glycemiaList;
+		}
+
+		else {
+			cursor.close();
+			return glycemiaList;
+		}
+	}
 }
