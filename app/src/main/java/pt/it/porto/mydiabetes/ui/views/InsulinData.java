@@ -34,12 +34,9 @@ public class InsulinData implements Serializable, Parcelable {
 		action = in.readInt();
 	}
 	public InsulinData(String[] in, int pox) {
-		//row[0] = cursor.getString(1); //Name
-		//row[1] = cursor.getString(2); //Type
-		//row[2] = cursor.getString(3); //Action
-		name = in[0].toString();
-		administrationMethod = in[1].toString();
-		action = Integer.parseInt(in[2].toString());
+		name = in[0];
+		administrationMethod = in[1];
+		action = Integer.parseInt(in[2]);
 
 		this.pox = pox;
 	}
@@ -54,10 +51,6 @@ public class InsulinData implements Serializable, Parcelable {
 
 	public String getAdministrationMethod() {
 		return administrationMethod;
-	}
-
-	public void setAdministrationMethod(String administrationMethod) {
-		this.administrationMethod = administrationMethod;
 	}
 
 	public int getAction() {

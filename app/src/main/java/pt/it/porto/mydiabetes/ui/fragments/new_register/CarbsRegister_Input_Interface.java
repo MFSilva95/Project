@@ -29,12 +29,6 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
     private ImageButton image_button;
     private ImageButton create_meal_button;
     private CarbsRec carbsData;
-    private int default_height;
-    private int default_width;
-
-    public Uri getImgUri() {
-        return imgUri;
-    }
 
     private Uri imgUri;
     private Bitmap b;
@@ -49,10 +43,8 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
 
     private NewHomeRegistry.NewHomeRegCallBack callBack;
 
-    public CarbsRegister_Input_Interface(Context context, NewHomeRegistry.NewHomeRegCallBack call, int default_height, int default_width) {
+    public CarbsRegister_Input_Interface(Context context, NewHomeRegistry.NewHomeRegCallBack call) {
         super(context);
-        this.default_height = default_height;
-        this.default_width = default_width;
         callBack = call;
         init();
     }
@@ -60,9 +52,9 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
     private void init() {
         carbsData = new CarbsRec();
         inflate(getContext(), R.layout.meal_content_edit, this);
-        this.carbs_input = (TextInputLayout) findViewById(R.id.meal_txt);
-        this.image_button = (ImageButton) findViewById(R.id.iv_MealDetail_Photo);
-        this.create_meal_button = (ImageButton) findViewById(R.id.create_meal);
+        this.carbs_input = findViewById(R.id.meal_txt);
+        this.image_button = findViewById(R.id.iv_MealDetail_Photo);
+        this.create_meal_button = findViewById(R.id.create_meal);
         setMealListeners();
         requestFocus();
     }
@@ -91,15 +83,8 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         carbsData = carbData;
         carbs_input.getEditText().setText(""+carbsData.getCarbsValue());
         if(carbsData.getPhotoPath()!= null){
-            //Log.i("RAWRAWR", "fill_parameters:              ->"+carbData.getPhotoPath());
             imgUri = Uri.parse(carbsData.getPhotoPath());
         }
-//        ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
-//        if (imgUri == null) {
-//            imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
-//        } else {
-//            setImage(imgUri);
-//        }
     }
     private void setMealListeners(){
 
@@ -115,19 +100,6 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         carbsTextView.addTextChangedListener(getCarbsTW());
     }
 
-//    public void setUri(Uri u){
-//        this.imgUri = u;
-//        if(u==null) {
-//            image_button.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.ic_photo_camera_grey_600_24dp, null));
-//        } else {
-//            this.carbsData.setPhotoPath(imgUri.getPath());
-//            try {
-//                setImage(imgUri);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
     private TextWatcher getCarbsTW(){
         TextWatcher carbsTW = new TextWatcher() {
             @Override
@@ -157,33 +129,6 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         callBack.updateInsulinCalc();
     }
 
-    private void insertCarbsData(int carbValue){
-        final ImageView imageView = (ImageView) findViewById(R.id.iv_MealDetail_Photo);
-        if (imageView == null) {
-            return;
-        }
-        if (imgUri != null) {
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-            int height = (int) (displaymetrics.heightPixels * 0.1);
-            int width = (int) (displaymetrics.widthPixels * 0.1);
-            b = ImageUtils.decodeSampledBitmapFromPath(imgUri.getPath(), width, height);
-            imageView.setImageBitmap(b);
-        }
-        TextInputLayout carbsInput = (TextInputLayout) findViewById(R.id.meal_txt);
-        TextView carbsTextView = carbsInput.getEditText();
-        carbsTextView.requestFocus();
-        carbsTextView.setText(carbValue+"");
-        carbsTextView.addTextChangedListener(getCarbsTW());
-
-//        imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                callBack.addCarbsImage(getContext(), imgUri);
-//            }
-//        });
-    }
-
     public CarbsRec save_read(){
         return carbsData;
     }
@@ -194,20 +139,6 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
 
     public void setImage(String imageUri){
         this.carbsData.setPhotoPath(imageUri);
-        //this.imgUri=imageUri;
-//        if (imgUri != null) {
-//
-//            File temp = new File(imageUri.getPath());
-//            if(temp.exists()){
-//                try {
-//                    b = ImageUtils.decodeSampledBitmapFromPath(imageUri.getPath(),default_height, default_width);
-//                }catch (Exception e){
-//                    e.printStackTrace();
-//                    //throw new Exception("cant access file");
-//                }
-//                image_button.setImageBitmap(b);
-//            }
-//        }
     }
     public void setCarbsMealID(int mealID){
         this.carbsData.setMealId(mealID);

@@ -150,8 +150,6 @@ public class AddInsulinsFragment extends Fragment implements WelcomeActivity.Reg
 		for (int i = 0; i < items.size(); i++) {
 			boolean failed = storage.addInsulin(items.get(i).getName(), items.get(i).getAdministrationMethod(), items.get(i).getAction());
 			if (!failed) {
-				// Do something
-				// Or maybe not! This is used in welcome screen, in there it cannot fail since there arent repeated insulin names
 				Log.d("AddInsulinFragment", "Failed to add! Already exists?");
 			}
 		}

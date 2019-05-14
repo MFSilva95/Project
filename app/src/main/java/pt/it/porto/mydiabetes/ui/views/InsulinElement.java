@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -71,17 +72,7 @@ public class InsulinElement extends CardView {
 		});
 
 
-
-		/*layoutEdit.findViewById(R.id.admininistration_method).setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View view, boolean b) {
-				if (!b) {
-					data.administrationMethod = ((EditText) view).getText().toString();
-				}
-			}
-		});*/
-
-		adminMethod = (RadioGroup) layoutEdit.findViewById(R.id.admininistration_method_insert);
+		adminMethod = layoutEdit.findViewById(R.id.admininistration_method_insert);
 		adminMethod.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener(){
 			@Override
 			public void onCheckedChanged(RadioGroup radioGroup, int i) {
@@ -91,7 +82,9 @@ public class InsulinElement extends CardView {
 				if (adminMethod.getCheckedRadioButtonId() != -1)
 				{
 					((RadioButton) adminMethod.getChildAt(1)).setError(null);
-					data.administrationMethod = ((RadioButton) adminMethod.findViewById(adminMethod.getCheckedRadioButtonId())).getText().toString().toLowerCase();
+					View selected = adminMethod.findViewById(adminMethod.getCheckedRadioButtonId());
+					int pos = adminMethod.indexOfChild(selected);
+					data.administrationMethod = pos+"";
 				}
 
 			}
@@ -161,33 +154,17 @@ public class InsulinElement extends CardView {
 			currentView = layoutEdit;
 			((Spinner) currentView.findViewById(R.id.insulin_type)).setSelection(data.action);
 
-			if(data.administrationMethod != null){
-				if(data.administrationMethod.equals("bomba"))
-					adminMethod.check(R.id.bomba);
-
-				if(data.administrationMethod.equals("caneta"))
-					adminMethod.check(R.id.caneta);
-			}
-			else{
-				adminMethod.clearCheck();
-				data.administrationMethod = null;
-			}
-
 			((RadioButton) adminMethod.getChildAt(1)).setError(null);
 
 		} else {
 			currentView = layoutShow;
 			((TextView) currentView.findViewById(R.id.insulin_type)).setText(getInsulinActionType(data.action));
-			((TextView) currentView.findViewById(R.id.admininistration_method_show)).setText(data.administrationMethod);
+			RadioButton selected = (RadioButton) adminMethod.getChildAt(Integer.parseInt(data.administrationMethod));
+			((TextView) currentView.findViewById(R.id.admininistration_method_show)).setText(selected.getText());
 		}
 
 		((TextView) currentView.findViewById(R.id.name)).setText(data.name);
 		((TextView) currentView.findViewById(R.id.name)).setError(null);
-
-
-		//((TextView) currentView.findViewById(R.id.admininistration_method)).setText(data.administrationMethod);
-		//((TextView) currentView.findViewById(R.id.admininistration_method)).setError(null);
-
 
 	}
 
@@ -244,11 +221,12 @@ public class InsulinElement extends CardView {
 		if (data.visibilityState == MODE_EDIT || data.visibilityState == MODE_CREATE) {
 			data.name = ((TextView) layoutEdit.findViewById(R.id.name)).getText().toString();
 
-
-			//data.administrationMethod = ((TextView) layoutEdit.findViewById(R.id.admininistration_method)).getText().toString();
 			adminMethod = (RadioGroup) layoutEdit.findViewById(R.id.admininistration_method_insert);
 			if (adminMethod.getCheckedRadioButtonId() != -1) {
-				data.administrationMethod = ((RadioButton) adminMethod.findViewById(adminMethod.getCheckedRadioButtonId())).getText().toString().toLowerCase();
+				((RadioButton) adminMethod.getChildAt(1)).setError(null);
+				View selected = adminMethod.findViewById(adminMethod.getCheckedRadioButtonId());
+				int pos = adminMethod.indexOfChild(selected);
+				data.administrationMethod = pos+"";
 			}
 
 			data.action = ((Spinner) layoutEdit.findViewById(R.id.insulin_type)).getSelectedItemPosition();

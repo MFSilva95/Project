@@ -84,8 +84,6 @@ public class SettingsInsulins extends BaseActivity {
 				insulin.setDuration(Double.parseDouble(row[3]));
 				allinsulins.add(insulin);
 			}
-		} else {
-
 		}
 
 		lv.setAdapter(new InsulinAdapter(allinsulins, this));

@@ -8,9 +8,13 @@ import android.widget.LinearLayout;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.databinding.FragmentInsulinMealCalcBinding;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
+/**
+ * MAIN INSU CALC VIEW -
+ */
 public class InsulinCalcView extends LinearLayout {
 
     private LinearLayout blockIOB;
@@ -24,6 +28,8 @@ public class InsulinCalcView extends LinearLayout {
 
 
     public void init() {
+        DB_Read r = new DB_Read(this.getContext());
+        //r.getRecordsByDate()
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_insulin_meal_calc, this, true);
         this.blockIOB = (LinearLayout) findViewById(R.id.block_iob);
 
