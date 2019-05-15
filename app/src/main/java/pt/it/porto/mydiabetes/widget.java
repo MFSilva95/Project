@@ -59,7 +59,7 @@ import java.util.Locale;
 public class widget extends AppWidgetProvider {
 
     private static final String FROM_WIDGET = "FROM_WIDGET";
-    private static final int WIDGET_HEIGHT = 300;
+    private static final int WIDGET_HEIGHT = 400;
     private static final int WIDTH_PADDING = 0;
     private static final int N_REG = 5;
 
@@ -228,6 +228,7 @@ public static class  MyXAxisValueFormatter extends IndexAxisValueFormatter {
         if(glicData.size()<=0){return;}
 
         chart.getDescription().setEnabled(false);
+        chart.getLegend().setEnabled(false);
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -250,7 +251,7 @@ public static class  MyXAxisValueFormatter extends IndexAxisValueFormatter {
 
         }
 
-        LineDataSet set1 = new LineDataSet(entries, context.getString(R.string.glycemia_value));
+        LineDataSet set1 = new LineDataSet(entries, "");
         set1.setColor(Color.GREEN);
         set1.setLineWidth(3f);
         set1.setValueTextSize(15f);
