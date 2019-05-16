@@ -123,11 +123,7 @@ public class MyDiabetesWebViewActivity extends Activity {
                         if(name !=null && pass != null){
                             pt.it.porto.mydiabetes.database.Preferences.saveCloudSyncCredentials(view.getContext(), name, pass);
                             setResult(1);
-                            //Log.i("cenas", "onReceiveValue: -> "+name+" "+pass);
                         }
-
-                        //arranjar o loading
-                          //      tnetar dar erro...
 
                     }
                 });
@@ -137,19 +133,14 @@ public class MyDiabetesWebViewActivity extends Activity {
 
 
             if(url.contains("exit")){
-                //try {
-                    //this.finalize();
+
                     setResult(1);
                     finish();
-                //} catch (Throwable throwable) {
-                //    throwable.printStackTrace();
-               // }
+
             }else{
                 if (Uri.parse(url).getHost().contains("mydiabetes.dcc.fc.up.pt")) {
-                    // This is my website, so do not override; let my WebView load the page
                     return false;
                 }
-                // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
                 return true;
             }
 

@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingMultiplier="1.2"
-            android:autoLink="web"
+            android:autoLink="all"
             android:text="@string/feature_cloud_sync_description2"/>
 
     </LinearLayout>

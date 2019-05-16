@@ -266,7 +266,7 @@
     <string name="filterdialog_subtitle_data" >Data</string>
     <string name="feature_cloud_sync" >Sync with cloud</string>
     <string name="feature_cloud_sync_description1" >You can send your data safely to the cloud.</string>
-    <string name="feature_cloud_sync_description2" >You can access your data at any moment at<a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="feature_cloud_sync_description2" >You can access your data at any moment at https://mydiabetes.dcc.fc.up.pt/</string>
     <string name="login_username" >Username</string>
     <string name="login_password" >Password</string>
     <string name="login_extra_text" >Create new account.</string>
@@ -278,7 +278,7 @@
     <string name="day" >Day</string>
     <string name="time" >Time</string>
 
-    <string name="privacyPolicyLink">By creating a new account, you accept the privacy policy available at <a href="https://mydiabetes.dcc.fc.up.pt/newsite/privacidade.php">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="privacyPolicyLink">By creating a new account, you accept the privacy policy available at https://mydiabetes.dcc.fc.up.pt/</string>
 
     <!--<a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a>-->
 

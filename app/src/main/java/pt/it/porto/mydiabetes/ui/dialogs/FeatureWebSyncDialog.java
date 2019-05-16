@@ -151,11 +151,9 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		dialog.findViewById(R.id.webViewButton).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				//Intent intent = new Intent(view.getContext(), MyDiabetesWebViewActivity.class);
+
 				Intent intent = new Intent(context, MyDiabetesWebViewActivity.class);
-				//((Activity) view.getContext()).startActivityForResult(intent, WEBVIEW);
 				((Activity) context).startActivityForResult(intent, WEBVIEW);
-				//((Activity) FeatureWebSyncDialog.this.context).startActivityForResult(intent, WEBVIEW);
 			}
 		});
 		((EditText) dialog.findViewById(R.id.username)).setText(username);

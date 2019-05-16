@@ -350,12 +350,12 @@
     <string name="filterdialog_subtitle_data" >Dados</string>
     <string name="feature_cloud_sync" >Sincronizar com cloud</string>
     <string name="feature_cloud_sync_description1" >Pode enviar para a cloud os seus dados de forma segura.</string>
-    <string name="feature_cloud_sync_description2" >A qualquer momento pode aceder aos dados em <a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="feature_cloud_sync_description2" >A qualquer momento pode aceder aos dados em https://mydiabetes.dcc.fc.up.pt/</string>
     <string name="login_username" >Nome do utilizador</string>
     <string name="login_password" >Palavra-passe</string>
     <string name="login_extra_text" >Criar nova conta.</string>
 
-    <string name="privacyPolicyLink">Ao criar uma nova conta está a aceitar a política de privacidade disponível em <a href="https://mydiabetes.dcc.fc.up.pt/newsite/privacidade.php">mydiabetes.dcc.fc.up.pt</a></string>
+    <string name="privacyPolicyLink">Ao criar uma nova conta está a aceitar a política de privacidade disponível em https://mydiabetes.dcc.fc.up.pt/</string>
     <!--<a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a>-->
 
     <string name="webview_title">MyDiabetes</string>
