@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -135,21 +136,17 @@ public class GlycaemiaRegister_Input_Interface extends LinearLayout {
             GlycemiaObjectivesData objData = objs.get(i);
             int next_index = (i+1)%objs.size();
             GlycemiaObjectivesData next_objData = objs.get(next_index);
-
             temp = objData.getStartTime().split(":");
 
             int startTime_objective = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
 
-            //temp = objData.getEndTime().split(":");
-            //int endTime2 = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
-
             temp = next_objData.getStartTime().split(":");
             int endTime_objective = Integer.parseInt(temp[0], 10) * 60 + Integer.parseInt(temp[1]);
+
+
             if(current_startTime >= startTime_objective && current_startTime <= endTime_objective){
                 return objData.getObjective();
             }
-
-            //if(CheckOverlap(startTime_objective, endTime_objective, current_startTime)){return objData.getObjective();}
         }
         return -1;
     }

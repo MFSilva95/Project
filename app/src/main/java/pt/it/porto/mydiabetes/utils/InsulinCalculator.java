@@ -23,6 +23,10 @@ public class InsulinCalculator  implements Cloneable {
 	private float carbsRatio;
 	private int insulinTarget;
 	private int carbs;
+
+	private float lipids;
+	private float protein;
+
 	private int glycemia;
 	private int time; // time of intake in minutes
 	private float insulinOnBoard = 0.0f;
@@ -39,17 +43,12 @@ public class InsulinCalculator  implements Cloneable {
 		int defaultInsuratio = rdb.getInsulinRatio();
 
 		String d = DateUtils.formatTimeToDb(c);
-//		Log.i("cenas", "InsulinCalculator: !!!! "+d);
 
 		glycemiaRatio = rdb.Sensitivity_GetCurrent(d);
 		carbsRatio = rdb.Ratio_GetCurrent(d);
 
-		//ArrayList<CarbsRatioData> allCarbs =  rdb.Ratio_GetAll();
-		//ArrayList<Sensitivity> allSens =  rdb.Sensitivity_GetAll();
 		rdb.close();
 
-//		this.glycemiaRatio = getCurrentRatioInsulinElement(allSens);
-//		this.carbsRatio = getCurrentCarbsRatioElement(allCarbs);
 		if(glycemiaRatio==-1){glycemiaRatio = defaultInsuratio;}
 		if(carbsRatio==-1){carbsRatio = defaultCarbsRatio;}
 
@@ -67,39 +66,45 @@ public class InsulinCalculator  implements Cloneable {
 		glycemiaRatio = rdb.Ratio_GetCurrent(d);
 		carbsRatio = rdb.Sensitivity_GetCurrent(d);
 
-//		glycemiaRatio = rdb.Ratio_GetCurrent(DateUtils.formatToDb(c));
-//		carbsRatio = rdb.Sensitivity_GetCurrent(DateUtils.formatToDb(c));
-
 		rdb.close();
 
 		if(glycemiaRatio==-1){glycemiaRatio = defaultInsuratio;}
 		if(carbsRatio==-1){carbsRatio = defaultCarbsRatio;}
 	}
 
-	private int getCurrentRatioInsulinElement(ArrayList<Sensitivity> list) {
-		if(list==null){return -1;}
-		for (Sensitivity sens:list){
-			int currHour = date.get(Calendar.HOUR_OF_DAY);
-			int currMinute = date.get(Calendar.MINUTE);
-			int currTime = currHour*60 +currMinute;
-			if (sens.getStartInMinutes() >= currTime && sens.getEndInMinutes() <= currTime){
-				return (int) sens.getSensitivity();
-			}
-		}
-		return -1;
-	}
-	private int getCurrentCarbsRatioElement(ArrayList<CarbsRatioData> list) {
-		if(list==null){return -1;}
-		for (CarbsRatioData sens:list){
-			int currHour = date.get(Calendar.HOUR_OF_DAY);
-			int currMinute = date.get(Calendar.MINUTE);
-			int currTime = currHour*60 +currMinute;
-			if (sens.getStartInMinutes() >= currTime && sens.getEndInMinutes() <= currTime){
-				return (int) sens.getValue();
-			}
-		}
-		return -1;
-	}
+
+//	public float getInsulinTotalFloat(boolean withIOB, boolean round, boolean contain_LP) {
+//		float insulinTotal = getInsulinTotalFloat(withIOB);
+//
+//		if(contain_LP){
+//			float BN = 0;
+//			float BS = 0;
+//
+//			float CU = carbs;
+//			float FPU = (protein*4 + lipids*9)/100;
+//			float IRFactor = carbsRatio;
+//			float CU_FPU_correction = NBSBCorrection / 100;
+//
+//			float CU_perc = CU/(CU+FPU);
+//
+//			//if(CU_perc <0.2){BN = 0;}
+//			if(CU_perc>=0.2 && CU_perc<=0.8){ BN = CU*IRFactor*(1-CU_FPU_correction);}
+//			if(CU_perc>0.8){BN = CU*IRFactor;}
+//
+//			//if(FPU <1.0){BS = 0;}
+//			if(CU_perc < 0.2){BS = FPU*IRFactor;}
+//			if(CU_perc >= 0.2 && CU_perc <= 0.8){ BS = FPU*IRFactor*(1+CU_FPU_correction);}
+//			//if(CU_perc >= 0.8){BS = 0;}
+//		}
+//
+//		if (round) {
+//			insulinTotal = (float) (0.5 * Math.round(insulinTotal / 0.5));
+//		}
+//		if(insulinTotal<0){
+//			insulinTotal = 0.0f;
+//		}
+//		return insulinTotal;
+//	}
 
 	public float getInsulinTotalFloat(boolean withIOB, boolean round) {
 		float insulinTotal = getInsulinTotalFloat(withIOB);
@@ -109,7 +114,6 @@ public class InsulinCalculator  implements Cloneable {
 		if(insulinTotal<0){
 			insulinTotal = 0.0f;
 		}
-//		Log.i("cenas", "  -> getInsulinTotal: "+insulinTotal);
 		return insulinTotal;
 	}
 
@@ -203,6 +207,12 @@ public class InsulinCalculator  implements Cloneable {
 	public void setGlycemia(int glycemia) {
 		this.glycemia = glycemia;
 	}
+	public void setLipids(int l) {
+		this.lipids = l;
+	}
+	public void setProtein(int p) {
+		this.protein = p;
+	}
 
 	public void setTime(int time) {
 		this.time = time;
@@ -211,9 +221,7 @@ public class InsulinCalculator  implements Cloneable {
 	//public void setTime(Context context, int hour, int minute, String date) {
 	public void setTime(Context context, Calendar c){
 		this.date = c;
-//		if(date!=null){
-//			this.date = date;
-//		}
+
 		int hour = c.get(Calendar.HOUR_OF_DAY);
 		int minute = c.get(Calendar.MINUTE);
 		this.time = (hour *60) + minute;//hour * 60 + minute;
@@ -246,15 +254,6 @@ public class InsulinCalculator  implements Cloneable {
 		newCalculator.insulinOnBoard = insulinOnBoard;
 		return newCalculator;
 	}
-
-//	public void setTime(Context context, String time, String date) {
-//		Calendar calendar = DateUtils.getTimeCalendar(time);
-//		if (calendar != null) {
-//			setTime(context, calendar);
-//		}
-//	}
-
-
 
 
 	public interface InsulinCalculatorListener {

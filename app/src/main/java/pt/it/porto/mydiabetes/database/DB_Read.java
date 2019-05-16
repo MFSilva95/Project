@@ -92,6 +92,37 @@ public class DB_Read {
 		}
 	}
 
+    public boolean hasTargetdata(){
+        Cursor cursor = myDB.rawQuery("select * from BG_Target", null);
+
+        if (cursor.getCount() > 0) {
+            cursor.close();
+            return true;
+        }
+        cursor.close();
+        return false;
+    }
+	public boolean hasRatioData(){
+        Cursor cursor = myDB.rawQuery("select * from Ratio_Reg", null);
+
+        if (cursor.getCount() > 0) {
+            cursor.close();
+            return true;
+        }
+        cursor.close();
+        return false;
+    }
+    public boolean hasSensData(){
+        Cursor cursor = myDB.rawQuery("select * from Sensitivity_Reg", null);
+
+        if (cursor.getCount() > 0) {
+            cursor.close();
+            return true;
+        }
+        cursor.close();
+        return false;
+    }
+
 	public int getUserId() {
 		Cursor cursor = myDB.rawQuery("SELECT " + MyDiabetesContract.UserInfo.COLUMN_NAME_ID + " FROM UserInfo", null);
 		int val = -1;
@@ -460,12 +491,12 @@ public class DB_Read {
 
 	public HashMap<Integer, String[]> Insulin_GetAll() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Insulin", null);
-		Log.d("Cursor", String.valueOf(cursor.getCount()));
+		//Log.d("Cursor", String.valueOf(cursor.getCount()));
 		HashMap<Integer, String[]> insulins = new HashMap<>();
 		String[] row;
-		Log.i("cenas", "Insulin_GetAll: -------------------------------------------");
-		Log.i("cenas", "Insulin_GetAll: "+DatabaseUtils.dumpCursorToString(cursor));
-		Log.i("cenas", "Insulin_GetAll: -------------------------------------------");
+//		Log.i("cenas", "Insulin_GetAll: -------------------------------------------");
+//		Log.i("cenas", "Insulin_GetAll: "+DatabaseUtils.dumpCursorToString(cursor));
+//		Log.i("cenas", "Insulin_GetAll: -------------------------------------------");
 
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
@@ -867,6 +898,20 @@ public class DB_Read {
 			return false;
 		}
 	}
+
+//	public int getInsulinTypes() {
+//
+//		Cursor cursor = myDB.rawQuery("SELECT count(*) FROM Record WHERE DateTime LIKE '%" + day + "%';", null);
+//		if (cursor.getCount() > 0) {
+//			cursor.moveToFirst();
+//			int nRecords = cursor.getInt(0);
+//			cursor.close();
+//			return nRecords;
+//		} else {
+//			cursor.close();
+//			return 0;
+//		}
+//	}
 
 
     @Nullable

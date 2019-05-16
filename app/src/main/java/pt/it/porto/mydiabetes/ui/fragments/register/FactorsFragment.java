@@ -1,7 +1,5 @@
 package pt.it.porto.mydiabetes.ui.fragments.register;
 
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -250,14 +248,23 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		}
 
 		File profile_img = new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg");
+
 		DB_Read read = new DB_Read(getContext());
+
+		boolean hasSensRatioData = read.hasSensData();
+		boolean hasCarbsRatioData = read.hasRatioData();
+		boolean hasTargetRatioData = read.hasTargetdata();
+
 		if(profile_img.exists()){
 				BadgeUtils.addPhotoBadge(getContext(), read);
 		}
 
-		storage.initRacioSens(sensR, "Sensitivity_Reg");
-		storage.initRacioSens(carbsR, "Ratio_Reg");
-		storage.initTarget_bg(bg_target);
+
+		if (!hasCarbsRatioData){storage.initRatioSens(carbsR, "Ratio_Reg");}
+		if (!hasSensRatioData){storage.initRatioSens(sensR, "Sensitivity_Reg");}
+		if (!hasTargetRatioData){storage.initTarget_bg(bg_target);}
+
+
 
 		LevelsPointsUtils.addPoints(getContext(),0,"first", read);
 		read.close();

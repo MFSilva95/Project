@@ -425,7 +425,6 @@ public class Home extends BaseActivity {
 	}
 
 	public void feedback() {
-		DB_Read read = new DB_Read(this);
 		Intent intent = ShareCompat.IntentBuilder.from(this)
 				.setType("message/rfc822")
 				.addEmailTo(PROJECT_MANAGER_EMAIL)
@@ -512,14 +511,13 @@ public class Home extends BaseActivity {
                                 getString(R.string.positiveButton),
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
+                                        DB_Handler h = new DB_Handler(Home.this);
                                         if(!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)){
-                                            DB_Handler h = new DB_Handler(Home.this);
                                             h.deleteOldBackup();
                                             h.close();
                                             ShowDialogAddData();
                                             return;
                                         }else{
-                                            DB_Handler h = new DB_Handler(Home.this);
                                             h.deleteOldBackup();
                                             h.close();
                                             setMainView(null);
@@ -595,6 +593,7 @@ public class Home extends BaseActivity {
         DB_Read db = new DB_Read(getBaseContext());
         int idUser = db.getUserId();
         db.close();
+
         if(idUser != -1){
             DB_Write dbwrite = new DB_Write(getBaseContext());
             dbwrite.Log_Save(idUser,activity);

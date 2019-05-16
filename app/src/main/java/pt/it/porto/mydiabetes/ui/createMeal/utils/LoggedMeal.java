@@ -46,6 +46,25 @@ public class LoggedMeal implements Parcelable {
 
     }
 
+    public int getTotalLipids() {
+        float total_lipids = 0;
+
+        for(MealItem m : itemList){
+            total_lipids = total_lipids + m.getLipids();
+        }
+        return Math.round(total_lipids);
+    }
+
+    public int getTotalProtein() {
+        float total_protein = 0;
+
+        for(MealItem m : itemList) {
+            total_protein = total_protein + m.getProtein();
+        }
+
+        return Math.round(total_protein);
+    }
+
     public String getThumbnailPath(){
         return thumbnailPath;
     }

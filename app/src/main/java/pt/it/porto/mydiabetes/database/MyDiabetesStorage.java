@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -103,7 +104,7 @@ public class MyDiabetesStorage {
 		DB_Read dbRead = new DB_Read(db);
 		ArrayList<Tag> tags = dbRead.Tag_GetAll();
 		int id_user = dbRead.getUserId();
-		for(int index=0;index<tags.size()-1;index++){
+		for(int index=0;index<tags.size();index++){
 
 			ContentValues toInsert = new ContentValues();
 			toInsert.put("Name", tags.get(index).getName());
@@ -114,35 +115,26 @@ public class MyDiabetesStorage {
 		}
 	}
 
-	public void initRacioSens(float value, String table){
+	public void initRatioSens(float value, String table){
 
 		SQLiteDatabase db = mHandler.getWritableDatabase();
 		DB_Read dbRead = new DB_Read(db);
 		ArrayList<Tag> tags = dbRead.Tag_GetAll();
 		int id_user = dbRead.getUserId();
-//		String TAG = "cenas";
-//		Log.i(TAG, "initRacioSens: USER_ID= "+id_user);
-//		Log.i(TAG, " TABLE : "+table);
 
-		for(int index=0;index<tags.size()-1;index++){
-//			Log.i(TAG, "- NEW TAG -");
+		for(int index=0;index<tags.size();index++){
 
 			ContentValues toInsert = new ContentValues();
 			toInsert.put("Id_User", id_user);
-//			toInsert.put("Id_Tag", tags.get(index).getUserId());
 			toInsert.put("Value", value);
 			toInsert.put("Name", tags.get(index).getName());
 			toInsert.put("TimeStart", tags.get(index).getStart());
 			toInsert.put("TimeEnd", tags.get(index).getEnd());
 
-//			Log.i(TAG, " TAG ID: "+tags.get(index).getUserId());
-//			Log.i(TAG, " TAG VALUE: "+value);
-//			Log.i(TAG, " TAG NAME: "+tags.get(index).getName());
-//			Log.i(TAG, " TAG : START"+tags.get(index).getStart());
-//			Log.i(TAG, " TAG END: "+tags.get(index).getEnd());
-
 			db.insert(table, null, toInsert);
 		}
+		dbRead.close();
+		db.close();
 	}
 
 	public ArrayList<GlycemiaObjectivesData> getGlycemiaObjectives() throws Exception{

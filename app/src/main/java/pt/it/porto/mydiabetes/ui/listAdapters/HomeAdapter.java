@@ -180,7 +180,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         TextView rowText = null;
         TextView myText = null;
         View v = holder.view;
-        //Log.i("Home", "onBindViewHolder: "+currentView.getDisplayType()+" Pos:"+position);
         switch (currentView.getDisplayType()) {
 
             case HEADER:
@@ -190,9 +189,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 break;
             case ADVICE:
 
-                textHolder = (LinearLayout) v.findViewById(R.id.adviceRowBackground);
-                myText = (TextView) v.findViewById(R.id.content);
-                //textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
+//                textHolder = (LinearLayout) v.findViewById(R.id.adviceRowBackground);
+//                myText = (TextView) v.findViewById(R.id.content);
+//                textHolder.setBackgroundColor(Color.parseColor("#cceeeeee"));
 //                holder.view.setOnClickListener(getAdviceClickListener(currentAdvice));
                 break;
             case LOGITEM:
@@ -215,12 +214,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
                 HomeElement logbookDataBinding = ((ViewHolder) v.getTag()).item;
                 if(logbookDataBinding.isPressed()){
-                    //Log.i("cenas", "onLongClick: NOT pressed");
                     logbookDataBinding.setPressed(false);
                     callBack.removeToDelete(logbookDataBinding);
 
                 }else{
-                    //Log.i("cenas", "onLongClick: pressed");
                     logbookDataBinding.setPressed(true);
                     callBack.addToDelete(logbookDataBinding);
                 }
@@ -297,20 +294,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.item = currentView;
         holder.hora.setText(currentView.getFormattedTime());
         if(currentView.getTag_id()!=-1){
-//            DB_Read read = new DB_Read(holder.view.getContext());
-//            holder.tag.setText(read.Tag_GetNameById(currentView.getTag_id()));
-//            read.close();
 
             Resources res = holder.view.getContext().getResources(); //assuming in an activity for example, otherwise you can provide a context.
             String[] dayTimes = res.getStringArray(R.array.daytimes);
             holder.tag.setText(dayTimes[currentView.getTag_id()-1]);
         }
-        //holder.tag.setText(currentView.getTag_name());
         LinearLayout imageTitleHolder = (LinearLayout) holder.view.findViewById(R.id.imageTitleHolder);
 
         holder.background.setBackgroundColor(!currentView.isPressed()?Color.TRANSPARENT:Color.LTGRAY);
 
-        //View sep = holder.view.findViewById(R.id.sep);
         if(homeList.get(position-1).getDisplayType() == HomeElement.Type.HEADER && (position - 1) > -1){
             imageTitleHolder.setVisibility(View.VISIBLE);
         }
@@ -344,80 +336,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         }
     }
 
-
-//    private View.OnClickListener getAdviceClickListener(final Advice currentAdvice){
-//
-//
-//        View.OnClickListener onclick = new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//
-//                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-//                LayoutInflater inflater = LayoutInflater.from(v.getContext());
-//                builder.setView(inflater.inflate(R.layout.dialog_exp_advice, null));
-//                if (!currentAdvice.getAdviceType().equals("ALERT") && !currentAdvice.getAdviceType().equals("NORMAL")) {
-//                    builder.setNegativeButton(v.getContext().getString(R.string.no), new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                    builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-//                        @Override
-//                        public void onClick(DialogInterface dialog, int which) {
-//                            if (currentAdvice.getAdviceType().equals("QUESTION")) {
-//                                //myYapInstance.insertRule("has("+currentAdvice.getRegistryType()+")");
-//                            }
-//                            if (currentAdvice.getAdviceType().equals("SUGGESTION")) {
-//                                Class<?> wantedAct = null;
-//                                String classPath = "";
-//                                try {
-//                                    classPath = "pt.it.porto.mydiabetes.ui.activities." + currentAdvice.getRegistryType();
-//                                    wantedAct = Class.forName(classPath);
-//
-//                                } catch (ClassNotFoundException e) {
-//                                    // TODO Auto-generated catch block
-//                                    e.printStackTrace();
-//                                }
-//
-//                                Intent intent = new Intent(c, wantedAct);
-//                                c.startActivity(intent);
-//                            }
-//                            dialog.dismiss();
-//                        }
-//                    });
-//                }
-//
-//                Dialog dialog = builder.create();
-//                dialog.show();
-//
-//                TextView textView = (TextView) dialog.findViewById(R.id.popup_text);
-//                textView.setText(currentAdvice.getExpandedText());
-//
-//            }
-//        };
-//        return onclick;
-//    }
-//    private View.OnClickListener getTaskClickListener(final Task currentTask){
-//
-//
-//        View.OnClickListener onclick = new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
-//                LayoutInflater inflater = LayoutInflater.from(v.getContext());
-//                builder.setView(inflater.inflate(R.layout.dialog_exp_task, null));
-//                Dialog dialog = builder.create();
-//                dialog.show();
-//                TextView textView = (TextView) dialog.findViewById(R.id.popup_task_text);
-//                textView.setText(currentTask.getExpandedText());
-//            }
-//        };
-//        return onclick;
-//
-//    }
     @Override
     public int getItemCount() {
         return homeList.size();

@@ -15,6 +15,7 @@ import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 /**
  * MAIN INSU CALC VIEW -
  */
+
 public class InsulinCalcView extends LinearLayout {
 
     private LinearLayout blockIOB;
@@ -28,12 +29,13 @@ public class InsulinCalcView extends LinearLayout {
 
 
     public void init() {
-        DB_Read r = new DB_Read(this.getContext());
-        //r.getRecordsByDate()
-        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_insulin_meal_calc, this, true);
-        this.blockIOB = (LinearLayout) findViewById(R.id.block_iob);
-
+        if(binding==null){
+            binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_insulin_meal_calc, this, true);
+        }
         if (!BuildConfig.IOB_AVAILABLE) {
+            if(blockIOB==null){
+                this.blockIOB = (LinearLayout) findViewById(R.id.block_iob);
+            }
             this.blockIOB.setVisibility(View.GONE);
         }
     }

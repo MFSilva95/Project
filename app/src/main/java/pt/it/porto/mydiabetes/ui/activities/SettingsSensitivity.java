@@ -61,7 +61,7 @@ public class SettingsSensitivity extends BaseActivity {
         ArrayList<Sensitivity> allTags = rdb.Sensitivity_GetAll();
 //        if(allTags==null){
 //            MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
-//            storage.initRacioSens(baseInsuRatio, "Sensitivity_Reg");
+//            storage.initRatioSens(baseInsuRatio, "Sensitivity_Reg");
 ////            rdb = new DB_Read(this);
 //            allTags = rdb.Sensitivity_GetAll();
 ////            rdb.close();

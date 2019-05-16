@@ -141,7 +141,6 @@ public class DB_Handler extends SQLiteOpenHelper {
             ContentValues toInsert = new ContentValues();
             toInsert.put(MyDiabetesContract.Feature.COLUMN_NAME_ACTIVATED, 0);
             myDB.update(MyDiabetesContract.Feature.TABLE_NAME, toInsert, MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{FeaturesDB.DEPRECATED});
-
         }
 
     }
@@ -225,67 +224,88 @@ public class DB_Handler extends SQLiteOpenHelper {
         String[] daytimes = res.getStringArray(R.array.daytimes);
 
         ContentValues toInsert = new ContentValues();
+
+        //<item>Acordar</item>
         toInsert.put("Name", daytimes[0]);
         toInsert.put("TimeStart", "06:00");
         toInsert.put("TimeEnd", "07:30");
         db.insert("Tag", null, toInsert);
 
+        //<item>Antes Peq. almoço</item>
         toInsert = new ContentValues();
         toInsert.put("Name", daytimes[1]);
         toInsert.put("TimeStart", "07:30");
         toInsert.put("TimeEnd", "09:00");
         db.insert("Tag", null, toInsert);
 
+        //<item>Depois Peq. almoço</item>
         toInsert = new ContentValues();
         toInsert.put("Name", daytimes[2]);
         toInsert.put("TimeStart", "09:00");
         toInsert.put("TimeEnd", "10:30");
         db.insert("Tag", null, toInsert);
 
+        //<item>Antes almoço</item>
         toInsert = new ContentValues();
         toInsert.put("Name", daytimes[3]);
         toInsert.put("TimeStart", "10:30");
         toInsert.put("TimeEnd", "13:00");
         db.insert("Tag", null, toInsert);
 
+        //<item>Depois Almoço</item>
         toInsert = new ContentValues();
         toInsert.put("Name", daytimes[4]);
         toInsert.put("TimeStart", "13:00");
         toInsert.put("TimeEnd", "15:30");
         db.insert("Tag", null, toInsert);
 
+        //<item>Lanche</item>
         toInsert = new ContentValues();
         toInsert.put("Name", daytimes[5]);
         toInsert.put("TimeStart", "15:30");
         toInsert.put("TimeEnd", "18:00");
         db.insert("Tag", null, toInsert);
 
+        //<item>Antes jantar</item>
         toInsert = new ContentValues();
         toInsert.put("Name", daytimes[6]);
         toInsert.put("TimeStart", "18:00");
         toInsert.put("TimeEnd", "20:30");
         db.insert("Tag", null, toInsert);
 
+        //<item>Depois jantar</item>
         toInsert = new ContentValues();
         toInsert.put("Name", daytimes[7]);
         toInsert.put("TimeStart", "20:30");
         toInsert.put("TimeEnd", "22:00");
         db.insert("Tag", null, toInsert);
 
+        //<item>Deitar</item>
         toInsert = new ContentValues();
         toInsert.put("Name", daytimes[8]);
         toInsert.put("TimeStart", "22:00");
-        toInsert.put("TimeEnd", "00:00");
+        toInsert.put("TimeEnd", "01:00");
         db.insert("Tag", null, toInsert);
 
+        //<item>Noite</item>
         toInsert = new ContentValues();
         toInsert.put("Name", daytimes[9]);
-        toInsert.put("TimeStart", "00:00");
+        toInsert.put("TimeStart", "01:00");
         toInsert.put("TimeEnd", "06:00");
         db.insert("Tag", null, toInsert);
 
+
 //        toInsert = new ContentValues();
 //        toInsert.put("Name", daytimes[10]);
+//        toInsert.put("TimeStart", "01:00");
+//        toInsert.put("TimeEnd", "06:00");
 //        db.insert("Tag", null, toInsert);
     }
 }
+
+
+
+
+
+
+

@@ -164,7 +164,6 @@ public class homeMiddleFragment extends Fragment {
 
                 CharSequence newDateText = android.text.format.DateUtils.getRelativeTimeSpanString(getDateInMillis(elem.getFormattedDate()), currentTime, android.text.format.DateUtils.DAY_IN_MILLIS);
                 if (dateText.equals(newDateText)) {
-                    //elem.setTag_name(db.Tag_GetNameById(elem.getTag_id()));
                     Resources res = getResources(); //assuming in an activity for example, otherwise you can provide a context.
                     String[] dayTimes = res.getStringArray(R.array.daytimes);
                     elem.setTag_name(dayTimes[elem.getTag_id()-1]);

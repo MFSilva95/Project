@@ -12,7 +12,6 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRatioData;
-import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.listAdapters.CarbsRatioListAdapter;
@@ -61,7 +60,7 @@ public class SettingsCarbsRatio extends BaseActivity {
 
         if(allTags==null){
             MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
-            storage.initRacioSens(baseCarbsRatio, "Ratio_Reg");
+            storage.initRatioSens(baseCarbsRatio, "Ratio_Reg");
             //rdb = new DB_Read(this);
             allTags = rdb.Ratio_GetAll();
         }

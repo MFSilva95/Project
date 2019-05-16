@@ -1,9 +1,5 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-/**
- * Created by Diogo on 22/02/2017.
- */
-
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -39,6 +35,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -185,25 +182,27 @@ public class NewHomeRegistry extends BaseActivity{
         if(requestCode == REQUEST_CREATE_MEAL && resultCode == RESULT_OK){
             if(data.hasExtra("meal")){
                 mCurrentMeal = data.getExtras().getParcelable("meal");
-                carbsRegisterInputInterface.setImage(mCurrentMeal.getThumbnailPath());
-                //carbsRegisterInputInterface.setImage();
-                carbsRegisterInputInterface.setCarbsMealID(mCurrentMeal.getId());
-                carbsRegisterInputInterface.setMealCarbs(mCurrentMeal.getTotalCarbs(true));
+                if(mCurrentMeal!=null){
+                    carbsRegisterInputInterface.setImage(mCurrentMeal.getThumbnailPath());
+                    //carbsRegisterInputInterface.setImage();
+                    carbsRegisterInputInterface.setCarbsMealID(mCurrentMeal.getId());
+                    carbsRegisterInputInterface.setMealCarbs(mCurrentMeal.getTotalCarbs(true));
+                    //->lipids and protei
+                }
             }
 
         }
         if(requestCode == BLOOD_GLUCOSE && resultCode == RESULT_OK){
             glycaemiaRegisterInputInterface.updateObjective();
         }
-
-
-        else if (requestCode == IMAGE_VIEW) {
-            //se tivermos apagado a foto dá result code -1
-            //se voltarmos por um return por exemplo o resultcode é 0
-            if (resultCode == -1) {
-                //imageRemoved();
-            }
-        }
+//        else {
+//            if (requestCode == IMAGE_VIEW) {
+//                //se tivermos apagado a foto dá result code -1
+//                //se voltarmos por um return por exemplo o resultcode é 0
+////            if (resultCode == -1) {
+////                //imageRemoved();
+//            }
+//        }
         super.onActivityResult(requestCode, resultCode, data);
     }
     @Override
@@ -218,19 +217,32 @@ public class NewHomeRegistry extends BaseActivity{
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        /**
-         * save current record state for recovery
-         */
-        //outState.putParcelable(GENERATED_IMAGE_URI, generatedImageUri);
+
+
         String date = DateUtils.getFormattedDate(registerDate)+" "+DateUtils.getFormattedTimeSec(registerDate); //save the currente record date and time
-        save_current_input_data();//save the state of each one of the record windows
+        save_current_input_data();
 
         outState.putBoolean(ARG_IS_RECORD_UPDATE, isRecordUpdate);
-        //outState.putStringArrayList(ARG_BUTTONS_UPDATE_LIST, buttonsUpdate);
+
         outState.putStringArrayList(ARG_BUTTONS_DELETE_LIST, delete_buttons);
         outState.putString(ARG_CALENDAR, date);
 
         spinner = findViewById(R.id.tag_spinner);
+//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { Tags should update?
+//            @Override
+//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//                if(buttons.contains(GLICAEMIA)){
+//                    glycaemiaRegisterInputInterface.updateObjective();
+//                }
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parentView) {
+//                // your code here
+//            }
+//
+//        });
+
         int idTag = (spinner.getSelectedItemPosition());//rdb.Tag_GetIdByName(tag);
 
         outState.putParcelable(ARG_BLOOD_GLUCOSE, glycemiaData);
@@ -241,31 +253,6 @@ public class NewHomeRegistry extends BaseActivity{
         outState.putInt(ARG_RECORD_ID, recordId);
     }
 
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        //logSave("NewHomeRegistry");
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-//        if (savedInstanceState != null && savedInstanceState.containsKey(GENERATED_IMAGE_URI)) {
-//            generatedImageUri = savedInstanceState.getParcelable(GENERATED_IMAGE_URI);
-//        }
-        /*if (savedInstanceState != null && savedInstanceState.getBoolean(CALCS_OPEN, false)) {
-            ImageButton calcInsulinInfo = ((ImageButton) findViewById(R.id.bt_insulin_calc_info));
-            if (calcInsulinInfo != null) {
-                calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_info_outline_grey_900_24dp));
-            }
-            fragmentInsulinCalcsFragment = new InsulinCalcFragment();
-            getFragmentManager().beginTransaction().replace(R.id.fragment_calcs, fragmentInsulinCalcsFragment).commit();
-            getFragmentManager().executePendingTransactions();
-            this.fragmentInsulinCalcsFragment = (InsulinCalcFragment) getFragmentManager().findFragmentById(R.id.fragment_calcs);
-            showCalcs();
-        }*/
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -291,9 +278,6 @@ public class NewHomeRegistry extends BaseActivity{
     }
     private void init_vars(){
         setContentView(R.layout.activity_add_event);
-        //FeaturesDB featuresDB = new FeaturesDB(MyDiabetesStorage.getInstance(this));
-
-        //useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
         contentLayout = findViewById(R.id.content_panel);
         registerDateTextV = findViewById(R.id.registryDate);
         registerTimeTextV = findViewById(R.id.registerTime);
@@ -309,26 +293,15 @@ public class NewHomeRegistry extends BaseActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
-        //permissionStatus = getSharedPreferences("permissionStatus", MODE_PRIVATE);
         registerDate = Calendar.getInstance();
 
         DB_Read rdb = new DB_Read(this);
         t = rdb.Tag_GetAll();
 
-        //Log.i(TAG, "init_vars: "+t.toString());
-        //String[] allTags = new String[t.size()];
         iRatio = rdb.Sensitivity_GetCurrent(DateUtils.getFormattedTimeSec(registerDate));
         cRatio = rdb.Ratio_GetCurrent(DateUtils.getFormattedTimeSec(registerDate));
-        //UserInfo obj = rdb.MyData_Read();
-        //iRatio = obj.getInsulinRatio();
-        //cRatio = obj.getCarbsRatio();
-        rdb.close();
 
-//        if (t != null) {
-//            for (int x=0;x<t.size();x++) {
-//                allTags[x] = t.get(x).getName();
-//            }
-//        }
+        rdb.close();
 
         Resources res = getResources(); //assuming in an activity for example, otherwise you can provide a context.
         String[] allTags = res.getStringArray(R.array.daytimes);
@@ -337,7 +310,6 @@ public class NewHomeRegistry extends BaseActivity{
         updateTagSpinner();
 
         buttons = new ArrayList<>();
-        //buttonsUpdate = new ArrayList<>();
         delete_buttons = new ArrayList<>();
 
         insulinCalculator = new InsulinCalculator(this,registerDate);
@@ -349,8 +321,7 @@ public class NewHomeRegistry extends BaseActivity{
         insulinData = new InsulinRec();
         noteData = new Note();
 
-        Pair<Integer, Integer> displayM = getDisplayMetrics();
-        carbsRegisterInputInterface = new CarbsRegister_Input_Interface(this, new NewHomeRegCallImpl(),displayM.first, displayM.second);
+        carbsRegisterInputInterface = new CarbsRegister_Input_Interface(this, new NewHomeRegCallImpl());
         glycaemiaRegisterInputInterface = new GlycaemiaRegister_Input_Interface(this, registerDate, new NewHomeRegCallImpl());
         noteRegisterInputInterface = new NoteRegister_Input_Interface(this);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(false);
@@ -364,12 +335,14 @@ public class NewHomeRegistry extends BaseActivity{
             }else{
                 save_record();
             }
-            //validateInfo_Save();
             finish();
         }catch (Exception e){
             e.printStackTrace();
             return;
         }
+    }
+    private void verify_empty_conditions()throws Exception{
+        if(buttons.size()<=1){throw new Exception();}
     }
     private void verify_note_conditions()throws Exception{
         if(buttons.contains(NOTE)){
@@ -408,14 +381,20 @@ public class NewHomeRegistry extends BaseActivity{
         spinner = findViewById(R.id.tag_spinner);
         int idTag = (spinner.getSelectedItemPosition());
 
+        try{
+            verify_empty_conditions();
+            verify_note_conditions();
+            verify_carbs_conditions();
+            verify_glucose_conditions();
+            verify_insulin_conditions();
+        }catch (Exception e){throw e;}
+
+
         DB_Read rdb = new DB_Read(this);
         int idUser = rdb.getUserId();
-        DB_Write reg = new DB_Write(this);
+        rdb.close();
 
-        verify_note_conditions();
-        verify_carbs_conditions();
-        verify_glucose_conditions();
-        verify_insulin_conditions();
+        DB_Write reg = new DB_Write(this);
 
         if(delete_buttons.contains(NOTE)){
             reg.Note_Delete(noteData.getId());
@@ -538,31 +517,35 @@ public class NewHomeRegistry extends BaseActivity{
                 throw e;
             }
         }
-        //reg.Record_Update(recordId,idUser, registerDate, idTag); carbsData.getUserId(),insulinData.getUserId(),glycemiaData.getUserId(),noteData.getUserId());
-
-        //Log.i(TAG, "validateInfo_Save: BEGIN");
-        //BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
-        //BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
-        //LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log", rdb);
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
-        //Log.i(TAG, "validateInfo_Save: END");
-        rdb.close();
+
+        dbHelper.close();
         reg.close();
     }
+
+
     private void save_record () throws Exception{
         spinner = findViewById(R.id.tag_spinner);
         int idTag = (spinner.getSelectedItemPosition()+1);
 
+        try{
+            verify_empty_conditions();
+            verify_note_conditions();
+            verify_carbs_conditions();
+            verify_glucose_conditions();
+            verify_insulin_conditions();
+        }catch (Exception e){
+            {throw e;}
+        }
+
+
         DB_Read rdb = new DB_Read(this);
         int idUser = rdb.getUserId();
+
+
         DB_Write reg = new DB_Write(this);
-
-        verify_note_conditions();
-        verify_carbs_conditions();
-        verify_glucose_conditions();
-        verify_insulin_conditions();
-
         recordId = reg.Record_Add(idUser, registerDate, idTag);
+
 
         DataBaseHelper dbHelper = new DataBaseHelper(this);
 
@@ -666,13 +649,14 @@ public class NewHomeRegistry extends BaseActivity{
             }
         }
 
-        Log.i(TAG, "validateInfo_Save: BEGIN");
         BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
         BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
         LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log", rdb);//bug here
-        setResult(Home.CHANGES_OCCURRED, this.getIntent());
-        Log.i(TAG, "validateInfo_Save: END");
         rdb.close();
+
+        setResult(Home.CHANGES_OCCURRED, this.getIntent());
+
+        dbHelper.close();
         reg.close();
     }
 
@@ -706,8 +690,7 @@ public class NewHomeRegistry extends BaseActivity{
                         //setAdviceText();
                     }*/
 
-        Pair<Integer,Integer> displayM = getDisplayMetrics();
-        carbsRegisterInputInterface = new CarbsRegister_Input_Interface(this, carbsRegisterInputInterface.getCallBack(),displayM.first,displayM.second);
+        carbsRegisterInputInterface = new CarbsRegister_Input_Interface(this, carbsRegisterInputInterface.getCallBack());
         addContent(carbsRegisterInputInterface);
         bottomSheetViewgroup.findViewById(R.id.bs_meal).setPressed(true);
         buttons.add(0, CARBS);
@@ -886,6 +869,7 @@ public class NewHomeRegistry extends BaseActivity{
         DB_Read db = new DB_Read(getBaseContext());
         int idUser = db.getUserId();
         db.close();
+
         if(idUser != -1){
             DB_Write dbwrite = new DB_Write(getBaseContext());
             dbwrite.Log_Save(idUser,activity);
@@ -900,17 +884,11 @@ public class NewHomeRegistry extends BaseActivity{
     public String getTime() {
         return registerTimeTextV.getText().toString();
     }
-//    private void setImgURI(Uri newUri){
-//        carbsRegisterInputInterface.setUri(newUri);
-//        //imgUri = newUri;
-//    }
-//    private void imageRemoved() {
-//        setImgURI(null);
-//    }
+
 
     private void fill_recover(Bundle args) throws Exception {
 
-        DB_Read db_read = new DB_Read(this);
+//        DB_Read db_read = new DB_Read(this);
 
         if(args.containsKey(ARG_CALENDAR)){
 
@@ -991,8 +969,9 @@ public class NewHomeRegistry extends BaseActivity{
         }
         hideBottomSheet();
         hideKeyboard();
-        db_read.close();
+//        db_read.close();
     }
+
     private void fill_update(Bundle args) throws Exception {
 
 
@@ -1072,9 +1051,6 @@ public class NewHomeRegistry extends BaseActivity{
         }
         hideBottomSheet();
         hideKeyboard();
-
-        db_read.close();
-
     }
 
     private void fillParameters(Bundle args, boolean isUpdate){
@@ -1120,32 +1096,10 @@ public class NewHomeRegistry extends BaseActivity{
         return super.startActionMode(callback);
     }
 
-///    @Override
-////    protected void onPostResume() {
-////        super.onPostResume();
-////        if (sentToSettings) {
-////            dispatchTakePictureIntent();
-////        }
-////    }
-
-
-
-
-    //            if (ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) + ActivityCompat.checkSelfPermission(NewHomeRegistry.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//                    //Got Permission
-//                    try {
-//                        dispatchTakePictureIntent();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//    }
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-//        dispatchTakePictureIntent();
-//    }
+
         if (requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 try {
@@ -1163,7 +1117,6 @@ public class NewHomeRegistry extends BaseActivity{
     private void dispatchTakePictureIntent() throws IOException {
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //Intent takePictureIntent = ImagePicker.cameraOnly().getIntent(this);
 
         //Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -1184,69 +1137,6 @@ public class NewHomeRegistry extends BaseActivity{
                 }
                 startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
             }
-        }
-    }
-
-//    private void dispatchTakePictureIntent() throws IOException {
-//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        // Ensure that there's a camera activity to handle the intent
-//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-//            // Create the File where the photo should go
-//            File photoFile = null;
-//            try {
-//                photoFile = createImageFile();
-//            } catch (IOException ex) {
-//                // Error occurred while creating the File
-//                return;
-//            }
-//            // Continue only if the File was successfully created
-//            if (photoFile != null) {
-//
-//                if(android.os.Build.VERSION.SDK_INT > Build.VERSION_CODES.KITKAT){
-//                    Uri photoURI = FileProvider.getUriForFile(NewHomeRegistry.this,
-//                            BuildConfig.APPLICATION_ID + ".provider",
-//                            photoFile);
-//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-//                }else{
-//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-//                }
-//                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-//            }
-//        }
-//    }
-
-
-    public static void copy19plus(String src_path, File dst) throws IOException {
-        File src = new File(src_path);
-        try (InputStream in = new FileInputStream(src)) {
-            try (OutputStream out = new FileOutputStream(dst)) {
-                // Transfer bytes from in to out
-                byte[] buf = new byte[1024];
-                int len;
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
-                }
-            }
-        }
-    }
-
-    public static void copyUnder19(String src_path, File dst) throws IOException {
-        File src = new File(src_path);
-        InputStream in = new FileInputStream(src);
-        try {
-            OutputStream out = new FileOutputStream(dst);
-            try {
-                // Transfer bytes from in to out
-                byte[] buf = new byte[1024];
-                int len;
-                while ((len = in.read(buf)) > 0) {
-                    out.write(buf, 0, len);
-                }
-            } finally {
-                out.close();
-            }
-        } finally {
-            in.close();
         }
     }
 
@@ -1336,6 +1226,11 @@ public class NewHomeRegistry extends BaseActivity{
 
         @Override
         public void updateInsulinCalc() {
+
+            if(mCurrentMeal != null){
+                insulinCalculator.setProtein(mCurrentMeal.getTotalProtein());
+                insulinCalculator.setLipids(mCurrentMeal.getTotalLipids());
+            }
             insulinCalculator.setCarbs(carbsRegisterInputInterface !=null? carbsRegisterInputInterface.getCarbs():0);
             insulinCalculator.setGlycemia(glycaemiaRegisterInputInterface !=null? glycaemiaRegisterInputInterface.getGlycemia():0);
             insulinCalculator.setGlycemiaTarget(glycaemiaRegisterInputInterface !=null? glycaemiaRegisterInputInterface.getGlycemiaTarget():0);
