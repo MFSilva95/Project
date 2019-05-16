@@ -99,8 +99,7 @@ public class homeRightFragment extends Fragment {
     private TextView averageText;
     private TextView variabilityText;
     private TextView hiperhipoText;
-    private TextView hypoText;
-    private TextView hyperText;
+    private TextView day;
 
     private Uri currentImageUri;
 
@@ -192,9 +191,8 @@ public class homeRightFragment extends Fragment {
 
         averageText = (TextView) layout.findViewById(R.id.averageText);
         variabilityText = (TextView) layout.findViewById(R.id.variabilityText);
-        //hiperhipoText = (TextView) layout.findViewById(R.id.hiperhipoText);
-        hyperText = (TextView) layout.findViewById(R.id.hyperText);
-        hypoText = (TextView) layout.findViewById(R.id.hypoText);
+        hiperhipoText = (TextView) layout.findViewById(R.id.hiperhipoText);
+        day = (TextView) layout.findViewById(R.id.day);
 
         beginnerBadge = (ImageView) layout.findViewById(R.id.beginnerBadge);
         beginnerBadgesText = (TextView) layout.findViewById(R.id.beginnerBadgesText);
@@ -485,40 +483,14 @@ public class homeRightFragment extends Fragment {
     private void setPersonalInfo() {
 
         DB_Read rdb = new DB_Read(getContext());
-        ArrayList<Integer> glycemiaList = rdb.getLastGlycaemias();
+        ArrayList<Integer> glycemiaList = rdb.getPersonalInfoToday();
+        System.out.println("entra: "+glycemiaList);
         rdb.close();
-
-        int average = 0;
-        double sum = 0;
-        int sd; //sqrt(1/n * sum(value - mean)^2)
-        int cv;
-        int hypers = 0;
-        int hypos = 0;
-
-        if (glycemiaList.size() > 0) {
-
-            // mean calculation and check the numbers of hypers and hypos
-            for (int i = 0; i < glycemiaList.size(); i++) {
-                average += glycemiaList.get(i);
-                if (glycemiaList.get(i) > 180) hypers ++;
-                if (glycemiaList.get(i) < 70) hypos ++;
-            }
-
-            average = (int) (average / glycemiaList.size());
-            // standard deviation calculation
-            for (int i = 0; i < glycemiaList.size(); i++) {
-                sum += Math.pow(Math.abs(glycemiaList.get(i) - average), 2);
-            }
-            sd = (int) (Math.sqrt(sum/glycemiaList.size()));
-
-            // set text
-            averageText.setText(String.valueOf(average) + "mg/dL");
-            variabilityText.setText(String.valueOf(Math.round((float) sd / average * 100))+"%");
-            hyperText.setText(String.valueOf(hypers));
-            hypoText.setText(String.valueOf(hypos));
-            //hiperhipoText.setText(hypers+" / "+hypos);
+        if (glycemiaList.size() != 0) {
+            averageText.setText(String.valueOf(glycemiaList.get(0)));
+            variabilityText.setText(String.valueOf((int)((float) (glycemiaList.get(1)*100/glycemiaList.get(0)))));
+            hiperhipoText.setText(glycemiaList.get(2)+" / "+glycemiaList.get(3));
         }
+
     }
-
-
 }

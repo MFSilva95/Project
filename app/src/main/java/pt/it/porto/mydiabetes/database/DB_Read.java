@@ -2905,4 +2905,30 @@ public class DB_Read {
 			return glycemiaList;
 		}
 	}
+
+	public ArrayList<Integer> getPersonalInfoToday() {
+		ArrayList<Integer> personalInfo = new ArrayList<>();
+		Cursor cursor = myDB.rawQuery("SELECT sub.a, AVG((Reg_BloodGlucose.Value - sub.a) * (Reg_BloodGlucose.Value - sub.a)) as var, hypo.hypoglycemia, hyper.hyperglycemia From Reg_BloodGlucose," +
+				"(SELECT AVG(Value) as a From Reg_BloodGlucose Where Reg_BloodGlucose.DateTime > DateTime('now','start of day') AND Reg_BloodGlucose.DateTime < DateTime('now','start of day','+24 hours')) AS sub," +
+				"(SELECT Count(*) as hypoglycemia From Reg_BloodGlucose Where Reg_BloodGlucose.Value < 70 and Reg_BloodGlucose.DateTime > DateTime('now','start of day') AND Reg_BloodGlucose.DateTime < DateTime('now','start of day','+24 hours')) as hypo," +
+				"(SELECT Count(*) as hyperglycemia From Reg_BloodGlucose Where Reg_BloodGlucose.Value > 180 and Reg_BloodGlucose.DateTime > DateTime('now','start of day') AND Reg_BloodGlucose.DateTime < DateTime('now','start of day','+24 hours')) as hyper", null);
+
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			if (cursor.getString(0) != null) {
+				personalInfo.add(Integer.valueOf(cursor.getString(0)));
+				personalInfo.add((int) (Math.sqrt(Double.parseDouble(cursor.getString(1)))));
+				personalInfo.add(Integer.valueOf(cursor.getString(2)));
+				personalInfo.add(Integer.valueOf(cursor.getString(3)));
+			}
+			cursor.close();
+			return personalInfo;
+		}
+
+		else {
+			cursor.close();
+			personalInfo = null;
+			return personalInfo;
+		}
+	}
 }
