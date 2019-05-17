@@ -10,51 +10,32 @@ android:layout_height="match_parent">
     android:layout_height="match_parent"
     android:background="@color/background">
 
-
-    <com.github.florent37.parallax.ScrollView
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <FrameLayout
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="170dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/food_profile"
+            android:tag="parallax=0.3" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
             android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="170dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/food_profile"
-                android:tag="parallax=0.3" />
+            <include layout="@layout/card_profile" />
+            <include layout="@layout/card_badges" />
 
-
-            <!--style="@style/MyTitle"-->
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:orientation="vertical">
-
-                <include layout="@layout/card_profile" />
-
-                <include layout="@layout/card_personal_info" />
-
-                <include layout="@layout/card_badges" />
-
-                <TextView
-                    android:id="@+id/graphSection"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Graph section"
-                    android:gravity="center"/>
-            </LinearLayout>
+        </LinearLayout>
 
 
 
         </FrameLayout>
-
-    </com.github.florent37.parallax.ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

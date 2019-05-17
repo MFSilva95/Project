@@ -80,16 +80,18 @@ public class Home extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
-<<<<<<< HEAD
+        /**
+         * WIDGET CALL
+         */
 
-=======
 	    if (this.getIntent() != null) {
             if (this.getIntent().getStringExtra(FROM_WIDGET) != null) {
                 Intent intent = new Intent(this, NewHomeRegistry.class);
                 startActivity(intent);
             }
         }
->>>>>>> origin/widget_gamification
+
+
 
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
