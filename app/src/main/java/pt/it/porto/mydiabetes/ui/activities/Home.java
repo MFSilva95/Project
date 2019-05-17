@@ -26,6 +26,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -67,6 +68,9 @@ public class Home extends BaseActivity {
 	private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
 	private static final int DB_OLD_PERMISSION_CONSTANT = 102;
     private static final int INIT_PERMISSION_REQUEST = 103;
+
+    private static final String FROM_WIDGET = "FROM_WIDGET";
+
     private static int idUser;
 
 	private SharedPreferences permissionStatus;
@@ -76,7 +80,16 @@ public class Home extends BaseActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 
+<<<<<<< HEAD
 
+=======
+	    if (this.getIntent() != null) {
+            if (this.getIntent().getStringExtra(FROM_WIDGET) != null) {
+                Intent intent = new Intent(this, NewHomeRegistry.class);
+                startActivity(intent);
+            }
+        }
+>>>>>>> origin/widget_gamification
 
         super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);

@@ -573,8 +573,12 @@
     <string name="delete_button">Remove</string>
     <string name="bullet">\u2022</string>
 
+
     <string name="meal_lipids_description">Lipid-rich meal</string>
     <string name="meal_lipids_explain">Your current meal has an high lipids level. It is expected that your glicemic level continues to increase in the next %1$d hours. If you possess an insulin pump, you should define a squared bolus. If you use a pen, you should regularly verify your glicemic values and, if necessary, administrate insulin to correct your glicemic values.</string>
+
+    <string name="widget_missing_data">No recent records.</string>
+
 
     <string name="create_meal_title">Create Meal</string>
     <string name="empty_list">Meal without any food!</string>

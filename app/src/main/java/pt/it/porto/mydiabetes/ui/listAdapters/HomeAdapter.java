@@ -2,6 +2,7 @@ package pt.it.porto.mydiabetes.ui.listAdapters;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,6 +42,7 @@ import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.ui.fragments.home.homeMiddleFragment;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
+import pt.it.porto.mydiabetes.widget;
 
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
@@ -322,6 +324,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             holder.gvalue.setText(String.valueOf(currentView.getGlycemia()));
             holder.gvalue.setVisibility(View.VISIBLE);
             holder.gtag.setVisibility(View.VISIBLE);
+
         } else {
             holder.gvalue.setVisibility(View.INVISIBLE);
             holder.gtag.setVisibility(View.INVISIBLE);

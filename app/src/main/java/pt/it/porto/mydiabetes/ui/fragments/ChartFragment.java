@@ -214,7 +214,7 @@ public class ChartFragment extends Fragment {
 //		numberOfElementsInGraph = lines.get(0)..size();
 		chart = (LineChartView) getView().findViewById(R.id.chart);
 
-		chart.setLineChartData(new LineChartData(lines));
+			chart.setLineChartData(new LineChartData(lines));
 
 		chart.setZoomType(ZoomType.HORIZONTAL);
 		Viewport tempViewPort = new Viewport(chart.getMaximumViewport());

@@ -22,7 +22,6 @@
 
 
 
-
     <string name="upload_failed">Infelizmente falhou o envio, tente mais tarde.</string>
 
     <string name="title_activity_my_data">Os Meus Dados</string>
@@ -68,45 +67,46 @@
     <string name="delete_detail">Eliminar</string>
     <string name="deleteReading">Eliminar leitura?</string>
     <string name="deleteException">Não pode eliminar esta leitura!</string>
-    <string name="delete_insulin" >Eliminar Insulina?</string>
-    <string name="delete_insulin_exception" >Não pode eliminar esta insulina, pois está associado a outros registos!</string>
-    <string name="delete_photo" >Eliminar foto?</string>
+    <string name="delete_insulin">Eliminar Insulina?</string>
+    <string name="delete_insulin_exception">Não pode eliminar esta insulina, pois está associado a outros registos!</string>
+    <string name="delete_photo">Eliminar foto?</string>
     <string name="delete_MedicinesFragment">Eliminar medicamento?</string>
     <string name="delete">Eliminar</string>
-    <string name="targetbg_delete_exception" >Não pode eliminar este objetivo, associado a outros registos!</string>
-    <string name="tag_info_delete_exception" >Não pode eliminar esta leitura, associada a outros registos!</string>
-
+    <string name="targetbg_delete_exception">Não pode eliminar este objetivo, associado a outros registos!</string>
+    <string name="tag_info_delete_exception">Não pode eliminar esta leitura, associada a outros registos!</string>
 
 
     <string name="error_MedicinesFragment">Não pode eliminar este medicamento, referenciado em registos!</string>
     <string name="error_glicInput">Número Invalido</string>
-    <string name="error_login_auth" >Erro na autenticação, verifique o nome de utilizador e password e tente novamente.</string>
-    <string name="error_login_no_internet" >Sem ligação à Internet</string>
-    <string name="error_repeated_description" >Descrição repetida</string>
-    <string name="error_could_not_send_data" >Não foi possivel enviar a sua base de dados.</string>
+    <string name="error_login_auth">Erro na autenticação, verifique o nome de utilizador e password e tente novamente.</string>
+    <string name="error_login_no_internet">Sem ligação à Internet</string>
+    <string name="error_repeated_description">Descrição repetida</string>
+    <string name="error_could_not_send_data">Não foi possivel enviar a sua base de dados.</string>
 
-    <string name="error_time_overlaps" >Tempo coincide com outro intervalo</string>
+    <string name="error_time_overlaps">Tempo coincide com outro intervalo</string>
 
-    <string name="error_email" >Email do utilizador, não encotrado!</string>
-    <string name="permissions" >A aplicação necessita de permissões de %1$s.</string>
-    <string name="all_permissions" >A aplicação requer permissões para continuar.</string>
+    <string name="error_email">Email do utilizador, não encotrado!</string>
+    <string name="permissions">A aplicação necessita de permissões de %1$s.</string>
+    <string name="all_permissions">A aplicação requer permissões para continuar.</string>
 
-    <string name="error_start_time_overlaps" >Tempo inicial coincide com outro intervalo</string>
-    <string name="error_end_time_overlaps" >Tempo final coincide com outro intervalo</string>
+    <string name="error_start_time_overlaps">Tempo inicial coincide com outro intervalo</string>
+    <string name="error_end_time_overlaps">Tempo final coincide com outro intervalo</string>
 
-    <string name="storage" >Memória</string>
+    <string name="storage">Memória</string>
 
-    <string name="error_end_time_before_start_time" >Tempo de fim antes do tempo de inicio</string>
-    <string name="error_dbcopy" >Ocorreu um erro durante a cópia de segurança, verifique se a memória externa está disponivel!</string>
-    <string name="error_transfer" >Ocorreu um erro</string>
+    <string name="error_end_time_before_start_time">Tempo de fim antes do tempo de inicio</string>
+    <string name="error_dbcopy">Ocorreu um erro durante a cópia de segurança, verifique se a memória externa está disponivel!</string>
+    <string name="error_transfer">Ocorreu um erro</string>
     <string name="error_note">Por favor insira um outro registo</string>
     <string name="error_carbs">O valor inserido não é válido</string>
     <string name="error_insulin">O valor inserido não é válido</string>
     <string name="error_glucose">O valor inserido não é válido</string>
+
     <string name="error_invalid_height" >Altura errada, tem de ser em metros. (Falta um ponto algures?)</string>
     <string name="error_invalid_parameter">Valor fora dos padrões normais</string>
     <string name="error_field_required" >Campo necessário</string>
     <string name="error_repeated_name" >O Nome não pode ser repetido</string>
+
 
 
     <string-array name="Sex">
@@ -127,7 +127,7 @@
     <string name="save_GlycemiaDetail">Guardar</string>
     <string name="saveButton">Gravar</string>
     <string name="photoSaved">Guardada em: </string>
-    <string name="mydata_saved" >Guardado</string>
+    <string name="mydata_saved">Guardado</string>
 
     <string name="positiveButton">Sim</string>
     <string name="negativeButton">Cancelar</string>
@@ -141,7 +141,6 @@
         <item>Intenso</item>
         <item>Muito Intenso</item>
     </string-array>
-
 
 
     <string-array name="daytimes">
@@ -179,41 +178,41 @@
     <string name="preferences_factors">Fatores e Rácios</string>
 
 
-    <string name="transfer_fail_connection" >Ligação Falhou!</string>
-    <string name="transfer_check_wifi" >Verifique se tem o wi-fi ligado</string>
-    <string name="transfer_correct_network" >ou se está na rede correta.</string>
-    <string name="transfer_transfer" >A transferir. . .</string>
-    <string name="transfer_success" >Transferência concluída com sucesso</string>
-    <string name="transfer_try_again" >tente novamente</string>
-    <string name="transfer_db" >Transferir Base de Dados</string>
-    <string name="transfer" >Transferir</string>
+    <string name="transfer_fail_connection">Ligação Falhou!</string>
+    <string name="transfer_check_wifi">Verifique se tem o wi-fi ligado</string>
+    <string name="transfer_correct_network">ou se está na rede correta.</string>
+    <string name="transfer_transfer">A transferir. . .</string>
+    <string name="transfer_success">Transferência concluída com sucesso</string>
+    <string name="transfer_try_again">tente novamente</string>
+    <string name="transfer_db">Transferir Base de Dados</string>
+    <string name="transfer">Transferir</string>
 
 
-    <string name="sync_with_pc" >Sincronizar com PC</string>
+    <string name="sync_with_pc">Sincronizar com PC</string>
     <string name="sync">Sincronização</string>
 
 
-
-    <string name="qr" >Ler codigo QR</string>
-    <string name="invalid_qr_code" >codigo QR inválido</string>
+    <string name="qr">Ler codigo QR</string>
+    <string name="invalid_qr_code">codigo QR inválido</string>
 
 
     <string name="sensitivity_overlap">Tem a certeza que pretende eliminar os tempos: %1$s ?</string>
 
-    <string name="targetbg_info" >Eliminar Objetivo de Glicemia?</string>
-    <string name="tag_info" >Eliminar Fase do dia?</string>
+    <string name="targetbg_info">Eliminar Objetivo de Glicemia?</string>
+    <string name="tag_info">Eliminar Fase do dia?</string>
 
     <string name="cancel_read">Leitura cancelada</string>
-    <string name="mydata_before_saving" >Antes de guardar preencha todos os campos.</string>
+    <string name="mydata_before_saving">Antes de guardar preencha todos os campos.</string>
 
 
-    <string name="dbcopy_success" >Cópia de segurança efectuada com sucesso!</string>
+    <string name="dbcopy_success">Cópia de segurança efectuada com sucesso!</string>
 
 
     <string name="date_hour" >Data e Hora</string>
     <string name="time_of_day" >Altura do Dia</string>
     <string name="day" >Dia</string>
     <string name="time" >Hora</string>
+
     <string name="bloodpressure">Pressão Arterial</string>
     <string name="systolic">Sistólica</string>
     <string name="diastolic">Diastólica</string>
@@ -221,32 +220,32 @@
 
     <string name="name">Nome</string>
     <string name="bloodglucose">Glicemia</string>
-    <string name="label" >Etiqueta</string>
+    <string name="label">Etiqueta</string>
     <string name="insulin">Insulina</string>
     <string name="mg_dl" translatable="false">mg/dl</string>
     <string name="from">De</string>
     <string name="to">Até</string>
     <string name="disease">Doença</string>
     <string name="flu">Gripe</string>
-    <string name="name_hint" >Jorge Mendes</string>
+    <string name="name_hint">Jorge Mendes</string>
     <string name="minutes">Minutos</string>
     <string name="hint_value1" translatable="false">95</string>
     <string name="glycemia_value">Valor de glicemia</string>
     <string name="weight">Peso</string>
-    <string name="select_all" >Selecionar Tudo</string>
+    <string name="select_all">Selecionar Tudo</string>
 
 
     <string name="backup">Cópia de Segurança</string>
     <string name="do_back">Efectuar Cópia de Segurança</string>
-    <string name="restore_backup" >Restaurar Cópia</string>
+    <string name="restore_backup">Restaurar Cópia</string>
     <string name="restore_backup_button">Restaurar Cópia de Segurança</string>
     <string name="restore_backup_button_welcome">Restaurar Cópia\nde Segurança</string>
-    <string name="restore_backup_success" >Restauro efectuado com sucesso!</string>
-    <string name="restore_backup_error" >Ocurreu um erro durante o restauro, verifique se a memória externa está disponivel!</string>
-    <string name="last_backup" >Última Cópia de Segurança</string>
+    <string name="restore_backup_success">Restauro efectuado com sucesso!</string>
+    <string name="restore_backup_error">Ocurreu um erro durante o restauro, verifique se a memória externa está disponivel!</string>
+    <string name="last_backup">Última Cópia de Segurança</string>
     <string name="action">Ação</string>
-    <string name="new_medicine" >Novo medicamento</string>
-    <string name="hint_medicine" translatable="false" >Ben u Ron 1000</string>
+    <string name="new_medicine">Novo medicamento</string>
+    <string name="hint_medicine" translatable="false">Ben u Ron 1000</string>
     <string name="units">unidades</string>
 
     <string name="restore_backup_deprecated_db_error">A sua antiga base de dados é incompativel com esta versão da aplicação.</string>
@@ -254,11 +253,11 @@
     <string name="information">Informação.</string>
 
     <string name="hc_units">uni</string>
-    <string name="gli_units" >mg/dl</string>
-    <string name="pills" >comprimidos</string>
-    <string name="hint_exercise1" >Corrida</string>
+    <string name="gli_units">mg/dl</string>
+    <string name="pills">comprimidos</string>
+    <string name="hint_exercise1">Corrida</string>
     <string name="schedule">Horário</string>
-    <string name="send_to_cloud" >Enviar para Cloud</string>
+    <string name="send_to_cloud">Enviar para Cloud</string>
     <string name="description">Descrição</string>
     <string name="cholesterol">Colesterol</string>
     <string name="HbA1c" translatable="false">HbA1c</string>
@@ -279,15 +278,15 @@
     <string name="hint_value7">ex.: 1.82</string>
     <string name="grams">gramas</string>
     <string name="percent" translatable="false">%</string>
-    <string name="weight_unit" >Kg</string>
+    <string name="weight_unit">Kg</string>
     <string name="insulin_method">Modo de Administração</string>
-    <string name="photo_and_value" >Foto e Valor</string>
-    <string name="photo" >Foto</string>
+    <string name="photo_and_value">Foto e Valor</string>
+    <string name="photo">Foto</string>
 
-    <string name="insulin_action_rapid" >Rápida</string>
-    <string name="insulin_action_short" >Curta</string>
-    <string name="insulin_action_intermediate" >Intermédia</string>
-    <string name="insulin_action_long" >Longa</string>
+    <string name="insulin_action_rapid">Rápida</string>
+    <string name="insulin_action_short">Curta</string>
+    <string name="insulin_action_intermediate">Intermédia</string>
+    <string name="insulin_action_long">Longa</string>
 
     <string-array name="insulin_action">
         <item>@string/insulin_action_rapid</item>
@@ -296,30 +295,29 @@
         <item>@string/insulin_action_long</item>
     </string-array>
 
-    <string name="insulin_message_action" >Escolha um modo de administração.</string>
+    <string name="insulin_message_action">Escolha um modo de administração.</string>
 
-    <string name="insulin_message_name_exists" >Já existe uma insulina com esse nome, escolha outro por favor.</string>
-
+    <string name="insulin_message_name_exists">Já existe uma insulina com esse nome, escolha outro por favor.</string>
 
 
     <!-- Strings related to login -->
 
     <string name="height_hint" translatable="false">1.65</string>
-    <string name="gender_male" >Masculino</string>
-    <string name="gender_female" >Feminino</string>
-    <string name="gender_unknown" >Outro</string>
+    <string name="gender_male">Masculino</string>
+    <string name="gender_female">Feminino</string>
+    <string name="gender_unknown">Outro</string>
     <string name="insulin_name">Nome para a Insulina</string>
     <string name="new_glycemia_objective">Novo Objectivo de Glicemia</string>
 
-    <string name="glycemia_objective_time_start_end" >Das %1$s até %2$s</string>
+    <string name="glycemia_objective_time_start_end">Das %1$s até %2$s</string>
 
     <string name="subtitle_diabetes_factors">Detalhes e Fatores</string>
     <string name="subtitle_personal_data">Dados Pessoais</string>
-    <string name="welcome" >Início</string>
+    <string name="welcome">Início</string>
 
-    <string name="backup_share" >Gravar cópia de segurança e\n enviar para o Gestor do Projecto</string>
-    <string name="share_subject" >Dados do paciente %1$s</string>
-    <string name="share_text" >Enviado da aplicação: A Minha Diabetes</string>
+    <string name="backup_share">Gravar cópia de segurança e\n enviar para o Gestor do Projecto</string>
+    <string name="share_subject">Dados do paciente %1$s</string>
+    <string name="share_text">Enviado da aplicação: A Minha Diabetes</string>
 
     <string name="correction_glycemia">Correcção Glicemia</string>
     <string name="correction_hc">Correcção Hidratos</string>
@@ -329,15 +327,16 @@
     <string name="plus_signal" translatable="false">+</string>
     <string name="use_not">Não usar</string>
     <string name="use">Usar</string>
-    <string name="new_feature" >Nova funcionalidade</string>
+    <string name="new_feature">Nova funcionalidade</string>
     <string name="active_insulin">Insulina Activa</string>
-    <string name="new_feature_iob_text_1" >Quando toma uma insulina esta não actua de imediato, mas sim ao longo de algumas horas. Como pode ver na imagem acima.</string>
-    <string name="new_feature_iob_text_2" >Agora pode ter informação da insulina que ainda está activa no seu organismo quando for tomar uma nova insulina</string>
+    <string name="new_feature_iob_text_1">Quando toma uma insulina esta não actua de imediato, mas sim ao longo de algumas horas. Como pode ver na imagem acima.</string>
+    <string name="new_feature_iob_text_2">Agora pode ter informação da insulina que ainda está activa no seu organismo quando for tomar uma nova insulina</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="use_iob">Usar Insulina Activa</string>
-    <string name="backup_restore_confirmation_dialog_text" >Este processo vai substituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
+    <string name="backup_restore_confirmation_dialog_text">Este processo vai substituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
     <string name="next_button">Seguinte</string>
+
     <string name="notification_sync_recurrent" >Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?</string>
     <string name="notification_sync_first_time" >Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?</string>
     <string name="notification_sync_text" >Envie os dados ao gestor do projecto</string>
@@ -355,14 +354,15 @@
     <string name="login_password" >Palavra-passe</string>
     <string name="login_extra_text" >Criar nova conta.</string>
 
+
     <string name="privacyPolicyLink">Ao criar uma nova conta está a aceitar a política de privacidade disponível em https://mydiabetes.dcc.fc.up.pt/</string>
     <!--<a href="https://mydiabetes.dcc.fc.up.pt">mydiabetes.dcc.fc.up.pt</a>-->
 
     <string name="webview_title">MyDiabetes</string>
 
-    <string name="login_try_later" >Tentar mais tarde</string>
-    <string name="login_try_again" >Tentar novamente</string>
-    <string name="cloudSync_edit_account" >Editar conta</string>
+    <string name="login_try_later">Tentar mais tarde</string>
+    <string name="login_try_again">Tentar novamente</string>
+    <string name="cloudSync_edit_account">Editar conta</string>
     <string name="settings_factors_ratio">Editar Fatores e Rácios</string>
     <string name="settings_edit_insulins">Editar Insulinas</string>
     <string name="settings_edit_glicemia_targets">Editar Objectivos de Glicemia</string>
@@ -386,8 +386,8 @@
         <item>Colesterol</item>
     </string-array>
 
-    <string name="navigation_drawer_open" >abrir</string>
-    <string name="navigation_drawer_close" >fechar</string>
+    <string name="navigation_drawer_open">abrir</string>
+    <string name="navigation_drawer_close">fechar</string>
 
 
     <string name="insulin_type_pen">Caneta</string>
@@ -547,6 +547,10 @@
     <string name="total_protein">Proteina Total</string>
     <string name="_total_of">Um total de</string>
     <string name="_carbs_in">H.Carb em</string>
+
+    <string name="widget_missing_data">Não existem registos recentes.</string>
+
+
     <string name="_items">itens</string>
     <string name="carbs">H.Carb</string>
     <string name="lipids">Lipidos</string>
@@ -608,5 +612,10 @@
         </small>
         \n\nToda a informação disponibilizada será para utilização exclusivamente académica!\nA equipa do MyDiabetes irá usar esta informação de forma a melhorar o seu sistema de aconselhamento de forma a conseguir ajudar os seus utilizadores.\n<b>\nAceita os termos apresentados?</b></string>
     <string name="notification_channel_sync_description">Lembrete para envio dos dados para o gestor do projecto</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="title_activity_ranking_chart">RankingChart</string>
+    <string name="title_activity_widget">Activity_widget</string>
+    <string name="title_activity_chart_section">ChartSection</string>
 
 </resources>

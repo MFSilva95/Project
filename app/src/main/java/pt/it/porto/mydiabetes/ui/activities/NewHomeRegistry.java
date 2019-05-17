@@ -78,6 +78,7 @@ import pt.it.porto.mydiabetes.ui.fragments.new_register.NoteRegister_Input_Inter
 import pt.it.porto.mydiabetes.ui.listAdapters.StringSpinnerAdapter;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
+import pt.it.porto.mydiabetes.utils.HomeElement;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 

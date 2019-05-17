@@ -44,6 +44,8 @@ import com.esafirm.imagepicker.model.Image;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.github.javiersantos.materialstyleddialogs.enums.Style;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -55,6 +57,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import info.abdolahi.CircularMusicProgressBar;
 import pt.it.porto.mydiabetes.BuildConfig;
@@ -63,6 +66,7 @@ import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.Badges;
+import pt.it.porto.mydiabetes.ui.activities.ChartSection;
 import pt.it.porto.mydiabetes.ui.activities.MyData;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
@@ -92,6 +96,11 @@ public class homeRightFragment extends Fragment {
     private ImageView advancedBadge;
     private TextView advancedBadgesText;
     private ImageView currentBadge;
+    private TextView averageText;
+    private TextView variabilityText;
+    private TextView hiperhipoText;
+    private TextView hypoText;
+    private TextView hyperText;
 
     private Uri currentImageUri;
 
@@ -104,6 +113,8 @@ public class homeRightFragment extends Fragment {
     private int countAdvanced;
     //private int countDaily;
     private BadgeRec dailyBadge;
+
+    private TextView graphSection;
 
     private static final int REQUEST_TAKE_PHOTO = 6;
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 7;
@@ -179,6 +190,12 @@ public class homeRightFragment extends Fragment {
         pointsText.setText(totalPoints+" / "+nextLvlPoints);
 
 
+        averageText = (TextView) layout.findViewById(R.id.averageText);
+        variabilityText = (TextView) layout.findViewById(R.id.variabilityText);
+        //hiperhipoText = (TextView) layout.findViewById(R.id.hiperhipoText);
+        hyperText = (TextView) layout.findViewById(R.id.hyperText);
+        hypoText = (TextView) layout.findViewById(R.id.hypoText);
+
         beginnerBadge = (ImageView) layout.findViewById(R.id.beginnerBadge);
         beginnerBadgesText = (TextView) layout.findViewById(R.id.beginnerBadgesText);
         mediumBadgesText = (TextView) layout.findViewById(R.id.beginnerBadgesText);
@@ -225,6 +242,7 @@ public class homeRightFragment extends Fragment {
 
         CardView personalInfo = (CardView) layout.findViewById(R.id.personalInfo);
         CardView badgesInfo = (CardView) layout.findViewById(R.id.badgesInfo);
+        graphSection = (TextView) layout.findViewById(R.id.graphSection);
 
         personalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -256,6 +274,14 @@ public class homeRightFragment extends Fragment {
                         .setCancelable(true)
                         .setPositiveText(R.string.okButton)
                         .show();
+            }
+        });
+
+        graphSection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), ChartSection.class);
+                startActivity(intent);
             }
         });
 
@@ -301,6 +327,8 @@ public class homeRightFragment extends Fragment {
         pointsText.setText(numberMedals_total);
         setMyDataFromDB(myData);
         updateMedals();
+        setPersonalInfo();
+
     }
 
     private void updateMedals() {
@@ -458,6 +486,44 @@ public class homeRightFragment extends Fragment {
 //            cameraPlaceholder.setVisibility(View.GONE);
 //            thumbnailPhotoView.setVisibility(View.VISIBLE);
 //        }
+    }
+
+    private void setPersonalInfo() {
+
+        DB_Read rdb = new DB_Read(getContext());
+        ArrayList<Integer> glycemiaList = rdb.getLastGlycaemias();
+        rdb.close();
+
+        int average = 0;
+        double sum = 0;
+        int sd; //sqrt(1/n * sum(value - mean)^2)
+        int cv;
+        int hypers = 0;
+        int hypos = 0;
+
+        if (glycemiaList.size() > 0) {
+
+            // mean calculation and check the numbers of hypers and hypos
+            for (int i = 0; i < glycemiaList.size(); i++) {
+                average += glycemiaList.get(i);
+                if (glycemiaList.get(i) > 180) hypers ++;
+                if (glycemiaList.get(i) < 70) hypos ++;
+            }
+
+            average = (int) (average / glycemiaList.size());
+            // standard deviation calculation
+            for (int i = 0; i < glycemiaList.size(); i++) {
+                sum += Math.pow(Math.abs(glycemiaList.get(i) - average), 2);
+            }
+            sd = (int) (Math.sqrt(sum/glycemiaList.size()));
+
+            // set text
+            averageText.setText(String.valueOf(average) + "mg/dL");
+            variabilityText.setText(String.valueOf(Math.round((float) sd / average * 100))+"%");
+            hyperText.setText(String.valueOf(hypers));
+            hypoText.setText(String.valueOf(hypos));
+            //hiperhipoText.setText(hypers+" / "+hypos);
+        }
     }
 
 

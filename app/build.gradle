@@ -114,4 +114,5 @@ dependencies {
         transitive = true
     }
     implementation 'com.github.javiersantos:MaterialStyledDialogs:2.1'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

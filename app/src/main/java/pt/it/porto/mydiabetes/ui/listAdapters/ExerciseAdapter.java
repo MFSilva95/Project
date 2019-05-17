@@ -106,7 +106,6 @@ public class ExerciseAdapter extends BaseAdapter {
 			this.effort = arrayList[effort];
 		}
 
-
 		public String getFormattedDate() {
 			return DateUtils.getFormattedDate(dateTime);
 		}

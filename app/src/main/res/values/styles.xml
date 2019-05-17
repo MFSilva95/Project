@@ -49,8 +49,7 @@
         <item name="windowActionModeOverlay">true</item>
     </style>
 
-    <style name="HomeTheme2" parent="HomeTheme">
-    </style>
+    <style name="HomeTheme2" parent="HomeTheme"></style>
 
     <!-- ToolBar -->
     <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -59,9 +58,9 @@
         <item name="windowActionModeOverlay">true</item>
     </style>
 
-    <style name="ToolbarTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="ToolbarTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="ToolbarTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="ToolbarTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
@@ -111,9 +110,6 @@
     </style>
 
 
-
-
-
     <style name="AlertDialogCustom" parent="@style/Theme.AppCompat.Dialog">
         <item name="android:textColor">@color/white_background</item>
         <item name="colorPrimary">@color/primary</item>
@@ -124,6 +120,14 @@
 
     </style>
 
+    <style name="HomeTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="HomeTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="HomeTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
 </resources>

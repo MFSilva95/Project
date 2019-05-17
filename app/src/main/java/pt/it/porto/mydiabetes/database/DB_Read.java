@@ -9,6 +9,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.Pair;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -19,6 +22,7 @@ import pt.it.porto.mydiabetes.data.BloodPressureRec;
 import pt.it.porto.mydiabetes.data.CarbsRatioData;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.CholesterolRec;
+import pt.it.porto.mydiabetes.data.DateTime;
 import pt.it.porto.mydiabetes.data.Disease;
 import pt.it.porto.mydiabetes.data.DiseaseRec;
 import pt.it.porto.mydiabetes.data.ExerciseRec;
@@ -930,6 +934,58 @@ public class DB_Read {
             return 0;
         }
     }
+
+
+	public LinkedList<GlycemiaRec> getLastXGlycaemias(int userId, int nRec) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE Id_User = "+ userId +" AND DateTime >= datetime('now', '-24 Hour')  ORDER BY DateTime LIMIT "+nRec+";", null);
+		LinkedList<GlycemiaRec> exs = null;
+
+		if (cursor.getCount() > 0) {
+			exs = new LinkedList<>();
+			cursor.moveToFirst();
+			GlycemiaRec tmp;
+			do {
+
+				tmp = new GlycemiaRec();
+				tmp.setId(cursor.getInt(0));
+				tmp.setIdUser(cursor.getInt(1));
+				tmp.setValue(cursor.getInt(2));
+				tmp.setDateTime(cursor.getString(3));
+				tmp.setObjective(cursor.getInt(6));
+				exs.add(tmp);
+
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return exs;
+		} else {
+			cursor.close();
+			return exs;
+		}
+	}
+
+    public LinkedList<String> getLastRecord(int userId) {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Record WHERE Id_User = "+ userId +" ORDER BY DateTime DESC LIMIT 1;", null);
+		LinkedList<String> ll = null;
+
+		if (cursor.getCount() > 0) {
+			ll = new LinkedList<>();
+			cursor.moveToFirst();
+			int carbVal = getCarbsValByID(cursor.getInt(4));
+			float insuVal = getInsuValByID(cursor.getInt(5));
+			int glycVal = getGlycaemiaValByID(cursor.getInt(6));
+
+			ll.add(cursor.getString(2));
+			ll.add(String.valueOf(carbVal));
+			ll.add(String.valueOf(insuVal));
+			ll.add(String.valueOf(glycVal));
+
+			return ll;
+		} else {
+			cursor.close();
+			return ll;
+		}
+	}
 
     @Nullable
     public LinkedList<ExerciseRec> getExerciseFromStartDate(String startDate, int limit) {
@@ -2161,6 +2217,22 @@ public class DB_Read {
 		}
 	}
 
+	private int getInsuValByID(int id_insulin) {
+
+		int value = -1;
+
+		Cursor cursor = myDB.rawQuery("SELECT Value FROM Reg_Insulin WHERE Id = "+id_insulin+";", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			value = cursor.getInt(0);
+			cursor.close();
+			return value;
+		} else {
+			cursor.close();
+			return -1;
+		}
+	}
+
 	private Pair getInsuNameValueByID(int ID) {
 
 		int insu_ID = -1;
@@ -2442,6 +2514,7 @@ public class DB_Read {
 			return AllReads;
 		}
 	}
+
 	public int getTotalPoints() {
 		Cursor cursor = myDB.rawQuery("SELECT SUM(Value) FROM Points;", null);
 		cursor.moveToLast();
@@ -2833,5 +2906,48 @@ public class DB_Read {
         return sqlCommand;
     }
 
+    //Get last day registers for each register parameter
+	public Integer[] getLastDayNumberOfRecords() {
+		Integer[] nRecords = new Integer[8];
+		int i=0;
+		while (i<8) {
+			Cursor cursor = null;
+			if (i==0) cursor = myDB.rawQuery("SELECT * FROM Reg_CarboHydrate WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
+			if (i==1) cursor = myDB.rawQuery("SELECT * FROM Reg_Insulin WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
+			if (i==2) cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
+			if (i==3) cursor = myDB.rawQuery("SELECT * FROM Reg_Exercise WHERE StartDateTime > DateTime('now','start of day','-24 HOURS') AND StartDateTime < DateTime('now','start of day');", null);
+			if (i==4) cursor = myDB.rawQuery("SELECT * FROM Reg_Disease WHERE StartDate > DateTime('now','start of day','-24 HOURS') AND StartDate < DateTime('now','start of day');", null);
+			if (i==5) cursor = myDB.rawQuery("SELECT * FROM Reg_Weight WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
+			if (i==6) cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
+			if (i==7) cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
 
+			if (cursor.getCount() > 0) {
+				nRecords[i] = cursor.getCount();
+			}
+			else nRecords[i] = 0;
+			cursor.close();
+			i++;
+		}
+		return nRecords;
+	}
+
+	public ArrayList<Integer> getLastGlycaemias() {
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE DateTime > DateTime('now','start of day') AND DateTime < DateTime('now','start of day','+24 HOURS');", null);
+		ArrayList<Integer> glycemiaList = new ArrayList<>();
+
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			do {
+				glycemiaList.add(Integer.valueOf(cursor.getString(2)));
+				cursor.moveToNext();
+			} while (!cursor.isAfterLast());
+			cursor.close();
+			return glycemiaList;
+		}
+
+		else {
+			cursor.close();
+			return glycemiaList;
+		}
+	}
 }
