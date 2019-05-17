@@ -82,8 +82,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_weight="5"
         app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/cardViewRemove"
         app:layout_constraintStart_toStartOf="@+id/foodCardView"
         app:layout_constraintTop_toBottomOf="@+id/foodCardView">
@@ -125,7 +127,7 @@
         android:layout_marginBottom="8dp"
         android:layout_weight="5"
         app:cardUseCompatPadding="true"
-        app:layout_constraintBottom_toBottomOf="@+id/cardViewEdit"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/foodCardView"
         app:layout_constraintStart_toEndOf="@+id/cardViewEdit"
         app:layout_constraintTop_toBottomOf="@+id/foodCardView">

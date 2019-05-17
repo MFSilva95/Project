@@ -3,6 +3,7 @@ package pt.it.porto.mydiabetes;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -80,7 +81,8 @@ public class widget extends AppWidgetProvider {
         // call logbook activity after widget click
         Intent intent2 = new Intent(context, LogbookChartList.class);
         PendingIntent pendingIntent2 = PendingIntent.getActivity(context, 0, intent2, PendingIntent.FLAG_CANCEL_CURRENT);
-        remoteViews.setOnClickPendingIntent(R.id.lastRecord_background, pendingIntent2);
+        remoteViews.setOnClickPendingIntent(R.id.widget_info_text, pendingIntent2);
+
 
 
         // get values from database
@@ -101,9 +103,17 @@ public class widget extends AppWidgetProvider {
         }
 
 
-        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-        Bitmap b = drawToBitmap(context, metrics.widthPixels-WIDTH_PADDING, WIDGET_HEIGHT, lastXGlicaemias);
-        //Log.i("rawr", "updateAppWidget: W: "+ metrics.widthPixels+" H: "+metrics.heightPixels);
+        //DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        AppWidgetProviderInfo widgetInfo = AppWidgetManager.getInstance (context).getAppWidgetInfo (appWidgetId);
+
+
+        int width = widgetInfo.minWidth; //* getWidthColsNum (widgetInfo);
+        int height = widgetInfo.minHeight; //* getHeightColsNum (widgetInfo);
+
+        Bitmap b = drawToBitmap(context, width, height, lastXGlicaemias);
+
+
+        //Bitmap b = drawToBitmap(context, metrics.widthPixels-WIDTH_PADDING, metrics.heightPixels-WIDTH_PADDING, lastXGlicaemias);//WIDGET_HEIGHT, lastXGlicaemias);
         if(b!=null){
             remoteViews.setImageViewBitmap(R.id.graph_img, b);
         }
@@ -112,6 +122,7 @@ public class widget extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 
     }
+
 
     // write values
     public static void setText(RemoteViews remoteViews, int field, String replaceValue) {
