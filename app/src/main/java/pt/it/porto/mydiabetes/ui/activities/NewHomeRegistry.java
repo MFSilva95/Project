@@ -231,7 +231,7 @@ public class NewHomeRegistry extends BaseActivity{
         outState.putStringArrayList(ARG_BUTTONS_DELETE_LIST, delete_buttons);
         outState.putString(ARG_CALENDAR, date);
 
-        spinner = findViewById(R.id.tag_spinner);
+        spinner = (Spinner) findViewById(R.id.tag_spinner);
         int idTag = (spinner.getSelectedItemPosition());//rdb.Tag_GetIdByName(tag);
 
         outState.putParcelable(ARG_BLOOD_GLUCOSE, glycemiaData);

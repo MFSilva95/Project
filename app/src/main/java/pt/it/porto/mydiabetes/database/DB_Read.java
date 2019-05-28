@@ -906,7 +906,7 @@ public class DB_Read {
 				tmp.setIdUser(cursor.getInt(1));
 				tmp.setValue(cursor.getInt(2));
 				tmp.setDateTime(cursor.getString(3));
-				tmp.setObjective(cursor.getInt(6));
+				tmp.setObjective(cursor.getInt(6)	);
 				exs.add(tmp);
 
 				cursor.moveToNext();
@@ -2906,20 +2906,42 @@ public class DB_Read {
 		}
 	}
 
-	public ArrayList<Integer> getPersonalInfoToday() {
+	public int getGlicoRegNumber() {
+		Cursor cursor = myDB.rawQuery("SELECT Count(*) from Reg_BloodGlucose", null);
+		return cursor.getCount();
+	}
+
+
+	// (Rui Carvalho) Get glycemia quality values for the current or the past seven days
+	public ArrayList<Integer> getPersonalInfo(int index) {
 		ArrayList<Integer> personalInfo = new ArrayList<>();
-		Cursor cursor = myDB.rawQuery("SELECT sub.a, AVG((Reg_BloodGlucose.Value - sub.a) * (Reg_BloodGlucose.Value - sub.a)) as var, hypo.hypoglycemia, hyper.hyperglycemia From Reg_BloodGlucose," +
-				"(SELECT AVG(Value) as a From Reg_BloodGlucose Where Reg_BloodGlucose.DateTime > DateTime('now','start of day') AND Reg_BloodGlucose.DateTime < DateTime('now','start of day','+24 hours')) AS sub," +
-				"(SELECT Count(*) as hypoglycemia From Reg_BloodGlucose Where Reg_BloodGlucose.Value < 70 and Reg_BloodGlucose.DateTime > DateTime('now','start of day') AND Reg_BloodGlucose.DateTime < DateTime('now','start of day','+24 hours')) as hypo," +
-				"(SELECT Count(*) as hyperglycemia From Reg_BloodGlucose Where Reg_BloodGlucose.Value > 180 and Reg_BloodGlucose.DateTime > DateTime('now','start of day') AND Reg_BloodGlucose.DateTime < DateTime('now','start of day','+24 hours')) as hyper", null);
+		Cursor cursor = null;
+		//index is used to obtain the values from the current day or last week, where 0 represent today and 1 represent the last week values
+
+		// get today values
+		if (index == 0) {
+			cursor = myDB.rawQuery("SELECT sub.a, AVG((today.Value - sub.a) * (today.Value - sub.a)) as var, hypo.hypoglycemia, hyper.hyperglycemia From Reg_BloodGlucose," +
+					"(SELECT * from Reg_BloodGlucose Where Reg_BloodGlucose.DateTime >= DateTime('now','localtime','start of day') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day','+1 days')) AS today," +
+					"(SELECT AVG(Value) as a From Reg_BloodGlucose Where Reg_BloodGlucose.DateTime >= DateTime('now','start of day') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day','+1 days')) AS sub," +
+					"(SELECT Count(*) as hypoglycemia From Reg_BloodGlucose Where Reg_BloodGlucose.Value < 70 and Reg_BloodGlucose.DateTime >= DateTime('now','localtime','start of day') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day','+24 hours')) as hypo," +
+					"(SELECT Count(*) as hyperglycemia From Reg_BloodGlucose Where Reg_BloodGlucose.Value > 180 and Reg_BloodGlucose.DateTime >= DateTime('now','localtime','start of day') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day','+24 hours')) as hyper", null);
+		}
+		// get last week values
+		if (index == 1) {
+			cursor = myDB.rawQuery("SELECT sub.a, AVG((today.Value - sub.a) * (today.Value - sub.a)) as var, hypo.hypoglycemia, hyper.hyperglycemia From Reg_BloodGlucose," +
+					"(SELECT * from Reg_BloodGlucose Where Reg_BloodGlucose.DateTime >= DateTime('now','localtime','start of day','-7 days') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day')) AS today," +
+					"(SELECT AVG(Value) as a From Reg_BloodGlucose Where Reg_BloodGlucose.DateTime >= DateTime('now','start of day','-7 days') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day')) AS sub," +
+					"(SELECT Count(*) as hypoglycemia From Reg_BloodGlucose Where Reg_BloodGlucose.Value < 70 and Reg_BloodGlucose.DateTime >= DateTime('now','localtime','start of day','-7 days') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day')) as hypo," +
+					"(SELECT Count(*) as hyperglycemia From Reg_BloodGlucose Where Reg_BloodGlucose.Value > 180 and Reg_BloodGlucose.DateTime >= DateTime('now','localtime','start of day','-7 days') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day')) as hyper", null);
+		}
 
 		if (cursor.getCount() > 0) {
 			cursor.moveToFirst();
 			if (cursor.getString(0) != null) {
-				personalInfo.add(Integer.valueOf(cursor.getString(0)));
-				personalInfo.add((int) (Math.sqrt(Double.parseDouble(cursor.getString(1)))));
-				personalInfo.add(Integer.valueOf(cursor.getString(2)));
-				personalInfo.add(Integer.valueOf(cursor.getString(3)));
+				personalInfo.add(cursor.getInt(0));
+				personalInfo.add((int) (Math.sqrt(cursor.getDouble(1))));
+				personalInfo.add(cursor.getInt(2));
+				personalInfo.add(cursor.getInt(3));
 			}
 			cursor.close();
 			return personalInfo;
@@ -2930,5 +2952,52 @@ public class DB_Read {
 			personalInfo = null;
 			return personalInfo;
 		}
+	}
+
+	// (Rui Carvalho) find for a given period, how many hyper, hypos, normal, high and low values occurred
+	public ArrayList<Integer> glycaemiasResume(int period) {
+		ArrayList<Integer> resume = new ArrayList<>();
+		Cursor cursor = myDB.rawQuery("select hypo.a, low.b, norm.c, high.d, hyper.e from" +
+				"(select count(*) as a from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day','-"+period+" days') and Value <= 60) as hypo," +
+				"(select count(*) as b from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day','-"+period+" days') and (Value > 60 and Value < 80)) as low," +
+				"(select count(*) as c from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day','-"+period+" days') and (Value >= 80 and Value <= 170)) as norm," +
+				"(select count(*) as d from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day','-"+period+" days') and (Value > 170 and Value <= 190)) as high," +
+				"(select count(*) as e from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day','-"+period+" days') and Value > 190) as hyper", null);
+
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			resume.add(cursor.getInt(0));
+			resume.add(cursor.getInt(1));
+			resume.add(cursor.getInt(2));
+			resume.add(cursor.getInt(3));
+			resume.add(cursor.getInt(4));
+			cursor.close();
+		}
+		return resume;
+	}
+
+	// (Rui Carvalho) Calculate average for a given day
+	public int getGlyDayAverage(int date) {
+		int date2 = date-1;
+		Cursor cursor = myDB.rawQuery("select avg(Value) from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day','-"+date+" days') and DateTime < DateTime('now','localtime','start of day','-"+date2+" days')", null);
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			return cursor.getInt(0);
+		}
+		else return 0;
+	}
+
+	// (Rui Carvalho) Number of glycaemia records by day
+	public int getGlyRecordsNumberByDay(int date) {
+		Cursor cursor;
+		if (date == 0) {
+			cursor = myDB.rawQuery("select Count(*) from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day') and DateTime < DateTime('now','localtime','start of day','+1 days')", null);
+		}
+		else {
+			int date2 = date - 1;
+			cursor = myDB.rawQuery("select Count(*) from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day','-" + date + " days') and DateTime < DateTime('now','localtime','start of day','-" + date2 + " days')", null);
+		}
+		cursor.moveToFirst();
+		return cursor.getInt(0);
 	}
 }

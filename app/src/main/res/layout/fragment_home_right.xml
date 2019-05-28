@@ -40,14 +40,10 @@ android:layout_height="match_parent">
 
                 <include layout="@layout/card_personal" />
 
+                <include layout="@layout/card_competition" />
+
                 <include layout="@layout/card_badges" />
 
-                <TextView
-                    android:id="@+id/graphSection"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Graph section"
-                    android:gravity="center"/>
             </LinearLayout>
 
 

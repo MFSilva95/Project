@@ -1,13 +1,13 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="250dp"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:layout_marginTop="5dp"
-    app:cardElevation="2dp">
+    app:cardElevation="2dp"
+    android:id="@+id/statisticInfo">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,36 +24,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="3">
-
-                <ImageView
-                    android:id="@+id/btn_back"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/btn_back"
-                    android:scaleType="fitStart"
-                    android:layout_marginLeft="15dp"
-                    android:layout_weight="1"/>
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/day"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:gravity="center_vertical|center_horizontal"
                     android:text="TODAY"
                     android:textSize="18sp" />
-
-                <ImageView
-                    android:id="@+id/btn_next"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginRight="15dp"
-                    android:src="@drawable/btn_next"
-                    android:scaleType="fitEnd"
-                    android:layout_weight="1"/>
-
 
             </LinearLayout>
 
@@ -159,11 +138,11 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="HIPER/HIPO"
+                        android:text="REGISTOS"
                         android:gravity="center_horizontal"/>
 
                     <TextView
-                        android:id="@+id/hiperhipoText"
+                        android:id="@+id/dailyRecordNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
@@ -172,9 +151,143 @@
                         android:textSize="25sp" />
 
                 </RelativeLayout>
-
             </LinearLayout>
 
+            <!-- STREAK SECTION -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"
+                android:weightSum="2">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/streak" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <!-- When the number of day streak is 0 -->
+                    <LinearLayout
+                        android:id="@+id/startRecordsMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="3dp"
+                        android:visibility="gone"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="12dp"
+                            android:text="Hoje é um bom dia para fazer o objetivo diario!"/>
+                    </LinearLayout>
+                    <!-- When the number of streak is different of 0 -->
+                    <LinearLayout
+                        android:id="@+id/streakDaysMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="3dp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="12dp"
+                            android:text="Está já à "/>
+                        <TextView
+                            android:id="@+id/streak_days"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textColor="@color/green"
+                            android:textSize="15dp"
+                            android:text="@string/n_a"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="12dp"
+                            android:text=" a realizar o objetivo diáro!"/>
+                    </LinearLayout>
+                    <!-- Days left to complete the daily record is different of 0 -->
+                    <LinearLayout
+                        android:id="@+id/leftDaysMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="3dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="12dp"
+                            android:text="Efetue mais "/>
+                        <TextView
+                            android:id="@+id/records_left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="15dp"
+                            android:textColor="@color/green"
+                            android:text="@string/n_a"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="12dp"
+                            android:text=" para concluir o objetivo de hoje"/>
+                    </LinearLayout>
+                    <!-- No days left until complete the daily goal -->
+                    <LinearLayout
+                        android:id="@+id/congratsMessage"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="gone"
+                        android:padding="3dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="15dp"
+                            android:textColor="@color/green"
+                            android:text="Parabéns!"/>/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textSize="12dp"
+                            android:text=" O desafio diário foi concluído"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!--
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -304,6 +417,7 @@
                 </LinearLayout>
 
             </LinearLayout>
+            -->
 
         </LinearLayout>
     </LinearLayout>

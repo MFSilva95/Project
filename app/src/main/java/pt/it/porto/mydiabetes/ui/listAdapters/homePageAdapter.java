@@ -38,6 +38,12 @@ public class homePageAdapter extends FragmentPagerAdapter {
     }
 
     @Override
+    public int getItemPosition(Object object) {
+        //Log.i("rawr", "getItemPosition: GET POS");
+        return -2;
+    }
+
+    @Override
     public int getCount() {
         return COUNT;
     }

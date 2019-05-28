@@ -23,9 +23,13 @@
         android:theme="@style/HomeTheme"
         tools:replace="android:theme">
         <activity
+            android:name=".ui.activities.Statistics"
+            android:label="@string/title_activity_statistics"
+            android:theme="@style/HomeTheme.NoActionBar"></activity>
+        <activity
             android:name=".ui.activities.ChartSection"
             android:label="@string/title_activity_chart_section"
-            android:theme="@style/HomeTheme.NoActionBar"></activity>
+            android:theme="@style/HomeTheme.NoActionBar" />
 
         <receiver android:name=".widget">
             <intent-filter>

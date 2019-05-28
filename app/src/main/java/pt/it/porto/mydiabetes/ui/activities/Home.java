@@ -62,7 +62,7 @@ public class Home extends BaseActivity {
 	private DrawerLayout drawerLayout;
 
 	private CustomViewPager mViewPager;
-	private PagerAdapter adapter;
+	private homePageAdapter adapter;
 	private BottomNavigationView bottomNavigationView;
 
 	private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 100;
@@ -655,6 +655,10 @@ public class Home extends BaseActivity {
                 alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
             }
         }
+    }
+
+    public void notifyPageAdapter() {
+	    adapter.notifyDataSetChanged();
     }
 }
 

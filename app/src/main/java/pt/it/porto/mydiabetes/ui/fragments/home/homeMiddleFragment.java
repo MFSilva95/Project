@@ -331,6 +331,7 @@ public class homeMiddleFragment extends Fragment {
                             updateHomeList();
                             toDeleteList.clear();
                             setDeleteMode(false);
+                            ((Home) getActivity()).notifyPageAdapter();
                         } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();

@@ -597,5 +597,23 @@
     <string name="title_activity_ranking_chart">RankingChart</string>
     <string name="title_activity_widget">Activity_widget</string>
     <string name="title_activity_chart_section">ChartSection</string>
+    <string name="title_activity_statistics">Statistics</string>
+
+    <string-array name="period">
+        <item>7 days</item>
+        <item>14 days</item>
+        <item>30 days</item>
+        <item>90 days</item>
+    </string-array>
+
+    <plurals name="numberOfDays">
+        <item quantity="one">dia</item>
+        <item quantity="other">dias</item>
+    </plurals>
+
+    <plurals name="numberOfRecords">
+        <item quantity="one">registo</item>
+        <item quantity="other">registos</item>
+    </plurals>
 
 </resources>

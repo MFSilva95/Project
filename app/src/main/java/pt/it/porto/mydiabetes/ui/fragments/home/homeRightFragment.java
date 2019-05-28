@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,6 +44,7 @@ import com.esafirm.imagepicker.features.ReturnMode;
 import com.esafirm.imagepicker.model.Image;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.github.javiersantos.materialstyleddialogs.enums.Style;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.w3c.dom.Text;
 
@@ -60,6 +62,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import info.abdolahi.CircularMusicProgressBar;
+import lecho.lib.hellocharts.model.Line;
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeRec;
@@ -68,6 +71,7 @@ import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.Badges;
 import pt.it.porto.mydiabetes.ui.activities.ChartSection;
 import pt.it.porto.mydiabetes.ui.activities.MyData;
+import pt.it.porto.mydiabetes.ui.activities.Statistics;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -96,10 +100,16 @@ public class homeRightFragment extends Fragment {
     private ImageView advancedBadge;
     private TextView advancedBadgesText;
     private ImageView currentBadge;
+
     private TextView averageText;
     private TextView variabilityText;
-    private TextView hiperhipoText;
-    private TextView day;
+    private TextView dailyRecordNumber;
+    private TextView streak_days;
+    private TextView records_left;
+    private LinearLayout startRecordsMessage;
+    private LinearLayout streakDaysMessage;
+    private LinearLayout leftDaysMessage;
+    private LinearLayout congratsMessage;
 
     private Uri currentImageUri;
 
@@ -113,7 +123,6 @@ public class homeRightFragment extends Fragment {
     //private int countDaily;
     private BadgeRec dailyBadge;
 
-    private TextView graphSection;
 
     private static final int REQUEST_TAKE_PHOTO = 6;
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 7;
@@ -188,12 +197,6 @@ public class homeRightFragment extends Fragment {
         pointsText = (TextView) layout.findViewById(R.id.numberPoints);
         pointsText.setText(totalPoints+" / "+nextLvlPoints);
 
-
-        averageText = (TextView) layout.findViewById(R.id.averageText);
-        variabilityText = (TextView) layout.findViewById(R.id.variabilityText);
-        hiperhipoText = (TextView) layout.findViewById(R.id.hiperhipoText);
-        day = (TextView) layout.findViewById(R.id.day);
-
         beginnerBadge = (ImageView) layout.findViewById(R.id.beginnerBadge);
         beginnerBadgesText = (TextView) layout.findViewById(R.id.beginnerBadgesText);
         mediumBadgesText = (TextView) layout.findViewById(R.id.beginnerBadgesText);
@@ -239,7 +242,8 @@ public class homeRightFragment extends Fragment {
 
         CardView personalInfo = (CardView) layout.findViewById(R.id.personalInfo);
         CardView badgesInfo = (CardView) layout.findViewById(R.id.badgesInfo);
-        graphSection = (TextView) layout.findViewById(R.id.graphSection);
+        final LinearLayout competitionInfo = (LinearLayout) layout.findViewById(R.id.competitionInfo);
+        final Button hideShowCompetition = (Button) layout.findViewById(R.id.hideShowCompetition);
 
         personalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -274,11 +278,18 @@ public class homeRightFragment extends Fragment {
             }
         });
 
-        graphSection.setOnClickListener(new View.OnClickListener() {
+        hideShowCompetition.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), ChartSection.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                if (competitionInfo.getVisibility() == View.GONE) {
+                    competitionInfo.setVisibility(View.VISIBLE);
+                    hideShowCompetition.setBackgroundColor(getResources().getColor(R.color.primary_light));
+                    hideShowCompetition.setText("Minimizar secção competitiva");
+                } else {
+                    competitionInfo.setVisibility(View.GONE);
+                    hideShowCompetition.setBackgroundColor(getResources().getColor(R.color.white_background));
+                    hideShowCompetition.setText("Mostrar secção competitiva");
+                }
             }
         });
 
@@ -299,7 +310,6 @@ public class homeRightFragment extends Fragment {
 
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 
     @Override
     public void onResume() {
@@ -482,15 +492,86 @@ public class homeRightFragment extends Fragment {
 
     private void setPersonalInfo() {
 
+        averageText = (TextView) layout.findViewById(R.id.averageText);
+        variabilityText = (TextView) layout.findViewById(R.id.variabilityText);
+
+
         DB_Read rdb = new DB_Read(getContext());
-        ArrayList<Integer> glycemiaList = rdb.getPersonalInfoToday();
-        System.out.println("entra: "+glycemiaList);
+        ArrayList<Integer> infoToday = rdb.getPersonalInfo(0);
+
         rdb.close();
-        if (glycemiaList.size() != 0) {
-            averageText.setText(String.valueOf(glycemiaList.get(0)));
-            variabilityText.setText(String.valueOf((int)((float) (glycemiaList.get(1)*100/glycemiaList.get(0)))));
-            hiperhipoText.setText(glycemiaList.get(2)+" / "+glycemiaList.get(3));
+        if (infoToday.size() != 0) {
+
+            int averageToday = infoToday.get(0);
+            int variabiToday = (int) (infoToday.get(1)*100/infoToday.get(0));
+            int hyposToday = infoToday.get(2);
+            int hypersToday = infoToday.get(3);
+
+            System.out.println("Valores Hoje: "+averageToday+" "+variabiToday+" "+hyposToday+" "+hypersToday);
+
+            averageText.setText(String.valueOf(averageToday));
+            variabilityText.setText(String.valueOf(variabiToday));
+
+            // painting text given the quality of the values
+            // average values
+            if (averageToday <= 60 || averageToday >= 190) averageText.setTextColor(getResources().getColor(R.color.red));
+            else if ((averageToday > 60 && averageToday < 80) || (averageToday > 170 && averageToday < 190)) averageText.setTextColor(getResources().getColor(R.color.orange));
+            else averageText.setTextColor(getResources().getColor(R.color.green));
+
+            // variability values
+            if (variabiToday > 40) variabilityText.setTextColor(getResources().getColor(R.color.red));
+            else if (variabiToday > 36 && variabiToday <= 40) variabilityText.setTextColor(getResources().getColor(R.color.orange));
+            else variabilityText.setTextColor(getResources().getColor(R.color.green));
+        }
+        getStreakValue();
+    }
+
+    public void getStreakValue() {
+        streak_days = (TextView) layout.findViewById(R.id.streak_days);
+        records_left = (TextView) layout.findViewById(R.id.records_left);
+        dailyRecordNumber = (TextView) layout.findViewById(R.id.dailyRecordNumber);
+        leftDaysMessage = (LinearLayout) layout.findViewById(R.id.leftDaysMessage);
+        congratsMessage = (LinearLayout) layout.findViewById(R.id.congratsMessage);
+        startRecordsMessage = (LinearLayout) layout.findViewById(R.id.startRecordsMessage);
+        streakDaysMessage = (LinearLayout) layout.findViewById(R.id.streakDaysMessage);
+
+        boolean inStreak = true;
+        int recordGoal = 6;
+        int streakDays = 0;
+        int nRecords = 0;
+        int day = 0;
+        DB_Read rdb = new DB_Read(getContext());
+        while (inStreak) {
+            nRecords = rdb.getGlyRecordsNumberByDay(day);
+            if (day == 0) { //get current day number of gly records
+
+                // if the user reach the goal
+                if (nRecords >= recordGoal) {
+                    leftDaysMessage.setVisibility(View.GONE);
+                    congratsMessage.setVisibility(View.VISIBLE);
+                } else {
+                    leftDaysMessage.setVisibility(View.VISIBLE);
+                    congratsMessage.setVisibility(View.GONE);
+                    records_left.setText((recordGoal - nRecords) + " " + getResources().getQuantityString(R.plurals.numberOfRecords, recordGoal - nRecords));
+                }
+                dailyRecordNumber.setText(String.valueOf(nRecords));
+                dailyRecordNumber.setTextColor(getResources().getColor(R.color.green));
+                day++;
+            } else if (nRecords >= recordGoal) { // get the streak based on the previous days
+                streakDays++;
+                day++;
+            } else inStreak = false;
         }
 
+        rdb.close();
+        // if there're not days in streak show motivional quote, if there're, write how much
+        if (streakDays == 0) {
+            streakDaysMessage.setVisibility(View.GONE);
+            startRecordsMessage.setVisibility(View.VISIBLE);
+        } else {
+            startRecordsMessage.setVisibility(View.GONE);
+            streakDaysMessage.setVisibility(View.VISIBLE);
+            streak_days.setText(streakDays + " " + getResources().getQuantityString(R.plurals.numberOfDays, streakDays));
+        }
     }
 }
