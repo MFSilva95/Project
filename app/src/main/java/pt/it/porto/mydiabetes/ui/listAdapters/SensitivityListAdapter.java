@@ -33,7 +33,7 @@ public class SensitivityListAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return _data.size();
+		if(_data!=null){return _data.size();}else{return 0;}
 	}
 
 	@Override

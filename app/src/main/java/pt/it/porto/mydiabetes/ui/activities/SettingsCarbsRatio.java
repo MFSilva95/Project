@@ -55,15 +55,15 @@ public class SettingsCarbsRatio extends BaseActivity {
 
     public void fillListView(ListView lv) {
         DB_Read rdb = new DB_Read(this);
-        int baseCarbsRatio = rdb.getCarbsRatio();
+//        int baseCarbsRatio = rdb.getCarbsRatio();
         ArrayList<CarbsRatioData> allTags = rdb.Ratio_GetAll();
 
-        if(allTags==null){
-            MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
-            storage.initRatioSens(baseCarbsRatio, "Ratio_Reg");
-            //rdb = new DB_Read(this);
-            allTags = rdb.Ratio_GetAll();
-        }
+//        if(allTags==null){
+//            MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
+//            storage.initRatioSens(baseCarbsRatio, "Ratio_Reg");
+//            //rdb = new DB_Read(this);
+//            allTags = rdb.Ratio_GetAll();
+//        }
         rdb.close();
         lv.setAdapter(new CarbsRatioListAdapter(allTags, this));
     }

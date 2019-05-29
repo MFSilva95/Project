@@ -431,6 +431,7 @@ public class Ratio_detail extends BaseActivity {
 							wdb.Ratio_Reg_Remove(idTarget);
 							goUp();
 						} catch (Exception e) {
+							wdb.close();
 							Toast.makeText(c, getString(R.string.targetbg_delete_exception), Toast.LENGTH_LONG).show();
 						}
 						wdb.close();

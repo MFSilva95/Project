@@ -271,6 +271,7 @@ public class DB_Read {
 	}
 
 
+
 	//------------------- DISEASE ---------------------
 	public ArrayList<Disease> Disease_GetAll() {
 		ArrayList<Disease> AllReads = new ArrayList<>();

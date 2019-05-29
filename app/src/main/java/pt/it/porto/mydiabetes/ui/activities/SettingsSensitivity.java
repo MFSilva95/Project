@@ -57,7 +57,7 @@ public class SettingsSensitivity extends BaseActivity {
 
     public void fillListView(ListView lv) {
         DB_Read rdb = new DB_Read(this);
-        int baseInsuRatio = rdb.getInsulinRatio();
+        //int baseInsuRatio = rdb.getInsulinRatio();
         ArrayList<Sensitivity> allTags = rdb.Sensitivity_GetAll();
 //        if(allTags==null){
 //            MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);

@@ -4,12 +4,10 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +20,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 
@@ -35,7 +32,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -45,11 +41,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -78,7 +70,6 @@ import pt.it.porto.mydiabetes.ui.fragments.new_register.NoteRegister_Input_Inter
 import pt.it.porto.mydiabetes.ui.listAdapters.StringSpinnerAdapter;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
-import pt.it.porto.mydiabetes.utils.HomeElement;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
@@ -140,7 +131,6 @@ public class NewHomeRegistry extends BaseActivity{
     //private ArrayList<String> buttonsUpdate;
     private ArrayList<String> delete_buttons;
 
-
     private Calendar registerDate;
     private TextView registerDateTextV;
     private TextView registerTimeTextV;
@@ -160,7 +150,7 @@ public class NewHomeRegistry extends BaseActivity{
     private Toolbar toolbar;
     private FloatingActionButton fab;
     private Spinner spinner;
-    private ArrayList<Tag> t;
+    private ArrayList<Tag> all_tags;
 
     private LoggedMeal mCurrentMeal = null;
 
@@ -297,16 +287,14 @@ public class NewHomeRegistry extends BaseActivity{
         registerDate = Calendar.getInstance();
 
         DB_Read rdb = new DB_Read(this);
-        t = rdb.Tag_GetAll();
-
+        all_tags = rdb.Tag_GetAll();
         iRatio = rdb.Sensitivity_GetCurrent(DateUtils.getFormattedTimeSec(registerDate));
         cRatio = rdb.Ratio_GetCurrent(DateUtils.getFormattedTimeSec(registerDate));
-
         rdb.close();
 
-        Resources res = getResources(); //assuming in an activity for example, otherwise you can provide a context.
-        String[] allTags = res.getStringArray(R.array.daytimes);
 
+
+        String[] allTags = Tag_GetAll_toList();
         spinner.setAdapter(new StringSpinnerAdapter(this, allTags));
         updateTagSpinner();
 
@@ -326,6 +314,18 @@ public class NewHomeRegistry extends BaseActivity{
         glycaemiaRegisterInputInterface = new GlycaemiaRegister_Input_Interface(this, registerDate, new NewHomeRegCallImpl());
         noteRegisterInputInterface = new NoteRegister_Input_Interface(this);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(false);
+    }
+
+    public String[] Tag_GetAll_toList(){
+
+        String[] list = new String[all_tags.size()];
+        int index=0;
+        for(Tag t:all_tags){
+            list[index] = t.getName();
+            index++;
+        }
+        return list;
+
     }
 
     private void save() {
@@ -380,7 +380,7 @@ public class NewHomeRegistry extends BaseActivity{
     private void update_record () throws Exception{
 
         spinner = findViewById(R.id.tag_spinner);
-        int idTag = (spinner.getSelectedItemPosition());
+        int idTag = (spinner.getSelectedItemPosition()+1);
 
         try{
             verify_empty_conditions();
@@ -1378,11 +1378,14 @@ public class NewHomeRegistry extends BaseActivity{
     }
 
     private void updateTagSpinner() {
-        Tag displayTag = getCurrentTag(t, registerDate);
+        Tag displayTag = getCurrentTag(all_tags, registerDate);
+        int index = 0;
         if(displayTag!=null){
-            int index = displayTag.getId()-1;
+            int i = displayTag.getId();
+            Log.i(TAG, "updateTagSpinner: O ID É: "+i);
             //int index = ((StringSpinnerAdapter) spinner.getAdapter()).getItemPosition(displayTag.getName());
-            if(index>=0){
+            if(i>=0 && i < all_tags.size()){
+                index = i;
                 spinner.setSelection(index);
 //                Log.i(TAG, "save_current_input_data: -> -> "+index);
             }
@@ -1393,7 +1396,7 @@ public class NewHomeRegistry extends BaseActivity{
         String timeString[] = DateUtils.getFormattedTime(registerDate).split(":");
         int currentTime = Integer.parseInt(timeString[0], 10) * 60 + Integer.parseInt(timeString[1]);
 
-//        for(Tag tag: t){
+//        for(Tag tag: all_tags){
         for(int index = 0;index<t.size();index++){
             Tag tag = t.get(index);
             Tag nextTag = t.get((index+1)%t.size());

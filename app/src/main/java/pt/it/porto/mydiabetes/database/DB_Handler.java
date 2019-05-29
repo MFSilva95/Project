@@ -223,6 +223,7 @@ public class DB_Handler extends SQLiteOpenHelper {
         Resources res = this.myContext.getResources();
         String[] daytimes = res.getStringArray(R.array.daytimes);
 
+
         ContentValues toInsert = new ContentValues();
 
         //<item>Acordar</item>

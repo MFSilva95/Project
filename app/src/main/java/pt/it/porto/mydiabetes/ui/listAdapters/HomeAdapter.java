@@ -35,6 +35,7 @@ import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 
 //import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
+import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.activities.Home;
@@ -297,9 +298,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.hora.setText(currentView.getFormattedTime());
         if(currentView.getTag_id()!=-1){
 
-            Resources res = holder.view.getContext().getResources(); //assuming in an activity for example, otherwise you can provide a context.
-            String[] dayTimes = res.getStringArray(R.array.daytimes);
-            holder.tag.setText(dayTimes[currentView.getTag_id()-1]);
+            DB_Read rdb = new DB_Read(holder.background.getContext());
+            ArrayList<Tag> all_tags = rdb.Tag_GetAll();
+            rdb.close();
+            //Resources res = holder.view.getContext().getResources(); //assuming in an activity for example, otherwise you can provide a context.
+            //String[] dayTimes = res.getStringArray(R.array.daytimes);
+            holder.tag.setText(all_tags.get(currentView.getTag_id()-1).getName());
+            //dayTimes[currentView.getTag_id()-1]);
         }
         LinearLayout imageTitleHolder = (LinearLayout) holder.view.findViewById(R.id.imageTitleHolder);
 
