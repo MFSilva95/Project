@@ -14,7 +14,6 @@ import android.graphics.Color;
 import java.io.FileNotFoundException;
 import java.util.Calendar;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -25,12 +24,10 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,7 +36,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,7 +61,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.BaseActivity;
-import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.ui.activities.ViewPhoto;
 import pt.it.porto.mydiabetes.ui.createMeal.adapters.CreateMealListAdapter;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
@@ -480,7 +475,7 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
 
     private boolean validate(){
         if(currentMealItemList.size() == 0){
-            Snackbar snackbar = Snackbar.make(addMealItemButton,getString(R.string.empty_list), Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(addMealItemButton,getString(R.string.empty_list_meal), Snackbar.LENGTH_LONG);
             snackbar.getView().setBackgroundColor(this.getResources().getColor(R.color.primary));
             snackbar.show();
             return false;
@@ -607,7 +602,7 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
                 Toast.makeText(getBaseContext(),"Unable to save photo",Toast.LENGTH_LONG).show();
             }
             Bitmap pic_bitmap = BitmapFactory.decodeStream(input);
-            File photoFile = null;
+            File photoFile;
             try {
                 photoFile = createImageFile();
                 try (FileOutputStream out = new FileOutputStream(photoFile)) {
@@ -615,9 +610,6 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
                     // PNG is a lossless format, the compression factor (100) is ignored
                     out.flush();
                     out.close();
-                    //Log.i("cenas", "setMealPhoto: photofile - "+photoFile.getAbsolutePath());
-                    //Log.i("cenas", "setMealPhoto: currentMealPhotoPath - "+currentMealPhotoPath);
-                    //currentMealPhotoPath = photoFile.getAbsolutePath();
 
                     displayImg(currentMealPhotoPath);
 
@@ -640,8 +632,7 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
     }
 
     private void deleteAll(){
-        final List<MealItem> itemListRemoved = new ArrayList<>();
-        itemListRemoved.addAll(currentMealItemList);
+        final List<MealItem> itemListRemoved = new ArrayList<>(currentMealItemList);
 
         mAdapter.removeAll();
 
@@ -800,21 +791,15 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
 
     public static void copyUnder19(String src_path, File dst) throws IOException {
         File src = new File(src_path);
-        InputStream in = new FileInputStream(src);
-        try {
-            OutputStream out = new FileOutputStream(dst);
-            try {
+        try (InputStream in = new FileInputStream(src)) {
+            try (OutputStream out = new FileOutputStream(dst)) {
                 // Transfer bytes from in to out
                 byte[] buf = new byte[1024];
                 int len;
                 while ((len = in.read(buf)) > 0) {
                     out.write(buf, 0, len);
                 }
-            } finally {
-                out.close();
             }
-        } finally {
-            in.close();
         }
     }
 }

@@ -82,15 +82,15 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             view = v;
             if (isLog) {
                 //data = (TextView) view.findViewById(R.id.tv_list_logbookreg_data);
-                hora = (TextView) view.findViewById(R.id.tv_list_logbookreg_hora);
-                insulinValue = (TextView) view.findViewById(R.id.tv_list_logbookreg_insulin_value);
-                insulinName = (TextView) view.findViewById(R.id.tv_list_logbookreg_insulin);
-                gvalue = (TextView) view.findViewById(R.id.tv_list_logbookreg_glycemia_value);
-                gtag = (TextView) view.findViewById(R.id.tv_list_logbookreg_glycemia);
-                cvalue = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_value);
-                ctag = (TextView) view.findViewById(R.id.tv_list_logbookreg_carbs_title);
-                tag = (TextView) view.findViewById(R.id.tv_list_logbookreg_tag);
-                background = (RelativeLayout) view.findViewById(R.id.logbookRecords);
+                hora = view.findViewById(R.id.tv_list_logbookreg_hora);
+                insulinValue = view.findViewById(R.id.tv_list_logbookreg_insulin_value);
+                insulinName = view.findViewById(R.id.tv_list_logbookreg_insulin);
+                gvalue = view.findViewById(R.id.tv_list_logbookreg_glycemia_value);
+                gtag = view.findViewById(R.id.tv_list_logbookreg_glycemia);
+                cvalue = view.findViewById(R.id.tv_list_logbookreg_carbs_value);
+                ctag = view.findViewById(R.id.tv_list_logbookreg_carbs_title);
+                tag = view.findViewById(R.id.tv_list_logbookreg_tag);
+                background = view.findViewById(R.id.logbookRecords);
 
 
                 view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -179,14 +179,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         HomeElement currentView = homeList.get(position);
-        LinearLayout textHolder = null;
-        TextView rowText = null;
-        TextView myText = null;
+        LinearLayout textHolder;
+        TextView rowText;
         View v = holder.view;
         switch (currentView.getDisplayType()) {
 
             case HEADER:
-                textHolder = (LinearLayout) v.findViewById(R.id.headerRowBackground);
+                textHolder = v.findViewById(R.id.headerRowBackground);
                 rowText = (TextView) textHolder.getChildAt(0);
                 rowText.setText(currentView.getName());
                 break;
@@ -210,7 +209,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     private View.OnLongClickListener getLogItemLongClickListener() {
 
-        View.OnLongClickListener onLongclick = new View.OnLongClickListener() {
+        return new View.OnLongClickListener() {
 
             @Override
             public boolean onLongClick(View v) {
@@ -229,7 +228,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 return true;
             }
         };
-        return onLongclick;
 
     }
     private View.OnClickListener getLogItemClickListener(){
@@ -301,12 +299,9 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
             DB_Read rdb = new DB_Read(holder.background.getContext());
             ArrayList<Tag> all_tags = rdb.Tag_GetAll();
             rdb.close();
-            //Resources res = holder.view.getContext().getResources(); //assuming in an activity for example, otherwise you can provide a context.
-            //String[] dayTimes = res.getStringArray(R.array.daytimes);
             holder.tag.setText(all_tags.get(currentView.getTag_id()-1).getName());
-            //dayTimes[currentView.getTag_id()-1]);
         }
-        LinearLayout imageTitleHolder = (LinearLayout) holder.view.findViewById(R.id.imageTitleHolder);
+        LinearLayout imageTitleHolder = holder.view.findViewById(R.id.imageTitleHolder);
 
         holder.background.setBackgroundColor(!currentView.isPressed()?Color.TRANSPARENT:Color.LTGRAY);
 

@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -32,7 +33,7 @@ public class SettingsCarbsRatio extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,14 +43,15 @@ public class SettingsCarbsRatio extends BaseActivity {
         });
 
 
-        targetList = (ListView) findViewById(R.id.targetsRatiosFragmentList);
+        targetList = findViewById(R.id.targetsRatiosFragmentList);
         fillListView(targetList);
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        targetList = (ListView) findViewById(R.id.targetsRatiosFragmentList);
+        targetList = findViewById(R.id.targetsRatiosFragmentList);
         fillListView(targetList);
     }
 
@@ -57,14 +59,22 @@ public class SettingsCarbsRatio extends BaseActivity {
         DB_Read rdb = new DB_Read(this);
 //        int baseCarbsRatio = rdb.getCarbsRatio();
         ArrayList<CarbsRatioData> allTags = rdb.Ratio_GetAll();
+        rdb.close();
 
+        TextView empty_list = findViewById(R.id.empty_list_message);
+
+        if(allTags==null && empty_list!=null){
+            empty_list.setVisibility(View.VISIBLE);
+        }else{
+            empty_list.setVisibility(View.GONE);
+        }
 //        if(allTags==null){
 //            MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
 //            storage.initRatioSens(baseCarbsRatio, "Ratio_Reg");
 //            //rdb = new DB_Read(this);
 //            allTags = rdb.Ratio_GetAll();
 //        }
-        rdb.close();
+
         lv.setAdapter(new CarbsRatioListAdapter(allTags, this));
     }
 }

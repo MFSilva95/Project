@@ -10,7 +10,6 @@
         android:id="@+id/toolbarbig"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
         android:orientation="vertical"
         app:elevation="4dp"
@@ -28,14 +27,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/plus_btn"
         app:elevation="6dp"
         tools:layout_editor_absoluteX="312dp"
         tools:layout_editor_absoluteY="116dp" />
 
-
+    <TextView
+        android:id="@+id/empty_list_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/empty_list"
+        android:gravity="center"/>
 
     <ListView
         android:id="@+id/targetsRatiosFragmentList"
@@ -44,7 +48,6 @@
         android:layout_below="@+id/toolbarbig"
         android:divider="@null"
         android:dividerHeight="0dp"
-        android:layout_weight="1"
         android:paddingBottom="72dp"
         android:clipToPadding="false"
         tools:listitem="@layout/list_ratio_row"/>

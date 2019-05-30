@@ -561,7 +561,9 @@
     <string name="bullet">\u2022</string>
 
     <string name="create_meal_title">Criar Refeição</string>
-    <string name="empty_list">Refeição sem alimentos!</string>
+    <string name="empty_list_meal">Refeição sem alimentos!</string>
+    <string name="empty_list">Sem valores adcione valores no simbolo\'+\'!</string>
+
     <string name="item_removed">Alimento(s) removido(s)</string>
     <string name="meal_removed">Refeição removida</string>
     <string name="meal_saved">Refeição adicionada aos favoritos</string>
@@ -612,10 +614,5 @@
         </small>
         \n\nToda a informação disponibilizada será para utilização exclusivamente académica!\nA equipa do MyDiabetes irá usar esta informação de forma a melhorar o seu sistema de aconselhamento de forma a conseguir ajudar os seus utilizadores.\n<b>\nAceita os termos apresentados?</b></string>
     <string name="notification_channel_sync_description">Lembrete para envio dos dados para o gestor do projecto</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-    <string name="title_activity_ranking_chart">RankingChart</string>
-    <string name="title_activity_widget">Activity_widget</string>
-    <string name="title_activity_chart_section">ChartSection</string>
 
 </resources>

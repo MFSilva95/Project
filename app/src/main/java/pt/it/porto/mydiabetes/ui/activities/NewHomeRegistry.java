@@ -13,6 +13,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
@@ -339,7 +340,6 @@ public class NewHomeRegistry extends BaseActivity{
             finish();
         }catch (Exception e){
             e.printStackTrace();
-            return;
         }
     }
     private void verify_empty_conditions()throws Exception{
@@ -382,13 +382,13 @@ public class NewHomeRegistry extends BaseActivity{
         spinner = findViewById(R.id.tag_spinner);
         int idTag = (spinner.getSelectedItemPosition()+1);
 
-        try{
-            verify_empty_conditions();
-            verify_note_conditions();
-            verify_carbs_conditions();
-            verify_glucose_conditions();
-            verify_insulin_conditions();
-        }catch (Exception e){throw e;}
+
+        verify_empty_conditions();
+        verify_note_conditions();
+        verify_carbs_conditions();
+        verify_glucose_conditions();
+        verify_insulin_conditions();
+
 
 
         DB_Read rdb = new DB_Read(this);
@@ -410,7 +410,7 @@ public class NewHomeRegistry extends BaseActivity{
             glycemiaData = null;
         }
         if(delete_buttons.contains(INSULIN)){
-            reg.Insulin_Delete(insulinData.getId());
+            reg.Insulin_Delete(insulinData.getId());//restaurar valores default - (pagina vazia)
             insulinData = null;
         }
 
@@ -419,103 +419,98 @@ public class NewHomeRegistry extends BaseActivity{
         DataBaseHelper dbHelper = new DataBaseHelper(this);
 
         for(String field:buttons){
-            try {
-                switch (field){
-                    case CARBS:
-                        if(carbsData != null){
-                            carbsData.setIdTag(idTag);
-                            carbsData.setIdUser(idUser);
-                            carbsData.setDateTime(registerDate);
-                            if(mCurrentMeal != null){
-                                if((mCurrentMeal.getItemList().size() != 0) || (mCurrentMeal.getThumbnailPath() != null)){
-                                    mCurrentMeal.setRegistered(true);
-                                    mCurrentMeal.setExtraCarbs(carbsRegisterInputInterface.getCarbs() - mCurrentMeal.getTotalCarbs(false));
 
-                                    if (mCurrentMeal.getId() != -1) {
-                                        dbHelper.updateMeal(mCurrentMeal);
-                                    }
-                                    else {
-                                        mCurrentMeal.setId(dbHelper.insertMeal(mCurrentMeal));
-                                    }
+            switch (field){
+                case CARBS:
+                    if(carbsData != null){
+                        carbsData.setIdTag(idTag);
+                        carbsData.setIdUser(idUser);
+                        carbsData.setDateTime(registerDate);
+                        if(mCurrentMeal != null){
+                            if((mCurrentMeal.getItemList().size() != 0) || (mCurrentMeal.getThumbnailPath() != null)){
+                                mCurrentMeal.setRegistered(true);
+                                mCurrentMeal.setExtraCarbs(carbsRegisterInputInterface.getCarbs() - mCurrentMeal.getTotalCarbs(false));
 
-                                    carbsData.setMealId(mCurrentMeal.getId());
-                                } else{
-                                    if (mCurrentMeal.getId() != -1) {
-                                        LoggedMeal prev_meal = dbHelper.getMeal(mCurrentMeal.getId());
-                                        prev_meal.setRegistered(false);
-                                        dbHelper.updateMeal(prev_meal);
-                                        carbsData.setMealId(-1);
-                                    }
+                                if (mCurrentMeal.getId() != -1) {
+                                    dbHelper.updateMeal(mCurrentMeal);
+                                }
+                                else {
+                                    mCurrentMeal.setId(dbHelper.insertMeal(mCurrentMeal));
+                                }
+
+                                carbsData.setMealId(mCurrentMeal.getId());
+                            } else{
+                                if (mCurrentMeal.getId() != -1) {
+                                    LoggedMeal prev_meal = dbHelper.getMeal(mCurrentMeal.getId());
+                                    prev_meal.setRegistered(false);
+                                    dbHelper.updateMeal(prev_meal);
+                                    carbsData.setMealId(-1);
                                 }
                             }
-
-                            if(noteData != null) {
-                                carbsData.setIdNote(noteData.getId());
-                            }else{
-                                carbsData.setIdNote(-1);
-                            }
-
-                            if (carbsData.getId()!=-1) {
-                                reg.Carbs_Update(carbsData);
-                            } else {
-                                carbsData.setId(reg.Carbs_Save(carbsData));
-                            }
-                            reg.Record_Update_Carbs(recordId, carbsData.getId());
                         }
-                        break;
-                    case GLICAEMIA:
-                        if(glycemiaData != null){
-                            glycemiaData.setIdTag(idTag);
-                            glycemiaData.setIdUser(idUser);
-                            glycemiaData.setDateTime(registerDate);
 
-                            if(noteData != null) {
-                                glycemiaData.setIdNote(noteData.getId());
-                            }else{
-                                glycemiaData.setIdNote(-1);
-                            }
-                            if (glycemiaData.getId()!=-1) {
-                                reg.Glycemia_Update(glycemiaData);
-                            } else {
-                                glycemiaData.setId(reg.Glycemia_Save(glycemiaData));
-                            }
-                            reg.Record_Update_Glycaemia(recordId, glycemiaData.getId());
+                        if(noteData != null) {
+                            carbsData.setIdNote(noteData.getId());
+                        }else{
+                            carbsData.setIdNote(-1);
                         }
-                        break;
-                    case INSULIN:
-                        if(insulinData != null){
-                            insulinData.setIdTag(idTag);
-                            insulinData.setIdUser(idUser);
-                            insulinData.setDateTime(registerDate);
 
-                            if(noteData != null) {
-                                insulinData.setIdNote(noteData.getId());
-                            }else{
-                                insulinData.setIdNote(-1);
-                            }
-                            if(insulinData.getId()!=-1){
-                                reg.Insulin_Update(insulinData);
-                            }else{
-                                insulinData.setId(reg.Insulin_Save(insulinData));
-                            }
-                            reg.Record_Update_Insulin(recordId,insulinData.getId());
+                        if (carbsData.getId()!=-1) {
+                            reg.Carbs_Update(carbsData);
+                        } else {
+                            carbsData.setId(reg.Carbs_Save(carbsData));
                         }
-                        break;
-                    case NOTE:
-                        if (noteData != null) {
-                            if(noteData.getId()!=-1){
-                                reg.Note_Update(noteData);
-                            }else{
-                                noteData.setId(reg.Note_Add(noteData));
-                            }
-                            reg.Record_Update_Note(recordId,noteData.getId());
+                        reg.Record_Update_Carbs(recordId, carbsData.getId());
+                    }
+                    break;
+                case GLICAEMIA:
+                    if(glycemiaData != null){
+                        glycemiaData.setIdTag(idTag);
+                        glycemiaData.setIdUser(idUser);
+                        glycemiaData.setDateTime(registerDate);
+
+                        if(noteData != null) {
+                            glycemiaData.setIdNote(noteData.getId());
+                        }else{
+                            glycemiaData.setIdNote(-1);
                         }
-                        break;
-                }
+                        if (glycemiaData.getId()!=-1) {
+                            reg.Glycemia_Update(glycemiaData);
+                        } else {
+                            glycemiaData.setId(reg.Glycemia_Save(glycemiaData));
+                        }
+                        reg.Record_Update_Glycaemia(recordId, glycemiaData.getId());
+                    }
+                    break;
+                case INSULIN:
+                    if(insulinData != null){
+                        insulinData.setIdTag(idTag);
+                        insulinData.setIdUser(idUser);
+                        insulinData.setDateTime(registerDate);
 
-
-            }catch (Exception e){
-                throw e;
+                        if(noteData != null) {
+                            insulinData.setIdNote(noteData.getId());
+                        }else{
+                            insulinData.setIdNote(-1);
+                        }
+                        if(insulinData.getId()!=-1){
+                            reg.Insulin_Update(insulinData);
+                        }else{
+                            insulinData.setId(reg.Insulin_Save(insulinData));
+                        }
+                        reg.Record_Update_Insulin(recordId,insulinData.getId());
+                    }
+                    break;
+                case NOTE:
+                    if (noteData != null) {
+                        if(noteData.getId()!=-1){
+                            reg.Note_Update(noteData);
+                        }else{
+                            noteData.setId(reg.Note_Add(noteData));
+                        }
+                        reg.Record_Update_Note(recordId,noteData.getId());
+                    }
+                    break;
             }
         }
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
@@ -781,7 +776,7 @@ public class NewHomeRegistry extends BaseActivity{
     }
     private void setupBottomSheet() {
 
-        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
+        Button button = bottomSheetViewgroup.findViewById(R.id.bs_notes);
         if(buttons.size()==0){
             button.setEnabled(false);
         }
@@ -1098,7 +1093,7 @@ public class NewHomeRegistry extends BaseActivity{
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == EXTERNAL_STORAGE_PERMISSION_CONSTANT) {
@@ -1122,7 +1117,7 @@ public class NewHomeRegistry extends BaseActivity{
         //Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
-            File photoFile = null;
+            File photoFile;
             photoFile = createImageFile();
 
             // Continue only if the File was successfully created
@@ -1339,7 +1334,7 @@ public class NewHomeRegistry extends BaseActivity{
     }
     private void addContent(LinearLayout view) {
         contentLayout.addView(view, contentLayout.getChildCount() - 1);//contentLayout.getChildCount() - 1);
-        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
+        Button button = bottomSheetViewgroup.findViewById(R.id.bs_notes);
         button.setEnabled(true);
     }
     private void addContentAt(LinearLayout view, int pos) {
@@ -1350,7 +1345,7 @@ public class NewHomeRegistry extends BaseActivity{
     }
     private void removeContent(LinearLayout view) {
         contentLayout.removeView(view);
-        Button button = (Button) bottomSheetViewgroup.findViewById(R.id.bs_notes);
+        Button button = bottomSheetViewgroup.findViewById(R.id.bs_notes);
         if(buttons.size()<=1){
             button.setEnabled(false);
         }
@@ -1358,7 +1353,6 @@ public class NewHomeRegistry extends BaseActivity{
 
     private void save_current_input_data(){
         int idTag = (spinner.getSelectedItemPosition());
-//        Log.i(TAG, "save_current_input_data: -> -> "+idTag);
 
         if (glycaemiaRegisterInputInterface != null ) {
             glycemiaData  = glycaemiaRegisterInputInterface.save_read();
@@ -1379,7 +1373,7 @@ public class NewHomeRegistry extends BaseActivity{
 
     private void updateTagSpinner() {
         Tag displayTag = getCurrentTag(all_tags, registerDate);
-        int index = 0;
+        int index;
         if(displayTag!=null){
             int i = displayTag.getId();
             Log.i(TAG, "updateTagSpinner: O ID É: "+i);
@@ -1393,7 +1387,7 @@ public class NewHomeRegistry extends BaseActivity{
     }
     private Tag getCurrentTag(ArrayList<Tag> t, Calendar registerDate) {
 
-        String timeString[] = DateUtils.getFormattedTime(registerDate).split(":");
+        String[] timeString = DateUtils.getFormattedTime(registerDate).split(":");
         int currentTime = Integer.parseInt(timeString[0], 10) * 60 + Integer.parseInt(timeString[1]);
 
 //        for(Tag tag: all_tags){

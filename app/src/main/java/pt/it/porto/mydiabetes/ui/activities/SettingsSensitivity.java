@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -34,7 +35,7 @@ public class SettingsSensitivity extends BaseActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,14 +45,14 @@ public class SettingsSensitivity extends BaseActivity {
         });
 
 
-        targetList = (ListView) findViewById(R.id.targetsRatiosFragmentList);
+        targetList = findViewById(R.id.targetsRatiosFragmentList);
         fillListView(targetList);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        targetList = (ListView) findViewById(R.id.targetsRatiosFragmentList);
+        targetList = findViewById(R.id.targetsRatiosFragmentList);
         fillListView(targetList);
     }
 
@@ -59,6 +60,14 @@ public class SettingsSensitivity extends BaseActivity {
         DB_Read rdb = new DB_Read(this);
         //int baseInsuRatio = rdb.getInsulinRatio();
         ArrayList<Sensitivity> allTags = rdb.Sensitivity_GetAll();
+
+        TextView empty_list = findViewById(R.id.empty_list_message);
+
+        if(allTags==null && empty_list!=null){
+            empty_list.setVisibility(View.VISIBLE);
+        }else{
+            empty_list.setVisibility(View.GONE);
+        }
 //        if(allTags==null){
 //            MyDiabetesStorage storage = MyDiabetesStorage.getInstance(this);
 //            storage.initRatioSens(baseInsuRatio, "Sensitivity_Reg");

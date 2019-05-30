@@ -15,6 +15,7 @@
     <string name="error_meal_act">The inserted meal\'s carbohydrate value is below the items\' carbohydrate value sum!</string>
 
     <string name="error_invalid_parameter">Invalid abnormal value</string>
+    <string name="empty_list">No values, add new values using the \'+\' symbol!</string>
 
     <string name="failed_import_img">Could not access the image.</string>
     <string name="upload_successful">Upload completed successfully.</string>
@@ -581,7 +582,7 @@
 
 
     <string name="create_meal_title">Create Meal</string>
-    <string name="empty_list">Meal without any food!</string>
+    <string name="empty_list_meal">Meal without any food!</string>
     <string name="item_removed">Food removed</string>
     <string name="meal_removed">Meal removed</string>
     <string name="meal_saved">Meal added to favorites</string>
