@@ -83,6 +83,11 @@ public class widget extends AppWidgetProvider {
         PendingIntent pendingIntent2 = PendingIntent.getActivity(context, 0, intent2, PendingIntent.FLAG_CANCEL_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.widget_info_text, pendingIntent2);
 
+        // call logbook activity after widget click
+        Intent intent3 = new Intent(context, LogbookChartList.class);
+        PendingIntent pendingIntent3 = PendingIntent.getActivity(context, 0, intent3, PendingIntent.FLAG_CANCEL_CURRENT);
+        remoteViews.setOnClickPendingIntent(R.id.graph_img, pendingIntent3);
+
 
 
         // get values from database
