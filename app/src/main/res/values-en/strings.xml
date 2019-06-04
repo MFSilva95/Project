@@ -666,4 +666,18 @@
     <string name="advanced_single_timeInRange">Keep your time in range over 65% (4 weeks)</string>
 
 
+    <!-- Tentativa -->
+    <string name="beginner_bronze_health">Keep your glyceamia average under 154 (1 week)</string>
+    <string name="medium_bronze_health">Keep your glyceamia average under 154 (2 weeks)</string>
+    <string name="advanced_bronze_health">Keep your glyceamia average under 154 (4 weeks)</string>
+
+    <string name="beginner_silver_health">Keep your variability under 36% (1 week)</string>
+    <string name="medium_silver_health">Keep your variability under 36% (2 weeks)</string>
+    <string name="advanced_silver_health">Keep your variability under 36% (4 weeks)</string>
+
+    <string name="beginner_gold_health">Keep your time in range over 65% (1 week)</string>
+    <string name="medium_gold_health">Keep your time in range over 65% (2 weeks)</string>
+    <string name="advanced_gold_health">Keep your time in range over 65% (4 weeks)</string>
+
+
 </resources>

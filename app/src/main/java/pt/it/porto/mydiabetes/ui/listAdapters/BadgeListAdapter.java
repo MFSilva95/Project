@@ -149,6 +149,7 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
 
             badgeTextHolder.setText(con.getResources().getIdentifier(obj.getMyStringPath(),"string", con.getPackageName()));
             if(!obj.isLocked()){
+                System.out.println("OBJ: "+obj.getMyBackgroundPath());
                 badgeBackGroundHolder.setImageResource(con.getResources().getIdentifier(obj.getMyBackgroundPath(),"drawable", con.getPackageName()));
                 badgeIcon.setImageResource(con.getResources().getIdentifier(obj.getMyIconPath(),"drawable", con.getPackageName()));
             }

@@ -25,7 +25,7 @@ import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 
 public class BadgeBoard extends Fragment {
-    public enum BadgeName {photo, export, average, variability, timeInRange, bp, log, hba1c, cholesterol, weight, disease, exercise}//send_data_badge,
+    public enum BadgeName {photo, export, health, bp, log, hba1c, cholesterol, weight, disease, exercise}//send_data_badge,
     public enum Difficulty {daily, beginner, medium, advanced}
     public enum Marks {single, bronze, silver, gold}
 
@@ -103,8 +103,12 @@ public class BadgeBoard extends Fragment {
                     this.myIconPath = name.toString();
                     this.myStringPath = diff.toString()+"_"+mark.toString()+"_"+name.toString();
                 }else {
-                    this.myBackgroundPath = "medal_"+mark.toString()+"_"+diff.toString();
-                    this.myIconPath = name.toString();
+                    if (name.toString() == "health") {
+                        this.myBackgroundPath = "medal_gold_"+diff.toString();
+                    } else {
+                        this.myBackgroundPath = "medal_" + mark.toString() + "_" + diff.toString();
+                    }
+                    this.myIconPath = "photo";
                     this.myStringPath = diff.toString()+"_"+mark.toString()+"_"+name.toString();
                 }
             }
@@ -174,9 +178,11 @@ public class BadgeBoard extends Fragment {
     private BadgeGlobalObjective photo_badge = new BadgeGlobalObjective(BadgeName.photo, new Difficulty[]{Difficulty.beginner}, new Marks[]{Marks.single},1,1);
     //private BadgeGlobalObjective send_data_badge = new BadgeGlobalObjective(BadgeName.send_data_badge, 1, 0, true);
 
-    private BadgeGlobalObjective average_badge = new BadgeGlobalObjective(BadgeName.average, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.single}, 1,1);
-    private BadgeGlobalObjective variability_badge = new BadgeGlobalObjective(BadgeName.variability, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.single}, 1,1);
-    private BadgeGlobalObjective timeInRange_badge = new BadgeGlobalObjective(BadgeName.timeInRange, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.single},1,1);
+    //private BadgeGlobalObjective average_badge = new BadgeGlobalObjective(BadgeName.average, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.single}, 1,1);
+    //private BadgeGlobalObjective variability_badge = new BadgeGlobalObjective(BadgeName.variability, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.single}, 1,1);
+    //private BadgeGlobalObjective timeInRange_badge = new BadgeGlobalObjective(BadgeName.timeInRange, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.single},1,1);
+
+    private BadgeGlobalObjective health_badge = new BadgeGlobalObjective(BadgeName.health, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.bronze, Marks.silver, Marks.gold},1,1);
 
     private BadgeGlobalObjective bp_badge = new BadgeGlobalObjective(BadgeName.bp, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.bronze, Marks.silver, Marks.gold},1,1);
     private BadgeGlobalObjective cholesterol_badge = new BadgeGlobalObjective(BadgeName.cholesterol, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.bronze, Marks.silver, Marks.gold},1,1);
@@ -206,9 +212,11 @@ public class BadgeBoard extends Fragment {
         myDiabetesMultiObjectives.add(export_badge);
         myDiabetesMultiObjectives.add(photo_badge);
 
-        myDiabetesMultiObjectives.add(average_badge);
-        myDiabetesMultiObjectives.add(variability_badge);
-        myDiabetesMultiObjectives.add(timeInRange_badge);
+        //myDiabetesMultiObjectives.add(average_badge);
+        //myDiabetesMultiObjectives.add(variability_badge);
+        //myDiabetesMultiObjectives.add(timeInRange_badge);
+
+        myDiabetesMultiObjectives.add(health_badge);
 
         myDiabetesMultiObjectives.add(bp_badge);
         myDiabetesMultiObjectives.add(cholesterol_badge);

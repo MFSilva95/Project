@@ -530,9 +530,9 @@ public class homeRightFragment extends Fragment {
             int hypo = userInfo.getLowerRange();
             int hyper = userInfo.getHigherRange();
             // average values
-            if (averageToday < hypo || averageToday > hyper) {
+            if (averageToday < 70 || averageToday > 180) {
                 averageText.setTextColor(getResources().getColor(R.color.red));
-            } else if ((averageToday >= hypo && averageToday < hypo+20) || (averageToday > hyper-20 && averageToday <= hyper)) {
+            } else if ((averageToday >= 70 && averageToday < 90) || (averageToday > 160 && averageToday <= 180)) {
                 averageText.setTextColor(getResources().getColor(R.color.orange));
             } else {
                 averageText.setTextColor(getResources().getColor(R.color.green));

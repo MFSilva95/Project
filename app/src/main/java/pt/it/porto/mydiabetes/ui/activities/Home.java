@@ -615,9 +615,9 @@ public class Home extends BaseActivity {
     protected void onResume()
     {
         DB_Read db = new DB_Read(this);
-        BadgeUtils.addAverageBadge(this, db);
-        BadgeUtils.addVariabilityBadge(this, db);
-        BadgeUtils.addTimeInRangeBadge(this, db);
+        if(db!=null){
+            BadgeUtils.addHealthBadge(this, db);
+        }
         db.close();
         super.onResume();
         if(mViewPager!=null){

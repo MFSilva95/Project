@@ -645,4 +645,19 @@
     <string name="beginner_single_timeInRange">Mantém o time in range acima de 65% (1 semana)</string>
     <string name="medium_single_timeInRange">Mantém o time in range acima de 65% (2 semana)</string>
     <string name="advanced_single_timeInRange">Mantém o time in range acima de 65% (4 semana)</string>
+
+    <!-- Tentativa -->
+    <string name="beginner_bronze_health">Mantém a média glicémica abaixo de 154 (1 semana)</string>
+    <string name="medium_bronze_health">Mantém a média glicémica abaixo de 154 (2 semana)</string>
+    <string name="advanced_bronze_health">Mantém a média glicémica abaixo de 154 (4 semana)</string>
+
+    <string name="beginner_silver_health">Mantém a variabilide abaixo de 36% (1 semana)</string>
+    <string name="medium_silver_health">Mantém a variabilide abaixo de 36% (2 semana)</string>
+    <string name="advanced_silver_health">Mantém a variabilide abaixo de 36% (4 semana)</string>
+
+    <string name="beginner_gold_health">Mantém o time in range acima de 65% (1 semana)</string>
+    <string name="medium_gold_health">Mantém o time in range acima de 65% (2 semana)</string>
+    <string name="advanced_gold_health">Mantém o time in range acima de 65% (4 semana)</string>
+
+
 </resources>

@@ -3030,7 +3030,7 @@ public class DB_Read {
 	public int getXDaysTimeInRange(int days, int hypo, int hyper) {
 		// validate if every day on "days" range has at least 3 blood glucose records
 		for (int i=1; i<=days; i++) {
-			if (getGlyRecordsNumberByDay(i) >= 3) {
+			if (getGlyRecordsNumberByDay(i) >= 1) {
 
 			} else {
 				return -1;
