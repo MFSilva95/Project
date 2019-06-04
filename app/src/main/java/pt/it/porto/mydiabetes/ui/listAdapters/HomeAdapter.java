@@ -305,7 +305,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
             Resources res = holder.view.getContext().getResources(); //assuming in an activity for example, otherwise you can provide a context.
             String[] dayTimes = res.getStringArray(R.array.daytimes);
-            holder.tag.setText(dayTimes[currentView.getTag_id()-1]);
+            holder.tag.setText(dayTimes[currentView.getTag_id()]);
         }
         //holder.tag.setText(currentView.getTag_name());
         LinearLayout imageTitleHolder = (LinearLayout) holder.view.findViewById(R.id.imageTitleHolder);

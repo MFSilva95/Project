@@ -502,6 +502,11 @@
     <string name="received_a_daily_medal">Recebeu uma Medalha Diária</string>
     <string name="new_note">Nova anotação</string>
 
+    <string name="badge_help_personal_dialog_title">Ajuda</string>
+    <string name="badge_help_personal_dialog_desc">Média Glicémica - É a média dos seus valores glicémicos ao longo de um período determinado de tempo, neste caso diário.\n\nVariabilidade - representa a variabilidade dos seus valores glicémicos, as oscilações que ocorrem ao longo do dia\n\n\nObjectivo diário -
+        Deve fazer pelo menos 6 registos diariamente. Se completar este objectivo irá receber 30 pontos, a multiplicar pelo número de dias seguidos de objectivos diários que completou. O valor a multiplicar tem um máximo de 7. Porém, pode e deve continuar a completar os objectivos diários para manter este valor e assim obter o máximo de pontos possivel.</string>
+
+
     <string name="badge_help_dialog_title">Como ganhar medalhas?</string>
     <string name="badge_help_dialog_desc">Para ganhar medalhas deve completar os registos necessários a cada. O nível intermédio e avançado são desbloqueáveis a níveis 10 e 30 respetivamente.
         Por cada registo inserido ganha 100 pontos e por medalha 200. Junte pontos para subir de nível.</string>
@@ -592,12 +597,7 @@
         </small>
         \n\nToda a informação disponibilizada será para utilização exclusivamente académica!\nA equipa do MyDiabetes irá usar esta informação de forma a melhorar o seu sistema de aconselhamento de forma a conseguir ajudar os seus utilizadores.\n<b>\nAceita os termos apresentados?</b></string>
     <string name="notification_channel_sync_description">Lembrete para envio dos dados para o gestor do projecto</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-    <string name="title_activity_ranking_chart">RankingChart</string>
-    <string name="title_activity_widget">Activity_widget</string>
-    <string name="title_activity_chart_section">ChartSection</string>
-    <string name="title_activity_statistics">Statistics</string>
+
 
     <string-array name="period">
         <item>7 days</item>
@@ -605,6 +605,19 @@
         <item>30 days</item>
         <item>90 days</item>
     </string-array>
+
+
+    <string name="average">MÉDIA</string>
+    <string name="variability">VARIABILIDADE</string>
+    <string name="dailyGoal">OBJETIVO DIÁRIO</string>
+
+    <string name="startRecordsMessage">Hoje é um bom dia para fazer o objetivo diário!</string>
+    <string name="streakMessage1">Está numa streak de </string>
+    <string name="streakMessage2">&#160; a realizar o objetivo diário!</string>
+    <string name="leftDaysMessage1">Registe mais </string>
+    <string name="leftDaysMessage2">&#160; para concluir o objetivo de hoje</string>
+    <string name="congratsMessage1">Parabéns!</string>
+    <string name="congratsMessage2">&#160; O desafio diário foi concluído</string>
 
     <plurals name="numberOfDays">
         <item quantity="one">dia</item>
@@ -616,4 +629,20 @@
         <item quantity="other">registos</item>
     </plurals>
 
+    <plurals name="numberOfGlyc">
+        <item quantity="one">glicemia</item>
+        <item quantity="other">glicemias</item>
+    </plurals>
+
+    <string name="beginner_single_average">Mantém a média glicémica abaixo de 154 (1 semana)</string>
+    <string name="medium_single_average">Mantém a média glicémica abaixo de 154 (2 semana)</string>
+    <string name="advanced_single_average">Mantém a média glicémica abaixo de 154 (4 semana)</string>
+
+    <string name="beginner_single_variability">Mantém a variabilide abaixo de 36% (1 semana)</string>
+    <string name="medium_single_variability">Mantém a variabilide abaixo de 36% (2 semana)</string>
+    <string name="advanced_single_variability">Mantém a variabilide abaixo de 36% (4 semana)</string>
+
+    <string name="beginner_single_timeInRange">Mantém o time in range acima de 65% (1 semana)</string>
+    <string name="medium_single_timeInRange">Mantém o time in range acima de 65% (2 semana)</string>
+    <string name="advanced_single_timeInRange">Mantém o time in range acima de 65% (4 semana)</string>
 </resources>

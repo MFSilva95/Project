@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.github.pierry.simpletoast.SimpleToast;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 
@@ -1771,6 +1772,142 @@ public class BadgeUtils {
             LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
             SimpleToast.info(context, context.getString(R.string.received_a_daily_medal), "{fa-trophy}");
         }
+    }
+
+    /*
+    @author Rui Carvalho
+    @since  05/2019
+    addAverageBadge, addVariabilityBadge, addTimeInRangeBadge
+     */
+    public static void addAverageBadge(Context context, DB_Read db) {
+        LinkedList<BadgeRec> list = db.getAllMedals("average");
+
+        boolean beginner = false;
+        boolean medium = false;
+        boolean advanced = false;
+
+        for (BadgeRec rec:list) {
+            if (rec.getType().equals("beginner")) {
+                beginner = true;
+            } else if (rec.getType().equals("medium")) {
+                medium = true;
+            } else if (rec.getType().equals("advanced")) {
+                advanced = true;
+            }
+        }
+
+        if (beginner == false) {
+            ArrayList<Integer> averageAndVariability = db.getXDaysGlycAverageAndVariability(7);
+            if (averageAndVariability.get(0) <= 154 && averageAndVariability.get(0) > 0) {
+                addBadgeAuxiliar(context, db, "average", "beginner");
+            }
+        }
+        if (medium == false) {
+            ArrayList<Integer> averageAndVariability = db.getXDaysGlycAverageAndVariability(15);
+            if (averageAndVariability.get(0) <= 154 && averageAndVariability.get(0) > 0) {
+                addBadgeAuxiliar(context, db, "average", "medium");
+            }
+        }
+        if (advanced == false) {
+            ArrayList<Integer> averageAndVariability = db.getXDaysGlycAverageAndVariability(30);
+            if (averageAndVariability.get(0) <= 154 && averageAndVariability.get(0) > 0) {
+                addBadgeAuxiliar(context, db, "average", "advanced");
+            }
+        }
+    }
+
+    public static void addVariabilityBadge(Context context, DB_Read db) {
+        LinkedList<BadgeRec> list = db.getAllMedals("variability");
+        ArrayList<Integer> averageAndVariability2 = db.getXDaysGlycAverageAndVariability(3);
+        boolean beginner = false;
+        boolean medium = false;
+        boolean advanced = false;
+
+        for (BadgeRec rec:list) {
+            if (rec.getType().equals("beginner")) {
+                beginner = true;
+            } else if (rec.getType().equals("medium")) {
+                medium = true;
+            } else if (rec.getType().equals("advanced")) {
+                advanced = true;
+            }
+        }
+
+        if (beginner == false) {
+            ArrayList<Integer> averageAndVariability = db.getXDaysGlycAverageAndVariability(3);
+            if (averageAndVariability.get(1) <= 36 && averageAndVariability.get(1) >= 0) {
+                addBadgeAuxiliar(context, db, "variability", "beginner");
+            }
+        }
+        if (medium == false) {
+            ArrayList<Integer> averageAndVariability = db.getXDaysGlycAverageAndVariability(15);
+            if (averageAndVariability.get(1) <= 36 && averageAndVariability.get(1) >= 0) {
+                addBadgeAuxiliar(context, db, "variability", "medium");
+            }
+        }
+        if (advanced == false) {
+            ArrayList<Integer> averageAndVariability = db.getXDaysGlycAverageAndVariability(30);
+            if (averageAndVariability.get(1) <= 36 && averageAndVariability.get(1) >= 0) {
+                addBadgeAuxiliar(context, db, "variability", "advanced");
+            }
+        }
+    }
+
+    public static void addTimeInRangeBadge(Context context, DB_Read db) {
+        LinkedList<BadgeRec> list = db.getAllMedals("timeInRange");
+
+        //int hypo = db.MyData_Read().getLowerRange();
+        //int hyper = db.MyData_Read().getHigherRange();
+
+        boolean beginner = false;
+        boolean medium = false;
+        boolean advanced = false;
+
+        for (BadgeRec rec:list) {
+            if (rec.getType().equals("beginner")) {
+                beginner = true;
+            } else if (rec.getType().equals("medium")) {
+                medium = true;
+            } else if (rec.getType().equals("advanced")) {
+                advanced = true;
+            }
+        }
+
+        if (beginner == false) {
+            int timeInRange = db.getXDaysTimeInRange(7, 70, 180);
+            System.out.println("Time in range: "+timeInRange);
+            if (timeInRange >= 65) {
+                addBadgeAuxiliar(context, db, "timeInRange", "beginner");
+            }
+        }
+        if (medium == false) {
+            int timeInRange = db.getXDaysTimeInRange(15, 70, 180);
+            if (timeInRange >= 65) {
+                addBadgeAuxiliar(context, db, "timeInRange", "medium");
+            }
+        }
+        if (advanced == false) {
+            int timeInRange = db.getXDaysTimeInRange(30, 70, 180);
+            if (timeInRange >= 65) {
+                addBadgeAuxiliar(context, db, "timeInRange", "advanced");
+            }
+        }
+    }
+
+    public static void addBadgeAuxiliar(Context context, DB_Read db, String name, String type) {
+        int idUser = db.getUserId();
+        DB_Write dbwrite = new DB_Write(context);
+        BadgeRec badge = new BadgeRec();
+        badge.setIdUser(idUser);
+        badge.setDateTime(Calendar.getInstance());
+        badge.setType(type);
+        badge.setName(name);
+        badge.setMedal("single");
+        dbwrite.Badge_Save(badge);
+
+        LevelsPointsUtils.addPoints(context, LevelsPointsUtils.BADGE_POINTS, "badge", db);
+        dbwrite.close();
+        SimpleToast.info(context, context.getString(R.string.received_a_medal), "{fa-trophy}");
     }
 
 }

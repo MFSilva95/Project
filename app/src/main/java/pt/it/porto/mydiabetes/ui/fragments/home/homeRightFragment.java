@@ -101,6 +101,7 @@ public class homeRightFragment extends Fragment {
     private TextView advancedBadgesText;
     private ImageView currentBadge;
 
+    private ImageButton helpButtonPersonal;
     private TextView averageText;
     private TextView variabilityText;
     private TextView dailyRecordNumber;
@@ -233,13 +234,13 @@ public class homeRightFragment extends Fragment {
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.fragment_home_right, container, false);
 
-
         medals_display_init();
 
         setImage();
         setMyDataFromDB(myData);
         updateMedals();
 
+        helpButtonPersonal = (ImageButton) layout.findViewById(R.id.helpButtonPersonal);
         CardView personalInfo = (CardView) layout.findViewById(R.id.personalInfo);
         CardView badgesInfo = (CardView) layout.findViewById(R.id.badgesInfo);
         final LinearLayout competitionInfo = (LinearLayout) layout.findViewById(R.id.competitionInfo);
@@ -261,13 +262,29 @@ public class homeRightFragment extends Fragment {
             }
         });
 
+        helpButtonPersonal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new MaterialStyledDialog.Builder(getContext())
+                        .setDescription(getString(R.string.badge_help_personal_dialog_desc))
+                        .setStyle(Style.HEADER_WITH_ICON)
+//                        .setIcon(R.drawable.medal_gold_record_a)
+                        .withDialogAnimation(true)
+                        .withDarkerOverlay(true)
+                        .withIconAnimation(false)
+                        .setCancelable(true)
+                        .setPositiveText(R.string.okButton)
+                        .show();
+            }
+        });
+
         helpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new MaterialStyledDialog.Builder(getContext())
                         .setTitle(getString(R.string.badge_help_dialog_title))
                         .setDescription(getString(R.string.badge_help_dialog_desc))
-                        .setStyle(Style.HEADER_WITH_ICON)
+                        //.setStyle(Style.HEADER_WITH_TITLE)
 //                        .setIcon(R.drawable.medal_gold_record_a)
                         .withDialogAnimation(true)
                         .withDarkerOverlay(true)
@@ -355,7 +372,6 @@ public class homeRightFragment extends Fragment {
             advancedBadge.setImageResource(R.drawable.medal_gold_advanced);
             advancedBadgesText.setText(countAdvanced+"/21");
         }
-
     }
 
     private void setImage() {
@@ -498,7 +514,7 @@ public class homeRightFragment extends Fragment {
 
         DB_Read rdb = new DB_Read(getContext());
         ArrayList<Integer> infoToday = rdb.getPersonalInfo(0);
-
+        UserInfo userInfo = rdb.MyData_Read();
         rdb.close();
         if (infoToday.size() != 0) {
 
@@ -507,16 +523,23 @@ public class homeRightFragment extends Fragment {
             int hyposToday = infoToday.get(2);
             int hypersToday = infoToday.get(3);
 
-            System.out.println("Valores Hoje: "+averageToday+" "+variabiToday+" "+hyposToday+" "+hypersToday);
-
             averageText.setText(String.valueOf(averageToday));
             variabilityText.setText(String.valueOf(variabiToday));
 
             // painting text given the quality of the values
+            int hypo = userInfo.getLowerRange();
+            int hyper = userInfo.getHigherRange();
             // average values
-            if (averageToday <= 60 || averageToday >= 190) averageText.setTextColor(getResources().getColor(R.color.red));
-            else if ((averageToday > 60 && averageToday < 80) || (averageToday > 170 && averageToday < 190)) averageText.setTextColor(getResources().getColor(R.color.orange));
-            else averageText.setTextColor(getResources().getColor(R.color.green));
+            if (averageToday < hypo || averageToday > hyper) {
+                averageText.setTextColor(getResources().getColor(R.color.red));
+            } else if ((averageToday >= hypo && averageToday < hypo+20) || (averageToday > hyper-20 && averageToday <= hyper)) {
+                averageText.setTextColor(getResources().getColor(R.color.orange));
+            } else {
+                averageText.setTextColor(getResources().getColor(R.color.green));
+            }
+            //if (averageToday <= 60 || averageToday >= 190) averageText.setTextColor(getResources().getColor(R.color.red));
+            //else if ((averageToday > 60 && averageToday < 80) || (averageToday > 170 && averageToday < 190)) averageText.setTextColor(getResources().getColor(R.color.orange));
+            //else averageText.setTextColor(getResources().getColor(R.color.green));
 
             // variability values
             if (variabiToday > 40) variabilityText.setTextColor(getResources().getColor(R.color.red));
@@ -543,7 +566,7 @@ public class homeRightFragment extends Fragment {
         DB_Read rdb = new DB_Read(getContext());
         while (inStreak) {
             nRecords = rdb.getGlyRecordsNumberByDay(day);
-            if (day == 0) { //get current day number of gly records
+            if (day == 0) { //get current day number of gly recordsD
 
                 // if the user reach the goal
                 if (nRecords >= recordGoal) {
@@ -552,9 +575,9 @@ public class homeRightFragment extends Fragment {
                 } else {
                     leftDaysMessage.setVisibility(View.VISIBLE);
                     congratsMessage.setVisibility(View.GONE);
-                    records_left.setText((recordGoal - nRecords) + " " + getResources().getQuantityString(R.plurals.numberOfRecords, recordGoal - nRecords));
+                    records_left.setText((recordGoal - nRecords) + " " + getResources().getQuantityString(R.plurals.numberOfGlyc, recordGoal - nRecords));
                 }
-                dailyRecordNumber.setText(String.valueOf(nRecords));
+                dailyRecordNumber.setText(String.valueOf(nRecords)+" / "+recordGoal);
                 dailyRecordNumber.setTextColor(getResources().getColor(R.color.green));
                 day++;
             } else if (nRecords >= recordGoal) { // get the streak based on the previous days

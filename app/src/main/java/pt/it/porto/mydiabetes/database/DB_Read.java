@@ -2248,7 +2248,7 @@ public class DB_Read {
 		String now = DateUtils.getFormattedDate(Calendar.getInstance());
 		LinkedList<BadgeRec> non_daily = Badges_GetAll_NONDAILY();
 		LinkedList<BadgeRec> current_daily = getAllDailyBadgesByDate(now);
-
+		System.out.println("BADGES_GEALL: "+non_daily);
 		non_daily.addAll(current_daily);
 		return non_daily;
 
@@ -2999,5 +2999,52 @@ public class DB_Read {
 		}
 		cursor.moveToFirst();
 		return cursor.getInt(0);
+	}
+
+	public ArrayList<Integer> getXDaysGlycAverageAndVariability(int days) {
+		ArrayList<Integer> averageAndVariability = new ArrayList<>();
+		// validate if every day on "days" range has at least 3 blood glucose records
+		for (int i=1; i<=days; i++) {
+			if (getGlyRecordsNumberByDay(i) >= 1) {
+				System.out.println("Regs: "+getGlyRecordsNumberByDay(i));
+			} else {
+				averageAndVariability.add(-1);
+				averageAndVariability.add(-1);
+				return averageAndVariability;
+			}
+		}
+
+		Cursor cursor = myDB.rawQuery("SELECT average.a, AVG((val.Value - average.a) * (val.Value - average.a)) as var From Reg_BloodGlucose," +
+				"(SELECT * from Reg_BloodGlucose Where DateTime >= DateTime('now','localtime','start of day','-"+days+" days') AND DateTime < DateTime('now','localtime','start of day')) AS val," +
+				"(SELECT AVG(Value) as a From Reg_BloodGlucose Where DateTime >= DateTime('now','start of day','-"+days+" days') AND DateTime < DateTime('now','localtime','start of day')) AS average", null);
+		cursor.moveToFirst();
+
+		int mean = cursor.getInt(0);
+		int sd = (int) (Math.sqrt(cursor.getDouble(1)));
+		int cv = (int) (sd*100/mean);
+		averageAndVariability.add(mean);
+		averageAndVariability.add(cv);
+		return averageAndVariability;
+	}
+
+	public int getXDaysTimeInRange(int days, int hypo, int hyper) {
+		// validate if every day on "days" range has at least 3 blood glucose records
+		for (int i=1; i<=days; i++) {
+			if (getGlyRecordsNumberByDay(i) >= 3) {
+
+			} else {
+				return -1;
+			}
+		}
+		Cursor cursor = myDB.rawQuery("select a, b from Reg_BloodGlucose," +
+				"(select count(*) as a from Reg_BloodGlucose where Value >= "+hypo+" and Value <= "+hyper+" and DateTime >= DateTime('now','localtime','start of day','-"+days+" days') and DateTime < DateTime('now','localtime','start of day')) as a,"+
+				"(select count(*) as b from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day','-"+days+" days') and DateTime < DateTime('now','localtime','start of day')) as b", null);
+		cursor.moveToFirst();
+
+		if (cursor.getInt(1) > 0) {
+			return (int) ((cursor.getInt(0)/cursor.getInt(1))*100);
+		} else {
+			return -1;
+		}
 	}
 }

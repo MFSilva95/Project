@@ -30,9 +30,20 @@
                     android:id="@+id/day"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:gravity="center_vertical|center_horizontal"
                     android:text="TODAY"
+                    android:paddingLeft="50dp"
                     android:textSize="18sp" />
+
+                <ImageButton
+                    android:id="@+id/helpButtonPersonal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="20dp"
+                    android:src="@drawable/ic_help_24dp"/>
 
             </LinearLayout>
 
@@ -56,7 +67,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="AVERAGE"
+                        android:text="@string/average"
                         android:gravity="center_horizontal"/>
 
                     <LinearLayout
@@ -97,7 +108,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="DERIVATION"
+                        android:text="@string/variability"
                         android:gravity="center_horizontal"/>
 
                     <LinearLayout
@@ -138,7 +149,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="REGISTOS"
+                        android:text="@string/dailyGoal"
                         android:gravity="center_horizontal"/>
 
                     <TextView
@@ -188,7 +199,7 @@
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:textSize="12dp"
-                            android:text="Hoje é um bom dia para fazer o objetivo diario!"/>
+                            android:text="@string/startRecordsMessage"/>
                     </LinearLayout>
                     <!-- When the number of streak is different of 0 -->
                     <LinearLayout
@@ -204,7 +215,7 @@
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:textSize="12dp"
-                            android:text="Está já à "/>
+                            android:text="@string/streakMessage1"/>
                         <TextView
                             android:id="@+id/streak_days"
                             android:layout_width="wrap_content"
@@ -222,7 +233,7 @@
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:textSize="12dp"
-                            android:text=" a realizar o objetivo diáro!"/>
+                            android:text="@string/streakMessage2"/>
                     </LinearLayout>
                     <!-- Days left to complete the daily record is different of 0 -->
                     <LinearLayout
@@ -238,7 +249,7 @@
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:textSize="12dp"
-                            android:text="Efetue mais "/>
+                            android:text="@string/leftDaysMessage1"/>
                         <TextView
                             android:id="@+id/records_left"
                             android:layout_width="wrap_content"
@@ -256,7 +267,7 @@
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:textSize="12dp"
-                            android:text=" para concluir o objetivo de hoje"/>
+                            android:text="@string/leftDaysMessage2"/>
                     </LinearLayout>
                     <!-- No days left until complete the daily goal -->
                     <LinearLayout
@@ -274,7 +285,7 @@
                             android:maxLines="1"
                             android:textSize="15dp"
                             android:textColor="@color/green"
-                            android:text="Parabéns!"/>/>
+                            android:text="@string/congratsMessage1"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -282,7 +293,7 @@
                             android:ellipsize="end"
                             android:maxLines="1"
                             android:textSize="12dp"
-                            android:text=" O desafio diário foi concluído"/>
+                            android:text="@string/congratsMessage2"/>
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

@@ -513,6 +513,9 @@
     <string name="settings_edit_glicemia_targets">Edit Glycaemia Goals</string>
     <string name="new_note">New Note</string>
 
+    <string name="badge_help_personal_dialog_title">Help</string>
+    <string name="badge_help_personal_dialog_desc">Glucose Average - It’s an overall measure of blood sugars over a period of time, in this case, daily\n\nVariability - represents the variability of the glucose values, the blood glucose oscillations that occur throughout the day\n\n\nDaily Goal - You should record at least 6 Glycaemias, daily. If you complete this objective, you will be awarded with 30 points multiplied by your streak value. Streak values are continuous completions of daily goals. You can and should aim to keep your streak to be awarded the maximum number of possible points. The objective streak value caps at the value 7, but can still be maintained.</string>
+
     <string name="badge_help_dialog_title">How to win Badges?</string>
     <string name="badge_help_dialog_desc">To win Badges you must complete the required records for each. The intermediate and advanced levels are unlockable at levels 10 and 30 respectively.
         For each record inserted gain 100 points and 200 per medal. Collect points to level up.</string>
@@ -620,4 +623,47 @@
         </small>
         \n\nAll the uploaded data will be used for academic purposes only!\nThe MyDiabetes team uses this data in order to improve its advising system and further help its users.\n<b>Do you accept the presented terms?</b></string>
     <string name="notification_channel_sync_description">Reminder to send your data to the project manager</string>
+
+
+
+    <string name="average">AVERAGE</string>
+    <string name="variability">VARIABILITY</string>
+    <string name="dailyGoal">DAILY GOAL</string>
+
+    <string name="startRecordsMessage">Today is a good day to make your daily goal!</string>
+    <string name="streakMessage1">You are on a </string>
+    <string name="streakMessage2">&#160; streak accomplishing your daily goal!</string>
+    <string name="leftDaysMessage1"></string>
+    <string name="leftDaysMessage2">&#160; left to complete the daily goal</string>
+    <string name="congratsMessage1">Congratulations!</string>
+    <string name="congratsMessage2">&#160; Your daily goal is completed</string>
+
+    <plurals name="numberOfDays">
+        <item quantity="one">dia</item>
+        <item quantity="other">dias</item>
+    </plurals>
+
+    <plurals name="numberOfRecords">
+        <item quantity="one">registo</item>
+        <item quantity="other">registos</item>
+    </plurals>
+
+    <plurals name="numberOfGlyc">
+        <item quantity="one">glycaemia</item>
+        <item quantity="other">glycaemias</item>
+    </plurals>
+
+    <string name="beginner_single_average">Keep your glyceamia average under 154 (1 week)</string>
+    <string name="medium_single_average">Keep your glyceamia average under 154 (2 weeks)</string>
+    <string name="advanced_single_average">Keep your glyceamia average under 154 (4 weeks)</string>
+
+    <string name="beginner_single_variability">Keep your variability under 36% (1 week)</string>
+    <string name="medium_single_variability">Keep your variability under 36% (2 weeks)</string>
+    <string name="advanced_single_variability">Keep your variability under 36% (4 weeks)</string>
+
+    <string name="beginner_single_timeInRange">Keep your time in range over 65% (1 week)</string>
+    <string name="medium_single_timeInRange">Keep your time in range over 65% (2 weeks)</string>
+    <string name="advanced_single_timeInRange">Keep your time in range over 65% (4 weeks)</string>
+
+
 </resources>

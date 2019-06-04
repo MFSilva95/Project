@@ -90,7 +90,7 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
         HashMap<String, BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective> badgeRow = (HashMap<String, BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective>) getChild(listPosition, expandedListPosition);
         LayoutInflater layoutInflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (listPosition>=2) {
+        if (listPosition>2) {
             convertView = layoutInflater.inflate(R.layout.badge_display_row_advanced, null);
         }else{
             convertView = layoutInflater.inflate(R.layout.badge_display_row, null);
@@ -231,9 +231,9 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
     private boolean isUnlocked(int playerLvl, String diff) {
         switch (diff){
             case "medium":
-                return playerLvl > LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL;
+                return playerLvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL;
             case "advanced":
-                return playerLvl > LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL;
+                return playerLvl >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL;
         }
         return true;
     }

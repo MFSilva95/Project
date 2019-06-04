@@ -25,7 +25,7 @@ import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 
 public class BadgeBoard extends Fragment {
-    public enum BadgeName {photo, export, bp, log, hba1c, cholesterol, weight, disease, exercise}//send_data_badge,
+    public enum BadgeName {photo, export, average, variability, timeInRange, bp, log, hba1c, cholesterol, weight, disease, exercise}//send_data_badge,
     public enum Difficulty {daily, beginner, medium, advanced}
     public enum Marks {single, bronze, silver, gold}
 
@@ -174,6 +174,10 @@ public class BadgeBoard extends Fragment {
     private BadgeGlobalObjective photo_badge = new BadgeGlobalObjective(BadgeName.photo, new Difficulty[]{Difficulty.beginner}, new Marks[]{Marks.single},1,1);
     //private BadgeGlobalObjective send_data_badge = new BadgeGlobalObjective(BadgeName.send_data_badge, 1, 0, true);
 
+    private BadgeGlobalObjective average_badge = new BadgeGlobalObjective(BadgeName.average, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.single}, 1,1);
+    private BadgeGlobalObjective variability_badge = new BadgeGlobalObjective(BadgeName.variability, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.single}, 1,1);
+    private BadgeGlobalObjective timeInRange_badge = new BadgeGlobalObjective(BadgeName.timeInRange, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.single},1,1);
+
     private BadgeGlobalObjective bp_badge = new BadgeGlobalObjective(BadgeName.bp, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.bronze, Marks.silver, Marks.gold},1,1);
     private BadgeGlobalObjective cholesterol_badge = new BadgeGlobalObjective(BadgeName.cholesterol, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.bronze, Marks.silver, Marks.gold},1,1);
     private BadgeGlobalObjective disease_badge = new BadgeGlobalObjective(BadgeName.disease, new Difficulty[]{Difficulty.beginner, Difficulty.medium, Difficulty.advanced}, new Marks[]{Marks.bronze, Marks.silver, Marks.gold},1,1);
@@ -201,6 +205,10 @@ public class BadgeBoard extends Fragment {
 
         myDiabetesMultiObjectives.add(export_badge);
         myDiabetesMultiObjectives.add(photo_badge);
+
+        myDiabetesMultiObjectives.add(average_badge);
+        myDiabetesMultiObjectives.add(variability_badge);
+        myDiabetesMultiObjectives.add(timeInRange_badge);
 
         myDiabetesMultiObjectives.add(bp_badge);
         myDiabetesMultiObjectives.add(cholesterol_badge);
@@ -242,6 +250,8 @@ public class BadgeBoard extends Fragment {
     public void unlock_medals(LinkedList<BadgeRec> unlockedBadgeList){
         for(BadgeRec badge:unlockedBadgeList){
             //String TAG = "cenas";
+            System.out.println("Unlock_medals:"+badge.getType()+" "+badge.getName()+" "+badge.getMedal());
+            System.out.println("AllMedals: "+allMedals);
             //Log.i(TAG, "unlock_medals: "+badge.getType());
             //Log.i(TAG, "unlock_medals: "+badge.getName());
             //Log.i(TAG, "unlock_medals: "+badge.getMedal());
@@ -263,6 +273,7 @@ public class BadgeBoard extends Fragment {
             DB_Read read = new DB_Read(container.getContext());
             lvl = LevelsPointsUtils.getLevel(container.getContext(), read);
             badgeList = read.Badges_GetAll();
+            System.out.println("BADGELIST: "+badgeList);
             read.close();
             if(badgeList!=null){
                 unlock_medals(badgeList);

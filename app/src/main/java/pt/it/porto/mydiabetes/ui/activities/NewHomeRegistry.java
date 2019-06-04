@@ -407,7 +407,7 @@ public class NewHomeRegistry extends BaseActivity{
     private void update_record () throws Exception{
 
         spinner = findViewById(R.id.tag_spinner);
-        int idTag = (spinner.getSelectedItemPosition());
+        int idTag = (spinner.getSelectedItemPosition()+1);
 
         DB_Read rdb = new DB_Read(this);
         int idUser = rdb.getUserId();
@@ -536,6 +536,8 @@ public class NewHomeRegistry extends BaseActivity{
 
 
             }catch (Exception e){
+                rdb.close();
+                reg.close();
                 throw e;
             }
         }
