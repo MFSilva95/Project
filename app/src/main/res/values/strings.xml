@@ -160,7 +160,7 @@
 
     <string name="information_about_using">Esta aplicação está em desenvolvimento e para a usar deve ter assinado o Consentimento Informado e ter sido informado sobre a metodologia do estudo.</string>
     <string name="information_about_developers">Aplicação desenvolvida por Ana Azevedo, André Diegues, Artur Ferreira, Diogo Machado, Eduardo Soares, João Graça, João Maia, José Ornelas, Pedro Cunha, Ricardo Parra.</string>
-    <string name="information_about_libraries">Esta aplicação utiliza as bibliotecas AAkira/ExpandableLayout, e Pierry/SimpleToast.</string>
+    <string name="information_about_libraries">Esta aplicação utiliza as bibliotecas AAkira/ExpandableLayout, e Pierry///SimpleToast.</string>
     <string name="information_about_food_db_info">A informação contida na base de dados dos alimentos inserida neste sistema foi extraida da Plataforma Portuguesa de Informação Alimentar (PortFIR)</string>
     <string name="information_about_version">Versão </string>
     <string name="information_about_contact" translatable="false">mydiabetes@dcc.fc.up.pt\n\n https://mydiabetes.dcc.fc.up.pt/</string>
@@ -408,14 +408,16 @@
     <string name="advanced">Avançado</string>
 
 
+    <string name="backupBadgeWon">Acabou de ganhar a medalha da Cópia de Segurança</string>
     <string name="create_backup">Criar Cópia de Segurança</string>
 
-
     <string name="beginner_single_export">Criar Cópia de Segurança</string>
+    <string name="photoBadgeWon">Acabou de ganhar a medalha da Foto</string>
     <string name="beginner_single_photo">Adicionar Foto</string>
+    <string name="datasendBadgeWon">Acabou de ganhar a medalha de Enviar Informação</string>
     <string name="beginner_single_send_data_badge">Enviar Informação</string>
 
-
+    <string name="logBadgeWon">Ganhou uma medalha de Registos no LogBook</string>
     <string name="beginner_bronze_log">Adicionar 10 Registos no LogBook</string>
     <string name="beginner_silver_log">Adicionar 20 Registos no LogBook</string>
     <string name="beginner_gold_log">Adicionar 30 Registos no LogBook</string>
@@ -426,6 +428,7 @@
     <string name="advanced_silver_log">Adicionar 250 Registos no LogBook</string>
     <string name="advanced_gold_log">Adicionar 300 Registos no LogBook</string>
 
+    <string name="exerciseBadgeWon">Ganhou uma medalha de Registos de Exercícios</string>
     <string name="beginner_bronze_exercise">Adicionar 3 Registos de Exercício</string>
     <string name="beginner_silver_exercise">Adicionar 10 Registos de Exercício</string>
     <string name="beginner_gold_exercise">Adicionar 20 Registos de Exercício</string>
@@ -436,6 +439,7 @@
     <string name="advanced_silver_exercise">Adicionar 120 Registos de Exercício</string>
     <string name="advanced_gold_exercise">Adicionar 150 Registos de Exercício</string>
 
+    <string name="diseaseBadgeWon">Ganhou uma medalha de Registos de Doenças</string>
     <string name="beginner_bronze_disease">Adicionar 1 Registo de Doença</string>
     <string name="beginner_silver_disease">Adicionar 2 Registos de Doença</string>
     <string name="beginner_gold_disease">Adicionar 3 Registos de Doença</string>
@@ -446,6 +450,7 @@
     <string name="advanced_silver_disease">Adicionar 8 Registos de Doença</string>
     <string name="advanced_gold_disease">Adicionar 9 Registos de Doença</string>
 
+    <string name="weightBadgeWon">Ganhou uma medalha de Registos de Peso</string>
     <string name="beginner_bronze_weight">Adicionar 3 Registos de Peso</string>
     <string name="beginner_silver_weight">Adicionar 10 Registos de Peso</string>
     <string name="beginner_gold_weight">Adicionar 20 Registos de Peso</string>
@@ -456,6 +461,7 @@
     <string name="advanced_silver_weight">Adicionar 120 Registos de Peso</string>
     <string name="advanced_gold_weight">Adicionar 150 Registos de Peso</string>
 
+    <string name="bpBadgeWon">Ganhou uma medalha de Registos de P.A</string>
     <string name="beginner_bronze_bp">Adicionar 1 Registo de P.A.</string>
     <string name="beginner_silver_bp">Adicionar 3 Registos de P.A.</string>
     <string name="beginner_gold_bp">Adicionar 5 Registos de P.A.</string>
@@ -466,6 +472,7 @@
     <string name="advanced_silver_bp">Adicionar 50 Registos de P.A.</string>
     <string name="advanced_gold_bp">Adicionar 60 Registos de P.A.</string>
 
+    <string name="cholesterolBadgeWon">Ganhou uma medalha de Registos de Colesterol</string>
     <string name="beginner_bronze_cholesterol">Adicionar 1 Registo de Colesterol</string>
     <string name="beginner_silver_cholesterol">Adicionar 2 Registos de Colesterol</string>
     <string name="beginner_gold_cholesterol">Adicionar 3 Registos de Colesterol</string>
@@ -476,6 +483,7 @@
     <string name="advanced_silver_cholesterol">Adicionar 8 Registos de Colesterol</string>
     <string name="advanced_gold_cholesterol">Adicionar 9 Registos de Colesterol</string>
 
+    <string name="hba1cBadgeWon">Ganhou uma medalha de Registos de HbA1c</string>
     <string name="beginner_bronze_hba1c">Adicionar 1 Registo de HbA1c</string>
     <string name="beginner_silver_hba1c">Adicionar 2 Registos de HbA1c</string>
     <string name="beginner_gold_hba1c">Adicionar 3 Registos de HbA1c</string>
@@ -486,7 +494,7 @@
     <string name="advanced_silver_hba1c">Adicionar 8 Registos de HbA1c</string>
     <string name="advanced_gold_hba1c">Adicionar 9 Registos de HbA1c</string>
 
-
+    <string name="dailyBadgeWon">Ganhou uma medalha de Registos Diários</string>
     <string name="daily_bronze_log">Adicionar 5 Registos Diários</string>
     <string name="daily_silver_log">Adicionar 10 Registos Diários</string>
     <string name="daily_gold_log">Adicionar 15 Registos Diários</string>
@@ -612,7 +620,7 @@
     <string name="dailyGoal">OBJETIVO DIÁRIO</string>
 
     <string name="startRecordsMessage">Hoje é um bom dia para fazer o objetivo diário!</string>
-    <string name="streakMessage1">Está numa streak de </string>
+    <string name="streakMessage1">Está numa streak de &#160;</string>
     <string name="streakMessage2">&#160; a realizar o objetivo diário!</string>
     <string name="leftDaysMessage1">Registe mais </string>
     <string name="leftDaysMessage2">&#160; para concluir o objetivo de hoje</string>
@@ -624,29 +632,15 @@
         <item quantity="other">dias</item>
     </plurals>
 
-    <plurals name="numberOfRecords">
-        <item quantity="one">registo</item>
-        <item quantity="other">registos</item>
-    </plurals>
-
     <plurals name="numberOfGlyc">
         <item quantity="one">glicemia</item>
         <item quantity="other">glicemias</item>
     </plurals>
 
-    <string name="beginner_single_average">Mantém a média glicémica abaixo de 154 (1 semana)</string>
-    <string name="medium_single_average">Mantém a média glicémica abaixo de 154 (2 semana)</string>
-    <string name="advanced_single_average">Mantém a média glicémica abaixo de 154 (4 semana)</string>
+    <string name="competitionTitleShow">Mostrar estatísticas comunidade</string>
+    <string name="competitionTitleHide">Esconder estatísticas comunidade</string>
 
-    <string name="beginner_single_variability">Mantém a variabilide abaixo de 36% (1 semana)</string>
-    <string name="medium_single_variability">Mantém a variabilide abaixo de 36% (2 semana)</string>
-    <string name="advanced_single_variability">Mantém a variabilide abaixo de 36% (4 semana)</string>
-
-    <string name="beginner_single_timeInRange">Mantém o time in range acima de 65% (1 semana)</string>
-    <string name="medium_single_timeInRange">Mantém o time in range acima de 65% (2 semana)</string>
-    <string name="advanced_single_timeInRange">Mantém o time in range acima de 65% (4 semana)</string>
-
-    <!-- Tentativa -->
+    <string name="healthBadgeWon">Ganhou uma medalha de Saúde</string>
     <string name="beginner_bronze_health">Mantém a média glicémica abaixo de 154 (1 semana)</string>
     <string name="medium_bronze_health">Mantém a média glicémica abaixo de 154 (2 semana)</string>
     <string name="advanced_bronze_health">Mantém a média glicémica abaixo de 154 (4 semana)</string>

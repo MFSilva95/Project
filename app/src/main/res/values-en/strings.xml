@@ -156,7 +156,7 @@
     <string name="information_about_using">The application is under development and for its use you should have signed the informed consent and have been informed about the methodology of the study.</string>
     <string name="information_about_developers">Developed by Ana Azevedo, André Diegues, Artur Ferreira, Diogo Machado, Eduardo Soares, João Graça, João Maia, José Ornelas, Pedro Cunha, Ricardo Parra.</string>
     <string name="information_about_food_db_info">The information contained in the food database is based on the Portuguese Food Information Platform (PortFIR)</string>
-    <string name="information_about_libraries">This application uses the AAkira/ExpandableLayout and Pierry/SimpleToast library.</string>
+    <string name="information_about_libraries">This application uses the AAkira/ExpandableLayout and Pierry///SimpleToast library.</string>
     <string name="information_about_version">Version </string>
 
 
@@ -399,12 +399,16 @@
     <string name="advanced">Advanced</string>
 
 
+    <string name="backupBadgeWon">Backup badge won</string>
     <string name="create_backup">Create Backup</string>
 
     <string name="beginner_single_export">Create Backup</string>
+    <string name="photoBadgeWon">Photo badge won</string>
     <string name="beginner_single_photo">Add Photo</string>
+    <string name="datasendBadgeWon">Send Data badge won</string>
     <string name="beginner_single_send_data_badge">Send Data</string>
 
+    <string name="logBadgeWon">Loogbook Entries badge won</string>
     <string name="beginner_bronze_log">Add 10 Logbook Entries</string>
     <string name="beginner_silver_log">Add 20 Logbook Entries</string>
     <string name="beginner_gold_log">Add 30 Logbook Entries</string>
@@ -415,6 +419,7 @@
     <string name="advanced_silver_log">Add 250 Logbook Entries</string>
     <string name="advanced_gold_log">Add 300 Logbook Entries</string>
 
+    <string name="exerciseBadgeWon">Exercise Records badge won</string>
     <string name="beginner_bronze_exercise">Add 3 Exercise Records</string>
     <string name="beginner_silver_exercise">Add 10 Exercise Records</string>
     <string name="beginner_gold_exercise">Add 20 Exercise Records</string>
@@ -425,6 +430,7 @@
     <string name="advanced_silver_exercise">Add 120 Exercise Records</string>
     <string name="advanced_gold_exercise">Add 150 Exercise Records</string>
 
+    <string name="diseaseBadgeWon">Disease Records badge won</string>
     <string name="beginner_bronze_disease">Add 1 Disease Record</string>
     <string name="beginner_silver_disease">Add 2 Disease Records</string>
     <string name="beginner_gold_disease">Add 3 Disease Records</string>
@@ -435,6 +441,7 @@
     <string name="advanced_silver_disease">Add 8 Disease Records</string>
     <string name="advanced_gold_disease">Add 9 Disease Records</string>
 
+    <string name="weightBadgeWon">Weight Records badge won</string>
     <string name="beginner_bronze_weight">Add 3 Weight Records</string>
     <string name="beginner_silver_weight">Add 10 Weight Records</string>
     <string name="beginner_gold_weight">Add 20 Weight Records</string>
@@ -445,6 +452,7 @@
     <string name="advanced_silver_weight">Add 120 Weight Records</string>
     <string name="advanced_gold_weight">Add 150 Weight Records</string>
 
+    <string name="bpBadgeWon">Blood Pressure Records badge won</string>
     <string name="beginner_bronze_bp">Add 1 B.P. Record</string>
     <string name="beginner_silver_bp">Add 3 B.P. Records</string>
     <string name="beginner_gold_bp">Add 5 B.P. Records</string>
@@ -455,6 +463,7 @@
     <string name="advanced_silver_bp">Add 50 B.P. Records</string>
     <string name="advanced_gold_bp">Add 60 B.P. Records</string>
 
+    <string name="cholesterolBadgeWon">Cholesterol Records badge won</string>
     <string name="beginner_bronze_cholesterol">Add 1 Cholesterol Record</string>
     <string name="beginner_silver_cholesterol">Add 2 Cholesterol Records</string>
     <string name="beginner_gold_cholesterol">Add 3 Cholesterol Records</string>
@@ -465,6 +474,7 @@
     <string name="advanced_silver_cholesterol">Add 8 Cholesterol Records</string>
     <string name="advanced_gold_cholesterol">Add 9 Cholesterol Records</string>
 
+    <string name="hba1cBadgeWon">HbA1c Records badge won</string>
     <string name="beginner_bronze_hba1c">Add 1 HbA1c Record</string>
     <string name="beginner_silver_hba1c">Add 2 HbA1c Records</string>
     <string name="beginner_gold_hba1c">Add 3 HbA1c Records</string>
@@ -475,7 +485,7 @@
     <string name="advanced_silver_hba1c">Add 8 HbA1c Records</string>
     <string name="advanced_gold_hba1c">Add 9 HbA1c Records</string>
 
-
+    <string name="dailyBadgeWon">Daily Records badge won</string>
     <string name="daily_bronze_log">Add 5 Daily Records</string>
     <string name="daily_silver_log">Add 10 Daily Records</string>
     <string name="daily_gold_log">Add 15 Daily Records</string>
@@ -631,7 +641,7 @@
     <string name="dailyGoal">DAILY GOAL</string>
 
     <string name="startRecordsMessage">Today is a good day to make your daily goal!</string>
-    <string name="streakMessage1">You are on a </string>
+    <string name="streakMessage1">You are on a &#160;</string>
     <string name="streakMessage2">&#160; streak accomplishing your daily goal!</string>
     <string name="leftDaysMessage1"></string>
     <string name="leftDaysMessage2">&#160; left to complete the daily goal</string>
@@ -639,13 +649,8 @@
     <string name="congratsMessage2">&#160; Your daily goal is completed</string>
 
     <plurals name="numberOfDays">
-        <item quantity="one">dia</item>
-        <item quantity="other">dias</item>
-    </plurals>
-
-    <plurals name="numberOfRecords">
-        <item quantity="one">registo</item>
-        <item quantity="other">registos</item>
+        <item quantity="one">day</item>
+        <item quantity="other">days</item>
     </plurals>
 
     <plurals name="numberOfGlyc">
@@ -653,20 +658,10 @@
         <item quantity="other">glycaemias</item>
     </plurals>
 
-    <string name="beginner_single_average">Keep your glyceamia average under 154 (1 week)</string>
-    <string name="medium_single_average">Keep your glyceamia average under 154 (2 weeks)</string>
-    <string name="advanced_single_average">Keep your glyceamia average under 154 (4 weeks)</string>
+    <string name="competitionTitleShow">Show community stats</string>
+    <string name="competitionTitleHide">Hide community stats</string>
 
-    <string name="beginner_single_variability">Keep your variability under 36% (1 week)</string>
-    <string name="medium_single_variability">Keep your variability under 36% (2 weeks)</string>
-    <string name="advanced_single_variability">Keep your variability under 36% (4 weeks)</string>
-
-    <string name="beginner_single_timeInRange">Keep your time in range over 65% (1 week)</string>
-    <string name="medium_single_timeInRange">Keep your time in range over 65% (2 weeks)</string>
-    <string name="advanced_single_timeInRange">Keep your time in range over 65% (4 weeks)</string>
-
-
-    <!-- Tentativa -->
+    <string name="healthBadgeWon">Health goal badge won</string>
     <string name="beginner_bronze_health">Keep your glyceamia average under 154 (1 week)</string>
     <string name="medium_bronze_health">Keep your glyceamia average under 154 (2 weeks)</string>
     <string name="advanced_bronze_health">Keep your glyceamia average under 154 (4 weeks)</string>
@@ -678,6 +673,8 @@
     <string name="beginner_gold_health">Keep your time in range over 65% (1 week)</string>
     <string name="medium_gold_health">Keep your time in range over 65% (2 weeks)</string>
     <string name="advanced_gold_health">Keep your time in range over 65% (4 weeks)</string>
+
+
 
 
 </resources>

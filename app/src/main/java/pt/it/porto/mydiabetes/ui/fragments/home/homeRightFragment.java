@@ -1,30 +1,20 @@
 package pt.it.porto.mydiabetes.ui.fragments.home;
 
 import android.Manifest;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.ImageDecoder;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,51 +22,35 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
-import com.esafirm.imagepicker.features.ImagePicker;
-import com.esafirm.imagepicker.features.ImagePickerActivity;
-import com.esafirm.imagepicker.features.ReturnMode;
+import com.cdev.achievementview.AchievementView;
 import com.esafirm.imagepicker.model.Image;
 import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
 import com.github.javiersantos.materialstyleddialogs.enums.Style;
-import com.github.mikephil.charting.utils.ColorTemplate;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.IntStream;
 
 import info.abdolahi.CircularMusicProgressBar;
-import lecho.lib.hellocharts.model.Line;
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.activities.Badges;
-import pt.it.porto.mydiabetes.ui.activities.ChartSection;
 import pt.it.porto.mydiabetes.ui.activities.MyData;
-import pt.it.porto.mydiabetes.ui.activities.Statistics;
-import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.FileProvider;
-import pt.it.porto.mydiabetes.utils.ImageUtils;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 import static android.app.Activity.RESULT_OK;
@@ -105,12 +79,14 @@ public class homeRightFragment extends Fragment {
     private TextView averageText;
     private TextView variabilityText;
     private TextView dailyRecordNumber;
+    private TextView streakText;
     private TextView streak_days;
     private TextView records_left;
     private LinearLayout startRecordsMessage;
     private LinearLayout streakDaysMessage;
     private LinearLayout leftDaysMessage;
     private LinearLayout congratsMessage;
+    private TextView bestStreak;
 
     private Uri currentImageUri;
 
@@ -124,6 +100,8 @@ public class homeRightFragment extends Fragment {
     //private int countDaily;
     private BadgeRec dailyBadge;
 
+    private AchievementView achievementView;
+
 
     private static final int REQUEST_TAKE_PHOTO = 6;
     private static final int EXTERNAL_STORAGE_PERMISSION_CONSTANT = 7;
@@ -132,6 +110,8 @@ public class homeRightFragment extends Fragment {
 
     private Bitmap bmp;
     private List<Image> images = new ArrayList<>();
+
+    private boolean winBadge = false;
 
     public static pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment newInstance() {
         pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment fragment = new pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment();
@@ -234,6 +214,7 @@ public class homeRightFragment extends Fragment {
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.fragment_home_right, container, false);
 
+
         medals_display_init();
 
         setImage();
@@ -243,6 +224,9 @@ public class homeRightFragment extends Fragment {
         helpButtonPersonal = (ImageButton) layout.findViewById(R.id.helpButtonPersonal);
         CardView personalInfo = (CardView) layout.findViewById(R.id.personalInfo);
         CardView badgesInfo = (CardView) layout.findViewById(R.id.badgesInfo);
+
+        achievementView = layout.findViewById(R.id.achievement_view);
+
         final LinearLayout competitionInfo = (LinearLayout) layout.findViewById(R.id.competitionInfo);
         final Button hideShowCompetition = (Button) layout.findViewById(R.id.hideShowCompetition);
 
@@ -301,11 +285,11 @@ public class homeRightFragment extends Fragment {
                 if (competitionInfo.getVisibility() == View.GONE) {
                     competitionInfo.setVisibility(View.VISIBLE);
                     hideShowCompetition.setBackgroundColor(getResources().getColor(R.color.primary_light));
-                    hideShowCompetition.setText("Minimizar secção competitiva");
+                    hideShowCompetition.setText(getContext().getString(R.string.competitionTitleHide));
                 } else {
                     competitionInfo.setVisibility(View.GONE);
                     hideShowCompetition.setBackgroundColor(getResources().getColor(R.color.white_background));
-                    hideShowCompetition.setText("Mostrar secção competitiva");
+                    hideShowCompetition.setText(getContext().getString(R.string.competitionTitleShow));
                 }
             }
         });
@@ -320,11 +304,14 @@ public class homeRightFragment extends Fragment {
             setProfilePhoto();
 
             DB_Read rdb = new DB_Read(getContext());
-            BadgeUtils.addPhotoBadge(getContext(), rdb);
+            winBadge = BadgeUtils.addPhotoBadge(getContext(), rdb);
             rdb.close();
             updateMedals();
+            if(winBadge){
+                achievementView.show(getContext().getString(R.string.congratsMessage1), getContext().getString(R.string.photoBadgeWon));
+                winBadge = false;
+            }
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -550,6 +537,7 @@ public class homeRightFragment extends Fragment {
     }
 
     public void getStreakValue() {
+        streakText = (TextView) layout.findViewById(R.id.streakText);
         streak_days = (TextView) layout.findViewById(R.id.streak_days);
         records_left = (TextView) layout.findViewById(R.id.records_left);
         dailyRecordNumber = (TextView) layout.findViewById(R.id.dailyRecordNumber);
@@ -557,44 +545,68 @@ public class homeRightFragment extends Fragment {
         congratsMessage = (LinearLayout) layout.findViewById(R.id.congratsMessage);
         startRecordsMessage = (LinearLayout) layout.findViewById(R.id.startRecordsMessage);
         streakDaysMessage = (LinearLayout) layout.findViewById(R.id.streakDaysMessage);
+        bestStreak = (TextView) layout.findViewById(R.id.bestStreak);
 
-        boolean inStreak = true;
-        int recordGoal = 6;
-        int streakDays = 0;
-        int nRecords = 0;
-        int day = 0;
+        int recordGoal = 3;
         DB_Read rdb = new DB_Read(getContext());
-        while (inStreak) {
-            nRecords = rdb.getGlyRecordsNumberByDay(day);
-            if (day == 0) { //get current day number of gly recordsD
 
-                // if the user reach the goal
-                if (nRecords >= recordGoal) {
-                    leftDaysMessage.setVisibility(View.GONE);
-                    congratsMessage.setVisibility(View.VISIBLE);
-                } else {
-                    leftDaysMessage.setVisibility(View.VISIBLE);
-                    congratsMessage.setVisibility(View.GONE);
-                    records_left.setText((recordGoal - nRecords) + " " + getResources().getQuantityString(R.plurals.numberOfGlyc, recordGoal - nRecords));
-                }
-                dailyRecordNumber.setText(String.valueOf(nRecords)+" / "+recordGoal);
-                dailyRecordNumber.setTextColor(getResources().getColor(R.color.green));
-                day++;
-            } else if (nRecords >= recordGoal) { // get the streak based on the previous days
-                streakDays++;
-                day++;
-            } else inStreak = false;
+        System.out.println("current streak: "+rdb.MyData_Read().getCurrentStreak() + " max streak: "+rdb.MyData_Read().getMaxStreak());
+        int todayRecords = rdb.getGlyRecordsNumberByDay(0);
+        int yesterdayRecords = rdb.getGlyRecordsNumberByDay(1);
+        UserInfo myInfo = rdb.MyData_Read();
+        rdb.close();
+
+        Boolean changes = false;
+
+        int streakDays = myInfo.getCurrentStreak();
+        int maxStreak = myInfo.getMaxStreak();
+
+        // reset streak if yesterday didn't complete daily goal
+        if (yesterdayRecords < recordGoal) {
+            streakDays = 0;
+            myInfo.setCurrentStreak(streakDays);
+            changes =true;
         }
 
-        rdb.close();
-        // if there're not days in streak show motivional quote, if there're, write how much
+        // in case of daily goal won
+        if (todayRecords >= recordGoal) {
+            changes = true;
+            leftDaysMessage.setVisibility(View.GONE);
+            congratsMessage.setVisibility(View.VISIBLE);
+            streakDays++;
+            // if current streak is the best streak
+            if (streakDays > maxStreak) {
+                maxStreak = streakDays;
+                myInfo.setMaxStrak(maxStreak);
+            }
+            // update personal data values
+            myInfo.setCurrentStreak(streakDays);
+        } else {
+            leftDaysMessage.setVisibility(View.VISIBLE);
+            congratsMessage.setVisibility(View.GONE);
+            records_left.setText((recordGoal - todayRecords) + " " + getResources().getQuantityString(R.plurals.numberOfGlyc, recordGoal - todayRecords));
+        }
+
+        if(maxStreak>0){
+            bestStreak.setText(maxStreak+" "+getResources().getQuantityString(R.plurals.numberOfDays, maxStreak));
+        }
+
+        if(changes){
+            DB_Write wdb = new DB_Write(getContext());
+            wdb.MyData_Save(myInfo);
+            wdb.close();
+        }
+
         if (streakDays == 0) {
             streakDaysMessage.setVisibility(View.GONE);
             startRecordsMessage.setVisibility(View.VISIBLE);
+            streakText.setVisibility(View.GONE);
         } else {
             startRecordsMessage.setVisibility(View.GONE);
             streakDaysMessage.setVisibility(View.VISIBLE);
             streak_days.setText(streakDays + " " + getResources().getQuantityString(R.plurals.numberOfDays, streakDays));
+            streakText.setVisibility(View.VISIBLE);
+            streakText.setText("x"+streakDays);
         }
     }
 }

@@ -27,6 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.cdev.achievementview.AchievementView;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -56,6 +58,8 @@ public class SettingsImportExport extends BaseActivity {
 
 	public static final String BACKUP_LOCATION = "/MyDiabetes/backup/DB_Diabetes";
 	public static final String PROJECT_MANAGER_EMAIL = "mydiabetes@dcc.fc.up.pt";
+
+	private AchievementView achievementView;
 
 	final private int WEBVIEW = 332;
 
@@ -125,6 +129,8 @@ public class SettingsImportExport extends BaseActivity {
 			restore.setVisibility(View.GONE);
 			//findViewById(R.id.share).setVisibility(View.GONE);
 		}
+
+		achievementView = findViewById(R.id.achievement_view);
 	}
 
 
@@ -287,14 +293,15 @@ public class SettingsImportExport extends BaseActivity {
         if (backup_file != null) {
 			ShowDialogMsg(getString(R.string.dbcopy_success));
 			DB_Read rdb = new DB_Read(v.getContext());
-			BadgeUtils.addExportBadge(getBaseContext(), rdb);
+			boolean winBadge = BadgeUtils.addExportBadge(getBaseContext(), rdb);
+			// send notification in case of badge win
 			rdb.close();
             //just created backup - make restore available
             Button restore = (Button) findViewById(R.id.bt_Restore);
             restore.setEnabled(true);
             //findViewById(R.id.share).setEnabled(true);
             restore.setVisibility(View.VISIBLE);
-
+			if (true) achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.backupBadgeWon));
 		} else {
 			ShowDialogMsg(getString(R.string.error_dbcopy));
 		}

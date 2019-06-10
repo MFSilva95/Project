@@ -32,6 +32,8 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import com.cdev.achievementview.AchievementView;
+
 import java.util.Calendar;
 import java.util.List;
 
@@ -46,7 +48,6 @@ import pt.it.porto.mydiabetes.database.MyDiabetesContract;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.database.Usage;
 import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
-import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.SyncAlarm;
@@ -129,11 +130,6 @@ public class Home extends BaseActivity {
                 }
             }
         }
-
-
-
-
-
 	}
 
     private void setupSyncAlarm() {
@@ -614,11 +610,6 @@ public class Home extends BaseActivity {
     @Override
     protected void onResume()
     {
-        DB_Read db = new DB_Read(this);
-        if(db!=null){
-            BadgeUtils.addHealthBadge(this, db);
-        }
-        db.close();
         super.onResume();
         if(mViewPager!=null){
             if (mViewPager.getCurrentItem()==0) logSave("Home:homeLeftFragment");

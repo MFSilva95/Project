@@ -170,7 +170,7 @@
         tools:layout_editor_absoluteX="312dp"
         tools:layout_editor_absoluteY="116dp"/>
 
-
+    <include layout="@layout/badgewin_notification"/>
 
 
 </android.support.design.widget.CoordinatorLayout>

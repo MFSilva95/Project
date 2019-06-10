@@ -36,11 +36,13 @@ import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
-
 public class BloodPressureDetail extends BaseActivity {
 
 	int idBP = 0;
 	int idNote = 0;
+	public static boolean winBadge = false;
+	public static boolean winDaily = false;
+
 	@Override
 	public String getRegType(){return "BloodPressure";}
 
@@ -258,8 +260,8 @@ public class BloodPressureDetail extends BaseActivity {
 		bp.setIdTag(idTag);
 
 		wdb.BloodPressure_Save(bp);
-		BadgeUtils.addBpBadge(getBaseContext(), rdb);
-		BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
+		winBadge = BadgeUtils.addBpBadge(getBaseContext(), rdb);
+		winDaily = BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
 
 		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "bp",rdb);
 

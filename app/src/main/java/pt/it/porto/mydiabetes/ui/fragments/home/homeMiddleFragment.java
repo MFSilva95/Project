@@ -23,6 +23,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.cdev.achievementview.AchievementView;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -44,6 +46,7 @@ import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
+import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 import pt.it.porto.mydiabetes.widget;
@@ -69,6 +72,8 @@ public class homeMiddleFragment extends Fragment {
 
     private RecyclerView homeRecyclerView;
     private List<HomeElement> logBookList;
+
+    private AchievementView achievementView;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -112,6 +117,8 @@ public class homeMiddleFragment extends Fragment {
         homeRecyclerView = (RecyclerView) layout.findViewById(R.id.HomeListDisplay);
         fab = (FloatingActionButton) layout.findViewById(R.id.fab);
         listEmpty = layout.findViewById(R.id.home_empty);
+
+        achievementView = layout.findViewById(R.id.achievement_view);
 
         setFabClickListeners();
         fillHomeList();
@@ -211,17 +218,45 @@ public class homeMiddleFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(fab.getContext(), NewHomeRegistry.class);
-                //startActivity(intent);
+                ////startActivity(intent);
                 startActivityForResult(intent, WAIT_REGISTER);
+
             }
         });
 
     }
 
-
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getView() != null) {
+            if (isVisibleToUser) {
+                System.out.println("visivel entra aqui");
+                if (true) {
+                    //achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.healthBadgeWon));
+                    //Home.winBadge = false;
+                }
+            }
+        }
+    }
 
     @Override
     public void onResume() {
+        DB_Read db = new DB_Read(getContext());
+        if(db!=null){
+            boolean winHealthBadge = BadgeUtils.addHealthBadge(getContext(), db);
+            if (winHealthBadge) achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.healthBadgeWon));
+            if (NewHomeRegistry.winBadge) {
+                achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.logBadgeWon));
+                NewHomeRegistry.winBadge = false;
+            }
+            if (NewHomeRegistry.winDaily) {
+                achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
+                NewHomeRegistry.winDaily = false;
+            }
+        }
+        db.close();
+
         super.onResume();
         updateHomeList();
     }

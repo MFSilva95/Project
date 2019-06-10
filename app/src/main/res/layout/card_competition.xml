@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white_background"
-        android:text="Minimizar secção competitiva"/>
+        android:text="@string/competitionTitleShow"/>
 
     <LinearLayout
         android:id="@+id/competitionInfo"
@@ -50,7 +50,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="MELHOR PONTUAÇÃO"
+                        android:text="PONTUAÇÃO"
                         android:textColor="@color/comp_titles"
                         android:gravity="center_horizontal"/>
                     <TextView
@@ -82,12 +82,12 @@
                         android:textColor="@color/comp_titles"
                         android:gravity="center_horizontal"/>
                     <TextView
-                        android:id="@+id/variabilityText"
+                        android:id="@+id/bestStreak"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0"
                         android:layout_marginTop="20dp"
-                        android:text="7 dias"
+                        android:text="@string/n_a"
                         android:gravity="center_horizontal"
                         android:textSize="25sp"/>
                     <TextView

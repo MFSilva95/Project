@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.cdev.achievementview.AchievementView;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -21,6 +23,7 @@ import pt.it.porto.mydiabetes.utils.DateUtils;
 public abstract class BaseListRangeActivity extends BaseActivity {
 
 	ListView list;
+	private AchievementView achievementView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public abstract class BaseListRangeActivity extends BaseActivity {
 
 		EditText dateFrom = (EditText) findViewById(R.id.et_DataFrom);
 		EditText dateTo = (EditText) findViewById(R.id.et_DataTo);
+		achievementView = findViewById(R.id.achievement_view);
 		dateFrom.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -120,6 +124,40 @@ public abstract class BaseListRangeActivity extends BaseActivity {
 	@Override
 	public void onResume() {
 		super.onResume();
+		sendBadgeNotification();
 		fillListView(list);
+	}
+
+	public void sendBadgeNotification() {
+		// notification non daily
+		if (ExerciseDetail.winBadge) {
+			achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.exerciseBadgeWon));
+			ExerciseDetail.winBadge = false;
+		}
+		if (DiseaseDetail.winBadge) {
+			achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.diseaseBadgeWon));
+			DiseaseDetail.winBadge = false;
+		}
+		if (BloodPressureDetail.winBadge) {
+			achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.bpBadgeWon));
+			BloodPressureDetail.winBadge = false;
+		}
+		if (CholesterolDetail.winBadge) {
+			achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.cholesterolBadgeWon));
+			CholesterolDetail.winBadge = false;
+		}
+		if (HbA1cDetail.winBadge) {
+			achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.hba1cBadgeWon));
+			HbA1cDetail.winBadge = false;
+		}
+		// notification daily
+		if (ExerciseDetail.winDaily || DiseaseDetail.winDaily || BloodPressureDetail.winDaily || CholesterolDetail.winDaily || HbA1cDetail.winDaily) {
+			achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
+			ExerciseDetail.winDaily = false;
+			DiseaseDetail.winDaily = false;
+			BloodPressureDetail.winDaily = false;
+			CholesterolDetail.winDaily = false;
+			HbA1cDetail.winDaily = false;
+		}
 	}
 }

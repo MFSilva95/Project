@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-android:layout_height="match_parent">
-
-<android.support.design.widget.CoordinatorLayout
-    android:id="@+id/main"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
-
+    android:id="@+id/main">
 
     <com.github.florent37.parallax.ScrollView
         android:layout_width="match_parent"
@@ -52,5 +47,5 @@ android:layout_height="match_parent">
 
     </com.github.florent37.parallax.ScrollView>
 
-</android.support.design.widget.CoordinatorLayout>
-</LinearLayout>
+    <include layout="@layout/badgewin_notification"/>
+</RelativeLayout>

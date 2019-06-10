@@ -173,7 +173,8 @@ public class NewHomeRegistry extends BaseActivity{
 
     private boolean isRecordUpdate = false;
 
-
+    public static boolean winBadge = false;
+    public static boolean winDaily = false;
 
     @Override
     public void finishAfterTransition() {
@@ -670,8 +671,8 @@ public class NewHomeRegistry extends BaseActivity{
         }
 
         Log.i(TAG, "validateInfo_Save: BEGIN");
-        BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
-        BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
+        winBadge = BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
+        winDaily = BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
         LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log", rdb);//bug here
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
         Log.i(TAG, "validateInfo_Save: END");

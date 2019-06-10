@@ -231,9 +231,10 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 
 		File profile_img = new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg");
 		DB_Read read = new DB_Read(getContext());
-		if(profile_img.exists()){
-				BadgeUtils.addPhotoBadge(getContext(), read);
-		}
+		//if(profile_img.exists()){
+		//		BadgeUtils.addPhotoBadge(getContext(), read);
+		//}
+
 
 		storage.initRacioSens(sensR, "Sensitivity_Reg");
 		storage.initRacioSens(carbsR, "Ratio_Reg");

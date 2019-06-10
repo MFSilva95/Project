@@ -3041,6 +3041,7 @@ public class DB_Read {
 				"(select count(*) as b from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day','-"+days+" days') and DateTime < DateTime('now','localtime','start of day')) as b", null);
 		cursor.moveToFirst();
 
+		System.out.println("Parts: "+cursor.getInt(0)+" "+cursor.getInt(1));
 		if (cursor.getInt(1) > 0) {
 			return (int) ((cursor.getInt(0)/cursor.getInt(1))*100);
 		} else {

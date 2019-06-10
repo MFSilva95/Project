@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
+import com.cdev.achievementview.AchievementView;
+
 import java.util.Calendar;
 import java.util.List;
 
@@ -43,6 +45,7 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 	private EditText dateTo;
 
 	public FloatingActionButton fab;
+	private AchievementView achievementView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,8 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 				setEnd();
 			}
 		});
+
+		achievementView = findViewById(R.id.achievement_view);
 
 
 		Bundle extras = getIntent().getExtras();
@@ -193,6 +198,20 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 		super.onResume();
 		setupContent();
 		updateTimeRange();
+		sendBadgeNotification();
+	}
+
+	public void sendBadgeNotification() {
+		// notification non daily
+		if (WeightDetail.winBadge) {
+			achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.weightBadgeWon));
+			WeightDetail.winBadge = false;
+		}
+		// notification daily goal
+		if (WeightDetail.winDaily) {
+			achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
+			WeightDetail.winDaily = false;
+		}
 	}
 
 	private void setEnd() {

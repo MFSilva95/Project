@@ -38,6 +38,9 @@ public class DiseaseDetail extends BaseActivity {
 	int idDisease = 0;
 	int idNote = 0;
 
+	public static boolean winBadge = false;
+	public static boolean winDaily = false;
+
 	@Override
 	public String getRegType(){return "Disease";}
 
@@ -200,8 +203,8 @@ public class DiseaseDetail extends BaseActivity {
 		dis.setEndDate((!dataTo.getText().toString().equals("")) ? dataTo.getText().toString() : null);
 		reg.DiseaseReg_Save(dis);
 
-		BadgeUtils.addDiseaseBadge(getBaseContext(), rdb);
-		BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
+		winBadge = BadgeUtils.addDiseaseBadge(getBaseContext(), rdb);
+		winDaily = BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
 		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "disease", rdb);
 
 		reg.close();

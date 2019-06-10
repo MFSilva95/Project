@@ -36,6 +36,9 @@ public class WeightDetail extends BaseActivity {
 	int idWeight = 0;
 	int idNote = 0;
 
+	public static boolean winBadge = false;
+	public static boolean winDaily = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -165,8 +168,8 @@ public class WeightDetail extends BaseActivity {
 		weight.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 		wdb.Weight_Save(weight);
 
-		BadgeUtils.addWeightBadge(getBaseContext(), rdb);
-		BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
+		winBadge = BadgeUtils.addWeightBadge(getBaseContext(), rdb);
+		winDaily = BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
 		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "weight", rdb);
 
 		wdb.close();

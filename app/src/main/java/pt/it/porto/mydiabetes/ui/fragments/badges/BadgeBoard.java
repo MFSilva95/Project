@@ -105,10 +105,11 @@ public class BadgeBoard extends Fragment {
                 }else {
                     if (name.toString() == "health") {
                         this.myBackgroundPath = "medal_gold_"+diff.toString();
+                        this.myIconPath = "photo";
                     } else {
                         this.myBackgroundPath = "medal_" + mark.toString() + "_" + diff.toString();
+                        this.myIconPath = name.toString();
                     }
-                    this.myIconPath = "photo";
                     this.myStringPath = diff.toString()+"_"+mark.toString()+"_"+name.toString();
                 }
             }

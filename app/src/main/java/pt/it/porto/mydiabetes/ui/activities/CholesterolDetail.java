@@ -36,6 +36,9 @@ public class CholesterolDetail extends BaseActivity {
 	int idCho = 0;
 	int idNote = 0;
 
+	public static boolean winBadge = false;
+	public static boolean winDaily = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -169,8 +172,8 @@ public class CholesterolDetail extends BaseActivity {
 		cho.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 		wdb.Cholesterol_Save(cho);
 
-		BadgeUtils.addCholesterolBadge(getBaseContext(), rdb);
-        BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
+		winBadge = BadgeUtils.addCholesterolBadge(getBaseContext(), rdb);
+		winDaily = BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
 		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "cholesterol", rdb);
 
 		wdb.close();
