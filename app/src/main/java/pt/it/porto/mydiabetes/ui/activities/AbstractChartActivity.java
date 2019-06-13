@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
@@ -46,6 +47,7 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 
 	public FloatingActionButton fab;
 	private AchievementView achievementView;
+	private AchievementView achievementViewSecondary;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +83,7 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 		});
 
 		achievementView = findViewById(R.id.achievement_view);
-
+		achievementViewSecondary = findViewById(R.id.achievement_view_secondary);
 
 		Bundle extras = getIntent().getExtras();
 		if (extras != null) {
@@ -202,14 +204,22 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 	}
 
 	public void sendBadgeNotification() {
+		boolean normalBadgeWin = false;
 		// notification non daily
 		if (WeightDetail.winBadge) {
 			achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.weightBadgeWon));
 			WeightDetail.winBadge = false;
+			normalBadgeWin = true;
 		}
 		// notification daily goal
 		if (WeightDetail.winDaily) {
-			achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
+			if (normalBadgeWin == true) {
+				achievementViewSecondary.setVisibility(View.VISIBLE);
+				achievementViewSecondary.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
+			} else {
+				achievementViewSecondary.setVisibility(View.GONE);
+				achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
+			}
 			WeightDetail.winDaily = false;
 		}
 	}

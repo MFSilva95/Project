@@ -72,31 +72,6 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		return builder.create();
 	}
 
-	public void updateDialog(){
-
-
-		currentShowingDialog.dismiss();
-//		Dialog userDataPopUp = getUserDataPopUp(context, -1, -1);
-//		userDataPopUp.show();
-
-//		TextView user = ((TextView) userDataPopUp.findViewById(R.id.username));
-//		if(user!=null){
-//			user.setText(username);
-//		}
-//		TextView pass = ((TextView) userDataPopUp.findViewById(R.id.password));
-//		if(pass!=null){
-//			pass.setText(password);
-//		}
-//
-//		currentShowingDialog = userDataPopUp;
-//		currentShowingDialog.setCancelable(true);
-
-		//password = Preferences.getPassword(context);
-		//username = Preferences.getUsername(context);
-
-		//((EditText) ((Activity) context).findViewById(R.id.username)).setText(username);
-		//((EditText) ((Activity) context).findViewById(R.id.password)).setText(password);
-	}
 
 	/**
 	 * LOGIN ONE
@@ -128,15 +103,7 @@ public class FeatureWebSyncDialog extends DialogFragment {
 						   @Override
 						   protected void onPostExecute(Void aVoid) {
 							   super.onPostExecute(aVoid);
-							   try {
-								   testCredentials(FeatureWebSyncDialog.this.context).show();
-							   } catch (NoSuchAlgorithmException e) {
-								   e.printStackTrace();
-							   } catch (KeyStoreException e) {
-								   e.printStackTrace();
-							   } catch (KeyManagementException e) {
-								   e.printStackTrace();
-							   }
+							   testCredentials(FeatureWebSyncDialog.this.context).show();
 						   }
 					   };
 					   saveTask.execute();
@@ -163,7 +130,130 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		return dialog;
 	}
 
-	public Dialog testCredentials(Context context) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
+
+
+	public Dialog getRankPopUp(int okButtonMessage, int cancelButtonMessage) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		password = Preferences.getPassword(context);
+		username = Preferences.getUsername(context);
+
+
+		LayoutInflater inflater = LayoutInflater.from(context);
+		builder.setView(inflater.inflate(R.layout.dialog_account_input, null))
+				.setPositiveButton(okButtonMessage > 0 ? okButtonMessage : android.R.string.ok, new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						username = ((EditText) ((Dialog) dialog).findViewById(R.id.username)).getText().toString();
+						password = ((EditText) ((Dialog) dialog).findViewById(R.id.password)).getText().toString();
+
+						AsyncTask<Void, Void, Void> saveTask = new AsyncTask<Void, Void, Void>() {
+							@Override
+							protected Void doInBackground(Void... params) {
+								pt.it.porto.mydiabetes.database.Preferences.saveCloudSyncCredentials(context, username, password);
+								return null;
+							}
+
+							@Override
+							protected void onPostExecute(Void aVoid) {
+								super.onPostExecute(aVoid);
+
+
+								try {
+									ServerSync.getInstance(context).testCredentials(new ServerSync.ServerSyncListener() {
+										@Override
+										public void onSyncSuccessful() {
+											currentShowingDialog.dismiss();
+											try {
+												ServerSync.getInstance(context).syncRank(new ServerSync.ServerSyncListener() {
+													@Override
+													public void onSyncSuccessful() {
+														currentShowingDialog.dismiss();
+													}
+
+													@Override
+													public void onSyncUnSuccessful() {
+														((Activity) FeatureWebSyncDialog.this.context).runOnUiThread(new Runnable() {
+															@Override
+															public void run() {
+																currentShowingDialog.dismiss();
+																showLoginError();
+															}
+														});
+													}
+
+													@Override
+													public void noNetworkAvailable() {
+														((Activity) FeatureWebSyncDialog.this.context).runOnUiThread(new Runnable() {
+															@Override
+															public void run() {
+																currentShowingDialog.dismiss();
+																showNoNetwork();
+															}
+														});
+													}
+												});
+											} catch (Exception e) {
+												showError();
+											}
+										}
+
+										@Override
+										public void onSyncUnSuccessful() {
+											((Activity) FeatureWebSyncDialog.this.context).runOnUiThread(new Runnable() {
+												@Override
+												public void run() {
+													currentShowingDialog.dismiss();
+													showLoginError();
+												}
+											});
+										}
+
+										@Override
+										public void noNetworkAvailable() {
+											((Activity) FeatureWebSyncDialog.this.context).runOnUiThread(new Runnable() {
+												@Override
+												public void run() {
+													currentShowingDialog.dismiss();
+													showNoNetwork();
+												}
+											});
+										}
+									});
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+						};
+						saveTask.execute();
+					}
+				})
+				.setNegativeButton(cancelButtonMessage > 0 ? cancelButtonMessage : android.R.string.cancel, null);
+
+		Dialog dialog = builder.create();
+		currentShowingDialog = dialog;
+		dialog.show();
+
+		dialog.findViewById(R.id.webViewButton).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				//Intent intent = new Intent(view.getContext(), MyDiabetesWebViewActivity.class);
+				Intent intent = new Intent(context, MyDiabetesWebViewActivity.class);
+				//((Activity) view.getContext()).startActivityForResult(intent, WEBVIEW);
+				((Activity) context).startActivityForResult(intent, WEBVIEW);
+				//((Activity) FeatureWebSyncDialog.this.context).startActivityForResult(intent, WEBVIEW);
+			}
+		});
+		((EditText) dialog.findViewById(R.id.username)).setText(username);
+		((EditText) dialog.findViewById(R.id.password)).setText(password);
+		return dialog;
+	}
+
+
+
+
+
+
+	public Dialog testCredentials(Context context){
 		ProgressDialog progressDialog = new ProgressDialog(context);
 		try {
 			ServerSync.getInstance(context).testCredentials(new ServerSync.ServerSyncListener() {

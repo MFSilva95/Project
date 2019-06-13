@@ -1,20 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:custom="http://schemas.android.com/apk/res-auto">
+    android:layout_height="150dp"
+    android:layout_alignParentBottom="true">
+
+    <com.cdev.achievementview.AchievementView
+        android:id="@+id/achievement_view_secondary"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginBottom="5dp"
+        android:gravity="bottom"
+        custom:rightPartWidth="250dp"
+        custom:revealDuration="200"
+        custom:collapseStartDelay="5000"
+        custom:colorLeft="@color/blue_primary_dark"
+        custom:colorRight="@color/blue_primary"
+        custom:drawableLeft="@drawable/trophy"/>
 
     <com.cdev.achievementview.AchievementView
         android:id="@+id/achievement_view"
         android:layout_width="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp"
         android:layout_height="50dp"
+        android:gravity="bottom"
         custom:rightPartWidth="250dp"
-        custom:revealDuration="300"
-        custom:collapseStartDelay="2000"
+        custom:revealDuration="200"
+        custom:collapseStartDelay="5000"
         custom:colorLeft="@color/primary_dark"
         custom:colorRight="@color/primary"
         custom:drawableLeft="@drawable/trophy"/>
 
-</RelativeLayout>
+</LinearLayout>

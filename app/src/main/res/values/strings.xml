@@ -408,13 +408,13 @@
     <string name="advanced">Avançado</string>
 
 
-    <string name="backupBadgeWon">Acabou de ganhar a medalha da Cópia de Segurança</string>
+    <string name="backupBadgeWon">Ganhou a medalha de Cópia de Segurança</string>
     <string name="create_backup">Criar Cópia de Segurança</string>
 
     <string name="beginner_single_export">Criar Cópia de Segurança</string>
-    <string name="photoBadgeWon">Acabou de ganhar a medalha da Foto</string>
+    <string name="photoBadgeWon">Ganhou a medalha da Foto</string>
     <string name="beginner_single_photo">Adicionar Foto</string>
-    <string name="datasendBadgeWon">Acabou de ganhar a medalha de Enviar Informação</string>
+    <string name="datasendBadgeWon">Ganhou a medalha de Enviar Informação</string>
     <string name="beginner_single_send_data_badge">Enviar Informação</string>
 
     <string name="logBadgeWon">Ganhou uma medalha de Registos no LogBook</string>

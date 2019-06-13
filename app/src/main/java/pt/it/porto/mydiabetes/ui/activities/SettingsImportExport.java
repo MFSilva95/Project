@@ -301,7 +301,9 @@ public class SettingsImportExport extends BaseActivity {
             restore.setEnabled(true);
             //findViewById(R.id.share).setEnabled(true);
             restore.setVisibility(View.VISIBLE);
-			if (true) achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.backupBadgeWon));
+			if (winBadge) {
+				achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.backupBadgeWon));
+			}
 		} else {
 			ShowDialogMsg(getString(R.string.error_dbcopy));
 		}
@@ -426,7 +428,7 @@ public class SettingsImportExport extends BaseActivity {
 
         if(webSyncDialog!=null){
         	if(requestCode==WEBVIEW && resultCode == 1){
-            	webSyncDialog.updateDialog();
+            	webSyncDialog.dismiss();
                 syncCloud(null);
         	}
 		}

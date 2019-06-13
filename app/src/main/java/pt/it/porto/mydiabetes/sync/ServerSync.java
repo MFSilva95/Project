@@ -3,6 +3,10 @@ package pt.it.porto.mydiabetes.sync;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Handler;
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
@@ -114,6 +118,8 @@ public class ServerSync {
 		});
 
 	}
+
+
 	private SSLSocketFactory getCert() throws IOException, KeyManagementException, NoSuchAlgorithmException, KeyStoreException, CertificateException {
 
 		// Load CAs from an InputStream
@@ -145,8 +151,8 @@ public class ServerSync {
 		context.init(null, tmf.getTrustManagers(), null);
 
 // Tell the URLConnection to use a SocketFactory from our SSLContext
-		URL url = new URL(BASE_URL + "transfer_db.php");
-		HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
+		//URL url = new URL(BASE_URL + "transfer_db.php");
+		//HttpsURLConnection urlConnection = (HttpsURLConnection)url.openConnection();
 
 		return context.getSocketFactory();
 		//urlConnection.setSSLSocketFactory(context.getSocketFactory());
@@ -288,6 +294,12 @@ public class ServerSync {
 		});
 	}
 
+
+
+
+
+
+
 	private void onNoNetworkAvailable() {
 		if (listener != null) {
 			mainHandler.post(new Runnable() {
@@ -297,6 +309,62 @@ public class ServerSync {
 				}
 			});
 		}
+	}
+
+	public void syncRank(ServerSyncListener listener) throws Exception {
+
+		this.listener = listener;
+
+		TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+		trustManagerFactory.init((KeyStore) null);
+		TrustManager[] trustManagers = trustManagerFactory.getTrustManagers();
+		if (trustManagers.length != 1 || !(trustManagers[0] instanceof X509TrustManager)) {
+			throw new IllegalStateException("Unexpected default trust managers:" + Arrays.toString(trustManagers));
+		}
+		X509TrustManager trustManager = (X509TrustManager) trustManagers[0];
+		SSLContext sslContext = SSLContext.getInstance("SSL");
+		sslContext.init(null, new TrustManager[] { trustManager }, null);
+		SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+
+
+		client = new OkHttpClient.Builder()
+				.sslSocketFactory(getCert(),trustManager)
+				.build();
+
+		username = Preferences.getUsername(context);
+		password = Preferences.getPassword(context);
+
+
+		if(username == null || password == null){
+			throw new Exception("NO LOGIN AVAILABLE");
+		}
+
+		RequestBody formBody = new MultipartBody.Builder().setType(MultipartBody.FORM)
+				.addFormDataPart("user", username)
+				.addFormDataPart("password", password)
+				.build();
+
+
+		Request request = new Request.Builder().url(BASE_URL + "mobile_ranking_sync.php").post(formBody).build();
+
+
+		client.newCall(request).enqueue(new Callback() {
+			@Override
+			public void onFailure(Call call, IOException e) {
+				ServerSync.this.onFailure();
+			}
+
+			@Override
+			public void onResponse(Call call, Response response) throws IOException {
+				try {
+					Log.i("Response", "onResponse: Response"+response.toString());
+					JSONObject jobj = new JSONObject(response.body().string());
+					Log.i("CENAS", "onResponse: "+jobj.toString());
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 	private void setContext(Context context) {

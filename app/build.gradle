@@ -110,4 +110,5 @@ dependencies {
     implementation 'com.github.javiersantos:MaterialStyledDialogs:2.1'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.cdev.android:achievement-view:0.9.1'
+    implementation 'com.android.volley:volley:1.1.0'
 }

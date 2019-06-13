@@ -1,6 +1,7 @@
 package pt.it.porto.mydiabetes.ui.fragments.home;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.ComponentName;
@@ -21,17 +22,30 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.cdev.achievementview.AchievementView;
+
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRec;
@@ -41,10 +55,13 @@ import pt.it.porto.mydiabetes.data.Note;
 
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
+import pt.it.porto.mydiabetes.ui.activities.WeightDetail;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
+import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -56,7 +73,6 @@ import pt.it.porto.mydiabetes.widget;
  */
 
 public class homeMiddleFragment extends Fragment {
-	
     final int WAIT_REGISTER = 123;
     //Number of last days shown
     final int NUMBER_OF_DAYS = 7;
@@ -74,6 +90,7 @@ public class homeMiddleFragment extends Fragment {
     private List<HomeElement> logBookList;
 
     private AchievementView achievementView;
+    private AchievementView achievementViewSecondary;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -119,11 +136,20 @@ public class homeMiddleFragment extends Fragment {
         listEmpty = layout.findViewById(R.id.home_empty);
 
         achievementView = layout.findViewById(R.id.achievement_view);
+        achievementViewSecondary = layout.findViewById(R.id.achievement_view_secondary);
 
         setFabClickListeners();
         fillHomeList();
         updateHomeList();
         return layout;
+    }
+
+    public static void setMargins (View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
+        }
     }
 
     private void updateHomeList() {
@@ -217,14 +243,20 @@ public class homeMiddleFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(fab.getContext(), NewHomeRegistry.class);
-                ////startActivity(intent);
-                startActivityForResult(intent, WAIT_REGISTER);
+                //Intent intent = new Intent(fab.getContext(), NewHomeRegistry.class);
+                //startActivityForResult(intent, WAIT_REGISTER);
+
+                // inserir aqui comunicação com servidor
+                // serverComunication();
+
+                FeatureWebSyncDialog dialog = new FeatureWebSyncDialog();
+                dialog.getRankPopUp(-1,-1).show();
 
             }
         });
-
     }
+
+
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -245,13 +277,23 @@ public class homeMiddleFragment extends Fragment {
         DB_Read db = new DB_Read(getContext());
         if(db!=null){
             boolean winHealthBadge = BadgeUtils.addHealthBadge(getContext(), db);
+            boolean normalBadgeWin = false;
             if (winHealthBadge) achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.healthBadgeWon));
             if (NewHomeRegistry.winBadge) {
                 achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.logBadgeWon));
                 NewHomeRegistry.winBadge = false;
+                normalBadgeWin = true;
             }
             if (NewHomeRegistry.winDaily) {
-                achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
+                if (normalBadgeWin == true) {
+                    System.out.println("IF: ");
+                    achievementViewSecondary.setVisibility(View.VISIBLE);
+                    achievementViewSecondary.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
+                } else {
+                    System.out.println("ELSE: ");
+                    achievementView.setVisibility(View.GONE);
+                    achievementViewSecondary.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
+                }
                 NewHomeRegistry.winDaily = false;
             }
         }
@@ -458,4 +500,37 @@ public class homeMiddleFragment extends Fragment {
             setDeleteMode(false);
         }
     }
+    /*
+    private void serverComunication() {
+        String url = "http://my-json-feed";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                })
+        {
+            @Override
+            public Map getHeaders() throws AuthFailureError {
+                HashMap headers = new HashMap();
+                headers.put("user", "username");
+                headers.put("pass", "password");
+                return headers;
+            }
+        };
+
+
+        // Access the RequestQueue through your singleton class.
+        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
+    }
+    */
 }
