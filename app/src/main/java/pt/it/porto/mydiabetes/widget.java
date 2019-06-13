@@ -71,11 +71,12 @@ public class widget extends AppWidgetProvider {
         Bundle bundle = new Bundle();
         bundle.putString(FROM_WIDGET,FROM_WIDGET);
 
+        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
+
         // call new registry activity after + click
         Intent intent = new Intent(context, Home.class);
         intent.putExtras(bundle);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
         remoteViews.setOnClickPendingIntent(R.id.addReg, pendingIntent);
 
         // call logbook activity after widget click

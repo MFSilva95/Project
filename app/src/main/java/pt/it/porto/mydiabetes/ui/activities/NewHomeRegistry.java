@@ -1278,7 +1278,7 @@ public class NewHomeRegistry extends BaseActivity{
                     registerTimeTextV.setText(timeString);
                     updateTagSpinner();
                     if(insuRegisterInputInterface !=null){
-                        Log.i(TAG, "onTimeSet: "+DateUtils.getFormattedTime(registerDate));
+                        //Log.i(TAG, "onTimeSet: "+DateUtils.getFormattedTime(registerDate));
                         insuRegisterInputInterface.updateRatioCalc(registerDate);
                     }
                     if(buttons.contains(GLICAEMIA)){
@@ -1373,15 +1373,10 @@ public class NewHomeRegistry extends BaseActivity{
 
     private void updateTagSpinner() {
         Tag displayTag = getCurrentTag(all_tags, registerDate);
-        int index;
         if(displayTag!=null){
-            int i = displayTag.getId();
-            Log.i(TAG, "updateTagSpinner: O ID É: "+i);
-            //int index = ((StringSpinnerAdapter) spinner.getAdapter()).getItemPosition(displayTag.getName());
+            int i = displayTag.getId()-1;
             if(i>=0 && i < all_tags.size()){
-                index = i;
-                spinner.setSelection(index);
-//                Log.i(TAG, "save_current_input_data: -> -> "+index);
+                spinner.setSelection(i);
             }
         }
     }
@@ -1390,26 +1385,20 @@ public class NewHomeRegistry extends BaseActivity{
         String[] timeString = DateUtils.getFormattedTime(registerDate).split(":");
         int currentTime = Integer.parseInt(timeString[0], 10) * 60 + Integer.parseInt(timeString[1]);
 
-//        for(Tag tag: all_tags){
         for(int index = 0;index<t.size();index++){
             Tag tag = t.get(index);
             Tag nextTag = t.get((index+1)%t.size());
             if(tag.getStart()!=null) {
                 String[] temp_start = tag.getStart().split(":");
                 String[] temp_end = nextTag.getStart().split(":");
-                //String[] temp_end = tag.getEnd().split(":");
                 int startTagTime = Integer.parseInt(temp_start[0], 10) * 60 + Integer.parseInt(temp_start[1]);
                 int h = Integer.parseInt(temp_end[0],10);
                 if(h==0){ h = 24;}
                 int endTagTime = h * 60 + Integer.parseInt(temp_end[1]);
 
-                if(currentTime >= startTagTime && currentTime <= endTagTime){
+                if(currentTime >= startTagTime && currentTime < endTagTime){
                     return tag;
                 }
-                //int endTagTime = Integer.parseInt(temp_end[0], 10) * 60 + Integer.parseInt(temp_end[1]);
-//                if (timeOverlaps(currentTime, startTagTime, endTagTime)) {
-//                    return tag;
-//                }
             }
         }
         return null;
