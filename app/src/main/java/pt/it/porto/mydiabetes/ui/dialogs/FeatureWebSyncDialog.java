@@ -17,6 +17,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -29,6 +30,8 @@ import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.activities.MyDiabetesWebViewActivity;
+import pt.it.porto.mydiabetes.ui.fragments.home.homeMiddleFragment;
+import pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment;
 
 public class FeatureWebSyncDialog extends DialogFragment {
 
@@ -44,7 +47,7 @@ public class FeatureWebSyncDialog extends DialogFragment {
 	@NonNull
 	@Override
 	public Dialog onCreateDialog(Bundle savedInstanceState) {
-		this.context = getActivity();
+		System.out.println("THIS CONTEXT: "+getActivity());
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 		// Get the layout inflater
 		LayoutInflater inflater = LayoutInflater.from(context);
@@ -130,130 +133,59 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		return dialog;
 	}
 
+    public Dialog getRankUserDataPopUp(final Context context, int okButtonMessage, int cancelButtonMessage) {
+		this.context = context;
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        password = Preferences.getPassword(context);
+        username = Preferences.getUsername(context);
 
+        LayoutInflater inflater = LayoutInflater.from(context);
+        builder.setView(inflater.inflate(R.layout.dialog_account_input, null))
+                .setPositiveButton(okButtonMessage > 0 ? okButtonMessage : android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        username = ((EditText) ((Dialog) dialog).findViewById(R.id.username)).getText().toString();
+                        password = ((EditText) ((Dialog) dialog).findViewById(R.id.password)).getText().toString();
 
-	public Dialog getRankPopUp(int okButtonMessage, int cancelButtonMessage) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(context);
-		password = Preferences.getPassword(context);
-		username = Preferences.getUsername(context);
+                        AsyncTask<Void, Void, Void> saveTask = new AsyncTask<Void, Void, Void>() {
+                            @Override
+                            protected Void doInBackground(Void... params) {
+                                pt.it.porto.mydiabetes.database.Preferences.saveCloudSyncCredentials(context, username, password);
+                                return null;
+                            }
 
+                            @Override
+                            protected void onPostExecute(Void aVoid) {
+                                super.onPostExecute(aVoid);
+                                testCredentials(FeatureWebSyncDialog.this.context).show();
+                            }
+                        };
+                        saveTask.execute();
+                    }
+                })
+                .setNegativeButton(cancelButtonMessage > 0 ? cancelButtonMessage : android.R.string.cancel, null);
 
-		LayoutInflater inflater = LayoutInflater.from(context);
-		builder.setView(inflater.inflate(R.layout.dialog_account_input, null))
-				.setPositiveButton(okButtonMessage > 0 ? okButtonMessage : android.R.string.ok, new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						username = ((EditText) ((Dialog) dialog).findViewById(R.id.username)).getText().toString();
-						password = ((EditText) ((Dialog) dialog).findViewById(R.id.password)).getText().toString();
+        Dialog dialog = builder.create();
+        currentShowingDialog = dialog;
+        dialog.show();
 
-						AsyncTask<Void, Void, Void> saveTask = new AsyncTask<Void, Void, Void>() {
-							@Override
-							protected Void doInBackground(Void... params) {
-								pt.it.porto.mydiabetes.database.Preferences.saveCloudSyncCredentials(context, username, password);
-								return null;
-							}
+        dialog.findViewById(R.id.webViewButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new Intent(view.getContext(), MyDiabetesWebViewActivity.class);
+                Intent intent = new Intent(context, MyDiabetesWebViewActivity.class);
+                //((Activity) view.getContext()).startActivityForResult(intent, WEBVIEW);
+                ((Activity) context).startActivityForResult(intent, WEBVIEW);
+                //((Activity) FeatureWebSyncDialog.this.context).startActivityForResult(intent, WEBVIEW);
+            }
+        });
 
-							@Override
-							protected void onPostExecute(Void aVoid) {
-								super.onPostExecute(aVoid);
+        ((EditText) dialog.findViewById(R.id.username)).setText(username);
+        ((EditText) dialog.findViewById(R.id.password)).setText(password);
+        return dialog;
+    }
 
-
-								try {
-									ServerSync.getInstance(context).testCredentials(new ServerSync.ServerSyncListener() {
-										@Override
-										public void onSyncSuccessful() {
-											currentShowingDialog.dismiss();
-											try {
-												ServerSync.getInstance(context).syncRank(new ServerSync.ServerSyncListener() {
-													@Override
-													public void onSyncSuccessful() {
-														currentShowingDialog.dismiss();
-													}
-
-													@Override
-													public void onSyncUnSuccessful() {
-														((Activity) FeatureWebSyncDialog.this.context).runOnUiThread(new Runnable() {
-															@Override
-															public void run() {
-																currentShowingDialog.dismiss();
-																showLoginError();
-															}
-														});
-													}
-
-													@Override
-													public void noNetworkAvailable() {
-														((Activity) FeatureWebSyncDialog.this.context).runOnUiThread(new Runnable() {
-															@Override
-															public void run() {
-																currentShowingDialog.dismiss();
-																showNoNetwork();
-															}
-														});
-													}
-												});
-											} catch (Exception e) {
-												showError();
-											}
-										}
-
-										@Override
-										public void onSyncUnSuccessful() {
-											((Activity) FeatureWebSyncDialog.this.context).runOnUiThread(new Runnable() {
-												@Override
-												public void run() {
-													currentShowingDialog.dismiss();
-													showLoginError();
-												}
-											});
-										}
-
-										@Override
-										public void noNetworkAvailable() {
-											((Activity) FeatureWebSyncDialog.this.context).runOnUiThread(new Runnable() {
-												@Override
-												public void run() {
-													currentShowingDialog.dismiss();
-													showNoNetwork();
-												}
-											});
-										}
-									});
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							}
-						};
-						saveTask.execute();
-					}
-				})
-				.setNegativeButton(cancelButtonMessage > 0 ? cancelButtonMessage : android.R.string.cancel, null);
-
-		Dialog dialog = builder.create();
-		currentShowingDialog = dialog;
-		dialog.show();
-
-		dialog.findViewById(R.id.webViewButton).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				//Intent intent = new Intent(view.getContext(), MyDiabetesWebViewActivity.class);
-				Intent intent = new Intent(context, MyDiabetesWebViewActivity.class);
-				//((Activity) view.getContext()).startActivityForResult(intent, WEBVIEW);
-				((Activity) context).startActivityForResult(intent, WEBVIEW);
-				//((Activity) FeatureWebSyncDialog.this.context).startActivityForResult(intent, WEBVIEW);
-			}
-		});
-		((EditText) dialog.findViewById(R.id.username)).setText(username);
-		((EditText) dialog.findViewById(R.id.password)).setText(password);
-		return dialog;
-	}
-
-
-
-
-
-
-	public Dialog testCredentials(Context context){
+	public Dialog testCredentials(final Context context){
 		ProgressDialog progressDialog = new ProgressDialog(context);
 		try {
 			ServerSync.getInstance(context).testCredentials(new ServerSync.ServerSyncListener() {

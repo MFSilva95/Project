@@ -1,6 +1,8 @@
 package pt.it.porto.mydiabetes.ui.fragments.home;
 
 import android.Manifest;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -22,6 +24,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,8 +49,11 @@ import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.ui.activities.Badges;
 import pt.it.porto.mydiabetes.ui.activities.MyData;
+import pt.it.porto.mydiabetes.ui.activities.SettingsImportExport;
+import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.FileProvider;
@@ -82,11 +88,13 @@ public class homeRightFragment extends Fragment {
     private TextView streakText;
     private TextView streak_days;
     private TextView records_left;
+    private LinearLayout missingAccount;
     private LinearLayout startRecordsMessage;
     private LinearLayout streakDaysMessage;
     private LinearLayout leftDaysMessage;
     private LinearLayout congratsMessage;
     private TextView bestStreak;
+    private Dialog showDialog;
 
     private Uri currentImageUri;
 
@@ -224,10 +232,12 @@ public class homeRightFragment extends Fragment {
         helpButtonPersonal = (ImageButton) layout.findViewById(R.id.helpButtonPersonal);
         CardView personalInfo = (CardView) layout.findViewById(R.id.personalInfo);
         CardView badgesInfo = (CardView) layout.findViewById(R.id.badgesInfo);
+        final TextView clickToCreateAccount = (TextView) layout.findViewById(R.id.clickToCreateAccount);
 
         achievementView = layout.findViewById(R.id.achievement_view);
 
-        final LinearLayout competitionInfo = (LinearLayout) layout.findViewById(R.id.competitionInfo);
+        final RelativeLayout competitionSection = (RelativeLayout) layout.findViewById(R.id.competitionSection);
+        missingAccount = (LinearLayout) layout.findViewById(R.id.missingAccount);
         final Button hideShowCompetition = (Button) layout.findViewById(R.id.hideShowCompetition);
 
         personalInfo.setOnClickListener(new View.OnClickListener() {
@@ -282,19 +292,47 @@ public class homeRightFragment extends Fragment {
         hideShowCompetition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (competitionInfo.getVisibility() == View.GONE) {
-                    competitionInfo.setVisibility(View.VISIBLE);
+                if (competitionSection.getVisibility() == View.GONE) {
+                    // necessário ver se a pessoa tem conta
+                    // em caso de ter conta, ver se tem net para fazer o update
+                    // antes de fazer o update ver se a data do ultimo update está dentro da semana corrente
+                    // ou seja, para saber se fez já update para não estar a fazer muitas vezes
+
+                    System.out.println("Username: "+Preferences.getUsername(getContext())+" "+"Password: "+Preferences.getPassword(getContext()));
+                    if (accountExistence()) {
+                        // if account exists
+                        missingAccount.setVisibility(View.GONE);
+                    } else {
+                        // account needed message with fast account creation
+                        missingAccount.setVisibility(View.VISIBLE);
+                    }
+                    competitionSection.setVisibility(View.VISIBLE);
                     hideShowCompetition.setBackgroundColor(getResources().getColor(R.color.primary_light));
                     hideShowCompetition.setText(getContext().getString(R.string.competitionTitleHide));
                 } else {
-                    competitionInfo.setVisibility(View.GONE);
+                    competitionSection.setVisibility(View.GONE);
                     hideShowCompetition.setBackgroundColor(getResources().getColor(R.color.white_background));
                     hideShowCompetition.setText(getContext().getString(R.string.competitionTitleShow));
                 }
             }
         });
 
+        clickToCreateAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FeatureWebSyncDialog dialog = new FeatureWebSyncDialog();
+                showDialog = dialog.getRankUserDataPopUp(getContext(),-1,-1);
+                showDialog.show();
+            }
+        });
         return layout;
+    }
+
+    public boolean accountExistence() {
+        if (Preferences.getUsername(getContext()) == null || Preferences.getPassword(getContext()) == null) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -318,7 +356,6 @@ public class homeRightFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         DB_Read read = new DB_Read(getContext());
 
         int percentageLvL = LevelsPointsUtils.getPercentageLevels(getContext(),read);

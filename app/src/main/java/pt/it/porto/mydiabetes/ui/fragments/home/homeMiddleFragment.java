@@ -243,15 +243,8 @@ public class homeMiddleFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Intent intent = new Intent(fab.getContext(), NewHomeRegistry.class);
-                //startActivityForResult(intent, WAIT_REGISTER);
-
-                // inserir aqui comunicação com servidor
-                // serverComunication();
-
-                FeatureWebSyncDialog dialog = new FeatureWebSyncDialog();
-                dialog.getRankPopUp(-1,-1).show();
-
+                Intent intent = new Intent(fab.getContext(), NewHomeRegistry.class);
+                startActivityForResult(intent, WAIT_REGISTER);
             }
         });
     }

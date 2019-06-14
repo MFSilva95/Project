@@ -21,6 +21,7 @@
     <color name="orange">#FFA500</color>
 
     <color name="comp_back">#4CAF50</color>
+    <color name="comp_back_opacity">#E64CAF50</color>
     <color name="comp_titles">#0B1A0B</color>
     <color name="comp_text">#B6D5B8</color>
 
