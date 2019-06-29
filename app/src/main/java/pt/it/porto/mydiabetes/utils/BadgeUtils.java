@@ -1883,7 +1883,7 @@ public class BadgeUtils {
         }
 
         if (averageBeginner == false) {
-            ArrayList<Integer> averageAndVariability = db.getXDaysGlycAverageAndVariability(3);
+            ArrayList<Integer> averageAndVariability = db.getXDaysGlycAverageAndVariability(7);
             if (averageAndVariability.get(0) <= 154 && averageAndVariability.get(0) > 0) {
                 addBadgeAuxiliar(context, db, "health", "beginner", "bronze");
                 newMedal = true;
@@ -1905,7 +1905,7 @@ public class BadgeUtils {
         }
 
         if (variabilityBeginner == false) {
-            ArrayList<Integer> averageAndVariability = db.getXDaysGlycAverageAndVariability(3);
+            ArrayList<Integer> averageAndVariability = db.getXDaysGlycAverageAndVariability(7);
             if (averageAndVariability.get(1) <= 36 && averageAndVariability.get(1) >= 0) {
                 addBadgeAuxiliar(context, db, "health", "beginner", "silver");
                 newMedal = true;
@@ -1927,7 +1927,7 @@ public class BadgeUtils {
         }
 
         if (timeInRangeBeginner == false) {
-            int timeInRange = db.getXDaysTimeInRange(3, 70, 180);
+            int timeInRange = db.getXDaysTimeInRange(7, 70, 180);
             System.out.println("Time in range: "+timeInRange);
             if (timeInRange >= 65) {
                 addBadgeAuxiliar(context, db, "health", "beginner", "gold");

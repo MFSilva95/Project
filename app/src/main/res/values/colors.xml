@@ -25,8 +25,11 @@
     <color name="comp_titles">#0B1A0B</color>
     <color name="comp_text">#B6D5B8</color>
 
-    <color name="blue_primary">#4F6987</color>
-    <color name="blue_primary_dark">#29486d</color>
+    <color name="red_primary">#FF2E2E</color>
+    <color name="red_primary_dark">#D10000</color>
+
+    <color name="blue_primary">#00A8E8</color>
+    <color name="blue_primary_dark">#003459</color>
 
     <color name="primary">#4CAF50</color>
     <color name="primary_dark">#388e3c</color>

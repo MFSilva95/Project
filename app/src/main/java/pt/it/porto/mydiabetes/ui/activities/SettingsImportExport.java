@@ -393,7 +393,8 @@ public class SettingsImportExport extends BaseActivity {
                     @Override
                     public void onSyncSuccessful() {
                         if (dialog != null) {
-                            dialog.hide();
+                            //dialog.hide();
+                            dialog.dismiss();
                         }
                         Toast.makeText(getApplicationContext(), R.string.upload_successful, Toast.LENGTH_SHORT).show();
                     }
@@ -401,7 +402,8 @@ public class SettingsImportExport extends BaseActivity {
                     @Override
                     public void onSyncUnSuccessful() {
                         if (dialog != null) {
-                            dialog.hide();
+							//dialog.hide();
+							dialog.dismiss();
                         }
                         Toast.makeText(getApplicationContext(), R.string.upload_failed, Toast.LENGTH_SHORT).show();
                         editAccount(null);
@@ -414,7 +416,8 @@ public class SettingsImportExport extends BaseActivity {
                 });
             } catch (Exception e) {
                 if (dialog != null) {
-                    dialog.hide();
+					//dialog.hide();
+					dialog.dismiss();
                 }
                 Toast.makeText(getApplicationContext(), R.string.error_could_not_send_data, Toast.LENGTH_SHORT).show();
             }
@@ -426,13 +429,19 @@ public class SettingsImportExport extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(webSyncDialog!=null){
-        	if(requestCode==WEBVIEW && resultCode == 1){
-            	webSyncDialog.dismiss();
-                syncCloud(null);
-        	}
-		}
+	    if (requestCode == 1 && data != null) {
+            if (resultCode == RESULT_OK) {
+                if (webSyncDialog != null) {
+                    if (requestCode == WEBVIEW && resultCode == 1) {
+                        webSyncDialog.dismiss();
+                        syncCloud(null);
+                    }
+                }
+            }
+            if (resultCode == RESULT_CANCELED) {
 
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 

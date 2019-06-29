@@ -45,8 +45,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:weightSum="2">
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -56,26 +56,51 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="PONTUAÇÃO"
+                            android:text="@string/points_title"
                             android:textColor="@color/comp_titles"
                             android:gravity="center_horizontal"/>
                         <TextView
-                            android:id="@+id/averageText"
+                            android:id="@+id/bestPoints"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="0"
                             android:layout_marginTop="20dp"
-                            android:text="240"
+                            android:text="@string/n_a"
                             android:gravity="center_horizontal"
                             android:textSize="25sp"/>
-                        <TextView
-                            android:layout_width="match_parent"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="55dp"
-                            android:textSize="12dp"
-                            android:text="Mais que 50% das pessoas"
-                            android:textColor="@color/comp_titles"
-                            android:gravity="center_horizontal"/>
+                            android:orientation="horizontal"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="55dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="@string/global_first" />
+
+                            <TextView
+                                android:id="@+id/points_g"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:textSize="18dp"
+                                android:text="@string/n_a" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="@string/global_week_second" />
+                        </LinearLayout>
                     </RelativeLayout>
                     <RelativeLayout
                         android:layout_width="wrap_content"
@@ -84,7 +109,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="MELHOR STREAK"
+                            android:text="@string/streak_title"
                             android:textColor="@color/comp_titles"
                             android:gravity="center_horizontal"/>
                         <TextView
@@ -96,14 +121,39 @@
                             android:text="@string/n_a"
                             android:gravity="center_horizontal"
                             android:textSize="25sp"/>
-                        <TextView
-                            android:layout_width="match_parent"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="55dp"
-                            android:textSize="12dp"
-                            android:text="Mais que 50% das pessoas"
-                            android:textColor="@color/comp_titles"
-                            android:gravity="center_horizontal"/>
+                            android:orientation="horizontal"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="55dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="@string/global_first" />
+
+                            <TextView
+                                android:id="@+id/streak_g"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0"
+                                android:ellipsize="end"
+                                android:textSize="18dp"
+                                android:maxLines="1"
+                                android:text="@string/n_a" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:text="@string/global_week_second" />
+                        </LinearLayout>
                     </RelativeLayout>
                 </LinearLayout>
 
@@ -119,18 +169,16 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Comparado com outros utilizadores, tem:"
+                        android:text="@string/comp_title"
                         android:gravity="center"
-                        android:textColor="@color/comp_titles"
                         android:textSize="18dp"/>
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="(Tendo em conta a ultima semana)"
+                        android:text="@string/comp_subtitle"
                         android:gravity="center"
-                        android:textColor="@color/comp_titles"
-                        android:textSize="12dp"/>
+                        android:textSize="14dp"/>
 
                     <LinearLayout
                         android:id="@+id/streakDaysMessage"
@@ -145,21 +193,21 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0"
                             android:textColor="@color/white_background"
-                            android:text="Mais pontos que "/>
+                            android:text="@string/week_points"/>
                         <TextView
-                            android:id="@+id/streak_days"
+                            android:id="@+id/points_w"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white_background"
                             android:layout_weight="0"
                             android:textSize="20dp"
-                            android:text="50"/>
+                            android:text="@string/n_a"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white_background"
                             android:layout_weight="0"
-                            android:text="% das pessoas"/>
+                            android:text="@string/global_week_second"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -172,20 +220,21 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0"
                             android:textColor="@color/white_background"
-                            android:text="Mais streaks que "/>
+                            android:text="@string/week_streak"/>
                         <TextView
+                            android:id="@+id/streak_w"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white_background"
                             android:layout_weight="0"
                             android:textSize="20dp"
-                            android:text="50"/>
+                            android:text="@string/n_a"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white_background"
                             android:layout_weight="0"
-                            android:text="% das pessoas"/>
+                            android:text="@string/global_week_second"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -198,20 +247,21 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0"
                             android:textColor="@color/white_background"
-                            android:text="Melhores valores glicémicos que "/>
+                            android:text="@string/week_glycaemia"/>
                         <TextView
+                            android:id="@+id/glycaemia_w"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white_background"
                             android:layout_weight="0"
                             android:textSize="20dp"
-                            android:text="50"/>
+                            android:text="@string/n_a"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white_background"
                             android:layout_weight="0"
-                            android:text="% das pessoas"/>
+                            android:text="@string/global_week_second"/>
                     </LinearLayout>
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -224,20 +274,21 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="0"
                             android:textColor="@color/white_background"
-                            android:text="Menos hiper/hipos que "/>
+                            android:text="@string/week_hyperhypo"/>
                         <TextView
+                            android:id="@+id/hyperhypo_w"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white_background"
                             android:layout_weight="0"
                             android:textSize="20dp"
-                            android:text="50"/>
+                            android:text="@string/n_a"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/white_background"
                             android:layout_weight="0"
-                            android:text="% das pessoas"/>
+                            android:text="@string/global_week_second"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -246,6 +297,7 @@
         </LinearLayout>
 
         <!-- missing internet case -->
+        <include layout="@layout/competition_missing_network"/>
 
         <!-- missing account case -->
         <include layout="@layout/competition_missing_account"/>

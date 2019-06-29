@@ -66,6 +66,7 @@ import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.HomeElement;
+import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 import pt.it.porto.mydiabetes.widget;
 
 /**
@@ -91,6 +92,7 @@ public class homeMiddleFragment extends Fragment {
 
     private AchievementView achievementView;
     private AchievementView achievementViewSecondary;
+    private AchievementView achievementViewStreak;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -137,6 +139,7 @@ public class homeMiddleFragment extends Fragment {
 
         achievementView = layout.findViewById(R.id.achievement_view);
         achievementViewSecondary = layout.findViewById(R.id.achievement_view_secondary);
+        achievementViewStreak = layout.findViewById(R.id.achievement_view_streak);
 
         setFabClickListeners();
         fillHomeList();
@@ -270,25 +273,44 @@ public class homeMiddleFragment extends Fragment {
         DB_Read db = new DB_Read(getContext());
         if(db!=null){
             boolean winHealthBadge = BadgeUtils.addHealthBadge(getContext(), db);
-            boolean normalBadgeWin = false;
             if (winHealthBadge) achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.healthBadgeWon));
             if (NewHomeRegistry.winBadge) {
                 achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.logBadgeWon));
-                NewHomeRegistry.winBadge = false;
-                normalBadgeWin = true;
             }
+
             if (NewHomeRegistry.winDaily) {
-                if (normalBadgeWin == true) {
-                    System.out.println("IF: ");
+                if (NewHomeRegistry.winBadge) {
                     achievementViewSecondary.setVisibility(View.VISIBLE);
                     achievementViewSecondary.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
                 } else {
-                    System.out.println("ELSE: ");
                     achievementView.setVisibility(View.GONE);
                     achievementViewSecondary.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
                 }
-                NewHomeRegistry.winDaily = false;
             }
+
+            if (NewHomeRegistry.winStreak) {
+                //add extra points to user points
+                int reward = 50;
+                int streak = db.MyData_Read().getCurrentStreak();
+                int points = reward * streak;
+                System.out.println("POINTS: "+streak+" "+points);
+                LevelsPointsUtils.addPoints(getContext(), points, "streak", db);
+
+                //show daily goal streak winning as a notification
+                if (!NewHomeRegistry.winBadge && !NewHomeRegistry.winDaily) {
+                    achievementView.setVisibility(View.GONE);
+                    achievementViewSecondary.setVisibility(View.GONE);
+                } else if (!NewHomeRegistry.winDaily) {
+                    achievementViewSecondary.setVisibility(View.GONE);
+                } else if (!NewHomeRegistry.winBadge) {
+                    achievementView.setVisibility(View.GONE);
+                }
+                achievementViewStreak.setVisibility(View.VISIBLE);
+                achievementViewStreak.show(this.getString(R.string.congratsStreak), this.getString(R.string.streakGoalWon));
+            }
+            NewHomeRegistry.winBadge = false;
+            NewHomeRegistry.winDaily = false;
+            NewHomeRegistry.winStreak = false;
         }
         db.close();
 
@@ -493,37 +515,4 @@ public class homeMiddleFragment extends Fragment {
             setDeleteMode(false);
         }
     }
-    /*
-    private void serverComunication() {
-        String url = "http://my-json-feed";
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                })
-        {
-            @Override
-            public Map getHeaders() throws AuthFailureError {
-                HashMap headers = new HashMap();
-                headers.put("user", "username");
-                headers.put("pass", "password");
-                return headers;
-            }
-        };
-
-
-        // Access the RequestQueue through your singleton class.
-        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-    }
-    */
 }

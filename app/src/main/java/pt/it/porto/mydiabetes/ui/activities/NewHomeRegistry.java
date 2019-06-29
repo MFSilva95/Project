@@ -66,6 +66,7 @@ import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Tag;
+import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
@@ -74,6 +75,7 @@ import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
+import pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.CarbsRegister_Input_Interface;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.GlycaemiaRegister_Input_Interface;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.InsuRegister_Input_Interface;
@@ -175,6 +177,7 @@ public class NewHomeRegistry extends BaseActivity{
 
     public static boolean winBadge = false;
     public static boolean winDaily = false;
+    public static boolean winStreak = false;
 
     @Override
     public void finishAfterTransition() {
@@ -625,6 +628,7 @@ public class NewHomeRegistry extends BaseActivity{
                             }
                             carbsData.setId(reg.Carbs_Save(carbsData));
                             reg.Record_Update_Carbs(recordId, carbsData.getId());
+
                         }
                         break;
                     case GLICAEMIA:
@@ -640,6 +644,9 @@ public class NewHomeRegistry extends BaseActivity{
                             }
                             glycemiaData.setId(reg.Glycemia_Save(glycemiaData));
                             reg.Record_Update_Glycaemia(recordId, glycemiaData.getId());
+                            if (rdb.getGlyRecordsNumberByDay(0) == 6) {
+                                winStreak = true;
+                            }
                         }
                         break;
                     case INSULIN:
@@ -685,6 +692,7 @@ public class NewHomeRegistry extends BaseActivity{
         addContent(noteRegisterInputInterface);
         buttons.add(0,NOTE);
     }
+
     private void insertGlicMenu(){
         /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
                     if(newAdvice!=null){

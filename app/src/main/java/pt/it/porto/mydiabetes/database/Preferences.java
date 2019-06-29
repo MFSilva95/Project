@@ -14,7 +14,11 @@ import java.security.KeyPairGenerator;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.crypto.Cipher;
 import javax.security.auth.x500.X500Principal;
@@ -25,8 +29,19 @@ public class Preferences {
 	private static final String USERNAME = "username";
 	private static final String PASSWORD = "password";
 	private static final String KEYSTORE_PK_ALIAS = "keystore_pk_keys";
+	private static final String LAST_RANK_UPDATE = "last_rank_update";
+	private static final String POINTS = "points";
+	private static final String STREAK = "streak";
+	private static final String POINTS_G = "pointGlobal";
+	private static final String STREAK_G = "streakGlobal";
+	private static final String POINTS_W = "pointWeak";
+	private static final String STREAK_W = "streakWeek";
+	private static final String GLYCAEMIA_W = "glycaemiaWeek";
+	private static final String HYPERHYPO_W = "hyperhypoWeek";
+
 
 	public static SharedPreferences getPreferences(Context context) {
+	    System.out.println("Contextoooo: "+context);
 		return context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
 	}
 
@@ -70,6 +85,49 @@ public class Preferences {
 			}
 		}
 		return getPreferences(context).getString(PASSWORD, null);
+	}
+
+	public static void saveLastRankUpdate(Context context, String date) {
+		SharedPreferences preferences = getPreferences(context);
+		preferences.edit().putString(LAST_RANK_UPDATE, date).apply();
+	}
+
+	public static Date getLastRankUpdate(Context context) {
+		String datestring = getPreferences(context).getString(LAST_RANK_UPDATE, null);
+		SimpleDateFormat dateFormat = new SimpleDateFormat();
+		Date d = null;
+		try {
+			d = dateFormat.parse(datestring);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return d;
+	}
+
+	public static void saveRankInfo(Context context, String points, String streak, String points_g, String streak_g, String points_w, String streak_w, String glycaemia_w, String hyperhypo_g) {
+		SharedPreferences preferences = getPreferences(context);
+		preferences.edit().putString(POINTS_G, points_g)
+				.putString(POINTS, points)
+				.putString(STREAK, streak)
+				.putString(STREAK_G, streak_g)
+				.putString(POINTS_W, points_w)
+				.putString(STREAK_W, points_w)
+				.putString(GLYCAEMIA_W, glycaemia_w)
+				.putString(HYPERHYPO_W, hyperhypo_g)
+				.apply();
+	}
+
+	public static String[] getRankInfo(Context context) {
+		String[] ranks = new String[8];
+		ranks[0] = getPreferences(context).getString(POINTS, null);
+		ranks[1] = getPreferences(context).getString(STREAK, null);
+		ranks[2] = getPreferences(context).getString(POINTS_G, null);
+		ranks[3] = getPreferences(context).getString(STREAK_G, null);
+		ranks[4] = getPreferences(context).getString(POINTS_W, null);
+		ranks[5] = getPreferences(context).getString(STREAK_W, null);
+		ranks[6] = getPreferences(context).getString(GLYCAEMIA_W, null);
+		ranks[7] = getPreferences(context).getString(STREAK_W, null);
+		return ranks;
 	}
 
 

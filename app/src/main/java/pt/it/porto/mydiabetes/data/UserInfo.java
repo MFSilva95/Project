@@ -195,14 +195,13 @@ public class UserInfo {
 		return this.currStreak;
 	}
 
-	public void setCurrentStreak(int currStreak) {
-		this.currStreak = currStreak;
-	}
+	public void setCurrentStreak(int currStreak) { this.currStreak = currStreak; }
+
 	public int getMaxStreak() {
 		return this.maxStreak;
 	}
 
-	public void setMaxStrak(int maxStreak) {
+	public void setMaxStreak(int maxStreak) {
 		this.maxStreak = maxStreak;
 	}
 

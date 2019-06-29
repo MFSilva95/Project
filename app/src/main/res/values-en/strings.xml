@@ -524,7 +524,7 @@
     <string name="new_note">New Note</string>
 
     <string name="badge_help_personal_dialog_title">Help</string>
-    <string name="badge_help_personal_dialog_desc">Glucose Average - It’s an overall measure of blood sugars over a period of time, in this case, daily\n\nVariability - represents the variability of the glucose values, the blood glucose oscillations that occur throughout the day\n\n\nDaily Goal - You should record at least 6 Glycaemias, daily. If you complete this objective, you will be awarded with 30 points multiplied by your streak value. Streak values are continuous completions of daily goals. You can and should aim to keep your streak to be awarded the maximum number of possible points. The objective streak value caps at the value 7, but can still be maintained.</string>
+    <string name="badge_help_personal_dialog_desc">Glucose Average - It’s an overall measure of blood sugars over a period of time, in this case, daily\n\nVariability - represents the variability of the glucose values, the blood glucose oscillations that occur throughout the day\n\n\Streak - Consecutive days number of daily goals completed. The streak value will turn 0 if you do not complete a certain daily goal.\n\nDaily Goal - You should record at least 6 Glycaemias, daily. If you complete this objective, you will be awarded with 50 points multiplied by your streak value. You can and should aim to keep your streak to be awarded the maximum number of possible points. The objective streak value caps at the value 7, but can still be maintained.</string>
 
     <string name="badge_help_dialog_title">How to win Badges?</string>
     <string name="badge_help_dialog_desc">To win Badges you must complete the required records for each. The intermediate and advanced levels are unlockable at levels 10 and 30 respectively.
@@ -640,6 +640,8 @@
     <string name="variability">VARIABILITY</string>
     <string name="dailyGoal">DAILY GOAL</string>
 
+    <string name="congratsStreak">Congratulations! Streak increased</string>
+    <string name="streakGoalWon">by accomplishing your daily goal</string>
     <string name="startRecordsMessage">Today is a good day to make your daily goal!</string>
     <string name="streakMessage1">You are on a &#160;</string>
     <string name="streakMessage2">&#160; streak accomplishing your daily goal!</string>
@@ -660,6 +662,19 @@
 
     <string name="competitionTitleShow">Show community stats</string>
     <string name="competitionTitleHide">Hide community stats</string>
+    <string name="missing_account">You need to have an account to see this section</string>
+    <string name="missing_account_create">Click here to create your account!</string>
+    <string name="missing_network">You need to have a network connection to see this section</string>
+    <string name="points_title">POINTS</string>
+    <string name="streak_title">BEST STREAK</string>
+    <string name="comp_title">Comparing with other users, you have:</string>
+    <string name="comp_subtitle">(Based on last week values)</string>
+    <string name="global_first">More than &#160;</string>
+    <string name="week_points">More points than &#160;</string>
+    <string name="week_streak">More streak than &#160;</string>
+    <string name="week_glycaemia">Better glucose values than &#160;</string>
+    <string name="week_hyperhypo">Less hyper/hypo than &#160;</string>
+    <string name="global_week_second">% of people</string>
 
     <string name="healthBadgeWon">Health goal badge won</string>
     <string name="beginner_bronze_health">Keep your glyceamia average under 154 (1 week)</string>
