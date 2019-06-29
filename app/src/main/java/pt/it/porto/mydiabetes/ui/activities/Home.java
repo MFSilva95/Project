@@ -47,6 +47,7 @@ import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesContract;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.database.Usage;
+import pt.it.porto.mydiabetes.ui.charts.data.Logbook;
 import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -72,6 +73,8 @@ public class Home extends BaseActivity {
     private static final int INIT_PERMISSION_REQUEST = 103;
 
     private static final String FROM_WIDGET = "FROM_WIDGET";
+    private static final String FROM_WIDGET_TO_LOGBOOK = "FROM_WIDGET_TO_LOGBOOK";
+
 
     private static int idUser;
 
@@ -85,6 +88,10 @@ public class Home extends BaseActivity {
 	    if (this.getIntent() != null) {
             if (this.getIntent().getStringExtra(FROM_WIDGET) != null) {
                 Intent intent = new Intent(this, NewHomeRegistry.class);
+                startActivity(intent);
+            }
+            if (this.getIntent().getStringExtra(FROM_WIDGET_TO_LOGBOOK) != null) {
+                Intent intent = new Intent(this, LogbookChartList.class);
                 startActivity(intent);
             }
         }
