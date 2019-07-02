@@ -35,6 +35,8 @@ public class HbA1cDetail extends BaseActivity {
 
 	int idHbA1c = 0;
 	int idNote = 0;
+	public static boolean winBadge = false;
+	public static boolean winDaily = false;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -168,8 +170,8 @@ public class HbA1cDetail extends BaseActivity {
 		hba1c.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 		wdb.HbA1c_Save(hba1c);
 
-		BadgeUtils.addHba1cBadge(getBaseContext(), rdb);
-        BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
+		winBadge = BadgeUtils.addHba1cBadge(getBaseContext(), rdb);
+        winDaily = BadgeUtils.addDailyBadge(getBaseContext(), rdb, wdb);
 		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "hba1c", rdb);
 
 		wdb.close();

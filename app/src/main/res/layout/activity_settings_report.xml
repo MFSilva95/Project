@@ -218,7 +218,8 @@
 
 
             </LinearLayout>
-
-
         </ScrollView>
+
+        <include layout="@layout/badgewin_notification"/>
+
 </RelativeLayout>

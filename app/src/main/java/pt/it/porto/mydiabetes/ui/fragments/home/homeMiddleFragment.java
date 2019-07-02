@@ -1,6 +1,7 @@
 package pt.it.porto.mydiabetes.ui.fragments.home;
 
 import android.app.AlertDialog;
+import android.app.Application;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.ComponentName;
@@ -21,15 +22,30 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.cdev.achievementview.AchievementView;
+
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRec;
@@ -39,13 +55,18 @@ import pt.it.porto.mydiabetes.data.Note;
 
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
+import pt.it.porto.mydiabetes.ui.activities.WeightDetail;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
+import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
+import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.HomeElement;
+import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 import pt.it.porto.mydiabetes.widget;
 
 /**
@@ -53,7 +74,6 @@ import pt.it.porto.mydiabetes.widget;
  */
 
 public class homeMiddleFragment extends Fragment {
-	
     final int WAIT_REGISTER = 123;
     //Number of last days shown
     final int NUMBER_OF_DAYS = 7;
@@ -69,6 +89,10 @@ public class homeMiddleFragment extends Fragment {
 
     private RecyclerView homeRecyclerView;
     private List<HomeElement> logBookList;
+
+    private AchievementView achievementView;
+    private AchievementView achievementViewSecondary;
+    private AchievementView achievementViewStreak;
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -113,10 +137,22 @@ public class homeMiddleFragment extends Fragment {
         fab = (FloatingActionButton) layout.findViewById(R.id.fab);
         listEmpty = layout.findViewById(R.id.home_empty);
 
+        achievementView = layout.findViewById(R.id.achievement_view);
+        achievementViewSecondary = layout.findViewById(R.id.achievement_view_secondary);
+        achievementViewStreak = layout.findViewById(R.id.achievement_view_streak);
+
         setFabClickListeners();
         fillHomeList();
         updateHomeList();
         return layout;
+    }
+
+    public static void setMargins (View v, int l, int t, int r, int b) {
+        if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
+            ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
+            p.setMargins(l, t, r, b);
+            v.requestLayout();
+        }
     }
 
     private void updateHomeList() {
@@ -210,17 +246,73 @@ public class homeMiddleFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(fab.getContext(), NewHomeRegistry.class);
-                //startActivity(intent);
                 startActivityForResult(intent, WAIT_REGISTER);
             }
         });
-
     }
 
 
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getView() != null) {
+            if (isVisibleToUser) {
+                System.out.println("visivel entra aqui");
+                if (true) {
+                    //achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.healthBadgeWon));
+                    //Home.winBadge = false;
+                }
+            }
+        }
+    }
+
+    @Override
     public void onResume() {
+        DB_Read db = new DB_Read(getContext());
+        if(db!=null){
+            boolean winHealthBadge = BadgeUtils.addHealthBadge(getContext(), db);
+            if (winHealthBadge) achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.healthBadgeWon));
+            if (NewHomeRegistry.winBadge) {
+                achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.logBadgeWon));
+            }
+
+            if (NewHomeRegistry.winDaily) {
+                if (NewHomeRegistry.winBadge) {
+                    achievementViewSecondary.setVisibility(View.VISIBLE);
+                    achievementViewSecondary.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
+                } else {
+                    achievementView.setVisibility(View.GONE);
+                    achievementViewSecondary.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
+                }
+            }
+
+            if (NewHomeRegistry.winStreak) {
+                //add extra points to user points
+                int reward = 50;
+                int streak = db.MyData_Read().getCurrentStreak();
+                int points = reward * streak;
+                System.out.println("POINTS: "+streak+" "+points);
+                LevelsPointsUtils.addPoints(getContext(), points, "streak", db);
+
+                //show daily goal streak winning as a notification
+                if (!NewHomeRegistry.winBadge && !NewHomeRegistry.winDaily) {
+                    achievementView.setVisibility(View.GONE);
+                    achievementViewSecondary.setVisibility(View.GONE);
+                } else if (!NewHomeRegistry.winDaily) {
+                    achievementViewSecondary.setVisibility(View.GONE);
+                } else if (!NewHomeRegistry.winBadge) {
+                    achievementView.setVisibility(View.GONE);
+                }
+                achievementViewStreak.setVisibility(View.VISIBLE);
+                achievementViewStreak.show(this.getString(R.string.congratsStreak), this.getString(R.string.streakGoalWon));
+            }
+            NewHomeRegistry.winBadge = false;
+            NewHomeRegistry.winDaily = false;
+            NewHomeRegistry.winStreak = false;
+        }
+        db.close();
+
         super.onResume();
         updateHomeList();
     }
@@ -330,6 +422,7 @@ public class homeMiddleFragment extends Fragment {
                             updateHomeList();
                             toDeleteList.clear();
                             setDeleteMode(false);
+                            ((Home) getActivity()).notifyPageAdapter();
                         } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();

@@ -55,6 +55,11 @@
             android:parentActivityName=".ui.activities.SettingsImportExport"
             android:theme="@style/welcomeTheme" />
         <activity
+            android:name=".ui.activities.MyDiabetesWebViewActivityRank"
+            android:label="@string/webview_title"
+            android:parentActivityName=".ui.activities.Home"
+            android:theme="@style/welcomeTheme" />
+        <activity
             android:name=".ui.createMeal.activities.CreateMealActivity"
             android:parentActivityName=".ui.activities.NewHomeRegistry"
             android:theme="@style/AppTheme" />
@@ -321,6 +326,11 @@
         <service
             android:name=".sync.transfer.Stream"
             android:exported="false" />
+
+        <service
+            android:name=".RankingService"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
 
         <activity
             android:name=".ui.activities.ScanActivity"

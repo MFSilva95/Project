@@ -42,6 +42,9 @@ public class ExerciseDetail extends BaseActivity {
 	int idNote = 0;
 	int idExercise = 0;
 
+	public static boolean winBadge = false;
+	public static boolean winDaily = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -234,8 +237,8 @@ public class ExerciseDetail extends BaseActivity {
 		ex.setDateTime(data.getText().toString(), hora.getText().toString()+":" + Calendar.getInstance().get(Calendar.SECOND));
 		reg.Exercise_Save(ex);
 
-		BadgeUtils.addExerciseBadge(getBaseContext(),rdb);
-		BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
+		winBadge = BadgeUtils.addExerciseBadge(getBaseContext(),rdb);
+		winDaily = BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
 		LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "exercise", rdb);
 
 		reg.close();

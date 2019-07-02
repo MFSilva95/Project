@@ -5,6 +5,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 
 import android.app.ProgressDialog;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +20,7 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -26,9 +30,15 @@ import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.RankingService;
 import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.activities.MyDiabetesWebViewActivity;
+import pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment;
+
+import static android.content.Context.JOB_SCHEDULER_SERVICE;
+import static pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment.missingAccount;
+import static pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment.missingNetwork;
 
 public class FeatureWebSyncDialog extends DialogFragment {
 
@@ -72,31 +82,6 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		return builder.create();
 	}
 
-	public void updateDialog(){
-
-
-		currentShowingDialog.dismiss();
-//		Dialog userDataPopUp = getUserDataPopUp(context, -1, -1);
-//		userDataPopUp.show();
-
-//		TextView user = ((TextView) userDataPopUp.findViewById(R.id.username));
-//		if(user!=null){
-//			user.setText(username);
-//		}
-//		TextView pass = ((TextView) userDataPopUp.findViewById(R.id.password));
-//		if(pass!=null){
-//			pass.setText(password);
-//		}
-//
-//		currentShowingDialog = userDataPopUp;
-//		currentShowingDialog.setCancelable(true);
-
-		//password = Preferences.getPassword(context);
-		//username = Preferences.getUsername(context);
-
-		//((EditText) ((Activity) context).findViewById(R.id.username)).setText(username);
-		//((EditText) ((Activity) context).findViewById(R.id.password)).setText(password);
-	}
 
 	/**
 	 * LOGIN ONE
@@ -128,15 +113,7 @@ public class FeatureWebSyncDialog extends DialogFragment {
 						   @Override
 						   protected void onPostExecute(Void aVoid) {
 							   super.onPostExecute(aVoid);
-							   try {
-								   testCredentials(FeatureWebSyncDialog.this.context).show();
-							   } catch (NoSuchAlgorithmException e) {
-								   e.printStackTrace();
-							   } catch (KeyStoreException e) {
-								   e.printStackTrace();
-							   } catch (KeyManagementException e) {
-								   e.printStackTrace();
-							   }
+							   testCredentials(FeatureWebSyncDialog.this.context).show();
 						   }
 					   };
 					   saveTask.execute();
@@ -161,13 +138,17 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		return dialog;
 	}
 
-	public Dialog testCredentials(Context context) throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
+
+	public Dialog testCredentials(final Context context){
 		ProgressDialog progressDialog = new ProgressDialog(context);
 		try {
 			ServerSync.getInstance(context).testCredentials(new ServerSync.ServerSyncListener() {
 				@Override
 				public void onSyncSuccessful() {
-					currentShowingDialog.dismiss();
+				    currentShowingDialog.dismiss();
+					missingAccount.setVisibility(View.GONE);
+					missingNetwork.setVisibility(View.VISIBLE);
+					pt.it.porto.mydiabetes.database.Preferences.saveLastRankUpdate(context, null);
 				}
 
 				@Override

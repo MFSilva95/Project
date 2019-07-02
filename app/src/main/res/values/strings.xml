@@ -167,7 +167,7 @@
 
     <string name="information_about_using">Esta aplicação está em desenvolvimento e para a usar deve ter assinado o Consentimento Informado e ter sido informado sobre a metodologia do estudo.</string>
     <string name="information_about_developers">Aplicação desenvolvida por Ana Azevedo, André Diegues, Artur Ferreira, Diogo Machado, Eduardo Soares, João Graça, João Maia, José Ornelas, Pedro Cunha, Ricardo Parra.</string>
-    <string name="information_about_libraries">Esta aplicação utiliza as bibliotecas AAkira/ExpandableLayout, e Pierry/SimpleToast.</string>
+    <string name="information_about_libraries">Esta aplicação utiliza as bibliotecas AAkira/ExpandableLayout, e Pierry///SimpleToast.</string>
     <string name="information_about_food_db_info">A informação contida na base de dados dos alimentos inserida neste sistema foi extraida da Plataforma Portuguesa de Informação Alimentar (PortFIR)</string>
     <string name="information_about_version">Versão </string>
     <string name="information_about_contact" translatable="false">mydiabetes@dcc.fc.up.pt\n\n https://mydiabetes.dcc.fc.up.pt/</string>
@@ -420,14 +420,16 @@
     <string name="advanced">Avançado</string>
 
 
+    <string name="backupBadgeWon">Ganhou a medalha de Cópia de Segurança</string>
     <string name="create_backup">Criar Cópia de Segurança</string>
 
-
     <string name="beginner_single_export">Criar Cópia de Segurança</string>
+    <string name="photoBadgeWon">Ganhou a medalha da Foto</string>
     <string name="beginner_single_photo">Adicionar Foto</string>
+    <string name="datasendBadgeWon">Ganhou a medalha de Enviar Informação</string>
     <string name="beginner_single_send_data_badge">Enviar Informação</string>
 
-
+    <string name="logBadgeWon">Ganhou uma medalha de Registos no LogBook</string>
     <string name="beginner_bronze_log">Adicionar 10 Registos no LogBook</string>
     <string name="beginner_silver_log">Adicionar 20 Registos no LogBook</string>
     <string name="beginner_gold_log">Adicionar 30 Registos no LogBook</string>
@@ -438,6 +440,7 @@
     <string name="advanced_silver_log">Adicionar 250 Registos no LogBook</string>
     <string name="advanced_gold_log">Adicionar 300 Registos no LogBook</string>
 
+    <string name="exerciseBadgeWon">Ganhou uma medalha de Registos de Exercícios</string>
     <string name="beginner_bronze_exercise">Adicionar 3 Registos de Exercício</string>
     <string name="beginner_silver_exercise">Adicionar 10 Registos de Exercício</string>
     <string name="beginner_gold_exercise">Adicionar 20 Registos de Exercício</string>
@@ -448,6 +451,7 @@
     <string name="advanced_silver_exercise">Adicionar 120 Registos de Exercício</string>
     <string name="advanced_gold_exercise">Adicionar 150 Registos de Exercício</string>
 
+    <string name="diseaseBadgeWon">Ganhou uma medalha de Registos de Doenças</string>
     <string name="beginner_bronze_disease">Adicionar 1 Registo de Doença</string>
     <string name="beginner_silver_disease">Adicionar 2 Registos de Doença</string>
     <string name="beginner_gold_disease">Adicionar 3 Registos de Doença</string>
@@ -458,6 +462,7 @@
     <string name="advanced_silver_disease">Adicionar 8 Registos de Doença</string>
     <string name="advanced_gold_disease">Adicionar 9 Registos de Doença</string>
 
+    <string name="weightBadgeWon">Ganhou uma medalha de Registos de Peso</string>
     <string name="beginner_bronze_weight">Adicionar 3 Registos de Peso</string>
     <string name="beginner_silver_weight">Adicionar 10 Registos de Peso</string>
     <string name="beginner_gold_weight">Adicionar 20 Registos de Peso</string>
@@ -468,6 +473,7 @@
     <string name="advanced_silver_weight">Adicionar 120 Registos de Peso</string>
     <string name="advanced_gold_weight">Adicionar 150 Registos de Peso</string>
 
+    <string name="bpBadgeWon">Ganhou uma medalha de Registos de P.A</string>
     <string name="beginner_bronze_bp">Adicionar 1 Registo de P.A.</string>
     <string name="beginner_silver_bp">Adicionar 3 Registos de P.A.</string>
     <string name="beginner_gold_bp">Adicionar 5 Registos de P.A.</string>
@@ -478,6 +484,7 @@
     <string name="advanced_silver_bp">Adicionar 50 Registos de P.A.</string>
     <string name="advanced_gold_bp">Adicionar 60 Registos de P.A.</string>
 
+    <string name="cholesterolBadgeWon">Ganhou uma medalha de Registos de Colesterol</string>
     <string name="beginner_bronze_cholesterol">Adicionar 1 Registo de Colesterol</string>
     <string name="beginner_silver_cholesterol">Adicionar 2 Registos de Colesterol</string>
     <string name="beginner_gold_cholesterol">Adicionar 3 Registos de Colesterol</string>
@@ -488,6 +495,7 @@
     <string name="advanced_silver_cholesterol">Adicionar 8 Registos de Colesterol</string>
     <string name="advanced_gold_cholesterol">Adicionar 9 Registos de Colesterol</string>
 
+    <string name="hba1cBadgeWon">Ganhou uma medalha de Registos de HbA1c</string>
     <string name="beginner_bronze_hba1c">Adicionar 1 Registo de HbA1c</string>
     <string name="beginner_silver_hba1c">Adicionar 2 Registos de HbA1c</string>
     <string name="beginner_gold_hba1c">Adicionar 3 Registos de HbA1c</string>
@@ -498,7 +506,7 @@
     <string name="advanced_silver_hba1c">Adicionar 8 Registos de HbA1c</string>
     <string name="advanced_gold_hba1c">Adicionar 9 Registos de HbA1c</string>
 
-
+    <string name="dailyBadgeWon">Ganhou uma medalha de Registos Diários</string>
     <string name="daily_bronze_log">Adicionar 5 Registos Diários</string>
     <string name="daily_silver_log">Adicionar 10 Registos Diários</string>
     <string name="daily_gold_log">Adicionar 15 Registos Diários</string>
@@ -508,20 +516,29 @@
     <string name="welcome_text">Bem-Vindo à myDiabetes</string>
 
     <string name="new_insulin_record">Novo Registo de Insulina</string>
-    <string name="medium_locked">Médio (Desbloqueável a nível 10)</string>
-    <string name="advanced_locked">Avançado (Desbloqueável a nível 30)</string>
+    <string name="medium_locked">Médio (Desbloqueável a nível 10 + 2 medalhas de saúde)</string>
+    <string name="advanced_locked">Avançado (Desbloqueável a nível 30 + 2 medalhas de saúde)</string>
     <string name="received_a_medal">Recebeu uma Medalha</string>
     <string name="received_a_daily_medal">Recebeu uma Medalha Diária</string>
     <string name="new_note">Nova anotação</string>
 
-    <string name="badge_help_dialog_title">Como ganhar medalhas?</string>
-    <string name="badge_help_dialog_desc">Para ganhar medalhas deve completar os registos necessários a cada. O nível intermédio e avançado são desbloqueáveis a níveis 10 e 30 respetivamente.
-        Por cada registo inserido ganha 100 pontos e por medalha 200. Junte pontos para subir de nível.</string>
+    <string name="badge_help_personal_dialog_title">Ajuda</string>
+    <string name="badge_help_personal_dialog_desc">Média Glicémica - É a média dos seus valores glicémicos ao longo de um período determinado de tempo, neste caso diário.\n\nVariabilidade - representa a variabilidade dos seus valores glicémicos, as oscilações que ocorrem ao longo do dia\n\n\nStreak - Representa o número de dias seguidos de objectivos diários completados. O valor da streak voltará a 0 caso não complete um objetivo diário.\n\nObjectivo diário -
+        Deve fazer pelo menos 6 registos diários de glicemia. Se completar este objectivo irá receber 50 pontos, a multiplicar pela sua streak corrente. O valor a multiplicar tem um máximo de 7. Porém, pode e deve continuar a completar os objectivos diários para manter este valor e assim obter o máximo de pontos possiveis.</string>
 
+
+<<<<<<< HEAD
     <string name="meal_lipids_explain">A sua refeição contém um nível elevado de Lipidos. É esperado que o seu nível glicémico continue a subir nas próximas %1$d horas. No caso de usar bomba deve definir um bolus quadrado. No caso de usar \'caneta\' deve fazer a verificação do seu valor glicémico regularmente e se necessário, administrar insulina para corrigir o valor glicémico.</string>
 
 
     <string name="meal_lipids_description">Refeição rica em Lipidos</string>
+=======
+    <string name="badge_help_dialog_title">Como ganhar medalhas?</string>
+    <string name="badge_help_dialog_desc">Para ganhar medalhas deve completar os registos necessários a cada. Por cada registo inserido ganha 100 pontos e por medalha 200. Junte pontos para subir de nível.
+        O nível intermédio e avançado são desbloqueáveis a níveis 10 e 30 respetivamente, e deve ter pelo menos duas medalhas de saúde conquistadas do presente nível.
+        As medalhas de saúde são:\n\nMédia glicémica - Ter a média dos valores glicémicos abaixo de 154mg/dL, durante um determinado período de tempo\n\nVariabilidade - A discrepância dos valores glicémicos não pode fazer com que a variabilidade seja superior a 36%, durante um determinado período de tempo\n\nTempo no alvo - Pelo menos 65% dos valores glicémicos têm que estar entre 70 e 180mg/dL, durante um determinado período de tempo
+    </string>
+>>>>>>> origin/widget_gamification
 
     <string name="email_feedback_subject">Opinião e Comentários sobre a myDiabetes</string>
 
@@ -614,5 +631,75 @@
         </small>
         \n\nToda a informação disponibilizada será para utilização exclusivamente académica!\nA equipa do MyDiabetes irá usar esta informação de forma a melhorar o seu sistema de aconselhamento de forma a conseguir ajudar os seus utilizadores.\n<b>\nAceita os termos apresentados?</b></string>
     <string name="notification_channel_sync_description">Lembrete para envio dos dados para o gestor do projecto</string>
+<<<<<<< HEAD
+=======
+
+
+    <string-array name="period">
+        <item>7 days</item>
+        <item>14 days</item>
+        <item>30 days</item>
+        <item>90 days</item>
+    </string-array>
+
+
+    <string name="average">MÉDIA</string>
+    <string name="variability">VARIABILIDADE</string>
+    <string name="dailyGoal">OBJETIVO DIÁRIO</string>
+
+    <string name="congratsStreak">Parabéns! Streak incrementada</string>
+    <string name="streakGoalWon">por concluíres o objetivo diário</string>
+    <string name="startRecordsMessage">Hoje é um bom dia para fazer o objetivo diário!</string>
+    <string name="streakMessage1">Está numa streak de &#160;</string>
+    <string name="streakMessage2">&#160; a realizar o objetivo diário!</string>
+    <string name="leftDaysMessage1">Registe mais </string>
+    <string name="leftDaysMessage2">&#160; para concluir o objetivo de hoje</string>
+    <string name="congratsMessage1">Parabéns!</string>
+    <string name="congratsMessage2">&#160; O desafio diário foi concluído</string>
+
+    <plurals name="numberOfDays">
+        <item quantity="one">dia</item>
+        <item quantity="other">dias</item>
+    </plurals>
+
+    <plurals name="numberOfGlyc">
+        <item quantity="one">glicemia</item>
+        <item quantity="other">glicemias</item>
+    </plurals>
+
+    <string name="competitionTitleShow">Mostrar estatísticas comunidade</string>
+    <string name="competitionTitleHide">Esconder estatísticas comunidade</string>
+    <string name="missing_account">Necessita de ter uma conta para conseguir visualizar esta secção</string>
+    <string name="missing_account_create">Clique aqui para criar a sua conta!</string>
+    <string name="missing_network">Necessita de ter ligação à internet para conseguir visualizar esta secção</string>
+    <string name="points_title">PONTOS TOTAIS</string>
+    <string name="streak_title">MELHOR STREAK</string>
+    <!--
+    <string name="comp_title">Comparando com outros utilizadores, tem:</string>
+    <string name="comp_subtitle">(Baseado nos valores da última semana)</string>
+    -->
+    <string name="comp_title">Baseado nos valores da última semana, tem:</string>
+    <string name="comp_subtitle">(As estatísticas renovam-se na próxima segunda)</string>
+    <string name="global_first">Mais que &#160;</string>
+    <string name="week_points">Mais pontos que &#160;</string>
+    <string name="week_streak">Maior streak que &#160;</string>
+    <string name="week_glycaemia">Melhores valores glicémicos que &#160;</string>
+    <string name="week_hyperhypo">Menos hypers/hypos que &#160;</string>
+    <string name="global_week_second">% das pessoas</string>
+
+    <string name="healthBadgeWon">Ganhou uma medalha de Saúde</string>
+    <string name="beginner_bronze_health">Mantém a média glicémica abaixo de 154 (1 semana)</string>
+    <string name="medium_bronze_health">Mantém a média glicémica abaixo de 154 (2 semana)</string>
+    <string name="advanced_bronze_health">Mantém a média glicémica abaixo de 154 (4 semana)</string>
+
+    <string name="beginner_silver_health">Mantém a variabilide abaixo de 36% (1 semana)</string>
+    <string name="medium_silver_health">Mantém a variabilide abaixo de 36% (2 semana)</string>
+    <string name="advanced_silver_health">Mantém a variabilide abaixo de 36% (4 semana)</string>
+
+    <string name="beginner_gold_health">Mantém o tempo no alvo acima de 65% (1 semana)</string>
+    <string name="medium_gold_health">Mantém o tempo no alvo acima de 65% (2 semana)</string>
+    <string name="advanced_gold_health">Mantém o tempo no alvo acima de 65% (4 semana)</string>
+
+>>>>>>> origin/widget_gamification
 
 </resources>

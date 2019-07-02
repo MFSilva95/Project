@@ -60,6 +60,7 @@ import java.util.Locale;
 public class widget extends AppWidgetProvider {
 
     private static final String FROM_WIDGET = "FROM_WIDGET";
+    private static final String FROM_WIDGET_TO_LOGBOOK = "FROM_WIDGET_TO_LOGBOOK";
     private static final int WIDGET_HEIGHT = 400;
     private static final int WIDTH_PADDING = 0;
     private static final int N_REG = 5;
@@ -79,8 +80,12 @@ public class widget extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.addReg, pendingIntent);
 
+        Bundle bundle_logbook = new Bundle();
+        bundle_logbook.putString(FROM_WIDGET_TO_LOGBOOK,FROM_WIDGET_TO_LOGBOOK);
+
         // call logbook activity after widget click
-        Intent intent2 = new Intent(context, LogbookChartList.class);
+        Intent intent2 = new Intent(context, Home.class);
+        intent2.putExtras(bundle_logbook);
         PendingIntent pendingIntent2 = PendingIntent.getActivity(context, 0, intent2, PendingIntent.FLAG_CANCEL_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.widget_info_text, pendingIntent2);
 

@@ -66,6 +66,7 @@ public class DB_Write {
 	public void MyData_Save(UserInfo obj) {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM UserInfo WHERE Id=" + obj.getId(), null);
 		ContentValues contentValues =obj.getContentValues(this.myContext);
+		System.out.println("CONTENTVALUES: "+contentValues);
 		if (cursor.getCount() == 1) {
 			cursor.moveToFirst();
 			myDB.update("UserInfo", contentValues, "Id=" + Integer.parseInt(cursor.getString(0)), null);
@@ -164,7 +165,7 @@ public class DB_Write {
         if(obj.getBG_target()!=-1){
             toUpdate.put("Target_BG", obj.getBG_target());
         }
-
+		Log.i("cwnA", "Glycemia_Update: "+toUpdate.toString());
 		myDB.update("Reg_BloodGlucose", toUpdate, "Id=" + obj.getId(), null);
 
 		Log.d("Update", "Reg_BloodGlucose");
@@ -726,6 +727,7 @@ public class DB_Write {
 	}
 
 	public void Badge_Save(BadgeRec badge) {
+		System.out.println("BADGE_SAVE: "+badge);
 		ContentValues toInsert = new ContentValues();
 		String datetime = DateUtils.formatToDb(badge.getDateTime());
 		toInsert.put("Id_User", badge.getIdUser());

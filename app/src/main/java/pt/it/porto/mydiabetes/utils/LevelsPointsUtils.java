@@ -102,7 +102,6 @@ public class LevelsPointsUtils {
             newPointRec.setValue(points);
             newPointRec.setOrigin(origin);
             dbwrite.Point_Save(newPointRec);
-
         }
         if((userPoints + points) < levels[index-1]){
             DB_Write dbwrite = new DB_Write(context);
@@ -119,6 +118,4 @@ public class LevelsPointsUtils {
         int points = db.getTotalPoints();
         return points;
     }
-
-
 }

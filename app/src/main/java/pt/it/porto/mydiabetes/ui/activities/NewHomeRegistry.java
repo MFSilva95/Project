@@ -56,6 +56,7 @@ import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Tag;
+import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
@@ -64,6 +65,7 @@ import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
+import pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.CarbsRegister_Input_Interface;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.GlycaemiaRegister_Input_Interface;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.InsuRegister_Input_Interface;
@@ -161,7 +163,9 @@ public class NewHomeRegistry extends BaseActivity{
 
     private boolean isRecordUpdate = false;
 
-
+    public static boolean winBadge = false;
+    public static boolean winDaily = false;
+    public static boolean winStreak = false;
 
     @Override
     public void finishAfterTransition() {
@@ -219,6 +223,7 @@ public class NewHomeRegistry extends BaseActivity{
         outState.putStringArrayList(ARG_BUTTONS_DELETE_LIST, delete_buttons);
         outState.putString(ARG_CALENDAR, date);
 
+<<<<<<< HEAD
         spinner = findViewById(R.id.tag_spinner);
 //        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { Tags should update?
 //            @Override
@@ -235,6 +240,9 @@ public class NewHomeRegistry extends BaseActivity{
 //
 //        });
 
+=======
+        spinner = (Spinner) findViewById(R.id.tag_spinner);
+>>>>>>> origin/widget_gamification
         int idTag = (spinner.getSelectedItemPosition());//rdb.Tag_GetIdByName(tag);
 
         outState.putParcelable(ARG_BLOOD_GLUCOSE, glycemiaData);
@@ -474,6 +482,7 @@ public class NewHomeRegistry extends BaseActivity{
                         }else{
                             glycemiaData.setIdNote(-1);
                         }
+<<<<<<< HEAD
                         if (glycemiaData.getId()!=-1) {
                             reg.Glycemia_Update(glycemiaData);
                         } else {
@@ -511,6 +520,16 @@ public class NewHomeRegistry extends BaseActivity{
                         reg.Record_Update_Note(recordId,noteData.getId());
                     }
                     break;
+=======
+                        break;
+                }
+
+
+            }catch (Exception e){
+                rdb.close();
+                reg.close();
+                throw e;
+>>>>>>> origin/widget_gamification
             }
         }
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
@@ -600,6 +619,7 @@ public class NewHomeRegistry extends BaseActivity{
                             }
                             carbsData.setId(reg.Carbs_Save(carbsData));
                             reg.Record_Update_Carbs(recordId, carbsData.getId());
+
                         }
                         break;
                     case GLICAEMIA:
@@ -615,6 +635,9 @@ public class NewHomeRegistry extends BaseActivity{
                             }
                             glycemiaData.setId(reg.Glycemia_Save(glycemiaData));
                             reg.Record_Update_Glycaemia(recordId, glycemiaData.getId());
+                            if (rdb.getGlyRecordsNumberByDay(0) == 6) {
+                                winStreak = true;
+                            }
                         }
                         break;
                     case INSULIN:
@@ -645,8 +668,14 @@ public class NewHomeRegistry extends BaseActivity{
             }
         }
 
+<<<<<<< HEAD
         BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
         BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
+=======
+        Log.i(TAG, "validateInfo_Save: BEGIN");
+        winBadge = BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
+        winDaily = BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
+>>>>>>> origin/widget_gamification
         LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log", rdb);//bug here
         rdb.close();
 
@@ -661,6 +690,7 @@ public class NewHomeRegistry extends BaseActivity{
         addContent(noteRegisterInputInterface);
         buttons.add(0,NOTE);
     }
+
     private void insertGlicMenu(){
         /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
                     if(newAdvice!=null){

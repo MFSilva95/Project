@@ -24,6 +24,8 @@ public class UserInfo {
 	private double height;
 	private String lastUpdate;
 	private int bg_target_Factor;
+	private int currStreak;
+	private int maxStreak;
 
 	public UserInfo(Cursor cursor) {
 		if (cursor.getCount() == 0) {
@@ -53,9 +55,13 @@ public class UserInfo {
 		lastUpdate = cursor.getString(10);
 		//Glicaemia target
 		bg_target_Factor = cursor.getInt(11);
+		// Current Streak
+		currStreak = cursor.getInt(12);
+		// Max Streak
+		maxStreak = cursor.getInt(13);
 	}
 
-	public UserInfo(int id, String username, int diabetesType, int insulinRatio, int carbsRatio, int lowerRange, int higherRange, String birthday, int gender, double height, String lastedit, int bg_t) {
+	public UserInfo(int id, String username, int diabetesType, int insulinRatio, int carbsRatio, int lowerRange, int higherRange, String birthday, int gender, double height, String lastedit, int bg_t, int currStreak, int maxStreak) {
 		this.id = id;
 		this.username = username;
 		this.diabetesType = diabetesType;
@@ -68,6 +74,8 @@ public class UserInfo {
 		this.height = height;
 		this.lastUpdate = lastedit;
 		this.bg_target_Factor = bg_t;
+		this.currStreak = currStreak;
+		this.maxStreak = maxStreak;
 	}
 
 	public int getId() {
@@ -183,6 +191,20 @@ public class UserInfo {
 		return lastUpdate;
 	}
 
+	public int getCurrentStreak() {
+		return this.currStreak;
+	}
+
+	public void setCurrentStreak(int currStreak) { this.currStreak = currStreak; }
+
+	public int getMaxStreak() {
+		return this.maxStreak;
+	}
+
+	public void setMaxStreak(int maxStreak) {
+		this.maxStreak = maxStreak;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -227,6 +249,12 @@ public class UserInfo {
 		if(bg_target_Factor != userInfo.bg_target_Factor){
 			return false;
 		}
+		if (currStreak != userInfo.currStreak) {
+			return false;
+		}
+		if (maxStreak != userInfo.maxStreak) {
+			return false;
+		}
 		return lastUpdate.equals(userInfo.lastUpdate);
 
 	}
@@ -245,8 +273,9 @@ public class UserInfo {
 		SimpleDateFormat now = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		contentValues.put("DateTimeUpdate", now.format(Calendar.getInstance().getTime()));
 		contentValues.put("BG_Target", getTG());
+		contentValues.put("CurrStreak", getCurrentStreak());
+		contentValues.put("MaxStreak", getMaxStreak());
 		//contentValues.put("DateTimeUpdate", now.format("%Y-%m-%d %H:%M:%S"));
 		return contentValues;
 	}
-
 }

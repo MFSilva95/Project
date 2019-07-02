@@ -952,7 +952,7 @@ public class DB_Read {
 				tmp.setIdUser(cursor.getInt(1));
 				tmp.setValue(cursor.getInt(2));
 				tmp.setDateTime(cursor.getString(3));
-				tmp.setObjective(cursor.getInt(6));
+				tmp.setObjective(cursor.getInt(6)	);
 				exs.add(tmp);
 
 				cursor.moveToNext();
@@ -2294,7 +2294,7 @@ public class DB_Read {
 		String now = DateUtils.getFormattedDate(Calendar.getInstance());
 		LinkedList<BadgeRec> non_daily = Badges_GetAll_NONDAILY();
 		LinkedList<BadgeRec> current_daily = getAllDailyBadgesByDate(now);
-
+		System.out.println("BADGES_GEALL: "+non_daily);
 		non_daily.addAll(current_daily);
 		return non_daily;
 
@@ -2907,31 +2907,6 @@ public class DB_Read {
         return sqlCommand;
     }
 
-    //Get last day registers for each register parameter
-	public Integer[] getLastDayNumberOfRecords() {
-		Integer[] nRecords = new Integer[8];
-		int i=0;
-		while (i<8) {
-			Cursor cursor = null;
-			if (i==0) cursor = myDB.rawQuery("SELECT * FROM Reg_CarboHydrate WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
-			if (i==1) cursor = myDB.rawQuery("SELECT * FROM Reg_Insulin WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
-			if (i==2) cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
-			if (i==3) cursor = myDB.rawQuery("SELECT * FROM Reg_Exercise WHERE StartDateTime > DateTime('now','start of day','-24 HOURS') AND StartDateTime < DateTime('now','start of day');", null);
-			if (i==4) cursor = myDB.rawQuery("SELECT * FROM Reg_Disease WHERE StartDate > DateTime('now','start of day','-24 HOURS') AND StartDate < DateTime('now','start of day');", null);
-			if (i==5) cursor = myDB.rawQuery("SELECT * FROM Reg_Weight WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
-			if (i==6) cursor = myDB.rawQuery("SELECT * FROM Reg_BloodPressure WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
-			if (i==7) cursor = myDB.rawQuery("SELECT * FROM Reg_Cholesterol WHERE DateTime > DateTime('now','start of day','-24 HOURS') AND DateTime < DateTime('now','start of day');", null);
-
-			if (cursor.getCount() > 0) {
-				nRecords[i] = cursor.getCount();
-			}
-			else nRecords[i] = 0;
-			cursor.close();
-			i++;
-		}
-		return nRecords;
-	}
-
 	public ArrayList<Integer> getLastGlycaemias() {
 		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_BloodGlucose WHERE DateTime > DateTime('now','start of day') AND DateTime < DateTime('now','start of day','+24 HOURS');", null);
 		ArrayList<Integer> glycemiaList = new ArrayList<>();
@@ -2950,5 +2925,139 @@ public class DB_Read {
 			cursor.close();
 			return glycemiaList;
 		}
+	}
+
+	public int getGlicoRegNumber() {
+		Cursor cursor = myDB.rawQuery("SELECT Count(*) from Reg_BloodGlucose", null);
+		return cursor.getCount();
+	}
+
+
+	// (Rui Carvalho) Get glycemia quality values for the current or the past seven days
+	public ArrayList<Integer> getPersonalInfo(int index) {
+		ArrayList<Integer> personalInfo = new ArrayList<>();
+		Cursor cursor = null;
+		//index is used to obtain the values from the current day or last week, where 0 represent today and 1 represent the last week values
+
+		// get today values
+		if (index == 0) {
+			cursor = myDB.rawQuery("SELECT sub.a, AVG((today.Value - sub.a) * (today.Value - sub.a)) as var, hypo.hypoglycemia, hyper.hyperglycemia From Reg_BloodGlucose," +
+					"(SELECT * from Reg_BloodGlucose Where Reg_BloodGlucose.DateTime >= DateTime('now','localtime','start of day') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day','+1 days')) AS today," +
+					"(SELECT AVG(Value) as a From Reg_BloodGlucose Where Reg_BloodGlucose.DateTime >= DateTime('now','start of day') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day','+1 days')) AS sub," +
+					"(SELECT Count(*) as hypoglycemia From Reg_BloodGlucose Where Reg_BloodGlucose.Value < 70 and Reg_BloodGlucose.DateTime >= DateTime('now','localtime','start of day') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day','+24 hours')) as hypo," +
+					"(SELECT Count(*) as hyperglycemia From Reg_BloodGlucose Where Reg_BloodGlucose.Value > 180 and Reg_BloodGlucose.DateTime >= DateTime('now','localtime','start of day') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day','+24 hours')) as hyper", null);
+		}
+		// get last week values
+		if (index == 1) {
+			cursor = myDB.rawQuery("SELECT sub.a, AVG((today.Value - sub.a) * (today.Value - sub.a)) as var, hypo.hypoglycemia, hyper.hyperglycemia From Reg_BloodGlucose," +
+					"(SELECT * from Reg_BloodGlucose Where Reg_BloodGlucose.DateTime >= DateTime('now','localtime','start of day','-7 days') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day')) AS today," +
+					"(SELECT AVG(Value) as a From Reg_BloodGlucose Where Reg_BloodGlucose.DateTime >= DateTime('now','start of day','-7 days') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day')) AS sub," +
+					"(SELECT Count(*) as hypoglycemia From Reg_BloodGlucose Where Reg_BloodGlucose.Value < 70 and Reg_BloodGlucose.DateTime >= DateTime('now','localtime','start of day','-7 days') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day')) as hypo," +
+					"(SELECT Count(*) as hyperglycemia From Reg_BloodGlucose Where Reg_BloodGlucose.Value > 180 and Reg_BloodGlucose.DateTime >= DateTime('now','localtime','start of day','-7 days') AND Reg_BloodGlucose.DateTime < DateTime('now','localtime','start of day')) as hyper", null);
+		}
+
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			if (cursor.getString(0) != null) {
+				personalInfo.add(cursor.getInt(0));
+				personalInfo.add((int) (Math.sqrt(cursor.getDouble(1))));
+				personalInfo.add(cursor.getInt(2));
+				personalInfo.add(cursor.getInt(3));
+			}
+			cursor.close();
+			return personalInfo;
+		}
+
+		else {
+			cursor.close();
+			personalInfo = null;
+			return personalInfo;
+		}
+	}
+
+	// (Rui Carvalho) Number of glycaemia records by day
+	public int getGlyRecordsNumberByDay(int date) {
+		Cursor cursor;
+		if (date == 0) {
+			cursor = myDB.rawQuery("select Count(*) from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day') and DateTime < DateTime('now','localtime','start of day','+1 days')", null);
+		}
+		else {
+			int date2 = date - 1;
+			cursor = myDB.rawQuery("select Count(*) from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day','-" + date + " days') and DateTime < DateTime('now','localtime','start of day','-" + date2 + " days')", null);
+		}
+		cursor.moveToFirst();
+		return cursor.getInt(0);
+	}
+
+	public ArrayList<Integer> getXDaysGlycAverageAndVariability(int days) {
+		ArrayList<Integer> averageAndVariability = new ArrayList<>();
+		// validate if every day on "days" range has at least 3 blood glucose records
+		for (int i=1; i<=days; i++) {
+			if (getGlyRecordsNumberByDay(i) >= 6) {
+
+			} else {
+				averageAndVariability.add(-1);
+				averageAndVariability.add(-1);
+				return averageAndVariability;
+			}
+		}
+
+		Cursor cursor = myDB.rawQuery("SELECT average.a, AVG((val.Value - average.a) * (val.Value - average.a)) as var From Reg_BloodGlucose," +
+				"(SELECT * from Reg_BloodGlucose Where DateTime >= DateTime('now','localtime','start of day','-"+days+" days') AND DateTime < DateTime('now','localtime','start of day')) AS val," +
+				"(SELECT AVG(Value) as a From Reg_BloodGlucose Where DateTime >= DateTime('now','start of day','-"+days+" days') AND DateTime < DateTime('now','localtime','start of day')) AS average", null);
+		cursor.moveToFirst();
+
+		int mean = cursor.getInt(0);
+		int sd = (int) (Math.sqrt(cursor.getDouble(1)));
+		int cv = (int) (sd*100/mean);
+		averageAndVariability.add(mean);
+		averageAndVariability.add(cv);
+		return averageAndVariability;
+	}
+
+	public int getXDaysTimeInRange(int days, int hypo, int hyper) {
+		// validate if every day on "days" range has at least 3 blood glucose records
+		for (int i=1; i<=days; i++) {
+			if (getGlyRecordsNumberByDay(i) >= 6) {
+
+			} else {
+				return -1;
+			}
+		}
+		Cursor cursor = myDB.rawQuery("select a, b from Reg_BloodGlucose," +
+				"(select count(*) as a from Reg_BloodGlucose where Value >= "+hypo+" and Value <= "+hyper+" and DateTime >= DateTime('now','localtime','start of day','-"+days+" days') and DateTime < DateTime('now','localtime','start of day')) as a,"+
+				"(select count(*) as b from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day','-"+days+" days') and DateTime < DateTime('now','localtime','start of day')) as b", null);
+		cursor.moveToFirst();
+
+		if (cursor.getInt(3) > 0) {
+			return (int) ((cursor.getInt(0)/cursor.getInt(1))*100);
+		} else {
+			return -1;
+		}
+	}
+
+	public int getRecordsNumbersByDate(long startDays, long endDays) {
+		Cursor cursor = myDB.rawQuery("select Count(*) from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day','-" + startDays + " days') and DateTime < DateTime('now','localtime','start of day','-" + endDays + " days')", null);
+		cursor.moveToFirst();
+		System.out.println("Value: "+cursor.getInt(0));
+		return cursor.getInt(0);
+	}
+
+	//at least two health badges needed in beginner to change difficulty to medium
+	public boolean getBeginnerHealthBadgesWon() {
+		Cursor cursor = myDB.rawQuery("select * from Badges where Type = 'beginner' and Name = 'health'", null);
+		int nMedals = cursor.getCount();
+		System.out.println("HEALTH BADGES: "+cursor.getCount());
+		if (nMedals >= 2) return true;
+		else return false;
+	}
+
+	//at least two health badges needed in medium to change difficulty to advanced
+	public boolean getMediumHealthBadgesWon() {
+		Cursor cursor = myDB.rawQuery("select * from Badges where Type = 'medium' and Name = 'health'", null);
+		int nMedals = cursor.getCount();
+		System.out.println("HEALTH BADGES: "+cursor.getCount());
+		if (nMedals >= 2) return true;
+		else return false;
 	}
 }

@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.database.DB_Read;
+import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.ui.fragments.badges.BadgeBoard;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
@@ -90,7 +92,7 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
         HashMap<String, BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective> badgeRow = (HashMap<String, BadgeBoard.BadgeGlobalObjective.BadgeSingleObjective>) getChild(listPosition, expandedListPosition);
         LayoutInflater layoutInflater = (LayoutInflater) con.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if (listPosition>=2) {
+        if (listPosition>2) {
             convertView = layoutInflater.inflate(R.layout.badge_display_row_advanced, null);
         }else{
             convertView = layoutInflater.inflate(R.layout.badge_display_row, null);
@@ -149,6 +151,7 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
 
             badgeTextHolder.setText(con.getResources().getIdentifier(obj.getMyStringPath(),"string", con.getPackageName()));
             if(!obj.isLocked()){
+                System.out.println("OBJ: "+obj.getMyBackgroundPath());
                 badgeBackGroundHolder.setImageResource(con.getResources().getIdentifier(obj.getMyBackgroundPath(),"drawable", con.getPackageName()));
                 badgeIcon.setImageResource(con.getResources().getIdentifier(obj.getMyIconPath(),"drawable", con.getPackageName()));
             }
@@ -200,7 +203,6 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
 
             CardView card = (CardView) convertView.findViewById(R.id.title_background);
 
-
             text = con.getString(con.getResources().getIdentifier(expandableListTitle.get(listPosition),"string", con.getPackageName()));
             listTitleTextView.setTypeface(null, Typeface.BOLD);
             listTitleTextView.setText(text);
@@ -229,11 +231,15 @@ public class BadgeListAdapter extends BaseExpandableListAdapter {
     }
 
     private boolean isUnlocked(int playerLvl, String diff) {
+        DB_Read db = new DB_Read(con);
+        boolean beginnerVerification = db.getBeginnerHealthBadgesWon();
+        boolean mediumVerification = db.getMediumHealthBadgesWon();
+        db.close();
         switch (diff){
             case "medium":
-                return playerLvl > LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL;
+                return (playerLvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL) && beginnerVerification;
             case "advanced":
-                return playerLvl > LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL;
+                return (playerLvl >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL) && mediumVerification;
         }
         return true;
     }
