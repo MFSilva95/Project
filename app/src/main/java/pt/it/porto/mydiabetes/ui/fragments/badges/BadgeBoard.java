@@ -258,7 +258,6 @@ public class BadgeBoard extends Fragment {
 
     public void unlock_medals(LinkedList<BadgeRec> unlockedBadgeList){
         for(BadgeRec badge:unlockedBadgeList){
-            //String TAG = "cenas";
             System.out.println("Unlock_medals:"+badge.getType()+" "+badge.getName()+" "+badge.getMedal());
             System.out.println("AllMedals: "+allMedals);
             //Log.i(TAG, "unlock_medals: "+badge.getType());
@@ -282,7 +281,6 @@ public class BadgeBoard extends Fragment {
             DB_Read read = new DB_Read(container.getContext());
             lvl = LevelsPointsUtils.getLevel(container.getContext(), read);
             badgeList = read.Badges_GetAll();
-            System.out.println("BADGELIST: "+badgeList);
             read.close();
             if(badgeList!=null){
                 unlock_medals(badgeList);

@@ -12,7 +12,7 @@
         android:id="@+id/hideShowCompetition"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white_background"
+        android:background="@color/primary_light"
         android:text="@string/competitionTitleShow"/>
 
     <RelativeLayout

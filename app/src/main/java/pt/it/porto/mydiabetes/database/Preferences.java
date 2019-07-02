@@ -41,7 +41,6 @@ public class Preferences {
 
 
 	public static SharedPreferences getPreferences(Context context) {
-	    System.out.println("Contextoooo: "+context);
 		return context.getSharedPreferences(PREFERENCES, Context.MODE_PRIVATE);
 	}
 
@@ -142,9 +141,9 @@ public class Preferences {
 
 		byte[] pass = input.doFinal(password.getBytes("UTF-8"));
 		getPreferences(context).edit()
-							   .putString(USERNAME, username)
-							   .putString(PASSWORD, Base64.encodeToString(pass, Base64.DEFAULT))
-							   .apply();
+				.putString(USERNAME, username)
+				.putString(PASSWORD, Base64.encodeToString(pass, Base64.DEFAULT))
+				.apply();
 		return true;
 	}
 
@@ -211,11 +210,11 @@ public class Preferences {
 			end.add(Calendar.YEAR, 2);
 
 			KeyPairGeneratorSpec spec = new KeyPairGeneratorSpec.Builder(context).setAlias(KEYSTORE_PK_ALIAS)
-																				 .setSubject(new X500Principal("CN=MyDiabetes, O=MyDiabetes"))
-																				 .setSerialNumber(BigInteger.ONE)
-																				 .setStartDate(start.getTime())
-																				 .setEndDate(end.getTime())
-																				 .build();
+					.setSubject(new X500Principal("CN=MyDiabetes, O=MyDiabetes"))
+					.setSerialNumber(BigInteger.ONE)
+					.setStartDate(start.getTime())
+					.setEndDate(end.getTime())
+					.build();
 //			KeyGenParameterSpec  spec = new KeyGenParameterSpec.Builder(KEYSTORE_PK_ALIAS, KeyProperties.PURPOSE_DECRYPT)
 //					.setCertificateSubject(new X500Principal("CN=MyDiabetes, O=MyDiabetes"))
 //					.setCertificateSerialNumber(BigInteger.ONE)

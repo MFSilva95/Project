@@ -157,6 +157,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
+                        android:textColor="@color/green"
                         android:layout_marginTop="20dp"
                         android:text="@string/n_a"
                         android:textSize="25sp" />

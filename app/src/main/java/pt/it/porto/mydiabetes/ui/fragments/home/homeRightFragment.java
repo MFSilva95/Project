@@ -22,6 +22,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -99,6 +100,8 @@ public class homeRightFragment extends Fragment {
     private TextView streakText;
     private TextView streak_days;
     private TextView records_left;
+    private RelativeLayout competitionSection;
+    private Button hideShowCompetition;
     public static LinearLayout missingAccount;
     public static LinearLayout missingNetwork;
     private LinearLayout startRecordsMessage;
@@ -216,7 +219,7 @@ public class homeRightFragment extends Fragment {
         }
 
 
-        if( lvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
+        if(lvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
             mediumBadge = (ImageView) layout.findViewById(R.id.mediumBadge);
             mediumBadge.setImageResource(R.drawable.medal_gold_medium);
             mediumBadgesText = (TextView) layout.findViewById(R.id.mediumBadgesText);
@@ -235,7 +238,6 @@ public class homeRightFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -257,10 +259,10 @@ public class homeRightFragment extends Fragment {
 
         achievementView = layout.findViewById(R.id.achievement_view);
 
-        final RelativeLayout competitionSection = (RelativeLayout) layout.findViewById(R.id.competitionSection);
+        competitionSection = (RelativeLayout) layout.findViewById(R.id.competitionSection);
         missingAccount = (LinearLayout) layout.findViewById(R.id.missingAccount);
         missingNetwork = (LinearLayout) layout.findViewById(R.id.missingNetwork);
-        final Button hideShowCompetition = (Button) layout.findViewById(R.id.hideShowCompetition);
+        hideShowCompetition = (Button) layout.findViewById(R.id.hideShowCompetition);
 
         points_g = (TextView) layout.findViewById(R.id.points_g);
         streak_g = (TextView) layout.findViewById(R.id.streak_g);
@@ -342,11 +344,9 @@ public class homeRightFragment extends Fragment {
                     }
 
                     competitionSection.setVisibility(View.VISIBLE);
-                    hideShowCompetition.setBackgroundColor(getResources().getColor(R.color.primary_light));
                     hideShowCompetition.setText(getContext().getString(R.string.competitionTitleHide));
                 } else {
                     competitionSection.setVisibility(View.GONE);
-                    hideShowCompetition.setBackgroundColor(getResources().getColor(R.color.white_background));
                     hideShowCompetition.setText(getContext().getString(R.string.competitionTitleShow));
                 }
             }
@@ -396,6 +396,14 @@ public class homeRightFragment extends Fragment {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        System.out.println("ENTRA: ");
+        competitionSection.setVisibility(View.GONE);
+        hideShowCompetition.setText(getContext().getString(R.string.competitionTitleShow));
     }
 
     @Override
@@ -632,7 +640,6 @@ public class homeRightFragment extends Fragment {
 
         int streakDays = myData.getCurrentStreak();
         int maxStreak = myData.getMaxStreak();
-        System.out.println("Values: "+streakDays+" "+maxStreak);
 
         // reset streak if yesterday didn't complete daily goal
         if (yesterdayRecords < recordGoal) {
@@ -677,10 +684,10 @@ public class homeRightFragment extends Fragment {
             streakText.setVisibility(View.VISIBLE);
             streakText.setText("x"+streakDays);
         }
+        dailyRecordNumber.setText(todayRecords+" / "+recordGoal);
     }
 
     public static boolean isTimeToRankUpdate(Context context) {
-        System.out.println("Contexto3: "+context);
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Calendar c1 = Calendar.getInstance();
         Date today = c1.getTime();

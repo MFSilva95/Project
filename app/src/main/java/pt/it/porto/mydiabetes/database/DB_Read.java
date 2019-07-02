@@ -2947,7 +2947,7 @@ public class DB_Read {
 		ArrayList<Integer> averageAndVariability = new ArrayList<>();
 		// validate if every day on "days" range has at least 3 blood glucose records
 		for (int i=1; i<=days; i++) {
-			if (getGlyRecordsNumberByDay(i) >= 3) {
+			if (getGlyRecordsNumberByDay(i) >= 6) {
 
 			} else {
 				averageAndVariability.add(-1);
@@ -2972,7 +2972,7 @@ public class DB_Read {
 	public int getXDaysTimeInRange(int days, int hypo, int hyper) {
 		// validate if every day on "days" range has at least 3 blood glucose records
 		for (int i=1; i<=days; i++) {
-			if (getGlyRecordsNumberByDay(i) >= 3) {
+			if (getGlyRecordsNumberByDay(i) >= 6) {
 
 			} else {
 				return -1;
@@ -2983,7 +2983,7 @@ public class DB_Read {
 				"(select count(*) as b from Reg_BloodGlucose where DateTime >= DateTime('now','localtime','start of day','-"+days+" days') and DateTime < DateTime('now','localtime','start of day')) as b", null);
 		cursor.moveToFirst();
 
-		if (cursor.getInt(1) > 0) {
+		if (cursor.getInt(3) > 0) {
 			return (int) ((cursor.getInt(0)/cursor.getInt(1))*100);
 		} else {
 			return -1;
@@ -2995,5 +2995,23 @@ public class DB_Read {
 		cursor.moveToFirst();
 		System.out.println("Value: "+cursor.getInt(0));
 		return cursor.getInt(0);
+	}
+
+	//at least two health badges needed in beginner to change difficulty to medium
+	public boolean getBeginnerHealthBadgesWon() {
+		Cursor cursor = myDB.rawQuery("select * from Badges where Type = 'beginner' and Name = 'health'", null);
+		int nMedals = cursor.getCount();
+		System.out.println("HEALTH BADGES: "+cursor.getCount());
+		if (nMedals >= 2) return true;
+		else return false;
+	}
+
+	//at least two health badges needed in medium to change difficulty to advanced
+	public boolean getMediumHealthBadgesWon() {
+		Cursor cursor = myDB.rawQuery("select * from Badges where Type = 'medium' and Name = 'health'", null);
+		int nMedals = cursor.getCount();
+		System.out.println("HEALTH BADGES: "+cursor.getCount());
+		if (nMedals >= 2) return true;
+		else return false;
 	}
 }

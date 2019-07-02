@@ -504,8 +504,8 @@
     <string name="welcome_text">Bem-Vindo à myDiabetes</string>
 
     <string name="new_insulin_record">Novo Registo de Insulina</string>
-    <string name="medium_locked">Médio (Desbloqueável a nível 10)</string>
-    <string name="advanced_locked">Avançado (Desbloqueável a nível 30)</string>
+    <string name="medium_locked">Médio (Desbloqueável a nível 10 + 2 medalhas de saúde)</string>
+    <string name="advanced_locked">Avançado (Desbloqueável a nível 30 + 2 medalhas de saúde)</string>
     <string name="received_a_medal">Recebeu uma Medalha</string>
     <string name="received_a_daily_medal">Recebeu uma Medalha Diária</string>
     <string name="new_note">Nova anotação</string>
@@ -516,9 +516,10 @@
 
 
     <string name="badge_help_dialog_title">Como ganhar medalhas?</string>
-    <string name="badge_help_dialog_desc">Para ganhar medalhas deve completar os registos necessários a cada. O nível intermédio e avançado são desbloqueáveis a níveis 10 e 30 respetivamente.
-        Por cada registo inserido ganha 100 pontos e por medalha 200. Junte pontos para subir de nível.</string>
-
+    <string name="badge_help_dialog_desc">Para ganhar medalhas deve completar os registos necessários a cada. Por cada registo inserido ganha 100 pontos e por medalha 200. Junte pontos para subir de nível.
+        O nível intermédio e avançado são desbloqueáveis a níveis 10 e 30 respetivamente, e deve ter pelo menos duas medalhas de saúde conquistadas do presente nível.
+        As medalhas de saúde são:\n\nMédia glicémica - Ter a média dos valores glicémicos abaixo de 154mg/dL, durante um determinado período de tempo\n\nVariabilidade - A discrepância dos valores glicémicos não pode fazer com que a variabilidade seja superior a 36%, durante um determinado período de tempo\n\nTempo no alvo - Pelo menos 65% dos valores glicémicos têm que estar entre 70 e 180mg/dL, durante um determinado período de tempo
+    </string>
 
     <string name="email_feedback_subject">Opinião e Comentários sobre a myDiabetes</string>
 
@@ -644,10 +645,14 @@
     <string name="missing_account">Necessita de ter uma conta para conseguir visualizar esta secção</string>
     <string name="missing_account_create">Clique aqui para criar a sua conta!</string>
     <string name="missing_network">Necessita de ter ligação à internet para conseguir visualizar esta secção</string>
-    <string name="points_title">PONTOS</string>
+    <string name="points_title">PONTOS TOTAIS</string>
     <string name="streak_title">MELHOR STREAK</string>
+    <!--
     <string name="comp_title">Comparando com outros utilizadores, tem:</string>
     <string name="comp_subtitle">(Baseado nos valores da última semana)</string>
+    -->
+    <string name="comp_title">Baseado nos valores da última semana, tem:</string>
+    <string name="comp_subtitle">(As estatísticas renovam-se na próxima segunda)</string>
     <string name="global_first">Mais que &#160;</string>
     <string name="week_points">Mais pontos que &#160;</string>
     <string name="week_streak">Maior streak que &#160;</string>
@@ -664,9 +669,9 @@
     <string name="medium_silver_health">Mantém a variabilide abaixo de 36% (2 semana)</string>
     <string name="advanced_silver_health">Mantém a variabilide abaixo de 36% (4 semana)</string>
 
-    <string name="beginner_gold_health">Mantém o time in range acima de 65% (1 semana)</string>
-    <string name="medium_gold_health">Mantém o time in range acima de 65% (2 semana)</string>
-    <string name="advanced_gold_health">Mantém o time in range acima de 65% (4 semana)</string>
+    <string name="beginner_gold_health">Mantém o tempo no alvo acima de 65% (1 semana)</string>
+    <string name="medium_gold_health">Mantém o tempo no alvo acima de 65% (2 semana)</string>
+    <string name="advanced_gold_health">Mantém o tempo no alvo acima de 65% (4 semana)</string>
 
 
 </resources>

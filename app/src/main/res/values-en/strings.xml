@@ -497,8 +497,8 @@
 
     <string name="new_insulin_record">New Insulin Record</string>
     <string name="new_glycemia_objective">New Glucose Target</string>
-    <string name="medium_locked">Medium (Unlockable at level 10)</string>
-    <string name="advanced_locked">Advanced (Unlockable at level 30)</string>
+    <string name="medium_locked">Medium (Unlockable at level 10 + 2 health badges)</string>
+    <string name="advanced_locked">Advanced (Unlockable at level 30 + 2 health badges)</string>
     <string name="received_a_medal">Received a Medal</string>
     <string name="received_a_daily_medal">Received a Daily Medal</string>
     <string name="minutes">Minutes</string>
@@ -527,9 +527,10 @@
     <string name="badge_help_personal_dialog_desc">Glucose Average - It’s an overall measure of blood sugars over a period of time, in this case, daily\n\nVariability - represents the variability of the glucose values, the blood glucose oscillations that occur throughout the day\n\n\Streak - Consecutive days number of daily goals completed. The streak value will turn 0 if you do not complete a certain daily goal.\n\nDaily Goal - You should record at least 6 Glycaemias, daily. If you complete this objective, you will be awarded with 50 points multiplied by your streak value. You can and should aim to keep your streak to be awarded the maximum number of possible points. The objective streak value caps at the value 7, but can still be maintained.</string>
 
     <string name="badge_help_dialog_title">How to win Badges?</string>
-    <string name="badge_help_dialog_desc">To win Badges you must complete the required records for each. The intermediate and advanced levels are unlockable at levels 10 and 30 respectively.
-        For each record inserted gain 100 points and 200 per medal. Collect points to level up.</string>
-
+    <string name="badge_help_dialog_desc">To win Badges you must complete the required records for each. For each record inserted gain 100 points and 200 per badge. Collect points to level up.
+        The intermediate and advanced levels are unlockable at levels 10 and 30 respectively, and you need to have at least two health medals on the current difficulty.
+        The health badges are:\n\nAverage - Having the glycaemia values average under 154mg/dL, over a certain period of time\n\nVariability - The glycaemia values variation can not make variability be over 36%, over a certain period of time\n\nTime in range - Having at least 65% of glycaemia values between 70 and 180mg/dL, over a certain period of time
+    </string>
     <string name="email_feedback_subject">Opinion and Comments about myDiabetes</string>
 
     <string name="exit_dialog_title">Exit without saving</string>
@@ -665,10 +666,14 @@
     <string name="missing_account">You need to have an account to see this section</string>
     <string name="missing_account_create">Click here to create your account!</string>
     <string name="missing_network">You need to have a network connection to see this section</string>
-    <string name="points_title">POINTS</string>
+    <string name="points_title">TOTAL POINTS</string>
     <string name="streak_title">BEST STREAK</string>
+    <!--
     <string name="comp_title">Comparing with other users, you have:</string>
     <string name="comp_subtitle">(Based on last week values)</string>
+    -->
+    <string name="comp_title">Based on last week values, you have:</string>
+    <string name="comp_subtitle">(The statistics will be renewed on the next monday)</string>
     <string name="global_first">More than &#160;</string>
     <string name="week_points">More points than &#160;</string>
     <string name="week_streak">More streak than &#160;</string>
