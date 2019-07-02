@@ -223,26 +223,9 @@ public class NewHomeRegistry extends BaseActivity{
         outState.putStringArrayList(ARG_BUTTONS_DELETE_LIST, delete_buttons);
         outState.putString(ARG_CALENDAR, date);
 
-<<<<<<< HEAD
         spinner = findViewById(R.id.tag_spinner);
-//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() { Tags should update?
-//            @Override
-//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-//                if(buttons.contains(GLICAEMIA)){
-//                    glycaemiaRegisterInputInterface.updateObjective();
-//                }
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parentView) {
-//                // your code here
-//            }
-//
-//        });
 
-=======
-        spinner = (Spinner) findViewById(R.id.tag_spinner);
->>>>>>> origin/widget_gamification
+
         int idTag = (spinner.getSelectedItemPosition());//rdb.Tag_GetIdByName(tag);
 
         outState.putParcelable(ARG_BLOOD_GLUCOSE, glycemiaData);
@@ -482,7 +465,6 @@ public class NewHomeRegistry extends BaseActivity{
                         }else{
                             glycemiaData.setIdNote(-1);
                         }
-<<<<<<< HEAD
                         if (glycemiaData.getId()!=-1) {
                             reg.Glycemia_Update(glycemiaData);
                         } else {
@@ -520,16 +502,6 @@ public class NewHomeRegistry extends BaseActivity{
                         reg.Record_Update_Note(recordId,noteData.getId());
                     }
                     break;
-=======
-                        break;
-                }
-
-
-            }catch (Exception e){
-                rdb.close();
-                reg.close();
-                throw e;
->>>>>>> origin/widget_gamification
             }
         }
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
@@ -668,14 +640,9 @@ public class NewHomeRegistry extends BaseActivity{
             }
         }
 
-<<<<<<< HEAD
-        BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
-        BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
-=======
-        Log.i(TAG, "validateInfo_Save: BEGIN");
         winBadge = BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
         winDaily = BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
->>>>>>> origin/widget_gamification
+
         LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log", rdb);//bug here
         rdb.close();
 

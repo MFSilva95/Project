@@ -296,16 +296,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         holder.hora.setText(currentView.getFormattedTime());
         if(currentView.getTag_id()!=-1){
 
-<<<<<<< HEAD
             DB_Read rdb = new DB_Read(holder.background.getContext());
             ArrayList<Tag> all_tags = rdb.Tag_GetAll();
             rdb.close();
             holder.tag.setText(all_tags.get(currentView.getTag_id()-1).getName());
-=======
-            Resources res = holder.view.getContext().getResources(); //assuming in an activity for example, otherwise you can provide a context.
-            String[] dayTimes = res.getStringArray(R.array.daytimes);
-            holder.tag.setText(dayTimes[currentView.getTag_id()]);
->>>>>>> origin/widget_gamification
+
         }
         LinearLayout imageTitleHolder = holder.view.findViewById(R.id.imageTitleHolder);
 

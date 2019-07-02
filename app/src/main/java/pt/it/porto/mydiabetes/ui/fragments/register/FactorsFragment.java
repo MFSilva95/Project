@@ -250,7 +250,6 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		File profile_img = new File(Environment.getExternalStorageDirectory().toString()+"/MyDiabetes/"+ userImgFileName+".jpg");
 
 		DB_Read read = new DB_Read(getContext());
-<<<<<<< HEAD
 
 		boolean hasSensRatioData = read.hasSensData();
 		boolean hasCarbsRatioData = read.hasRatioData();
@@ -259,12 +258,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		if(profile_img.exists()){
 				BadgeUtils.addPhotoBadge(getContext(), read);
 		}
-=======
-		//if(profile_img.exists()){
-		//		BadgeUtils.addPhotoBadge(getContext(), read);
-		//}
 
->>>>>>> origin/widget_gamification
 
 
 		if (!hasCarbsRatioData){storage.initRatioSens(carbsR, "Ratio_Reg");}

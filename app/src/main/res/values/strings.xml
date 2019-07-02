@@ -527,18 +527,17 @@
         Deve fazer pelo menos 6 registos diários de glicemia. Se completar este objectivo irá receber 50 pontos, a multiplicar pela sua streak corrente. O valor a multiplicar tem um máximo de 7. Porém, pode e deve continuar a completar os objectivos diários para manter este valor e assim obter o máximo de pontos possiveis.</string>
 
 
-<<<<<<< HEAD
+
     <string name="meal_lipids_explain">A sua refeição contém um nível elevado de Lipidos. É esperado que o seu nível glicémico continue a subir nas próximas %1$d horas. No caso de usar bomba deve definir um bolus quadrado. No caso de usar \'caneta\' deve fazer a verificação do seu valor glicémico regularmente e se necessário, administrar insulina para corrigir o valor glicémico.</string>
 
 
     <string name="meal_lipids_description">Refeição rica em Lipidos</string>
-=======
+
     <string name="badge_help_dialog_title">Como ganhar medalhas?</string>
     <string name="badge_help_dialog_desc">Para ganhar medalhas deve completar os registos necessários a cada. Por cada registo inserido ganha 100 pontos e por medalha 200. Junte pontos para subir de nível.
         O nível intermédio e avançado são desbloqueáveis a níveis 10 e 30 respetivamente, e deve ter pelo menos duas medalhas de saúde conquistadas do presente nível.
         As medalhas de saúde são:\n\nMédia glicémica - Ter a média dos valores glicémicos abaixo de 154mg/dL, durante um determinado período de tempo\n\nVariabilidade - A discrepância dos valores glicémicos não pode fazer com que a variabilidade seja superior a 36%, durante um determinado período de tempo\n\nTempo no alvo - Pelo menos 65% dos valores glicémicos têm que estar entre 70 e 180mg/dL, durante um determinado período de tempo
     </string>
->>>>>>> origin/widget_gamification
 
     <string name="email_feedback_subject">Opinião e Comentários sobre a myDiabetes</string>
 
@@ -631,8 +630,7 @@
         </small>
         \n\nToda a informação disponibilizada será para utilização exclusivamente académica!\nA equipa do MyDiabetes irá usar esta informação de forma a melhorar o seu sistema de aconselhamento de forma a conseguir ajudar os seus utilizadores.\n<b>\nAceita os termos apresentados?</b></string>
     <string name="notification_channel_sync_description">Lembrete para envio dos dados para o gestor do projecto</string>
-<<<<<<< HEAD
-=======
+
 
 
     <string-array name="period">
@@ -700,6 +698,5 @@
     <string name="medium_gold_health">Mantém o tempo no alvo acima de 65% (2 semana)</string>
     <string name="advanced_gold_health">Mantém o tempo no alvo acima de 65% (4 semana)</string>
 
->>>>>>> origin/widget_gamification
 
 </resources>

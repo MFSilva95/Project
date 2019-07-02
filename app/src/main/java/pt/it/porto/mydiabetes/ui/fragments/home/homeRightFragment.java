@@ -92,8 +92,6 @@ public class homeRightFragment extends Fragment {
     private ImageView advancedBadge;
     private TextView advancedBadgesText;
     private ImageView currentBadge;
-<<<<<<< HEAD
-=======
 
     private ImageButton helpButtonPersonal;
     private TextView averageText;
@@ -121,7 +119,6 @@ public class homeRightFragment extends Fragment {
     public static TextView hyperhypo_w;
 
     private Dialog showDialog;
->>>>>>> origin/widget_gamification
 
     private Uri currentImageUri;
 
@@ -259,8 +256,7 @@ public class homeRightFragment extends Fragment {
         helpButtonPersonal = (ImageButton) layout.findViewById(R.id.helpButtonPersonal);
         CardView personalInfo = (CardView) layout.findViewById(R.id.personalInfo);
         CardView badgesInfo = (CardView) layout.findViewById(R.id.badgesInfo);
-<<<<<<< HEAD
-=======
+
         final TextView clickToCreateAccount = (TextView) layout.findViewById(R.id.clickToCreateAccount);
 
         achievementView = layout.findViewById(R.id.achievement_view);
@@ -276,7 +272,6 @@ public class homeRightFragment extends Fragment {
         streak_w = (TextView) layout.findViewById(R.id.streak_w);
         glycaemia_w = (TextView) layout.findViewById(R.id.glycaemia_w);
         hyperhypo_w = (TextView) layout.findViewById(R.id.hyperhypo_w);
->>>>>>> origin/widget_gamification
 
         personalInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -327,8 +322,6 @@ public class homeRightFragment extends Fragment {
             }
         });
 
-<<<<<<< HEAD
-=======
         hideShowCompetition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -370,7 +363,6 @@ public class homeRightFragment extends Fragment {
                 Dialog dialog = webSyncDialog.getUserDataPopUp(getContext(), -1, -1);
             }
         });
->>>>>>> origin/widget_gamification
         return layout;
     }
 
@@ -438,11 +430,9 @@ public class homeRightFragment extends Fragment {
         pointsText.setText(numberMedals_total);
         setMyDataFromDB(myData);
         updateMedals();
-<<<<<<< HEAD
-=======
+
         setPersonalInfo();
         setRankInfo(getContext());
->>>>>>> origin/widget_gamification
     }
 
     private void updateMedals() {
@@ -596,8 +586,6 @@ public class homeRightFragment extends Fragment {
         mCircleView.setImageBitmap(Bitmap.createScaledBitmap(bitmap, THUMBSIZE, THUMBSIZE, false));
 
     }
-<<<<<<< HEAD
-=======
 
     private void setPersonalInfo() {
 
@@ -809,5 +797,4 @@ public class homeRightFragment extends Fragment {
             homeRightFragment.hyperhypo_w.setText(R.string.n_a);
         }
     }
->>>>>>> origin/widget_gamification
 }
