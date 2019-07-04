@@ -1,6 +1,7 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -46,8 +47,11 @@ import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesContract;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
+import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.database.Usage;
+import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.charts.data.Logbook;
+import pt.it.porto.mydiabetes.ui.dialogs.RankWebSyncDialog;
 import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
 import pt.it.porto.mydiabetes.utils.DateUtils;
@@ -325,7 +329,64 @@ public class Home extends BaseActivity {
         }
 	}
 
-	private void goToImportExportActivity() {
+
+    public void ShowDialogMsg(String msg) {
+        new android.app.AlertDialog.Builder(this).setTitle(R.string.information).setMessage(msg).show();
+    }
+
+    final private int WEBVIEW = 332;
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Log.i("cenas", "onActivityResult: TESTE TESTE TESTE");
+
+        if (requestCode == WEBVIEW && resultCode == RESULT_OK) {
+            try {
+                ServerSync.getInstance(this).testCredentials(new ServerSync.ServerSyncListener() {
+                    @Override
+                    public void onSyncSuccessful() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ShowDialogMsg(getBaseContext().getString(R.string.upload_successful));
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onSyncUnSuccessful() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ShowDialogMsg(getBaseContext().getString(R.string.upload_failed));
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void noNetworkAvailable() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ShowDialogMsg(getBaseContext().getString(R.string.upload_failed));
+                            }
+                        });
+                    }
+                });
+            } catch (Exception e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ShowDialogMsg(getBaseContext().getString(R.string.upload_failed));
+                    }
+                });
+            }
+        }
+    }
+
+
+    private void goToImportExportActivity() {
 		//We've got the permission, now we can proceed further
 		Intent intent = new Intent(getApplicationContext(), SettingsImportExport.class);
 		startActivity(intent);

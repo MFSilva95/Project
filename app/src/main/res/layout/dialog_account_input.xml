@@ -42,14 +42,31 @@
         android:inputType="textPassword"
         android:maxLines="1"/>
 
+    <Button
+        android:id="@+id/login_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:background="@color/green_background"
+        android:text="LOGIN"/>
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="30dp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/green_background"></View>
     <Space
         android:layout_width="1dp"
         android:layout_height="30dp"/>
 
     <Button
-        android:id="@+id/webViewButton"
+        android:id="@+id/createNewAccountButton"
+        android:background="@color/primary_light"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         android:text="@string/login_extra_text"/>
 
     <TextView

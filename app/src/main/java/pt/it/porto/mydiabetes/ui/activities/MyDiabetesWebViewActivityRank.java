@@ -100,55 +100,39 @@ public class MyDiabetesWebViewActivityRank extends Activity {
         @Override
         public boolean shouldOverrideUrlLoading(final WebView view, String url) {
 
-            if(Build.VERSION.SDK_INT >= 19){
-
-                final String js = "javascript:document.getElementById('user').value + ' ' + document.getElementById('pass').value;";
 
 
-                view.evaluateJavascript(js, new ValueCallback<String>() {
-                    @Override
-                    public void onReceiveValue(String s) {
+            final String js = "javascript:document.getElementById('user').value + ' ' + document.getElementById('pass').value;";
 
-                        s=s.trim();
-                        s=s.substring(1, s.length()-1);
-                        String[] namePass = s.split(" ");
-                        String name = namePass[0];
-                        String pass = namePass[1];
 
-                        if(name !=null && pass != null){
-                            pt.it.porto.mydiabetes.database.Preferences.saveCloudSyncCredentials(view.getContext(), name, pass);
-                            setResult(1);
-                            //Log.i("cenas", "onReceiveValue: -> "+name+" "+pass);
-                        }
+            view.evaluateJavascript(js, new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String s) {
 
-                        //arranjar o loading
-                          //      tnetar dar erro...
+                    s=s.trim();
+                    s=s.substring(1, s.length()-1);
+                    String[] namePass = s.split(" ");
+                    String name = namePass[0];
+                    String pass = namePass[1];
 
+                    if(name !=null && pass != null){
+                        setResult(RESULT_OK);
+                        pt.it.porto.mydiabetes.database.Preferences.saveCloudSyncCredentials(view.getContext(), name, pass);
+                        //Log.i("cenas", "onReceiveValue: -> "+name+" "+pass);
                     }
-                });
-            }
-
-
-
+                }
+            });
 
             if(url.contains("exit")){
-                //try {
-                    //this.finalize();
-                    setResult(1);
-                    finish();
-                //} catch (Throwable throwable) {
-                //    throwable.printStackTrace();
-               // }
+                setResult(RESULT_OK);
+                finish();
+                return true;
             }else{
                 if (Uri.parse(url).getHost().contains("mydiabetes.dcc.fc.up.pt")) {
-                    // This is my website, so do not override; let my WebView load the page
                     return false;
                 }
-                // Otherwise, the link is not for a page on my site, so launch another Activity that handles URLs
                 return true;
             }
-
-            return true;
         }
     }
 }

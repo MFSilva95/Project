@@ -5,9 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 
 import android.app.ProgressDialog;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,28 +14,14 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.RankingService;
 import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.activities.MyDiabetesWebViewActivity;
-import pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment;
 
-import static android.content.Context.JOB_SCHEDULER_SERVICE;
-import static pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment.missingAccount;
-import static pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment.missingNetwork;
 
 public class FeatureWebSyncDialog extends DialogFragment {
 
@@ -125,7 +108,7 @@ public class FeatureWebSyncDialog extends DialogFragment {
 		currentShowingDialog = dialog;
 		dialog.show();
 
-		dialog.findViewById(R.id.webViewButton).setOnClickListener(new View.OnClickListener() {
+		dialog.findViewById(R.id.createNewAccountButton).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
 
@@ -146,8 +129,6 @@ public class FeatureWebSyncDialog extends DialogFragment {
 				@Override
 				public void onSyncSuccessful() {
 				    currentShowingDialog.dismiss();
-					missingAccount.setVisibility(View.GONE);
-					missingNetwork.setVisibility(View.VISIBLE);
 					pt.it.porto.mydiabetes.database.Preferences.saveLastRankUpdate(context, null);
 				}
 

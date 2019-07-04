@@ -13,6 +13,8 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -60,16 +62,14 @@ import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.Preferences;
+import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.activities.Badges;
 import pt.it.porto.mydiabetes.ui.activities.MyData;
-import pt.it.porto.mydiabetes.ui.activities.SettingsImportExport;
-import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
 import pt.it.porto.mydiabetes.ui.dialogs.RankWebSyncDialog;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.FileProvider;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
-
 import static android.app.Activity.RESULT_OK;
 import static android.content.Context.JOB_SCHEDULER_SERVICE;
 
@@ -83,6 +83,9 @@ public class homeRightFragment extends Fragment {
     private String userImgFileName = "profilePhoto";
     public static View layout;
     final int THUMBSIZE = 350;
+
+
+    RankWebSyncDialog webSyncDialog;
 
     private ImageButton helpButton;
     private ImageView beginnerBadge;
@@ -102,8 +105,9 @@ public class homeRightFragment extends Fragment {
     private TextView records_left;
     private RelativeLayout competitionSection;
     private Button hideShowCompetition;
-    public static LinearLayout missingAccount;
-    public static LinearLayout missingNetwork;
+    public  LinearLayout missingAccount;
+    public  LinearLayout missingNetwork;
+    private LinearLayout competitionInfo;
     private LinearLayout startRecordsMessage;
     private LinearLayout streakDaysMessage;
     private LinearLayout leftDaysMessage;
@@ -117,6 +121,8 @@ public class homeRightFragment extends Fragment {
     public static TextView streak_w;
     public static TextView glycaemia_w;
     public static TextView hyperhypo_w;
+
+    private Context context;
 
     private Dialog showDialog;
 
@@ -244,7 +250,7 @@ public class homeRightFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         layout = inflater.inflate(R.layout.fragment_home_right, container, false);
-
+        this.context = this.getContext();
 
         medals_display_init();
 
@@ -265,6 +271,8 @@ public class homeRightFragment extends Fragment {
         missingAccount = (LinearLayout) layout.findViewById(R.id.missingAccount);
         missingNetwork = (LinearLayout) layout.findViewById(R.id.missingNetwork);
         hideShowCompetition = (Button) layout.findViewById(R.id.hideShowCompetition);
+        competitionInfo = layout.findViewById(R.id.competitionInfo);
+
 
         points_g = (TextView) layout.findViewById(R.id.points_g);
         streak_g = (TextView) layout.findViewById(R.id.streak_g);
@@ -325,58 +333,81 @@ public class homeRightFragment extends Fragment {
         hideShowCompetition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (competitionSection.getVisibility() == View.GONE) {
-                    // necessário ver se a pessoa tem conta
-                    // em caso de ter conta, ver se tem net para fazer o update
-                    // antes de fazer o update ver se a data do ultimo update está dentro da semana corrente
-                    // ou seja, para saber se fez já update para não estar a fazer muitas vezes
-
-                    if (accountExistence()) {
-                        // if account exists
-                        missingAccount.setVisibility(View.GONE);
-                    } else {
-                        // account needed message with fast account creation
-                        missingAccount.setVisibility(View.VISIBLE);
-                    }
-
-                    // JOBSCHEDULER
-                    if (isTimeToRankUpdate(getContext()) && missingAccount.getVisibility() == View.GONE) {
-                        missingNetwork.setVisibility(View.VISIBLE);
-                        getRankings();
-                    }
-
-                    competitionSection.setVisibility(View.VISIBLE);
-                    hideShowCompetition.setText(getContext().getString(R.string.competitionTitleHide));
-                } else {
-                    competitionSection.setVisibility(View.GONE);
-                    hideShowCompetition.setText(getContext().getString(R.string.competitionTitleShow));
-                }
+                updateRankingScreen();
             }
         });
 
         clickToCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RankWebSyncDialog webSyncDialog = new RankWebSyncDialog();
+
+                if(competitionSection !=null){
+                    competitionSection.setVisibility(View.GONE);
+                    hideShowCompetition.setText(getContext().getString(R.string.competitionTitleShow));
+                }
+
+                webSyncDialog = new RankWebSyncDialog();
                 webSyncDialog.show(getActivity().getSupportFragmentManager(), "editAccount");
-                webSyncDialog.dismiss();
-                Dialog dialog = webSyncDialog.getUserDataPopUp(getContext(), -1, -1);
+//                webSyncDialog.dismiss();
+//                Dialog dialog = webSyncDialog.getUserDataPopUp(getContext(), -1, -1);
             }
         });
         return layout;
     }
 
-    public void getRankings() {
-        JobScheduler jobScheduler;
-        int MYJOBID = 1;
-        jobScheduler = (JobScheduler)getContext().getSystemService(JOB_SCHEDULER_SERVICE);
-        ComponentName jobService = new ComponentName(getActivity().getPackageName(), RankingService.class.getName());
-        JobInfo jobInfo = new JobInfo.Builder(MYJOBID,jobService).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY). build();
-        jobScheduler.schedule(jobInfo);
+
+    public void updateRankingScreen(){
+        if (competitionSection.getVisibility() == View.GONE) {
+            // necessário ver se a pessoa tem conta
+            // em caso de ter conta, ver se tem net para fazer o update
+            // antes de fazer o update ver se a data do ultimo update está dentro da semana corrente
+            // ou seja, para saber se fez já update para não estar a fazer muitas vezes
+
+            competitionSection.setVisibility(View.VISIBLE);
+
+            competitionInfo.setVisibility(View.GONE);
+            missingAccount.setVisibility(View.GONE);
+            missingNetwork.setVisibility(View.GONE);
+
+            if(!isNetworkAvailable()){
+                missingNetwork.setVisibility(View.VISIBLE);
+                hideShowCompetition.setText(getContext().getString(R.string.competitionTitleHide));
+            }else{
+                if (accountExists()) {
+                    // JOBSCHEDULER
+                    if (isTimeToRankUpdate(getContext())) {
+                        if(requiredJobSchedule()){
+                            missingNetwork.setVisibility(View.VISIBLE);
+                        }else{
+                            competitionInfo.setVisibility(View.VISIBLE);
+                        }
+                    }else{
+                        competitionInfo.setVisibility(View.VISIBLE);
+                    }
+                    hideShowCompetition.setText(getContext().getString(R.string.competitionTitleHide));
+
+                } else {
+                    // account needed message with fast account creation
+                    missingAccount.setVisibility(View.VISIBLE);
+                    competitionInfo.setVisibility(View.GONE);
+                    hideShowCompetition.setText(getContext().getString(R.string.competitionTitleHide));
+                    return;
+                }
+            }
+
+        } else {
+            competitionSection.setVisibility(View.GONE);
+            hideShowCompetition.setText(getContext().getString(R.string.competitionTitleShow));
+        }
     }
 
-    public boolean accountExistence() {
-        if (Preferences.getUsername(getContext()) == null || Preferences.getPassword(getContext()) == null) {
+
+
+    public boolean accountExists() {
+
+        String user = Preferences.getUsername(getContext());
+        String pass = Preferences.getPassword(getContext());
+        if (user == null || pass == null || user.equals("") || pass.equals("")) {
             return false;
         }
         return true;
@@ -385,7 +416,7 @@ public class homeRightFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if(resultCode == RESULT_OK){
+        if(requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK){
             setProfilePhoto();
 
             DB_Read rdb = new DB_Read(getContext());
@@ -399,6 +430,7 @@ public class homeRightFragment extends Fragment {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 
     @Override
     public void onPause() {
@@ -587,6 +619,60 @@ public class homeRightFragment extends Fragment {
 
     }
 
+    public Boolean requiredJobSchedule(){
+        if (homeRightFragment.isTimeToRankUpdate(context)) {
+
+            if(isNetworkAvailable()){
+                try {
+                    ServerSync ss = ServerSync.getInstance(context);
+                    ss.syncRank(new ServerSync.ServerSyncListener() {
+                        @Override
+                        public void onSyncSuccessful() {
+                            homeRightFragment.setRankInfo(context);
+                        }
+
+                        @Override
+                        public void onSyncUnSuccessful() {
+                            Toast.makeText(context, context.getString(R.string.upload_failed),Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void noNetworkAvailable() {
+                            Toast.makeText(context, context.getString(R.string.upload_failed),Toast.LENGTH_LONG).show();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }else{
+                JobScheduler jobScheduler;
+                int MYJOBID = 2;
+                jobScheduler = (JobScheduler)context.getSystemService(JOB_SCHEDULER_SERVICE);
+                ComponentName jobService = new ComponentName(((Activity) context).getPackageName(), RankingService.class.getName());
+                JobInfo jobInfo = new JobInfo.Builder(MYJOBID,jobService).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY). build();
+                jobScheduler.schedule(jobInfo);
+                return true;
+            }
+        }
+        return false;
+    }
+
+//    public void getRankings() {
+//        JobScheduler jobScheduler;
+//        int MYJOBID = 1;
+//        jobScheduler = (JobScheduler)getContext().getSystemService(JOB_SCHEDULER_SERVICE);
+//        ComponentName jobService = new ComponentName(getActivity().getPackageName(), RankingService.class.getName());
+//        JobInfo jobInfo = new JobInfo.Builder(MYJOBID,jobService).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY). build();
+//        jobScheduler.schedule(jobInfo);
+//    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     private void setPersonalInfo() {
 
         averageText = (TextView) layout.findViewById(R.id.averageText);
@@ -736,65 +822,68 @@ public class homeRightFragment extends Fragment {
     }
 
     public static void setRankInfo(Context context) {
-        bestPoints = (TextView) layout.findViewById(R.id.bestPoints);
-        bestStreak = (TextView) layout.findViewById(R.id.bestStreak);
-        String[] ranks = Preferences.getRankInfo(context);
+        bestPoints = layout.findViewById(R.id.bestPoints);
+        bestStreak = layout.findViewById(R.id.bestStreak);
+        if(bestPoints != null && context != null){
+            String[] ranks = Preferences.getRankInfo(context);
 
-        if (ranks[0] != null) {
-            int value = (int) Math.round(Double.parseDouble(ranks[0]));
-            if (value != -1) homeRightFragment.bestPoints.setText(String.valueOf(value));
-            else homeRightFragment.bestPoints.setText(R.string.n_a);
-        } else {
-            homeRightFragment.bestPoints.setText(R.string.n_a);
+            if (ranks[0] != null) {
+                int value = (int) Math.round(Double.parseDouble(ranks[0]));
+                if (value != -1) homeRightFragment.bestPoints.setText(String.valueOf(value));
+                else homeRightFragment.bestPoints.setText(R.string.n_a);
+            } else {
+                homeRightFragment.bestPoints.setText(R.string.n_a);
+            }
+            if (ranks[1] != null) {
+                int value = (int) Math.round(Double.parseDouble(ranks[1]));
+                if (value != -1) homeRightFragment.bestStreak.setText(String.valueOf(value));
+                else homeRightFragment.bestStreak.setText(R.string.n_a);
+            } else {
+                homeRightFragment.bestStreak.setText(R.string.n_a);
+            }
+            if (ranks[2] != null) {
+                int value = (int) Math.round(Double.parseDouble(ranks[2]));
+                if (value != -1) homeRightFragment.points_g.setText(String.valueOf(value));
+                else homeRightFragment.points_g.setText(R.string.n_a);
+            } else {
+                homeRightFragment.points_g.setText(R.string.n_a);
+            }
+            if (ranks[3] != null) {
+                int value = (int) Math.round(Double.parseDouble(ranks[3]));
+                if (value != -1) homeRightFragment.streak_g.setText(String.valueOf(value));
+                else homeRightFragment.streak_g.setText(R.string.n_a);
+            } else {
+                homeRightFragment.streak_g.setText(R.string.n_a);
+            }
+            if (ranks[4] != null) {
+                int value = (int) Math.round(Double.parseDouble(ranks[4]));
+                if (value != -1) homeRightFragment.points_w.setText(String.valueOf(value));
+                else homeRightFragment.points_w.setText(R.string.n_a);
+            } else {
+                homeRightFragment.points_w.setText(R.string.n_a);
+            }
+            if (ranks[5] != null) {
+                int value = (int) Math.round(Double.parseDouble(ranks[5]));
+                if (value != -1) homeRightFragment.streak_w.setText(String.valueOf(value));
+                else homeRightFragment.streak_w.setText(R.string.n_a);
+            } else {
+                homeRightFragment.streak_w.setText(R.string.n_a);
+            }
+            if (ranks[6] != null) {
+                int value = (int) Math.round(Double.parseDouble(ranks[6]));
+                if (value != -1) homeRightFragment.glycaemia_w.setText(String.valueOf(value));
+                else homeRightFragment.glycaemia_w.setText(R.string.n_a);
+            } else {
+                homeRightFragment.glycaemia_w.setText(R.string.n_a);
+            }
+            if (ranks[7] != null) {
+                int value = (int) Math.round(Double.parseDouble(ranks[7]));
+                if (value != -1) homeRightFragment.hyperhypo_w.setText(String.valueOf(value));
+                else homeRightFragment.hyperhypo_w.setText(R.string.n_a);
+            } else {
+                homeRightFragment.hyperhypo_w.setText(R.string.n_a);
+            }
         }
-        if (ranks[1] != null) {
-            int value = (int) Math.round(Double.parseDouble(ranks[1]));
-            if (value != -1) homeRightFragment.bestStreak.setText(String.valueOf(value));
-            else homeRightFragment.bestStreak.setText(R.string.n_a);
-        } else {
-            homeRightFragment.bestStreak.setText(R.string.n_a);
-        }
-        if (ranks[2] != null) {
-            int value = (int) Math.round(Double.parseDouble(ranks[2]));
-            if (value != -1) homeRightFragment.points_g.setText(String.valueOf(value));
-            else homeRightFragment.points_g.setText(R.string.n_a);
-        } else {
-            homeRightFragment.points_g.setText(R.string.n_a);
-        }
-        if (ranks[3] != null) {
-            int value = (int) Math.round(Double.parseDouble(ranks[3]));
-            if (value != -1) homeRightFragment.streak_g.setText(String.valueOf(value));
-            else homeRightFragment.streak_g.setText(R.string.n_a);
-        } else {
-            homeRightFragment.streak_g.setText(R.string.n_a);
-        }
-        if (ranks[4] != null) {
-            int value = (int) Math.round(Double.parseDouble(ranks[4]));
-            if (value != -1) homeRightFragment.points_w.setText(String.valueOf(value));
-            else homeRightFragment.points_w.setText(R.string.n_a);
-        } else {
-            homeRightFragment.points_w.setText(R.string.n_a);
-        }
-        if (ranks[5] != null) {
-            int value = (int) Math.round(Double.parseDouble(ranks[5]));
-            if (value != -1) homeRightFragment.streak_w.setText(String.valueOf(value));
-            else homeRightFragment.streak_w.setText(R.string.n_a);
-        } else {
-            homeRightFragment.streak_w.setText(R.string.n_a);
-        }
-        if (ranks[6] != null) {
-            int value = (int) Math.round(Double.parseDouble(ranks[6]));
-            if (value != -1) homeRightFragment.glycaemia_w.setText(String.valueOf(value));
-            else homeRightFragment.glycaemia_w.setText(R.string.n_a);
-        } else {
-            homeRightFragment.glycaemia_w.setText(R.string.n_a);
-        }
-        if (ranks[7] != null) {
-            int value = (int) Math.round(Double.parseDouble(ranks[7]));
-            if (value != -1) homeRightFragment.hyperhypo_w.setText(String.valueOf(value));
-            else homeRightFragment.hyperhypo_w.setText(R.string.n_a);
-        } else {
-            homeRightFragment.hyperhypo_w.setText(R.string.n_a);
-        }
+
     }
 }

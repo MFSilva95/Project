@@ -7,7 +7,7 @@
     android:gravity="center_vertical|center_horizontal"
     android:layout_toStartOf="@+id/competitionSection"
     android:background="@color/comp_back_opacity"
-    android:visibility="visible">
+    android:visibility="gone">
 
     <TextView
         android:layout_width="wrap_content"

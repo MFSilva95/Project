@@ -50,6 +50,7 @@ import pt.it.porto.mydiabetes.database.DB_Handler;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
+import pt.it.porto.mydiabetes.ui.dialogs.RankWebSyncDialog;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DbUtils;
 import pt.it.porto.mydiabetes.utils.FileProvider;
@@ -60,6 +61,7 @@ public class SettingsImportExport extends BaseActivity {
 	public static final String PROJECT_MANAGER_EMAIL = "mydiabetes@dcc.fc.up.pt";
 
 	private AchievementView achievementView;
+	private Context context;
 
 	final private int WEBVIEW = 332;
 
@@ -71,6 +73,7 @@ public class SettingsImportExport extends BaseActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_settings_report);
+		context = this;
 		// Show the Up button in the action bar.
 		setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
 		ActionBar actionBar=getSupportActionBar();
@@ -387,6 +390,23 @@ public class SettingsImportExport extends BaseActivity {
 //		startActivity(intent);
 //	}
 
+
+//	@Override
+//	protected void onResume() {
+//		super.onResume();
+//		String username = pt.it.porto.mydiabetes.database.Preferences.getUsername(this);
+//		if(username!=null && !username.equals("")){
+//			findViewById(R.id.syncCloud).setVisibility(View.VISIBLE);
+//		}
+//	}
+
+    public void showUpload(){
+        findViewById(R.id.syncCloud).setVisibility(View.VISIBLE);
+    }
+	public void hideUpload(){
+		findViewById(R.id.syncCloud).setVisibility(View.GONE);
+	}
+
 	public void syncCloud(View view){
 		if(BuildConfig.SYNC_AVAILABLE){
 
@@ -402,20 +422,27 @@ public class SettingsImportExport extends BaseActivity {
                     @Override
                     public void onSyncSuccessful() {
                         if (dialog != null) {
-                            //dialog.hide();
-                            dialog.dismiss();
+							dialog.dismiss();
                         }
-                        Toast.makeText(getApplicationContext(), R.string.upload_successful, Toast.LENGTH_SHORT).show();
+						runOnUiThread(new Runnable() {
+							@Override
+							public void run() {
+								ShowDialogMsg(getBaseContext().getString(R.string.upload_successful));
+							}
+						});
                     }
 
                     @Override
                     public void onSyncUnSuccessful() {
                         if (dialog != null) {
-							//dialog.hide();
 							dialog.dismiss();
                         }
-                        Toast.makeText(getApplicationContext(), R.string.upload_failed, Toast.LENGTH_SHORT).show();
-                        editAccount(null);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+								editErrorAccount(context);
+                            }
+                        });
                     }
 
                     @Override
@@ -425,10 +452,14 @@ public class SettingsImportExport extends BaseActivity {
                 });
             } catch (Exception e) {
                 if (dialog != null) {
-					//dialog.hide();
 					dialog.dismiss();
                 }
-                Toast.makeText(getApplicationContext(), R.string.error_could_not_send_data, Toast.LENGTH_SHORT).show();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+						editErrorAccount(context);
+                    }
+                });
             }
 
 
@@ -438,29 +469,30 @@ public class SettingsImportExport extends BaseActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-	    if (requestCode == 1 && data != null) {
-            if (resultCode == RESULT_OK) {
-                if (webSyncDialog != null) {
-                    if (requestCode == WEBVIEW && resultCode == 1) {
-                        webSyncDialog.dismiss();
-                        syncCloud(null);
-                    }
-                }
-            }
-            if (resultCode == RESULT_CANCELED) {
+		if (requestCode == WEBVIEW && resultCode == RESULT_OK) {
+			if (webSyncDialog != null) {
+				webSyncDialog.uploadData();
+			}
+		}
 
-            }
-        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
 
-	FeatureWebSyncDialog webSyncDialog;
+	RankWebSyncDialog webSyncDialog;//FeatureWebSyncDialog webSyncDialog;
 	public void editAccount(View view) {
-		webSyncDialog = new FeatureWebSyncDialog();
+		webSyncDialog = new RankWebSyncDialog();//new FeatureWebSyncDialog();
 		webSyncDialog.show(getSupportFragmentManager(), "editAccount");
-		webSyncDialog.dismiss();
-		webSyncDialog.getUserDataPopUp(this, -1, -1);
+		//webSyncDialog.dismiss();
+		//webSyncDialog.getUserDataPopUp(this, -1, -1);
+	}
+
+	public void editErrorAccount(Context c) {
+		webSyncDialog = new RankWebSyncDialog();//new FeatureWebSyncDialog();
+		webSyncDialog.showError(c);
+		//webSyncDialog.show(getSupportFragmentManager(), "editAccount");
+		//webSyncDialog.dismiss();
+		//webSyncDialog.getUserDataPopUp(this, -1, -1);
 	}
 
 

@@ -51,7 +51,7 @@ public class RankingService extends JobService {
         //receive from server my position compared with other users
         getRanking();
 
-        Toast.makeText(this,"boas",Toast.LENGTH_LONG).show();
+        //Toast.makeText(this,"boas",Toast.LENGTH_LONG).show();
         return false;
     }
 
@@ -61,12 +61,16 @@ public class RankingService extends JobService {
         return false;
     }
 
-
+    Context c;
     public void getRanking() {
         try {
-            ServerSync.getInstance(this).syncRank(new ServerSync.ServerSyncListener() {
+            ServerSync ss = ServerSync.getInstance(this);
+            c = ss.getContext();
+            ss.syncRank(new ServerSync.ServerSyncListener() {
                 @Override
                 public void onSyncSuccessful() {
+                    //homeRightFragment.missingNetwork.setVisibility(View.GONE);
+                    homeRightFragment.setRankInfo(c);
                 }
 
                 @Override
@@ -80,7 +84,5 @@ public class RankingService extends JobService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        homeRightFragment.missingNetwork.setVisibility(View.GONE);
-        homeRightFragment.setRankInfo(this);
     }
 }

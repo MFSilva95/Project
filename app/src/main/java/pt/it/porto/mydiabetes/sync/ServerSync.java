@@ -64,7 +64,7 @@ import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.backup;
 public class ServerSync {
 
 	public static final MediaType MEDIA_TYPE_BINARY = MediaType.parse("application/octet-stream");
-	private static final String BASE_URL = "https://mydiabetes.dcc.fc.up.pt/";
+	private static final String BASE_URL = "https://mydiabetes.dcc.fc.up.pt/newsite/";
 	private static ServerSync instance;
 	private String username;
 	private String password;
@@ -77,6 +77,10 @@ public class ServerSync {
 	private Handler mainHandler;
 
 	private ServerSync() {
+	}
+
+	public Context getContext() {
+		return context;
 	}
 
 	public static ServerSync getInstance(Context context) {
@@ -123,16 +127,40 @@ public class ServerSync {
 			@Override
 			public void onFailure(Call call, IOException e) {
 				e.printStackTrace();
-				ServerSync.this.onFailure();
+				if(e!=null && e instanceof UnknownHostException){
+					ServerSync.this.onNoNetworkAvailable();
+				} else {
+					ServerSync.this.onFailure();
+				}
 			}
 
 			@Override
 			public void onResponse(Call call, Response response) throws IOException {
-                //Log.i("RAWR", "onResponse: "+response);
-				// now sends the images
-				photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(context));
-				processNextPhoto();
+				String responseTxt = response.body().string();
+				//Log.i("RAWR", "onResponse: IMA HERE LOL-> "+responseTxt);
+				if (ServerSync.this.listener != null) {
+					if (responseTxt.contains("invalid user or password")) {
+						ServerSync.this.listener.onSyncUnSuccessful();
+					} else {
+						ServerSync.this.listener.onSyncSuccessful();
+					}
+				}
 			}
+
+
+//			@Override
+//			public void onFailure(Call call, IOException e) {
+//				e.printStackTrace();
+//				ServerSync.this.onFailure();
+//			}
+//
+//			@Override
+//			public void onResponse(Call call, Response response) throws IOException {
+//                //Log.i("RAWR", "onResponse: "+response);
+//				// now sends the images
+//				photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(context));
+//				processNextPhoto();
+//			}
 		});
 
 	}
@@ -298,7 +326,6 @@ public class ServerSync {
 
 			@Override
 			public void onResponse(Call call, Response response) throws IOException {
-//				response.body().string() to get the server's response
 				String responseTxt = response.body().string();
 				//Log.i("RAWR", "onResponse: IMA HERE LOL-> "+responseTxt);
 				if (ServerSync.this.listener != null) {
