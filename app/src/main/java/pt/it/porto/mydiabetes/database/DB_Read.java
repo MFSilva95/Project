@@ -106,6 +106,22 @@ public class DB_Read {
         cursor.close();
         return false;
     }
+
+	public String MyData_Get_last_update_date() {
+		Cursor cursor = myDB.rawQuery("SELECT DateTimeUpdate FROM UserInfo", null);
+		Log.d("Cursor", String.valueOf(cursor.getCount()));
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			String result = cursor.getString(0);
+			cursor.close();
+			return result;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
+
 	public boolean hasRatioData(){
         Cursor cursor = myDB.rawQuery("select * from Ratio_Reg", null);
 

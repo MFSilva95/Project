@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
@@ -53,6 +55,7 @@ import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.charts.data.Logbook;
 import pt.it.porto.mydiabetes.ui.dialogs.RankWebSyncDialog;
 import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
+import pt.it.porto.mydiabetes.utils.AutoSync;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.SyncAlarm;
@@ -63,6 +66,9 @@ import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.PROJECT_
 public class Home extends BaseActivity {
 
 	public static final int CHANGES_OCCURRED = 1;
+
+    private int _TEST_TIME_ = 86400000;
+
 	private static Boolean old_db = false;
 
 	private NavigationView navigationView;
@@ -148,6 +154,12 @@ public class Home extends BaseActivity {
                     setMainView(savedInstanceState);
                 }
             }
+        }
+
+        try {
+            setupAutoSync();
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
         }
 	}
 
@@ -691,6 +703,10 @@ public class Home extends BaseActivity {
             else if (mViewPager.getCurrentItem()==1) logSave("Home:homeMiddleFragment");
             else if (mViewPager.getCurrentItem()==2) logSave("Home:homeRightFragment");
         }
+        try {
+            setupAutoSync();
+        } catch (java.text.ParseException e) {
+        }
     }
 
 
@@ -726,6 +742,34 @@ public class Home extends BaseActivity {
                 preferences.edit().putInt(SyncAlarm.SYNC_ALARM_PREFERENCE, 1).apply();
                 alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
             }
+        }
+    }
+    private void setupAutoSync() throws java.text.ParseException {
+
+        String username = pt.it.porto.mydiabetes.database.Preferences.getUsername(this);
+        if(username==null || username.equals("")){
+            return;
+        }
+
+        //SharedPreferences preferences = pt.it.porto.mydiabetes.database.Preferences.getPreferences(this);
+        Calendar calendar_last_update = Calendar.getInstance();
+        long today_time = Calendar.getInstance().getTimeInMillis();
+        DB_Read read = new DB_Read(this);
+        String last_update_string = read.MyData_Get_last_update_date();
+        try {
+            calendar_last_update.setTime(DateUtils.iso8601Format.parse(last_update_string));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return;
+        }
+        long time_last_update = calendar_last_update.getTimeInMillis();
+        long time_difference = today_time - time_last_update;
+        if(time_difference>_TEST_TIME_){//86400000){
+            JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+
+            ComponentName jobService = new ComponentName(getPackageName(), AutoSync.class.getName());
+            JobInfo jobInfo = new JobInfo.Builder(AutoSync.MYJOBID,jobService).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY). build();
+            jobScheduler.schedule(jobInfo);
         }
     }
 
