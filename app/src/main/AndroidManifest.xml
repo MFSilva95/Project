@@ -55,11 +55,6 @@
             android:parentActivityName=".ui.activities.SettingsImportExport"
             android:theme="@style/welcomeTheme" />
         <activity
-            android:name=".ui.activities.MyDiabetesWebViewActivityRank"
-            android:label="@string/webview_title"
-            android:parentActivityName=".ui.activities.Home"
-            android:theme="@style/welcomeTheme" />
-        <activity
             android:name=".ui.createMeal.activities.CreateMealActivity"
             android:parentActivityName=".ui.activities.NewHomeRegistry"
             android:theme="@style/AppTheme" />

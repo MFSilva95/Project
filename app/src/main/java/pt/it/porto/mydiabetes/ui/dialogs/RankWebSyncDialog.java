@@ -28,7 +28,7 @@ import pt.it.porto.mydiabetes.RankingService;
 import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.activities.Home;
-import pt.it.porto.mydiabetes.ui.activities.MyDiabetesWebViewActivityRank;
+import pt.it.porto.mydiabetes.ui.activities.MyDiabetesWebViewActivity;
 import pt.it.porto.mydiabetes.ui.activities.SettingsImportExport;
 import pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment;
 
@@ -107,7 +107,7 @@ public class RankWebSyncDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 currentShowingDialog.dismiss();
-                Intent intent = new Intent(context, MyDiabetesWebViewActivityRank.class);
+                Intent intent = new Intent(context, MyDiabetesWebViewActivity.class); //MyDiabetesWebViewActivityRank.class);
                 ((Activity) context).startActivityForResult(intent, WEBVIEW);
             }
         });
@@ -226,45 +226,6 @@ public class RankWebSyncDialog extends DialogFragment {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public Boolean requiredJobSchedule(){
-        if (homeRightFragment.isTimeToRankUpdate(context)) {
-
-            if(isNetworkAvailable()){
-                try {
-                    ServerSync ss = ServerSync.getInstance(context);
-                    ss.syncRank(new ServerSync.ServerSyncListener() {
-                        @Override
-                        public void onSyncSuccessful() {
-                            homeRightFragment.setRankInfo(context);
-                        }
-
-                        @Override
-                        public void onSyncUnSuccessful() {
-                            Toast.makeText(context, context.getString(R.string.upload_failed),Toast.LENGTH_LONG).show();
-                        }
-
-                        @Override
-                        public void noNetworkAvailable() {
-                            Toast.makeText(context, context.getString(R.string.upload_failed),Toast.LENGTH_LONG).show();
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                return false;
-            }else{
-                JobScheduler jobScheduler;
-                int MYJOBID = 2;
-                jobScheduler = (JobScheduler)context.getSystemService(JOB_SCHEDULER_SERVICE);
-                ComponentName jobService = new ComponentName(((Activity) context).getPackageName(), RankingService.class.getName());
-                JobInfo jobInfo = new JobInfo.Builder(MYJOBID,jobService).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY). build();
-                jobScheduler.schedule(jobInfo);
-                return true;
-            }
-        }
-        return false;
-    }
-
     public void setListener(ActivateFeatureDialogListener listener) {
         this.listener = listener;
     }
@@ -275,52 +236,4 @@ public class RankWebSyncDialog extends DialogFragment {
         void notUseFeature();
     }
 
-
-//    public Dialog testCredentialsImport_Export_Dialog(final Context context){
-//        ProgressDialog progressDialog = new ProgressDialog(context);
-//        try {
-//            ServerSync.getInstance(context).testCredentials(new ServerSync.ServerSyncListener() {
-//                @Override
-//                public void onSyncSuccessful() {
-//                    ((Activity) RankWebSyncDialog.this.context).runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            currentShowingDialog.dismiss();
-//                            ShowDialogMsg(context.getString(R.string.upload_successful));
-//                            ((SettingsImportExport)context).showUpload();
-//                        }
-//                    });
-//                }
-//
-//                @Override
-//                public void onSyncUnSuccessful() {
-//                    ((Activity) RankWebSyncDialog.this.context).runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            currentShowingDialog.dismiss();
-//                            ((SettingsImportExport)context).hideUpload();
-//                            showLoginError();
-//                        }
-//                    });
-//                }
-//
-//                @Override
-//                public void noNetworkAvailable() {
-//                    ((Activity) RankWebSyncDialog.this.context).runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            currentShowingDialog.dismiss();
-//                            ((SettingsImportExport)context).hideUpload();
-//                            showNoNetwork();
-//                        }
-//                    });
-//                }
-//            });
-//        } catch (Exception e) {
-//            showError();
-//        }
-//        progressDialog.setCancelable(false);
-//        currentShowingDialog = progressDialog;
-//        return progressDialog;
-//    }
 }

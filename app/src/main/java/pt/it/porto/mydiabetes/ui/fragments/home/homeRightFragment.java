@@ -633,39 +633,37 @@ public class homeRightFragment extends Fragment {
 
                         @Override
                         public void onSyncUnSuccessful() {
-                            Toast.makeText(context, context.getString(R.string.upload_failed),Toast.LENGTH_LONG).show();
+                            scheduleUpdateJob();
                         }
 
                         @Override
                         public void noNetworkAvailable() {
-                            Toast.makeText(context, context.getString(R.string.upload_failed),Toast.LENGTH_LONG).show();
+                            scheduleUpdateJob();
                         }
                     });
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    scheduleUpdateJob();
+                    return true;
                 }
                 return false;
             }else{
-                JobScheduler jobScheduler;
-                int MYJOBID = 2;
-                jobScheduler = (JobScheduler)context.getSystemService(JOB_SCHEDULER_SERVICE);
-                ComponentName jobService = new ComponentName(((Activity) context).getPackageName(), RankingService.class.getName());
-                JobInfo jobInfo = new JobInfo.Builder(MYJOBID,jobService).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY). build();
-                jobScheduler.schedule(jobInfo);
+                scheduleUpdateJob();
                 return true;
             }
         }
         return false;
     }
 
-//    public void getRankings() {
-//        JobScheduler jobScheduler;
-//        int MYJOBID = 1;
-//        jobScheduler = (JobScheduler)getContext().getSystemService(JOB_SCHEDULER_SERVICE);
-//        ComponentName jobService = new ComponentName(getActivity().getPackageName(), RankingService.class.getName());
-//        JobInfo jobInfo = new JobInfo.Builder(MYJOBID,jobService).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY). build();
-//        jobScheduler.schedule(jobInfo);
-//    }
+
+    private void scheduleUpdateJob(){
+        JobScheduler jobScheduler;
+        int MYJOBID = 2;
+        jobScheduler = (JobScheduler)context.getSystemService(JOB_SCHEDULER_SERVICE);
+        ComponentName jobService = new ComponentName(((Activity) context).getPackageName(), RankingService.class.getName());
+        JobInfo jobInfo = new JobInfo.Builder(MYJOBID,jobService).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY). build();
+        jobScheduler.schedule(jobInfo);
+    }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

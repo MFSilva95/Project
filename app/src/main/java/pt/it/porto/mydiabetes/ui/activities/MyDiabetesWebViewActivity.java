@@ -18,11 +18,12 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 
 public class MyDiabetesWebViewActivity extends Activity {
 
-    private String site = "https://mydiabetes.dcc.fc.up.pt/register_mobile.php";
+    private String site = BuildConfig.SERVER_URL + "register_mobile.php";
     private WebView webView;
 
     public void onCreate(Bundle savedInstanceState) {
@@ -105,46 +106,37 @@ public class MyDiabetesWebViewActivity extends Activity {
         @Override
         public boolean shouldOverrideUrlLoading(final WebView view, String url) {
 
-            if(Build.VERSION.SDK_INT >= 19){
-
-                final String js = "javascript:document.getElementById('user').value + ' ' + document.getElementById('pass').value;";
+            final String js = "javascript:document.getElementById('user').value + ' ' + document.getElementById('pass').value;";
 
 
-                view.evaluateJavascript(js, new ValueCallback<String>() {
-                    @Override
-                    public void onReceiveValue(String s) {
+            view.evaluateJavascript(js, new ValueCallback<String>() {
+                @Override
+                public void onReceiveValue(String s) {
 
-                        s=s.trim();
-                        s=s.substring(1, s.length()-1);
-                        String[] namePass = s.split(" ");
-                        String name = namePass[0];
-                        String pass = namePass[1];
+                    s=s.trim();
+                    s=s.substring(1, s.length()-1);
+                    String[] namePass = s.split(" ");
+                    String name = namePass[0];
+                    String pass = namePass[1];
 
-                        if(name !=null && pass != null){
-                            pt.it.porto.mydiabetes.database.Preferences.saveCloudSyncCredentials(view.getContext(), name, pass);
-                            setResult(1);
-                        }
-
+                    if(name !=null && pass != null){
+                        setResult(RESULT_OK);
+                        pt.it.porto.mydiabetes.database.Preferences.saveCloudSyncCredentials(view.getContext(), name, pass);
+                        //Log.i("cenas", "onReceiveValue: -> "+name+" "+pass);
                     }
-                });
-            }
-
-
-
+                }
+            });
 
             if(url.contains("exit")){
-
-                    setResult(1);
-                    finish();
-
+                setResult(RESULT_OK);
+                finish();
+                return true;
             }else{
                 if (Uri.parse(url).getHost().contains("mydiabetes.dcc.fc.up.pt")) {
                     return false;
                 }
                 return true;
             }
-
-            return true;
         }
     }
 }

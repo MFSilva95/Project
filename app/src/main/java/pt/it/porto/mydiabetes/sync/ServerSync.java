@@ -49,6 +49,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.RankingService;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
@@ -64,7 +65,7 @@ import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.backup;
 public class ServerSync {
 
 	public static final MediaType MEDIA_TYPE_BINARY = MediaType.parse("application/octet-stream");
-	private static final String BASE_URL = "https://mydiabetes.dcc.fc.up.pt/newsite/";
+	private static final String BASE_URL = BuildConfig.SERVER_URL;
 	private static ServerSync instance;
 	private String username;
 	private String password;
