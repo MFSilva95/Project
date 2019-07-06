@@ -262,6 +262,16 @@ public class ServerSync {
 			});
 		}
 	}
+	private void onSuccess() {
+		if (listener != null) {
+			mainHandler.post(new Runnable() {
+				@Override
+				public void run() {
+					listener.onSyncSuccessful();
+				}
+			});
+		}
+	}
 
 	private void processNextPhoto() {
 		Cursor listPhotos = photoSyncDb.getListPhotos();
@@ -369,6 +379,8 @@ public class ServerSync {
 				.sslSocketFactory(getCert(),trustManager)
 				.build();
 
+		mainHandler = new Handler(context.getMainLooper());
+
 		username = Preferences.getUsername(context);
 		password = Preferences.getPassword(context);
 
@@ -413,7 +425,7 @@ public class ServerSync {
 					ranks[7] = rank.getString("h");
 
 					Preferences.saveRankInfo(context,ranks[0],ranks[1],ranks[2],ranks[3],ranks[4],ranks[5],ranks[6],ranks[7]);
-
+					onSuccess();
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
