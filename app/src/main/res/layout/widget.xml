@@ -16,156 +16,156 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/widget_info_text">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="8dp"
-            android:layout_weight="1">
+        android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/widget_info_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/lastRecord_background"
-                android:orientation="vertical"
+                android:orientation="horizontal"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="1">
 
-                <TextView
-                    android:id="@+id/widget_hour"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:gravity="center_horizontal"
-                    android:lines="1"
-                    android:scrollHorizontally="true"
-                    android:textSize="18sp"
-                    android:textColor="@color/primary_text"
-                    tools:text="00:00" />
-
-                <TextView
-                    android:id="@+id/widget_day"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:textSize="12sp"
-                    android:textColor="@color/primary_text"
-                    tools:text="12/12/12" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lastRecord_background"
                     android:orientation="vertical"
                     android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/widget_c_val"
+                        android:id="@+id/widget_hour"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="---"
-                        android:textSize="18sp"
-                        android:textColor="@color/primary_text"/>
-
-                    <TextView
-                        android:id="@+id/widget_c_tag"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/Carbs"
-                        android:textSize="12sp"
-                        android:textColor="@color/primary_dark"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/widget_i_val"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="---"
-                        android:textSize="18sp"
-                        android:textColor="@color/primary_text"/>
-
-                    <TextView
-                        android:id="@+id/widget_i_tag"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/insulin"
                         android:ellipsize="end"
+                        android:gravity="center_horizontal"
                         android:lines="1"
                         android:scrollHorizontally="true"
+                        android:textSize="18sp"
+                        android:textColor="@color/primary_text"
+                        tools:text="00:00" />
+
+                    <TextView
+                        android:id="@+id/widget_day"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
                         android:textSize="12sp"
-                        android:textColor="@color/primary_dark"/>
+                        android:textColor="@color/primary_text"
+                        tools:text="12/12/12" />
 
                 </LinearLayout>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/widget_g_val"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="---"
-                        android:textSize="18sp"
-                        android:textColor="@color/primary_text"/>
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
 
-                    <TextView
-                        android:id="@+id/widget_g_tag"
+                        <TextView
+                            android:id="@+id/widget_c_val"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="---"
+                            android:textSize="18sp"
+                            android:textColor="@color/primary_text"/>
+
+                        <TextView
+                            android:id="@+id/widget_c_tag"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/Carbs"
+                            android:textSize="12sp"
+                            android:textColor="@color/primary_dark"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/bloodglucose"
-                        android:textSize="12sp"
-                        android:textColor="@color/primary_dark"/>
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/widget_i_val"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="---"
+                            android:textSize="18sp"
+                            android:textColor="@color/primary_text"/>
+
+                        <TextView
+                            android:id="@+id/widget_i_tag"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/insulin"
+                            android:ellipsize="end"
+                            android:lines="1"
+                            android:scrollHorizontally="true"
+                            android:textSize="12sp"
+                            android:textColor="@color/primary_dark"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/widget_g_val"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="---"
+                            android:textSize="18sp"
+                            android:textColor="@color/primary_text"/>
+
+                        <TextView
+                            android:id="@+id/widget_g_tag"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_horizontal"
+                            android:text="@string/bloodglucose"
+                            android:textSize="12sp"
+                            android:textColor="@color/primary_dark"/>
+                    </LinearLayout>
+
                 </LinearLayout>
 
             </LinearLayout>
+            <ImageButton
+                android:id="@+id/addReg"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="8dp"
+                android:src="@drawable/ic_plus" />
 
-        </LinearLayout>
-
-        <ImageButton
-            android:id="@+id/addReg"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="8dp"
-            android:src="@drawable/ic_plus" />
     </LinearLayout>
 
 </LinearLayout>

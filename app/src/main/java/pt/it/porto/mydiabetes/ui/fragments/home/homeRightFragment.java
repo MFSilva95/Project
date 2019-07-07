@@ -628,6 +628,7 @@ public class homeRightFragment extends Fragment {
                     ss.syncRank(new ServerSync.ServerSyncListener() {
                         @Override
                         public void onSyncSuccessful() {
+                            System.out.println("requiredJobSchedule");
                             homeRightFragment.setRankInfo(context);
                         }
 
@@ -827,28 +828,28 @@ public class homeRightFragment extends Fragment {
 
             if (ranks[0] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[0]));
-                if (value != -1) homeRightFragment.bestPoints.setText(String.valueOf(value));
+                if (value != -1 && value != 0) homeRightFragment.bestPoints.setText(String.valueOf(value));
                 else homeRightFragment.bestPoints.setText(R.string.n_a);
             } else {
                 homeRightFragment.bestPoints.setText(R.string.n_a);
             }
             if (ranks[1] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[1]));
-                if (value != -1) homeRightFragment.bestStreak.setText(String.valueOf(value));
+                if (value != -1 && value != 0) homeRightFragment.bestStreak.setText(String.valueOf(value));
                 else homeRightFragment.bestStreak.setText(R.string.n_a);
             } else {
                 homeRightFragment.bestStreak.setText(R.string.n_a);
             }
             if (ranks[2] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[2]));
-                if (value != -1) homeRightFragment.points_g.setText(String.valueOf(value));
+                if (value != -1 && (int) Math.round(Double.parseDouble(ranks[0])) != 0) homeRightFragment.points_g.setText(String.valueOf(value));
                 else homeRightFragment.points_g.setText(R.string.n_a);
             } else {
                 homeRightFragment.points_g.setText(R.string.n_a);
             }
             if (ranks[3] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[3]));
-                if (value != -1) homeRightFragment.streak_g.setText(String.valueOf(value));
+                if (value != -1 && (int) Math.round(Double.parseDouble(ranks[1])) != 0) homeRightFragment.streak_g.setText(String.valueOf(value));
                 else homeRightFragment.streak_g.setText(R.string.n_a);
             } else {
                 homeRightFragment.streak_g.setText(R.string.n_a);
@@ -882,6 +883,5 @@ public class homeRightFragment extends Fragment {
                 homeRightFragment.hyperhypo_w.setText(R.string.n_a);
             }
         }
-
     }
 }

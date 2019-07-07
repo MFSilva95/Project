@@ -105,12 +105,12 @@ public class Preferences {
 
 	public static void saveRankInfo(Context context, String points, String streak, String points_g, String streak_g, String points_w, String streak_w, String glycaemia_w, String hyperhypo_g) {
 		SharedPreferences preferences = getPreferences(context);
-		preferences.edit().putString(POINTS_G, points_g)
-				.putString(POINTS, points)
+		preferences.edit().putString(POINTS, points)
 				.putString(STREAK, streak)
+				.putString(POINTS_G, points_g)
 				.putString(STREAK_G, streak_g)
 				.putString(POINTS_W, points_w)
-				.putString(STREAK_W, points_w)
+				.putString(STREAK_W, streak_w)
 				.putString(GLYCAEMIA_W, glycaemia_w)
 				.putString(HYPERHYPO_W, hyperhypo_g)
 				.apply();
@@ -125,7 +125,7 @@ public class Preferences {
 		ranks[4] = getPreferences(context).getString(POINTS_W, null);
 		ranks[5] = getPreferences(context).getString(STREAK_W, null);
 		ranks[6] = getPreferences(context).getString(GLYCAEMIA_W, null);
-		ranks[7] = getPreferences(context).getString(STREAK_W, null);
+		ranks[7] = getPreferences(context).getString(HYPERHYPO_W, null);
 		return ranks;
 	}
 

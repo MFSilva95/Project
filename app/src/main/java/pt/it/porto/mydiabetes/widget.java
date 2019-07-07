@@ -16,6 +16,10 @@ import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RemoteViews;
 
 
@@ -37,10 +41,7 @@ import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.LogbookChartList;
-
-
-
-
+import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 
 
 import java.text.DateFormat;
@@ -69,32 +70,27 @@ public class widget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        Bundle bundle = new Bundle();
-        bundle.putString(FROM_WIDGET,FROM_WIDGET);
 
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.widget);
 
         // call new registry activity after + click
+        Bundle bundle = new Bundle();
+        bundle.putString(FROM_WIDGET,FROM_WIDGET);
         Intent intent = new Intent(context, Home.class);
         intent.putExtras(bundle);
+        intent.setAction(Long.toString(System.currentTimeMillis())); //to differentiate both intents. if this setAction don't exist, only the last intent work
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.addReg, pendingIntent);
 
+        // call logbook activity after last record or graph image click
         Bundle bundle_logbook = new Bundle();
         bundle_logbook.putString(FROM_WIDGET_TO_LOGBOOK,FROM_WIDGET_TO_LOGBOOK);
-
-        // call logbook activity after widget click
         Intent intent2 = new Intent(context, Home.class);
         intent2.putExtras(bundle_logbook);
+        intent2.setAction(Long.toString(System.currentTimeMillis())); //to differentiate both intents. if this setAction don't exist, only the last intent work
         PendingIntent pendingIntent2 = PendingIntent.getActivity(context, 0, intent2, PendingIntent.FLAG_CANCEL_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.widget_info_text, pendingIntent2);
-
-        // call logbook activity after widget click
-        Intent intent3 = new Intent(context, LogbookChartList.class);
-        PendingIntent pendingIntent3 = PendingIntent.getActivity(context, 0, intent3, PendingIntent.FLAG_CANCEL_CURRENT);
-        remoteViews.setOnClickPendingIntent(R.id.graph_img, pendingIntent3);
-
-
+        remoteViews.setOnClickPendingIntent(R.id.graph_img, pendingIntent2);
 
         // get values from database
         DB_Read db = new DB_Read(context);
@@ -133,7 +129,6 @@ public class widget extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetId, remoteViews);
 
     }
-
 
     // write values
     public static void setText(RemoteViews remoteViews, int field, String replaceValue) {
