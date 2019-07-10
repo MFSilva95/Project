@@ -24,6 +24,12 @@
             android:icon="@drawable/ic_import_export"/>
 
         <item
+            android:id="@+id/options_app"
+            android:checked="false"
+            android:title="@string/title_activity_app_options"
+            android:icon="@drawable/ic_notes"/>
+
+        <item
             android:id="@+id/info"
             android:checked="false"
             android:icon="@drawable/ic_info_outline_24dp"

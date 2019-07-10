@@ -413,7 +413,6 @@ public class ServerSync {
 					ranks[7] = rank.getString("h");
 
 					Preferences.saveRankInfo(context,ranks[0],ranks[1],ranks[2],ranks[3],ranks[4],ranks[5],ranks[6],ranks[7]);
-
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
