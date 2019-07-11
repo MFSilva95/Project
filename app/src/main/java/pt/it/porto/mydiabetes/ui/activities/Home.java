@@ -147,9 +147,10 @@ public class Home extends BaseActivity {
         db_features = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
         boolean accepted_terms = db_features.isFeatureActive(FeaturesDB.ACCEPTED_NEW_TERMS);
         boolean initial_reg_done = db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE);
+        boolean accepted_terms_first = db_features.hasFeature(FeaturesDB.ACCEPTED_NEW_TERMS);
         //MyDiabetesStorage.getInstance(getBaseContext()).close_handler();
 
-        if(!accepted_terms){
+        if(!accepted_terms_first){
             showTermsOfService();
         }else{
             if(!initial_reg_done){

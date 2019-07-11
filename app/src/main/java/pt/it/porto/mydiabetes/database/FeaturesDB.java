@@ -41,6 +41,22 @@ public class FeaturesDB {
 		return result.getInt(0) != 0;
 	}
 
+	public boolean hasFeature(String feature) {//INITIAL_REG_DONE
+		if(FEATURE_CLOUD_SYNC.equals(feature) && !BuildConfig.SYNC_AVAILABLE){
+			return false;
+		}
+		if(FEATURE_INSULIN_ON_BOARD.equals(feature) && !BuildConfig.IOB_AVAILABLE){
+			return false;
+		}
+		Cursor result = storage.query(MyDiabetesContract.Feature.TABLE_NAME, new String[]{MyDiabetesContract.Feature.COLUMN_NAME_ACTIVATED},
+				MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{feature}, null, null, null, 1);
+		if(result == null){return false;}
+		else{
+			result.moveToFirst();
+			return (result.getCount() > 0);
+		}
+	}
+
 	public void changeFeatureStatus(String feature, boolean active) {
 		// checks is feature created
 		Cursor result = storage.query(MyDiabetesContract.Feature.TABLE_NAME, new String[]{MyDiabetesContract.Feature.COLUMN_NAME_NAME},
