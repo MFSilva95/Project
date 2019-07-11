@@ -44,13 +44,14 @@
     <string name="title_activity_hb_a1c_detail">Registo de HbA1c</string>
     <string name="title_activity_disease_detail">Registo de Doença</string>
     <string name="title_activity_import_export">Importar &amp; Exportar</string>
+    <string name="title_activity_app_options">Opções da aplicação</string>
     <string name="title_activity_tag_detail">Fase do Dia</string>
     <string name="title_activity_target_bg_detail">Objetivo de Glicemia</string>
     <string name="title_activity_insulins_detail">Insulina</string>
     <string name="title_activity_info">Informação</string>
     <string name="title_activity_view_photo">Fotografia</string>
     <string name="title_activity_welcome">Registo</string>
-
+    <string name="use_auto_upd">Envio automático de informação</string>
 
     <string name="add_MedicinesFragment">Adicionar Medicamento</string>
     <string name="add_Carbs">Adicionar Hidratos de Carbono</string>
@@ -130,6 +131,7 @@
     <string name="mydata_saved">Guardado</string>
 
     <string name="positiveButton">Sim</string>
+    <string name="noButton">Não</string>
     <string name="negativeButton">Cancelar</string>
     <string name="okButton" translatable="false">OK</string>
 
@@ -599,7 +601,8 @@
     <string name="add_extra_carbs">Adicionar H.Carb extra</string>
 
     <string name="terms_of_service_title">Politica de Privacidade</string>
-    <string name="terms_of_service_description">A aplicação MyDiabetes não recolhe autónomamente informações dos seus utilizadores. A aplicação permite que os seus utilizadores carreguem para uma "nuvem" segura todos os seus dados. Se o fizer, a equipa da MyDiabetes terá acesso aos seus dados sobre:\n
+
+    <string name="terms_of_service_description">A aplicação MyDiabetes, a partir desta nova actualização, vai recolher autónomamente, mantendo a infomação anónima, os seguintes dados:\n
 
         <small>
             <ul>
@@ -628,7 +631,8 @@
             \n<li>Objectivos Glicemicos.</li>
             </ul>
         </small>
-        \n\nToda a informação disponibilizada será para utilização exclusivamente académica!\nA equipa do MyDiabetes irá usar esta informação de forma a melhorar o seu sistema de aconselhamento de forma a conseguir ajudar os seus utilizadores.\n<b>\nAceita os termos apresentados?</b></string>
+        \n\nToda a informação disponibilizada será para utilização exclusivamente académica!\nA equipa do MyDiabetes irá usar esta informação de forma a melhorar o seu sistema de aconselhamento de forma a conseguir ajudar os seus utilizadores.\n<b>\nAceita os termos apresentados?</b>\n<br>\n(pode a qualquer momento desativar o upload automático dos dados nas opções da aplicação)</br></string>
+
     <string name="notification_channel_sync_description">Lembrete para envio dos dados para o gestor do projecto</string>
 
 

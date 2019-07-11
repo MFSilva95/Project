@@ -4,12 +4,15 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.database.Cursor;
@@ -36,6 +39,7 @@ import android.widget.Toast;
 import com.cdev.achievementview.AchievementView;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import pt.it.porto.mydiabetes.BuildConfig;
@@ -53,6 +57,7 @@ import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.charts.data.Logbook;
 import pt.it.porto.mydiabetes.ui.dialogs.RankWebSyncDialog;
 import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
+import pt.it.porto.mydiabetes.utils.AutoSync;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.SyncAlarm;
@@ -63,6 +68,9 @@ import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.PROJECT_
 public class Home extends BaseActivity {
 
 	public static final int CHANGES_OCCURRED = 1;
+
+    private int _TEST_TIME_ = 86400000;
+
 	private static Boolean old_db = false;
 
 	private NavigationView navigationView;
@@ -84,6 +92,20 @@ public class Home extends BaseActivity {
 
 	private SharedPreferences permissionStatus;
     FeaturesDB db_features;
+
+    private void showAutoUpdateNotice(){
+        PackageInfo packageInfo = null;
+        try {
+            packageInfo = this.getPackageManager()
+                    .getPackageInfo(this.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        int versionCode = packageInfo.versionCode;
+        if(versionCode==23){
+
+        }
+    }
 
 
 	@Override
@@ -110,20 +132,20 @@ public class Home extends BaseActivity {
 		setContentView(R.layout.activity_home);
         permissionStatus = getSharedPreferences("permissionStatus",MODE_PRIVATE);
 
-        if(BuildConfig.SYNC_AVAILABLE) {
-            try {
-                setupAlarm();
-            } catch (java.text.ParseException e) {
-                e.printStackTrace();
-            }
-        }
+//        if(BuildConfig.SYNC_AVAILABLE) {
+//            try {
+//                setupAlarm();
+//            } catch (java.text.ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         DB_Read db = new DB_Read(this);//getBaseContext());
         idUser = db.getUserId();
         db.close();
 
         db_features = new FeaturesDB(MyDiabetesStorage.getInstance(getBaseContext()));
-        boolean accepted_terms = db_features.isFeatureActive(FeaturesDB.ACCEPTED_TERMS);
+        boolean accepted_terms = db_features.isFeatureActive(FeaturesDB.ACCEPTED_NEW_TERMS);
         boolean initial_reg_done = db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE);
         //MyDiabetesStorage.getInstance(getBaseContext()).close_handler();
 
@@ -147,6 +169,14 @@ public class Home extends BaseActivity {
                 }else{
                     setMainView(savedInstanceState);
                 }
+            }
+        }
+
+        if(accepted_terms){
+            try {
+                setupAutoSync();
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
             }
         }
 	}
@@ -289,6 +319,10 @@ public class Home extends BaseActivity {
                         return true;
                     case R.id.importAndExport:
                         checkPermissions(EXTERNAL_STORAGE_PERMISSION_CONSTANT);
+                        return true;
+                    case R.id.options_app:
+                        intent = new Intent(getApplicationContext(), SettingsAPP.class);
+                        startActivity(intent);
                         return true;
                     case R.id.info:
                         intent = new Intent(getApplicationContext(), Info.class);
@@ -641,7 +675,36 @@ public class Home extends BaseActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
 
-                        db_features.changeFeatureStatus(FeaturesDB.ACCEPTED_TERMS, true);
+                        db_features.changeFeatureStatus(FeaturesDB.ACCEPTED_NEW_TERMS, true);
+
+                        if (!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)) {
+                            if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                                ActivityCompat.requestPermissions(Home.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, INIT_PERMISSION_REQUEST);
+                            } else {
+                                if (ShouldBackupDB()) {
+                                    showBackupDialog();
+                                } else {
+                                    ShowDialogAddData();
+                                    return;
+                                }
+                            }
+                        } else {
+                            if (ShouldBackupDB()) {
+                                showBackupDialog();
+                            } else {
+                                setMainView(null);
+                            }
+                        }
+                        dialog.cancel();
+                    }
+                });
+
+        builder1.setNegativeButton(
+                getString(R.string.noButton),
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        db_features.changeFeatureStatus(FeaturesDB.ACCEPTED_NEW_TERMS, false);
 
                         if (!db_features.isFeatureActive(FeaturesDB.INITIAL_REG_DONE)) {
                             if (ActivityCompat.checkSelfPermission(Home.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -691,6 +754,10 @@ public class Home extends BaseActivity {
             else if (mViewPager.getCurrentItem()==1) logSave("Home:homeMiddleFragment");
             else if (mViewPager.getCurrentItem()==2) logSave("Home:homeRightFragment");
         }
+//        try {
+//            setupAutoSync();
+//        } catch (java.text.ParseException e) {
+//        }
     }
 
 
@@ -726,6 +793,44 @@ public class Home extends BaseActivity {
                 preferences.edit().putInt(SyncAlarm.SYNC_ALARM_PREFERENCE, 1).apply();
                 alm.set(AlarmManager.RTC, calendar.getTimeInMillis(), alarmIntent);
             }
+        }
+    }
+    private void setupAutoSync() throws java.text.ParseException {
+
+        String username = pt.it.porto.mydiabetes.database.Preferences.getUsername(this);
+        if(username==null || username.equals("")){
+            return;
+        }
+
+        //SharedPreferences preferences = pt.it.porto.mydiabetes.database.Preferences.getPreferences(this);
+        Calendar calendar_last_update = Calendar.getInstance();
+        Calendar calendar_today = Calendar.getInstance();
+
+        long today_time = calendar_today.getTimeInMillis();
+
+        DB_Read read = new DB_Read(this);
+        String last_update_string = read.MyData_Get_last_update_date();
+        read.close();
+
+        try {
+            calendar_last_update.setTime(DateUtils.iso8601Format.parse(last_update_string));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        long time_last_update = calendar_last_update.getTimeInMillis();
+        long time_difference = today_time - time_last_update;
+
+        if(time_difference>_TEST_TIME_){//86400000){
+            JobScheduler jobScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+
+            ComponentName jobService = new ComponentName(getPackageName(), AutoSync.class.getName());
+            JobInfo jobInfo = new JobInfo.Builder(AutoSync.MYJOBID,jobService).setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY). build();
+            jobScheduler.schedule(jobInfo);
+            DB_Write db_write = new DB_Write(this);
+            String datetime = DateUtils.formatToDb(calendar_today);
+            db_write.database_last_upload_update(datetime);
         }
     }
 
