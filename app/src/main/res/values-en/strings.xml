@@ -530,13 +530,13 @@
     <string name="settings_edit_glicemia_targets">Edit Glycaemia Goals</string>
     <string name="new_note">New Note</string>
 
-    <string name="badge_help_personal_dialog_title">Help</string>
-    <string name="badge_help_personal_dialog_desc">Glucose Average - It’s an overall measure of blood sugars over a period of time, in this case, daily\n\nVariability - represents the variability of the glucose values, the blood glucose oscillations that occur throughout the day\n\n\Streak - Consecutive days number of daily goals completed. The streak value will turn 0 if you do not complete a certain daily goal.\n\nDaily Goal - You should record at least 6 Glycaemias, daily. If you complete this objective, you will be awarded with 50 points multiplied by your streak value. You can and should aim to keep your streak to be awarded the maximum number of possible points. The objective streak value caps at the value 7, but can still be maintained.</string>
+    <string name="personal_help_dialog_title">Help</string>
+    <string name="personal_help_dialog_desc">Glucose Average - It’s an overall measure of blood sugars over a period of time, in this case, daily.(The quality of the given feedback depends on the number of records)\n\nVariability - represents the variability of the glucose values, the blood glucose oscillations that occur throughout the day.(The quality of the given feedback depends on the number of records)\n\n\Streak - Consecutive days number of daily goals completed. The streak value will turn 0 if you do not complete a certain daily goal.\n\nDaily Goal - You should record at least 6 Glycaemias, daily. If you complete this objective, you will be awarded with 100 points multiplied by your streak value. You can and should aim to keep your streak to be awarded the maximum number of possible points. The objective streak value caps at the value 7, but can still be maintained.</string>
 
     <string name="badge_help_dialog_title">How to win Badges?</string>
     <string name="badge_help_dialog_desc">To win Badges you must complete the required records for each. For each record inserted gain 100 points and 200 per badge. Collect points to level up.
         The intermediate and advanced levels are unlockable at levels 10 and 30 respectively, and you need to have at least two health medals on the current difficulty.
-        The health badges are:\n\nAverage - Having the glycaemia values average under 154mg/dL, over a certain period of time\n\nVariability - The glycaemia values variation can not make variability be over 36%, over a certain period of time\n\nTime in range - Having at least 65% of glycaemia values between 70 and 180mg/dL, over a certain period of time
+        The health badges are:\n\nAverage - Having the glycaemia values average under 154mg/dL, over a certain period of time (At least 3 glycaemia records each day).\n\nVariability - The glycaemia values variation can not make variability be over 36%, over a certain period of time (At least 3 glycaemia records each day).\n\nTime in range - Having at least 65% of glycaemia values between 70 and 180mg/dL, over a certain period of time (At least 3 glycaemia records each day).
     </string>
     <string name="email_feedback_subject">Opinion and Comments about myDiabetes</string>
 
@@ -658,7 +658,8 @@
     <string name="dailyGoal">DAILY GOAL</string>
 
     <string name="congratsStreak">Congratulations! Streak increased</string>
-    <string name="streakGoalWon">by accomplishing your daily goal</string>
+    <!-- <string name="streakGoalWon">by accomplishing your daily goal</string> -->
+    <string name="streakGoalWon">bonus points won</string>
     <string name="startRecordsMessage">Today is a good day to make your daily goal!</string>
     <string name="streakMessage1">You are on a &#160;</string>
     <string name="streakMessage2">&#160; streak accomplishing your daily goal!</string>
