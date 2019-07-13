@@ -436,7 +436,6 @@ public class homeRightFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        System.out.println("ENTRA: ");
         competitionSection.setVisibility(View.GONE);
         hideShowCompetition.setText(getContext().getString(R.string.competitionTitleShow));
     }

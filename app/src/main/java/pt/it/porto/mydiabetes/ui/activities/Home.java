@@ -95,10 +95,12 @@ public class Home extends BaseActivity {
 
 	    if (this.getIntent() != null) {
             if (this.getIntent().getStringExtra(FROM_WIDGET) != null) {
+                logSave("Widget:NewHomeRegistry");
                 Intent intent = new Intent(this, NewHomeRegistry.class);
                 startActivity(intent);
             }
             if (this.getIntent().getStringExtra(FROM_WIDGET_TO_LOGBOOK) != null) {
+                logSave("Widget:LogbookChartList");
                 Intent intent = new Intent(this, LogbookChartList.class);
                 startActivity(intent);
             }
