@@ -59,6 +59,7 @@ import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
@@ -607,8 +608,18 @@ public class NewHomeRegistry extends BaseActivity{
                             }
                             glycemiaData.setId(reg.Glycemia_Save(glycemiaData));
                             reg.Record_Update_Glycaemia(recordId, glycemiaData.getId());
-                            if (rdb.getGlyRecordsNumberByDay(0) == 6) {
+
+                            // streak update section
+                            if (rdb.getGlyRecordsNumberByDay(0) == 6 && !rdb.checkDailyGoalWin(0)) {
                                 winStreak = true;
+                                UserInfo myData = rdb.MyData_Read();
+                                int currentStreak = myData.getCurrentStreak()+1;
+                                myData.setCurrentStreak(currentStreak);
+                                reg.MyData_Save(myData);
+
+                                int streak = rdb.MyData_Read().getCurrentStreak();
+                                int points = 100 * streak;
+                                LevelsPointsUtils.addPoints(getBaseContext(), points, "streak", rdb);
                             }
                         }
                         break;

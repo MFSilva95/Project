@@ -7,6 +7,7 @@ import pt.it.porto.mydiabetes.BuildConfig;
 
 public class FeaturesDB {
 	public static final String ACCEPTED_TERMS = "accepted_terms";
+	public static final String ACCEPTED_NEW_TERMS = "accepted_new_terms";
 	public static final String FEATURE_INSULIN_ON_BOARD = "feature_insulin_on_board";
 	public static final String FEATURE_CLOUD_SYNC = "feature_cloud_sync/2";
 	public static final String INITIAL_REG_DONE = "initial_reg_done";
@@ -38,6 +39,22 @@ public class FeaturesDB {
 		}
 		result.moveToFirst();
 		return result.getInt(0) != 0;
+	}
+
+	public boolean hasFeature(String feature) {//INITIAL_REG_DONE
+		if(FEATURE_CLOUD_SYNC.equals(feature) && !BuildConfig.SYNC_AVAILABLE){
+			return false;
+		}
+		if(FEATURE_INSULIN_ON_BOARD.equals(feature) && !BuildConfig.IOB_AVAILABLE){
+			return false;
+		}
+		Cursor result = storage.query(MyDiabetesContract.Feature.TABLE_NAME, new String[]{MyDiabetesContract.Feature.COLUMN_NAME_ACTIVATED},
+				MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{feature}, null, null, null, 1);
+		if(result == null){return false;}
+		else{
+			result.moveToFirst();
+			return (result.getCount() > 0);
+		}
 	}
 
 	public void changeFeatureStatus(String feature, boolean active) {

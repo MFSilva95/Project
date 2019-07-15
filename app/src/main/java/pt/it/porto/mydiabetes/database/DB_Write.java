@@ -88,6 +88,16 @@ public class DB_Write {
 		myDB.insert("Tag", null, toInsert);
 	}
 
+
+	public void database_last_upload_update(String date){
+		ContentValues toUpdate = new ContentValues();
+		toUpdate.put("DateTimeUpdate", date);
+
+		myDB.update("UserInfo", toUpdate, null, null);
+
+		Log.d("Update", "UserInfo");
+	}
+
 	public void Tag_Add(Tag t) {
 		ContentValues toInsert = new ContentValues();
 		toInsert.put("Name", t.getName());

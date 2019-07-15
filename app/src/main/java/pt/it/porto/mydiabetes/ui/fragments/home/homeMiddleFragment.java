@@ -53,8 +53,10 @@ import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
 
+import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
@@ -269,6 +271,7 @@ public class homeMiddleFragment extends Fragment {
 
     @Override
     public void onResume() {
+        updateStreakValues();
         DB_Read db = new DB_Read(getContext());
         if(db!=null){
             boolean winHealthBadge = BadgeUtils.addHealthBadge(getContext(), db);
@@ -286,14 +289,9 @@ public class homeMiddleFragment extends Fragment {
                     achievementViewSecondary.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
                 }
             }
-
+            System.out.println("CURRENT_STREAK: "+db.MyData_Read().getCurrentStreak());
             if (NewHomeRegistry.winStreak) {
-                //add extra points to user points
-                int reward = 50;
-                int streak = db.MyData_Read().getCurrentStreak();
-                int points = reward * streak;
-                System.out.println("POINTS: "+streak+" "+points);
-                LevelsPointsUtils.addPoints(getContext(), points, "streak", db);
+                int points = 100 * db.MyData_Read().getCurrentStreak();
 
                 //show daily goal streak winning as a notification
                 if (!NewHomeRegistry.winBadge && !NewHomeRegistry.winDaily) {
@@ -305,7 +303,7 @@ public class homeMiddleFragment extends Fragment {
                     achievementView.setVisibility(View.GONE);
                 }
                 achievementViewStreak.setVisibility(View.VISIBLE);
-                achievementViewStreak.show(this.getString(R.string.congratsStreak), this.getString(R.string.streakGoalWon));
+                achievementViewStreak.show(this.getString(R.string.congratsStreak), points+" "+this.getString(R.string.streakGoalWon));
             }
             NewHomeRegistry.winBadge = false;
             NewHomeRegistry.winDaily = false;
@@ -315,6 +313,31 @@ public class homeMiddleFragment extends Fragment {
 
         super.onResume();
         updateHomeList();
+    }
+
+    public void updateStreakValues() {
+        DB_Read rdb = new DB_Read(getContext());
+        UserInfo myData = rdb.MyData_Read();
+        Boolean changes = false;
+        int currentStreak = myData.getCurrentStreak();
+        int maxStreak = myData.getMaxStreak();
+
+        // set current streak 0 if yesterday daily goal was not complete
+        if (!rdb.checkDailyGoalWin(1) && !rdb.checkDailyGoalWin(0) && currentStreak != 0) {
+            changes = true;
+            myData.setCurrentStreak(0);
+        }
+        // update maxStreak if currentStreak is better than maxStreak
+        if (currentStreak > maxStreak) {
+            changes = true;
+            myData.setMaxStreak(currentStreak);
+        }
+        // save new updates
+        if (changes) {
+            DB_Write wdb = new DB_Write(getContext());
+            wdb.MyData_Save(myData);
+            wdb.close();
+        }
     }
 
     public static long getDateInMillis(String srcDate) {

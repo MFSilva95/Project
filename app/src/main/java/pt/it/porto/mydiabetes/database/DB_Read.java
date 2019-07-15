@@ -106,6 +106,22 @@ public class DB_Read {
         cursor.close();
         return false;
     }
+
+	public String MyData_Get_last_update_date() {
+		Cursor cursor = myDB.rawQuery("SELECT DateTimeUpdate FROM UserInfo", null);
+		Log.d("Cursor", String.valueOf(cursor.getCount()));
+		if (cursor.getCount() > 0) {
+			cursor.moveToFirst();
+			String result = cursor.getString(0);
+			cursor.close();
+			return result;
+		} else {
+			cursor.close();
+			return null;
+		}
+	}
+
+
 	public boolean hasRatioData(){
         Cursor cursor = myDB.rawQuery("select * from Ratio_Reg", null);
 
@@ -2993,7 +3009,7 @@ public class DB_Read {
 		ArrayList<Integer> averageAndVariability = new ArrayList<>();
 		// validate if every day on "days" range has at least 3 blood glucose records
 		for (int i=1; i<=days; i++) {
-			if (getGlyRecordsNumberByDay(i) >= 6) {
+			if (getGlyRecordsNumberByDay(i) >= 3) {
 
 			} else {
 				averageAndVariability.add(-1);
@@ -3002,13 +3018,15 @@ public class DB_Read {
 			}
 		}
 
-		Cursor cursor = myDB.rawQuery("SELECT average.a, AVG((val.Value - average.a) * (val.Value - average.a)) as var From Reg_BloodGlucose," +
+		Cursor cursor = myDB.rawQuery("SELECT average.a, AVG((val.Value - average.a) * (val.Value - average.a)) as var, nReg.c as n From Reg_BloodGlucose," +
 				"(SELECT * from Reg_BloodGlucose Where DateTime >= DateTime('now','localtime','start of day','-"+days+" days') AND DateTime < DateTime('now','localtime','start of day')) AS val," +
-				"(SELECT AVG(Value) as a From Reg_BloodGlucose Where DateTime >= DateTime('now','start of day','-"+days+" days') AND DateTime < DateTime('now','localtime','start of day')) AS average", null);
+				"(SELECT AVG(Value) as a From Reg_BloodGlucose Where DateTime >= DateTime('now','start of day','-"+days+" days') AND DateTime < DateTime('now','localtime','start of day')) AS average," +
+				"(SELECT Count(*) as c From Reg_BloodGlucose Where DateTime >= DateTime('now','start of day','-"+days+" days') AND DateTime < DateTime('now','localtime','start of day')) AS nReg", null);
 		cursor.moveToFirst();
 
 		int mean = cursor.getInt(0);
 		int sd = (int) (Math.sqrt(cursor.getDouble(1)));
+		sd = (int) (sd/cursor.getInt(2));
 		int cv = (int) (sd*100/mean);
 		averageAndVariability.add(mean);
 		averageAndVariability.add(cv);
@@ -3018,7 +3036,7 @@ public class DB_Read {
 	public int getXDaysTimeInRange(int days, int hypo, int hyper) {
 		// validate if every day on "days" range has at least 3 blood glucose records
 		for (int i=1; i<=days; i++) {
-			if (getGlyRecordsNumberByDay(i) >= 6) {
+			if (getGlyRecordsNumberByDay(i) >= 3) {
 
 			} else {
 				return -1;
@@ -3059,5 +3077,23 @@ public class DB_Read {
 		System.out.println("HEALTH BADGES: "+cursor.getCount());
 		if (nMedals >= 2) return true;
 		else return false;
+	}
+
+	// returning true if on a x day, the daily goal was obtained
+	public boolean checkDailyGoalWin(int day) {
+		Cursor cursor;
+		if (day == 0) {
+			cursor = myDB.rawQuery("select Count(*) from Points where DateTime >= DateTime('now','localtime','start of day') and DateTime < DateTime('now','localtime','start of day','+1 days') and Origin = 'streak'", null);
+		}
+		else {
+			int day2 = day - 1;
+			cursor = myDB.rawQuery("select Count(*) from Points where DateTime >= DateTime('now','localtime','start of day','-" + day + " days') and DateTime < DateTime('now','localtime','start of day','-" + day2 + " days') and Origin = 'streak'", null);
+		}
+		cursor.moveToFirst();
+		if (cursor.getInt(0) == 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
