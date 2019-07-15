@@ -780,8 +780,8 @@ public class homeRightFragment extends Fragment {
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Calendar c1 = Calendar.getInstance();
         Date today = c1.getTime();
-        c1.add(Calendar.DATE, -8);
-        pt.it.porto.mydiabetes.database.Preferences.saveLastRankUpdate(context, dateFormat.format(c1.getTime()));
+        //c1.add(Calendar.DATE, -8);
+        //pt.it.porto.mydiabetes.database.Preferences.saveLastRankUpdate(context, dateFormat.format(c1.getTime()));
 
         Calendar c = Calendar.getInstance();
         c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
