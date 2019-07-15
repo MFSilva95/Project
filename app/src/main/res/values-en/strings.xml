@@ -531,12 +531,12 @@
     <string name="new_note">New Note</string>
 
     <string name="badge_help_personal_dialog_title">Help</string>
-    <string name="badge_help_personal_dialog_desc">Glucose Average - It’s an overall measure of blood sugars over a period of time, in this case, daily\n\nVariability - represents the variability of the glucose values, the blood glucose oscillations that occur throughout the day\n\n\Streak - Consecutive days number of daily goals completed. The streak value will turn 0 if you do not complete a certain daily goal.\n\nDaily Goal - You should record at least 6 Glycaemias, daily. If you complete this objective, you will be awarded with 50 points multiplied by your streak value. You can and should aim to keep your streak to be awarded the maximum number of possible points. The objective streak value caps at the value 7, but can still be maintained.</string>
+    <string name="badge_help_personal_dialog_desc">Glucose Average - It’s an overall measure of blood sugars over a period of time, in this case, daily\n\nVariability - represents the variability of the glucose values, the blood glucose oscillations that occur throughout the day\n\n\Streak - Consecutive day number of daily goals completed. The streak value will turn 0 if you do not complete a certain daily goal.\n\nDaily Goal - You should record at least 6 Glycaemias, daily. If you complete this objective, you will be awarded with 100 points multiplied by your streak value. You can and should aim to keep your streak to be awarded the maximum number of possible points. The objective streak value caps at the value 7, but can still be maintained.</string>
 
     <string name="badge_help_dialog_title">How to win Badges?</string>
     <string name="badge_help_dialog_desc">To win Badges you must complete the required records for each. For each record inserted gain 100 points and 200 per badge. Collect points to level up.
         The intermediate and advanced levels are unlockable at levels 10 and 30 respectively, and you need to have at least two health medals on the current difficulty.
-        The health badges are:\n\nAverage - Having the glycaemia values average under 154mg/dL, over a certain period of time\n\nVariability - The glycaemia values variation can not make variability be over 36%, over a certain period of time\n\nTime in range - Having at least 65% of glycaemia values between 70 and 180mg/dL, over a certain period of time
+        The health badges are:\n\nAverage - Having the glycaemia values average under 154mg/dL, over a certain period of time (At least 3 glycaemia records each day).\n\nVariability - The glycaemia values variation can not make variability be over 36%, over a certain period of time (At least 3 glycaemia records each day).\n\nTime in range - Having at least 65% of glycaemia values between 70 and 180mg/dL, over a certain period of time (At least 3 glycaemia records each day).
     </string>
     <string name="email_feedback_subject">Opinion and Comments about myDiabetes</string>
 
@@ -652,7 +652,7 @@
     <string name="notification_channel_sync_description">Reminder to send your data to the project manager</string>
 
 
-
+    <string name="today_info">DAILY INFORMATION</string>
     <string name="average">AVERAGE</string>
     <string name="variability">VARIABILITY</string>
     <string name="dailyGoal">DAILY GOAL</string>
@@ -698,9 +698,9 @@
     <string name="global_week_second">% of people</string>
 
     <string name="healthBadgeWon">Health goal badge won</string>
-    <string name="beginner_bronze_health">Keep your glyceamia average under 154 (1 week)</string>
-    <string name="medium_bronze_health">Keep your glyceamia average under 154 (2 weeks)</string>
-    <string name="advanced_bronze_health">Keep your glyceamia average under 154 (4 weeks)</string>
+    <string name="beginner_bronze_health">Keep your glyceamia average under 154mg/dl (1 week)</string>
+    <string name="medium_bronze_health">Keep your glyceamia average under 154mg/dl (2 weeks)</string>
+    <string name="advanced_bronze_health">Keep your glyceamia average under 154mg/dl (4 weeks)</string>
 
     <string name="beginner_silver_health">Keep your variability under 36% (1 week)</string>
     <string name="medium_silver_health">Keep your variability under 36% (2 weeks)</string>
@@ -709,8 +709,5 @@
     <string name="beginner_gold_health">Keep your time in range over 65% (1 week)</string>
     <string name="medium_gold_health">Keep your time in range over 65% (2 weeks)</string>
     <string name="advanced_gold_health">Keep your time in range over 65% (4 weeks)</string>
-
-
-
 
 </resources>

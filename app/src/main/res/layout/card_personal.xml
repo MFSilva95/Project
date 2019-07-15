@@ -32,7 +32,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center_vertical|center_horizontal"
-                    android:text="TODAY"
+                    android:text="@string/today_info"
                     android:paddingLeft="50dp"
                     android:textSize="18sp" />
 
@@ -192,7 +192,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
                         android:textColor="@color/red"
-                        android:text="x10"/>
+                        android:text="@string/n_a"/>
 
                 </LinearLayout>
                 <LinearLayout

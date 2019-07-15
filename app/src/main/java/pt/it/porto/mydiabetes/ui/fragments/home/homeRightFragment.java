@@ -699,8 +699,8 @@ public class homeRightFragment extends Fragment {
             }
 
             // variability values
-            if (variabiToday > 40) variabilityText.setTextColor(getResources().getColor(R.color.red));
-            else if (variabiToday > 36 && variabiToday <= 40) variabilityText.setTextColor(getResources().getColor(R.color.orange));
+            if (variabiToday > 36) variabilityText.setTextColor(getResources().getColor(R.color.red));
+            else if (variabiToday > 33 && variabiToday <= 36) variabilityText.setTextColor(getResources().getColor(R.color.orange));
             else variabilityText.setTextColor(getResources().getColor(R.color.green));
         }
 
@@ -780,8 +780,8 @@ public class homeRightFragment extends Fragment {
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Calendar c1 = Calendar.getInstance();
         Date today = c1.getTime();
-        c1.add(Calendar.DATE, -8);
-        pt.it.porto.mydiabetes.database.Preferences.saveLastRankUpdate(context, dateFormat.format(c1.getTime()));
+        //c1.add(Calendar.DATE, -8);
+        //pt.it.porto.mydiabetes.database.Preferences.saveLastRankUpdate(context, dateFormat.format(c1.getTime()));
 
         Calendar c = Calendar.getInstance();
         c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
