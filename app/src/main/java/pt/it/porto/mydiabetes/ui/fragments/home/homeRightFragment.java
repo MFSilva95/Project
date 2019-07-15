@@ -101,7 +101,7 @@ public class homeRightFragment extends Fragment {
     private TextView variabilityText;
     private TextView dailyRecordNumber;
     private TextView streakText;
-    private TextView streak_days;
+    private static TextView streak_days;
     private TextView records_left;
     private RelativeLayout competitionSection;
     private Button hideShowCompetition;
@@ -301,7 +301,8 @@ public class homeRightFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 new MaterialStyledDialog.Builder(getContext())
-                        .setDescription(getString(R.string.badge_help_personal_dialog_desc))
+                        .setTitle(getString(R.string.personal_help_dialog_title))
+                        .setDescription(getString(R.string.personal_help_dialog_desc))
                         .setStyle(Style.HEADER_WITH_ICON)
 //                        .setIcon(R.drawable.medal_gold_record_a)
                         .withDialogAnimation(true)
@@ -435,7 +436,6 @@ public class homeRightFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        System.out.println("ENTRA: ");
         competitionSection.setVisibility(View.GONE);
         hideShowCompetition.setText(getContext().getString(R.string.competitionTitleShow));
     }
@@ -723,43 +723,20 @@ public class homeRightFragment extends Fragment {
 
         int todayRecords = rdb.getGlyRecordsNumberByDay(0);
         int yesterdayRecords = rdb.getGlyRecordsNumberByDay(1);
-        rdb.close();
 
-        Boolean changes = false;
+
 
         int streakDays = myData.getCurrentStreak();
         int maxStreak = myData.getMaxStreak();
 
-        // reset streak if yesterday didn't complete daily goal
-        if (yesterdayRecords < recordGoal) {
-            streakDays = 0;
-            myData.setCurrentStreak(streakDays);
-            changes = true;
-        }
-
         // in case of daily goal won
-        if (todayRecords >= recordGoal) {
-            changes = true;
+        if (rdb.checkDailyGoalWin(0)) {
             leftDaysMessage.setVisibility(View.GONE);
             congratsMessage.setVisibility(View.VISIBLE);
-            streakDays++;
-            // if current streak is the best streak
-            if (streakDays > maxStreak) {
-                maxStreak = streakDays;
-                myData.setMaxStreak(maxStreak);
-            }
-            // update personal data values
-            myData.setCurrentStreak(streakDays);
         } else {
             leftDaysMessage.setVisibility(View.VISIBLE);
             congratsMessage.setVisibility(View.GONE);
             records_left.setText((recordGoal - todayRecords) + " " + getResources().getQuantityString(R.plurals.numberOfGlyc, recordGoal - todayRecords));
-        }
-
-        if(changes){
-            DB_Write wdb = new DB_Write(getContext());
-            wdb.MyData_Save(myData);
-            wdb.close();
         }
 
         if (streakDays == 0) {
@@ -774,6 +751,7 @@ public class homeRightFragment extends Fragment {
             streakText.setText("x"+streakDays);
         }
         dailyRecordNumber.setText(todayRecords+" / "+recordGoal);
+        rdb.close();
     }
 
     public static boolean isTimeToRankUpdate(Context context) {
@@ -842,42 +820,44 @@ public class homeRightFragment extends Fragment {
             }
             if (ranks[2] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[2]));
-                if (value != -1 && (int) Math.round(Double.parseDouble(ranks[0])) != 0) homeRightFragment.points_g.setText(String.valueOf(value));
+                int points_g = (int) Math.round(Double.parseDouble(ranks[0]));
+                if (value != -1 && (points_g != 0 && points_g != -1)) homeRightFragment.points_g.setText(String.valueOf(value));
                 else homeRightFragment.points_g.setText(R.string.n_a);
             } else {
                 homeRightFragment.points_g.setText(R.string.n_a);
             }
             if (ranks[3] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[3]));
-                if (value != -1 && (int) Math.round(Double.parseDouble(ranks[1])) != 0) homeRightFragment.streak_g.setText(String.valueOf(value));
+                int streak_g = (int) Math.round(Double.parseDouble(ranks[1]));
+                if (value != -1 && (streak_g != 0 && streak_g != -1)) homeRightFragment.streak_g.setText(String.valueOf(value));
                 else homeRightFragment.streak_g.setText(R.string.n_a);
             } else {
                 homeRightFragment.streak_g.setText(R.string.n_a);
             }
             if (ranks[4] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[4]));
-                if (value != -1) homeRightFragment.points_w.setText(String.valueOf(value));
+                if (value != -1 && value != 0) homeRightFragment.points_w.setText(String.valueOf(value));
                 else homeRightFragment.points_w.setText(R.string.n_a);
             } else {
                 homeRightFragment.points_w.setText(R.string.n_a);
             }
             if (ranks[5] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[5]));
-                if (value != -1) homeRightFragment.streak_w.setText(String.valueOf(value));
+                if (value != -1 && value != 0) homeRightFragment.streak_w.setText(String.valueOf(value));
                 else homeRightFragment.streak_w.setText(R.string.n_a);
             } else {
                 homeRightFragment.streak_w.setText(R.string.n_a);
             }
             if (ranks[6] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[6]));
-                if (value != -1) homeRightFragment.glycaemia_w.setText(String.valueOf(value));
+                if (value != -1 && value != 0) homeRightFragment.glycaemia_w.setText(String.valueOf(value));
                 else homeRightFragment.glycaemia_w.setText(R.string.n_a);
             } else {
                 homeRightFragment.glycaemia_w.setText(R.string.n_a);
             }
             if (ranks[7] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[7]));
-                if (value != -1) homeRightFragment.hyperhypo_w.setText(String.valueOf(value));
+                if (value != -1 && value != 0) homeRightFragment.hyperhypo_w.setText(String.valueOf(value));
                 else homeRightFragment.hyperhypo_w.setText(R.string.n_a);
             } else {
                 homeRightFragment.hyperhypo_w.setText(R.string.n_a);

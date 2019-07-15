@@ -114,8 +114,8 @@ public class widget extends AppWidgetProvider {
         AppWidgetProviderInfo widgetInfo = AppWidgetManager.getInstance (context).getAppWidgetInfo (appWidgetId);
 
 
-        int width = widgetInfo.minWidth; //* getWidthColsNum (widgetInfo);
-        int height = widgetInfo.minHeight; //* getHeightColsNum (widgetInfo);
+        int width = widgetInfo.minWidth-10; //* getWidthColsNum (widgetInfo);
+        int height = widgetInfo.minHeight-10; //* getHeightColsNum (widgetInfo);
 
         Bitmap b = drawToBitmap(context, width, height, lastXGlicaemias);
 
