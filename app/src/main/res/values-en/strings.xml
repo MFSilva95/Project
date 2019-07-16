@@ -20,6 +20,10 @@
     <string name="failed_import_img">Could not access the image.</string>
     <string name="upload_successful">Upload completed successfully.</string>
 
+    <string name="title_activity_app_options">App options</string>
+    <string name="use_auto_upd">Automatic data uploads</string>
+    <string name="noButton">No</string>
+
     <string name="upload_failed">Upload failed, please try later.</string>
     <string name="title_activity_my_data">My Data</string>
     <string name="title_activity_exercise">Exercise Register</string>
@@ -530,8 +534,8 @@
     <string name="settings_edit_glicemia_targets">Edit Glycaemia Goals</string>
     <string name="new_note">New Note</string>
 
-    <string name="badge_help_personal_dialog_title">Help</string>
-    <string name="badge_help_personal_dialog_desc">Glucose Average - It’s an overall measure of blood sugars over a period of time, in this case, daily\n\nVariability - represents the variability of the glucose values, the blood glucose oscillations that occur throughout the day\n\n\Streak - Consecutive day number of daily goals completed. The streak value will turn 0 if you do not complete a certain daily goal.\n\nDaily Goal - You should record at least 6 Glycaemias, daily. If you complete this objective, you will be awarded with 100 points multiplied by your streak value. You can and should aim to keep your streak to be awarded the maximum number of possible points. The objective streak value caps at the value 7, but can still be maintained.</string>
+    <string name="personal_help_dialog_title">Help</string>
+    <string name="personal_help_dialog_desc">Glucose Average - It’s an overall measure of blood sugars over a period of time, in this case, daily\n\nVariability - represents the variability of the glucose values, the blood glucose oscillations that occur throughout the day\n\n\Streak - Consecutive day number of daily goals completed. The streak value will turn 0 if you do not complete a certain daily goal.\n\nDaily Goal - You should record at least 6 Glycaemias, daily. If you complete this objective, you will be awarded with 100 points multiplied by your streak value. You can and should aim to keep your streak to be awarded the maximum number of possible points. The objective streak value caps at the value 7, but can still be maintained.</string>
 
     <string name="badge_help_dialog_title">How to win Badges?</string>
     <string name="badge_help_dialog_desc">To win Badges you must complete the required records for each. For each record inserted gain 100 points and 200 per badge. Collect points to level up.

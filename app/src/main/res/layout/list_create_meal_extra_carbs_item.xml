@@ -33,7 +33,6 @@
                 android:id="@+id/food_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="Arroz com frango com pedaços de cenas e cenas ayy limao"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textColor="@color/primary_text"
                 android:paddingStart="8dp"

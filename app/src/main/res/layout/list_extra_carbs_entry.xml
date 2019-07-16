@@ -38,7 +38,6 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_weight="9"
-                android:text="Arroz com frango com pedaços de cenas e cenas ayy limao"
                 android:textAppearance="@style/TextAppearance.AppCompat"
                 android:textColor="@color/primary_text"
                 android:textSize="18sp"

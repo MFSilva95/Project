@@ -95,10 +95,12 @@ public class Preferences {
 		String datestring = getPreferences(context).getString(LAST_RANK_UPDATE, null);
 		SimpleDateFormat dateFormat = new SimpleDateFormat();
 		Date d = null;
-		try {
-			d = dateFormat.parse(datestring);
-		} catch (ParseException e) {
-			e.printStackTrace();
+		if(datestring!=null){
+			try {
+				d = dateFormat.parse(datestring);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		}
 		return d;
 	}

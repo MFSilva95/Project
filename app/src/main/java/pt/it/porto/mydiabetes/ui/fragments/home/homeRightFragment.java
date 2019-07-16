@@ -61,9 +61,11 @@ import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.activities.Badges;
+import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.MyData;
 import pt.it.porto.mydiabetes.ui.dialogs.RankWebSyncDialog;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
@@ -300,34 +302,64 @@ public class homeRightFragment extends Fragment {
         helpButtonPersonal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new MaterialStyledDialog.Builder(getContext())
-                        .setDescription(getString(R.string.badge_help_personal_dialog_desc))
-                        .setStyle(Style.HEADER_WITH_ICON)
-//                        .setIcon(R.drawable.medal_gold_record_a)
-                        .withDialogAnimation(true)
-                        .withDarkerOverlay(true)
-                        .withIconAnimation(false)
-                        .setCancelable(true)
-                        .setPositiveText(R.string.okButton)
-                        .show();
+                android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(getContext());
+                builder1.setTitle(getString(R.string.personal_help_dialog_title));
+                builder1.setMessage(getText(R.string.personal_help_dialog_desc));
+                builder1.setCancelable(true);
+                builder1.setPositiveButton(
+                        getString(R.string.okButton),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                builder1.show();
+
+
+//                new MaterialStyledDialog.Builder(getContext())
+//                        .setTitle(getString(R.string.personal_help_dialog_title))
+//                        .setDescription(getString(R.string.personal_help_dialog_desc))
+//                        //.setDescription(getString(R.string.badge_help_personal_dialog_desc))
+//                        .setStyle(Style.HEADER_WITH_ICON)
+////                        .setIcon(R.drawable.medal_gold_record_a)
+//                        .withDialogAnimation(true)
+//                        .withDarkerOverlay(true)
+//                        .withIconAnimation(false)
+//                        .setCancelable(true)
+//                        .setPositiveText(R.string.okButton)
+//                        .show();
             }
         });
 
         helpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new MaterialStyledDialog.Builder(getContext())
-                        .setTitle(getString(R.string.badge_help_dialog_title))
-                        .setDescription(getString(R.string.badge_help_dialog_desc))
-                        //.setStyle(Style.HEADER_WITH_TITLE)
-//                        .setIcon(R.drawable.medal_gold_record_a)
-                        .withDialogAnimation(true)
-                        .withDarkerOverlay(true)
-                        .withIconAnimation(false)
-                        .setCancelable(true)
-                        .setPositiveText(R.string.okButton)
-                        .show();
+                android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(getContext());
+                builder1.setTitle(getString(R.string.badge_help_dialog_title));
+                builder1.setMessage(getText(R.string.badge_help_dialog_desc));
+                builder1.setCancelable(true);
+                builder1.setPositiveButton(
+                        getString(R.string.okButton),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                builder1.show();
             }
+//            public void onClick(View view) {
+//                new MaterialStyledDialog.Builder(getContext())
+//                        .setTitle(getString(R.string.badge_help_dialog_title))
+//                        .setDescription(getString(R.string.badge_help_dialog_desc))
+//                        //.setStyle(Style.HEADER_WITH_TITLE)
+////                        .setIcon(R.drawable.medal_gold_record_a)
+//                        .withDialogAnimation(true)
+//                        .withDarkerOverlay(true)
+//                        .withIconAnimation(false)
+//                        .setCancelable(true)
+//                        .setPositiveText(R.string.okButton)
+//                        .show();
+//            }
         });
 
         hideShowCompetition.setOnClickListener(new View.OnClickListener() {
@@ -723,6 +755,7 @@ public class homeRightFragment extends Fragment {
 
         int todayRecords = rdb.getGlyRecordsNumberByDay(0);
         int yesterdayRecords = rdb.getGlyRecordsNumberByDay(1);
+        boolean dailyGoalReached = rdb.checkDailyGoalWin(0);
         rdb.close();
 
         Boolean changes = false;
@@ -738,8 +771,9 @@ public class homeRightFragment extends Fragment {
         }
 
         // in case of daily goal won
-        if (todayRecords >= recordGoal) {
-            changes = true;
+        //if (todayRecords >= recordGoal) {
+        if (dailyGoalReached) {
+            //changes = true;
             leftDaysMessage.setVisibility(View.GONE);
             congratsMessage.setVisibility(View.VISIBLE);
             streakDays++;
@@ -774,14 +808,14 @@ public class homeRightFragment extends Fragment {
             streakText.setText("x"+streakDays);
         }
         dailyRecordNumber.setText(todayRecords+" / "+recordGoal);
+        rdb.close();
     }
 
     public static boolean isTimeToRankUpdate(Context context) {
+
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Calendar c1 = Calendar.getInstance();
         Date today = c1.getTime();
-        //c1.add(Calendar.DATE, -8);
-        //pt.it.porto.mydiabetes.database.Preferences.saveLastRankUpdate(context, dateFormat.format(c1.getTime()));
 
         Calendar c = Calendar.getInstance();
         c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
@@ -796,7 +830,7 @@ public class homeRightFragment extends Fragment {
         c.add(Calendar.DATE, 14);
         Date newUpdate = c.getTime();
 
-        if (today.after(lastRankUpdate) || lastRankUpdate == null) {
+        if (lastRankUpdate == null || today.after(lastRankUpdate)) {
             pt.it.porto.mydiabetes.database.Preferences.saveLastRankUpdate(context, dateFormat.format(newUpdate));
             //get number of records in last week
             DB_Read rdb = new DB_Read(context);
@@ -842,42 +876,46 @@ public class homeRightFragment extends Fragment {
             }
             if (ranks[2] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[2]));
-                if (value != -1 && (int) Math.round(Double.parseDouble(ranks[0])) != 0) homeRightFragment.points_g.setText(String.valueOf(value));
+//                if (value != -1 && (int) Math.round(Double.parseDouble(ranks[0])) != 0) homeRightFragment.points_g.setText(String.valueOf(value));
+                int points_g = (int) Math.round(Double.parseDouble(ranks[0]));
+                if (value != -1 && (points_g != 0 && points_g != -1)) homeRightFragment.points_g.setText(String.valueOf(value));
                 else homeRightFragment.points_g.setText(R.string.n_a);
             } else {
                 homeRightFragment.points_g.setText(R.string.n_a);
             }
             if (ranks[3] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[3]));
-                if (value != -1 && (int) Math.round(Double.parseDouble(ranks[1])) != 0) homeRightFragment.streak_g.setText(String.valueOf(value));
+                //if (value != -1 && (int) Math.round(Double.parseDouble(ranks[1])) != 0) homeRightFragment.streak_g.setText(String.valueOf(value));
+                int streak_g = (int) Math.round(Double.parseDouble(ranks[1]));
+                if (value != -1 && (streak_g != 0 && streak_g != -1)) homeRightFragment.streak_g.setText(String.valueOf(value));
                 else homeRightFragment.streak_g.setText(R.string.n_a);
             } else {
                 homeRightFragment.streak_g.setText(R.string.n_a);
             }
             if (ranks[4] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[4]));
-                if (value != -1) homeRightFragment.points_w.setText(String.valueOf(value));
+                if (value != -1 && value != 0) homeRightFragment.points_w.setText(String.valueOf(value));
                 else homeRightFragment.points_w.setText(R.string.n_a);
             } else {
                 homeRightFragment.points_w.setText(R.string.n_a);
             }
             if (ranks[5] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[5]));
-                if (value != -1) homeRightFragment.streak_w.setText(String.valueOf(value));
+                if (value != -1 && value != 0) homeRightFragment.streak_w.setText(String.valueOf(value));
                 else homeRightFragment.streak_w.setText(R.string.n_a);
             } else {
                 homeRightFragment.streak_w.setText(R.string.n_a);
             }
             if (ranks[6] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[6]));
-                if (value != -1) homeRightFragment.glycaemia_w.setText(String.valueOf(value));
+                if (value != -1 && value != 0) homeRightFragment.glycaemia_w.setText(String.valueOf(value));
                 else homeRightFragment.glycaemia_w.setText(R.string.n_a);
             } else {
                 homeRightFragment.glycaemia_w.setText(R.string.n_a);
             }
             if (ranks[7] != null) {
                 int value = (int) Math.round(Double.parseDouble(ranks[7]));
-                if (value != -1) homeRightFragment.hyperhypo_w.setText(String.valueOf(value));
+                if (value != -1 && value != 0) homeRightFragment.hyperhypo_w.setText(String.valueOf(value));
                 else homeRightFragment.hyperhypo_w.setText(R.string.n_a);
             } else {
                 homeRightFragment.hyperhypo_w.setText(R.string.n_a);

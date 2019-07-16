@@ -12,6 +12,7 @@
 
     <string name="app_name">myDiabetes</string>
     <string name="action_settings">Definições</string>
+    <string name="noButton">Não</string>
 
     <string name="failed_import_img">Não foi possivel aceder à imagem.</string>
 
@@ -19,6 +20,8 @@
 
     <string name="error_meal_act">"Valor de H.Carb introduzido para a refeição é menor do que o total de H.Carb dos itens!"</string>
 
+    <string name="use_auto_upd">Envio automático de informação</string>
+    <string name="title_activity_app_options">Opções da aplicação</string>
 
 
 
@@ -522,8 +525,8 @@
     <string name="received_a_daily_medal">Recebeu uma Medalha Diária</string>
     <string name="new_note">Nova anotação</string>
 
-    <string name="badge_help_personal_dialog_title">Ajuda</string>
-    <string name="badge_help_personal_dialog_desc">Média Glicémica - É a média dos seus valores glicémicos ao longo de um determinado período de tempo, neste caso diário.\n\nVariabilidade - representa a variabilidade dos seus valores glicémicos, as oscilações que ocorrem ao longo do dia\n\n\nStreak - Representa o número de dias seguidos de objectivos diários completados. O valor da streak voltará a 0 caso não complete um objetivo diário.\n\nObjectivo diário -
+    <string name="personal_help_dialog_title">Ajuda</string>
+    <string name="personal_help_dialog_desc">Média Glicémica - É a média dos seus valores glicémicos ao longo de um determinado período de tempo, neste caso diário.\n\nVariabilidade - representa a variabilidade dos seus valores glicémicos, as oscilações que ocorrem ao longo do dia\n\n\nStreak - Representa o número de dias seguidos de objectivos diários completados. O valor da streak voltará a 0 caso não complete um objetivo diário.\n\nObjectivo diário -
         Deve fazer pelo menos 6 registos diários de glicemia. Se completar este objectivo irá receber 100 pontos, a multiplicar pela sua streak corrente. O valor a multiplicar tem um máximo de 7. Porém, pode e deve continuar a completar os objectivos diários para manter este valor e assim obter o máximo de pontos possíveis.</string>
 
 
