@@ -24,7 +24,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +37,6 @@ import android.widget.Toast;
 
 import com.cdev.achievementview.AchievementView;
 import com.esafirm.imagepicker.model.Image;
-import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
-import com.github.javiersantos.materialstyleddialogs.enums.Style;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -61,11 +58,9 @@ import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.activities.Badges;
-import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.MyData;
 import pt.it.porto.mydiabetes.ui.dialogs.RankWebSyncDialog;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;

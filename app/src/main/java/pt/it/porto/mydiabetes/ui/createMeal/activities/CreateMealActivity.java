@@ -41,9 +41,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.github.javiersantos.materialstyleddialogs.MaterialStyledDialog;
-import com.github.javiersantos.materialstyleddialogs.enums.Style;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -380,46 +377,50 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
         if(FPU >= 1){
 
             //if(total_lipids>total_protein){
-                mealTotalLipidsTextView.setTextColor(getResources().getColor(R.color.md_edittext_error));
+                mealTotalLipidsTextView.setTextColor(getResources().getColor(R.color.edittext_error_color));
                 info_lipids.setVisibility(View.VISIBLE);
 
 
 
                 mealTotalLipidsTextView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+                    @Override
+                    public void onClick(View view) {
 
+                        String descriptionTxt = getResources().getString(R.string.meal_lipids_explain, getLipidHours());
 
-                    String descriptionTxt = getResources().getString(R.string.meal_lipids_explain, getLipidHours());
-                    new MaterialStyledDialog.Builder(view.getContext())
-                            .setTitle(getString(R.string.meal_lipids_description))
-                            .setDescription(descriptionTxt)
-                            .setStyle(Style.HEADER_WITH_ICON)
-                            .setIcon(R.drawable.ic_meal)
-                            .withDialogAnimation(true)
-                            .withDarkerOverlay(true)
-                            .withIconAnimation(false)
-                            .setCancelable(true)
-                            .setPositiveText(R.string.okButton)
-                            .show();
-                }
-            });
+                        android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(view.getContext());
+                        builder1.setTitle(getString(R.string.meal_lipids_description));
+                        builder1.setMessage(descriptionTxt);
+                        builder1.setCancelable(true);
+                        builder1.setPositiveButton(
+                                getString(R.string.okButton),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        builder1.show();
+
+                    }
+                });
                 info_lipids.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
                         String descriptionTxt = getResources().getString(R.string.meal_lipids_explain, getLipidHours());
-                        new MaterialStyledDialog.Builder(view.getContext())
-                                .setTitle(getString(R.string.meal_lipids_description))
-                                .setDescription(descriptionTxt)
-                                .setStyle(Style.HEADER_WITH_ICON)
-                                .setIcon(R.drawable.ic_meal)
-                                .withDialogAnimation(true)
-                                .withDarkerOverlay(true)
-                                .withIconAnimation(false)
-                                .setCancelable(true)
-                                .setPositiveText(R.string.okButton)
-                                .show();
+
+                        android.app.AlertDialog.Builder builder1 = new android.app.AlertDialog.Builder(view.getContext());
+                        builder1.setTitle(getString(R.string.meal_lipids_description));
+                        builder1.setMessage(descriptionTxt);
+                        builder1.setCancelable(true);
+                        builder1.setPositiveButton(
+                                getString(R.string.okButton),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        builder1.show();
                     }
                 });
 //            }else{
