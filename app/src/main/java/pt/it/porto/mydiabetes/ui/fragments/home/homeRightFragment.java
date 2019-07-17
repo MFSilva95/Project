@@ -666,7 +666,15 @@ public class homeRightFragment extends Fragment {
 
                         @Override
                         public void onSyncUnSuccessful() {
-                            scheduleUpdateJob();
+
+                            if(missingAccount!=null && competitionInfo != null && hideShowCompetition != null){
+                                missingAccount.setVisibility(View.VISIBLE);
+                                competitionInfo.setVisibility(View.GONE);
+                                hideShowCompetition.setText(getContext().getString(R.string.competitionTitleHide));
+                            }
+
+                            return;
+                            //Log.i("rawr", "onSyncUnSuccessful: APANHEI UM ERRO!!!!");scheduleUpdateJob();asd
                         }
 
                         @Override
@@ -812,7 +820,7 @@ public class homeRightFragment extends Fragment {
     }
 
     public static boolean isTimeToRankUpdate(Context context) {
-
+//        return true;
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         Calendar c1 = Calendar.getInstance();
         Date today = c1.getTime();

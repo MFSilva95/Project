@@ -411,9 +411,10 @@ public class ServerSync {
 			@Override
 			public void onResponse(Call call, Response response) throws IOException {
 				try {
-					System.out.println("Entra aqui");
+					//System.out.println("Entra aqui");
 					String responseData = response.body().string();
-					System.out.println("ranks: "+responseData);
+					if(responseData.equals("-1")){onFailure( call, new IOException("BADLOGIN"));return;}
+					//System.out.println("ranks: "+responseData);
 					JSONObject rank = new JSONObject(responseData);
 					ranks[0] = rank.getString("mypoints");
 					ranks[1] = rank.getString("mystreak");
