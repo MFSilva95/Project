@@ -535,7 +535,7 @@
     <string name="new_note">New Note</string>
 
     <string name="personal_help_dialog_title">Help</string>
-    <string name="personal_help_dialog_desc">Glucose Average - It’s an overall measure of blood sugars over a period of time, in this case, daily\n\nVariability - represents the variability of the glucose values, the blood glucose oscillations that occur throughout the day\n\n\Streak - Consecutive day number of daily goals completed. The streak value will turn 0 if you do not complete a certain daily goal.\n\nDaily Goal - You should record at least 6 Glycaemias, daily. If you complete this objective, you will be awarded with 100 points multiplied by your streak value. You can and should aim to keep your streak to be awarded the maximum number of possible points. The objective streak value caps at the value 7, but can still be maintained.</string>
+    <string name="personal_help_dialog_desc">Glucose Average - It’s an overall measure of blood sugars over a period of time, in this case, daily. (This value is only a estimation based on your entries, and you need at least 3 to be calculated)\n\nVariability - represents the variability of the glucose values, the blood glucose oscillations that occur throughout the day. (This value is only a estimation based on your entries, and you need at least 3 to be calculated)\n\n\Streak - Consecutive day number of daily goals completed. The streak value will turn 0 if you do not complete a certain daily goal.\n\nDaily Goal - You should record at least 6 Glycaemias, daily. If you complete this objective, you will be awarded with 100 points multiplied by your streak value. You can and should aim to keep your streak to be awarded the maximum number of possible points. The objective streak value caps at the value 7, but can still be maintained.</string>
 
     <string name="badge_help_dialog_title">How to win Badges?</string>
     <string name="badge_help_dialog_desc">To win Badges you must complete the required records for each. For each record inserted gain 100 points and 200 per badge. Collect points to level up.
@@ -702,16 +702,17 @@
     <string name="global_week_second">% of people</string>
 
     <string name="healthBadgeWon">Health goal badge won</string>
-    <string name="beginner_bronze_health">Keep your glyceamia average under 154mg/dl (1 week)</string>
-    <string name="medium_bronze_health">Keep your glyceamia average under 154mg/dl (2 weeks)</string>
-    <string name="advanced_bronze_health">Keep your glyceamia average under 154mg/dl (4 weeks)</string>
 
-    <string name="beginner_silver_health">Keep your variability under 36% (1 week)</string>
-    <string name="medium_silver_health">Keep your variability under 36% (2 weeks)</string>
-    <string name="advanced_silver_health">Keep your variability under 36% (4 weeks)</string>
+    <string name="beginner_bronze_health">7 days with your Glyceamia average under 154mg/dl</string>
+    <string name="medium_bronze_health">15 days with your Glyceamia average under 154mg/dl</string>
+    <string name="advanced_bronze_health">30 days with your Glyceamia average under 154mg/dl</string>
 
-    <string name="beginner_gold_health">Keep your time in range over 65% (1 week)</string>
-    <string name="medium_gold_health">Keep your time in range over 65% (2 weeks)</string>
-    <string name="advanced_gold_health">Keep your time in range over 65% (4 weeks)</string>
+    <string name="beginner_silver_health">7 days with your variability under 36%</string>
+    <string name="medium_silver_health">15 days with your variability under 36%</string>
+    <string name="advanced_silver_health">30 days your variability under 36%</string>
+
+    <string name="beginner_gold_health">7 days with your time in range over 65%</string>
+    <string name="medium_gold_health">15 days with your time in range over 65%</string>
+    <string name="advanced_gold_health">30 days your time in range over 65%</string>
 
 </resources>

@@ -391,7 +391,6 @@ public class homeRightFragment extends Fragment {
             // ou seja, para saber se fez já update para não estar a fazer muitas vezes
 
             competitionSection.setVisibility(View.VISIBLE);
-
             competitionInfo.setVisibility(View.GONE);
             missingAccount.setVisibility(View.GONE);
             missingNetwork.setVisibility(View.GONE);
@@ -714,32 +713,37 @@ public class homeRightFragment extends Fragment {
 
         DB_Read rdb = new DB_Read(getContext());
         ArrayList<Integer> infoToday = rdb.getPersonalInfo(0);
+        int todayGlycRecords = rdb.getGlyRecordsNumberByDay(0);
         rdb.close();
         if (infoToday.size() != 0) {
 
             int averageToday = infoToday.get(0);
             int variabiToday = (int) (infoToday.get(1)*100/infoToday.get(0));
 
-            averageText.setText(String.valueOf(averageToday));
-            variabilityText.setText(String.valueOf(variabiToday));
+            // only right average and variability if at least 3 values were inserted
+            // cause 1 or 2 values are not significant
+            if (todayGlycRecords >= 3) {
+                averageText.setText(String.valueOf(averageToday));
+                variabilityText.setText(String.valueOf(variabiToday));
 
-            // painting text given the quality of the values
-            // average values
-            if (averageToday < 70 || averageToday > 180) {
-                averageText.setTextColor(getResources().getColor(R.color.red));
-            } else if ((averageToday >= 70 && averageToday < 90) || (averageToday > 160 && averageToday <= 180)) {
-                averageText.setTextColor(getResources().getColor(R.color.orange));
-            } else {
-                averageText.setTextColor(getResources().getColor(R.color.green));
+                // painting average values by quality
+                if (averageToday >= 70 && averageToday <= 180) {
+                    averageText.setTextColor(getResources().getColor(R.color.green));
+                } else if (averageToday < 54 || averageToday > 250) {
+                    averageText.setTextColor(getResources().getColor(R.color.orange));
+                } else {
+                    averageText.setTextColor(getResources().getColor(R.color.red));
+                }
+
+                // painting variability values by quality
+                if (variabiToday > 36)
+                    variabilityText.setTextColor(getResources().getColor(R.color.red));
+                else if (variabiToday > 33 && variabiToday <= 36)
+                    variabilityText.setTextColor(getResources().getColor(R.color.orange));
+                else variabilityText.setTextColor(getResources().getColor(R.color.green));
             }
-
-            // variability values
-            if (variabiToday > 36) variabilityText.setTextColor(getResources().getColor(R.color.red));
-            else if (variabiToday > 33 && variabiToday <= 36) variabilityText.setTextColor(getResources().getColor(R.color.orange));
-            else variabilityText.setTextColor(getResources().getColor(R.color.green));
         }
 
-        //bestPoints.setText(+" "+getResources().getQuantityString(R.plurals.numberOfDays, ));
         getStreakValue();
     }
 

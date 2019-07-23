@@ -1885,21 +1885,21 @@ public class BadgeUtils {
 
         if (averageBeginner == false) {
             ArrayList<Integer> averageAndVariability = db.getXDaysGlycAverageAndVariability(7);
-            if (averageAndVariability.get(0) <= 154 && averageAndVariability.get(0) > 0) {
+            if (averageAndVariability.get(0) <= 154) {
                 addBadgeAuxiliar(context, db, "health", "beginner", "bronze");
                 newMedal = true;
             }
         }
         if (averageMedium == false) {
             ArrayList<Integer> averageAndVariability = db.getXDaysGlycAverageAndVariability(15);
-            if (averageAndVariability.get(0) <= 154 && averageAndVariability.get(0) > 0) {
+            if (averageAndVariability.get(0) <= 154) {
                 addBadgeAuxiliar(context, db, "health", "medium", "bronze");
                 newMedal = true;
             }
         }
         if (averageAdvanced == false) {
             ArrayList<Integer> averageAndVariability = db.getXDaysGlycAverageAndVariability(30);
-            if (averageAndVariability.get(0) <= 154 && averageAndVariability.get(0) > 0) {
+            if (averageAndVariability.get(0) <= 154) {
                 addBadgeAuxiliar(context, db, "health", "advanced", "bronze");
                 newMedal = true;
             }
