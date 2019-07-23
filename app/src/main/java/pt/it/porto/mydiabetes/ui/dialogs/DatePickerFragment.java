@@ -2,7 +2,6 @@ package pt.it.porto.mydiabetes.ui.dialogs;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;

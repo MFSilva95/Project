@@ -189,7 +189,7 @@ public class Glucometer implements Runnable {
     }
 
     private byte[] dialogWithMeter(byte[] send, int noOfBytes) throws Exception {
-        byte receive[];
+        byte[] receive;
         for (int i = 0; i < DIALOG_RETRIES_IN_CASE_OF_WRONG_RESPONCE; i++) {
             boolean isWritten = writeToMeter(send);
             if (!isWritten) {

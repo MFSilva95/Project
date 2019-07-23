@@ -1,16 +1,9 @@
 package pt.it.porto.mydiabetes.utils;
 
 import android.content.Context;
-import android.databinding.BaseObservable;
-import android.databinding.Bindable;
-import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
-import pt.it.porto.mydiabetes.data.CarbsRatioData;
-import pt.it.porto.mydiabetes.data.Sensitivity;
-import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 
 public class InsulinCalculator  implements Cloneable {

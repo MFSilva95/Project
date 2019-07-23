@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import pt.it.porto.mydiabetes.ui.fragments.register.AddGlycemiaObjectivesFragment;
 import pt.it.porto.mydiabetes.ui.fragments.register.AddInsulinsFragment;
 import pt.it.porto.mydiabetes.ui.fragments.register.FactorsFragment;
 import pt.it.porto.mydiabetes.ui.fragments.register.PersonalDataFragment;

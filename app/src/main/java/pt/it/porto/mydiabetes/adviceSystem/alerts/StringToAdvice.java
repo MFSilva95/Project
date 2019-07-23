@@ -3,8 +3,6 @@ package pt.it.porto.mydiabetes.adviceSystem.alerts;
 import android.app.DialogFragment;
 import android.content.Context;
 
-import java.util.Calendar;
-
 //import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;
 
 //import pt.it.porto.mydiabetes.adviceSystem.yapDroid.YapDroid;

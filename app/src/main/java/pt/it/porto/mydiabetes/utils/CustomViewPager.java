@@ -1,12 +1,9 @@
 package pt.it.porto.mydiabetes.utils;
 
 import android.content.Context;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.FrameLayout;
 
 /**
  * Created by parra on 17/02/2017.

@@ -1,34 +1,10 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.ActionBar;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ToggleButton;
 
-import java.util.Calendar;
-
-import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
-import pt.it.porto.mydiabetes.data.Note;
-import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 public class DetailLogbookActivity{

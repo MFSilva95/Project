@@ -20,7 +20,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.LoggedMealDetail;
@@ -138,7 +137,6 @@ public class LoggedMealListAdapter extends RecyclerView.Adapter<LoggedMealListAd
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
 
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         mImageView.setImageBitmap(bitmap);

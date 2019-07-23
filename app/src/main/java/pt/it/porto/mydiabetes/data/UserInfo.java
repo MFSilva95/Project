@@ -3,12 +3,9 @@ package pt.it.porto.mydiabetes.data;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-import pt.it.porto.mydiabetes.R;
 
 public class UserInfo {
 
@@ -61,7 +58,7 @@ public class UserInfo {
 		maxStreak = cursor.getInt(13);
 	}
 
-	public UserInfo(int id, String username, int diabetesType, int insulinRatio, int carbsRatio, int lowerRange, int higherRange, String birthday, int gender, double height, String lastedit, int bg_t, int currStreak, int maxStreak) {
+	public UserInfo(int id, String username, int diabetesType, int insulinRatio, int carbsRatio, int lowerRange, int higherRange, String birthday, int gender, double height, String lastedit, int bg_t) {
 		this.id = id;
 		this.username = username;
 		this.diabetesType = diabetesType;

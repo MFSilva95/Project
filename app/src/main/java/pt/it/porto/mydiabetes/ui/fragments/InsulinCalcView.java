@@ -8,7 +8,6 @@ import android.widget.LinearLayout;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.databinding.FragmentInsulinMealCalcBinding;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 

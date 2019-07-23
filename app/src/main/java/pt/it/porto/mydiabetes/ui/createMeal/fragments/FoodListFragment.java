@@ -27,7 +27,6 @@ import android.widget.NumberPicker;
 import java.util.List;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.SelectMealActivity;
 import pt.it.porto.mydiabetes.ui.createMeal.adapters.MealItemListAdapter;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
@@ -115,7 +114,7 @@ public class FoodListFragment extends Fragment {
         });
 
         final NumberPicker typePicker = view.findViewById(R.id.gram_or_portion_picker);
-        final String types[] = { getString(R.string.food_portion), getString(R.string.food_grams)};
+        final String[] types = { getString(R.string.food_portion), getString(R.string.food_grams)};
 
         typePicker.setMinValue(0);
         typePicker.setMaxValue(types.length - 1);

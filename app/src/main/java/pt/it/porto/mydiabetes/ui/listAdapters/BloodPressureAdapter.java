@@ -14,7 +14,6 @@ import java.text.ParseException;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.BloodPressureDetail;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 

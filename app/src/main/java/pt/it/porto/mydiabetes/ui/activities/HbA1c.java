@@ -4,17 +4,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListAdapter;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.HbA1cRec;
-import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.ListsDataDb;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.listAdapters.HbA1cAdapter;

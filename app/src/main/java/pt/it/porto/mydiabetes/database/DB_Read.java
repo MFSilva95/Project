@@ -3,15 +3,11 @@ package pt.it.porto.mydiabetes.database;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.util.Pair;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -22,7 +18,6 @@ import pt.it.porto.mydiabetes.data.BloodPressureRec;
 import pt.it.porto.mydiabetes.data.CarbsRatioData;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.CholesterolRec;
-import pt.it.porto.mydiabetes.data.DateTime;
 import pt.it.porto.mydiabetes.data.Disease;
 import pt.it.porto.mydiabetes.data.DiseaseRec;
 import pt.it.porto.mydiabetes.data.ExerciseRec;
@@ -614,26 +609,26 @@ public class DB_Read {
 		return insulin;
 	}
 
-	public int[] InsulinReg_GetLastHourAndQuantity() {
-		Cursor cursor = myDB.rawQuery("SELECT ins.action, reg.DateTime, strftime('%H',reg.DateTime), strftime('%M',reg.DateTime), reg.Value FROM Reg_Insulin as reg, Insulin as ins WHERE  reg.Id_Insulin=ins.Id And reg.DateTime > DateTime('now','-5 HOURS') order by 2 DESC", null);
-
-		int[] result = {-1, -1, -1, -1};
-
-		if (cursor.getCount() > 0) {
-			cursor.moveToFirst();
-
-
-			result[0] = Integer.parseInt(cursor.getString(0));
-			result[1] = cursor.getInt(2);
-			result[2] = cursor.getInt(3);
-			result[3] = cursor.getInt(4);
-
-		}
-
-
-		cursor.close();
-		return result;
-	}
+//	public int[] InsulinReg_GetLastHourAndQuantity() {
+//		Cursor cursor = myDB.rawQuery("SELECT ins.action, reg.DateTime, strftime('%H',reg.DateTime), strftime('%M',reg.DateTime), reg.Value FROM Reg_Insulin as reg, Insulin as ins WHERE  reg.Id_Insulin=ins.Id And reg.DateTime > DateTime('now','-5 HOURS') order by 2 DESC", null);
+//
+//		int[] result = {-1, -1, -1, -1};
+//
+//		if (cursor.getCount() > 0) {
+//			cursor.moveToFirst();
+//
+//
+//			result[0] = Integer.parseInt(cursor.getString(0));
+//			result[1] = cursor.getInt(2);
+//			result[2] = cursor.getInt(3);
+//			result[3] = cursor.getInt(4);
+//
+//		}
+//
+//
+//		cursor.close();
+//		return result;
+//	}
 
 	public int[] InsulinReg_GetLastHourAndQuantity(String time, String date) {
 		Cursor cursor;
@@ -1135,7 +1130,7 @@ public class DB_Read {
 	}
 
 	public CarbsRec getCarbsAtThisTime(int userId, String time) {
-		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_CarboHydrate WHERE Id_User=" + String.valueOf(userId) + " AND DateTime='" + time + "';", null);
+		Cursor cursor = myDB.rawQuery("SELECT * FROM Reg_CarboHydrate WHERE Id_User=" + userId + " AND DateTime='" + time + "';", null);
 		CarbsRec tmp = null;
 
 		if (cursor.getCount() == 1) {

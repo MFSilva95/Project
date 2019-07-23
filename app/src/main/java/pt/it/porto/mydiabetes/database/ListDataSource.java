@@ -2,7 +2,6 @@ package pt.it.porto.mydiabetes.database;
 
 import android.database.Cursor;
 import android.text.TextUtils;
-import android.util.Log;
 
 public class ListDataSource {
 	public static final String ROW_VALUE = "Value";

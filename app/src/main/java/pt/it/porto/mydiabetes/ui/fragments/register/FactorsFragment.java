@@ -285,7 +285,7 @@ public class FactorsFragment extends Fragment implements WelcomeActivity.Registr
 		return R.string.subtitle_diabetes_factors;
 	}
 
-	private final void focusOnView(final View view){
+	private void focusOnView(final View view){
 		scrollView.post(new Runnable() {
 			@Override
 			public void run() {

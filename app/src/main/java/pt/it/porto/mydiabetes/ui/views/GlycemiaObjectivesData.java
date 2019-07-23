@@ -1,16 +1,11 @@
 package pt.it.porto.mydiabetes.ui.views;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Point;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import pt.it.porto.mydiabetes.database.DB_Read;
 
 public class GlycemiaObjectivesData implements Serializable, Parcelable {
 

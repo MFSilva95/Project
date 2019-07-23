@@ -20,8 +20,8 @@ public class FilterDialog extends DialogFragment {
 	private static final String ARG_DATA = "param3";
 
 	private ChartData data;
-	private boolean toggleFilter[];
-	private boolean toggleExtras[];
+	private boolean[] toggleFilter;
+	private boolean[] toggleExtras;
 
 
 	public static FilterDialog newInstance(ChartData chartData) {

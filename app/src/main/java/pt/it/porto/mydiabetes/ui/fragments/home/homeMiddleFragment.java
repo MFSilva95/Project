@@ -1,7 +1,6 @@
 package pt.it.porto.mydiabetes.ui.fragments.home;
 
 import android.app.AlertDialog;
-import android.app.Application;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.ComponentName;
@@ -22,30 +21,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.cdev.achievementview.AchievementView;
-
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRec;
@@ -56,19 +42,14 @@ import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.database.Preferences;
-import pt.it.porto.mydiabetes.sync.ServerSync;
 import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
-import pt.it.porto.mydiabetes.ui.activities.WeightDetail;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
-import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.HomeElement;
-import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 import pt.it.porto.mydiabetes.widget;
 
 /**
@@ -185,7 +166,7 @@ public class homeMiddleFragment extends Fragment {
         // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
         // since it seems the onUpdate() is only fired on that:
         intent.setAction("android.appwidget.action.APPWIDGET_UPDATE");
-        int ids[] = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), widget.class));
+        int[] ids = AppWidgetManager.getInstance(getActivity().getApplication()).getAppWidgetIds(new ComponentName(getActivity().getApplication(), widget.class));
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
         getContext().sendBroadcast(intent);
     }

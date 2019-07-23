@@ -9,16 +9,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
+
 
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.BadgeRec;
+
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.listAdapters.BadgePageAdapter;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;
-import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
+
 
 
 public class Badges extends BaseActivity {

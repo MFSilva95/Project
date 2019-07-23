@@ -11,12 +11,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.HbA1cDetail;
-import pt.it.porto.mydiabetes.data.HbA1cRec;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 

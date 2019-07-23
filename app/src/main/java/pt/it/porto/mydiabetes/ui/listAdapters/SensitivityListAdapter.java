@@ -15,7 +15,6 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.Sensitivity;
-import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.ui.activities.DayFaseDetail;
 import pt.it.porto.mydiabetes.ui.activities.Sensitivity_detail;
 

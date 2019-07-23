@@ -1,27 +1,19 @@
 package pt.it.porto.mydiabetes.ui.fragments.new_register;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.io.File;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
-import pt.it.porto.mydiabetes.utils.ImageUtils;
 
 
 public class CarbsRegister_Input_Interface extends LinearLayout {

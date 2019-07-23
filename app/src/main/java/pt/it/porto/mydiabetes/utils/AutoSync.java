@@ -1,12 +1,10 @@
 package pt.it.porto.mydiabetes.utils;
 
-import android.app.Activity;
+
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Context;
-import android.widget.Toast;
 
-import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.sync.ServerSync;
 
 

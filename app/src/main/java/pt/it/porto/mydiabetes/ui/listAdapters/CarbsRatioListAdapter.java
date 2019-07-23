@@ -15,10 +15,8 @@ import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRatioData;
-import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.ui.activities.DayFaseDetail;
 import pt.it.porto.mydiabetes.ui.activities.Ratio_detail;
-import pt.it.porto.mydiabetes.ui.activities.SettingsCarbsRatio;
 
 
 public class CarbsRatioListAdapter extends BaseAdapter {

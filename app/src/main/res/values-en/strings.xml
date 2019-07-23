@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="advice">Advice</string>
     <string name="task">Task</string>
     <string name="tasks">Tasks</string>

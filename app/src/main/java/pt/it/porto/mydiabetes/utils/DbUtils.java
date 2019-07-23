@@ -1,17 +1,12 @@
 package pt.it.porto.mydiabetes.utils;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
-import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
 
-import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.database.DB_Handler;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.database.Usage;

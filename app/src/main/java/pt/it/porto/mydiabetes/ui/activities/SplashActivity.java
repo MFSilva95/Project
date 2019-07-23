@@ -2,7 +2,6 @@ package pt.it.porto.mydiabetes.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 
 /**
  * Created by parra on 04/02/2017.

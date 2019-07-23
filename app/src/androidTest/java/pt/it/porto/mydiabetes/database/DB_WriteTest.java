@@ -624,7 +624,7 @@ public class DB_WriteTest {
 		Assert.assertNotNull(result);
 		Log.d("test", "saved: " + carbsRec.toString());
 		Log.d("test", "returned: " + result.toString());
-		Assert.assertTrue("Carb data not the same as saved", carbsRec.equals(result));
+        Assert.assertEquals("Carb data not the same as saved", carbsRec, result);
 
 		dbRead.close();
 		dbWrite.close();
@@ -654,7 +654,7 @@ public class DB_WriteTest {
 		Assert.assertNotNull(result);
 		Log.d("test", "saved: " + carbsRec.toString());
 		Log.d("test", "returned: " + result.toString());
-		Assert.assertTrue("Carb data not the same as saved", carbsRec.equals(result));
+        Assert.assertEquals("Carb data not the same as saved", carbsRec, result);
 		Assert.assertEquals("Carbs value different from the expected", carbsRec.getCarbsValue(), result.getCarbsValue());
 
 		dbRead.close();

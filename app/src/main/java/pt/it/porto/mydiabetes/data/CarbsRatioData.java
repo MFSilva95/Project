@@ -1,10 +1,8 @@
 package pt.it.porto.mydiabetes.data;
 
 
-import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 public class CarbsRatioData implements Parcelable {
 

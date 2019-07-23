@@ -3,16 +3,13 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
-import pt.it.porto.mydiabetes.ui.dialogs.FeatureIOBDialog;
 
 
 public class SettingsAPP extends BaseActivity {

@@ -12,11 +12,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.data.Sensitivity;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
-import pt.it.porto.mydiabetes.ui.listAdapters.GlycemiaAdapter;
 import pt.it.porto.mydiabetes.ui.listAdapters.SensitivityListAdapter;
 
 

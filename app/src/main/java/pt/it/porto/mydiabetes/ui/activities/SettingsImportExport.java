@@ -3,20 +3,15 @@ package pt.it.porto.mydiabetes.ui.activities;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ComponentName;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ShareCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -24,36 +19,27 @@ import android.view.View;
 import android.widget.Button;
 
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.cdev.achievementview.AchievementView;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.channels.FileChannel;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Handler;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.sync.ServerSync;
-import pt.it.porto.mydiabetes.ui.dialogs.FeatureWebSyncDialog;
 import pt.it.porto.mydiabetes.ui.dialogs.RankWebSyncDialog;
 import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DbUtils;
-import pt.it.porto.mydiabetes.utils.FileProvider;
 
 public class SettingsImportExport extends BaseActivity {
 

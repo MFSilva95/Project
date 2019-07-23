@@ -1,12 +1,7 @@
 package pt.it.porto.mydiabetes.database;
 
 import android.database.Cursor;
-import android.util.Log;
 
-import java.util.LinkedList;
-
-import pt.it.porto.mydiabetes.data.LogBookEntry;
-import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.utils.DbUtils;
 
 public class ListsDataDb {

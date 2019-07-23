@@ -1,27 +1,15 @@
 package pt.it.porto.mydiabetes.sync;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStore;
@@ -33,7 +21,6 @@ import java.security.cert.CertificateFactory;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManager;
@@ -42,7 +29,6 @@ import javax.net.ssl.X509TrustManager;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.HttpUrl;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
@@ -50,15 +36,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import pt.it.porto.mydiabetes.BuildConfig;
-import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.RankingService;
-import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.database.PhotoSyncDb;
 import pt.it.porto.mydiabetes.database.Preferences;
-import pt.it.porto.mydiabetes.ui.activities.Home;
-import pt.it.porto.mydiabetes.ui.dialogs.RankWebSyncDialog;
-import pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment;
-import pt.it.porto.mydiabetes.utils.DbUtils;
 
 import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.backup;
 

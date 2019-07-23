@@ -1,8 +1,5 @@
 package pt.it.porto.mydiabetes.utils;
 
-import java.text.ParseException;
-import java.util.Calendar;
-
 /**
  * Created by Diogo on 12/07/2016.
  */

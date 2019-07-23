@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.annotation.NonNull;
-import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -70,7 +69,7 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
         if(meal.getId()==-1){//carbs
             holder.foodCarbs.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getCarbs()) + "g"));
         }else{//meal
-            holder.foodPortion.setText(new StringBuilder(String.valueOf(meal.getQuantity()) + "g"));
+            holder.foodPortion.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getQuantity()) + "g"));
             holder.foodCarbs.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getCarbs()) + "g"));
             holder.foodLipids.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getLipids()) + "g"));
             holder.foodProtein.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getProtein()) + "g"));
@@ -226,7 +225,7 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
         });
 
         final NumberPicker typePicker = view.findViewById(R.id.gram_or_portion_picker);
-        final String types[] = { context.getString(R.string.food_grams), context.getString(R.string.food_portion)};
+        final String[] types = { context.getString(R.string.food_grams), context.getString(R.string.food_portion)};
 
         typePicker.setMinValue(0);
         typePicker.setMaxValue(types.length - 1);

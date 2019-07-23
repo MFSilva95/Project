@@ -5,17 +5,17 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.PendingIntent;
+
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
+
 import android.os.Bundle;
 
 import java.util.Calendar;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-//import pt.it.porto.mydiabetes.utils.AdviceAlertReceiver;
+
 
 
 public class AlertWithTimer extends AdviseATest {

@@ -1,7 +1,5 @@
 package pt.it.porto.mydiabetes.utils;
 
-import android.util.Log;
-
 import java.text.ParseException;
 import java.util.Calendar;
 
@@ -11,7 +9,7 @@ import java.util.Calendar;
 public class HomeElement {
 
 
-    public enum Type{ADVICE, TASK, HEADER, SPACE, LOGITEM};
+    public enum Type{ADVICE, TASK, HEADER, SPACE, LOGITEM}
     private Type displayType;
     private String name;
 

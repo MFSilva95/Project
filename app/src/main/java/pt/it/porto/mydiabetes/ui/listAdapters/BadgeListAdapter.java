@@ -6,7 +6,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import java.util.List;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.ui.fragments.badges.BadgeBoard;
 import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 

@@ -175,7 +175,7 @@ public class Record {
 	}
 	
 	public byte[] toBytes() {
-		byte buf[] = new byte[SIZE];
+		byte[] buf = new byte[SIZE];
 		buf[0] = (byte)(((year << 1) & 0xfe) + ((mon >> 3) & 0x01));
 		buf[1] = (byte)(((mon << 5) & 0xe0) + (day & 0x1f));
 		buf[2] = (byte)(((temp & 0x3f) << 2) + ((result >> 8) & 0x03));

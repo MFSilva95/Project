@@ -11,7 +11,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.R;

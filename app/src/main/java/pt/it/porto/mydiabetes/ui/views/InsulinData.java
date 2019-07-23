@@ -1,14 +1,10 @@
 package pt.it.porto.mydiabetes.ui.views;
 
-import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
 
 import java.io.Serializable;
-
-import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.data.InsulinRec;
 
 public class InsulinData implements Serializable, Parcelable {
 	public static final int NO_ERROR = 0;

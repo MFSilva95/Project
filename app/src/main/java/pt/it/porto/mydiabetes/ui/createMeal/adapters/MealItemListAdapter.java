@@ -9,14 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.ui.createMeal.activities.SelectMealActivity;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.MealItem;
 
 

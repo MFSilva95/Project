@@ -1,51 +1,34 @@
 package pt.it.porto.mydiabetes.ui.fragments.register;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.DialogFragment;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.esafirm.imagepicker.features.ImagePicker;
-import com.esafirm.imagepicker.features.ImagePickerActivity;
-
-import com.esafirm.imagepicker.features.ReturnMode;
 import com.esafirm.imagepicker.model.Image;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -54,9 +37,6 @@ import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
-import pt.it.porto.mydiabetes.utils.BadgeUtils;
-import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.FileProvider;
 
 import java.io.File;

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRatioData;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.listAdapters.CarbsRatioListAdapter;
 
 

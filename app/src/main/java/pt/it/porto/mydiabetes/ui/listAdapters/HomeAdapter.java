@@ -1,27 +1,15 @@
 package pt.it.porto.mydiabetes.ui.listAdapters;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.appwidget.AppWidgetManager;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -38,12 +26,10 @@ import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
-import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.ui.fragments.home.homeMiddleFragment;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
-import pt.it.porto.mydiabetes.widget;
 
 
 public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {

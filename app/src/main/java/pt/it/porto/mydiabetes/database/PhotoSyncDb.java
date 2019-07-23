@@ -2,7 +2,6 @@ package pt.it.porto.mydiabetes.database;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.util.Log;
 
 import java.io.File;
 

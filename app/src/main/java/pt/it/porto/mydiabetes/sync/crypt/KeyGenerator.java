@@ -12,7 +12,7 @@ import java.util.Random;
  */
 public class KeyGenerator {
 	public byte[] generateKey() {
-		byte key[];
+		byte[] key;
 		Random ranGen = new SecureRandom();
 		key = new byte[16];
 		ranGen.nextBytes(key);

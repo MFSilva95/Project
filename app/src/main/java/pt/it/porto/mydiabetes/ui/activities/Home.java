@@ -1,7 +1,6 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.app.job.JobInfo;
@@ -25,24 +24,18 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ShareCompat;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 
-import com.cdev.achievementview.AchievementView;
-
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 
 import pt.it.porto.mydiabetes.database.DB_Handler;
@@ -51,11 +44,8 @@ import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesContract;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
-import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.database.Usage;
 import pt.it.porto.mydiabetes.sync.ServerSync;
-import pt.it.porto.mydiabetes.ui.charts.data.Logbook;
-import pt.it.porto.mydiabetes.ui.dialogs.RankWebSyncDialog;
 import pt.it.porto.mydiabetes.ui.listAdapters.homePageAdapter;
 import pt.it.porto.mydiabetes.utils.AutoSync;
 import pt.it.porto.mydiabetes.utils.CustomViewPager;

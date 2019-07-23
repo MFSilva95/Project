@@ -1,11 +1,8 @@
 package pt.it.porto.mydiabetes.ui.fragments.register;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.graphics.Point;
-import android.net.Uri;
+
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -15,20 +12,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import java.util.ArrayList;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.database.DB_Read;
+
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjectivesData;
 import pt.it.porto.mydiabetes.ui.views.GlycemiaObjetivesElement;
-import pt.it.porto.mydiabetes.utils.ArraysUtils;
-import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
+
 
 
 public class AddGlycemiaObjectivesFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {

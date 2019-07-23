@@ -1,21 +1,16 @@
 package pt.it.porto.mydiabetes.ui.activities;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-import info.abdolahi.CircularMusicProgressBar;
+
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
@@ -23,7 +18,6 @@ import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.register.PersonalDataFragment;
 import pt.it.porto.mydiabetes.utils.DateUtils;
-import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 import pt.it.porto.mydiabetes.utils.LocaleUtils;
 
 

@@ -5,9 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 
 import android.app.ProgressDialog;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -21,18 +18,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import pt.it.porto.mydiabetes.R;
-import pt.it.porto.mydiabetes.RankingService;
 import pt.it.porto.mydiabetes.database.Preferences;
 import pt.it.porto.mydiabetes.sync.ServerSync;
-import pt.it.porto.mydiabetes.ui.activities.Home;
 import pt.it.porto.mydiabetes.ui.activities.MyDiabetesWebViewActivity;
 import pt.it.porto.mydiabetes.ui.activities.SettingsImportExport;
-import pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment;
-
-import static android.content.Context.JOB_SCHEDULER_SERVICE;
 
 public class RankWebSyncDialog extends DialogFragment {
 

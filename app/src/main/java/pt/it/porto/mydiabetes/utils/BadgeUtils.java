@@ -1,14 +1,13 @@
 package pt.it.porto.mydiabetes.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedList;
 
-import pt.it.porto.mydiabetes.R;
+
 import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.BloodPressureRec;
 import pt.it.porto.mydiabetes.data.CholesterolRec;
@@ -19,8 +18,7 @@ import pt.it.porto.mydiabetes.data.PointsRec;
 import pt.it.porto.mydiabetes.data.WeightRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.database.Preferences;
-import pt.it.porto.mydiabetes.ui.fragments.badges.BadgeBoard;
+
 
 /**
  * Created by parra on 02/04/2017.

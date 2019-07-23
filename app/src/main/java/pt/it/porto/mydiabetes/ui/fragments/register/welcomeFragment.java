@@ -2,18 +2,13 @@ package pt.it.porto.mydiabetes.ui.fragments.register;
 
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Layout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.WelcomeActivity;
-import pt.it.porto.mydiabetes.utils.OnSwipeTouchListener;
 
 
 public class welcomeFragment extends Fragment implements WelcomeActivity.RegistryFragmentPage {
