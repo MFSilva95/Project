@@ -602,7 +602,8 @@
     <string name="add_extra_carbs">Adicionar H.Carb extra</string>
 
     <string name="terms_of_service_title">Politica de Privacidade</string>
-    <string name="terms_of_service_description">A aplicação MyDiabetes não recolhe autónomamente informações dos seus utilizadores. A aplicação permite que os seus utilizadores carreguem para uma "nuvem" segura todos os seus dados. Se o fizer, a equipa da MyDiabetes terá acesso aos seus dados sobre:\n
+
+    <string name="terms_of_service_description">A aplicação MyDiabetes, a partir desta nova actualização, vai recolher autónomamente, mantendo a infomação anónima, os seguintes dados:\n
 
         <small>
             <ul>
@@ -631,8 +632,18 @@
             \n<li>Objectivos Glicemicos.</li>
             </ul>
         </small>
-        \n\nToda a informação disponibilizada será para utilização exclusivamente académica!\nA equipa do MyDiabetes irá usar esta informação de forma a melhorar o seu sistema de aconselhamento de forma a conseguir ajudar os seus utilizadores.\n<b>\nAceita os termos apresentados?</b></string>
-    <string name="notification_channel_sync_description">Lembrete para envio dos dados para o gestor do projecto</string>
+        \n\nToda a informação disponibilizada será para utilização exclusivamente académica!\nA equipa do MyDiabetes irá usar esta informação de forma a melhorar o seu sistema de aconselhamento de forma a conseguir ajudar os seus utilizadores.\n<b>\nAceita os termos apresentados?</b>\n<br>\n(pode a qualquer momento desativar o upload automático dos dados nas opções da aplicação)</br></string>
+
+
+
+
+
+
+
+
+
+
+<string name="notification_channel_sync_description">Lembrete para envio dos dados para o gestor do projecto</string>
 
 
 

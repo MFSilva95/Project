@@ -623,7 +623,8 @@
 
 
     <string name="terms_of_service_title">Privacy Policy</string>
-    <string name="terms_of_service_description">The MyDiabetes application does not collect automatically any data from its users. The application allows its users to upload their data to a safe cloud. Here the MyDiabetes team will have access to your:\n
+
+    <string name="terms_of_service_description">The MyDiabetes application with this new update, will collect autonomously, keeping the information anonymous, the following data:\n
         <small>
             <ul>
             \n<li>Diabetes type;</li>
@@ -652,8 +653,10 @@
             \n<li>Glicemic objectives.</li>
         </ul>
         </small>
-        \n\nAll the uploaded data will be used for academic purposes only!\nThe MyDiabetes team uses this data in order to improve its advising system and further help its users.\n<b>Do you accept the presented terms?</b></string>
-    <string name="notification_channel_sync_description">Reminder to send your data to the project manager</string>
+        \n\nAll the uploaded data will be used for academic purposes only!\nThe MyDiabetes team uses this data in order to improve its advising system and further help its users.\n<b>Do you accept the presented terms?</b>\n<br>\n(this option can be turned off in the MyDiabetes\' options)</br></string>
+
+
+<string name="notification_channel_sync_description">Reminder to send your data to the project manager</string>
 
 
     <string name="today_info">DAILY INFORMATION</string>
