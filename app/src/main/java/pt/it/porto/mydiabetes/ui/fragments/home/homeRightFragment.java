@@ -214,23 +214,23 @@ public class homeRightFragment extends Fragment {
         pointsText.setText(totalPoints+" / "+nextLvlPoints);
 
         beginnerBadge = (ImageView) layout.findViewById(R.id.beginnerBadge);
+        mediumBadge = (ImageView) layout.findViewById(R.id.mediumBadge);
+        advancedBadge = (ImageView) layout.findViewById(R.id.advancedBadge);
+
+
+
         beginnerBadgesText = (TextView) layout.findViewById(R.id.beginnerBadgesText);
-        mediumBadgesText = (TextView) layout.findViewById(R.id.beginnerBadgesText);
+        mediumBadgesText = (TextView) layout.findViewById(R.id.mediumBadgesText);
+        advancedBadgesText = (TextView) layout.findViewById(R.id.advancedBadgesText);
 
         if(countBeginner>0){
             beginnerBadge.setImageResource(R.drawable.medal_gold_beginner);
         }
 
-
         if(lvl >= LevelsPointsUtils.BADGES_MEDIUM_UNLOCK_LEVEL){
-            mediumBadge = (ImageView) layout.findViewById(R.id.mediumBadge);
             mediumBadge.setImageResource(R.drawable.medal_gold_medium);
-            mediumBadgesText = (TextView) layout.findViewById(R.id.mediumBadgesText);
-
             if(lvl >= LevelsPointsUtils.BADGES_ADVANCED_UNLOCK_LEVEL){
-                advancedBadge = (ImageView) layout.findViewById(R.id.advancedBadge);
                 advancedBadge.setImageResource(R.drawable.medal_gold_advanced);
-                advancedBadgesText = (TextView) layout.findViewById(R.id.advancedBadgesText);
             }
         }
         helpButton = (ImageButton) layout.findViewById(R.id.helpButton);
