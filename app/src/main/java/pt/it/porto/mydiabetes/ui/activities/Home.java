@@ -19,6 +19,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.ParseException;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -28,11 +29,27 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.ugos.jiprolog.android.JIPrologFactory;
+import com.ugos.jiprolog.android.JIProlog_call;
+import com.ugos.jiprolog.engine.JIPEngine;
+import com.ugos.jiprolog.engine.JIPQuery;
+
+import java.io.File;
+import java.io.PrintStream;
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -97,9 +114,27 @@ public class Home extends BaseActivity {
         }
     }
 
+    private static final String TAG = "MainActivity";
+    private JIPEngine jip;
+
+    private TextView textViewResult;
+    private PrintStream outs;
+    private JIPQuery jipQuery;
+    private ArrayList<String> history;
+    private AutoCompleteTextView editTextQuery;
+
+    private String db_name = "DB_Diabetes";
+    private String db_path = Environment.getExternalStorageDirectory() + "/"+db_name;
+
+    private Connection connection;
+
+    long startTime;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
+
+        JIProlog_call myJIP = new JIProlog_call(this, "");
 
         /**
          * WIDGET CALL
