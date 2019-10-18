@@ -253,7 +253,6 @@ public class SettingsImportExport extends BaseActivity {
 			}
 		}
         throw new Exception();
-
 	}
 
 

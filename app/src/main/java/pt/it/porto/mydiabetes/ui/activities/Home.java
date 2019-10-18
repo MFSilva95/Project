@@ -29,26 +29,20 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.ugos.jiprolog.android.JIPrologFactory;
+import com.ugos.jiprolog.android.ARBS_engine;
 import com.ugos.jiprolog.android.JIProlog_call;
 import com.ugos.jiprolog.engine.JIPEngine;
 import com.ugos.jiprolog.engine.JIPQuery;
 
-import java.io.File;
 import java.io.PrintStream;
 import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -69,6 +63,7 @@ import pt.it.porto.mydiabetes.utils.CustomViewPager;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.SyncAlarm;
 
+import static com.ugos.jiprolog.android.ARBS_engine.getARBS_Instance;
 import static pt.it.porto.mydiabetes.ui.activities.SettingsImportExport.PROJECT_MANAGER_EMAIL;
 
 
@@ -134,7 +129,19 @@ public class Home extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 
 
-        JIProlog_call myJIP = new JIProlog_call(this, "");
+        ARBS_engine en = getARBS_Instance();
+        en.setARBSLanguage("en");
+        en.getAdvice("end", "glucose", 1);
+//        try {
+//            en.init_consult();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
+
+
+
+
 
         /**
          * WIDGET CALL
@@ -400,8 +407,6 @@ public class Home extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        //Log.i("cenas", "onActivityResult: TESTE TESTE TESTE");
 
         if (requestCode == WEBVIEW && resultCode == RESULT_OK) {
             try {

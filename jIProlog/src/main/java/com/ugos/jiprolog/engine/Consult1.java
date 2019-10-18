@@ -88,6 +88,60 @@ class Consult1 extends BuiltIn
         return true;
     }
 
+    static final void consult_assets(InputStream fileInputStream, JIPEngine engine, int nQueryHandle) throws IOException
+    {
+        boolean enableClauseChecks = engine.getEnvVariable("enable_clause_check").equals("true");
+
+        String strOldSearchPath = null;
+        try
+        {
+            String strFileName[] = new String[1];
+            String strCurDir[] = new String[1];
+
+            InputStream ins;
+            ins = fileInputStream;
+
+
+            //System.out.println(strFileName[0]);
+            strOldSearchPath = engine.getSearchPath();
+            engine.setSearchPath(strCurDir[0]);
+            Vector<PrologObject> initializationVector = consult(ins, strFileName[0], engine, nQueryHandle, enableClauseChecks);
+            engine.setSearchPath(strOldSearchPath);
+
+            ins.close();
+
+            final WAM wam = new WAM(engine);
+
+            for(PrologObject goal : initializationVector)
+            {
+                // chiama la wam
+                if(!wam.query(goal))
+                {
+                    wam.closeQuery();
+                    throw JIPRuntimeException.createRuntimeException(27, strFileName[0] + ". goal: " + goal.toString(engine));
+                }
+
+                wam.closeQuery();
+            }
+
+        }
+        catch(SecurityException ex)
+        {
+            if(strOldSearchPath != null)
+                engine.setSearchPath(strOldSearchPath);
+
+            throw new JIPPermissionException("access", "source_sink", "filePATH_");
+//            throw JIPRuntimeException.create(9, "consult " + strPath);
+        }
+        catch(JIPRuntimeException ex)
+        {
+            ex.printStackTrace();
+            if(strOldSearchPath != null)
+                engine.setSearchPath(strOldSearchPath);
+            throw ex;
+        }
+    }
+
     static final void consult(String strPath, JIPEngine engine, int nQueryHandle) throws IOException
     {
     	boolean enableClauseChecks = engine.getEnvVariable("enable_clause_check").equals("true");

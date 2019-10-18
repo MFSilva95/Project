@@ -39,9 +39,9 @@ public class JIProlog_call {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        runQ("X=2.");
-        runQ("db_get('activity_log', 5).");
-        runQ("db:activity_log(A,B,C,D).");
+        //runQ("X=2.");
+        //runQ("db_get('activity_log', 5).");
+        //runQ("db:activity_log(A,B,C,D).");
 
         jip.releaseAllResources();
 

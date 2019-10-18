@@ -5,35 +5,31 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.ExerciseDetail">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/toolbarbig"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:orientation="vertical"
-        app:elevation="4dp"
-        app:theme="@style/ToolbarTheme">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </android.support.design.widget.AppBarLayout>
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbarbig"
-        android:orientation="vertical"
-        android:scrollbarStyle="outsideInset"
-        android:scrollbars="vertical">
+        android:orientation="vertical">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/toolbarbig"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
+            android:orientation="vertical"
+            app:elevation="4dp"
+            app:theme="@style/ToolbarTheme">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </android.support.design.widget.AppBarLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:descendantFocusability="beforeDescendants"
-            android:focusableInTouchMode="true"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/advice_test"
             android:orientation="vertical"
             android:paddingTop="8dp">
 
@@ -209,8 +205,7 @@
             </LinearLayout>
 
         </LinearLayout>
-
-    </ScrollView>
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
