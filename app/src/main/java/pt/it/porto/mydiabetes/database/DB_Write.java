@@ -234,12 +234,13 @@ public class DB_Write {
 
 	public int Insulin_Save(InsulinRec obj) {
 		ContentValues toInsert = new ContentValues();
-		toInsert.put("Id_User", obj.getIdUser());
-		toInsert.put("Id_Insulin", obj.getIdInsulin());
-		String datetime = DateUtils.formatToDb(obj.getDateTime());
+		//toInsert.put("Id_User", obj.getIdUser());
+		toInsert.put("Id_User", 1);
+		toInsert.put("Id_Insulin", 1);
+		String datetime = DateUtils.formatToDb(Calendar.getInstance());
 		toInsert.put("DateTime", datetime);
 		toInsert.put("Value", obj.getInsulinUnits());
-		toInsert.put("Id_Tag", obj.getIdTag());
+		toInsert.put("Id_Tag", 1);
 
 		if (obj.getIdNote() > 0) {
 			toInsert.put("Id_Note", obj.getIdNote());
@@ -250,6 +251,10 @@ public class DB_Write {
 		if (obj.getIdBloodGlucose() > 0) {
 			toInsert.put("Id_BloodGlucose", obj.getIdBloodGlucose());
 		}
+
+
+
+
 		return (int) myDB.insert("Reg_Insulin", null, toInsert);
 	}
 
@@ -736,32 +741,6 @@ public class DB_Write {
 		}
 	}
 
-	public void Badge_Save(BadgeRec badge) {
-		System.out.println("BADGE_SAVE: "+badge);
-		ContentValues toInsert = new ContentValues();
-		String datetime = DateUtils.formatToDb(badge.getDateTime());
-		toInsert.put("Id_User", badge.getIdUser());
-		toInsert.put("DateTime", datetime);
-		toInsert.put("Type", badge.getType());
-		toInsert.put("Name", badge.getName());
-		toInsert.put("Medal", badge.getMedal());
-		myDB.insert("Badges", null, toInsert);
-	}
-
-	public void Badge_Remove(int id) {
-		myDB.delete("Badges", "id=" + id, null);
-	}
-
-
-	public void Point_Save(PointsRec pointRec) {
-		ContentValues toInsert = new ContentValues();
-		String datetime = DateUtils.formatToDb(pointRec.getDateTime());
-		toInsert.put("Id_User", pointRec.getIdUser());
-		toInsert.put("DateTime", datetime);
-		toInsert.put("Value", pointRec.getValue());
-		toInsert.put("Origin", pointRec.getOrigin());
-		myDB.insert("Points", null, toInsert);
-	}
 
 	public void Log_Save(int id_user, String activity) {
 		ContentValues toInsert = new ContentValues();

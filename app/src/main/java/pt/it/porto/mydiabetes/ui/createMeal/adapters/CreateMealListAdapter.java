@@ -69,7 +69,7 @@ public class CreateMealListAdapter extends RecyclerView.Adapter<CreateMealListAd
         if(meal.getId()==-1){//carbs
             holder.foodCarbs.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getCarbs()) + "g"));
         }else{//meal
-            holder.foodPortion.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getQuantity()) + "g"));
+            holder.foodPortion.setText(new StringBuilder(String.format(Locale.US, "%d", meal.getQuantity()) + "g"));
             holder.foodCarbs.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getCarbs()) + "g"));
             holder.foodLipids.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getLipids()) + "g"));
             holder.foodProtein.setText(new StringBuilder(String.format(Locale.US, "%.2f", meal.getProtein()) + "g"));

@@ -197,28 +197,6 @@ public abstract class AbstractChartActivity extends BaseActivity implements Char
 		super.onResume();
 		setupContent();
 		updateTimeRange();
-		sendBadgeNotification();
-	}
-
-	public void sendBadgeNotification() {
-		boolean normalBadgeWin = false;
-		// notification non daily
-		if (WeightDetail.winBadge) {
-			achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.weightBadgeWon));
-			WeightDetail.winBadge = false;
-			normalBadgeWin = true;
-		}
-		// notification daily goal
-		if (WeightDetail.winDaily) {
-			if (normalBadgeWin == true) {
-				achievementViewSecondary.setVisibility(View.VISIBLE);
-				achievementViewSecondary.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
-			} else {
-				achievementViewSecondary.setVisibility(View.GONE);
-				achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
-			}
-			WeightDetail.winDaily = false;
-		}
 	}
 
 	private void setEnd() {

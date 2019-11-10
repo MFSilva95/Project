@@ -5,9 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import pt.it.porto.mydiabetes.ui.fragments.home.homeLeftFragment;
 import pt.it.porto.mydiabetes.ui.fragments.home.homeMiddleFragment;
-import pt.it.porto.mydiabetes.ui.fragments.home.homeRightFragment;
 
 public class homePageAdapter extends FragmentPagerAdapter {
     private static final int FRAGMENT_ONE_POSITION = 0;
@@ -22,12 +20,8 @@ public class homePageAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         switch (position) {
-            case FRAGMENT_ONE_POSITION:
-                return new homeLeftFragment();
             case FRAGMENT_TWO_POSITION:
                 return new homeMiddleFragment();
-            case FRAGMENT_THREE_POSITION:
-                return new homeRightFragment();
         }
         return null;
     }

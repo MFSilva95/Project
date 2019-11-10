@@ -70,10 +70,8 @@ import pt.it.porto.mydiabetes.ui.fragments.new_register.GlycaemiaRegister_Input_
 import pt.it.porto.mydiabetes.ui.fragments.new_register.InsuRegister_Input_Interface;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.NoteRegister_Input_Interface;
 import pt.it.porto.mydiabetes.ui.listAdapters.StringSpinnerAdapter;
-import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
-import pt.it.porto.mydiabetes.utils.LevelsPointsUtils;
 
 import static pt.it.porto.mydiabetes.utils.DateUtils.ISO8601_FORMAT_SECONDS;
 
@@ -179,7 +177,6 @@ public class NewHomeRegistry extends BaseActivity{
                 mCurrentMeal = data.getExtras().getParcelable("meal");
                 if(mCurrentMeal!=null){
                     carbsRegisterInputInterface.setImage(mCurrentMeal.getThumbnailPath());
-                    //carbsRegisterInputInterface.setImage();
                     carbsRegisterInputInterface.setCarbsMealID(mCurrentMeal.getId());
                     carbsRegisterInputInterface.setMealCarbs(mCurrentMeal.getTotalCarbs(true));
                     //->lipids and protei
@@ -190,14 +187,6 @@ public class NewHomeRegistry extends BaseActivity{
         if(requestCode == BLOOD_GLUCOSE && resultCode == RESULT_OK){
             glycaemiaRegisterInputInterface.updateObjective();
         }
-//        else {
-//            if (requestCode == IMAGE_VIEW) {
-//                //se tivermos apagado a foto dá result code -1
-//                //se voltarmos por um return por exemplo o resultcode é 0
-////            if (resultCode == -1) {
-////                //imageRemoved();
-//            }
-//        }
         super.onActivityResult(requestCode, resultCode, data);
     }
     @Override
@@ -607,18 +596,6 @@ public class NewHomeRegistry extends BaseActivity{
                             glycemiaData.setId(reg.Glycemia_Save(glycemiaData));
                             reg.Record_Update_Glycaemia(recordId, glycemiaData.getId());
 
-                            // streak update section
-                            if (rdb.getGlyRecordsNumberByDay(0) == 6 && !rdb.checkDailyGoalWin(0)) {
-                                winStreak = true;
-                                UserInfo myData = rdb.MyData_Read();
-                                int currentStreak = myData.getCurrentStreak()+1;
-                                myData.setCurrentStreak(currentStreak);
-                                reg.MyData_Save(myData);
-
-                                int streak = rdb.MyData_Read().getCurrentStreak();
-                                int points = 100 * streak;
-                                LevelsPointsUtils.addPoints(getBaseContext(), points, "streak", rdb);
-                            }
                         }
                         break;
                     case INSULIN:
@@ -649,10 +626,6 @@ public class NewHomeRegistry extends BaseActivity{
             }
         }
 
-        winBadge = BadgeUtils.addLogBadge(getBaseContext(), rdb, reg);
-        winDaily = BadgeUtils.addDailyBadge(getBaseContext(), rdb, reg);
-
-        LevelsPointsUtils.addPoints(getBaseContext(), LevelsPointsUtils.RECORD_POINTS, "log", rdb);//bug here
         rdb.close();
 
         setResult(Home.CHANGES_OCCURRED, this.getIntent());
@@ -1196,34 +1169,10 @@ public class NewHomeRegistry extends BaseActivity{
 
         @Override
         public void addGlycaemiaObjective(Context c) {
-            Intent intent = new Intent(c, TargetBG_detail.class);
-            EditText targetGlycemia = ((TextInputLayout) findViewById(R.id.glycemia_obj)).getEditText();
-            String goal = null;
-            if (targetGlycemia != null) {
-                goal = targetGlycemia.getText().toString();
-            }
-            if (!TextUtils.isEmpty(goal)) {
-                float target = Float.parseFloat(goal);
-                Bundle bundle = new Bundle();
-                bundle.putFloat(TargetBG_detail.BUNDLE_GOAL, target);
-                intent.putExtras(bundle);
-            }//updateObjective()
-            startActivityForResult(intent, BLOOD_GLUCOSE);
-            //startActivity(intent);
         }
 
         @Override
         public void addCarbsImage(Context context, Uri thisImgUri) {
-            if (thisImgUri != null) {
-                Intent intent = new Intent(context, ViewPhoto.class);
-                Bundle argsToPhoto = new Bundle();
-                argsToPhoto.putString("Path", thisImgUri.getPath());
-                argsToPhoto.putInt("Id", -1);
-                intent.putExtras(argsToPhoto);
-                startActivityForResult(intent, IMAGE_VIEW);
-            }else {
-                checkPermissions();
-            }
         }
 
         @Override

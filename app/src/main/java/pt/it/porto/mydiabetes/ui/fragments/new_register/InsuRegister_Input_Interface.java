@@ -232,12 +232,17 @@ public class InsuRegister_Input_Interface extends LinearLayout {
     }
 
     public InsulinRec save_read(){
-        String insulin = insu_spinner.getSelectedItem().toString();
 
-        DB_Read rdb = new DB_Read(getContext());
-        int idInsulin = rdb.Insulin_GetByName(insulin).getId();
-        rdb.close();
-        insuData.setIdInsulin(idInsulin);
+        if(insu_spinner != null){
+            if(insu_spinner.getSelectedItem() != null){
+                String insulin = insu_spinner.getSelectedItem().toString();
+                DB_Read rdb = new DB_Read(getContext());
+                int idInsulin = rdb.Insulin_GetByName(insulin).getId();
+                rdb.close();
+                insuData.setIdInsulin(idInsulin);
+            }
+        }
+
         return insuData;
     }
 

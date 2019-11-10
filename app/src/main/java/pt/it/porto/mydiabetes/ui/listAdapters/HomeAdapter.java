@@ -25,7 +25,6 @@ import pt.it.porto.mydiabetes.data.InsulinRec;
 //import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.activities.DetailLogbookActivity;
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.ui.fragments.home.homeMiddleFragment;
 import pt.it.porto.mydiabetes.utils.HomeElement;
@@ -237,31 +236,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
                 }else{
                     Intent intent = new Intent(v.getContext(), NewHomeRegistry.class);
                     Bundle args = new Bundle();
-                    if(logbookDataBinding.getRecordID() != -1){
-                        args.putInt(DetailLogbookActivity.ARG_RECORD_ID, logbookDataBinding.getRecordID());
-                    }
+
                     if(logbookDataBinding.getTag_id()!=-1){
                         DB_Read read = new DB_Read(v.getContext());
                         args.putString("tag",read.Tag_GetNameById(logbookDataBinding.getTag_id()));
                         read.close();
-                    }
-                    if (logbookDataBinding.getGlycemiaId() != -1) {
-                        GlycemiaRec glycemiaRec = new GlycemiaRec();
-                        glycemiaRec.setId(logbookDataBinding.getGlycemiaId());
-                        args.putString("bg", String.valueOf(glycemiaRec.getId())); //bg id
-                        args.putParcelable(DetailLogbookActivity.ARG_BLOOD_GLUCOSE, glycemiaRec);
-                    }
-                    if (logbookDataBinding.getCarbsId() != -1) {
-                        CarbsRec carbs = new CarbsRec();
-                        carbs.setId(logbookDataBinding.getCarbsId());
-                        args.putString("ch", String.valueOf(carbs.getId())); //ch id
-                        args.putParcelable(DetailLogbookActivity.ARG_CARBS, carbs);
-                    }
-                    if (logbookDataBinding.getInsulinId() != -1) {
-                        InsulinRec insulin = new InsulinRec();
-                        insulin.setId(logbookDataBinding.getInsulinId());
-                        args.putString("ins", String.valueOf(insulin.getId())); //ins id
-                        args.putParcelable(DetailLogbookActivity.ARG_INSULIN, insulin);
                     }
                     if (logbookDataBinding.getNote_id() != -1) {
                         args.putInt("note_id", logbookDataBinding.getNote_id()); //ins id

@@ -12,6 +12,14 @@ public class Insulin {
 	public Insulin() {
 	}
 
+	public Insulin(int i,String n,String t,String a, double d) {
+		this.id = i;
+		this.name = n;
+		this.type = t;
+		this.action = a;
+		this.duration = d;
+	}
+
 	public Insulin(Insulin oldInsulin) {
 		if (oldInsulin == null) {
 			return;

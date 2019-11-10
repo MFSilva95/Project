@@ -81,7 +81,6 @@ repositories {
 }
 
 dependencies {
-	implementation project(':jIProlog')
 	implementation 'org.sqldroid:sqldroid:1.0.3'
 	
     implementation 'com.android.support:support-v4:28.0.0'

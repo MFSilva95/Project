@@ -58,7 +58,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.ui.activities.BaseActivity;
-import pt.it.porto.mydiabetes.ui.activities.ViewPhoto;
 import pt.it.porto.mydiabetes.ui.createMeal.adapters.CreateMealListAdapter;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
@@ -292,12 +291,10 @@ public class CreateMealActivity extends BaseActivity implements RecyclerItemTouc
         thumbnailPhotoView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ViewPhoto.class);
+
                 Bundle argsToPhoto = new Bundle();
                 argsToPhoto.putString("Path", currentMealPhotoPath);
                 argsToPhoto.putInt("Id", -1);
-                intent.putExtras(argsToPhoto);
-                startActivityForResult(intent, IMAGE_VIEW);
             }
         });
 

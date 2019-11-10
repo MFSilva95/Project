@@ -47,7 +47,6 @@ import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 import pt.it.porto.mydiabetes.ui.listAdapters.HomeAdapter;
-import pt.it.porto.mydiabetes.utils.BadgeUtils;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 import pt.it.porto.mydiabetes.widget;
@@ -252,73 +251,9 @@ public class homeMiddleFragment extends Fragment {
 
     @Override
     public void onResume() {
-        updateStreakValues();
-        DB_Read db = new DB_Read(getContext());
-        if(db!=null){
-            boolean winHealthBadge = BadgeUtils.addHealthBadge(getContext(), db);
-            if (winHealthBadge) achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.healthBadgeWon));
-            if (NewHomeRegistry.winBadge) {
-                achievementView.show(this.getString(R.string.congratsMessage1), this.getString(R.string.logBadgeWon));
-            }
-
-            if (NewHomeRegistry.winDaily) {
-                if (NewHomeRegistry.winBadge) {
-                    achievementViewSecondary.setVisibility(View.VISIBLE);
-                    achievementViewSecondary.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
-                } else {
-                    achievementView.setVisibility(View.GONE);
-                    achievementViewSecondary.show(this.getString(R.string.congratsMessage1), this.getString(R.string.dailyBadgeWon));
-                }
-            }
-            System.out.println("CURRENT_STREAK: "+db.MyData_Read().getCurrentStreak());
-            if (NewHomeRegistry.winStreak) {
-                int points = 100 * db.MyData_Read().getCurrentStreak();
-
-                //show daily goal streak winning as a notification
-                if (!NewHomeRegistry.winBadge && !NewHomeRegistry.winDaily) {
-                    achievementView.setVisibility(View.GONE);
-                    achievementViewSecondary.setVisibility(View.GONE);
-                } else if (!NewHomeRegistry.winDaily) {
-                    achievementViewSecondary.setVisibility(View.GONE);
-                } else if (!NewHomeRegistry.winBadge) {
-                    achievementView.setVisibility(View.GONE);
-                }
-                achievementViewStreak.setVisibility(View.VISIBLE);
-                achievementViewStreak.show(this.getString(R.string.congratsStreak), points+" "+this.getString(R.string.streakGoalWon));
-            }
-            NewHomeRegistry.winBadge = false;
-            NewHomeRegistry.winDaily = false;
-            NewHomeRegistry.winStreak = false;
-        }
-        db.close();
 
         super.onResume();
         updateHomeList();
-    }
-
-    public void updateStreakValues() {
-        DB_Read rdb = new DB_Read(getContext());
-        UserInfo myData = rdb.MyData_Read();
-        Boolean changes = false;
-        int currentStreak = myData.getCurrentStreak();
-        int maxStreak = myData.getMaxStreak();
-
-        // set current streak 0 if yesterday daily goal was not complete
-        if (!rdb.checkDailyGoalWin(1) && !rdb.checkDailyGoalWin(0) && currentStreak != 0) {
-            changes = true;
-            myData.setCurrentStreak(0);
-        }
-        // update maxStreak if currentStreak is better than maxStreak
-        if (currentStreak > maxStreak) {
-            changes = true;
-            myData.setMaxStreak(currentStreak);
-        }
-        // save new updates
-        if (changes) {
-            DB_Write wdb = new DB_Write(getContext());
-            wdb.MyData_Save(myData);
-            wdb.close();
-        }
     }
 
     public static long getDateInMillis(String srcDate) {
@@ -426,7 +361,6 @@ public class homeMiddleFragment extends Fragment {
                             updateHomeList();
                             toDeleteList.clear();
                             setDeleteMode(false);
-                            ((Home) getActivity()).notifyPageAdapter();
                         } catch (Exception e) {
                             e.printStackTrace();
                             Toast.makeText(c, getString(R.string.deleteException), Toast.LENGTH_LONG).show();
