@@ -9,6 +9,7 @@
     android:orientation="vertical">
 
 
+
     <ImageButton
         android:id="@+id/bt_add_more_content"
         style="@style/Widget.AppCompat.Button.Borderless"
@@ -19,4 +20,5 @@
         android:cropToPadding="false"
         android:elevation="0dp"
         android:src="@drawable/ic_plus"/>
+
 </LinearLayout>

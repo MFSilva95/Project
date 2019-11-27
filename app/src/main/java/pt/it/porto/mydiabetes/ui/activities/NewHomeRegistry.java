@@ -59,7 +59,10 @@ import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
+import pt.it.porto.mydiabetes.ui.createMeal.activities.BigMeal;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
+import pt.it.porto.mydiabetes.ui.createMeal.activities.SmallMeal;
+import pt.it.porto.mydiabetes.ui.createMeal.activities.StandardMeal;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
@@ -76,6 +79,8 @@ import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 import static pt.it.porto.mydiabetes.utils.DateUtils.ISO8601_FORMAT_SECONDS;
 
 public class NewHomeRegistry extends BaseActivity{
+
+    private Button SmallM, StandardM, BigM;
 
     private String TAG = "newREG";
 
@@ -231,6 +236,32 @@ public class NewHomeRegistry extends BaseActivity{
         init_listeners();
         buttons.add(PLUS);
         setupBottomSheet();
+        /*Buttons MEAL*/
+//        SmallM = (Button)findViewById(R.id.Small_Meal);
+//        SmallM.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View view) {
+//                Intent intent_SM = new Intent(getApplicationContext(), SmallMeal.class);
+//                startActivity(intent_SM);
+//            }
+//        });
+//        BigM =(Button)findViewById(R.id.Big_Meal);
+//        BigM.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent_BM = new Intent(getApplicationContext(), BigMeal.class);
+//                startActivity(intent_BM);
+//            }
+//        });
+//        StandardM =(Button)findViewById(R.id.Standard_Meal);
+//        StandardM.setOnClickListener(new View.OnClickListener(){
+//
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent_SM = new Intent(getApplicationContext(), StandardMeal.class);
+//                startActivity(intent_SM);
+//
+//            }
+//        });
         /*
          If register from old reg
          */

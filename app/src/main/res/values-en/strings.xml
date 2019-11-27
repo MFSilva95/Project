@@ -718,4 +718,8 @@
     <string name="medium_gold_health">15 days with your time in range over 65%</string>
     <string name="advanced_gold_health">30 days your time in range over 65%</string>
 
+    <string name="small_meal">Small Meal</string>
+    <string name="standard_meal"> Tipical Meal</string>
+    <string name="big_meal">Refeição Grande</string>
+
 </resources>

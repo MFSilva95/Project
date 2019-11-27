@@ -24,7 +24,6 @@
     <string name="title_activity_app_options">Opções da aplicação</string>
 
 
-
     <string name="upload_failed">Infelizmente falhou o envio, tente mais tarde.</string>
 
     <string name="title_activity_my_data">Os Meus Dados</string>
@@ -105,11 +104,10 @@
     <string name="error_insulin">O valor inserido não é válido</string>
     <string name="error_glucose">O valor inserido não é válido</string>
 
-    <string name="error_invalid_height" >Altura errada, tem de ser em metros. (Falta um ponto algures?)</string>
+    <string name="error_invalid_height">Altura errada, tem de ser em metros. (Falta um ponto algures?)</string>
     <string name="error_invalid_parameter">Valor fora dos padrões normais</string>
-    <string name="error_field_required" >Campo necessário</string>
-    <string name="error_repeated_name" >O Nome não pode ser repetido</string>
-
+    <string name="error_field_required">Campo necessário</string>
+    <string name="error_repeated_name">O Nome não pode ser repetido</string>
 
 
     <string-array name="Sex">
@@ -211,10 +209,10 @@
     <string name="dbcopy_success">Cópia de segurança efectuada com sucesso!</string>
 
 
-    <string name="date_hour" >Data e Hora</string>
-    <string name="time_of_day" >Altura do Dia</string>
-    <string name="day" >Dia</string>
-    <string name="time" >Hora</string>
+    <string name="date_hour">Data e Hora</string>
+    <string name="time_of_day">Altura do Dia</string>
+    <string name="day">Dia</string>
+    <string name="time">Hora</string>
 
     <string name="bloodpressure">Pressão Arterial</string>
     <string name="systolic">Sistólica</string>
@@ -340,22 +338,22 @@
     <string name="backup_restore_confirmation_dialog_text">Este processo vai substituir todos os dados que tem gravados pelos do backup.\nTem a certeza?</string>
     <string name="next_button">Seguinte</string>
 
-    <string name="notification_sync_recurrent" >Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?</string>
-    <string name="notification_sync_first_time" >Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?</string>
-    <string name="notification_sync_text" >Envie os dados ao gestor do projecto</string>
-    <string name="list_empty_message" >Nenhum resultado encontrado\nAumente o intervalo de tempo</string>
-    <string name="show_labels" >Mostrar valores</string>
-    <string name="show_hiperglicemia_limit" >Mostrar limite de hiperglicemia</string>
-    <string name="show_hipoglicemia_limit" >Mostrar limite de hipoglicemia</string>
-    <string name="filterdialog_title" >Filtro</string>
-    <string name="filterdialog_subtitle_extras" >Extras</string>
-    <string name="filterdialog_subtitle_data" >Dados</string>
-    <string name="feature_cloud_sync" >Sincronizar com cloud</string>
-    <string name="feature_cloud_sync_description1" >Pode enviar para a cloud os seus dados de forma segura.</string>
-    <string name="feature_cloud_sync_description2" >A qualquer momento pode aceder aos dados em https://mydiabetes.dcc.fc.up.pt/</string>
-    <string name="login_username" >Nome do utilizador</string>
-    <string name="login_password" >Palavra-passe</string>
-    <string name="login_extra_text" >Criar nova conta.</string>
+    <string name="notification_sync_recurrent">Já passaram 7 dias desde a última vez que enviou dados ao projecto. Quer enviar?</string>
+    <string name="notification_sync_first_time">Já passaram 7 dias desde que começou a usar a aplicação, deseja enviar os dados ao projecto?</string>
+    <string name="notification_sync_text">Envie os dados ao gestor do projecto</string>
+    <string name="list_empty_message">Nenhum resultado encontrado\nAumente o intervalo de tempo</string>
+    <string name="show_labels">Mostrar valores</string>
+    <string name="show_hiperglicemia_limit">Mostrar limite de hiperglicemia</string>
+    <string name="show_hipoglicemia_limit">Mostrar limite de hipoglicemia</string>
+    <string name="filterdialog_title">Filtro</string>
+    <string name="filterdialog_subtitle_extras">Extras</string>
+    <string name="filterdialog_subtitle_data">Dados</string>
+    <string name="feature_cloud_sync">Sincronizar com cloud</string>
+    <string name="feature_cloud_sync_description1">Pode enviar para a cloud os seus dados de forma segura.</string>
+    <string name="feature_cloud_sync_description2">A qualquer momento pode aceder aos dados em https://mydiabetes.dcc.fc.up.pt/</string>
+    <string name="login_username">Nome do utilizador</string>
+    <string name="login_password">Palavra-passe</string>
+    <string name="login_extra_text">Criar nova conta.</string>
 
 
     <string name="privacyPolicyLink">Ao criar uma nova conta está a aceitar a política de privacidade disponível em https://mydiabetes.dcc.fc.up.pt/</string>
@@ -530,7 +528,6 @@
         Deve fazer pelo menos 6 registos diários de glicemia. Se completar este objectivo irá receber 100 pontos, a multiplicar pela sua streak corrente. O valor a multiplicar tem um máximo de 7. Porém, pode e deve continuar a completar os objectivos diários para manter este valor e assim obter o máximo de pontos possíveis.</string>
 
 
-
     <string name="meal_lipids_explain">A sua refeição contém um nível elevado de Lipidos. É esperado que o seu nível glicémico continue a subir nas próximas %1$d horas. No caso de usar bomba deve definir um bolus quadrado. No caso de usar \'caneta\' deve fazer a verificação do seu valor glicémico regularmente e se necessário, administrar insulina para corrigir o valor glicémico.</string>
 
 
@@ -635,16 +632,7 @@
         \n\nToda a informação disponibilizada será para utilização exclusivamente académica!\nA equipa do MyDiabetes irá usar esta informação de forma a melhorar o seu sistema de aconselhamento de forma a conseguir ajudar os seus utilizadores.\n<b>\nAceita os termos apresentados?</b>\n<br>\n(pode a qualquer momento desativar o upload automático dos dados nas opções da aplicação)</br></string>
 
 
-
-
-
-
-
-
-
-
-<string name="notification_channel_sync_description">Lembrete para envio dos dados para o gestor do projecto</string>
-
+    <string name="notification_channel_sync_description">Lembrete para envio dos dados para o gestor do projecto</string>
 
 
     <string-array name="period">
@@ -713,5 +701,8 @@
     <string name="medium_gold_health">15 dias com o tempo no alvo acima de 65%</string>
     <string name="advanced_gold_health">30 dias com o tempo no alvo acima de 65%</string>
 
+    <string name="small_meal">Refeição Leve</string>
+    <string name="standard_meal">Refeição Habitual</string>
+    <string name="big_meal">Refeição Grande</string>
 
 </resources>
