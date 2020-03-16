@@ -701,8 +701,14 @@
     <string name="medium_gold_health">15 dias com o tempo no alvo acima de 65%</string>
     <string name="advanced_gold_health">30 dias com o tempo no alvo acima de 65%</string>
 
-    <string name="small_meal">Refeição Leve</string>
-    <string name="standard_meal">Refeição Habitual</string>
-    <string name="big_meal">Refeição Grande</string>
+    <string name="buttonstitle">Concentração de gordura e proteína na refeição:</string>
+    <string name="small_meal">Leve</string>
+    <string name="standard_meal">Habitual</string>
+    <string name="big_meal">Grande</string>
+    <string name="insulin_adj">Ajuste de insulina</string>
+    <string name="infomealtitle">Ajuda </string>
+    <string name="infomealmessage"> Informação a ser adicionada!</string>
+    <!-- TODO: Remove or change this placeholder text -->
+
 
 </resources>

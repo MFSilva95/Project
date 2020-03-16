@@ -17,25 +17,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
-
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Pair;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
-
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -56,16 +51,13 @@ import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Tag;
-import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
-import pt.it.porto.mydiabetes.ui.createMeal.activities.BigMeal;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
-import pt.it.porto.mydiabetes.ui.createMeal.activities.SmallMeal;
-import pt.it.porto.mydiabetes.ui.createMeal.activities.StandardMeal;
 import pt.it.porto.mydiabetes.ui.createMeal.db.DataBaseHelper;
 import pt.it.porto.mydiabetes.ui.createMeal.utils.LoggedMeal;
 import pt.it.porto.mydiabetes.ui.dialogs.DatePickerFragment;
+import pt.it.porto.mydiabetes.ui.dialogs.InfoTypeMealFragment;
 import pt.it.porto.mydiabetes.ui.dialogs.TimePickerFragment;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
 import pt.it.porto.mydiabetes.ui.fragments.new_register.CarbsRegister_Input_Interface;
@@ -80,7 +72,8 @@ import static pt.it.porto.mydiabetes.utils.DateUtils.ISO8601_FORMAT_SECONDS;
 
 public class NewHomeRegistry extends BaseActivity{
 
-    private Button SmallM, StandardM, BigM;
+    private Button SmallM, StandardM, BigM, InfoMeal;
+    private int tmeal = 0;
 
     private String TAG = "newREG";
 
@@ -149,7 +142,7 @@ public class NewHomeRegistry extends BaseActivity{
     private Uri generatedImageUri;
     private Uri imgUri;
     private int recordId=-1;
-
+    public String type_m;
     private int noteId;
     private String mCurrentPhotoPath;
     private Toolbar toolbar;
@@ -254,34 +247,123 @@ public class NewHomeRegistry extends BaseActivity{
         }
     }
 
-    private void typeOfMeal() {
+    public void typeOfMeal() {
         /*Buttons MEAL*/
+
+
         SmallM = (Button)findViewById(R.id.Small_Meal);
         SmallM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent intent_SM = new Intent(getApplicationContext(), SmallMeal.class);
-                startActivity(intent_SM);
+
+                logSave("NewHomeRegistry:Insulin");
+                if (buttons.contains(INSULIN)) {
+                    if(isRecordUpdate){
+                        delete_buttons.add(INSULIN);
+                    }
+                    removeContent(insuRegisterInputInterface);
+                    buttons.remove(INSULIN);
+                    SmallM.findViewById(R.id.Small_Meal).setActivated(false);
+                } else {
+                    if(isRecordUpdate){
+                        delete_buttons.remove(INSULIN);
+                    }
+                    setInsuPressed(view);
+                    SmallM.findViewById(R.id.Small_Meal).setActivated(true);
+                    type_m = "SmallM";
+                    if(StandardM.isActivated() || BigM.isActivated()){
+                        StandardM.setActivated(false);
+                        BigM.setActivated(false);
+                    }
+                }
+
             }
         });
+
+        InfoMeal = (Button)findViewById(R.id.Meal_info);
+        InfoMeal.setOnClickListener((new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                String tInfoMeal = "InfoMeal";
+                showInfoMealDialog(view, tInfoMeal);
+            }
+
+        }));
+
         BigM =(Button)findViewById(R.id.Big_Meal);
         BigM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent_BM = new Intent(getApplicationContext(), BigMeal.class);
-                startActivity(intent_BM);
+
+                logSave("NewHomeRegistry:Insulin");
+                if (buttons.contains(INSULIN)) {
+                    if(isRecordUpdate){
+                        delete_buttons.add(INSULIN);
+                    }
+                    removeContent(insuRegisterInputInterface);
+                    buttons.remove(INSULIN);
+                    BigM.findViewById(R.id.Big_Meal).setActivated(false);
+                } else {
+                    if(isRecordUpdate){
+                        delete_buttons.remove(INSULIN);
+                    }
+                    setInsuPressed(view);
+                    BigM.findViewById(R.id.Big_Meal).setActivated(true);
+                    type_m = "BigM";
+                    if(StandardM.isActivated() || BigM.isActivated()){
+                        StandardM.setActivated(false);
+                        SmallM.setActivated(false);
+                    }
+                }
+
+
             }
         });
+
         StandardM =(Button)findViewById(R.id.Standard_Meal);
         StandardM.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view) {
-                Intent intent_SM = new Intent(getApplicationContext(), StandardMeal.class);
-                startActivity(intent_SM);
+
+                logSave("NewHomeRegistry:Insulin");
+                if (buttons.contains(INSULIN)) {
+                    if(isRecordUpdate){
+                        delete_buttons.add(INSULIN);
+                    }
+                    removeContent(insuRegisterInputInterface);
+                    buttons.remove(INSULIN);
+                    StandardM.findViewById(R.id.Standard_Meal).setActivated(false);
+                } else {
+                    if(isRecordUpdate){
+                        delete_buttons.remove(INSULIN);
+                    }
+
+                    setInsuPressed(view);
+                    StandardM.findViewById(R.id.Standard_Meal).setActivated(true);
+                    type_m = "StandardM";
+                    if(StandardM.isActivated() || BigM.isActivated()){
+                        SmallM.setActivated(false);
+                        BigM.setActivated(false);
+                    }
+
+                }
+
 
             }
         });
+
+
     }
+    private void showInfoMealDialog(View view, String tInfoMeal){
+        InfoTypeMealFragment infotypeMealF =  new InfoTypeMealFragment();
+            infotypeMealF.show(getSupportFragmentManager(), "InfoMeal");
+
+
+    }
+
+
+
 
     private void init_vars(){
         setContentView(R.layout.activity_add_event);

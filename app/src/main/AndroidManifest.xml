@@ -21,9 +21,6 @@
         android:label="@string/app_name"
         android:theme="@style/HomeTheme"
         tools:replace="android:theme">
-        <activity android:name=".ui.createMeal.activities.BigMeal"></activity>
-        <activity android:name=".ui.createMeal.activities.StandardMeal" />
-        <activity android:name=".ui.createMeal.activities.SmallMeal" />
 
         <provider
             android:name=".utils.FileProvider"

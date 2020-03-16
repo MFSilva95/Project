@@ -718,8 +718,12 @@
     <string name="medium_gold_health">15 days with your time in range over 65%</string>
     <string name="advanced_gold_health">30 days your time in range over 65%</string>
 
-    <string name="small_meal">Small Meal</string>
-    <string name="standard_meal"> Tipical Meal</string>
-    <string name="big_meal">Big Meal</string>
+    <string name="buttonstitle">Fat and protein concentation in the meal:</string>
+    <string name="small_meal">Small</string>
+    <string name="standard_meal"> Typical</string>
+    <string name="big_meal">Big </string>
+    <string name="insulin_adj">Insulin Adjustment</string>
+    <string name="infomealtitle">Help </string>
+    <string name="infomealmessage"> Info yet to be introduced!</string>
 
 </resources>
