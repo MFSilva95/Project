@@ -707,7 +707,7 @@
     <string name="big_meal">Grande</string>
     <string name="insulin_adj">Ajuste de insulina</string>
     <string name="infomealtitle">Ajuda </string>
-    <string name="infomealmessage"> Informação a ser adicionada!</string>
+    <string name="infomealmessage"><b>Refeição leve:</b> Refeição com pouca concentração de proteína e gordura, e mais concentração de açucar. Recomenda-se aplicar a dose de insulina 20min antes da refeição. \n <b>Refeição habitual:</b> Refeição com entre 40g e 75g de proteína.  Ajuste de insulina adicionado na altura da refeição.\n<b>Refeição Grande:</b> Refeição com grande concentração de gordura e proteina, com mais de 40g de gordura, aplicar dose inicial de 35% de insulina na altura da refeição com ajustes de 50%-50% ao longo de 2:30h. </string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

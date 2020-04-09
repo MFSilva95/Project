@@ -51,6 +51,7 @@ import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Tag;
+import pt.it.porto.mydiabetes.data.TypeMeal;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
@@ -73,7 +74,7 @@ import static pt.it.porto.mydiabetes.utils.DateUtils.ISO8601_FORMAT_SECONDS;
 public class NewHomeRegistry extends BaseActivity{
 
     private Button SmallM, StandardM, BigM, InfoMeal;
-    private int tmeal = 0;
+
 
     private String TAG = "newREG";
 
@@ -142,7 +143,7 @@ public class NewHomeRegistry extends BaseActivity{
     private Uri generatedImageUri;
     private Uri imgUri;
     private int recordId=-1;
-    public String type_m;
+    private String type_of_meal;
     private int noteId;
     private String mCurrentPhotoPath;
     private Toolbar toolbar;
@@ -250,31 +251,20 @@ public class NewHomeRegistry extends BaseActivity{
     public void typeOfMeal() {
         /*Buttons MEAL*/
 
-
         SmallM = (Button)findViewById(R.id.Small_Meal);
         SmallM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-
-                logSave("NewHomeRegistry:Insulin");
+                logSave("NewHomeRegistry: TypeMeal");
+                SmallM.findViewById(R.id.Small_Meal).setActivated(true);
+                setType_of_meal("SmallM");
+                BigM.findViewById(R.id.Big_Meal).setActivated(false);
+                StandardM.findViewById(R.id.Standard_Meal).setActivated(false);
                 if (buttons.contains(INSULIN)) {
-                    if(isRecordUpdate){
-                        delete_buttons.add(INSULIN);
-                    }
-                    removeContent(insuRegisterInputInterface);
-                    buttons.remove(INSULIN);
-                    SmallM.findViewById(R.id.Small_Meal).setActivated(false);
+                  //do nothing
                 } else {
-                    if(isRecordUpdate){
-                        delete_buttons.remove(INSULIN);
-                    }
                     setInsuPressed(view);
-                    SmallM.findViewById(R.id.Small_Meal).setActivated(true);
-                    type_m = "SmallM";
-                    if(StandardM.isActivated() || BigM.isActivated()){
-                        StandardM.setActivated(false);
-                        BigM.setActivated(false);
-                    }
                 }
+
 
             }
         });
@@ -294,26 +284,16 @@ public class NewHomeRegistry extends BaseActivity{
         BigM.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                logSave("NewHomeRegistry: TypeMeal");
+                BigM.findViewById(R.id.Big_Meal).setActivated(true);
+                setType_of_meal("BigM");
+                StandardM.findViewById(R.id.Standard_Meal).setActivated(false);
+                SmallM.findViewById(R.id.Small_Meal).setActivated(false);
 
-                logSave("NewHomeRegistry:Insulin");
                 if (buttons.contains(INSULIN)) {
-                    if(isRecordUpdate){
-                        delete_buttons.add(INSULIN);
-                    }
-                    removeContent(insuRegisterInputInterface);
-                    buttons.remove(INSULIN);
-                    BigM.findViewById(R.id.Big_Meal).setActivated(false);
+                    //do nothing
                 } else {
-                    if(isRecordUpdate){
-                        delete_buttons.remove(INSULIN);
-                    }
                     setInsuPressed(view);
-                    BigM.findViewById(R.id.Big_Meal).setActivated(true);
-                    type_m = "BigM";
-                    if(StandardM.isActivated() || BigM.isActivated()){
-                        StandardM.setActivated(false);
-                        SmallM.setActivated(false);
-                    }
                 }
 
 
@@ -325,45 +305,39 @@ public class NewHomeRegistry extends BaseActivity{
 
             @Override
             public void onClick(View view) {
+                logSave("NewHomeRegistry: TypeMeal");
+                StandardM.findViewById(R.id.Standard_Meal).setActivated(true);
+                BigM.findViewById(R.id.Big_Meal).setActivated(false);
+                setType_of_meal("StandardM");
+                SmallM.findViewById(R.id.Small_Meal).setActivated(false);
 
-                logSave("NewHomeRegistry:Insulin");
                 if (buttons.contains(INSULIN)) {
-                    if(isRecordUpdate){
-                        delete_buttons.add(INSULIN);
-                    }
-                    removeContent(insuRegisterInputInterface);
-                    buttons.remove(INSULIN);
-                    StandardM.findViewById(R.id.Standard_Meal).setActivated(false);
+                    //do nothing
                 } else {
-                    if(isRecordUpdate){
-                        delete_buttons.remove(INSULIN);
-                    }
-
                     setInsuPressed(view);
-                    StandardM.findViewById(R.id.Standard_Meal).setActivated(true);
-                    type_m = "StandardM";
-                    if(StandardM.isActivated() || BigM.isActivated()){
-                        SmallM.setActivated(false);
-                        BigM.setActivated(false);
-                    }
-
                 }
 
 
             }
         });
 
-
     }
+
+
+    public String getType_of_meal() {
+        return type_of_meal;
+    }
+
+    public void setType_of_meal(String type_of_meal) {
+        this.type_of_meal = type_of_meal;
+    }
+
     private void showInfoMealDialog(View view, String tInfoMeal){
         InfoTypeMealFragment infotypeMealF =  new InfoTypeMealFragment();
             infotypeMealF.show(getSupportFragmentManager(), "InfoMeal");
 
 
     }
-
-
-
 
     private void init_vars(){
         setContentView(R.layout.activity_add_event);
