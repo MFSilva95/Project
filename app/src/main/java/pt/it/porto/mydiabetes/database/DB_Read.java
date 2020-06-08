@@ -1138,11 +1138,12 @@ public class DB_Read {
 			tmp = new CarbsRec();
 			tmp.setId(cursor.getInt(0));
 			tmp.setIdUser(cursor.getInt(1));
-			tmp.setCarbsValue(cursor.getInt(2));
-			tmp.setPhotoPath(cursor.getString(3));
-			tmp.setDateTime(cursor.getString(4));
-			tmp.setIdTag(cursor.getInt(5));
-			tmp.setIdNote((!cursor.isNull(6)) ? cursor.getInt(6) : -1);
+			tmp.setIdUser(cursor.getInt(2));
+			tmp.setCarbsValue(cursor.getInt(3));
+			tmp.setPhotoPath(cursor.getString(4));
+			tmp.setDateTime(cursor.getString(5));
+			tmp.setIdTag(cursor.getInt(6));
+			tmp.setIdNote((!cursor.isNull(7)) ? cursor.getInt(7) : -1);
 			cursor.close();
 
 		}

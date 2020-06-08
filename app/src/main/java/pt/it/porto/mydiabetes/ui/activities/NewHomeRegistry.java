@@ -51,7 +51,6 @@ import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Tag;
-import pt.it.porto.mydiabetes.data.TypeMeal;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
