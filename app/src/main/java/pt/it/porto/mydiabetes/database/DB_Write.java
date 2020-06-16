@@ -392,6 +392,9 @@ public class DB_Write {
 			PhotoSyncDb photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(myContext));
 			photoSyncDb.addPhoto(obj.getPhotoPath());
 		}
+		if(obj.getMealType()!=-1){
+			toInsert.put("mealType", obj.getMealType());
+		}
 		String datetime = DateUtils.formatToDb(obj.getDateTime());
 		toInsert.put("DateTime", datetime);
 		toInsert.put("Id_Tag", obj.getIdTag());
@@ -409,7 +412,9 @@ public class DB_Write {
 		toInsert.put("PhotoPath", obj.getPhotoPath());
 		//Log.i("update", "Carbs_Update: "+obj.getUserId());
 
-
+		if(obj.getMealType()!=-1){
+			toInsert.put("mealType", obj.getMealType());
+		}
 		DB_Read read = new DB_Read(myContext);
 		CarbsRec old = read.CarboHydrate_GetById(obj.getId());
 
@@ -985,6 +990,5 @@ public class DB_Write {
 			db.insert("Ratio_Reg", null, toInsert);
 		}
 	}
-
 
 }

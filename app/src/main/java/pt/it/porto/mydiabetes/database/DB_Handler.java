@@ -23,7 +23,7 @@ import pt.it.porto.mydiabetes.R;
 public class DB_Handler extends SQLiteOpenHelper {
 
     // Database Version
-    private static final int DATABASE_VERSION = 20;//17
+    private static final int DATABASE_VERSION = 21;//17
     private static final int DATABASE_VERSION_USERID_BADGES = 8;
     private static final int DATABASE_VERSION_TARGET_BG = 10;
     private static final int DATABASE_VERSION_TAG = 17;
@@ -136,7 +136,11 @@ public class DB_Handler extends SQLiteOpenHelper {
                 myDB.update(MyDiabetesContract.Feature.TABLE_NAME, toInsert, MyDiabetesContract.Feature.COLUMN_NAME_NAME + "=?", new String[]{FeaturesDB.DEPRECATED});
             }
         }else{
-            if(oldVersion<=20){
+            if(oldVersion<20){
+                if(oldVersion<21){
+                    String updateADD_MEALTYPE = "ALTER TABLE Reg_CarboHydrate ADD COLUMN MealType INTEGER";
+                    myDB.execSQL(updateADD_MEALTYPE);
+                }
                 String updateADD_STREAK_1 = "ALTER TABLE UserInfo ADD COLUMN CurrStreak INTEGER";
                 String updateADD_STREAK_2 = "ALTER TABLE UserInfo ADD COLUMN MaxStreak INTEGER";
 
