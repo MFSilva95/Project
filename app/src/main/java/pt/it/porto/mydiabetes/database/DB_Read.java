@@ -765,7 +765,11 @@ public class DB_Read {
 		return insulin;
 
 	}
-
+//---------------------TypeMeal ------------------
+	public HashMap<String,Integer> TypeMeal(){
+		Cursor cursor = myDB.rawQuery("Select * from TypeMeal",null );
+		return null;
+	}
 
 	//----------------- EXERCISES --------------
 	public boolean Exercise_ExistName(String name) {
@@ -1069,6 +1073,7 @@ public class DB_Read {
 				tmp.setPhotoPath(cursor.getString(3));
 				tmp.setDateTime(cursor.getString(4));
 				tmp.setIdTag(cursor.getInt(5));
+				tmp.setType_of_meal(cursor.getString(6));
 
 				allreads.add(tmp);
 				cursor.moveToNext();

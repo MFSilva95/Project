@@ -10,7 +10,6 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-import pt.it.porto.mydiabetes.data.BadgeRec;
 import pt.it.porto.mydiabetes.data.BloodPressureRec;
 import pt.it.porto.mydiabetes.data.CarbsRatioData;
 import pt.it.porto.mydiabetes.data.CarbsRec;
@@ -25,7 +24,6 @@ import pt.it.porto.mydiabetes.data.Insulin;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.InsulinTarget;
 import pt.it.porto.mydiabetes.data.Note;
-import pt.it.porto.mydiabetes.data.PointsRec;
 import pt.it.porto.mydiabetes.data.Sensitivity;
 import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.data.TargetBGRec;
@@ -388,6 +386,8 @@ public class DB_Write {
 		toInsert.put("Id_User", obj.getIdUser());
 		toInsert.put("Value", obj.getCarbsValue());
 		toInsert.put("PhotoPath", obj.getPhotoPath());
+
+
 		if (obj.getPhotoPath() != null) {
 			PhotoSyncDb photoSyncDb = new PhotoSyncDb(MyDiabetesStorage.getInstance(myContext));
 			photoSyncDb.addPhoto(obj.getPhotoPath());
@@ -408,6 +408,7 @@ public class DB_Write {
 		toInsert.put("Value", obj.getCarbsValue());
 		toInsert.put("PhotoPath", obj.getPhotoPath());
 		//Log.i("update", "Carbs_Update: "+obj.getUserId());
+
 
 		DB_Read read = new DB_Read(myContext);
 		CarbsRec old = read.CarboHydrate_GetById(obj.getId());
@@ -984,5 +985,6 @@ public class DB_Write {
 			db.insert("Ratio_Reg", null, toInsert);
 		}
 	}
+
 
 }

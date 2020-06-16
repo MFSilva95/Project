@@ -724,6 +724,8 @@
     <string name="big_meal">Big </string>
     <string name="insulin_adj">Insulin Adjustment</string>
     <string name="infomealtitle">Help </string>
-    <string name="infomealmessage"><b>Small Meal:</b>Meal with a low concentration of protein and fat, and more concentration in sugar. Recommended to apply the insulin dose 20min before the meal. \n <b>Typical Meal:</b>Meal with usual concentration of protein and fat (between 40g and 75g of protein). Insulin adjustment added at meal time. \n <b>Big Meal:</b>Meal with high concentration of fat(more than 40g of fat). Apply initial dose of 35% at meal time, with two 50%-50% adjustments over 2:30h.  </string>
-
+    <string name="infomealmessage"><b>Small Meal:</b>Meal with a low concentration of fat and protein, and more concentration in sugar. Recommended to apply the insulin dose 20min before the meal. \n <b>Typical Meal:</b>Meal with usual concentration of protein and fat (between 40g and 75g of protein). Insulin adjustment added at meal time. \n <b>Big Meal:</b>Meal with high concentration of fat(more than 40g of fat). Apply initial dose of 35% at meal time, with two 50%-50% adjustments over 2:30h.  </string>
+    <string name="insulin_adjustment">Adjustment of Fat/Protein</string>
+    <string name="insulin_corr">correction of insulin in 1h</string>
+    <string name="noinsulin_corr">No need for insulin adjustment</string>
 </resources>

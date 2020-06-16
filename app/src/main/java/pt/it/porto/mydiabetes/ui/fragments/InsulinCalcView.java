@@ -1,15 +1,18 @@
 package pt.it.porto.mydiabetes.ui.fragments;
 
 import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.databinding.DataBindingUtil;
 
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.databinding.FragmentInsulinMealCalcBinding;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
+
+
 
 /**
  * MAIN INSU CALC VIEW -

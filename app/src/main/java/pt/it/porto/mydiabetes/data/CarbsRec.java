@@ -19,6 +19,7 @@ public class CarbsRec extends DateTime implements Parcelable {
 			return new CarbsRec[size];
 		}
 	};
+	private String type_of_meal="";
 	private int id = -1;
 	private int id_User = -1;
 	private int value = -1;
@@ -26,7 +27,6 @@ public class CarbsRec extends DateTime implements Parcelable {
 	private int idTag = -1;
 	private int idNote = -1;
 	private int mealId = -1;
-
 	public CarbsRec() {
 	}
 
@@ -42,6 +42,8 @@ public class CarbsRec extends DateTime implements Parcelable {
 		idTag = oldCarbs.getIdTag();
 		idNote = oldCarbs.getIdNote();
 		mealId = oldCarbs.getMealId();
+		type_of_meal = oldCarbs.getType_of_meal();
+
 	}
 
 	protected CarbsRec(Parcel in) {
@@ -53,6 +55,8 @@ public class CarbsRec extends DateTime implements Parcelable {
 		idTag = in.readInt();
 		idNote = in.readInt();
 		mealId = in.readInt();
+		type_of_meal =  in.readString();
+
 	}
 
 	public int getId() {
@@ -120,6 +124,11 @@ public class CarbsRec extends DateTime implements Parcelable {
 		this.mealId = mealId;
 	}
 
+	public String getType_of_meal() {
+		return type_of_meal;
+	}
+
+	public void setType_of_meal(String type_of_meal) { this.type_of_meal = type_of_meal;}
 
 	@Override
 	public int describeContents() {
@@ -136,6 +145,7 @@ public class CarbsRec extends DateTime implements Parcelable {
 		dest.writeInt(idTag);
 		dest.writeInt(idNote);
 		dest.writeInt(mealId);
+		dest.writeString(type_of_meal);
 	}
 
 	@Override
@@ -160,6 +170,8 @@ public class CarbsRec extends DateTime implements Parcelable {
 		}
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "CarbsRec{" +
@@ -170,6 +182,7 @@ public class CarbsRec extends DateTime implements Parcelable {
 				", idTag=" + idTag +
 				", idNote=" + idNote +
 				", mealID=" + mealId +
+				",TypeMeal=" + type_of_meal +
 				'}';
 	}
 }

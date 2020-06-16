@@ -372,4 +372,5 @@ public class InsulinElement extends CardView {
 
 		void viewRemoved(int pox);
 	}
+
 }

@@ -36,6 +36,7 @@ public class CarbsRatioData implements Parcelable {
 		name = in.readString();
 		start = in.readString();
 		end = in.readString();
+
 	}
 
 	@Override

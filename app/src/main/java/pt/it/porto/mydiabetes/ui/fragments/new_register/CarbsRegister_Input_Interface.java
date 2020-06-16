@@ -25,6 +25,7 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
     private Uri imgUri;
     private Bitmap b;
 
+
     public NewHomeRegistry.NewHomeRegCallBack getCallBack() {
         return callBack;
     }
@@ -92,6 +93,7 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         carbsTextView.addTextChangedListener(getCarbsTW());
     }
 
+
     private TextWatcher getCarbsTW(){
         TextWatcher carbsTW = new TextWatcher() {
             @Override
@@ -136,4 +138,11 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
         this.carbsData.setMealId(mealID);
     }
 
+
+    public String getTypeMeal() {
+        return this.carbsData.getType_of_meal();
+    }
+    public void setTypeMeal(String typeMeal){
+        carbsData.setType_of_meal(typeMeal);
+    }
 }

@@ -701,13 +701,16 @@
     <string name="medium_gold_health">15 dias com o tempo no alvo acima de 65%</string>
     <string name="advanced_gold_health">30 dias com o tempo no alvo acima de 65%</string>
 
-    <string name="buttonstitle">Concentração de gordura e proteína na refeição:</string>
+    <string name="buttonstitle">Concentração de proteína e gordura na refeição:</string>
     <string name="small_meal">Leve</string>
     <string name="standard_meal">Habitual</string>
     <string name="big_meal">Grande</string>
     <string name="insulin_adj">Ajuste de insulina</string>
     <string name="infomealtitle">Ajuda </string>
     <string name="infomealmessage"><b>Refeição leve:</b> Refeição com pouca concentração de proteína e gordura, e mais concentração de açucar. Recomenda-se aplicar a dose de insulina 20min antes da refeição. \n <b>Refeição habitual:</b> Refeição com entre 40g e 75g de proteína.  Ajuste de insulina adicionado na altura da refeição.\n<b>Refeição Grande:</b> Refeição com grande concentração de gordura e proteina, com mais de 40g de gordura, aplicar dose inicial de 35% de insulina na altura da refeição com ajustes de 50%-50% ao longo de 2:30h. </string>
+    <string name="insulin_adjustment">Correcção Proteína/Gordura</string>
+    <string name="insulin_corr">Insulina extra em 1h por proteína/gordura</string>
+    <string name="noinsulin_corr">Sem necessidade de ajuste de insulina por proteína/gordura</string>
     <!-- TODO: Remove or change this placeholder text -->
 
 

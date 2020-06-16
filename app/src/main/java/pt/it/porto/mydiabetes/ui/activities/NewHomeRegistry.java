@@ -15,6 +15,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.BuildConfig;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -44,14 +45,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.CarbsRec;
 import pt.it.porto.mydiabetes.data.GlycemiaRec;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.data.Note;
 import pt.it.porto.mydiabetes.data.Tag;
-import pt.it.porto.mydiabetes.data.TypeMeal;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.ui.createMeal.activities.CreateMealActivity;
@@ -71,6 +70,8 @@ import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 import static pt.it.porto.mydiabetes.utils.DateUtils.ISO8601_FORMAT_SECONDS;
 
+
+
 public class NewHomeRegistry extends BaseActivity{
 
     private Button SmallM, StandardM, BigM, InfoMeal;
@@ -86,6 +87,7 @@ public class NewHomeRegistry extends BaseActivity{
     private static final String GLICAEMIA = "GLICAEMIA";
     private static final String NOTE = "NOTE";
     private static final String PLUS = "PLUS";
+    private static final String TypeMeal = "TypeMeal";
 
     private static final String ARG_CARBS = "ARG_CARBS";
     private static final String ARG_INSULIN = "ARG_INSULIN";
@@ -126,6 +128,7 @@ public class NewHomeRegistry extends BaseActivity{
     private Note noteData;
 
 
+
     private ArrayList<String> buttons;
     //private ArrayList<String> buttonsUpdate;
     private ArrayList<String> delete_buttons;
@@ -136,6 +139,7 @@ public class NewHomeRegistry extends BaseActivity{
 
     protected InsulinCalcView fragmentInsulinCalcsFragment;
     protected InsulinCalculator insulinCalculator = null;
+
 
 
 
@@ -162,6 +166,8 @@ public class NewHomeRegistry extends BaseActivity{
     public static boolean winBadge = false;
     public static boolean winDaily = false;
     public static boolean winStreak = false;
+    private Object String;
+    private Object Navigation;
 
     @Override
     public void finishAfterTransition() {
@@ -250,7 +256,6 @@ public class NewHomeRegistry extends BaseActivity{
 
     public void typeOfMeal() {
         /*Buttons MEAL*/
-
         SmallM = (Button)findViewById(R.id.Small_Meal);
         SmallM.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -259,12 +264,13 @@ public class NewHomeRegistry extends BaseActivity{
                 setType_of_meal("SmallM");
                 BigM.findViewById(R.id.Big_Meal).setActivated(false);
                 StandardM.findViewById(R.id.Standard_Meal).setActivated(false);
+                insulinCalculator.setType_of_meal(carbsData!=null ? getType_of_meal(): "SmallM");
                 if (buttons.contains(INSULIN)) {
                   //do nothing
                 } else {
                     setInsuPressed(view);
-                }
 
+                }
 
             }
         });
@@ -287,15 +293,19 @@ public class NewHomeRegistry extends BaseActivity{
                 logSave("NewHomeRegistry: TypeMeal");
                 BigM.findViewById(R.id.Big_Meal).setActivated(true);
                 setType_of_meal("BigM");
+                insulinCalculator.setType_of_meal(carbsData!=null ? getType_of_meal(): "BigM");
                 StandardM.findViewById(R.id.Standard_Meal).setActivated(false);
                 SmallM.findViewById(R.id.Small_Meal).setActivated(false);
+
+
 
                 if (buttons.contains(INSULIN)) {
                     //do nothing
                 } else {
                     setInsuPressed(view);
-                }
 
+
+                }
 
             }
         });
@@ -306,23 +316,26 @@ public class NewHomeRegistry extends BaseActivity{
             @Override
             public void onClick(View view) {
                 logSave("NewHomeRegistry: TypeMeal");
+
                 StandardM.findViewById(R.id.Standard_Meal).setActivated(true);
                 BigM.findViewById(R.id.Big_Meal).setActivated(false);
                 setType_of_meal("StandardM");
+                insulinCalculator.setType_of_meal(carbsData!=null ? getType_of_meal(): "StandardM");
                 SmallM.findViewById(R.id.Small_Meal).setActivated(false);
 
                 if (buttons.contains(INSULIN)) {
                     //do nothing
                 } else {
                     setInsuPressed(view);
-                }
 
+
+                }
 
             }
         });
 
-    }
 
+    }
 
     public String getType_of_meal() {
         return type_of_meal;
@@ -330,6 +343,7 @@ public class NewHomeRegistry extends BaseActivity{
 
     public void setType_of_meal(String type_of_meal) {
         this.type_of_meal = type_of_meal;
+
     }
 
     private void showInfoMealDialog(View view, String tInfoMeal){
@@ -632,6 +646,7 @@ public class NewHomeRegistry extends BaseActivity{
             reg.Insulin_Delete(insulinData.getId());
             insulinData = null;
         }
+
 
         for(String field:buttons){
             try {
@@ -1032,6 +1047,8 @@ public class NewHomeRegistry extends BaseActivity{
         insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);
         insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
 
+
+
         if (registerDate != null) {
             insulinCalculator.setTime(this, registerDate);
         }
@@ -1113,6 +1130,8 @@ public class NewHomeRegistry extends BaseActivity{
         insulinCalculator.setCarbs(carbsData != null ? carbsData.getCarbsValue() : 0);
         insulinCalculator.setGlycemia(glycemiaData != null ? glycemiaData.getValue() : 0);
         insulinCalculator.setGlycemiaTarget(insulinData != null ? insulinData.getTargetGlycemia() : 0);
+
+
 
         if (registerDate != null) {
             insulinCalculator.setTime(this, registerDate);
@@ -1275,9 +1294,12 @@ public class NewHomeRegistry extends BaseActivity{
                 insulinCalculator.setProtein(mCurrentMeal.getTotalProtein());
                 insulinCalculator.setLipids(mCurrentMeal.getTotalLipids());
             }
+
             insulinCalculator.setCarbs(carbsRegisterInputInterface !=null? carbsRegisterInputInterface.getCarbs():0);
             insulinCalculator.setGlycemia(glycaemiaRegisterInputInterface !=null? glycaemiaRegisterInputInterface.getGlycemia():0);
             insulinCalculator.setGlycemiaTarget(glycaemiaRegisterInputInterface !=null? glycaemiaRegisterInputInterface.getGlycemiaTarget():0);
+            insulinCalculator.setType_of_meal(carbsData!=null ? carbsData.getType_of_meal(): "");
+
             if(insuRegisterInputInterface !=null)
                 insuRegisterInputInterface.updateInsuCalc(insulinCalculator,insuRegisterInputInterface.isManual());
         }

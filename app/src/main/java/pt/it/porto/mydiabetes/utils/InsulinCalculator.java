@@ -6,6 +6,9 @@ import java.util.Calendar;
 
 import pt.it.porto.mydiabetes.database.DB_Read;
 
+import static java.lang.String.valueOf;
+
+
 public class InsulinCalculator  implements Cloneable {
 
 	/** Indicates the linear decline per half an hour of the insulin on board
@@ -16,13 +19,14 @@ public class InsulinCalculator  implements Cloneable {
 	private float carbsRatio;
 	private int insulinTarget;
 	private int carbs;
-
+	private String type_of_meal;
 	private float lipids;
 	private float protein;
-
+	private float icarbs;
 	private int glycemia;
 	private int time; // time of intake in minutes
 	private float insulinOnBoard = 0.0f;
+	private float insuladjvalue ;
 	private Calendar date;
 	private Context context;
 
@@ -31,7 +35,6 @@ public class InsulinCalculator  implements Cloneable {
 		date = c;
 		this.context = context;
 		DB_Read rdb = new DB_Read(context);
-
 		int defaultCarbsRatio = rdb.getCarbsRatio();
 		int defaultInsuratio = rdb.getInsulinRatio();
 
@@ -47,6 +50,9 @@ public class InsulinCalculator  implements Cloneable {
 
 		time = (date.get(Calendar.HOUR_OF_DAY) * 60) + date.get(Calendar.MINUTE);
 	}
+
+
+
 
 	public void updateRatios(Calendar c){
 		DB_Read rdb = new DB_Read(context);
@@ -99,6 +105,51 @@ public class InsulinCalculator  implements Cloneable {
 //		return insulinTotal;
 //	}
 
+	///
+	public float getInsulinAdjustmentFloat(){
+
+		float Carbsratio = getInsulinCarbs();
+		switch (getType_of_meal()) {
+			case "BigM":  // meal with high concentration of fat and prot
+
+				insuladjvalue = 0.35f*Carbsratio;
+				break;
+			case "StandardM":  //meal with protein
+
+				insuladjvalue = 0.2f*Carbsratio;
+				break;
+			case "SmallM":  //meal with fat
+
+				insuladjvalue = 0.0f;
+				break;
+		}
+		return insuladjvalue;
+	}
+
+	public float getInsulinCorr(){ //value of insulin to be added hours after meal
+		float valuetocorr;
+		if(getType_of_meal().equals("BigM")){
+			valuetocorr = getInsulinCarbs()*0.35f;
+
+		}
+		else{
+			valuetocorr = 0.0f;
+		}
+		return valuetocorr;
+	}
+
+
+
+
+	public String getType_of_meal() {
+		return type_of_meal;
+	}
+
+	public void setType_of_meal(String type_of_meal) {
+		this.type_of_meal = type_of_meal;
+	}
+
+	///
 	public float getInsulinTotalFloat(boolean withIOB, boolean round) {
 		float insulinTotal = getInsulinTotalFloat(withIOB);
 		if (round) {
@@ -111,12 +162,12 @@ public class InsulinCalculator  implements Cloneable {
 	}
 
 	public float getInsulinTotalFloat(boolean withIOB) {
-		return getInsulinCarbs() + getInsulinGlycemia() - (withIOB ? insulinOnBoard : 0);
+		return getInsulinCarbs() + getInsulinAdjustmentFloat() + getInsulinGlycemia() - (withIOB ? insulinOnBoard : 0);
 	}
 
 
 	public String getInsulinTotal(){
-		String result = String.valueOf(getInsulinTotalFloat(false, true));
+		String result = valueOf(getInsulinTotalFloat(false, true));
 		if(result==null || result.equals("0.0")){return "---";}
 		else{
 			return result;
@@ -222,7 +273,7 @@ public class InsulinCalculator  implements Cloneable {
 
 		DB_Read read = new DB_Read(context);
 		int[] lastInsulin =
-				read.InsulinReg_GetLastHourAndQuantity((hour < 10 ? "0" : "") + String.valueOf(hour) + ":" + (minute < 10 ? "0" : "") + String.valueOf(minute), DateUtils.getFormattedTime(date));
+				read.InsulinReg_GetLastHourAndQuantity((hour < 10 ? "0" : "") + valueOf(hour) + ":" + (minute < 10 ? "0" : "") + valueOf(minute), DateUtils.getFormattedTime(date));
 		read.close();
 
 		// this will be fun if it was in the day before at 23:XX and doing a Meal at 01:XX :)
@@ -245,8 +296,11 @@ public class InsulinCalculator  implements Cloneable {
 		newCalculator.setGlycemia(glycemia);
 		newCalculator.setGlycemiaTarget(insulinTarget);
 		newCalculator.insulinOnBoard = insulinOnBoard;
+		newCalculator.setType_of_meal(type_of_meal);
 		return newCalculator;
 	}
+
+
 
 
 	public interface InsulinCalculatorListener {

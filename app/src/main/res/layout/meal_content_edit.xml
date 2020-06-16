@@ -77,7 +77,7 @@
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:text="@string/buttonstitle"
-            android:textColor="@color/ef_grey"
+            android:textColor="@color/secondary_text"
             android:textSize="14dp"></TextView>
 
         <Button
@@ -88,7 +88,8 @@
             android:layout_marginRight="5dp"
             android:layout_marginBottom="5dp"
             android:background="@drawable/ic_help_outline_black_24dp"
-            android:padding="10dp"
+            android:backgroundTint="@color/hint_grey"
+            android:padding="15dp"
             android:scaleType="center"
             android:visibility="visible" />
     </LinearLayout>
