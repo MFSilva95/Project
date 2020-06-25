@@ -33,6 +33,7 @@ import pt.it.porto.mydiabetes.data.Tag;
 import pt.it.porto.mydiabetes.data.TargetBGRec;
 import pt.it.porto.mydiabetes.data.UserInfo;
 import pt.it.porto.mydiabetes.data.WeightRec;
+import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.utils.DateUtils;
 import pt.it.porto.mydiabetes.utils.HomeElement;
 import pt.it.porto.mydiabetes.utils.RawRecord;
@@ -1073,7 +1074,7 @@ public class DB_Read {
 				tmp.setPhotoPath(cursor.getString(3));
 				tmp.setDateTime(cursor.getString(4));
 				tmp.setIdTag(cursor.getInt(5));
-				tmp.setType_of_meal(cursor.getString(6));
+				tmp.setType_of_meal(NewHomeRegistry.MealType.valueOf(cursor.getString(6)));
 
 				allreads.add(tmp);
 				cursor.moveToNext();
