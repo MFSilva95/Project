@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,8 +8,6 @@
             name="insulinCalc"
             type="pt.it.porto.mydiabetes.utils.InsulinCalculator" />
     </data>
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -332,16 +329,13 @@
             android:id="@+id/extra_ins"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:visibility="gone">
-
+            android:visibility='@{ insulinCalc.setExtraInsulinVisibility()}'>
             <TextView
-
                 android:layout_width="wrap_content"
                 android:textColor="@color/blue_dark"
                 android:layout_height="wrap_content"
                 android:text="@string/insulin_corr"
                 android:gravity="center_horizontal"
-
                 android:textStyle="italic|bold"/>
 
             <View
@@ -368,32 +362,59 @@
                 android:layout_height="wrap_content"
                 android:gravity="end"
                 android:textColor="@color/blue_dark"
-                android:text='@{ String.format("%.1f", insulinCalc.getInsulinCorr())}'
+                android:text='@{ String.format("%.1f", insulinCalc.getInsulinAdjustment())}'
                 android:textSize="18sp"
                 android:textStyle="bold"
                 tools:text="6.1" />
         </LinearLayout>
+
+
         <LinearLayout
-            style="android:stateListAnimator= pt.it.porto.mydiabetes.ui.views.InsulinAdjustmentTragment"
+            android:id="@+id/noextra_ins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:animateLayoutChanges="true"
+            android:orientation="horizontal"
+            android:visibility='@{ insulinCalc.setNoExtraInsulinVisibility()}'>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/noinsulin_corr"
+                android:textAlignment="center"
+                android:textColor="@color/blue_dark"
+                android:textStyle="italic|bold"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:id="@+id/noextra_ins"
+            android:id="@+id/extra_ins_bomb"
             android:orientation="horizontal"
             android:layout_gravity="center"
-            android:visibility="visible">
-
-
+            android:visibility='@{ insulinCalc.setExtraInsulinVisibility_Bomb()}'>
             <TextView
-                style="pt.it.porto.mydiabetes.ui.views.InsulinElement"
                 android:layout_width="wrap_content"
                 android:textColor="@color/blue_dark"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:gravity="center"
-                android:text="@string/noinsulin_corr"
-                android:textStyle="italic|bold" />
+                android:text="@string/insulin_corr_bomb"
+                android:gravity="center_horizontal"
+                android:textStyle="italic|bold"/>
+
+            <View
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:backgroundTint="@color/blue_dark"
+                android:layout_gravity="center"
+                android:layout_weight="12"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@drawable/ic_access_time" />
         </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/result_round"
@@ -404,6 +425,6 @@
             android:gravity="end"
             android:textSize="16sp"
             tools:text="(6)" />
-
+        
     </LinearLayout>
 </layout>

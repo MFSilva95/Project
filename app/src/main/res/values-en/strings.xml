@@ -728,4 +728,5 @@
     <string name="insulin_adjustment">Adjustment of Fat/Protein</string>
     <string name="insulin_corr">correction of insulin in 1h</string>
     <string name="noinsulin_corr">No need for insulin adjustment</string>
+    <string name="insulin_corr_bomb">Split 50%/50% over 2:30h</string>
 </resources>

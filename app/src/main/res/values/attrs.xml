@@ -4,9 +4,6 @@
         <attr name="suffix" format="string"/>
         <attr name="suffix_color" format="color"/>
     </declare-styleable>
-    <declare-styleable name="InsulinAdjustmentTragment">
-        <attr name="visibility" format="string"/>
-    </declare-styleable>
 </resources>
 
 

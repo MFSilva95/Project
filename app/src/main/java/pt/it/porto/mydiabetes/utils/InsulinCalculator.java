@@ -1,9 +1,11 @@
 package pt.it.porto.mydiabetes.utils;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 
 import java.util.Calendar;
 
+import pt.it.porto.mydiabetes.data.Insulin;
 import pt.it.porto.mydiabetes.database.DB_Read;
 
 import static java.lang.String.valueOf;
@@ -24,6 +26,10 @@ public class InsulinCalculator  implements Cloneable {
 	private float protein;
 	private float icarbs;
 	private int glycemia;
+	@Nullable
+	private Insulin typeInsulin;
+
+	String typeIns;
 	private int time; // time of intake in minutes
 	private float insulinOnBoard = 0.0f;
 	private float insuladjvalue ;
@@ -39,16 +45,17 @@ public class InsulinCalculator  implements Cloneable {
 		int defaultInsuratio = rdb.getInsulinRatio();
 
 		String d = DateUtils.formatTimeToDb(c);
-
 		glycemiaRatio = rdb.Sensitivity_GetCurrent(d);
 		carbsRatio = rdb.Ratio_GetCurrent(d);
-
+		typeInsulin = new Insulin();
+		typeIns = typeInsulin.getType();
 		rdb.close();
 
 		if(glycemiaRatio==-1){glycemiaRatio = defaultInsuratio;}
 		if(carbsRatio==-1){carbsRatio = defaultCarbsRatio;}
 
 		time = (date.get(Calendar.HOUR_OF_DAY) * 60) + date.get(Calendar.MINUTE);
+
 	}
 
 
@@ -59,12 +66,10 @@ public class InsulinCalculator  implements Cloneable {
 
 		int defaultCarbsRatio = rdb.getCarbsRatio();
 		int defaultInsuratio = rdb.getInsulinRatio();
-
 		String d = DateUtils.formatTimeToDb(c);
 
 		glycemiaRatio = rdb.Sensitivity_GetCurrent(d);
 		carbsRatio = rdb.Ratio_GetCurrent(d);
-
 		rdb.close();
 
 		if(glycemiaRatio==-1){glycemiaRatio = defaultInsuratio;}
@@ -106,31 +111,18 @@ public class InsulinCalculator  implements Cloneable {
 //	}
 
 	///
-	public float getInsulinAdjustmentFloat(){
 
-		float Carbsratio = getInsulinCarbs();
-		switch (getType_of_meal()) {
-			case "BigM":  // meal with high concentration of fat and prot
 
-				insuladjvalue = 0.35f*Carbsratio;
-				break;
-			case "StandardM":  //meal with protein
 
-				insuladjvalue = 0.2f*Carbsratio;
-				break;
-			case "SmallM":  //meal with fat
-
-				insuladjvalue = 0.0f;
-				break;
-		}
-		return insuladjvalue;
-	}
-
-	public float getInsulinCorr(){ //value of insulin to be added hours after meal
+	public float getInsulinAdjustment(){ //valor de insulina a ser ajustado horas após
 		float valuetocorr;
 		if(getType_of_meal().equals("BigM")){
-			valuetocorr = getInsulinCarbs()*0.35f;
-
+			if(typeIns.equals("pump")) {
+				valuetocorr = getInsulinCarbs() * 0.35f + getInsulinTotalFloat(false, true);
+			}
+			else{
+				valuetocorr = getInsulinCarbs() * 0.35f;
+			}
 		}
 		else{
 			valuetocorr = 0.0f;
@@ -138,7 +130,24 @@ public class InsulinCalculator  implements Cloneable {
 		return valuetocorr;
 	}
 
+	public float getInsulinCorr(){ //Valor de insulina de correcção a ser adicionado
+		float Carbsratio = getInsulinCarbs();
+		switch (getType_of_meal()) {
+			case "BigM":  // meal with high concentration of fat
 
+				insuladjvalue = 0.0f; // só é aplicado correcção h após a refeição
+				break;
+			case "StandardM":  //meal with protein
+
+				insuladjvalue = 0.2f*Carbsratio;
+				break;
+			case "SmallM":  //meal with HGI
+
+				insuladjvalue = 0.0f;
+				break;
+		}
+		return insuladjvalue;
+	}
 
 
 	public String getType_of_meal() {
@@ -162,7 +171,7 @@ public class InsulinCalculator  implements Cloneable {
 	}
 
 	public float getInsulinTotalFloat(boolean withIOB) {
-		return getInsulinCarbs() + getInsulinAdjustmentFloat() + getInsulinGlycemia() - (withIOB ? insulinOnBoard : 0);
+		return getInsulinCarbs() + getInsulinCorr() + getInsulinGlycemia() - (withIOB ? insulinOnBoard : 0);
 	}
 
 
@@ -178,8 +187,6 @@ public class InsulinCalculator  implements Cloneable {
 		if(carbs<=0){return 0;}
 		return ((float)carbs / carbsRatio);
 	}
-
-
 
 	public float getInsulinGlycemia() {
 		if(glycemia<=0){return 0;}
@@ -284,7 +291,39 @@ public class InsulinCalculator  implements Cloneable {
 
 		setLastInsulin(insulinDose, minuteOriginal, insulinType);
 	}
-
+	public int setExtraInsulinVisibility(){
+		int visibility=0;
+		if (getType_of_meal().equals("BigM") && typeIns.equals("pen")) {
+			visibility = 0;
+		}else if (getType_of_meal().equals("BigM") && typeIns.equals("pump")) {
+			visibility = 8;
+		} else{
+			visibility=8;
+		}
+		return visibility;
+	}
+	public int setNoExtraInsulinVisibility() {
+		int visibility = 0;
+		if (getType_of_meal().equals("BigM")){
+			visibility = 8;
+		} else if (getType_of_meal().equals("SmallM")){
+			visibility = 0;
+		} else{
+			visibility=0;
+		}
+		return visibility;
+	}
+	public int setExtraInsulinVisibility_Bomb(){
+		int visibility=0;
+		if (getType_of_meal().equals("BigM") && typeIns.equals("pen")) {
+			visibility = 8;
+		}else if (getType_of_meal().equals("BigM") && typeIns.equals("pump")) {
+			visibility = 0;
+		} else{
+			visibility=8;
+		}
+		return visibility;
+	}
 	public void setListener(InsulinCalculatorListener listener) {
 		this.listener = listener;
 	}

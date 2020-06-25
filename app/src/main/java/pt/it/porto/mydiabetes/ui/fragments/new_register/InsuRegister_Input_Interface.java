@@ -39,6 +39,7 @@ public class InsuRegister_Input_Interface extends LinearLayout {
     private boolean useIOB;
     private float iRatio;
     private float cRatio;
+    private String typeMeal;
     private Spinner insu_spinner;
     private InsulinCalculator calc;
     private TextWatcher insuWatcher;
@@ -71,7 +72,6 @@ public class InsuRegister_Input_Interface extends LinearLayout {
         useIOB = featuresDB.isFeatureActive(FeaturesDB.FEATURE_INSULIN_ON_BOARD);
         calcShowing = false;
         insuData = new InsulinRec();
-
         insulin_input = (TextInputLayout) findViewById(R.id.insulin_admin);
         insuInfo = findViewById(R.id.bt_insulin_calc_info);
         insuInfoContent = (FrameLayout) findViewById(R.id.fragment_calcs);
@@ -91,9 +91,13 @@ public class InsuRegister_Input_Interface extends LinearLayout {
             }
         }
     }
+    public void setTypeMeal(String type){
+        this.typeMeal = type;
+    }
     public void updateRatioCalc(Calendar c){
         this.calc.updateRatios(c);
         this.fragmentInsulinCalcsFragment.setInsulinCalculator(calc);
+
     }
     public void fill_parameters(InsulinRec rec){
         this.insuData = rec;
@@ -194,6 +198,7 @@ public class InsuRegister_Input_Interface extends LinearLayout {
                 updateInsuCalc(calc, true);
             }
         }
+
     }
     private void hideCalcs() {
 
@@ -205,6 +210,7 @@ public class InsuRegister_Input_Interface extends LinearLayout {
             logSave("Close:InsulinCalcView");
             calcInsulinInfo.setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.ic_information_outline_grey600_24dp));
         }
+
     }
 
     public void logSave (String activity) {
