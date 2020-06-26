@@ -49,7 +49,7 @@ public class Home extends BaseActivity {
 
 		DB_Write w = new DB_Write(this);
 		w.MyData_Save(new UserInfo(1,"teste",1,40,30,70,200,"11-04-1789",1,190.0,"11-12-1987",110));
-		if(in.size()== 0) {
+		if(in == null || in.size()== 0) {
             w.Insulin_Add(new Insulin(1,"teste_pump","1","long", 10.0));
             w.Insulin_Add(new Insulin(1,"teste_pen","0","long", 10.0));
         }
