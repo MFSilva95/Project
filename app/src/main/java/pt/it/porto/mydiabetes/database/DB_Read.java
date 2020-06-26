@@ -765,12 +765,11 @@ public class DB_Read {
 		return insulin;
 
 	}
-//---------------------TypeMeal ------------------
+	//---------------------TypeMeal ------------------
 	public HashMap<String,Integer> TypeMeal(){
 		Cursor cursor = myDB.rawQuery("Select * from TypeMeal",null );
 		return null;
 	}
-
 	//----------------- EXERCISES --------------
 	public boolean Exercise_ExistName(String name) {
 		Cursor cursor = myDB.rawQuery("SELECT Name FROM Exercise where Name='" + name + "'", null);

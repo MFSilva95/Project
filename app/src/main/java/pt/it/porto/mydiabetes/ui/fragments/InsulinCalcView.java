@@ -4,9 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
-
 import androidx.databinding.DataBindingUtil;
-
 import pt.it.porto.mydiabetes.BuildConfig;
 import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.databinding.FragmentInsulinMealCalcBinding;
@@ -22,13 +20,10 @@ public class InsulinCalcView extends LinearLayout {
 
     private LinearLayout blockIOB;
     FragmentInsulinMealCalcBinding binding;
-
-
     public InsulinCalcView(Context context) {
         super(context);
         init();
     }
-
 
     public void init() {
         if(binding==null){
@@ -41,7 +36,6 @@ public class InsulinCalcView extends LinearLayout {
             this.blockIOB.setVisibility(View.GONE);
         }
     }
-
     public void setInsulinCalculator(InsulinCalculator calculator) {
         binding.setInsulinCalc(calculator);
         binding.executePendingBindings();
