@@ -6,6 +6,9 @@ import android.os.Parcelable;
 
 import java.io.File;
 
+import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
+import pt.it.porto.mydiabetes.utils.InsulinCalculator;
+
 public class CarbsRec extends DateTime implements Parcelable {
 
 	public static final Creator<CarbsRec> CREATOR = new Creator<CarbsRec>() {
@@ -19,7 +22,7 @@ public class CarbsRec extends DateTime implements Parcelable {
 			return new CarbsRec[size];
 		}
 	};
-	private String type_of_meal="";
+	private NewHomeRegistry.MealType type_of_meal = NewHomeRegistry.MealType.NoMeal;;
 	private int id = -1;
 	private int id_User = -1;
 	private int mealType = -1;
@@ -58,7 +61,7 @@ public class CarbsRec extends DateTime implements Parcelable {
 		idTag = in.readInt();
 		idNote = in.readInt();
 		mealId = in.readInt();
-		type_of_meal =  in.readString();
+		type_of_meal =  NewHomeRegistry.MealType.valueOf(in.readString());
 
 	}
 
@@ -131,11 +134,11 @@ public class CarbsRec extends DateTime implements Parcelable {
 		this.mealId = mealId;
 	}
 
-	public String getType_of_meal() {
+	public NewHomeRegistry.MealType getType_of_meal() {
 		return type_of_meal;
 	}
 
-	public void setType_of_meal(String type_of_meal) { this.type_of_meal = type_of_meal;}
+	public void setType_of_meal(NewHomeRegistry.MealType type_of_meal) { this.type_of_meal = type_of_meal;}
 
 	@Override
 	public int describeContents() {
@@ -153,7 +156,7 @@ public class CarbsRec extends DateTime implements Parcelable {
 		dest.writeInt(idTag);
 		dest.writeInt(idNote);
 		dest.writeInt(mealId);
-		dest.writeString(type_of_meal);
+		dest.writeString(type_of_meal.name());
 	}
 
 	@Override

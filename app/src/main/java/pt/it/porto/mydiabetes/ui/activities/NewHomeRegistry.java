@@ -78,6 +78,7 @@ public class NewHomeRegistry extends BaseActivity{
     private Button SmallM, StandardM, BigM, InfoMeal;
 
 
+    public enum MealType{NoMeal, SmallM, BigM, StandardM}
     private String TAG = "newREG";
 
     private static final String CALCS_OPEN = "calcs open";
@@ -88,7 +89,6 @@ public class NewHomeRegistry extends BaseActivity{
     private static final String GLICAEMIA = "GLICAEMIA";
     private static final String NOTE = "NOTE";
     private static final String PLUS = "PLUS";
-    private static final String TypeMeal = "TypeMeal";
 
     private static final String ARG_CARBS = "ARG_CARBS";
     private static final String ARG_INSULIN = "ARG_INSULIN";
@@ -148,7 +148,7 @@ public class NewHomeRegistry extends BaseActivity{
     private Uri generatedImageUri;
     private Uri imgUri;
     private int recordId=-1;
-    private String type_of_meal;
+    private MealType type_of_meal = MealType.NoMeal;;
     private int noteId;
     private String mCurrentPhotoPath;
     private Toolbar toolbar;
@@ -256,7 +256,7 @@ public class NewHomeRegistry extends BaseActivity{
         }
     }
 
-    public void TypeOfMeal() {
+    public void SetMealTypeButtonListeners() {
         /*Buttons MEAL*/
         SmallM = (Button)findViewById(R.id.Small_Meal);
         SmallM.setOnClickListener(new View.OnClickListener() {
@@ -264,15 +264,20 @@ public class NewHomeRegistry extends BaseActivity{
             public void onClick(View view) {
                 logSave("NewHomeRegistry: TypeMeal");
                 SmallM.findViewById(R.id.Small_Meal).setActivated(true);
-                setType_of_meal("SmallM");
+                setType_of_meal(MealType.SmallM);
+
                 BigM.findViewById(R.id.Big_Meal).setActivated(false);
                 StandardM.findViewById(R.id.Standard_Meal).setActivated(false);
-                insulinCalculator.setType_of_meal(carbsData!=null ? getType_of_meal(): "SmallM");
+
+                insulinCalculator.setType_of_meal(carbsData!=null ? getType_of_meal():MealType.SmallM);
                 if (buttons.contains(INSULIN)) {
                   //do nothing
-                    insuRegisterInputInterface.setTypeMeal("SmallM");
+                    insuRegisterInputInterface.setTypeMeal(MealType.SmallM);
                     insuRegisterInputInterface.updateInsuCalc(insulinCalculator,false);
-                    findViewById(R.id.extra_ins).setVisibility(View.GONE);
+                    LinearLayout ins = findViewById(R.id.extra_ins);
+                    if(ins!=null){
+                        ins.setVisibility(View.GONE);
+                    }
                 } else {
                     setInsuPressed(view);
                 }
@@ -298,19 +303,17 @@ public class NewHomeRegistry extends BaseActivity{
 
                 logSave("NewHomeRegistry: TypeMeal");
                 BigM.findViewById(R.id.Big_Meal).setActivated(true);
-                setType_of_meal("BigM");
-                insulinCalculator.setType_of_meal(carbsData!=null ? getType_of_meal(): "BigM");
+                setType_of_meal(MealType.BigM);
+                insulinCalculator.setType_of_meal(carbsData!=null ? getType_of_meal(): MealType.BigM);
                 StandardM.findViewById(R.id.Standard_Meal).setActivated(false);
                 SmallM.findViewById(R.id.Small_Meal).setActivated(false);
                 if (buttons.contains(INSULIN)) {
                     //do nothing
-                    insuRegisterInputInterface.setTypeMeal("BigM");
+                    insuRegisterInputInterface.setTypeMeal(MealType.BigM);
                     insuRegisterInputInterface.updateInsuCalc(insulinCalculator,false);
 
                 } else {
                     setInsuPressed(view);
-
-
                 }
 
             }
@@ -325,12 +328,12 @@ public class NewHomeRegistry extends BaseActivity{
 
                 StandardM.findViewById(R.id.Standard_Meal).setActivated(true);
                 BigM.findViewById(R.id.Big_Meal).setActivated(false);
-                setType_of_meal("StandardM");
-                insulinCalculator.setType_of_meal(carbsData!=null ? getType_of_meal(): "StandardM");
+                setType_of_meal(MealType.StandardM);
+                insulinCalculator.setType_of_meal(carbsData!=null ? getType_of_meal(): MealType.StandardM);
                 SmallM.findViewById(R.id.Small_Meal).setActivated(false);
                 if (buttons.contains(INSULIN)) {
                     //do nothing
-                    insuRegisterInputInterface.setTypeMeal("StandardM");
+                    insuRegisterInputInterface.setTypeMeal(MealType.StandardM);
                     insuRegisterInputInterface.updateInsuCalc(insulinCalculator,false);
                 } else {
                     setInsuPressed(view);
@@ -339,11 +342,12 @@ public class NewHomeRegistry extends BaseActivity{
         });
 
     }
-    public String getType_of_meal() {
+
+    public MealType getType_of_meal() {
         return type_of_meal;
     }
 
-    public void setType_of_meal(String type_of_meal) {
+    public void setType_of_meal(MealType type_of_meal) {
         this.type_of_meal = type_of_meal;
 
     }
@@ -389,7 +393,7 @@ public class NewHomeRegistry extends BaseActivity{
         buttons = new ArrayList<>();
         delete_buttons = new ArrayList<>();
 
-        insulinCalculator = new InsulinCalculator(this,registerDate);
+        insulinCalculator = new InsulinCalculator(this, registerDate);
         imgUri = null;
         noteId = -1;
 
@@ -605,8 +609,6 @@ public class NewHomeRegistry extends BaseActivity{
         dbHelper.close();
         reg.close();
     }
-
-
     private void save_record () throws Exception{
         spinner = findViewById(R.id.tag_spinner);
         int idTag = (spinner.getSelectedItemPosition()+1);
@@ -743,18 +745,14 @@ public class NewHomeRegistry extends BaseActivity{
         reg.close();
     }
 
+
     private void insertNoteMenu(){
         noteRegisterInputInterface = new NoteRegister_Input_Interface(this);
         addContent(noteRegisterInputInterface);
         buttons.add(0,NOTE);
     }
-
     private void insertGlicMenu(){
-        /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
-                    if(newAdvice!=null){
-                        addContent(R.layout.dialog_exp_advice);
-                        setAdviceText();
-                    }*/
+
         glycaemiaRegisterInputInterface = new GlycaemiaRegister_Input_Interface(this,registerDate, glycaemiaRegisterInputInterface.getCallBack());
         addContent(glycaemiaRegisterInputInterface);
         bottomSheetViewgroup.findViewById(R.id.bs_glicemia).setPressed(true);
@@ -763,16 +761,6 @@ public class NewHomeRegistry extends BaseActivity{
         requestKeyboard(glycaemiaRegisterInputInterface);
     }
     private void insertCarbsMenu(){
-        //Advice advice1 = new Advice();
-        //advice1.setSummaryText("You have recently exercised. You should compensate it with carbohydrates.");
-        //advice1.setExpandedText("You have recently exercised. You should compensate it with carbohydrates.");
-        //advice1.setUrgency(5);
-        //advice1.setType("NORMAL");
-        //Advice newAdvice = //YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
-                    /*if(advice1!=null){
-                        addContentAt(new AdviceRegister(this, advice1),0);
-                        //setAdviceText();
-                    }*/
 
         carbsRegisterInputInterface = new CarbsRegister_Input_Interface(this, carbsRegisterInputInterface.getCallBack());
         addContent(carbsRegisterInputInterface);
@@ -780,16 +768,12 @@ public class NewHomeRegistry extends BaseActivity{
         buttons.add(0, CARBS);
         bottomSheetViewgroup.findViewById(R.id.bs_notes).setEnabled(true);
         requestKeyboard(carbsRegisterInputInterface);
-        TypeOfMeal();
+        SetMealTypeButtonListeners();
     }
     private void insertInsulinMenu(boolean reqKey){
-        /*Advice newAdvice = YapDroid.newInstance(v.getContext()).getSingleAdvice("Start", "",v.getContext());
-                    if(newAdvice!=null){
-                        addContent(R.layout.dialog_exp_advice);
-                        setAdviceText();
-                    }*/
         insuRegisterInputInterface = new InsuRegister_Input_Interface(this, iRatio, cRatio);
         addContent(insuRegisterInputInterface);
+
         insuRegisterInputInterface.updateInsuCalc(insulinCalculator, false);
         buttons.add(0, INSULIN);
         bottomSheetViewgroup.findViewById(R.id.bs_insulin).setPressed(true);
@@ -1302,7 +1286,7 @@ public class NewHomeRegistry extends BaseActivity{
             insulinCalculator.setCarbs(carbsRegisterInputInterface !=null? carbsRegisterInputInterface.getCarbs():0);
             insulinCalculator.setGlycemia(glycaemiaRegisterInputInterface !=null? glycaemiaRegisterInputInterface.getGlycemia():0);
             insulinCalculator.setGlycemiaTarget(glycaemiaRegisterInputInterface !=null? glycaemiaRegisterInputInterface.getGlycemiaTarget():0);
-            insulinCalculator.setType_of_meal(carbsData!=null ? carbsData.getType_of_meal(): "");
+            insulinCalculator.setType_of_meal(carbsData!=null ? carbsData.getType_of_meal(): MealType.NoMeal);
 
             if(insuRegisterInputInterface !=null)
                 insuRegisterInputInterface.updateInsuCalc(insulinCalculator,insuRegisterInputInterface.isManual());

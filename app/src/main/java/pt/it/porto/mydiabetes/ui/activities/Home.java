@@ -11,6 +11,8 @@ import android.view.View;
 import android.widget.Toast;
 
 
+import java.util.HashMap;
+
 import pt.it.porto.mydiabetes.R;
 
 import pt.it.porto.mydiabetes.data.Insulin;
@@ -42,13 +44,14 @@ public class Home extends BaseActivity {
 		setContentView(R.layout.activity_home);
 
         DB_Read db = new DB_Read(this);
-        Insulin in = db.Insulin_GetByName("insu");
+        HashMap<Integer, String[]> in = db.Insulin_GetAll();
         db.close();
 
 		DB_Write w = new DB_Write(this);
 		w.MyData_Save(new UserInfo(1,"teste",1,40,30,70,200,"11-04-1789",1,190.0,"11-12-1987",110));
-		if(in == null) {
-            w.Insulin_Add(new Insulin(1,"teste","pump","long", 10.0));
+		if(in.size()== 0) {
+            w.Insulin_Add(new Insulin(1,"teste_pump","1","long", 10.0));
+            w.Insulin_Add(new Insulin(1,"teste_pen","0","long", 10.0));
         }
 		w.close();
 

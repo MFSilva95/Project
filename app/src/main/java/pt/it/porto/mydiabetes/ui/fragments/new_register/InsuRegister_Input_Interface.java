@@ -6,6 +6,7 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -18,11 +19,13 @@ import java.util.Calendar;
 import java.util.HashMap;
 
 import pt.it.porto.mydiabetes.R;
+import pt.it.porto.mydiabetes.data.Insulin;
 import pt.it.porto.mydiabetes.data.InsulinRec;
 import pt.it.porto.mydiabetes.database.DB_Read;
 import pt.it.porto.mydiabetes.database.DB_Write;
 import pt.it.porto.mydiabetes.database.FeaturesDB;
 import pt.it.porto.mydiabetes.database.MyDiabetesStorage;
+import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 import pt.it.porto.mydiabetes.ui.fragments.InsulinCalcView;
 import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
@@ -39,10 +42,11 @@ public class InsuRegister_Input_Interface extends LinearLayout {
     private boolean useIOB;
     private float iRatio;
     private float cRatio;
-    private String typeMeal;
+    private NewHomeRegistry.MealType typeMeal;
     private Spinner insu_spinner;
     private InsulinCalculator calc;
     private TextWatcher insuWatcher;
+    private Insulin insulin;
 
 
     public boolean isManual(){  return isManual;
@@ -80,6 +84,10 @@ public class InsuRegister_Input_Interface extends LinearLayout {
         isManual = false;
     }
 
+    public void updateInsulin(Insulin insu){
+        this.insulin = insu;
+    }
+
     public void updateInsuCalc(InsulinCalculator calculator, boolean manual){
         this.calc = calculator;
         this.fragmentInsulinCalcsFragment.setInsulinCalculator(calculator);
@@ -91,7 +99,8 @@ public class InsuRegister_Input_Interface extends LinearLayout {
             }
         }
     }
-    public void setTypeMeal(String type){
+
+    public void setTypeMeal(NewHomeRegistry.MealType type){
         this.typeMeal = type;
     }
     public void updateRatioCalc(Calendar c){
@@ -145,8 +154,32 @@ public class InsuRegister_Input_Interface extends LinearLayout {
     public void setIsManual(boolean bool){
         this.isManual = bool;
     }
+
+    private void updateCurrentInsulin(){
+        Spinner insuSpin = findViewById(R.id.sp_MealDetail_Insulin);
+        DB_Read read = new DB_Read(this.getContext());
+        Insulin currInsu = read.Insulin_GetByName(insuSpin.getSelectedItem().toString());
+        read.close();
+        this.insulin = currInsu;
+        if(this.insulin!=null){
+            calc.updateInsuType(Integer.parseInt(currInsu.getType()));
+            this.fragmentInsulinCalcsFragment.setInsulinCalculator(calc);
+        }
+    }
+
     private void fillInsulinSpinner() {
         insu_spinner = (Spinner) findViewById(R.id.sp_MealDetail_Insulin);
+        insu_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                updateCurrentInsulin();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         ArrayList<String> allInsulins = new ArrayList<>();
         DB_Read rdb = new DB_Read(getContext());
         HashMap<Integer, String> val = rdb.Insulin_GetAllNames();

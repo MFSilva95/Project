@@ -139,10 +139,10 @@ public class CarbsRegister_Input_Interface extends LinearLayout {
     }
 
 
-    public String getTypeMeal() {
+    public NewHomeRegistry.MealType getTypeMeal() {
         return this.carbsData.getType_of_meal();
     }
-    public void setTypeMeal(String typeMeal){
+    public void setTypeMeal(NewHomeRegistry.MealType typeMeal){
         carbsData.setType_of_meal(typeMeal);
     }
 }
