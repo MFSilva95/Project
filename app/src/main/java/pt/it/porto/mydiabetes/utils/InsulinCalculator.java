@@ -1,18 +1,15 @@
 package pt.it.porto.mydiabetes.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.Nullable;
 
 import java.util.Calendar;
 
-import pt.it.porto.mydiabetes.R;
 import pt.it.porto.mydiabetes.data.Insulin;
 import pt.it.porto.mydiabetes.database.DB_Read;
-import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
 
 import static java.lang.String.valueOf;
-import static pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry.*;
+import static pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry.MealType;
 
 
 public class InsulinCalculator  implements Cloneable {
@@ -84,6 +81,7 @@ public class InsulinCalculator  implements Cloneable {
 
 		glycemiaRatio = rdb.Sensitivity_GetCurrent(d);
 		carbsRatio = rdb.Ratio_GetCurrent(d);
+
 		rdb.close();
 
 		if(glycemiaRatio==-1){glycemiaRatio = defaultInsuratio;}
@@ -140,6 +138,18 @@ public class InsulinCalculator  implements Cloneable {
 		}
 		return valuetocorr;
 	}
+    public float getInsulinAdjustmentLater(){ //valor de insulina a ser ajustado horas após
+        float valuetocorr = 0.0f;
+        if(getType_of_meal() == MealType.BigM){
+            if(this.insuType==INSULIN_TYPE_PUMP){
+                valuetocorr = getInsulinCarbs() * 0.35f ;
+            }
+            else{
+                valuetocorr = getInsulinCarbs() * 0.00f;
+            }
+        }
+        return valuetocorr;
+    }
 
 	public float getInsulinCorr(){ //Valor de insulina de correcção a ser adicionado
 		float Carbsratio = getInsulinCarbs();
@@ -182,7 +192,7 @@ public class InsulinCalculator  implements Cloneable {
 	}
 
 	public float getInsulinTotalFloat(boolean withIOB) {
-		return getInsulinCarbs() + getInsulinCorr() + getInsulinGlycemia() - (withIOB ? insulinOnBoard : 0);
+		return getInsulinCarbs() + getInsulinCorr()+ getInsulinAdjustmentLater() + getInsulinGlycemia() - (withIOB ? insulinOnBoard : 0);
 	}
 
 
