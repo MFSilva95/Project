@@ -7,7 +7,6 @@ import android.os.Parcelable;
 import java.io.File;
 
 import pt.it.porto.mydiabetes.ui.activities.NewHomeRegistry;
-import pt.it.porto.mydiabetes.utils.InsulinCalculator;
 
 public class CarbsRec extends DateTime implements Parcelable {
 
@@ -22,7 +21,7 @@ public class CarbsRec extends DateTime implements Parcelable {
 			return new CarbsRec[size];
 		}
 	};
-	private NewHomeRegistry.MealType type_of_meal = NewHomeRegistry.MealType.NoMeal;;
+	private NewHomeRegistry.MealType type_of_meal = NewHomeRegistry.MealType.NoMeal;
 	private int id = -1;
 	private int id_User = -1;
 	private int mealType = -1;
